@@ -72,19 +72,60 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      {
+        name: "description",
+        content:
+          "Sushanth Paatnaik — six-time Indian Presidential awardee, inventor and founder building graphene, nano-materials, and industrial deep-tech ventures from India for the world.",
+      },
+      { name: "author", content: "Sushanth Paatnaik" },
+      { name: "theme-color", content: "#070708" },
+      { property: "og:site_name", content: "Sushanth Paatnaik" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      {
+        property: "og:description",
+        content:
+          "Inventor, founder, and six-time Indian Presidential awardee engineering graphene, nano-materials, and industrial systems from India for the world.",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      {
+        name: "twitter:description",
+        content:
+          "Graphene, nano-materials, AI, and industrial commercialization — built in India, designed for the world.",
+      },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Sushanth Paatnaik",
+          jobTitle: "Inventor · Deep-Tech Founder",
+          description:
+            "Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital. CIO at Magppie.",
+          birthPlace: "Bhubaneswar, Odisha, India",
+          alumniOf: [
+            { "@type": "CollegeOrUniversity", name: "IISER Bhopal" },
+            { "@type": "CollegeOrUniversity", name: "OCT, Bhopal" },
+          ],
+          knowsAbout: [
+            "Graphene",
+            "Advanced Materials",
+            "Nano-materials",
+            "Deep-Tech",
+            "Industrial Systems",
+            "Climate Technology",
+          ],
+        }),
       },
     ],
   }),
