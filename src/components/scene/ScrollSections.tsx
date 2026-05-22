@@ -4,7 +4,7 @@ import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
 import type { StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
-import founderLab from "@/assets/founder-lab.jpg";
+
 
 // 7-chapter cinematic storyline.
 // Chapter 01 (Spark) is rendered by HeroSection.
