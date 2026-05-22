@@ -53,8 +53,8 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    // Always keep a soft baseline blur so imagery reads as atmosphere, not geometry.
-    return 6 + d * 10;
+    // Sharp at center; soft blur only while transitioning between scenes.
+    return d * d * 10;
   });
 }
 
@@ -76,7 +76,7 @@ function SceneLayer({
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
   const blurPx = useSceneBlur(phase, index);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.62) contrast(0.92) saturate(0.85)`;
+  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.72) contrast(1.04) saturate(1)`;
   const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
 
   return (
