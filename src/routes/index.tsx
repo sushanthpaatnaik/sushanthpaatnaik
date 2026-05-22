@@ -11,11 +11,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Sushanth — Engineering Intelligent Matter · Graphene, Nano-Materials & AI" },
+      { title: "Sushanth Paatnaik — Inventor · Graphene & Advanced Materials · Deep-Tech Founder" },
       {
         name: "description",
         content:
-          "Building future-facing deep-tech ventures at the intersection of graphene, nano-materials, AI, energy, climate, and intelligent systems.",
+          "Sushanth Paatnaik — inventor and founder building graphene, nano-materials, and industrial deep-tech ventures from India for the world.",
       },
     ],
   }),

@@ -21,8 +21,8 @@ export default function ParticleField({
   progress,
   opacityStops = [0.55, 0.46, 0.4, 0.34, 0.3, 0.24, 0.16],
   count = 32,
-  primaryColor = "oklch(0.92 0.06 235)",
-  accentColor = "oklch(0.82 0.13 58)",
+  primaryColor = "oklch(0.81 0.1 235)",
+  accentColor = "oklch(0.63 0.1 75)",
 }: ParticleFieldProps) {
   const particles = useMemo(
     () =>
@@ -62,8 +62,8 @@ export default function ParticleField({
             filter: `blur(${particle.blur}px)`,
             background: particle.accent ? accentColor : primaryColor,
             boxShadow: particle.accent
-              ? "0 0 10px oklch(0.74 0.13 58 / 0.45)"
-              : "0 0 10px oklch(0.78 0.18 235 / 0.4)",
+              ? "0 0 10px oklch(0.63 0.1 75 / 0.35)"
+              : "0 0 10px oklch(0.71 0.13 240 / 0.32)",
             animation: `atmosDrift ${particle.duration}s ease-in-out ${particle.delay}s infinite alternate`,
           }}
         />
