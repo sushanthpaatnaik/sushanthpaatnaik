@@ -346,7 +346,7 @@ export default function ScrollSections() {
               Measured in tons of carbon, joules of energy, years of life.
             </h3>
           </MotionReveal>
-          <div className="grid gap-px bg-foreground/10 md:grid-cols-3">
+          <div className="grid gap-px bg-foreground/[0.06] md:grid-cols-3">
             {[
               { k: "GW", l: "Energy systems", s: "Graphene-enabled storage & transmission" },
               { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
