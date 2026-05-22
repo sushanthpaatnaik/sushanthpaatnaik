@@ -8,29 +8,32 @@ import {
   type MotionValue,
 } from "framer-motion";
 
-import scene01 from "@/assets/scene-01-origin.jpg";
-import scene02 from "@/assets/scene-02-discovery.jpg";
-import scene03 from "@/assets/scene-03-engineering.jpg";
-import scene04 from "@/assets/scene-04-prototype.jpg";
-import scene05 from "@/assets/scene-05-scale.jpg";
-import scene06 from "@/assets/scene-06-impact.jpg";
-import scene07 from "@/assets/scene-07-future.jpg";
+import scene01 from "@/assets/scene-01-discover.jpg";
+import scene02 from "@/assets/scene-02-ideate.jpg";
+import scene03 from "@/assets/scene-03-invent.jpg";
+import scene04 from "@/assets/scene-04-validate.jpg";
+import scene05 from "@/assets/scene-05-protect.jpg";
+import scene06 from "@/assets/scene-06-prototype.jpg";
+import scene07 from "@/assets/scene-07-commercialize.jpg";
+import scene08 from "@/assets/scene-08-scale.jpg";
+import scene09 from "@/assets/scene-09-deployment.jpg";
 
-// 7 cinematic scenes: Origin → Discovery → Engineering → Prototype → Scale → Impact → Future
+// 9 cinematic stages mapped to the innovation lifecycle.
 const SCENES = [
-  { src: scene01, alt: "Origin — abstract dark particles" },
-  { src: scene02, alt: "Discovery — molecular structures, graphene lattice" },
-  { src: scene03, alt: "Engineering — conductive pathways" },
-  { src: scene04, alt: "Prototype — lab-to-industry forge" },
-  { src: scene05, alt: "Scale — industrial infrastructure" },
-  { src: scene06, alt: "Impact — climate-tech deployment" },
-  { src: scene07, alt: "Future — visionary stillness" },
+  { src: scene01, alt: "Discover — conceptual particles, idea formation" },
+  { src: scene02, alt: "Ideate — graphene lattice, molecular exploration" },
+  { src: scene03, alt: "Invent — conductive pathways, engineering precision" },
+  { src: scene04, alt: "Validate — lab atmosphere, prototype validation" },
+  { src: scene05, alt: "Protect — IP vault, secure system architecture" },
+  { src: scene06, alt: "Prototype — advanced manufacturing, product emergence" },
+  { src: scene07, alt: "Commercialize — industrial-scale infrastructure" },
+  { src: scene08, alt: "Scale — global climate-tech deployment network" },
+  { src: scene09, alt: "Deployment — visionary stillness, future resolution" },
 ];
 
 const STAGES = SCENES.length;
 const STOPS = Array.from({ length: STAGES }, (_, i) => i / (STAGES - 1));
 
-// Smooth crossfade with smoothstep, only adjacent scenes overlap.
 function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1) {
   return useTransform(phase, (v) => {
     const d = Math.abs(v - center) / spread;
@@ -40,19 +43,17 @@ function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1)
   });
 }
 
-// Subtle per-scene scale (incoming zooms in, outgoing zooms out).
 function useSceneScale(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = v - center;
-    return 1.08 - d * 0.05; // ~1.13 → 1.03 across the chapter
+    return 1.08 - d * 0.05;
   });
 }
 
-// Subtle per-scene blur (sharpens near center).
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    return d * 8; // 0px at center, up to 8px at edge
+    return d * 8;
   });
 }
 
@@ -74,9 +75,7 @@ function SceneLayer({
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
   const blurPx = useSceneBlur(phase, index);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.72) contrast(1.08) saturate(1.05)`;
-
-  // Each scene drifts vertically a touch for parallax — alternating direction.
+  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.7) contrast(1.08) saturate(1.05)`;
   const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
 
   return (
@@ -107,13 +106,9 @@ export default function AtmosphereLayer() {
     mass: 1.4,
   });
 
-  // Phase travels 0 → (STAGES - 1) across the page.
   const phase = useTransform(progressSlow, [0, 1], [0, STAGES - 1]);
-
-  // Parallax drift signal (centered around 0).
   const parallax = useTransform(progressSlow, [0, 1], [-1, 1]);
 
-  // Sparse drifting particles overlay — kept for premium feel.
   const particles = useMemo(
     () =>
       Array.from({ length: 32 }, (_, index) => ({
@@ -132,20 +127,18 @@ export default function AtmosphereLayer() {
   const particleOpacity = useTransform(
     progressSlow,
     STOPS,
-    [0.5, 0.45, 0.4, 0.35, 0.3, 0.22, 0.12],
+    [0.5, 0.46, 0.42, 0.38, 0.34, 0.3, 0.24, 0.18, 0.1],
   );
 
-  // Cinematic dark overlay strength — slightly lighter mid-journey so imagery
-  // breathes, heavier at the calm bookends.
+  // Darker bookends, slightly lighter mid-journey so imagery breathes.
   const overlayOpacity = useTransform(
     progressSlow,
     STOPS,
-    [0.62, 0.5, 0.46, 0.5, 0.48, 0.44, 0.6],
+    [0.62, 0.5, 0.46, 0.5, 0.54, 0.48, 0.46, 0.5, 0.6],
   );
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden bg-background">
-      {/* Crossfading scene images */}
       {SCENES.map((scene, index) => (
         <SceneLayer
           key={scene.src}
