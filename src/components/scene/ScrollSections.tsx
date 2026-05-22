@@ -80,7 +80,7 @@ function HeroSection() {
 
   return (
     <section id="spark" className="relative min-h-[150vh] px-6">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden text-center">
+      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden text-center pt-24 pb-12">
         {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
         <motion.div
           aria-hidden
