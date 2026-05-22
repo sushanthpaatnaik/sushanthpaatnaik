@@ -162,6 +162,9 @@
     height: var(--viewport-height);
     min-height: var(--viewport-height);
   }
+  .viewport-section {
+    min-height: var(--viewport-height);
+  }
   .panel-surface {
     background: oklch(0.08 0 0 / 0.72);
     border: 1px solid oklch(1 0 0 / 0.08);
