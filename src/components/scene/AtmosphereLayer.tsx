@@ -217,6 +217,15 @@ export default function AtmosphereLayer() {
         ))}
       </motion.div>
 
+      {/* Subtle cyan glow for premium readability */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.74 0.12 220 / 0.12), transparent 70%)",
+        }}
+      />
+
       {/* Film grain */}
       <div
         className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
