@@ -197,7 +197,7 @@ export const Route = createFileRoute("/essays/$slug")({
 });
 
 function EssayPage() {
-  const { essay } = Route.useLoaderData();
+  const { essay } = Route.useLoaderData() as { essay: EssayContent };
 
   return (
     <div className="relative min-h-screen bg-background text-foreground noise">
