@@ -2,22 +2,22 @@ import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
 
 import scene01 from "@/assets/story-01-spark.jpg";
-import scene02 from "@/assets/story-02-origin.jpg";
+import scene02 from "@/assets/story-02-recognition.jpg";
 import scene03 from "@/assets/story-03-material.jpg";
-import scene04 from "@/assets/story-04-stack.jpg";
-import scene05 from "@/assets/story-05-founder.jpg";
+import scene04 from "@/assets/story-04-industrial.jpg";
+import scene05 from "@/assets/story-05-ventures.jpg";
 import scene06 from "@/assets/story-06-india.jpg";
 import scene07 from "@/assets/story-07-future.jpg";
 
-// 7 cinematic chapters: Spark → Origin → Material → Stack → Founder → India → Future.
+// 7 cinematic chapters: Spark → Recognition → Carbon Intelligence → Industrial Applications → Venture Builder → India → Future.
 const SCENES: BackgroundScene[] = [
-  { src: scene01, alt: "The Spark — single particle, idea forming in the void" },
-  { src: scene02, alt: "Origin — young inventor's workshop, gadgets and blueprints" },
-  { src: scene03, alt: "The Material Layer — graphene honeycomb lattice" },
-  { src: scene04, alt: "The Innovation Stack — solar, battery, polymer, concrete" },
-  { src: scene05, alt: "The Founder Layer — constellation of companies" },
-  { src: scene06, alt: "India to the World — India glowing outward to global network" },
-  { src: scene07, alt: "The Future System — living industrial ecosystem at dawn" },
+  { src: scene01, alt: "The Spark — a single glowing particle in dark space" },
+  { src: scene02, alt: "Recognition — blueprints and award-light silhouettes" },
+  { src: scene03, alt: "Carbon Intelligence — graphene lattice and nano-materials" },
+  { src: scene04, alt: "Industrial Applications — solar, battery, concrete, polymer, fuel, coal" },
+  { src: scene05, alt: "Venture Builder — a constellation of operating companies" },
+  { src: scene06, alt: "India to the World — India radiating into a global network" },
+  { src: scene07, alt: "The Future — a living industrial ecosystem at dawn" },
 ];
 
 // Darker at the spark and founder/india interludes; lighter through material/stack/future.

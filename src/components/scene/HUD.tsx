@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 
 const labels = [
   "Spark",
-  "Origin",
-  "Material",
-  "Stack",
-  "Founder",
+  "Recognition",
+  "Carbon Intelligence",
+  "Industrial Applications",
+  "Venture Builder",
   "India → World",
   "Future",
 ];
