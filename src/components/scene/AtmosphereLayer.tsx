@@ -100,7 +100,7 @@ export default function AtmosphereLayer({
       </div>
 
       {/* Deep graphite darkening — readability */}
-      <div className="absolute inset-0 bg-[#04060c]/72" />
+      <div className="absolute inset-0 bg-[#03050a]/80" />
 
       {/* Layered atmospheric haze — slow drifting fog */}
       <div
