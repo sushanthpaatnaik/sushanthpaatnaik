@@ -415,10 +415,10 @@ export default function ScrollSections() {
               Founder · Voice
             </p>
             <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-4xl">
-              “Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world.”
+              "Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world."
             </blockquote>
             <p className="mt-10 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization.
+              Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization. BSc · IISER Bhopal (KVPY-SP).
             </p>
             <div className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
