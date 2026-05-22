@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "[Your Name] — Deep-Tech Founder · Graphene, Nano-Materials & AI" },
+      { title: "Sushanth — Engineering Intelligent Matter · Graphene, Nano-Materials & AI" },
       {
         name: "description",
         content:
