@@ -157,6 +157,51 @@ export default function AtmosphereLayer() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_70%,oklch(0.26_0.05_230/0.30),transparent_65%)]" />
       </motion.div>
 
+      {/* ===== Per-section gradient SCENES — crossfade between chapters ===== */}
+      <motion.div
+        className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_at_50%_55%,oklch(0.22_0.03_250/0.9),transparent_70%)]"
+        style={{ opacity: scene0 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-soft-light bg-[linear-gradient(160deg,oklch(0.18_0.08_275/0.85)_0%,oklch(0.14_0.06_255/0.7)_60%,transparent_100%)]"
+        style={{ opacity: scene1 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_at_30%_60%,oklch(0.35_0.10_210/0.55),transparent_65%)]"
+        style={{ opacity: scene2 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_at_55%_50%,oklch(0.55_0.18_215/0.65),oklch(0.30_0.12_230/0.3)_45%,transparent_75%)]"
+        style={{ opacity: scene3 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-soft-light bg-[linear-gradient(200deg,oklch(0.20_0.10_250/0.85),oklch(0.10_0.05_240/0.6)_70%,transparent_100%)]"
+        style={{ opacity: scene4 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-overlay bg-[radial-gradient(ellipse_at_60%_45%,oklch(0.32_0.04_50/0.45),transparent_65%)]"
+        style={{ opacity: scene5 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_at_40%_55%,oklch(0.45_0.12_165/0.45),transparent_70%)]"
+        style={{ opacity: scene6 }}
+      />
+      <motion.div
+        className="absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_at_center,oklch(0.06_0.02_250/0.85),#02030a_85%)]"
+        style={{ opacity: scene7 }}
+      />
+
+      {/* Aurora glow — sweeps across the scene timeline */}
+      <motion.div
+        className="absolute inset-0 mix-blend-screen will-change-transform pointer-events-none"
+        style={{ opacity: auroraOpacity }}
+      >
+        <motion.div
+          className="absolute w-[80vw] h-[80vw] rounded-full blur-[120px] bg-[radial-gradient(circle,oklch(0.6_0.18_215/0.5),transparent_70%)]"
+          style={{ left: auroraX, top: auroraY, x: "-50%", y: "-50%" }}
+        />
+      </motion.div>
+
       {/* Conductive glow — breathes wider through Intelligence, softer intensity */}
       <motion.div
         className="absolute inset-0 mix-blend-screen will-change-transform"
