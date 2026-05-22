@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 
 const chapters = [
   {
