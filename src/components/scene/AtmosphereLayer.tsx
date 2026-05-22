@@ -76,7 +76,7 @@ function SceneLayer({
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
   const blurPx = useSceneBlur(phase, index);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.72) contrast(1.04) saturate(1)`;
+  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.68) contrast(1.02) saturate(0.55) hue-rotate(-8deg)`;
   const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
 
   return (
