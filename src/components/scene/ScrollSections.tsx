@@ -302,7 +302,7 @@ export default function ScrollSections() {
         <HeroSection />
       </motion.div>
 
-      {chapters.slice(1, 6).map((chapter, index) => (
+      {chapters.slice(1).map((chapter, index) => (
         <StoryPanel key={chapter.id} chapter={chapter} index={index + 1} />
       ))}
 
