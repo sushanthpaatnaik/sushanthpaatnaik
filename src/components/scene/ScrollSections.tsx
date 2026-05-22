@@ -54,10 +54,10 @@ const chapters: readonly StoryChapter[] = [
 ];
 
 const ventures: Venture[] = [
-  { n: "01", title: "Monoatom Labs", body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream platform." },
-  { n: "02", title: "Grafillium", body: "Graphene-enabled materials engineered for energy, mobility, and industrial-scale deployment." },
-  { n: "03", title: "SPI Industries", body: "Operating arm translating advanced materials into production-grade infrastructure and supply." },
-  { n: "04", title: "InThinks · Starunico Capital", body: "Intelligent systems and capital architecture — the vehicles that carry deep-tech from lab to ledger." },
+  { n: "01", title: "Monoatom Labs", body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream industrial platform." },
+  { n: "02", title: "Grafillium", body: "Graphene-enabled advanced materials engineered for solar, batteries, polymers, and industrial-scale deployment." },
+  { n: "03", title: "SPI Industries", body: "Operating arm translating advanced materials into production-grade industrial products and supply chains." },
+  { n: "04", title: "InThinks · Starunico Capital", body: "AI systems and capital architecture — the commercialization vehicles that carry deep-tech from lab to industry." },
 ];
 
 const processSteps = [
@@ -79,7 +79,7 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
             className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            01 — The Spark · Deep-Tech Founder · Graphene · Advanced Materials · AI · Energy · Climate
+            01 — Spark · Founder · Inventor · Graphene · Nano-Materials · Deep-Tech Ventures · India to Global
           </motion.p>
           <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
             {[
@@ -106,7 +106,7 @@ function HeroSection() {
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
             className="mx-auto mt-12 max-w-xl text-sm text-muted-foreground md:text-base"
           >
-            From curiosity to carbon intelligence — engineering the materials behind a cleaner century.
+            Curiosity turned into inventions, patents, companies, and industrial technologies — graphene, nano-materials, and deep-tech ventures built from India for the world.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -116,7 +116,7 @@ function HeroSection() {
             className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#material"
+              href="#carbon-intelligence"
               className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
             >
               Enter the Journey
@@ -221,19 +221,19 @@ export default function ScrollSections() {
       {/* Ventures — supports chapter 05 (Founder Layer) */}
       <VentureConstellation ventures={ventures} />
 
-      {/* Substrate metrics — supports chapter 03 (Material Layer) */}
+      {/* Carbon Intelligence metrics — supports chapter 03 */}
       <section className="min-h-screen flex items-center px-6 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">The Substrate</p>
-            <h3 className="mb-16 font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">Matter, measured.</h3>
+            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
+            <h3 className="mb-16 font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
           </MotionReveal>
           <div className="grid grid-cols-2 gap-px bg-foreground/10 md:grid-cols-4">
             {[
-              { k: "1", u: "atom", l: "Lattice thickness" },
+              { k: "1", u: "atom", l: "Graphene lattice thickness" },
               { k: "200×", u: "", l: "Stronger than steel" },
-              { k: "10⁶", u: "S/m", l: "Conductivity" },
-              { k: "∞", u: "", l: "Application surface" },
+              { k: "10⁶", u: "S/m", l: "Electrical conductivity" },
+              { k: "∞", u: "", l: "Industrial application surface" },
             ].map((metric, index) => (
               <MotionReveal
                 key={metric.l}
@@ -251,13 +251,14 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Method — supports chapter 04 (Innovation Stack) */}
+      {/* Method — supports chapter 04 (Industrial Applications) */}
       <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
             <h3 className="mb-20 max-w-2xl font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">
-              From atom to industry.
+              From invention to industrial scale.
+
             </h3>
           </MotionReveal>
           <div className="grid gap-10 md:grid-cols-4">
@@ -323,19 +324,19 @@ export default function ScrollSections() {
             <MotionReveal delay={0.16}>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <a
-                  href="mailto:sushanth@intelligentmatter.com"
+                  href="mailto:me@sushanthpaatnaik.com?subject=Collaborate"
                   className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
                 >
                   Collaborate
                 </a>
                 <a
-                  href="mailto:invest@intelligentmatter.com"
+                  href="mailto:me@sushanthpaatnaik.com?subject=Invest"
                   className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
                 >
                   Invest
                 </a>
                 <a
-                  href="mailto:build@intelligentmatter.com"
+                  href="mailto:me@sushanthpaatnaik.com?subject=Build%20with%20me"
                   className="rounded-full px-8 py-4 text-sm tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground"
                 >
                   Build with me →
