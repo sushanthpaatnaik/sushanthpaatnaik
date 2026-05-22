@@ -94,10 +94,12 @@ export default function AnimatedBackground({
   const stops = Array.from({ length: stages }, (_, i) => i / (stages - 1));
 
   const { scrollYProgress } = useScroll();
+  // Softer spring — long, calm settle so atmospheric crossfades breathe
+  // instead of tracking scroll velocity 1:1.
   const progress = useSpring(scrollYProgress, {
-    stiffness: 34,
-    damping: 42,
-    mass: 1.1,
+    stiffness: 22,
+    damping: 48,
+    mass: 1.2,
   });
 
   const phase = useTransform(progress, [0, 1], [0, stages - 1]);
