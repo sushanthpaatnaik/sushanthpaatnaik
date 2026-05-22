@@ -1,18 +1,17 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import {
   motion,
   useMotionTemplate,
-  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import atmosphereVideo from "@/assets/atmosphere.mp4";
 
 // 4 stages: Ideation → Innovation → Commercialisation → Industry Deployment
 const STAGES = 4;
 const STOPS = Array.from({ length: STAGES }, (_, i) => i / (STAGES - 1));
+
 
 function useStageOpacity(phase: MotionValue<number>, center: number, spread = 0.85) {
   return useTransform(phase, (value) => {
@@ -24,9 +23,6 @@ function useStageOpacity(phase: MotionValue<number>, center: number, spread = 0.
 }
 
 export default function AtmosphereLayer() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const durationRef = useRef(0);
-
   const particles = useMemo(
     () =>
       Array.from({ length: 44 }, (_, index) => ({
@@ -42,59 +38,15 @@ export default function AtmosphereLayer() {
   );
 
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 26, damping: 42, mass: 1.1 });
   const progressSlow = useSpring(scrollYProgress, { stiffness: 14, damping: 38, mass: 1.8 });
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const syncDuration = () => {
-      durationRef.current = Number.isFinite(video.duration) ? video.duration : 0;
-      if (durationRef.current > 0 && video.currentTime === 0) {
-        video.currentTime = durationRef.current * 0.02;
-      }
-    };
-
-    video.muted = true;
-    video.loop = false;
-    video.pause();
-    video.addEventListener("loadedmetadata", syncDuration);
-    syncDuration();
-
-    return () => video.removeEventListener("loadedmetadata", syncDuration);
-  }, []);
-
-  useMotionValueEvent(progress, "change", (value) => {
-    const video = videoRef.current;
-    const duration = durationRef.current || video?.duration || 0;
-    if (!video || !duration) return;
-    const targetTime = duration * (0.04 + value * 0.92);
-    if (Math.abs(video.currentTime - targetTime) > 0.033) {
-      video.currentTime = targetTime;
-    }
-  });
 
   const stagePhase = useTransform(progressSlow, [0, 1], [0, STAGES - 1]);
 
-  // Stage 1 Ideation, 2 Innovation, 3 Commercialisation, 4 Deployment
   const s0 = useStageOpacity(stagePhase, 0);
   const s1 = useStageOpacity(stagePhase, 1);
   const s2 = useStageOpacity(stagePhase, 2);
   const s3 = useStageOpacity(stagePhase, 3);
 
-  // Video: quiet at Ideation, energetic at Innovation/Commercialisation, calm at Deployment
-  const videoScale = useTransform(progress, STOPS, [1.28, 1.08, 1.16, 1.3]);
-  const videoX = useTransform(progress, STOPS, [0, -20, 18, 0]);
-  const videoY = useTransform(progress, STOPS, [0, -28, -44, -72]);
-  const videoRotate = useTransform(progress, STOPS, [-0.6, 0.22, -0.22, 0]);
-  const videoBlur = useTransform(progress, STOPS, [6, 0.5, 1.2, 5]);
-  const videoBrightness = useTransform(progress, STOPS, [0.22, 0.72, 0.7, 0.32]);
-  const videoContrast = useTransform(progress, STOPS, [0.96, 1.3, 1.2, 1]);
-  const videoSaturate = useTransform(progress, STOPS, [0.2, 0.92, 0.82, 0.4]);
-  const videoHue = useTransform(progress, STOPS, [-20, 24, -8, 30]);
-  const videoOpacity = useTransform(progress, STOPS, [0.22, 0.8, 0.78, 0.34]);
-  const videoFilter = useMotionTemplate`blur(${videoBlur}px) brightness(${videoBrightness}) contrast(${videoContrast}) saturate(${videoSaturate}) hue-rotate(${videoHue}deg)`;
 
   const globalDarkness = useTransform(progressSlow, STOPS, [0.82, 0.42, 0.4, 0.72]);
   const vignetteOpacity = useTransform(progressSlow, STOPS, [1, 0.7, 0.74, 0.96]);
@@ -213,26 +165,8 @@ export default function AtmosphereLayer() {
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
-      <motion.div
-        className="absolute inset-0 will-change-transform"
-        style={{
-          x: videoX,
-          y: videoY,
-          scale: videoScale,
-          rotate: videoRotate,
-          opacity: videoOpacity,
-          filter: videoFilter,
-        }}
-      >
-        <video
-          ref={videoRef}
-          src={atmosphereVideo}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      </motion.div>
+
+
 
       <motion.div
         className="absolute inset-0"
