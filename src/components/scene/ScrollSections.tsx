@@ -411,11 +411,11 @@ export default function ScrollSections() {
 
           {/* Editorial quote — offset down-right for cinematic asymmetry */}
           <MotionReveal delay={0.14} className="md:col-span-5 md:col-start-8 md:pt-56 lg:pt-72">
-            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
+            <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
               Founder · Voice
             </p>
             <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-4xl">
-              "Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world."
+              "The most important specification on any drawing I make is the human being it is meant for."
             </blockquote>
             <p className="mt-10 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization. BSc · IISER Bhopal (KVPY-SP).
