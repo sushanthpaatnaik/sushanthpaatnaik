@@ -6,6 +6,7 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
+import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
   component: Index,
