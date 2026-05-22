@@ -447,7 +447,7 @@ export default function ScrollSections() {
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-[linear-gradient(90deg,oklch(0.03_0_0)_8%,transparent)]" />
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-[linear-gradient(270deg,oklch(0.03_0_0)_8%,transparent)]" />
               </div>
-              <p className="mt-4 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/55">
+              <p className="mt-4 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/35">
                 R&amp;D bench · Instrumentation · Graphene · Nano-materials
               </p>
             </div>
