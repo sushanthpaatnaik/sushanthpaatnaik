@@ -29,7 +29,7 @@ export default function VideoLayer({
         else o = 1;
       }
       o = Math.max(0, Math.min(1, o));
-      if (ref.current) ref.current.style.opacity = String(o * 0.55);
+      if (ref.current) ref.current.style.opacity = String(o * 0.28);
       if (videoRef.current) {
         if (o > 0.05 && videoRef.current.paused) videoRef.current.play().catch(() => {});
         if (o <= 0.05 && !videoRef.current.paused) videoRef.current.pause();
@@ -55,7 +55,8 @@ export default function VideoLayer({
         className="w-full h-full object-cover"
       />
       {/* Soften edges into the scene */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#04050a_85%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,#03040a_85%)]" />
+      <div className="absolute inset-0 bg-background/40" />
     </div>
   );
 }

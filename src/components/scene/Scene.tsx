@@ -309,14 +309,14 @@ function CameraRig({ scrollProgress, mouse }: SceneProps) {
     const e = p * p * (3 - 2 * p) * 0.5 + p * 0.5;
     curve.getPointAt(e, tmp);
     lookCurve.getPointAt(e, look);
-    // Mouse parallax
-    tmp.x += mouse.current.x * 0.45;
-    tmp.y += -mouse.current.y * 0.35;
-    // Breath drift
-    tmp.x += Math.sin(state.clock.elapsedTime * 0.18) * 0.12;
-    tmp.y += Math.cos(state.clock.elapsedTime * 0.14) * 0.08;
-    camera.position.lerp(tmp, 1 - Math.pow(0.001, dt));
-    lookLerp.lerp(look, 1 - Math.pow(0.005, dt));
+    // Mouse parallax — gentler
+    tmp.x += mouse.current.x * 0.25;
+    tmp.y += -mouse.current.y * 0.2;
+    // Slow breath drift
+    tmp.x += Math.sin(state.clock.elapsedTime * 0.1) * 0.07;
+    tmp.y += Math.cos(state.clock.elapsedTime * 0.08) * 0.05;
+    camera.position.lerp(tmp, 1 - Math.pow(0.0005, dt));
+    lookLerp.lerp(look, 1 - Math.pow(0.002, dt));
     camera.lookAt(lookLerp);
   });
   return null;
@@ -368,11 +368,11 @@ function DynamicLights({ scrollProgress, mouse }: SceneProps) {
   });
   return (
     <>
-      <ambientLight intensity={0.28} />
-      <directionalLight position={[5, 5, 5]} intensity={1.1} color="#c7ddff" />
-      <pointLight ref={a} position={[-6, -2, -4]} intensity={3} distance={22} />
-      <pointLight ref={b} position={[6, 4, 2]} intensity={2} distance={20} />
-      <pointLight ref={c} position={[0, 0, -3]} intensity={1.5} distance={16} />
+      <ambientLight intensity={0.18} />
+      <directionalLight position={[5, 5, 5]} intensity={0.7} color="#a8c0e0" />
+      <pointLight ref={a} position={[-6, -2, -4]} intensity={1.6} distance={20} />
+      <pointLight ref={b} position={[6, 4, 2]} intensity={1.1} distance={18} />
+      <pointLight ref={c} position={[0, 0, -3]} intensity={0.8} distance={14} />
     </>
   );
 }
