@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, type ReactNode } from "react";
+import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 
 const chapters = [
   {
@@ -90,11 +90,6 @@ const processSteps = [
   { n: "04", t: "Deploy", b: "Scale from scientific validity to industrial adoption." },
 ];
 
-function RevealBlock({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useMotionValue(null);
-  return <div className={className}>{children}</div>;
-}
-
 function SectionCopy({
   eyebrow,
   title,
@@ -108,13 +103,6 @@ function SectionCopy({
   align: "left" | "right" | "center";
   index: number;
 }) {
-  const ref = (globalThis as unknown as { React?: unknown }) ? undefined : undefined;
-  void ref;
-  const localRef = useMotionValue(null);
-  const inView = true;
-  void localRef;
-  void inView;
-
   const textAlign = align === "center" ? "text-center mx-auto" : align === "right" ? "ml-auto text-right" : "mr-auto text-left";
   const counterPosition = align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
 
@@ -169,9 +157,6 @@ function StoryPanel({
   chapter: (typeof chapters)[number];
   index: number;
 }) {
-  const sectionRef = useMotionValue(null);
-  void sectionRef;
-
   return (
     <section id={chapter.id} className="story-panel relative min-h-[130vh] px-6 md:px-20">
       <div className="sticky top-0 flex h-screen items-center">
@@ -196,9 +181,6 @@ function StoryPanel({
 }
 
 function HeroSection() {
-  const heroRef = useMotionValue(null);
-  void heroRef;
-
   return (
     <section id="hero" className="relative min-h-[150vh] px-6">
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center text-center">
@@ -295,15 +277,18 @@ function MotionReveal({
   className = "",
   delay = 0,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   delay?: number;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.3, once: false });
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 36, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: false, amount: 0.3 }}
+      ref={ref}
+      initial={false}
+      animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 36, filter: "blur(10px)" }}
       transition={{ duration: 1.05, delay, ease: [0.19, 1, 0.22, 1] }}
       className={className}
     >
