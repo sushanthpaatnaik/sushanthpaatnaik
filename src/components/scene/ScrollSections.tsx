@@ -182,21 +182,27 @@ function HeroSection() {
           </motion.div>
         </div>
         {/* Atmospheric founder identity — right side, minimal, cinematic */}
-        <div
-          className="pointer-events-none absolute right-6 top-1/2 z-[15] hidden -translate-y-1/2 flex-col items-end gap-5 md:right-10 md:flex lg:right-16"
+        <motion.div
+          initial={{ opacity: 1, x: 0 }}
+          animate={{ opacity: 1, x: 1 }}
+          transition={{ duration: 0 }}
+          className="pointer-events-none absolute right-6 top-1/2 z-[15] hidden -translate-y-1/2 flex-col items-end md:right-10 md:flex lg:right-16"
+          style={{ mixBlendMode: "soft-light" }}
         >
-          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
-            Inventor
-          </span>
-          <span className="h-px w-4 bg-foreground/30" />
-          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
-            Advanced Materials
-          </span>
-          <span className="h-px w-4 bg-foreground/30" />
-          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
-            Deep-Tech Systems
-          </span>
-        </div>
+          <div className="flex flex-col items-end gap-5 opacity-40">
+            <span className="text-[10px] font-extralight uppercase tracking-[0.3em] text-foreground/35 blur-[0.3px]">
+              Inventor
+            </span>
+            <span className="h-px w-3 bg-gradient-to-l from-foreground/15 to-transparent" />
+            <span className="text-[10px] font-extralight uppercase tracking-[0.3em] text-foreground/35 blur-[0.3px]">
+              Advanced Materials
+            </span>
+            <span className="h-px w-3 bg-gradient-to-l from-foreground/15 to-transparent" />
+            <span className="text-[10px] font-extralight uppercase tracking-[0.3em] text-foreground/35 blur-[0.3px]">
+              Deep-Tech Systems
+            </span>
+          </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
