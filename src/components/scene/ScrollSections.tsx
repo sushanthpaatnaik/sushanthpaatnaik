@@ -71,10 +71,62 @@ const processSteps = [
 ];
 
 function HeroSection() {
+  const { scrollYProgress } = useScroll();
+  // Progressive founder reveal: starts deeply hidden, subtly emerges as user scrolls into journey
+  const silhouetteOpacity = useTransform(scrollYProgress, [0, 0.04, 0.1], [0.08, 0.18, 0.32]);
+  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [28, 14]);
+  const silhouetteFilter = useTransform(silhouetteBlur, (b) => `blur(${b}px) grayscale(0.4) contrast(1.05)`);
+  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.08, 1]);
+
   return (
     <section id="spark" className="relative min-h-[150vh] px-6">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center text-center">
-        <div className="max-w-5xl">
+      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden text-center">
+        {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
+        <motion.div
+          aria-hidden
+          style={{ opacity: silhouetteOpacity, filter: silhouetteFilter, scale: silhouetteScale }}
+          className="pointer-events-none absolute inset-0 z-0"
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${founderPresence})`,
+              backgroundPosition: "center 30%",
+              backgroundSize: "auto 95%",
+              backgroundRepeat: "no-repeat",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 42% 58% at 50% 48%, #000 18%, rgba(0,0,0,0.55) 48%, transparent 82%)",
+              maskImage:
+                "radial-gradient(ellipse 42% 58% at 50% 48%, #000 18%, rgba(0,0,0,0.55) 48%, transparent 82%)",
+            }}
+          />
+          {/* Volumetric haze wash across silhouette */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, oklch(0.04 0 0 / 0.55) 70%, oklch(0.03 0 0) 95%)",
+            }}
+          />
+          {/* Cool rim atmospheric wash */}
+          <div
+            className="absolute inset-0 mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(ellipse 38% 45% at 62% 42%, oklch(0.5 0.08 240 / 0.08) 0%, transparent 60%)",
+            }}
+          />
+        </motion.div>
+        {/* Cinematic top + bottom fade so silhouette dissolves into page */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(0.03 0 0) 0%, transparent 22%, transparent 70%, oklch(0.03 0 0) 100%)",
+          }}
+        />
+        <div className="relative z-10 max-w-5xl">
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
