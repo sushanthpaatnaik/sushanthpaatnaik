@@ -1,9 +1,5 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export function useLenis(onScroll?: (progress: number) => void) {
   useEffect(() => {
@@ -15,19 +11,19 @@ export function useLenis(onScroll?: (progress: number) => void) {
       touchMultiplier: 1.2,
     });
 
-    lenis.on("scroll", ScrollTrigger.update);
     lenis.on("scroll", ({ progress }: { progress: number }) => {
       onScroll?.(progress);
     });
 
+    let rafId = 0;
     const raf = (time: number) => {
-      lenis.raf(time * 1000);
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
     };
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
-      gsap.ticker.remove(raf);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, [onScroll]);
