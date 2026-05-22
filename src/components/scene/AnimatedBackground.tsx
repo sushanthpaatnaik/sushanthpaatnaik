@@ -21,17 +21,20 @@ interface AnimatedBackgroundProps {
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
-function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1) {
+function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.25) {
   return useTransform(phase, (v) => {
     const d = Math.abs(v - center) / spread;
     if (d >= 1) return 0;
     const t = 1 - d;
-    return t * t * (3 - 2 * t);
+    // Wider, softer crossfade — longer overlap between adjacent scenes,
+    // so the cut between chapters dissolves rather than handing off.
+    return t * t * t * (t * (t * 6 - 15) + 10);
   });
 }
 
 function useSceneScale(phase: MotionValue<number>, center: number) {
-  return useTransform(phase, (v) => 1.04 - (v - center) * 0.025);
+  // Gentler Ken Burns drift; aggressive parallax replaced with restraint.
+  return useTransform(phase, (v) => 1.03 - (v - center) * 0.018);
 }
 
 // Static color grade. Dynamic blur on 1920x1080 images every scroll frame was
@@ -56,7 +59,7 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
-  const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
+  const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 24);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
@@ -91,10 +94,12 @@ export default function AnimatedBackground({
   const stops = Array.from({ length: stages }, (_, i) => i / (stages - 1));
 
   const { scrollYProgress } = useScroll();
+  // Softer spring — long, calm settle so atmospheric crossfades breathe
+  // instead of tracking scroll velocity 1:1.
   const progress = useSpring(scrollYProgress, {
-    stiffness: 34,
-    damping: 42,
-    mass: 1.1,
+    stiffness: 22,
+    damping: 48,
+    mass: 1.2,
   });
 
   const phase = useTransform(progress, [0, 1], [0, stages - 1]);

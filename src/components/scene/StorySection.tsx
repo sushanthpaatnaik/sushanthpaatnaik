@@ -35,35 +35,35 @@ function SectionCopy({
   return (
     <div className={`max-w-xl pointer-events-auto ${textAlign}`}>
       <motion.div
-        initial={{ opacity: 0, scaleX: 0, filter: "blur(8px)" }}
+        initial={{ opacity: 0, scaleX: 0.2, filter: "blur(6px)" }}
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
+        viewport={{ once: false, amount: 0.32 }}
+        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
         className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
-        initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
+        initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.05, delay: 0.04, ease: [0.19, 1, 0.22, 1] }}
+        viewport={{ once: false, amount: 0.32 }}
+        transition={{ duration: 1.4, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6"
       >
         {eyebrow}
       </motion.p>
       <motion.h2
-        initial={{ opacity: 0, y: 64, filter: "blur(16px)" }}
+        initial={{ opacity: 0, y: 44, filter: "blur(12px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.15, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+        viewport={{ once: false, amount: 0.32 }}
+        transition={{ duration: 1.7, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
         className="font-display text-[clamp(2rem,9vw,5rem)] leading-[1.02] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient mb-7 md:mb-8"
       >
         {title}
       </motion.h2>
       <motion.p
-        initial={{ opacity: 0, y: 56, filter: "blur(14px)" }}
+        initial={{ opacity: 0, y: 36, filter: "blur(10px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 1.05, delay: 0.18, ease: [0.19, 1, 0.22, 1] }}
+        viewport={{ once: false, amount: 0.28 }}
+        transition={{ duration: 1.5, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
         className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md"
       >
         {body}
@@ -90,10 +90,10 @@ export default function StorySection({ chapter, index, total }: StorySectionProp
     <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.24)] px-5 sm:px-6 md:px-20">
       <div className="viewport-stage sticky top-0 flex items-center overflow-clip pt-28 md:pt-24 pb-12 render-stable">
         <motion.div
-          initial={{ opacity: 0.65, y: 40 }}
+          initial={{ opacity: 0.55, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.45 }}
-          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+          viewport={{ once: false, amount: 0.25 }}
+          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 w-full render-stable"
         >
           <SectionCopy

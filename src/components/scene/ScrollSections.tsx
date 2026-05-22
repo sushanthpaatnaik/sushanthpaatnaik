@@ -219,7 +219,8 @@ function HeroSection() {
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 110, damping: 28, mass: 0.35 });
+  // Calmer, longer settle — the bar should drift, not snap with the cursor.
+  const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 32, mass: 0.5 });
 
   return (
     <div className="fixed left-0 right-0 top-0 z-[55] h-[2px] bg-foreground/5">
@@ -238,14 +239,16 @@ function MotionReveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.3, once: false });
+  // Reveal earlier in the viewport, with a longer film-grade ease, so panels
+  // breathe in rather than pop. Tightly paired with section scroll pacing.
+  const inView = useInView(ref, { amount: 0.18, once: false });
 
   return (
     <motion.div
       ref={ref}
       initial={false}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.9, delay, ease: [0.19, 1, 0.22, 1] }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      transition={{ duration: 1.4, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
