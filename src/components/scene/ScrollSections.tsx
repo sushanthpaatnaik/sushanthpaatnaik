@@ -197,33 +197,41 @@ function SceneBackdrop({ id }: { id: string }) {
   );
 }
 
+// Restrained graphite + steel-blue + conductive-cyan palette.
+// Differentiate through position, depth, and intensity — not through color flooding.
+const MOTIF_GRAPHITE = "radial-gradient(ellipse at 50% 60%, oklch(0.16 0.02 250 / 0.5), transparent 70%)";
+const MOTIF_CYAN_LOW = (pos: string) =>
+  `radial-gradient(ellipse at ${pos}, oklch(0.55 0.06 220 / 0.18), transparent 68%)`;
+const MOTIF_STEEL = (angle: string) =>
+  `linear-gradient(${angle}, oklch(0.12 0.018 250 / 0.55), transparent 70%)`;
+
 const SCENE_MOTIFS: Record<string, ReactNode> = {
   discover: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 65%, oklch(0.42 0.16 32 / 0.28), transparent 60%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("50% 65%") }} />
   ),
   ideate: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 40% 50%, oklch(0.5 0.18 268 / 0.32), transparent 65%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("40% 50%") }} />
   ),
   invent: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.6 0.2 215 / 0.3), transparent 68%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("55% 50%") }} />
   ),
   validate: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.55 0.14 188 / 0.3), transparent 68%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_STEEL("180deg") }} />
   ),
   protect: (
-    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.08 0.03 264 / 0.7), oklch(0.04 0.01 260 / 0.85))" }} />
+    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.08 0.015 250 / 0.65), oklch(0.05 0.01 250 / 0.8))" }} />
   ),
   prototype: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 60% 60%, oklch(0.6 0.2 52 / 0.38), transparent 65%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_GRAPHITE }} />
   ),
   commercialize: (
-    <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, oklch(0.52 0.16 38 / 0.32), oklch(0.18 0.06 268 / 0.35))" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_STEEL("160deg") }} />
   ),
   scale: (
-    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.2 0.08 250 / 0.5), transparent 70%)" }} />
+    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.14 0.02 250 / 0.55), transparent 72%)" }} />
   ),
   deployment: (
-    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, oklch(0.6 0.18 162 / 0.36), transparent 68%)" }} />
+    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("50% 55%") }} />
   ),
 };
 
