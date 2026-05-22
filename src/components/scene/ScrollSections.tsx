@@ -247,7 +247,7 @@ function HeroSection() {
             className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#commercialisation"
+              href="#commercialize"
               className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
             >
               Explore the Work
