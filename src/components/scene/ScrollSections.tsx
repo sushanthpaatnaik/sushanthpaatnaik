@@ -400,16 +400,16 @@ export default function ScrollSections() {
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
-      <section className="relative min-h-[140vh] overflow-hidden px-6 py-32 md:px-20">
+      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-6 py-24 md:px-20">
         {/* Heavy atmospheric scrim that pushes the India network bg deep into the scene */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.78),oklch(0.03_0_0/0.95))] backdrop-blur-[6px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.84),oklch(0.03_0_0/0.97))]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
 
         {/* Ambient volumetric wash behind the figure */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-15%] top-1/2 h-[95vh] w-[80vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.32),transparent_62%)] blur-3xl" />
-          <div className="absolute right-[-20%] top-[15%] h-[70vh] w-[55vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.45),transparent_70%)] blur-3xl" />
-          <div className="absolute left-[20%] bottom-[-10%] h-[50vh] w-[45vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.7),transparent_70%)] blur-3xl" />
+          <div className="absolute left-[-10%] top-1/2 h-[72vh] w-[65vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.22),transparent_62%)] blur-2xl render-stable" />
+          <div className="absolute right-[-12%] top-[18%] h-[54vh] w-[42vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.3),transparent_70%)] blur-2xl render-stable" />
+          <div className="absolute left-[20%] bottom-[-6%] h-[38vh] w-[36vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.52),transparent_70%)] blur-2xl render-stable" />
         </div>
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
@@ -493,8 +493,8 @@ export default function ScrollSections() {
 
 
       {/* Chapter 07 — The Future System */}
-      <section id="future" className="relative min-h-[135vh] px-6 text-center">
-        <div className="sticky top-0 flex h-screen flex-col items-center justify-center pt-24 pb-12">
+      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-6 text-center">
+        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-24 pb-12 render-stable">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
