@@ -39,7 +39,7 @@ function SectionCopy({
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.55 }}
         transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-        className={`h-px w-24 mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "ml-auto origin-right bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
+        className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
         initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
