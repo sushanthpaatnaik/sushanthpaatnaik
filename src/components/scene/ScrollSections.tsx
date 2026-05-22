@@ -108,45 +108,14 @@ function HeroSection() {
                 "radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, oklch(0.04 0 0 / 0.55) 70%, oklch(0.03 0 0) 95%)",
             }}
           />
-          {/* Cool rim atmospheric wash — gentle breathing */}
+          {/* Single cool rim breath — replaces 3 drift layers + dust grid */}
           <motion.div
             className="absolute inset-0 mix-blend-screen render-stable"
-            animate={{ opacity: [0.75, 1, 0.75] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
             style={{
               background:
-                "radial-gradient(ellipse 38% 45% at 62% 42%, oklch(0.5 0.08 240 / 0.08) 0%, transparent 60%)",
-            }}
-          />
-          {/* Drifting volumetric haze — slow horizontal breath */}
-          <motion.div
-            className="absolute inset-0 mix-blend-screen render-stable"
-            animate={{ x: ["-2%", "2%", "-2%"], opacity: [0.6, 0.95, 0.6] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              background:
-                "radial-gradient(ellipse 55% 35% at 50% 55%, oklch(0.35 0.02 240 / 0.06) 0%, transparent 70%)",
-            }}
-          />
-          {/* Counter-drift atmospheric layer for parallax depth */}
-          <motion.div
-            className="absolute inset-0 mix-blend-screen render-stable"
-            animate={{ x: ["1.5%", "-1.5%", "1.5%"], opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 25% at 50% 30%, oklch(0.4 0.015 250 / 0.05) 0%, transparent 75%)",
-            }}
-          />
-          {/* Subtle particle dust — almost imperceptible */}
-          <motion.div
-            className="absolute inset-0 opacity-[0.03] mix-blend-screen render-stable"
-            animate={{ backgroundPositionY: ["0px", "-40px", "0px"] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            style={{
-              backgroundImage:
-                "radial-gradient(1px 1px at 25% 30%, oklch(0.85 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 70% 60%, oklch(0.8 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 45% 80%, oklch(0.85 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 80% 20%, oklch(0.75 0 0) 50%, transparent 100%)",
-              backgroundSize: "400px 400px",
+                "radial-gradient(ellipse 42% 48% at 60% 44%, oklch(0.5 0.08 240 / 0.09) 0%, transparent 65%)",
             }}
           />
         </motion.div>
@@ -390,11 +359,10 @@ export default function ScrollSections() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.84),oklch(0.03_0_0/0.97))]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
 
-        {/* Ambient volumetric wash behind the figure */}
+        {/* Ambient volumetric wash — single blended layer */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-10%] top-1/2 h-[72vh] w-[65vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.22),transparent_62%)] blur-2xl render-stable" />
-          <div className="absolute right-[-12%] top-[18%] h-[54vh] w-[42vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.3),transparent_70%)] blur-2xl render-stable" />
-          <div className="absolute left-[20%] bottom-[-6%] h-[38vh] w-[36vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.52),transparent_70%)] blur-2xl render-stable" />
+          <div className="absolute left-[-10%] top-1/2 h-[72vh] w-[65vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.2),transparent_62%)] blur-2xl render-stable" />
+          <div className="absolute right-[-12%] top-[18%] h-[54vh] w-[42vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.28),transparent_70%)] blur-2xl render-stable" />
         </div>
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
