@@ -208,14 +208,15 @@ function HeroSection() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.8 }}
-          transition={{ duration: 1, delay: 1.05 }}
-          className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
+          transition={{ duration: 1.4, delay: 1.2 }}
+          className="absolute bottom-12 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/55"
+          style={{ mixBlendMode: "soft-light" }}
         >
-          <span>Scroll to enter</span>
+          <span className="blur-[0.3px]">Scroll to enter</span>
           <motion.div
-            animate={{ opacity: [0.35, 1, 0.35], scaleY: [1, 1.18, 1] }}
-            transition={{ duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/60 to-transparent"
+            animate={{ opacity: [0.2, 0.6, 0.2], scaleY: [1, 1.12, 1] }}
+            transition={{ duration: 3.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="h-16 w-px origin-top bg-gradient-to-b from-foreground/30 to-transparent"
           />
         </motion.div>
       </div>
@@ -290,7 +291,7 @@ export default function ScrollSections() {
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
             <h3 className="mb-12 md:mb-16 font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
           </MotionReveal>
-          <div className="grid grid-cols-2 gap-px bg-foreground/10 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] md:grid-cols-4">
             {[
               { k: "1", u: "atom", l: "Graphene lattice thickness" },
               { k: "200×", u: "", l: "Stronger than steel" },
@@ -325,7 +326,7 @@ export default function ScrollSections() {
           </MotionReveal>
           <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-10">
             {processSteps.map((step, index) => (
-              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-5 md:pt-6">
+              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/[0.08] pt-5 md:pt-6">
                 <span className="font-mono text-xs tracking-[0.3em] text-primary/80">{step.n}</span>
                 <h4 className="mt-4 mb-3 font-display text-xl md:text-2xl tracking-[-0.02em]">{step.t}</h4>
                 <p className="text-sm leading-relaxed text-muted-foreground">{step.b}</p>
@@ -345,7 +346,7 @@ export default function ScrollSections() {
               Measured in tons of carbon, joules of energy, years of life.
             </h3>
           </MotionReveal>
-          <div className="grid gap-px bg-foreground/10 md:grid-cols-3">
+          <div className="grid gap-px bg-foreground/[0.06] md:grid-cols-3">
             {[
               { k: "GW", l: "Energy systems", s: "Graphene-enabled storage & transmission" },
               { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
@@ -379,7 +380,7 @@ export default function ScrollSections() {
           {/* Asymmetric portrait — enlarged, fully dissolved into the scene */}
           <MotionReveal className="relative md:col-span-8 md:col-start-1 md:-ml-[6%] lg:-ml-[10%]">
             <div className="relative">
-              <p className="absolute top-4 left-[12%] z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+              <p className="absolute top-4 left-[12%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
                 Plate 02 · Founder
               </p>
               <img
@@ -417,15 +418,15 @@ export default function ScrollSections() {
             <p className="mt-10 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization.
             </p>
-            <div className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-              <span className="h-px w-10 bg-foreground/30" />
+            <div className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
+              <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
               <span>Sushanth Paatnaik</span>
             </div>
 
             {/* Plate 03 · R&D — atmospheric inventor-documentary inset.
                 Small, asymmetric, edge-blended, emerging from darkness. */}
             <div className="relative mt-20 -ml-[20%] hidden md:block lg:-ml-[30%]">
-              <p className="absolute -top-5 left-2 z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+              <p className="absolute -top-5 left-2 z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
                 Plate 03 · R&amp;D · Inventor at work
               </p>
               <div className="relative aspect-square w-[78%]">
@@ -446,7 +447,7 @@ export default function ScrollSections() {
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-[linear-gradient(90deg,oklch(0.03_0_0)_8%,transparent)]" />
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-[linear-gradient(270deg,oklch(0.03_0_0)_8%,transparent)]" />
               </div>
-              <p className="mt-4 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/55">
+              <p className="mt-4 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/35">
                 R&amp;D bench · Instrumentation · Graphene · Nano-materials
               </p>
             </div>
@@ -483,16 +484,16 @@ export default function ScrollSections() {
               </div>
             </MotionReveal>
             <MotionReveal delay={0.24}>
-              <div className="mt-16 md:mt-24 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:gap-8 font-mono text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground/60">
+              <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
                 <span>Graphene</span>
-                <span className="h-1 w-1 rounded-full bg-primary" />
+                <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
                 <span>Nano-Materials</span>
-                <span className="h-1 w-1 rounded-full bg-accent" />
+                <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
                 <span>AI · Climate</span>
               </div>
             </MotionReveal>
             <MotionReveal delay={0.32}>
-              <p className="mt-12 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
+              <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
                 © Sushanth Paatnaik — Engineering matter, capital, and scale.
               </p>
             </MotionReveal>
