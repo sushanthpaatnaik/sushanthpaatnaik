@@ -4,91 +4,91 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ----- 8-chapter narrative ----- */
+/* ----- 8-chapter founder narrative ----- */
 const chapters = [
   {
     id: "vision",
     eyebrow: "Chapter 02 — Vision",
-    title: "We build the surface of the future.",
+    title: "Engineering the next material era.",
     body:
-      "Nova is a real-time interface studio engineering the next decade of digital experience. Software that feels like light. Products that feel like cinema.",
+      "I build ventures at the frontier of graphene, nano-materials and artificial intelligence — designing the substrates, systems and intelligence that will define the next century of energy, climate and computation.",
     align: "right" as const,
   },
   {
-    id: "depth",
-    eyebrow: "Chapter 03 — Depth",
-    title: "Worlds within worlds.",
+    id: "materials",
+    eyebrow: "Chapter 03 — Materials",
+    title: "Graphene as a foundation, not a feature.",
     body:
-      "Layered geometry, volumetric atmosphere and physically-based light. Focus moves with you, naturally, frame by frame — a quiet architecture for attention.",
+      "From atomically-thin lattices to engineered nano-composites — materials that conduct, sense and adapt. A new physical substrate for energy storage, filtration, sensing and structural intelligence.",
     align: "left" as const,
   },
   {
-    id: "motion",
-    eyebrow: "Chapter 04 — Motion",
-    title: "Motion you can feel.",
+    id: "intelligence",
+    eyebrow: "Chapter 04 — Intelligence",
+    title: "AI woven into matter itself.",
     body:
-      "GPU-accelerated choreography at 120fps. Inertia, easing and cinematic timing — every transition tuned by hand, every frame intentional.",
+      "Machine learning fused with material science. Models that design molecules, simulate lattices, and accelerate discovery — turning years of lab cycles into weeks of intentional iteration.",
     align: "right" as const,
   },
   {
-    id: "tech",
-    eyebrow: "Chapter 05 — Technology",
-    title: "A new rendering stack.",
+    id: "ventures",
+    eyebrow: "Chapter 05 — Ventures",
+    title: "Building companies, not papers.",
     body:
-      "WebGL, WebGPU and ray-marched shaders running edge-side. Streaming geometry, sub-millisecond input latency, real-time global illumination — in the browser.",
+      "Deep-tech venture creation across graphene energy systems, nano-material platforms, climate infrastructure and intelligent sensing — translating frontier research into companies that ship.",
     align: "left" as const,
   },
   {
     id: "process",
     eyebrow: "Chapter 06 — Process",
-    title: "From script to scene.",
+    title: "From atom to architecture.",
     body:
-      "We work like a film studio. Direction, choreography, lighting and edit — translated into production-ready React, Three.js and shader code your team can ship.",
+      "Hypothesis, synthesis, simulation, scale. I move between the lab bench and the cap table — pairing scientific rigor with founder velocity to compress the distance between breakthrough and deployment.",
     align: "right" as const,
   },
 ];
 
-/* ----- Services ----- */
+/* ----- Focus areas ----- */
 const services = [
   {
     n: "01",
-    title: "Cinematic interfaces",
-    body: "Story-driven product surfaces for launches, brand films and immersive marketing sites.",
+    title: "Graphene & nano-materials",
+    body: "Synthesis, characterization and applied research turning 2D materials into energy, sensing and structural platforms.",
   },
   {
     n: "02",
-    title: "Real-time 3D systems",
-    body: "Custom WebGL pipelines, shader systems and configurator tools built to scale.",
+    title: "AI for materials & climate",
+    body: "ML systems for molecular design, lattice simulation and climate modeling — accelerating discovery cycles by orders of magnitude.",
   },
   {
     n: "03",
-    title: "Motion direction",
-    body: "End-to-end motion language — timing, easing, choreography, transitions, micro-interaction.",
+    title: "Deep-tech venture building",
+    body: "Founding and operating companies at the intersection of advanced materials, energy and intelligent systems.",
   },
   {
     n: "04",
-    title: "Engineering partnership",
-    body: "Embed with your team to ship performant React, R3F and shader code into production.",
+    title: "Frontier advisory",
+    body: "Strategic partnership with founders, labs and funds navigating the early arc of nano-material and climate-tech ventures.",
   },
 ];
 
 /* ----- Process ----- */
 const processSteps = [
-  { n: "01", t: "Discover", b: "Audit, strategy, narrative direction." },
-  { n: "02", t: "Direct", b: "Storyboard, mood, motion language, art direction." },
-  { n: "03", t: "Render", b: "3D scenes, shaders, choreography, prototyping." },
-  { n: "04", t: "Ship", b: "Production engineering, performance, handover." },
+  { n: "01", t: "Hypothesize", b: "Identify a material-level lever with civilizational impact." },
+  { n: "02", t: "Synthesize", b: "Build the lattice, the model, the prototype, the team." },
+  { n: "03", t: "Simulate", b: "AI-driven iteration across structure, function and economics." },
+  { n: "04", t: "Scale", b: "Found, capitalize and deploy — from lab cell to industrial system." },
 ];
 
-/* ----- Testimonials ----- */
+/* ----- Voices ----- */
 const quotes = [
   {
-    q: "Nova rebuilt our launch experience from the ground up. Conversion lifted 38% in week one. It looks like a film and ships like software.",
-    a: "Aria Chen — Head of Brand, Atlas",
+    q: "A rare operator who moves fluently between graphene chemistry, AI architecture and venture strategy. The kind of founder this decade actually needs.",
+    a: "Partner — Deep-Tech Fund",
   },
   {
-    q: "The most cinematic browser experience I've ever shipped. The motion language is now part of our product DNA.",
-    a: "Marcus Vance — VP Design, Helio",
+    q: "Translates frontier material science into companies you can actually back. Scientific depth with founder velocity.",
+    a: "Director — Climate Innovation Lab",
   },
 ];
 
