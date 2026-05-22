@@ -23,7 +23,7 @@ const chapters: readonly StoryChapter[] = [
     id: "recognition",
     eyebrow: "02 — Recognition",
     title: "Awarded early. Responsible forever.",
-    body: "Six-time Indian Presidential awardee between 2008 and 2013. One of the youngest speakers invited to TED-India. Featured by MIT Technology Review, India Today, Times of India and Global Indian. Recognition is a lagging indicator — the work remains in the next prototype.",
+    body: "Six-time Indian Presidential awardee between 2008 and 2013. NIF-India IGNITE awardee. One of the youngest speakers invited to TED-India. Featured by MIT Technology Review, India Today, Times of India, Business Standard, and Global Indian. Recognition is a lagging indicator — the work remains in the next prototype.",
     align: "left",
   },
   {
