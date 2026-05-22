@@ -484,16 +484,16 @@ export default function ScrollSections() {
               </div>
             </MotionReveal>
             <MotionReveal delay={0.24}>
-              <div className="mt-16 md:mt-24 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:gap-8 font-mono text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground/60">
+              <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
                 <span>Graphene</span>
-                <span className="h-1 w-1 rounded-full bg-primary" />
+                <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
                 <span>Nano-Materials</span>
-                <span className="h-1 w-1 rounded-full bg-accent" />
+                <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
                 <span>AI · Climate</span>
               </div>
             </MotionReveal>
             <MotionReveal delay={0.32}>
-              <p className="mt-12 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
+              <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
                 © Sushanth Paatnaik — Engineering matter, capital, and scale.
               </p>
             </MotionReveal>
