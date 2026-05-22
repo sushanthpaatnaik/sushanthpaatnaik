@@ -4,6 +4,7 @@ import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
 import type { StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
+import founderLab from "@/assets/founder-lab.jpg";
 
 // 7-chapter cinematic storyline.
 // Chapter 01 (Spark) is rendered by HeroSection.
@@ -321,6 +322,25 @@ export default function ScrollSections() {
               {/* Soft lens diffusion + vignette over the plate */}
               <div className="pointer-events-none absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_at_50%_55%,transparent_35%,oklch(0.05_0_0/0.7)_100%)]" />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,oklch(0.04_0_0/0.55)_100%)]" />
+
+              {/* Plate 03 — laboratory inset, offset for editorial layering */}
+              <div className="absolute -bottom-12 -right-8 hidden w-[42%] md:block lg:-right-16 lg:-bottom-16">
+                <div className="relative overflow-hidden border border-foreground/10 shadow-[0_30px_80px_-30px_oklch(0.04_0_0/0.9)]">
+                  <div className="absolute -top-3 left-0 z-10 font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/60">
+                    Plate 03 · Laboratory
+                  </div>
+                  <img
+                    src={founderLab}
+                    alt="Inventor at the laboratory bench with instrumentation, shallow depth of field, industrial grading."
+                    width={1024}
+                    height={1024}
+                    loading="lazy"
+                    decoding="async"
+                    className="mt-3 aspect-square w-full object-cover grayscale-[0.15] contrast-[1.05] [filter:brightness(0.9)_saturate(0.8)]"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.04_0_0/0.6)_100%)]" />
+                </div>
+              </div>
             </div>
           </MotionReveal>
 
