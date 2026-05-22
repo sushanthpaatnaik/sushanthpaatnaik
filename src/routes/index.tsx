@@ -7,6 +7,7 @@ import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
 import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
 import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
+import CursorAura from "@/components/scene/CursorAura";
 import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
@@ -167,6 +168,9 @@ function Index() {
 
       {/* Sitewide ambient atmosphere — near-imperceptible haze + grain for spatial life */}
       {entered && <AmbientAtmosphere />}
+
+      {/* Hidden cinematic interaction — a faint cool aura that trails the cursor */}
+      {entered && <CursorAura />}
 
       {/* Custom cursor */}
       <div
