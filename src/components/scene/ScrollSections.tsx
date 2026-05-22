@@ -307,7 +307,8 @@ export default function ScrollSections() {
       </section>
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
-      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_50%,oklch(0.10_0.03_250/0.09),transparent_72%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
