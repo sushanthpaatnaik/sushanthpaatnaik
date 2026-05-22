@@ -4,7 +4,6 @@ import {
   useScroll,
   useSpring,
   useTransform,
-  useMotionTemplate,
   type MotionValue,
 } from "framer-motion";
 
@@ -35,12 +34,10 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => 1.04 - (v - center) * 0.025);
 }
 
-function useSceneBlur(phase: MotionValue<number>, center: number) {
-  return useTransform(phase, (v) => {
-    const d = Math.min(Math.abs(v - center), 1);
-    return d * d * 5;
-  });
-}
+// Static color grade. Dynamic blur on 1920x1080 images every scroll frame was
+// the single largest GPU cost on the page; crossfade + scale already
+// communicates depth, blur is no longer needed.
+const SCENE_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
 
 function SceneLayer({
   src,
@@ -59,12 +56,10 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
-  const blurPx = useSceneBlur(phase, index);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.78) contrast(1.05) saturate(0.92)`;
   const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
 
   return (
-    <motion.div className="absolute inset-0 will-change-transform" style={{ opacity }}>
+    <motion.div className="absolute inset-0" style={{ opacity }}>
       <motion.img
         src={src}
         alt={alt}
@@ -73,8 +68,9 @@ function SceneLayer({
         loading={isFirst ? "eager" : "lazy"}
         decoding="async"
         draggable={false}
+        fetchPriority={isFirst ? "high" : "low"}
         className="h-full w-full object-cover select-none"
-        style={{ scale, filter, y }}
+        style={{ scale, y, filter: SCENE_FILTER, transform: "translateZ(0)" }}
       />
     </motion.div>
   );
