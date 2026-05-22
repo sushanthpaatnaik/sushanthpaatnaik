@@ -380,7 +380,7 @@ export default function ScrollSections() {
           {/* Asymmetric portrait — enlarged, fully dissolved into the scene */}
           <MotionReveal className="relative md:col-span-8 md:col-start-1 md:-ml-[6%] lg:-ml-[10%]">
             <div className="relative">
-              <p className="absolute top-4 left-[12%] z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+              <p className="absolute top-4 left-[12%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
                 Plate 02 · Founder
               </p>
               <img
