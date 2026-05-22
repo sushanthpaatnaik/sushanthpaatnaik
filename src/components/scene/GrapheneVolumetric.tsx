@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, Bloom, DepthOfField } from "@react-three/postprocessing";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import GrapheneAtmosphere from "./GrapheneAtmosphere";
 
