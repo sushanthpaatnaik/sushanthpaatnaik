@@ -361,6 +361,35 @@ export default function ScrollSections() {
               <span className="h-px w-10 bg-foreground/30" />
               <span>Sushanth Paatnaik</span>
             </div>
+
+            {/* Plate 03 · R&D — atmospheric inventor-documentary inset.
+                Small, asymmetric, edge-blended, emerging from darkness. */}
+            <div className="relative mt-20 -ml-[20%] hidden md:block lg:-ml-[30%]">
+              <p className="absolute -top-5 left-2 z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+                Plate 03 · R&amp;D · Inventor at work
+              </p>
+              <div className="relative aspect-square w-[78%]">
+                <img
+                  src={founderLab}
+                  alt="Sushanth Paatnaik inside an advanced materials research environment, instrument in hand."
+                  width={720}
+                  height={720}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover grayscale-[0.3] contrast-[1.08] [filter:brightness(0.72)_saturate(0.65)] [mask-image:radial-gradient(ellipse_70%_75%_at_45%_50%,#000_25%,rgba(0,0,0,0.5)_60%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_70%_75%_at_45%_50%,#000_25%,rgba(0,0,0,0.5)_60%,transparent_92%)]"
+                />
+                <div className="pointer-events-none absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_70%_75%_at_45%_50%,transparent_25%,oklch(0.02_0_0/0.97)_92%)]" />
+                <div className="pointer-events-none absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_25%_45%_at_82%_42%,oklch(0.45_0.1_240/0.18),transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,transparent_45%,oklch(0.1_0.02_240/0.16)_65%,transparent_88%)]" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 bg-[linear-gradient(180deg,oklch(0.03_0_0)_5%,transparent)]" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,oklch(0.03_0_0)_88%)]" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-[linear-gradient(90deg,oklch(0.03_0_0)_8%,transparent)]" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-[linear-gradient(270deg,oklch(0.03_0_0)_8%,transparent)]" />
+              </div>
+              <p className="mt-4 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/55">
+                R&amp;D bench · Instrumentation · Graphene · Nano-materials
+              </p>
+            </div>
           </MotionReveal>
         </div>
       </section>
