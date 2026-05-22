@@ -80,17 +80,7 @@ const processSteps = [
   { n: "04", t: "Scale", b: "Found, capitalize and deploy — from lab cell to industrial system." },
 ];
 
-/* ----- Voices ----- */
-const quotes = [
-  {
-    q: "A rare operator who moves fluently between graphene chemistry, AI architecture and venture strategy. The kind of founder this decade actually needs.",
-    a: "Partner — Deep-Tech Fund",
-  },
-  {
-    q: "Translates frontier material science into companies you can actually back. Scientific depth with founder velocity.",
-    a: "Director — Climate Innovation Lab",
-  },
-];
+/* Fictional testimonials removed for founder-led identity */
 
 export default function ScrollSections() {
   const root = useRef<HTMLDivElement>(null);
