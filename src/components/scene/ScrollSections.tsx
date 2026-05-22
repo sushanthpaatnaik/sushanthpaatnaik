@@ -3,6 +3,7 @@ import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform }
 import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
 import type { StoryChapter } from "./StorySection";
+import founderPresence from "@/assets/founder-presence.jpg";
 
 // 7-chapter cinematic storyline.
 // Chapter 01 (Spark) is rendered by HeroSection.
@@ -298,14 +299,50 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      <section className="min-h-[60vh] flex items-center px-6 py-24 md:px-20">
-        <MotionReveal className="mx-auto max-w-4xl pointer-events-auto">
-          <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">Voice</p>
-          <blockquote className="font-display text-2xl leading-[1.2] tracking-[-0.025em] text-gradient md:text-4xl lg:text-5xl">
-            “Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world.”
-          </blockquote>
-        </MotionReveal>
+      {/* Founder presence — asymmetric editorial composition.
+          Silhouette + handwritten quote; cinematic, mysterious, invention-driven. */}
+      <section className="relative min-h-[110vh] px-6 py-32 md:px-20">
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          {/* Asymmetric image — offset left, occupies 7 of 12 columns */}
+          <MotionReveal className="relative md:col-span-7 md:col-start-1">
+            <div className="relative overflow-hidden">
+              <div className="absolute -top-3 left-0 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
+                Plate 02 · Inventor at the bench
+              </div>
+              <img
+                src={founderPresence}
+                alt="Inventor silhouette at a graphite workbench, lit by cool blue light, surrounded by patent diagrams, microscope and graphene wafer."
+                width={1024}
+                height={1024}
+                loading="lazy"
+                decoding="async"
+                className="mt-6 aspect-square w-full object-cover grayscale-[0.18] contrast-[1.05] [filter:brightness(0.92)_saturate(0.8)]"
+              />
+              {/* Soft lens diffusion + vignette over the plate */}
+              <div className="pointer-events-none absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_at_50%_55%,transparent_35%,oklch(0.05_0_0/0.7)_100%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,oklch(0.04_0_0/0.55)_100%)]" />
+            </div>
+          </MotionReveal>
+
+          {/* Editorial quote — pushed right + down for cinematic asymmetry */}
+          <MotionReveal delay={0.12} className="md:col-span-5 md:col-start-8 md:pt-32 lg:pt-48">
+            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/80">
+              Founder · Voice
+            </p>
+            <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-4xl">
+              “Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world.”
+            </blockquote>
+            <p className="mt-10 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization.
+            </p>
+            <div className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
+              <span className="h-px w-10 bg-foreground/30" />
+              <span>Sushanth Paatnaik</span>
+            </div>
+          </MotionReveal>
+        </div>
       </section>
+
 
       {/* Chapter 07 — The Future System */}
       <section id="future" className="relative min-h-[135vh] px-6 text-center">
