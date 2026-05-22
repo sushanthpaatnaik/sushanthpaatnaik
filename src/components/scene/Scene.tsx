@@ -36,14 +36,14 @@ function Particles({ count = 2500 }: { count?: number }) {
 
   useFrame((_, dt) => {
     if (ref.current) {
-      ref.current.rotation.y += dt * 0.015;
-      ref.current.rotation.x += dt * 0.004;
+      ref.current.rotation.y += dt * 0.008;
+      ref.current.rotation.x += dt * 0.002;
     }
   });
 
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial transparent color="#9bbcff" size={0.022} sizeAttenuation depthWrite={false} opacity={0.9} />
+      <PointMaterial transparent color="#8aa6d8" size={0.018} sizeAttenuation depthWrite={false} opacity={0.55} />
     </Points>
   );
 }
