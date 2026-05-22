@@ -116,9 +116,9 @@ export default function AtmosphereLayer({
       <div
         ref={glowRef}
         className="absolute inset-0 mix-blend-screen"
-        style={{ opacity: 0.12 }}
+        style={{ opacity: 0.08 }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,oklch(0.45_0.14_220/0.5),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,oklch(0.4_0.1_220/0.35),transparent_60%)]" />
       </div>
 
       {/* Foreground molecular particle drift */}
