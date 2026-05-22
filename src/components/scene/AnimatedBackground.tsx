@@ -59,7 +59,7 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
-  const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
+  const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 24);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
