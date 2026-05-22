@@ -166,7 +166,7 @@ export default function AnimatedBackground({
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.78 0.18 235 / 0.1), transparent 70%)",
+            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.71 0.13 240 / 0.08), transparent 70%)",
         }}
       />
     </div>
