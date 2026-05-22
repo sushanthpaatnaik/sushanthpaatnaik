@@ -193,15 +193,30 @@ export default function ScrollSections() {
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center relative">
         <div className="max-w-5xl">
           <p className="hero-meta text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
-            01 — Origin / Sushanth · Deep-Tech Founder · 2026
+            01 — Origin / Deep-Tech Founder · Graphene · Nano-Materials · AI · Climate Innovation
           </p>
           <h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
+            <span className="hero-line block text-gradient">Sushanth.</span>
             <span className="hero-line block text-gradient">Engineering</span>
             <span className="hero-line block text-glow text-foreground">Intelligent Matter.</span>
           </h1>
           <p className="hero-meta mt-12 text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
             A deep-tech founder building future-facing ventures across graphene, nano-materials, AI, energy, climate, and intelligent systems.
           </p>
+          <div className="hero-meta mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="#ventures"
+              className="glass px-8 py-4 rounded-full text-sm tracking-wide hover:bg-foreground/10 transition-all duration-500 hover:scale-[1.03]"
+            >
+              Explore the Work
+            </a>
+            <a
+              href="#contact"
+              className="px-8 py-4 rounded-full text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300"
+            >
+              Connect
+            </a>
+          </div>
         </div>
         <div className="hero-meta absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
           <span>Scroll to enter</span>
@@ -329,7 +344,15 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* (Fictional voices removed — founder-led identity) */}
+      {/* FOUNDER VOICE */}
+      <section className="min-h-[60vh] flex items-center px-6 md:px-20 py-24">
+        <div className="max-w-4xl mx-auto pointer-events-auto reveal">
+          <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-8">Voice</p>
+          <blockquote className="font-display text-2xl md:text-4xl lg:text-5xl tracking-[-0.025em] text-gradient leading-[1.2]">
+            “Collaborating with founders, scientists, funds, and climate operators to move frontier science from lab-scale possibility to industrial reality.”
+          </blockquote>
+        </div>
+      </section>
 
       {/* CONTACT / OUTRO */}
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center">
@@ -362,7 +385,7 @@ export default function ScrollSections() {
             <span>AI · Climate</span>
           </div>
           <p className="reveal mt-12 text-[10px] text-muted-foreground/60 tracking-[0.3em] uppercase">
-            © Sushanth — Engineering intelligent matter.
+            © Sushanth — Building at the frontier of intelligent matter.
           </p>
         </div>
       </section>
