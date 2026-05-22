@@ -404,24 +404,15 @@ export default function ScrollSections() {
               </h2>
             </MotionReveal>
             <MotionReveal delay={0.16}>
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a
-                  href="mailto:me@sushanthpaatnaik.com?subject=Collaborate"
-                  className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
-                >
+              <div className="flex flex-col items-center justify-center gap-5 sm:flex-row">
+                <a href="mailto:me@sushanthpaatnaik.com?subject=Collaborate" className="btn-cinematic">
                   Collaborate
                 </a>
-                <a
-                  href="mailto:me@sushanthpaatnaik.com?subject=Invest"
-                  className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
-                >
+                <a href="mailto:me@sushanthpaatnaik.com?subject=Invest" className="btn-cinematic">
                   Invest
                 </a>
-                <a
-                  href="mailto:me@sushanthpaatnaik.com?subject=Build%20with%20me"
-                  className="rounded-full px-8 py-4 text-sm tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground"
-                >
-                  Build with me →
+                <a href="mailto:me@sushanthpaatnaik.com?subject=Build%20with%20me" className="btn-cinematic-secondary">
+                  Build with me <span className="text-[10px] opacity-60">→</span>
                 </a>
               </div>
             </MotionReveal>
