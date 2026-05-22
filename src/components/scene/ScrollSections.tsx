@@ -116,18 +116,12 @@ function HeroSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.8 }}
             transition={{ duration: 1.05, delay: 0.88, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row"
           >
-            <a
-              href="#carbon-intelligence"
-              className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
-            >
+            <a href="#carbon-intelligence" className="btn-cinematic pointer-events-auto">
               Enter the Journey
             </a>
-            <a
-              href="#future"
-              className="pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground"
-            >
+            <a href="#future" className="btn-cinematic-secondary pointer-events-auto">
               Collaborate
             </a>
           </motion.div>
