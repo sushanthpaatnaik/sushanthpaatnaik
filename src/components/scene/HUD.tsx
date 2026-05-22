@@ -56,31 +56,6 @@ export default function HUD({
         })}
       </div>
 
-      {/* Right: telemetry */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-end gap-2 pointer-events-none font-mono">
-        <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-          Telemetry
-        </span>
-        <span className="text-[10px] tracking-[0.3em] text-foreground/80 tabular-nums">
-          SCROLL {(p * 100).toFixed(2)}%
-        </span>
-        <span className="text-[10px] tracking-[0.3em] text-foreground/40 tabular-nums">
-          LAT 0.4ms · 120 FPS
-        </span>
-        <div className="mt-3 w-px h-32 bg-gradient-to-b from-foreground/40 via-foreground/10 to-transparent relative">
-          <div
-            className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary shadow-[0_0_12px_oklch(0.85_0.15_220/0.8)]"
-            style={{ top: `${p * 100}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Bottom center: coordinates */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden md:flex items-center gap-6 text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60 pointer-events-none font-mono">
-        <span>LAT 37.7749°</span>
-        <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-        <span>LON -122.4194°</span>
-      </div>
     </>
   );
 }

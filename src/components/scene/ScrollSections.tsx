@@ -199,93 +199,31 @@ function SceneBackdrop({ id }: { id: string }) {
 
 const SCENE_MOTIFS: Record<string, ReactNode> = {
   discover: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 70%, oklch(0.42 0.16 32 / 0.34), transparent 55%)" }} />
-      <div className="absolute left-1/2 top-1/2 h-[2px] w-[60vw] -translate-x-1/2 -translate-y-1/2" style={{ background: "linear-gradient(90deg, transparent, oklch(0.7 0.18 38 / 0.55), transparent)" }} />
-      <div className="absolute left-1/2 top-1/2 h-[44vh] w-[44vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.06]" />
-      <div className="absolute left-1/2 top-1/2 h-[26vh] w-[26vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.08]" />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 65%, oklch(0.42 0.16 32 / 0.28), transparent 60%)" }} />
   ),
   ideate: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 40% 50%, oklch(0.5 0.18 268 / 0.45), transparent 60%)" }} />
-      <div className="absolute inset-0" style={{
-        backgroundImage:
-          "radial-gradient(circle, oklch(0.85 0.14 268 / 0.55) 1px, transparent 1.5px), radial-gradient(circle, oklch(0.85 0.14 268 / 0.3) 1px, transparent 1.5px)",
-        backgroundSize: "120px 120px, 60px 60px",
-        backgroundPosition: "0 0, 30px 30px",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 40% 50%, oklch(0.5 0.18 268 / 0.32), transparent 65%)" }} />
   ),
   invent: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.6 0.2 215 / 0.45), transparent 65%)" }} />
-      <div className="absolute inset-0 opacity-70" style={{
-        backgroundImage:
-          "repeating-linear-gradient(60deg, oklch(0.75 0.18 205 / 0.32) 0 1px, transparent 1px 38px), repeating-linear-gradient(-60deg, oklch(0.75 0.18 205 / 0.32) 0 1px, transparent 1px 38px), repeating-linear-gradient(0deg, oklch(0.75 0.18 205 / 0.18) 0 1px, transparent 1px 38px)",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.6 0.2 215 / 0.3), transparent 68%)" }} />
   ),
   validate: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.55 0.14 188 / 0.4), transparent 65%)" }} />
-      <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2" style={{ background: "linear-gradient(90deg, transparent, oklch(0.8 0.18 188 / 0.7), transparent)" }} />
-      <div className="absolute inset-0" style={{
-        backgroundImage:
-          "repeating-linear-gradient(0deg, oklch(0.78 0.12 188 / 0.18) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, oklch(0.78 0.12 188 / 0.12) 0 1px, transparent 1px 28px)",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.55 0.14 188 / 0.3), transparent 68%)" }} />
   ),
   protect: (
-    <>
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.08 0.03 264 / 0.85), oklch(0.04 0.01 260 / 0.95))" }} />
-      <div className="absolute inset-0" style={{
-        background:
-          "linear-gradient(90deg, transparent 18%, oklch(0.65 0.12 280 / 0.32) 19%, transparent 21%, transparent 48%, oklch(0.65 0.12 280 / 0.26) 50%, transparent 52%, transparent 78%, oklch(0.65 0.12 280 / 0.32) 80%, transparent 82%)",
-      }} />
-      <div className="absolute left-1/2 top-1/2 h-[44vh] w-[44vh] -translate-x-1/2 -translate-y-1/2 border border-foreground/10" style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.08 0.03 264 / 0.7), oklch(0.04 0.01 260 / 0.85))" }} />
   ),
   prototype: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 60% 60%, oklch(0.6 0.2 52 / 0.55), transparent 60%)" }} />
-      <div className="absolute inset-0 opacity-60" style={{
-        background: "linear-gradient(200deg, oklch(0.34 0.08 44 / 0.6), oklch(0.16 0.04 240 / 0.5) 60%, transparent)",
-      }} />
-      <div className="absolute inset-0" style={{
-        backgroundImage:
-          "repeating-linear-gradient(45deg, oklch(0.7 0.16 48 / 0.18) 0 2px, transparent 2px 22px)",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 60% 60%, oklch(0.6 0.2 52 / 0.38), transparent 65%)" }} />
   ),
   commercialize: (
-    <>
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, oklch(0.52 0.16 38 / 0.45), oklch(0.32 0.1 32 / 0.3) 50%, oklch(0.18 0.06 268 / 0.45))" }} />
-      <div className="absolute inset-0" style={{
-        backgroundImage:
-          "repeating-linear-gradient(90deg, transparent 0 92px, oklch(0.74 0.16 48 / 0.22) 92px 93px), repeating-linear-gradient(0deg, transparent 0 92px, oklch(0.74 0.14 40 / 0.16) 92px 93px)",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, oklch(0.52 0.16 38 / 0.32), oklch(0.18 0.06 268 / 0.35))" }} />
   ),
   scale: (
-    <>
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.2 0.08 250 / 0.7), transparent 70%)" }} />
-      <div className="absolute inset-x-0 top-[58%] h-px" style={{ background: "linear-gradient(90deg, transparent, oklch(0.6 0.14 240 / 0.6), transparent)" }} />
-      <div className="absolute inset-0" style={{
-        backgroundImage:
-          "repeating-linear-gradient(90deg, transparent 0 80px, oklch(0.5 0.12 240 / 0.18) 80px 81px)",
-        maskImage: "linear-gradient(180deg, transparent 50%, black 58%, black 100%)",
-        WebkitMaskImage: "linear-gradient(180deg, transparent 50%, black 58%, black 100%)",
-      }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.2 0.08 250 / 0.5), transparent 70%)" }} />
   ),
   deployment: (
-    <>
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, oklch(0.6 0.18 162 / 0.5), transparent 65%)" }} />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, oklch(0.28 0.1 168 / 0.45), transparent 70%)" }} />
-      <div className="absolute left-1/2 top-1/2 h-[60vh] w-[60vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.08]" />
-      <div className="absolute inset-x-0 top-[62%] h-px" style={{ background: "linear-gradient(90deg, transparent, oklch(0.72 0.16 162 / 0.55), transparent)" }} />
-    </>
+    <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, oklch(0.6 0.18 162 / 0.36), transparent 68%)" }} />
   ),
 };
 
