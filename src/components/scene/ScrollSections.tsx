@@ -281,6 +281,68 @@ export default function ScrollSections() {
 
       <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
 
+      {/* Dossier — honors of record. Editorial, not corporate. */}
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_50%_50%,oklch(0.10_0.03_245/0.10),transparent_72%)]" />
+        <div className="mx-auto w-full max-w-5xl pointer-events-auto">
+          <MotionReveal>
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Dossier · Honors of Record</p>
+            <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
+              Three decades of work, condensed.
+            </h3>
+          </MotionReveal>
+          <div className="grid grid-cols-2 gap-x-10 gap-y-12 md:grid-cols-4 md:gap-x-14">
+            {[
+              { k: "27", u: "", l: "Honors of record", s: "National + international" },
+              { k: "21", u: "", l: "Patents & awards", s: "Times of India · profiled" },
+              { k: "50", u: "+", l: "Media imprints", s: "Print · broadcast · digital" },
+              { k: "10", u: "+", l: "Working prototypes", s: "Bench to industrial pilot" },
+            ].map((m, i) => (
+              <MotionReveal key={m.l} delay={i * 0.08} className="border-t border-foreground/[0.08] pt-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-primary/70">{m.l}</p>
+                <div className="mt-5 flex items-baseline gap-1">
+                  <span className="font-display text-5xl font-medium text-gradient md:text-6xl">{m.k}</span>
+                  <span className="font-display text-2xl text-muted-foreground/60">{m.u}</span>
+                </div>
+                <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground/70">{m.s}</p>
+              </MotionReveal>
+            ))}
+          </div>
+
+          {/* Media imprints — slow horizontal drift, restrained */}
+          <MotionReveal delay={0.2} className="mt-20 md:mt-28">
+            <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">Featured · Imprints</p>
+            <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_15%,#000_85%,transparent)]">
+              <div className="flex w-max gap-14 animate-marquee">
+                {[
+                  "MIT Technology Review",
+                  "TED India",
+                  "Times of India",
+                  "India Today",
+                  "Business Standard",
+                  "Global Indian",
+                  "NIF-India · IGNITE",
+                  "Govt. of India · President's Awards",
+                ].concat([
+                  "MIT Technology Review",
+                  "TED India",
+                  "Times of India",
+                  "India Today",
+                  "Business Standard",
+                  "Global Indian",
+                  "NIF-India · IGNITE",
+                  "Govt. of India · President's Awards",
+                ]).map((label, i) => (
+                  <span key={`${label}-${i}`} className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.42em] text-foreground/55">
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </MotionReveal>
+        </div>
+      </section>
+
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
       <VentureConstellation ventures={ventures} />
