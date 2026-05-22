@@ -166,7 +166,7 @@ function HeroSection() {
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
             className="mx-auto mt-10 md:mt-12 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
           >
-            Curiosity turned into inventions, patents, companies, and industrial technologies — graphene, nano-materials, and deep-tech ventures built from India for the world.
+            Inventor and deep-tech founder. Six-time Indian Presidential awardee. Building graphene, nano-materials, and industrial systems from Bhubaneswar — for the world.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
