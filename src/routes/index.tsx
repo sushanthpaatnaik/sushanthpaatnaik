@@ -5,6 +5,7 @@ import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
+import VideoLayer from "@/components/scene/VideoLayer";
 import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
@@ -84,6 +85,9 @@ function Index() {
         {/* Animated light streak */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-[linear-gradient(115deg,transparent_45%,oklch(0.85_0.15_220/0.06)_50%,transparent_55%)] animate-[streak_8s_ease-in-out_infinite]" />
       </div>
+
+      {/* Graphene cinematic backdrop — Technology chapter */}
+      <VideoLayer scrollProgress={scrollProgress} start={0.42} end={0.62} />
 
       {/* Custom cursor */}
       <div
