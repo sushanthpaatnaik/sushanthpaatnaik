@@ -188,8 +188,8 @@ export default function AtmosphereLayer() {
       <style>{`
         @keyframes atmosDrift {
           0%   { transform: translate3d(0, 0, 1px); opacity: 0.15; }
-          50%  { transform: translate3d(5px, -9px, 1px); opacity: 0.30; }
-          100% { transform: translate3d(-3px, -17px, 1px); opacity: 0.19; }
+          50%  { transform: translate3d(4px, -8px, 1px); opacity: 0.28; }
+          100% { transform: translate3d(-3px, -14px, 1px); opacity: 0.19; }
         }
       `}</style>
     </div>
