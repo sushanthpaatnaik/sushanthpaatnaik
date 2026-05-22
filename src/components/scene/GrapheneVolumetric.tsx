@@ -69,8 +69,8 @@ function GrapheneCanvas({ scrollProgress, mouse }: Props) {
         <CanvasOpacity scrollProgress={scrollProgress} />
 
         <EffectComposer multisampling={0}>
-          <Bloom intensity={0.45} luminanceThreshold={0.35} luminanceSmoothing={0.92} mipmapBlur />
-          <DepthOfField focusDistance={0.018} focalLength={0.06} bokehScale={2.4} />
+          <Bloom intensity={0.28} luminanceThreshold={0.42} luminanceSmoothing={0.94} />
+          <DepthOfField focusDistance={0.02} focalLength={0.045} bokehScale={1.6} />
           <Vignette eskil={false} offset={0.2} darkness={0.7} />
         </EffectComposer>
       </Suspense>

@@ -6,11 +6,12 @@ export function useLenis(onScroll?: (progress: number) => void) {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1.2,
+      touchMultiplier: 1.05,
+      syncTouch: true,
     });
     lenisRef.current = lenis;
 
@@ -25,23 +26,53 @@ export function useLenis(onScroll?: (progress: number) => void) {
     };
     rafId = requestAnimationFrame(raf);
 
-    // Recompute pin/sticky math once images, fonts, and late layout settle.
+    // Recompute layout-dependent scroll math once images, fonts, and late layout settle.
     const resize = () => lenis.resize();
+    const snapState = () => {
+      const current = window.scrollY || window.pageYOffset || 0;
+      lenis.scrollTo(current, { immediate: true, force: true, lock: true });
+    };
     const onLoad = () => {
       lenis.resize();
+      snapState();
     };
     window.addEventListener("load", onLoad);
     const fonts = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts;
-    fonts?.ready.then(resize).catch(() => {});
+    fonts?.ready.then(() => {
+      resize();
+      snapState();
+    }).catch(() => {});
     // Catch async image decode / hydration shifts.
-    const t1 = window.setTimeout(resize, 400);
-    const t2 = window.setTimeout(resize, 1200);
+    const t1 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 180);
+    const t2 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 700);
+    const t3 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 1400);
+
+    const ro = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => {
+          resize();
+        })
+      : null;
+    if (ro) {
+      ro.observe(document.documentElement);
+      ro.observe(document.body);
+    }
 
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("load", onLoad);
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
+      ro?.disconnect();
       lenis.destroy();
       lenisRef.current = null;
     };

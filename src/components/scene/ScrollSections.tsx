@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
 import type { StoryChapter } from "./StorySection";
@@ -74,18 +74,18 @@ function HeroSection() {
   const { scrollYProgress } = useScroll();
   // Progressive founder reveal: starts deeply hidden, subtly emerges as user scrolls into journey
   const silhouetteOpacity = useTransform(scrollYProgress, [0, 0.04, 0.1], [0.08, 0.18, 0.32]);
-  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [28, 14]);
+  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [18, 10]);
   const silhouetteFilter = useTransform(silhouetteBlur, (b) => `blur(${b}px) grayscale(0.4) contrast(1.05)`);
-  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.08, 1]);
+  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.04, 1]);
 
   return (
-    <section id="spark" className="relative min-h-[150vh] px-6">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden text-center pt-24 pb-12">
+    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-6">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-24 pb-12 render-stable">
         {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
         <motion.div
           aria-hidden
           style={{ opacity: silhouetteOpacity, filter: silhouetteFilter, scale: silhouetteScale }}
-          className="pointer-events-none absolute inset-0 z-0"
+          className="pointer-events-none absolute inset-0 z-0 render-stable"
         >
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -110,7 +110,7 @@ function HeroSection() {
           />
           {/* Cool rim atmospheric wash — gentle breathing */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ opacity: [0.75, 1, 0.75] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -120,7 +120,7 @@ function HeroSection() {
           />
           {/* Drifting volumetric haze — slow horizontal breath */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ x: ["-2%", "2%", "-2%"], opacity: [0.6, 0.95, 0.6] }}
             transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -130,7 +130,7 @@ function HeroSection() {
           />
           {/* Counter-drift atmospheric layer for parallax depth */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ x: ["1.5%", "-1.5%", "1.5%"], opacity: [0.4, 0.7, 0.4] }}
             transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -140,7 +140,7 @@ function HeroSection() {
           />
           {/* Subtle particle dust — almost imperceptible */}
           <motion.div
-            className="absolute inset-0 opacity-[0.04] mix-blend-screen"
+            className="absolute inset-0 opacity-[0.03] mix-blend-screen render-stable"
             animate={{ backgroundPositionY: ["0px", "-40px", "0px"] }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             style={{
@@ -275,8 +275,8 @@ function MotionReveal({
     <motion.div
       ref={ref}
       initial={false}
-      animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 36, filter: "blur(10px)" }}
-      transition={{ duration: 1.05, delay, ease: [0.19, 1, 0.22, 1] }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.9, delay, ease: [0.19, 1, 0.22, 1] }}
       className={className}
     >
       {children}
@@ -285,24 +285,9 @@ function MotionReveal({
 }
 
 export default function ScrollSections() {
-  const sectionProgress = useMotionValue(0);
-
-  useEffect(() => {
-    const handle = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      sectionProgress.set(max > 0 ? window.scrollY / max : 0);
-    };
-
-    handle();
-    window.addEventListener("scroll", handle, { passive: true });
-    window.addEventListener("resize", handle);
-    return () => {
-      window.removeEventListener("scroll", handle);
-      window.removeEventListener("resize", handle);
-    };
-  }, [sectionProgress]);
-
-  const drift = useTransform(sectionProgress, [0, 1], [0, -120]);
+  const { scrollYProgress } = useScroll();
+  const sectionProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.22 });
+  const drift = useTransform(sectionProgress, [0, 1], [0, -64]);
 
   // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
   const storyChapters = chapters.slice(1);
@@ -312,7 +297,7 @@ export default function ScrollSections() {
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
 
-      <motion.div style={{ y: drift }}>
+      <motion.div style={{ y: drift }} className="render-stable">
         <HeroSection />
       </motion.div>
 
@@ -322,7 +307,7 @@ export default function ScrollSections() {
       <VentureConstellation ventures={ventures} />
 
       {/* Carbon Intelligence metrics — supports chapter 03 */}
-      <section className="min-h-screen flex items-center px-6 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
@@ -338,7 +323,7 @@ export default function ScrollSections() {
               <MotionReveal
                 key={metric.l}
                 delay={index * 0.08}
-                className="bg-background/60 p-8 backdrop-blur-xl transition-all duration-700 hover:bg-background/80 md:p-12"
+                className="panel-surface p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
               >
                 <div className="flex items-baseline gap-1">
                   <span className="font-display text-5xl font-medium text-gradient md:text-7xl">{metric.k}</span>
@@ -352,7 +337,7 @@ export default function ScrollSections() {
       </section>
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
-      <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
@@ -374,7 +359,7 @@ export default function ScrollSections() {
       </section>
 
       {/* Outcomes — supports chapter 06 (India → World) */}
-      <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Outcomes</p>
@@ -388,7 +373,7 @@ export default function ScrollSections() {
               { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
               { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
             ].map((metric, index) => (
-              <MotionReveal key={metric.l} delay={index * 0.08} className="bg-background/60 p-10 backdrop-blur-xl md:p-14">
+              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-10 md:p-14">
                 <div className="font-display text-5xl font-medium text-gradient md:text-6xl">{metric.k}</div>
                 <p className="mt-4 text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
                 <p className="mt-2 text-xs text-muted-foreground/70">{metric.s}</p>
@@ -400,16 +385,16 @@ export default function ScrollSections() {
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
-      <section className="relative min-h-[140vh] overflow-hidden px-6 py-32 md:px-20">
+      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-6 py-24 md:px-20">
         {/* Heavy atmospheric scrim that pushes the India network bg deep into the scene */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.78),oklch(0.03_0_0/0.95))] backdrop-blur-[6px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.84),oklch(0.03_0_0/0.97))]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
 
         {/* Ambient volumetric wash behind the figure */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-15%] top-1/2 h-[95vh] w-[80vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.32),transparent_62%)] blur-3xl" />
-          <div className="absolute right-[-20%] top-[15%] h-[70vh] w-[55vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.45),transparent_70%)] blur-3xl" />
-          <div className="absolute left-[20%] bottom-[-10%] h-[50vh] w-[45vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.7),transparent_70%)] blur-3xl" />
+          <div className="absolute left-[-10%] top-1/2 h-[72vh] w-[65vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.22),transparent_62%)] blur-2xl render-stable" />
+          <div className="absolute right-[-12%] top-[18%] h-[54vh] w-[42vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.3),transparent_70%)] blur-2xl render-stable" />
+          <div className="absolute left-[20%] bottom-[-6%] h-[38vh] w-[36vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.52),transparent_70%)] blur-2xl render-stable" />
         </div>
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
@@ -493,8 +478,8 @@ export default function ScrollSections() {
 
 
       {/* Chapter 07 — The Future System */}
-      <section id="future" className="relative min-h-[135vh] px-6 text-center">
-        <div className="sticky top-0 flex h-screen flex-col items-center justify-center pt-24 pb-12">
+      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-6 text-center">
+        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-24 pb-12 render-stable">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">

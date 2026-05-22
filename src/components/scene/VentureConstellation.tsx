@@ -25,10 +25,10 @@ function MotionReveal({
       initial={false}
       animate={
         inView
-          ? { opacity: 1, y: 0, filter: "blur(0px)" }
-          : { opacity: 0, y: 36, filter: "blur(10px)" }
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 24 }
       }
-      transition={{ duration: 1.05, delay, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ duration: 0.9, delay, ease: [0.19, 1, 0.22, 1] }}
       className={className}
     >
       {children}
@@ -51,9 +51,9 @@ export default function VentureConstellation({
   subtitle = "Operating companies carrying frontier science from lab into the industrial world.",
 }: VentureConstellationProps) {
   return (
-    <section className="min-h-screen px-6 py-32 md:px-20 pointer-events-auto">
+    <section className="viewport-section px-6 py-24 md:px-20 pointer-events-auto">
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
-        <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32">
+        <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32 render-stable">
           <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">{eyebrow}</p>
           <h3 className="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">
             {title}

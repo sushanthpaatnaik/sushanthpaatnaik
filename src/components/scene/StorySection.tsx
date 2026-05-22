@@ -87,14 +87,14 @@ interface StorySectionProps {
 /** Sticky-pinned narrative panel for one chapter of the scroll story. */
 export default function StorySection({ chapter, index, total }: StorySectionProps) {
   return (
-    <section id={chapter.id} className="story-panel relative min-h-[130vh] px-6 md:px-20">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+    <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.24)] px-6 md:px-20">
+      <div className="viewport-stage sticky top-0 flex items-center overflow-clip pt-24 pb-12 render-stable">
         <motion.div
           initial={{ opacity: 0.65, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.45 }}
           transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-          className="relative z-10 w-full"
+          className="relative z-10 w-full render-stable"
         >
           <SectionCopy
             eyebrow={chapter.eyebrow}
