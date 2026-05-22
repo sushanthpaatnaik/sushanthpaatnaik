@@ -378,6 +378,45 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Technology Portfolio — editorial archive of material & systems domains.
+          Restrained list, not a card grid. */}
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.11_0.03_245/0.10),transparent_72%)]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Portfolio</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              The lattice, downstream.
+            </h3>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Nine material and systems domains where graphene, nano-additives, and intelligent process design converge into industrial outcomes.
+            </p>
+          </MotionReveal>
+
+          <div className="md:col-span-8">
+            {[
+              { n: "01", t: "Graphene Systems", b: "Atomic-thin carbon — synthesized, functionalized, and integrated as the substrate of next-generation industrial platforms." },
+              { n: "02", t: "Nano-Materials", b: "Engineered 2D and quantum-confined structures, designed for conductivity, strength, and catalytic surface area." },
+              { n: "03", t: "Industrial Coatings", b: "Anti-corrosion, thermal, and photonic coatings for solar, marine, aerospace, and heavy infrastructure." },
+              { n: "04", t: "Polymer Additives", b: "Carbon dispersions that lift mechanical, electrical, and barrier properties in mainstream polymers." },
+              { n: "05", t: "Concrete Technologies", b: "Carbon-augmented binders reducing cement intensity while extending the lifespan of structural systems." },
+              { n: "06", t: "Battery & Energy Storage", b: "Electrode architectures shortening charge cycles and lifting energy density at industrial scale." },
+              { n: "07", t: "Fuel & Coal Systems", b: "Moisture, sulphur, and combustion-efficiency interventions for legacy fuel infrastructure in transition." },
+              { n: "08", t: "Filtration & Water", b: "Membrane and adsorbent systems for industrial effluent, potable water, and air-quality recovery." },
+              { n: "09", t: "Climate Infrastructure", b: "Carbon-capture surfaces, sensing networks, and decarbonization pathways for industrial corridors." },
+            ].map((d, i) => (
+              <MotionReveal key={d.n} delay={i * 0.04} className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/10 py-7 md:py-8 transition-colors duration-500 hover:border-foreground/25">
+                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{d.n}</span>
+                <div>
+                  <h4 className="mb-2 font-display text-lg tracking-[-0.02em] md:text-2xl">{d.t}</h4>
+                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground/85">{d.b}</p>
+                </div>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Method — supports chapter 04 (Industrial Applications) */}
       <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_50%,oklch(0.10_0.03_250/0.09),transparent_72%)]" />
