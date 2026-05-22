@@ -354,7 +354,7 @@ export default function ScrollSections() {
             </MotionReveal>
             <MotionReveal delay={0.32}>
               <p className="mt-12 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
-                © Sushanth — Engineering the materials behind a cleaner century.
+                © Sushanth Paatnaik — Engineering matter, capital, and scale.
               </p>
             </MotionReveal>
           </div>
