@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import Scene from "@/components/scene/Scene";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
+import Loader from "@/components/scene/Loader";
+import HUD from "@/components/scene/HUD";
 import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
@@ -23,12 +25,19 @@ function Index() {
   const scrollProgress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
+  const [entered, setEntered] = useState(false);
 
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
   }, []);
 
   useLenis(handleScroll);
+
+  // Reveal main content after loader
+  useEffect(() => {
+    const t = setTimeout(() => setEntered(true), 2400);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     let targetX = 0;
@@ -56,24 +65,39 @@ function Index() {
 
   return (
     <div className="relative bg-background text-foreground noise">
+      <Loader />
+
       {/* Fixed full-viewport 3D canvas */}
-      <div className="fixed inset-0 z-0">
+      <div
+        className={`fixed inset-0 z-0 transition-[opacity,transform,filter] duration-[1800ms] ease-out ${
+          entered ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-[1.06] blur-md"
+        }`}
+      >
         <Scene scrollProgress={scrollProgress} mouse={mouse} />
         {/* Cinematic vignette */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,oklch(0.04_0.01_260/0.85)_100%)]" />
-        {/* Top/bottom letterbox gradient for cinematic framing */}
+        {/* Letterbox gradients */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/80 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background/80 to-transparent" />
+        {/* Holographic scanlines */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04] bg-[repeating-linear-gradient(0deg,transparent_0,transparent_2px,#ffffff_2px,#ffffff_3px)] mix-blend-overlay" />
+        {/* Animated light streak */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-[linear-gradient(115deg,transparent_45%,oklch(0.85_0.15_220/0.06)_50%,transparent_55%)] animate-[streak_8s_ease-in-out_infinite]" />
       </div>
 
       {/* Custom cursor */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block transition-[width,height,background] duration-300"
+        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block"
       />
 
-      <Nav />
-      <ScrollSections />
+      <div
+        className={`transition-opacity duration-1000 ${entered ? "opacity-100" : "opacity-0"}`}
+      >
+        <Nav />
+        <HUD scrollProgress={scrollProgress} />
+        <ScrollSections />
+      </div>
     </div>
   );
 }
