@@ -87,7 +87,7 @@ function Index() {
       </div>
 
       {/* Sitewide cinematic atmosphere — scroll-reactive video layer */}
-      <AtmosphereLayer scrollProgress={scrollProgress} />
+      <AtmosphereLayer />
 
       {/* Custom cursor */}
       <div
