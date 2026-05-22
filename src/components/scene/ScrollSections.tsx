@@ -275,8 +275,8 @@ function MotionReveal({
     <motion.div
       ref={ref}
       initial={false}
-      animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 36, filter: "blur(10px)" }}
-      transition={{ duration: 1.05, delay, ease: [0.19, 1, 0.22, 1] }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.9, delay, ease: [0.19, 1, 0.22, 1] }}
       className={className}
     >
       {children}
@@ -302,7 +302,7 @@ export default function ScrollSections() {
     };
   }, [sectionProgress]);
 
-  const drift = useTransform(sectionProgress, [0, 1], [0, -120]);
+  const drift = useTransform(sectionProgress, [0, 1], [0, -64]);
 
   // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
   const storyChapters = chapters.slice(1);
@@ -312,7 +312,7 @@ export default function ScrollSections() {
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
 
-      <motion.div style={{ y: drift }}>
+      <motion.div style={{ y: drift }} className="render-stable">
         <HeroSection />
       </motion.div>
 
@@ -322,7 +322,7 @@ export default function ScrollSections() {
       <VentureConstellation ventures={ventures} />
 
       {/* Carbon Intelligence metrics — supports chapter 03 */}
-      <section className="min-h-screen flex items-center px-6 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
@@ -338,7 +338,7 @@ export default function ScrollSections() {
               <MotionReveal
                 key={metric.l}
                 delay={index * 0.08}
-                className="bg-background/60 p-8 backdrop-blur-xl transition-all duration-700 hover:bg-background/80 md:p-12"
+                className="panel-surface p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
               >
                 <div className="flex items-baseline gap-1">
                   <span className="font-display text-5xl font-medium text-gradient md:text-7xl">{metric.k}</span>
@@ -352,7 +352,7 @@ export default function ScrollSections() {
       </section>
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
-      <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
@@ -374,7 +374,7 @@ export default function ScrollSections() {
       </section>
 
       {/* Outcomes — supports chapter 06 (India → World) */}
-      <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
+      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Outcomes</p>
@@ -388,7 +388,7 @@ export default function ScrollSections() {
               { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
               { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
             ].map((metric, index) => (
-              <MotionReveal key={metric.l} delay={index * 0.08} className="bg-background/60 p-10 backdrop-blur-xl md:p-14">
+              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-10 md:p-14">
                 <div className="font-display text-5xl font-medium text-gradient md:text-6xl">{metric.k}</div>
                 <p className="mt-4 text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
                 <p className="mt-2 text-xs text-muted-foreground/70">{metric.s}</p>
