@@ -326,7 +326,7 @@ export default function ScrollSections() {
           </MotionReveal>
           <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-10">
             {processSteps.map((step, index) => (
-              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-5 md:pt-6">
+              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/[0.08] pt-5 md:pt-6">
                 <span className="font-mono text-xs tracking-[0.3em] text-primary/80">{step.n}</span>
                 <h4 className="mt-4 mb-3 font-display text-xl md:text-2xl tracking-[-0.02em]">{step.t}</h4>
                 <p className="text-sm leading-relaxed text-muted-foreground">{step.b}</p>
