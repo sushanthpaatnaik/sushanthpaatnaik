@@ -5,7 +5,7 @@ import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
-import { useLenis } from "@/components/scene/useLenis";
+import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
 
 export const Route = createFileRoute("/")({
   component: Index,
