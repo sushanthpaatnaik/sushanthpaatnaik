@@ -36,14 +36,14 @@ function Particles({ count = 2500 }: { count?: number }) {
 
   useFrame((_, dt) => {
     if (ref.current) {
-      ref.current.rotation.y += dt * 0.015;
-      ref.current.rotation.x += dt * 0.004;
+      ref.current.rotation.y += dt * 0.008;
+      ref.current.rotation.x += dt * 0.002;
     }
   });
 
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial transparent color="#9bbcff" size={0.022} sizeAttenuation depthWrite={false} opacity={0.9} />
+      <PointMaterial transparent color="#8aa6d8" size={0.018} sizeAttenuation depthWrite={false} opacity={0.55} />
     </Points>
   );
 }
@@ -309,14 +309,14 @@ function CameraRig({ scrollProgress, mouse }: SceneProps) {
     const e = p * p * (3 - 2 * p) * 0.5 + p * 0.5;
     curve.getPointAt(e, tmp);
     lookCurve.getPointAt(e, look);
-    // Mouse parallax
-    tmp.x += mouse.current.x * 0.45;
-    tmp.y += -mouse.current.y * 0.35;
-    // Breath drift
-    tmp.x += Math.sin(state.clock.elapsedTime * 0.18) * 0.12;
-    tmp.y += Math.cos(state.clock.elapsedTime * 0.14) * 0.08;
-    camera.position.lerp(tmp, 1 - Math.pow(0.001, dt));
-    lookLerp.lerp(look, 1 - Math.pow(0.005, dt));
+    // Mouse parallax — gentler
+    tmp.x += mouse.current.x * 0.25;
+    tmp.y += -mouse.current.y * 0.2;
+    // Slow breath drift
+    tmp.x += Math.sin(state.clock.elapsedTime * 0.1) * 0.07;
+    tmp.y += Math.cos(state.clock.elapsedTime * 0.08) * 0.05;
+    camera.position.lerp(tmp, 1 - Math.pow(0.0005, dt));
+    lookLerp.lerp(look, 1 - Math.pow(0.002, dt));
     camera.lookAt(lookLerp);
   });
   return null;
@@ -368,11 +368,11 @@ function DynamicLights({ scrollProgress, mouse }: SceneProps) {
   });
   return (
     <>
-      <ambientLight intensity={0.28} />
-      <directionalLight position={[5, 5, 5]} intensity={1.1} color="#c7ddff" />
-      <pointLight ref={a} position={[-6, -2, -4]} intensity={3} distance={22} />
-      <pointLight ref={b} position={[6, 4, 2]} intensity={2} distance={20} />
-      <pointLight ref={c} position={[0, 0, -3]} intensity={1.5} distance={16} />
+      <ambientLight intensity={0.18} />
+      <directionalLight position={[5, 5, 5]} intensity={0.7} color="#a8c0e0" />
+      <pointLight ref={a} position={[-6, -2, -4]} intensity={1.6} distance={20} />
+      <pointLight ref={b} position={[6, 4, 2]} intensity={1.1} distance={18} />
+      <pointLight ref={c} position={[0, 0, -3]} intensity={0.8} distance={14} />
     </>
   );
 }
@@ -381,8 +381,8 @@ export default function Scene({ scrollProgress, mouse }: SceneProps) {
   return (
     <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 6.5], fov: 45 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
       <Suspense fallback={null}>
-        <color attach="background" args={["#04050a"]} />
-        <fog attach="fog" args={["#04050a", 7, 30]} />
+        <color attach="background" args={["#03040a"]} />
+        <fog attach="fog" args={["#03040a", 5, 24]} />
 
         <DynamicLights scrollProgress={scrollProgress} mouse={mouse} />
         <CameraRig scrollProgress={scrollProgress} mouse={mouse} />
@@ -396,15 +396,15 @@ export default function Scene({ scrollProgress, mouse }: SceneProps) {
 
         <FloatingShards scrollProgress={scrollProgress} />
         <Particles />
-        <Stars radius={60} depth={40} count={1500} factor={3} fade speed={0.4} />
+        <Stars radius={60} depth={40} count={900} factor={2} fade speed={0.2} />
 
         <Environment preset="night" />
 
         <EffectComposer multisampling={0}>
-          <Bloom intensity={1.15} luminanceThreshold={0.22} luminanceSmoothing={0.9} mipmapBlur />
-          <DepthOfField focusDistance={0.02} focalLength={0.05} bokehScale={2.2} />
-          <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
-          <Vignette eskil={false} offset={0.2} darkness={0.85} />
+          <Bloom intensity={0.55} luminanceThreshold={0.42} luminanceSmoothing={0.95} mipmapBlur />
+          <DepthOfField focusDistance={0.02} focalLength={0.08} bokehScale={3.2} />
+          <Noise opacity={0.025} blendFunction={BlendFunction.OVERLAY} />
+          <Vignette eskil={false} offset={0.15} darkness={0.95} />
         </EffectComposer>
       </Suspense>
     </Canvas>

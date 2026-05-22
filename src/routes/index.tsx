@@ -80,10 +80,10 @@ function Index() {
         {/* Letterbox gradients */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/80 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background/80 to-transparent" />
-        {/* Holographic scanlines */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.04] bg-[repeating-linear-gradient(0deg,transparent_0,transparent_2px,#ffffff_2px,#ffffff_3px)] mix-blend-overlay" />
-        {/* Animated light streak */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-[linear-gradient(115deg,transparent_45%,oklch(0.85_0.15_220/0.06)_50%,transparent_55%)] animate-[streak_8s_ease-in-out_infinite]" />
+        {/* Holographic scanlines — very subtle */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.018] bg-[repeating-linear-gradient(0deg,transparent_0,transparent_2px,#ffffff_2px,#ffffff_3px)] mix-blend-overlay" />
+        {/* Soft atmospheric haze */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,oklch(0.18_0.04_250/0.25),transparent_70%)]" />
       </div>
 
       {/* Graphene cinematic backdrop — Technology chapter */}
