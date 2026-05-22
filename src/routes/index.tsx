@@ -5,6 +5,7 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
+import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
 import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
@@ -67,7 +68,7 @@ function Index() {
     <div className="relative bg-background text-foreground noise">
       <Loader />
 
-      {/* Sitewide cinematic atmosphere — Framer Motion driven */}
+      {/* Sitewide cinematic atmosphere — Framer Motion driven scene crossfade */}
       <div
         className={`fixed inset-0 z-0 transition-[opacity,filter] duration-[1800ms] ease-out ${
           entered ? "opacity-100 blur-0" : "opacity-0 blur-md"
@@ -75,6 +76,9 @@ function Index() {
       >
         <AtmosphereLayer />
       </div>
+
+      {/* Volumetric graphene lattice — 3D depth + parallax + DoF, lives inside the scene */}
+      {entered && <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />}
 
       {/* Custom cursor */}
       <div
