@@ -1,82 +1,63 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import ScrollStory from "./ScrollStory";
+import VentureConstellation, { type Venture } from "./VentureConstellation";
+import type { StoryChapter } from "./StorySection";
 
 // 7-chapter cinematic storyline.
 // Chapter 01 (Spark) is rendered by HeroSection.
 // Chapter 07 (Future) is rendered by the closing CTA section.
-// The sticky StoryPanels cover chapters 02–06.
-const chapters = [
+// ScrollStory covers chapters 02–06.
+const chapters: readonly StoryChapter[] = [
   {
     id: "spark",
     eyebrow: "01 — The Spark",
     title: "I build what does not yet exist.",
-    body:
-      "From curiosity to carbon intelligence — engineering the materials behind a cleaner century.",
-    align: "center" as const,
+    body: "From curiosity to carbon intelligence — engineering the materials behind a cleaner century.",
+    align: "center",
   },
   {
     id: "origin",
     eyebrow: "02 — Origin",
     title: "Curiosity became a discipline. Recognition became responsibility.",
-    body:
-      "A young inventor's bench. Dismantled gadgets, blueprint fragments, quiet awards. Where the instinct to take things apart became the discipline to engineer what comes next.",
-    align: "left" as const,
+    body: "A young inventor's bench. Dismantled gadgets, blueprint fragments, quiet awards. Where the instinct to take things apart became the discipline to engineer what comes next.",
+    align: "left",
   },
   {
     id: "material",
     eyebrow: "03 — The Material Layer",
     title: "At the atomic scale, small changes rewrite industries.",
-    body:
-      "Graphene. 2D materials. Nano-composites. The honeycomb lattice that bends into roads, panels, batteries, polymers. A single layer of carbon — engineered into a century of leverage.",
-    align: "right" as const,
+    body: "Graphene. 2D materials. Nano-composites. The honeycomb lattice that bends into roads, panels, batteries, polymers. A single layer of carbon — engineered into a century of leverage.",
+    align: "right",
   },
   {
     id: "stack",
     eyebrow: "04 — The Innovation Stack",
     title: "One platform. Many industries. One objective: performance with less waste.",
-    body:
-      "Solar. Battery. Concrete. Polymer. Fuel. Coal efficiency. Each industry rebuilt from the material upward — measured in joules, tons of CO₂, and decades of service life.",
-    align: "left" as const,
+    body: "Solar. Battery. Concrete. Polymer. Fuel. Coal efficiency. Each industry rebuilt from the material upward — measured in joules, tons of CO₂, and decades of service life.",
+    align: "left",
   },
   {
     id: "founder",
     eyebrow: "05 — The Founder Layer",
     title: "I don't only invent technologies. I build vehicles that carry them to the world.",
-    body:
-      "Monoatom Labs. Grafillium. SPI Industries. InThinks. Starunico Capital. A constellation of companies — research translated into operating ventures, and ventures translated into industrial reality.",
-    align: "right" as const,
+    body: "Monoatom Labs. Grafillium. SPI Industries. InThinks. Starunico Capital. A constellation of companies — research translated into operating ventures, and ventures translated into industrial reality.",
+    align: "right",
   },
   {
     id: "india",
     eyebrow: "06 — India to the World",
     title: "Built in India. Designed for global industrial transformation.",
-    body:
-      "Frontier materials engineered at home, deployed across continents. India as the launchpad — global energy, mobility, and climate infrastructure as the destination.",
-    align: "left" as const,
+    body: "Frontier materials engineered at home, deployed across continents. India as the launchpad — global energy, mobility, and climate infrastructure as the destination.",
+    align: "left",
   },
-] as const;
+];
 
-const ventures = [
-  {
-    n: "01",
-    title: "Monoatom Labs",
-    body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream platform.",
-  },
-  {
-    n: "02",
-    title: "Grafillium",
-    body: "Graphene-enabled materials engineered for energy, mobility, and industrial-scale deployment.",
-  },
-  {
-    n: "03",
-    title: "SPI Industries",
-    body: "Operating arm translating advanced materials into production-grade infrastructure and supply.",
-  },
-  {
-    n: "04",
-    title: "InThinks · Starunico Capital",
-    body: "Intelligent systems and capital architecture — the vehicles that carry deep-tech from lab to ledger.",
-  },
+const ventures: Venture[] = [
+  { n: "01", title: "Monoatom Labs", body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream platform." },
+  { n: "02", title: "Grafillium", body: "Graphene-enabled materials engineered for energy, mobility, and industrial-scale deployment." },
+  { n: "03", title: "SPI Industries", body: "Operating arm translating advanced materials into production-grade infrastructure and supply." },
+  { n: "04", title: "InThinks · Starunico Capital", body: "Intelligent systems and capital architecture — the vehicles that carry deep-tech from lab to ledger." },
 ];
 
 const processSteps = [
@@ -85,101 +66,6 @@ const processSteps = [
   { n: "03", t: "Prototype", b: "Build the lattice, module, and operating pathway into physical form." },
   { n: "04", t: "Deploy", b: "Scale from scientific validity to industrial adoption." },
 ];
-
-function SectionCopy({
-  eyebrow,
-  title,
-  body,
-  align,
-  index,
-  total,
-}: {
-  eyebrow: string;
-  title: string;
-  body: string;
-  align: "left" | "right" | "center";
-  index: number;
-  total: number;
-}) {
-  const textAlign = align === "center" ? "text-center mx-auto" : align === "right" ? "ml-auto text-right" : "mr-auto text-left";
-  const counterPosition = align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
-
-  return (
-    <div className={`max-w-xl pointer-events-auto ${textAlign}`}>
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-        className={`h-px w-24 mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "ml-auto origin-right bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
-      />
-      <motion.p
-        initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.05, delay: 0.04, ease: [0.19, 1, 0.22, 1] }}
-        className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6"
-      >
-        {eyebrow}
-      </motion.p>
-      <motion.h2
-        initial={{ opacity: 0, y: 64, filter: "blur(16px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.55 }}
-        transition={{ duration: 1.15, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-        className="font-display text-[clamp(2.25rem,5.5vw,5rem)] leading-[1] tracking-[-0.035em] font-medium text-gradient mb-8"
-      >
-        {title}
-      </motion.h2>
-      <motion.p
-        initial={{ opacity: 0, y: 56, filter: "blur(14px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 1.05, delay: 0.18, ease: [0.19, 1, 0.22, 1] }}
-        className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md"
-      >
-        {body}
-      </motion.p>
-
-      <div className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}>
-        {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </div>
-    </div>
-  );
-}
-
-function StoryPanel({
-  chapter,
-  index,
-  total,
-}: {
-  chapter: (typeof chapters)[number];
-  index: number;
-  total: number;
-}) {
-  return (
-    <section id={chapter.id} className="story-panel relative min-h-[130vh] px-6 md:px-20">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0.65, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.45 }}
-          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-          className="relative z-10 w-full"
-        >
-          <SectionCopy
-            eyebrow={chapter.eyebrow}
-            title={chapter.title}
-            body={chapter.body}
-            align={chapter.align}
-            index={index}
-            total={total}
-          />
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 function HeroSection() {
   return (
@@ -318,8 +204,7 @@ export default function ScrollSections() {
 
   const drift = useTransform(sectionProgress, [0, 1], [0, -120]);
 
-  // Chapters 02–06 render as sticky story panels (chapter 01 is the hero,
-  // chapter 07 is the closing CTA below).
+  // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
   const storyChapters = chapters.slice(1);
   const totalChapters = 7;
 
@@ -331,45 +216,10 @@ export default function ScrollSections() {
         <HeroSection />
       </motion.div>
 
-      {storyChapters.map((chapter, index) => (
-        <StoryPanel
-          key={chapter.id}
-          chapter={chapter}
-          index={index + 1}
-          total={totalChapters}
-        />
-      ))}
+      <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
-      <section className="min-h-screen px-6 py-32 md:px-20 pointer-events-auto">
-        <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
-          <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32">
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Ventures</p>
-            <h3 className="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">The vehicles.</h3>
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Operating companies carrying frontier science from lab into the industrial world.
-            </p>
-          </MotionReveal>
-
-          <div className="flex flex-col md:col-span-8">
-            {ventures.map((venture, index) => (
-              <MotionReveal
-                key={venture.n}
-                delay={index * 0.06}
-                className="group grid grid-cols-[auto_1fr] items-start gap-8 border-t border-foreground/10 py-10 transition-colors duration-500 hover:border-foreground/30"
-              >
-                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{venture.n}</span>
-                <div>
-                  <h4 className="mb-3 font-display text-2xl tracking-[-0.02em] transition-all duration-500 group-hover:text-glow md:text-3xl">
-                    {venture.title}
-                  </h4>
-                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">{venture.body}</p>
-                </div>
-              </MotionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <VentureConstellation ventures={ventures} />
 
       {/* Substrate metrics — supports chapter 03 (Material Layer) */}
       <section className="min-h-screen flex items-center px-6 md:px-20">
