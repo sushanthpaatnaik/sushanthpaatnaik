@@ -276,7 +276,8 @@ export default function ScrollSections() {
       <VentureConstellation ventures={ventures} />
 
       {/* Carbon Intelligence metrics — supports chapter 03 */}
-      <section className="viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.12_0.04_240/0.10),transparent_70%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
