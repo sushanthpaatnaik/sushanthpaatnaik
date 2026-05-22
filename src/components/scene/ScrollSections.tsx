@@ -356,7 +356,8 @@ export default function ScrollSections() {
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
-      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-6 py-24 md:px-20">
+      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-5 sm:px-6 pt-28 pb-20 md:px-20 md:py-24">
+        {/* spacer kept */}
         {/* Heavy atmospheric scrim that pushes the India network bg deep into the scene */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.84),oklch(0.03_0_0/0.97))]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
