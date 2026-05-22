@@ -79,8 +79,8 @@ function HeroSection() {
   const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.04, 1]);
 
   return (
-    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-6">
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-24 pb-12 render-stable">
+    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-5 sm:px-6">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-28 md:pt-24 pb-12 render-stable">
         {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
         <motion.div
           aria-hidden
