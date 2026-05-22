@@ -213,22 +213,21 @@ function HeroSection() {
           </motion.div>
         </div>
         {/* Atmospheric founder identity — right side, minimal, cinematic */}
-        <motion.div
-          style={{ opacity: useTransform(silhouetteOpacity, (v) => v * 0.55) }}
-          className="pointer-events-none absolute right-6 top-1/2 z-[2] hidden -translate-y-1/2 flex-col items-end gap-5 md:right-10 md:flex lg:right-16"
+        <div
+          className="pointer-events-none absolute right-6 top-1/2 z-[15] hidden -translate-y-1/2 flex-col items-end gap-5 md:right-10 md:flex lg:right-16"
         >
-          <span className="text-[9px] font-light uppercase tracking-[0.35em] text-foreground/20">
+          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
             Inventor
           </span>
-          <span className="h-px w-3 bg-foreground/10" />
-          <span className="text-[9px] font-light uppercase tracking-[0.35em] text-foreground/20">
+          <span className="h-px w-4 bg-foreground/30" />
+          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
             Advanced Materials
           </span>
-          <span className="h-px w-3 bg-foreground/10" />
-          <span className="text-[9px] font-light uppercase tracking-[0.35em] text-foreground/20">
+          <span className="h-px w-4 bg-foreground/30" />
+          <span className="text-[10px] font-light uppercase tracking-[0.35em] text-foreground/55">
             Deep-Tech Systems
           </span>
-        </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}
