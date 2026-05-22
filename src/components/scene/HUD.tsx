@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const labels = ["Origin", "Discovery", "Engineering", "Prototype", "Scale", "Deployment", "Future"];
+const labels = ["Origin", "Discovery", "Engineering", "Prototype", "Scale", "Impact", "Future"];
 
 export default function HUD({
   scrollProgress,
