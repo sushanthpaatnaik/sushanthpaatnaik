@@ -80,8 +80,8 @@ export default function AtmosphereLayer({
         ref={wrapRef}
         className="absolute inset-0 will-change-transform"
         style={{
-          transform: "scale(1.12)",
-          filter: "blur(4px) saturate(0.7) contrast(1.04) brightness(0.52)",
+          transform: "scale(1.08)",
+          filter: "blur(3px) saturate(0.62) contrast(1.01) brightness(0.45)",
         }}
       >
         <video
