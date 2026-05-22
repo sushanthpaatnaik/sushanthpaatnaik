@@ -15,8 +15,8 @@ const chapters = [
     align: "right" as const,
   },
   {
-    id: "materials",
-    eyebrow: "Chapter 03 — Materials",
+    id: "graphene",
+    eyebrow: "Chapter 03 — Graphene",
     title: "Graphene as a foundation, not a feature.",
     body:
       "From atomically-thin lattices to engineered nano-composites — materials that conduct, sense and adapt. A new physical substrate for energy storage, filtration, sensing and structural intelligence.",
@@ -203,14 +203,14 @@ export default function ScrollSections() {
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center relative">
         <div className="max-w-5xl">
           <p className="hero-meta text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
-            01 — Origin / Deep-Tech Founder · 2026
+            01 — Origin / Sushanth · Deep-Tech Founder · 2026
           </p>
           <h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
-            <span className="hero-line block text-gradient">[Your Name].</span>
-            <span className="hero-line block text-glow text-foreground">Building at the atomic edge.</span>
+            <span className="hero-line block text-gradient">Engineering</span>
+            <span className="hero-line block text-glow text-foreground">Intelligent Matter.</span>
           </h1>
           <p className="hero-meta mt-12 text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-            Founder working at the intersection of graphene, nano-materials, AI, energy and climate — engineering the intelligent systems of the next century.
+            A deep-tech founder building future-facing ventures across graphene, nano-materials, AI, energy, climate, and intelligent systems.
           </p>
         </div>
         <div className="hero-meta absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
@@ -269,7 +269,7 @@ export default function ScrollSections() {
       <section className="min-h-screen flex items-center px-6 md:px-20">
         <div className="w-full max-w-6xl mx-auto pointer-events-auto">
           <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4 text-center">
-            03 — Materials
+            03 — Graphene
           </p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient text-center mb-16 leading-[1.0]">
             Matter, measured.
@@ -319,7 +319,7 @@ export default function ScrollSections() {
       {/* IMPACT */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">07 — Future / Impact</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">07 — Impact</p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient mb-20 max-w-3xl leading-[1.0]">
             Measured in tons of carbon, joules of energy, years of life.
           </h3>
@@ -339,24 +339,7 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* VOICES */}
-      <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
-        <div className="max-w-5xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Backed by deep-tech funds, labs and climate operators</p>
-          <div className="grid md:grid-cols-2 gap-12 mt-16">
-            {quotes.map((q, i) => (
-              <figure key={i} className="reveal">
-                <blockquote className="font-display text-xl md:text-2xl tracking-[-0.015em] text-foreground/90 leading-[1.35]">
-                  "{q.q}"
-                </blockquote>
-                <figcaption className="mt-6 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                  — {q.a}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* (Fictional voices removed — founder-led identity) */}
 
       {/* CONTACT / OUTRO */}
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center">
@@ -369,10 +352,10 @@ export default function ScrollSections() {
           </h2>
           <div className="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:hello@yourdomain.com"
+              href="mailto:sushanth@intelligentmatter.com"
               className="glass px-8 py-4 rounded-full text-sm tracking-wide hover:bg-foreground/10 transition-all duration-500 hover:scale-[1.03]"
             >
-              hello@yourdomain.com
+              sushanth@intelligentmatter.com
             </a>
             <a
               href="#"
@@ -389,7 +372,7 @@ export default function ScrollSections() {
             <span>AI · Climate</span>
           </div>
           <p className="reveal mt-12 text-[10px] text-muted-foreground/60 tracking-[0.3em] uppercase">
-            © [Your Name] — Building at the frontier of intelligent matter.
+            © Sushanth — Engineering intelligent matter.
           </p>
         </div>
       </section>
