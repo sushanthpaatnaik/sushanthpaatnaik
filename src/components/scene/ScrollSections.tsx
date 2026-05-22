@@ -208,14 +208,15 @@ function HeroSection() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.8 }}
-          transition={{ duration: 1, delay: 1.05 }}
-          className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
+          transition={{ duration: 1.4, delay: 1.2 }}
+          className="absolute bottom-12 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/55"
+          style={{ mixBlendMode: "soft-light" }}
         >
-          <span>Scroll to enter</span>
+          <span className="blur-[0.3px]">Scroll to enter</span>
           <motion.div
-            animate={{ opacity: [0.35, 1, 0.35], scaleY: [1, 1.18, 1] }}
-            transition={{ duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/60 to-transparent"
+            animate={{ opacity: [0.2, 0.6, 0.2], scaleY: [1, 1.12, 1] }}
+            transition={{ duration: 3.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="h-16 w-px origin-top bg-gradient-to-b from-foreground/30 to-transparent"
           />
         </motion.div>
       </div>
