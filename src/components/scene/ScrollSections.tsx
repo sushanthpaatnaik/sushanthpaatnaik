@@ -177,7 +177,7 @@ function HeroSection() {
               Enter the Journey
             </a>
             <a href="#future" className="btn-cinematic-secondary pointer-events-auto">
-              Collaborate
+              Connect
             </a>
           </motion.div>
         </div>
@@ -464,8 +464,8 @@ export default function ScrollSections() {
             </MotionReveal>
             <MotionReveal delay={0.16}>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-                <a href="mailto:me@sushanthpaatnaik.com?subject=Collaborate" className="btn-cinematic">
-                  Collaborate
+                <a href="mailto:me@sushanthpaatnaik.com?subject=Connect" className="btn-cinematic">
+                  Connect
                 </a>
                 <a href="mailto:me@sushanthpaatnaik.com?subject=Invest" className="btn-cinematic">
                   Invest
