@@ -178,8 +178,8 @@ function HeroSection() {
             <a href="#carbon-intelligence" className="btn-cinematic pointer-events-auto">
               Enter the Journey
             </a>
-            <a href="#future" className="btn-cinematic-secondary pointer-events-auto">
-              Connect
+            <a href="/essays" className="btn-cinematic-secondary pointer-events-auto">
+              Read the essays
             </a>
           </motion.div>
         </div>
