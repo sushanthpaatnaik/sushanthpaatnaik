@@ -108,15 +108,49 @@ function HeroSection() {
                 "radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, oklch(0.04 0 0 / 0.55) 70%, oklch(0.03 0 0) 95%)",
             }}
           />
-          {/* Cool rim atmospheric wash */}
-          <div
+          {/* Cool rim atmospheric wash — gentle breathing */}
+          <motion.div
             className="absolute inset-0 mix-blend-screen"
+            animate={{ opacity: [0.75, 1, 0.75] }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             style={{
               background:
                 "radial-gradient(ellipse 38% 45% at 62% 42%, oklch(0.5 0.08 240 / 0.08) 0%, transparent 60%)",
             }}
           />
+          {/* Drifting volumetric haze — slow horizontal breath */}
+          <motion.div
+            className="absolute inset-0 mix-blend-screen"
+            animate={{ x: ["-2%", "2%", "-2%"], opacity: [0.6, 0.95, 0.6] }}
+            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              background:
+                "radial-gradient(ellipse 55% 35% at 50% 55%, oklch(0.35 0.02 240 / 0.06) 0%, transparent 70%)",
+            }}
+          />
+          {/* Counter-drift atmospheric layer for parallax depth */}
+          <motion.div
+            className="absolute inset-0 mix-blend-screen"
+            animate={{ x: ["1.5%", "-1.5%", "1.5%"], opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 25% at 50% 30%, oklch(0.4 0.015 250 / 0.05) 0%, transparent 75%)",
+            }}
+          />
+          {/* Subtle particle dust — almost imperceptible */}
+          <motion.div
+            className="absolute inset-0 opacity-[0.04] mix-blend-screen"
+            animate={{ backgroundPositionY: ["0px", "-40px", "0px"] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            style={{
+              backgroundImage:
+                "radial-gradient(1px 1px at 25% 30%, oklch(0.85 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 70% 60%, oklch(0.8 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 45% 80%, oklch(0.85 0 0) 50%, transparent 100%), radial-gradient(1px 1px at 80% 20%, oklch(0.75 0 0) 50%, transparent 100%)",
+              backgroundSize: "400px 400px",
+            }}
+          />
         </motion.div>
+
         {/* Cinematic top + bottom fade so silhouette dissolves into page */}
         <div
           aria-hidden
