@@ -498,7 +498,7 @@ export default function ScrollSections() {
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
-                07 — The Future System / Open to founders, scientists, funds & climate operators
+                07 — The Future System
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
