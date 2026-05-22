@@ -34,7 +34,7 @@ export default function AtmosphereLayer({
   useEffect(() => {
     const v = videoRef.current;
     if (v) {
-      v.playbackRate = 0.32; // very slow, luxurious cadence
+      v.playbackRate = 0.25; // deeper, luxurious cadence
       v.play().catch(() => {});
     }
     let raf = 0;
@@ -44,28 +44,28 @@ export default function AtmosphereLayer({
       const now = performance.now();
       const t = (now - t0) / 1000;
       const target = scrollProgress.current;
-      cur += (target - cur) * 0.04; // deeper, slower follow
+      cur += (target - cur) * 0.03; // slower, heavier follow
 
       if (wrapRef.current) {
-        const ty = -cur * 50;             // slow parallax
-        const scale = 1.12 + cur * 0.04;  // gentle perspective scale
-        const blur = 4 + cur * 5;         // depth blur deepens with scroll
-        const drift = Math.sin(t * 0.05) * 6; // ambient drift
+        const ty = -cur * 38;              // slower parallax
+        const scale = 1.08 + cur * 0.03;  // restrained perspective scale
+        const blur = 3 + cur * 3.5;        // softer depth blur
+        const drift = Math.sin(t * 0.035) * 4; // ambient drift
         wrapRef.current.style.transform = `translate3d(${drift}px, ${ty}px, 0) scale(${scale})`;
-        wrapRef.current.style.filter = `blur(${blur.toFixed(2)}px) saturate(0.7) contrast(1.04) brightness(0.52)`;
+        wrapRef.current.style.filter = `blur(${blur.toFixed(2)}px) saturate(0.62) contrast(1.01) brightness(0.45)`;
       }
       if (hazeRef.current) {
-        const dy = Math.sin(t * 0.08) * 12;
-        const op = 0.18 + Math.sin(t * 0.06) * 0.04;
+        const dy = Math.sin(t * 0.06) * 8;
+        const op = 0.14 + Math.sin(t * 0.05) * 0.03;
         hazeRef.current.style.transform = `translate3d(0, ${dy}px, 0)`;
         hazeRef.current.style.opacity = op.toFixed(3);
       }
       if (glowRef.current) {
-        const op = 0.12 + Math.sin(t * 0.045 + 1.2) * 0.03;
+        const op = 0.08 + Math.sin(t * 0.035 + 1.2) * 0.02;
         glowRef.current.style.opacity = op.toFixed(3);
       }
       if (particleWrapRef.current) {
-        particleWrapRef.current.style.transform = `translate3d(0, ${-cur * 25}px, 0)`;
+        particleWrapRef.current.style.transform = `translate3d(0, ${-cur * 18}px, 0)`;
       }
       raf = requestAnimationFrame(loop);
     };
