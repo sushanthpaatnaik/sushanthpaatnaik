@@ -276,12 +276,12 @@ export default function ScrollSections() {
       <VentureConstellation ventures={ventures} />
 
       {/* Carbon Intelligence metrics — supports chapter 03 */}
-      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.12_0.04_240/0.10),transparent_70%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
-            <h3 className="mb-16 font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
+            <h3 className="mb-12 md:mb-16 font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
           </MotionReveal>
           <div className="grid grid-cols-2 gap-px bg-foreground/10 md:grid-cols-4">
             {[
@@ -293,13 +293,13 @@ export default function ScrollSections() {
               <MotionReveal
                 key={metric.l}
                 delay={index * 0.08}
-                className="panel-surface p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
+                className="panel-surface p-6 sm:p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
               >
                 <div className="flex items-baseline gap-1">
-                  <span className="font-display text-5xl font-medium text-gradient md:text-7xl">{metric.k}</span>
-                  <span className="text-sm text-muted-foreground">{metric.u}</span>
+                  <span className="font-display text-4xl font-medium text-gradient sm:text-5xl md:text-7xl">{metric.k}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">{metric.u}</span>
                 </div>
-                <p className="mt-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">{metric.l}</p>
+                <p className="mt-3 md:mt-4 text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground">{metric.l}</p>
               </MotionReveal>
             ))}
           </div>
