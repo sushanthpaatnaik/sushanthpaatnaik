@@ -288,7 +288,7 @@ export default function ScrollSections() {
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Dossier · Honors of Record</p>
             <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
-              Three decades of work, condensed.
+              A quiet record.
             </h3>
           </MotionReveal>
           <div className="grid grid-cols-2 gap-x-10 gap-y-12 md:grid-cols-4 md:gap-x-14">
@@ -309,39 +309,16 @@ export default function ScrollSections() {
             ))}
           </div>
 
-          {/* Media imprints — slow horizontal drift, restrained */}
-          <MotionReveal delay={0.2} className="mt-20 md:mt-28">
-            <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">Featured · Imprints</p>
-            <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_15%,#000_85%,transparent)]">
-              <div className="flex w-max gap-14 animate-marquee">
-                {[
-                  "MIT Technology Review",
-                  "TED India",
-                  "Times of India",
-                  "India Today",
-                  "Business Standard",
-                  "Global Indian",
-                  "NIF-India · IGNITE",
-                  "Govt. of India · President's Awards",
-                ].concat([
-                  "MIT Technology Review",
-                  "TED India",
-                  "Times of India",
-                  "India Today",
-                  "Business Standard",
-                  "Global Indian",
-                  "NIF-India · IGNITE",
-                  "Govt. of India · President's Awards",
-                ]).map((label, i) => (
-                  <span key={`${label}-${i}`} className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.42em] text-foreground/55">
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
+          {/* Featured imprints — single restrained editorial line */}
+          <MotionReveal delay={0.22} className="mt-20 md:mt-28">
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45 leading-loose blur-[0.3px]">
+              MIT Technology Review &middot; TED India &middot; Times of India &middot; India Today &middot; Business Standard &middot; Global Indian &middot; NIF-India IGNITE
+            </p>
           </MotionReveal>
         </div>
       </section>
+
+
 
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
@@ -439,31 +416,10 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Outcomes — supports chapter 06 (India → World) */}
-      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_70%_50%,oklch(0.11_0.03_245/0.10),transparent_72%)]" />
-        <div className="mx-auto w-full max-w-6xl pointer-events-auto">
-          <MotionReveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Outcomes</p>
-            <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,8vw,4rem)] leading-[1.04] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">
-              Measured in tons of carbon, joules of energy, years of life.
-            </h3>
-          </MotionReveal>
-          <div className="grid gap-px bg-foreground/[0.06] md:grid-cols-3">
-            {[
-              { k: "GW", l: "Energy systems", s: "Graphene-enabled storage & transmission" },
-              { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
-              { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
-            ].map((metric, index) => (
-              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-7 sm:p-10 md:p-14">
-                <div className="font-display text-4xl font-medium text-gradient sm:text-5xl md:text-6xl">{metric.k}</div>
-                <p className="mt-4 text-xs sm:text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground/70">{metric.s}</p>
-              </MotionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Outcomes section removed — the Dossier and Carbon Intelligence panels
+          already carry the credibility layer. Speculative stats diluted both. */}
+
+
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
