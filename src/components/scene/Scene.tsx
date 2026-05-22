@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, MeshDistortMaterial, Points, PointMaterial, Stars } from "@react-three/drei";
-import { EffectComposer, Bloom, Vignette, ChromaticAberration, Noise, DepthOfField } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Vignette, Noise, DepthOfField } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
