@@ -4,91 +4,91 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ----- 8-chapter narrative ----- */
+/* ----- 8-chapter founder narrative ----- */
 const chapters = [
   {
     id: "vision",
     eyebrow: "Chapter 02 — Vision",
-    title: "We build the surface of the future.",
+    title: "Engineering the next material era.",
     body:
-      "Nova is a real-time interface studio engineering the next decade of digital experience. Software that feels like light. Products that feel like cinema.",
+      "I build ventures at the frontier of graphene, nano-materials and artificial intelligence — designing the substrates, systems and intelligence that will define the next century of energy, climate and computation.",
     align: "right" as const,
   },
   {
-    id: "depth",
-    eyebrow: "Chapter 03 — Depth",
-    title: "Worlds within worlds.",
+    id: "materials",
+    eyebrow: "Chapter 03 — Materials",
+    title: "Graphene as a foundation, not a feature.",
     body:
-      "Layered geometry, volumetric atmosphere and physically-based light. Focus moves with you, naturally, frame by frame — a quiet architecture for attention.",
+      "From atomically-thin lattices to engineered nano-composites — materials that conduct, sense and adapt. A new physical substrate for energy storage, filtration, sensing and structural intelligence.",
     align: "left" as const,
   },
   {
-    id: "motion",
-    eyebrow: "Chapter 04 — Motion",
-    title: "Motion you can feel.",
+    id: "intelligence",
+    eyebrow: "Chapter 04 — Intelligence",
+    title: "AI woven into matter itself.",
     body:
-      "GPU-accelerated choreography at 120fps. Inertia, easing and cinematic timing — every transition tuned by hand, every frame intentional.",
+      "Machine learning fused with material science. Models that design molecules, simulate lattices, and accelerate discovery — turning years of lab cycles into weeks of intentional iteration.",
     align: "right" as const,
   },
   {
-    id: "tech",
-    eyebrow: "Chapter 05 — Technology",
-    title: "A new rendering stack.",
+    id: "ventures",
+    eyebrow: "Chapter 05 — Ventures",
+    title: "Building companies, not papers.",
     body:
-      "WebGL, WebGPU and ray-marched shaders running edge-side. Streaming geometry, sub-millisecond input latency, real-time global illumination — in the browser.",
+      "Deep-tech venture creation across graphene energy systems, nano-material platforms, climate infrastructure and intelligent sensing — translating frontier research into companies that ship.",
     align: "left" as const,
   },
   {
     id: "process",
     eyebrow: "Chapter 06 — Process",
-    title: "From script to scene.",
+    title: "From atom to architecture.",
     body:
-      "We work like a film studio. Direction, choreography, lighting and edit — translated into production-ready React, Three.js and shader code your team can ship.",
+      "Hypothesis, synthesis, simulation, scale. I move between the lab bench and the cap table — pairing scientific rigor with founder velocity to compress the distance between breakthrough and deployment.",
     align: "right" as const,
   },
 ];
 
-/* ----- Services ----- */
+/* ----- Focus areas ----- */
 const services = [
   {
     n: "01",
-    title: "Cinematic interfaces",
-    body: "Story-driven product surfaces for launches, brand films and immersive marketing sites.",
+    title: "Graphene & nano-materials",
+    body: "Synthesis, characterization and applied research turning 2D materials into energy, sensing and structural platforms.",
   },
   {
     n: "02",
-    title: "Real-time 3D systems",
-    body: "Custom WebGL pipelines, shader systems and configurator tools built to scale.",
+    title: "AI for materials & climate",
+    body: "ML systems for molecular design, lattice simulation and climate modeling — accelerating discovery cycles by orders of magnitude.",
   },
   {
     n: "03",
-    title: "Motion direction",
-    body: "End-to-end motion language — timing, easing, choreography, transitions, micro-interaction.",
+    title: "Deep-tech venture building",
+    body: "Founding and operating companies at the intersection of advanced materials, energy and intelligent systems.",
   },
   {
     n: "04",
-    title: "Engineering partnership",
-    body: "Embed with your team to ship performant React, R3F and shader code into production.",
+    title: "Frontier advisory",
+    body: "Strategic partnership with founders, labs and funds navigating the early arc of nano-material and climate-tech ventures.",
   },
 ];
 
 /* ----- Process ----- */
 const processSteps = [
-  { n: "01", t: "Discover", b: "Audit, strategy, narrative direction." },
-  { n: "02", t: "Direct", b: "Storyboard, mood, motion language, art direction." },
-  { n: "03", t: "Render", b: "3D scenes, shaders, choreography, prototyping." },
-  { n: "04", t: "Ship", b: "Production engineering, performance, handover." },
+  { n: "01", t: "Hypothesize", b: "Identify a material-level lever with civilizational impact." },
+  { n: "02", t: "Synthesize", b: "Build the lattice, the model, the prototype, the team." },
+  { n: "03", t: "Simulate", b: "AI-driven iteration across structure, function and economics." },
+  { n: "04", t: "Scale", b: "Found, capitalize and deploy — from lab cell to industrial system." },
 ];
 
-/* ----- Testimonials ----- */
+/* ----- Voices ----- */
 const quotes = [
   {
-    q: "Nova rebuilt our launch experience from the ground up. Conversion lifted 38% in week one. It looks like a film and ships like software.",
-    a: "Aria Chen — Head of Brand, Atlas",
+    q: "A rare operator who moves fluently between graphene chemistry, AI architecture and venture strategy. The kind of founder this decade actually needs.",
+    a: "Partner — Deep-Tech Fund",
   },
   {
-    q: "The most cinematic browser experience I've ever shipped. The motion language is now part of our product DNA.",
-    a: "Marcus Vance — VP Design, Helio",
+    q: "Translates frontier material science into companies you can actually back. Scientific depth with founder velocity.",
+    a: "Director — Climate Innovation Lab",
   },
 ];
 
@@ -203,14 +203,14 @@ export default function ScrollSections() {
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center relative">
         <div className="max-w-5xl">
           <p className="hero-meta text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
-            Nova Studio / Volume 01 — 2026
+            01 — Origin / Deep-Tech Founder · 2026
           </p>
           <h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
-            <span className="hero-line block text-gradient">Beyond</span>
-            <span className="hero-line block text-glow text-foreground">the surface.</span>
+            <span className="hero-line block text-gradient">[Your Name].</span>
+            <span className="hero-line block text-glow text-foreground">Building at the atomic edge.</span>
           </h1>
-          <p className="hero-meta mt-12 text-sm md:text-base text-muted-foreground max-w-md mx-auto">
-            A cinematic real-time studio designing the next decade of digital experience.
+          <p className="hero-meta mt-12 text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+            Founder working at the intersection of graphene, nano-materials, AI, energy and climate — engineering the intelligent systems of the next century.
           </p>
         </div>
         <div className="hero-meta absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
@@ -234,16 +234,16 @@ export default function ScrollSections() {
         </section>
       ))}
 
-      {/* SERVICES GRID — sticky title, scrolling list */}
+      {/* FOCUS AREAS — sticky title, scrolling list */}
       <section className="min-h-screen px-6 md:px-20 py-32 pointer-events-auto">
         <div className="max-w-6xl mx-auto grid md:grid-cols-12 gap-12">
           <div className="md:col-span-4 md:sticky md:top-32 self-start reveal">
-            <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Services</p>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">05 — Ventures</p>
             <h3 className="font-display text-4xl md:text-5xl tracking-[-0.03em] text-gradient leading-[1.05]">
-              What we make.
+              Where I build.
             </h3>
             <p className="mt-6 text-sm text-muted-foreground max-w-xs leading-relaxed">
-              A small senior team for studios, founders and brands building the next surface of the web.
+              Founding and operating across graphene, nano-materials, AI and climate infrastructure — research translated into companies.
             </p>
           </div>
           <div className="md:col-span-8 flex flex-col">
@@ -265,21 +265,21 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* TECH SPECS STRIP */}
+      {/* TECH / MATERIALS STRIP */}
       <section className="min-h-screen flex items-center px-6 md:px-20">
         <div className="w-full max-w-6xl mx-auto pointer-events-auto">
           <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4 text-center">
-            Technology
+            03 — Materials
           </p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient text-center mb-16 leading-[1.0]">
-            Performance, measured.
+            Matter, measured.
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-foreground/10">
             {[
-              { k: "120", u: "fps", l: "Render" },
-              { k: "0.4", u: "ms", l: "Input latency" },
-              { k: "8K", u: "px", l: "Resolution" },
-              { k: "∞", u: "", l: "Depth" },
+              { k: "1", u: "atom", l: "Lattice thickness" },
+              { k: "200×", u: "", l: "Stronger than steel" },
+              { k: "10⁶", u: "S/m", l: "Conductivity" },
+              { k: "∞", u: "", l: "Application surface" },
             ].map((m, i) => (
               <div
                 key={i}
@@ -300,9 +300,9 @@ export default function ScrollSections() {
       {/* PROCESS */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Process</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">06 — Process</p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient mb-20 max-w-2xl leading-[1.0]">
-            Four acts. One continuous take.
+            From atom to industry.
           </h3>
           <div className="grid md:grid-cols-4 gap-10">
             {processSteps.map((s) => (
@@ -316,18 +316,18 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* CASE / IMPACT */}
+      {/* IMPACT */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Impact</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">07 — Future / Impact</p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient mb-20 max-w-3xl leading-[1.0]">
-            Measured in attention.
+            Measured in tons of carbon, joules of energy, years of life.
           </h3>
           <div className="grid md:grid-cols-3 gap-px bg-foreground/10">
             {[
-              { k: "+38%", l: "Conversion uplift", s: "Atlas launch — week one" },
-              { k: "4.6×", l: "Avg. session time", s: "Helio product page" },
-              { k: "98", l: "Lighthouse perf", s: "Across published work" },
+              { k: "GW", l: "Energy systems", s: "Graphene-enabled storage & transmission" },
+              { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
+              { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
             ].map((m, i) => (
               <div key={i} className="reveal bg-background/60 backdrop-blur-xl p-10 md:p-14">
                 <div className="font-display text-5xl md:text-6xl font-medium text-gradient">{m.k}</div>
@@ -339,10 +339,10 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* VOICES */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-5xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Trusted by directors of brand & product</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Backed by deep-tech funds, labs and climate operators</p>
           <div className="grid md:grid-cols-2 gap-12 mt-16">
             {quotes.map((q, i) => (
               <figure key={i} className="reveal">
@@ -362,34 +362,34 @@ export default function ScrollSections() {
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center">
         <div className="max-w-3xl pointer-events-auto">
           <p className="reveal text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
-            Now accepting two engagements for Q3 2026
+            08 — Contact / Open to founders, scientists, funds & climate operators
           </p>
           <h2 className="reveal font-display text-[clamp(2.5rem,7.5vw,7rem)] leading-[0.95] tracking-[-0.045em] font-medium text-gradient mb-12">
-            Let's build the surface.
+            Let's build the next material era.
           </h2>
           <div className="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:hello@nova.studio"
+              href="mailto:hello@yourdomain.com"
               className="glass px-8 py-4 rounded-full text-sm tracking-wide hover:bg-foreground/10 transition-all duration-500 hover:scale-[1.03]"
             >
-              hello@nova.studio
+              hello@yourdomain.com
             </a>
             <a
               href="#"
               className="px-8 py-4 rounded-full text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
-              Watch the film →
+              Read the thesis →
             </a>
           </div>
           <div className="reveal mt-24 flex items-center justify-center gap-8 text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60 font-mono">
-            <span>San Francisco</span>
+            <span>Graphene</span>
             <span className="w-1 h-1 rounded-full bg-primary" />
-            <span>London</span>
+            <span>Nano-Materials</span>
             <span className="w-1 h-1 rounded-full bg-primary" />
-            <span>Tokyo</span>
+            <span>AI · Climate</span>
           </div>
           <p className="reveal mt-12 text-[10px] text-muted-foreground/60 tracking-[0.3em] uppercase">
-            © Nova Studio — Built for the next decade of motion.
+            © [Your Name] — Building at the frontier of intelligent matter.
           </p>
         </div>
       </section>
