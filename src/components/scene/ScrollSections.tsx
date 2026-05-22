@@ -16,42 +16,42 @@ const chapters: readonly StoryChapter[] = [
     id: "spark",
     eyebrow: "01 — Spark",
     title: "I build what does not yet exist.",
-    body: "Curiosity turned into inventions, patents, companies, and industrial technologies.",
+    body: "It began at fourteen, in a borrowed workshop, with a breath-powered wheelchair for a man who could no longer speak. Curiosity, since then, has turned into inventions, patents, companies, and industrial technologies.",
     align: "center",
   },
   {
     id: "recognition",
     eyebrow: "02 — Recognition",
     title: "Awarded early. Responsible forever.",
-    body: "A young innovator recognized at the national level, now building technologies with industrial consequence.",
+    body: "Six-time Indian Presidential awardee between 2008 and 2013. One of the youngest speakers invited to TED-India. Featured by MIT Technology Review, India Today, Times of India and Global Indian. Recognition is a lagging indicator — the work remains in the next prototype.",
     align: "left",
   },
   {
     id: "carbon-intelligence",
     eyebrow: "03 — Carbon Intelligence",
     title: "Engineering intelligent matter.",
-    body: "Graphene, nano-materials, coatings, additives, composites, and AI-assisted material systems.",
+    body: "Graphene, nano-materials, coatings, additives, composites, and AI-assisted material systems. A single sheet of carbon, manufactured cleanly and at scale, is the most under-priced strategic asset on the table this decade.",
     align: "right",
   },
   {
     id: "industrial",
     eyebrow: "04 — Industrial Applications",
     title: "One material platform. Many industries.",
-    body: "Solar coatings, batteries, concrete, polymers, fuels, coal moisture reduction, and climate infrastructure.",
+    body: "Solar coatings, batteries that charge in minutes, structural composites, polymer additives, coal-moisture reduction, water and air filtration, climate infrastructure — each a downstream of the same lattice.",
     align: "left",
   },
   {
     id: "ventures",
     eyebrow: "05 — Venture Builder",
     title: "I do not only invent. I build companies.",
-    body: "Ventures across advanced materials, industrial products, AI, capital, and technology commercialization.",
+    body: "Five operating ventures across advanced materials, industrial products, AI systems, and capital architecture — plus a CIO seat at Magppie. The vehicles that carry frontier science from the lab into the industrial world.",
     align: "right",
   },
   {
     id: "india",
     eyebrow: "06 — India to World",
     title: "Built in India. Designed for the world.",
-    body: "Translating Indian invention into global industrial deployment.",
+    body: "India has the talent, the demand, and the urgency. What remains is the patience. Translating Indian invention into global industrial deployment is the strategic question of this decade.",
     align: "left",
   },
 ];
@@ -60,7 +60,9 @@ const ventures: Venture[] = [
   { n: "01", title: "Monoatom Labs", body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream industrial platform." },
   { n: "02", title: "Grafillium", body: "Graphene-enabled advanced materials engineered for solar, batteries, polymers, and industrial-scale deployment." },
   { n: "03", title: "SPI Industries", body: "Operating arm translating advanced materials into production-grade industrial products and supply chains." },
-  { n: "04", title: "InThinks · Starunico Capital", body: "AI systems and capital architecture — the commercialization vehicles that carry deep-tech from lab to industry." },
+  { n: "04", title: "InThinks", body: "AI systems applied to materials discovery, process intelligence, and the commercialization layer beneath every venture." },
+  { n: "05", title: "Starunico Capital", body: "Capital architecture for deep-tech — the patient vehicle carrying frontier science from lab through industrial scale." },
+  { n: "06", title: "Magppie · CIO", body: "Chief Innovation Officer — embedding advanced materials thinking into an established industrial design house." },
 ];
 
 const processSteps = [
@@ -164,7 +166,7 @@ function HeroSection() {
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
             className="mx-auto mt-10 md:mt-12 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
           >
-            Curiosity turned into inventions, patents, companies, and industrial technologies — graphene, nano-materials, and deep-tech ventures built from India for the world.
+            Inventor and deep-tech founder. Six-time Indian Presidential awardee. Building graphene, nano-materials, and industrial systems from Bhubaneswar — for the world.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -413,10 +415,10 @@ export default function ScrollSections() {
               Founder · Voice
             </p>
             <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-4xl">
-              “Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world.”
+              "Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world."
             </blockquote>
             <p className="mt-10 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization.
+              Inventor. Founder. Working at the intersection of graphene, advanced materials, AI, and industrial commercialization. BSc · IISER Bhopal (KVPY-SP).
             </p>
             <div className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
