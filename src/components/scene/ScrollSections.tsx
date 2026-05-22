@@ -210,7 +210,7 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
             className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            01 — Ideation / Deep-Tech Founder · Graphene · Nano-Materials · AI · Climate Innovation
+            01 — Discover / Deep-Tech Innovation & Commercialization Architect · Graphene · Advanced Materials · AI · Energy · Climate
           </motion.p>
           <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
             {[
