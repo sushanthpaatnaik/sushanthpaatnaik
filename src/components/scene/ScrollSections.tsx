@@ -291,7 +291,7 @@ export default function ScrollSections() {
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
             <h3 className="mb-12 md:mb-16 font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
           </MotionReveal>
-          <div className="grid grid-cols-2 gap-px bg-foreground/10 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] md:grid-cols-4">
             {[
               { k: "1", u: "atom", l: "Graphene lattice thickness" },
               { k: "200×", u: "", l: "Stronger than steel" },
