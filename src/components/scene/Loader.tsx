@@ -31,7 +31,7 @@ export default function Loader() {
       <div className="flex flex-col items-center gap-10">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent shadow-[0_0_40px_oklch(0.85_0.15_220/0.6)] animate-pulse" />
-          <span className="text-xs uppercase tracking-[0.5em] font-medium">Nova</span>
+          <span className="text-xs uppercase tracking-[0.5em] font-medium">Sushanth</span>
         </div>
 
         <div className="w-[260px] flex flex-col items-center gap-3">
