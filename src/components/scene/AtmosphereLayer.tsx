@@ -142,15 +142,15 @@ export default function AtmosphereLayer({
       </div>
 
       {/* Cinematic vignette — deepened edges */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#02030a_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#02030a_100%)]" />
 
       {/* Letterbox gradients — taller, premium framing */}
-      <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[#02030a]/98 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#02030a]/98 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#02030a]/98 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-[#02030a]/98 to-transparent" />
 
       {/* Procedural grain — fine, cinematic */}
       <div
-        className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.7  0 0 0 0 0.75  0 0 0 0 0.85  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
@@ -160,9 +160,9 @@ export default function AtmosphereLayer({
       {/* Inline keyframes for particle drift (CSS animation OK here — non-React, GPU transforms) */}
       <style>{`
         @keyframes atmosDrift {
-          0%   { transform: translate3d(0, 0, 0); opacity: 0.18; }
-          50%  { transform: translate3d(8px, -14px, 0); opacity: 0.42; }
-          100% { transform: translate3d(-6px, -28px, 0); opacity: 0.2; }
+          0%   { transform: translate3d(0, 0, 1px); opacity: 0.12; }
+          50%  { transform: translate3d(6px, -10px, 1px); opacity: 0.28; }
+          100% { transform: translate3d(-4px, -20px, 1px); opacity: 0.14; }
         }
       `}</style>
     </div>
