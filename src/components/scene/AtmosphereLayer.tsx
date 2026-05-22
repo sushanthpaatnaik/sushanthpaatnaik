@@ -41,8 +41,8 @@ export default function AtmosphereLayer() {
   // Dual-spring parallax depth system:
   //   pFast  — video camera responds with restrained immediacy
   //   pSlow  — atmospheric overlays drift heavier, creating dimensional depth
-  const pFast = useSpring(scrollYProgress, { stiffness: 32, damping: 42, mass: 1.2 });
-  const pSlow = useSpring(scrollYProgress, { stiffness: 18, damping: 52, mass: 2.0 });
+  const pFast = useSpring(scrollYProgress, { stiffness: 27, damping: 44, mass: 1.2 });
+  const pSlow = useSpring(scrollYProgress, { stiffness: 15, damping: 54, mass: 2.0 });
 
   /* ---------- Video "camera" — drifting through the environment ----------
    * Each section keyframe matches the emotional brief:
