@@ -34,6 +34,43 @@ function Index() {
 
   useLenis(handleScroll);
 
+  // Disable browser scroll restoration and force hero on first paint
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const prev = window.history.scrollRestoration;
+    try {
+      window.history.scrollRestoration = "manual";
+    } catch {}
+
+    const hasIntentionalHash =
+      window.location.hash && window.location.hash.length > 1;
+
+    // Only force-top when there's no user-clicked anchor target.
+    if (!hasIntentionalHash) {
+      window.scrollTo(0, 0);
+      // Catch late layout shifts from images/fonts/sticky sections
+      const r1 = requestAnimationFrame(() => window.scrollTo(0, 0));
+      const t1 = window.setTimeout(() => window.scrollTo(0, 0), 60);
+      const t2 = window.setTimeout(() => window.scrollTo(0, 0), 300);
+      const onLoad = () => window.scrollTo(0, 0);
+      window.addEventListener("load", onLoad, { once: true });
+      return () => {
+        cancelAnimationFrame(r1);
+        clearTimeout(t1);
+        clearTimeout(t2);
+        window.removeEventListener("load", onLoad);
+        try {
+          window.history.scrollRestoration = prev;
+        } catch {}
+      };
+    }
+    return () => {
+      try {
+        window.history.scrollRestoration = prev;
+      } catch {}
+    };
+  }, []);
+
   // Reveal main content after loader
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 2400);
