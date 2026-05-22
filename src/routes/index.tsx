@@ -5,6 +5,7 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
+import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
 import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
 import { useLenis } from "@/components/scene/useLenis";
 
