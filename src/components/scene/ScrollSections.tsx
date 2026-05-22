@@ -426,7 +426,7 @@ export default function ScrollSections() {
             {/* Plate 03 · R&D — atmospheric inventor-documentary inset.
                 Small, asymmetric, edge-blended, emerging from darkness. */}
             <div className="relative mt-20 -ml-[20%] hidden md:block lg:-ml-[30%]">
-              <p className="absolute -top-5 left-2 z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+              <p className="absolute -top-5 left-2 z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
                 Plate 03 · R&amp;D · Inventor at work
               </p>
               <div className="relative aspect-square w-[78%]">
