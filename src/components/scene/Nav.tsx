@@ -10,7 +10,7 @@ export default function Nav() {
         <a href="#" className="hover:text-foreground transition-colors">Ventures</a>
         <a href="#" className="hover:text-foreground transition-colors">Contact</a>
       </nav>
-      <button className="glass pointer-events-auto px-5 py-2.5 rounded-full text-xs uppercase tracking-[0.2em] hover:bg-foreground/10 transition-all">
+      <button className="btn-cinematic btn-cinematic-sm pointer-events-auto">
         Connect
       </button>
     </header>
