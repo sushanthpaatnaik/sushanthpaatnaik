@@ -3,38 +3,79 @@ import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform }
 
 const chapters = [
   {
-    id: "ideation",
-    eyebrow: "Stage 01 — Ideation",
-    title: "Where intelligent matter begins as possibility.",
+    id: "discover",
+    eyebrow: "Stage 01 — Discover",
+    title: "The signal before the science.",
     body:
-      "Abstract particles, atmospheric darkness, and a first pulse of conceptual energy. The journey opens in pure ideation — frontier science existing only as a signal of future industry.",
+      "Every industry begins as a weak signal at the edge of physics. Scouting frontier research, mapping emerging materials, and listening for the breakthroughs that will define the next industrial era.",
     align: "center" as const,
   },
   {
-    id: "innovation",
-    eyebrow: "Stage 02 — Innovation",
-    title: "Discovery becomes engineered breakthrough.",
+    id: "ideate",
+    eyebrow: "Stage 02 — Ideate",
+    title: "From signal to thesis.",
     body:
-      "Graphene lattices, molecular systems, conductive pathways and structural precision. Scientific curiosity condenses into engineered material systems ready to leave the lab.",
+      "An idea worth pursuing is testable, scalable, and inevitable. Material, system, and market converge into a deep-tech thesis that justifies a decade of conviction.",
     align: "right" as const,
   },
   {
-    id: "commercialisation",
-    eyebrow: "Stage 03 — Commercialisation",
-    title: "Prototypes become products, products become production.",
+    id: "invent",
+    eyebrow: "Stage 03 — Invent",
+    title: "Engineering intelligent matter.",
     body:
-      "Sensors, cells, membranes and modules graduate from bench to pilot line. Industrial form, applied performance, and the first real economics of a new material category.",
+      "Graphene, 2D materials, nano-composites and AI-assisted molecular design. Invention is where physics becomes a manufacturable system — lattice, junction, and interface.",
     align: "left" as const,
   },
   {
-    id: "deployment",
-    eyebrow: "Stage 04 — Industry Deployment",
-    title: "Frontier science becomes world-scale infrastructure.",
+    id: "validate",
+    eyebrow: "Stage 04 — Validate",
+    title: "Proof before production.",
     body:
-      "Advanced materials move into energy systems, decarbonisation platforms and resilient supply chains — climate-grade deployment replacing lab-scale promise with industrial reality.",
+      "Characterisation, pilot testing, and digital-twin simulation advance TRL from concept to capital-ready evidence. Validation turns conviction into measurable performance.",
     align: "right" as const,
   },
+  {
+    id: "protect",
+    eyebrow: "Stage 05 — Protect",
+    title: "The architecture of defensibility.",
+    body:
+      "Patents, trade secrets, and freedom-to-operate. What cannot be defended cannot be deployed at scale — IP is the load-bearing structure of industrial deep-tech.",
+    align: "left" as const,
+  },
+  {
+    id: "prototype",
+    eyebrow: "Stage 06 — Prototype",
+    title: "Matter becomes mechanism.",
+    body:
+      "Sensors, cells, membranes and modules graduate from bench to physical form. The first prototype is the first honest argument that the science will hold in the world.",
+    align: "right" as const,
+  },
+  {
+    id: "commercialize",
+    eyebrow: "Stage 07 — Commercialize",
+    title: "From lab to ledger.",
+    body:
+      "Pricing, partnerships, supply chain, regulatory pathways and unit economics. Commercialisation is the engineering of revenue around a defensible material breakthrough.",
+    align: "left" as const,
+  },
+  {
+    id: "scale",
+    eyebrow: "Stage 08 — Scale",
+    title: "Infrastructure as the new molecule.",
+    body:
+      "Gigafactories, grid-scale storage, distributed sensing, and orchestrated supply chains. Scale is where physics meets policy meets capital — and the breakthrough becomes infrastructure.",
+    align: "right" as const,
+  },
+  {
+    id: "deployment",
+    eyebrow: "Stage 09 — Industrial Deployment",
+    title: "Climate-grade, world-scale.",
+    body:
+      "Deep-tech earns its name only when it deploys at industrial scale. Energy, mobility, water, semiconductors and climate infrastructure — material breakthroughs operating in the real world.",
+    align: "center" as const,
+  },
 ];
+
 
 
 const services = [
@@ -121,7 +162,7 @@ function SectionCopy({
       </motion.p>
 
       <div className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}>
-        {String(index + 1).padStart(2, "0")} / 04
+        {String(index + 1).padStart(2, "0")} / 09
       </div>
     </div>
   );
@@ -169,7 +210,7 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
             className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            01 — Ideation / Deep-Tech Founder · Graphene · Nano-Materials · AI · Climate Innovation
+            01 — Discover / Deep-Tech Innovation & Commercialization Architect · Graphene · Advanced Materials · AI · Energy · Climate
           </motion.p>
           <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
             {[
@@ -206,7 +247,7 @@ function HeroSection() {
             className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#commercialisation"
+              href="#commercialize"
               className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
             >
               Explore the Work
@@ -423,7 +464,7 @@ export default function ScrollSections() {
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
-                Beyond Deployment / Open to founders, scientists, funds & climate operators
+                Beyond Industrial Deployment / Open to founders, scientists, funds & climate operators
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
