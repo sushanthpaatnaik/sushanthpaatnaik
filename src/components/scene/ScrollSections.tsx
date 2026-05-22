@@ -4,46 +4,48 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ----- 8-chapter founder narrative ----- */
+/* ----- 7-chapter cinematic innovation journey -----
+ * From scientific ideation to industrial transformation.
+ */
 const chapters = [
   {
-    id: "vision",
-    eyebrow: "Chapter 02 — Vision",
-    title: "Engineering the next material era.",
+    id: "discovery",
+    eyebrow: "Chapter 02 — Discovery",
+    title: "Where matter first reveals itself.",
     body:
-      "I build ventures at the frontier of graphene, nano-materials and artificial intelligence — designing the substrates, systems and intelligence that will define the next century of energy, climate and computation.",
+      "The lattice emerges. Atomically-thin sheets of carbon, molecular systems, nano-material formation — the moment scientific curiosity crystallizes into a buildable substrate for the next century.",
     align: "right" as const,
   },
   {
-    id: "graphene",
-    eyebrow: "Chapter 03 — Graphene",
-    title: "Graphene as a foundation, not a feature.",
+    id: "engineering",
+    eyebrow: "Chapter 03 — Engineering",
+    title: "Designing conductive pathways.",
     body:
-      "From atomically-thin lattices to engineered nano-composites — materials that conduct, sense and adapt. A new physical substrate for energy storage, filtration, sensing and structural intelligence.",
+      "Precision industrial geometry. Material systems engineered atom by atom — conductive, structural, sensing — translating frontier physics into intelligent engineering that the world can manufacture.",
     align: "left" as const,
   },
   {
-    id: "intelligence",
-    eyebrow: "Chapter 04 — Intelligence",
-    title: "AI woven into matter itself.",
+    id: "prototype",
+    eyebrow: "Chapter 04 — Prototype",
+    title: "From lab bench to first device.",
     body:
-      "Machine learning fused with material science. Models that design molecules, simulate lattices, and accelerate discovery — turning years of lab cycles into weeks of intentional iteration.",
+      "Futuristic manufacturing meets applied materials. Cells, sensors, membranes, modules — the first physical embodiments where graphene and nano-material science evolve into real products.",
     align: "right" as const,
   },
   {
-    id: "ventures",
-    eyebrow: "Chapter 05 — Ventures",
-    title: "Building companies, not papers.",
+    id: "scale",
+    eyebrow: "Chapter 05 — Scale",
+    title: "Industrial infrastructure, energy networks.",
     body:
-      "Deep-tech venture creation across graphene energy systems, nano-material platforms, climate infrastructure and intelligent sensing — translating frontier research into companies that ship.",
+      "Pilot lines become production lines. Storage, transmission, filtration and intelligent sensing scale into grids, fleets and supply chains — the technological expansion of intelligent matter.",
     align: "left" as const,
   },
   {
-    id: "process",
-    eyebrow: "Chapter 06 — Process",
-    title: "From atom to architecture.",
+    id: "deployment",
+    eyebrow: "Chapter 06 — Deployment",
+    title: "Climate-tech in the real world.",
     body:
-      "Hypothesis, synthesis, simulation, scale. I move between the lab bench and the cap table — pairing scientific rigor with founder velocity to compress the distance between breakthrough and deployment.",
+      "Intelligent infrastructure deployed where it matters — energy systems, decarbonization platforms, water and air, structural sensing. Frontier science arriving as climate-grade reality.",
     align: "right" as const,
   },
 ];
@@ -80,14 +82,11 @@ const processSteps = [
   { n: "04", t: "Scale", b: "Found, capitalize and deploy — from lab cell to industrial system." },
 ];
 
-/* Fictional testimonials removed for founder-led identity */
-
 export default function ScrollSections() {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Kinetic hero — split into per-word reveal
       document.querySelectorAll<HTMLElement>(".hero-line").forEach((el) => {
         const text = el.textContent || "";
         el.innerHTML = text
@@ -102,15 +101,7 @@ export default function ScrollSections() {
       gsap.fromTo(
         "[data-word]",
         { yPercent: 110, opacity: 0, filter: "blur(14px)" },
-        {
-          yPercent: 0,
-          opacity: 1,
-          filter: "blur(0px)",
-          duration: 1.4,
-          ease: "expo.out",
-          stagger: 0.06,
-          delay: 0.25,
-        },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "expo.out", stagger: 0.06, delay: 0.25 },
       );
 
       gsap.fromTo(
@@ -119,7 +110,6 @@ export default function ScrollSections() {
         { opacity: 1, y: 0, duration: 1, delay: 1.1, ease: "power2.out" },
       );
 
-      // Story panels
       gsap.utils.toArray<HTMLElement>(".story-panel").forEach((panel) => {
         const eyebrow = panel.querySelector(".s-eyebrow");
         const title = panel.querySelector(".s-title");
@@ -155,7 +145,6 @@ export default function ScrollSections() {
         });
       });
 
-      // Reveal generic .reveal blocks
       gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
         gsap.fromTo(
           el,
@@ -171,7 +160,6 @@ export default function ScrollSections() {
         );
       });
 
-      // Scroll progress bar
       gsap.to(".scroll-progress", {
         scaleX: 1,
         ease: "none",
@@ -189,7 +177,7 @@ export default function ScrollSections() {
         <div className="scroll-progress origin-left scale-x-0 h-full bg-gradient-to-r from-primary via-accent to-primary" />
       </div>
 
-      {/* HERO */}
+      {/* 01 ORIGIN — hero */}
       <section className="h-screen flex flex-col items-center justify-center px-6 text-center relative">
         <div className="max-w-5xl">
           <p className="hero-meta text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
@@ -205,14 +193,14 @@ export default function ScrollSections() {
           </p>
           <div className="hero-meta mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#ventures"
-              className="glass px-8 py-4 rounded-full text-sm tracking-wide hover:bg-foreground/10 transition-all duration-500 hover:scale-[1.03]"
+              href="#scale"
+              className="glass px-8 py-4 rounded-full text-sm tracking-wide hover:bg-foreground/10 transition-all duration-500 hover:scale-[1.03] pointer-events-auto"
             >
               Explore the Work
             </a>
             <a
-              href="#contact"
-              className="px-8 py-4 rounded-full text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300"
+              href="#future"
+              className="px-8 py-4 rounded-full text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300 pointer-events-auto"
             >
               Connect
             </a>
@@ -224,9 +212,13 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* STORY CHAPTERS */}
+      {/* 02–06 STORY CHAPTERS — Discovery, Engineering, Prototype, Scale, Deployment */}
       {chapters.map((s, i) => (
-        <section key={s.id} className="story-panel min-h-[120vh] flex items-center px-6 md:px-20 relative">
+        <section
+          key={s.id}
+          id={s.id}
+          className="story-panel min-h-[120vh] flex items-center px-6 md:px-20 relative"
+        >
           <div className={`s-inner max-w-xl pointer-events-auto ${s.align === "right" ? "ml-auto text-right" : "mr-auto"}`}>
             <div className={`s-line h-px w-24 bg-gradient-to-r from-primary to-transparent mb-8 ${s.align === "right" ? "ml-auto bg-gradient-to-l" : ""}`} />
             <p className="s-eyebrow text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6">{s.eyebrow}</p>
@@ -234,16 +226,16 @@ export default function ScrollSections() {
             <p className="s-body text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md">{s.body}</p>
           </div>
           <div className={`absolute top-10 ${s.align === "right" ? "left-10" : "right-10"} text-[10px] tracking-[0.4em] uppercase text-muted-foreground/50 hidden md:block font-mono`}>
-            0{i + 2} / 08
+            0{i + 2} / 07
           </div>
         </section>
       ))}
 
-      {/* FOCUS AREAS — sticky title, scrolling list */}
+      {/* WHERE I BUILD — focus areas inside the Scale chapter atmosphere */}
       <section className="min-h-screen px-6 md:px-20 py-32 pointer-events-auto">
         <div className="max-w-6xl mx-auto grid md:grid-cols-12 gap-12">
           <div className="md:col-span-4 md:sticky md:top-32 self-start reveal">
-            <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">05 — Ventures</p>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Ventures</p>
             <h3 className="font-display text-4xl md:text-5xl tracking-[-0.03em] text-gradient leading-[1.05]">
               Where I build.
             </h3>
@@ -270,11 +262,11 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* TECH / MATERIALS STRIP */}
+      {/* MATTER, MEASURED — material metrics */}
       <section className="min-h-screen flex items-center px-6 md:px-20">
         <div className="w-full max-w-6xl mx-auto pointer-events-auto">
           <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4 text-center">
-            03 — Graphene
+            The Substrate
           </p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient text-center mb-16 leading-[1.0]">
             Matter, measured.
@@ -302,10 +294,10 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* FROM ATOM TO INDUSTRY — process */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">06 — Process</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Method</p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient mb-20 max-w-2xl leading-[1.0]">
             From atom to industry.
           </h3>
@@ -321,10 +313,10 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* IMPACT */}
+      {/* IMPACT — measured outcomes */}
       <section className="min-h-screen flex items-center px-6 md:px-20 py-32">
         <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">07 — Impact</p>
+          <p className="reveal text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-4">Outcomes</p>
           <h3 className="reveal font-display text-4xl md:text-6xl tracking-[-0.035em] text-gradient mb-20 max-w-3xl leading-[1.0]">
             Measured in tons of carbon, joules of energy, years of life.
           </h3>
@@ -354,11 +346,11 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* CONTACT / OUTRO */}
-      <section className="h-screen flex flex-col items-center justify-center px-6 text-center">
+      {/* 07 FUTURE — outro / contact */}
+      <section id="future" className="h-screen flex flex-col items-center justify-center px-6 text-center">
         <div className="max-w-3xl pointer-events-auto">
           <p className="reveal text-[10px] uppercase tracking-[0.5em] text-muted-foreground mb-10">
-            08 — Contact / Open to founders, scientists, funds & climate operators
+            07 — Future / Open to founders, scientists, funds & climate operators
           </p>
           <h2 className="reveal font-display text-[clamp(2.5rem,7.5vw,7rem)] leading-[0.95] tracking-[-0.045em] font-medium text-gradient mb-12">
             Let's build the next material era.
