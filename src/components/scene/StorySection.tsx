@@ -27,7 +27,7 @@ function SectionCopy({
     align === "center"
       ? "text-center mx-auto"
       : align === "right"
-        ? "ml-auto text-right"
+        ? "mr-auto md:ml-auto md:mr-0 text-left md:text-right"
         : "mr-auto text-left";
   const counterPosition =
     align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
@@ -39,7 +39,7 @@ function SectionCopy({
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.55 }}
         transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-        className={`h-px w-24 mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "ml-auto origin-right bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
+        className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
         initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
@@ -55,7 +55,7 @@ function SectionCopy({
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.55 }}
         transition={{ duration: 1.15, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-        className="font-display text-[clamp(2.25rem,5.5vw,5rem)] leading-[1] tracking-[-0.035em] font-medium text-gradient mb-8"
+        className="font-display text-[clamp(2rem,9vw,5rem)] leading-[1.02] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient mb-7 md:mb-8"
       >
         {title}
       </motion.h2>
@@ -87,8 +87,8 @@ interface StorySectionProps {
 /** Sticky-pinned narrative panel for one chapter of the scroll story. */
 export default function StorySection({ chapter, index, total }: StorySectionProps) {
   return (
-    <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.24)] px-6 md:px-20">
-      <div className="viewport-stage sticky top-0 flex items-center overflow-clip pt-24 pb-12 render-stable">
+    <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.24)] px-5 sm:px-6 md:px-20">
+      <div className="viewport-stage sticky top-0 flex items-center overflow-clip pt-28 md:pt-24 pb-12 render-stable">
         <motion.div
           initial={{ opacity: 0.65, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

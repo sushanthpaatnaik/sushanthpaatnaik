@@ -79,8 +79,8 @@ function HeroSection() {
   const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.04, 1]);
 
   return (
-    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-6">
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-24 pb-12 render-stable">
+    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-5 sm:px-6">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-28 md:pt-24 pb-12 render-stable">
         {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
         <motion.div
           aria-hidden
@@ -135,11 +135,11 @@ function HeroSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.8 }}
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-            className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
+            className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground"
           >
             01 — Spark
           </motion.p>
-          <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
+          <motion.h1 className="font-display text-[clamp(2.6rem,11vw,10rem)] leading-[0.94] md:leading-[0.92] tracking-[-0.04em] md:tracking-[-0.045em] font-medium">
             {[
               { text: "I build", delay: 0.2 },
               { text: "what does not", delay: 0.34 },
@@ -162,7 +162,7 @@ function HeroSection() {
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: false, amount: 0.8 }}
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
-            className="mx-auto mt-12 max-w-xl text-sm text-muted-foreground md:text-base"
+            className="mx-auto mt-10 md:mt-12 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
           >
             Curiosity turned into inventions, patents, companies, and industrial technologies — graphene, nano-materials, and deep-tech ventures built from India for the world.
           </motion.p>
@@ -276,12 +276,12 @@ export default function ScrollSections() {
       <VentureConstellation ventures={ventures} />
 
       {/* Carbon Intelligence metrics — supports chapter 03 */}
-      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.12_0.04_240/0.10),transparent_70%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
-            <h3 className="mb-16 font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Carbon Intelligence</p>
+            <h3 className="mb-12 md:mb-16 font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">Intelligent matter, measured.</h3>
           </MotionReveal>
           <div className="grid grid-cols-2 gap-px bg-foreground/10 md:grid-cols-4">
             {[
@@ -293,13 +293,13 @@ export default function ScrollSections() {
               <MotionReveal
                 key={metric.l}
                 delay={index * 0.08}
-                className="panel-surface p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
+                className="panel-surface p-6 sm:p-8 transition-all duration-700 hover:bg-background/80 md:p-12"
               >
                 <div className="flex items-baseline gap-1">
-                  <span className="font-display text-5xl font-medium text-gradient md:text-7xl">{metric.k}</span>
-                  <span className="text-sm text-muted-foreground">{metric.u}</span>
+                  <span className="font-display text-4xl font-medium text-gradient sm:text-5xl md:text-7xl">{metric.k}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">{metric.u}</span>
                 </div>
-                <p className="mt-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">{metric.l}</p>
+                <p className="mt-3 md:mt-4 text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground">{metric.l}</p>
               </MotionReveal>
             ))}
           </div>
@@ -307,21 +307,20 @@ export default function ScrollSections() {
       </section>
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
-      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_50%,oklch(0.10_0.03_250/0.09),transparent_72%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
-            <h3 className="mb-20 max-w-2xl font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Method</p>
+            <h3 className="mb-14 md:mb-20 max-w-2xl font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">
               From invention to industrial scale.
-
             </h3>
           </MotionReveal>
-          <div className="grid gap-10 md:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-10">
             {processSteps.map((step, index) => (
-              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-6">
+              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-5 md:pt-6">
                 <span className="font-mono text-xs tracking-[0.3em] text-primary/80">{step.n}</span>
-                <h4 className="mt-4 mb-3 font-display text-2xl tracking-[-0.02em]">{step.t}</h4>
+                <h4 className="mt-4 mb-3 font-display text-xl md:text-2xl tracking-[-0.02em]">{step.t}</h4>
                 <p className="text-sm leading-relaxed text-muted-foreground">{step.b}</p>
               </MotionReveal>
             ))}
@@ -330,12 +329,12 @@ export default function ScrollSections() {
       </section>
 
       {/* Outcomes — supports chapter 06 (India → World) */}
-      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_70%_50%,oklch(0.11_0.03_245/0.10),transparent_72%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Outcomes</p>
-            <h3 className="mb-20 max-w-3xl font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Outcomes</p>
+            <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,8vw,4rem)] leading-[1.04] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">
               Measured in tons of carbon, joules of energy, years of life.
             </h3>
           </MotionReveal>
@@ -345,10 +344,10 @@ export default function ScrollSections() {
               { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
               { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
             ].map((metric, index) => (
-              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-10 md:p-14">
-                <div className="font-display text-5xl font-medium text-gradient md:text-6xl">{metric.k}</div>
-                <p className="mt-4 text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
-                <p className="mt-2 text-xs text-muted-foreground/70">{metric.s}</p>
+              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-7 sm:p-10 md:p-14">
+                <div className="font-display text-4xl font-medium text-gradient sm:text-5xl md:text-6xl">{metric.k}</div>
+                <p className="mt-4 text-xs sm:text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground/70">{metric.s}</p>
               </MotionReveal>
             ))}
           </div>
@@ -357,7 +356,8 @@ export default function ScrollSections() {
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
-      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-6 py-24 md:px-20">
+      <section className="relative min-h-[calc(var(--viewport-height)*1.1)] overflow-hidden px-5 sm:px-6 pt-28 pb-20 md:px-20 md:py-24">
+        
         {/* Heavy atmospheric scrim that pushes the India network bg deep into the scene */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.84),oklch(0.03_0_0/0.97))]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
@@ -449,21 +449,21 @@ export default function ScrollSections() {
 
 
       {/* Chapter 07 — The Future System */}
-      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-6 text-center">
-        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-24 pb-12 render-stable">
+      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-5 sm:px-6 text-center">
+        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-28 md:pt-24 pb-12 render-stable">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
-              <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
+              <p className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
                 07 — The Future System
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
-              <h2 className="mb-12 font-display text-[clamp(2.5rem,7.5vw,7rem)] leading-[0.95] tracking-[-0.045em] font-medium text-gradient">
+              <h2 className="mb-10 md:mb-12 font-display text-[clamp(2.2rem,9vw,7rem)] leading-[0.98] md:leading-[0.95] tracking-[-0.04em] md:tracking-[-0.045em] font-medium text-gradient">
                 Cleaner materials. Faster systems. Smarter infrastructure.
               </h2>
             </MotionReveal>
             <MotionReveal delay={0.16}>
-              <div className="flex flex-col items-center justify-center gap-5 sm:flex-row">
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
                 <a href="mailto:me@sushanthpaatnaik.com?subject=Collaborate" className="btn-cinematic">
                   Collaborate
                 </a>
@@ -476,7 +476,7 @@ export default function ScrollSections() {
               </div>
             </MotionReveal>
             <MotionReveal delay={0.24}>
-              <div className="mt-24 flex items-center justify-center gap-8 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
+              <div className="mt-16 md:mt-24 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:gap-8 font-mono text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground/60">
                 <span>Graphene</span>
                 <span className="h-1 w-1 rounded-full bg-primary" />
                 <span>Nano-Materials</span>
