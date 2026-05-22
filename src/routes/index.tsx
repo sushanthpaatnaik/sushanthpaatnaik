@@ -32,7 +32,7 @@ function Index() {
     scrollProgress.current = p;
   }, []);
 
-  useLenis(handleScroll);
+  const lenisRef = useLenis(handleScroll);
 
   // Disable browser scroll restoration and force hero on first paint
   useEffect(() => {
@@ -45,20 +45,43 @@ function Index() {
     const hasIntentionalHash =
       window.location.hash && window.location.hash.length > 1;
 
-    // Only force-top when there's no user-clicked anchor target.
+    const snapTop = () => {
+      // Use Lenis when available so its internal target stays in sync,
+      // otherwise fall back to native scroll (covers first-paint window
+      // before Lenis instance is constructed).
+      const lenis = lenisRef.current;
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true, force: true, lock: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+
     if (!hasIntentionalHash) {
-      window.scrollTo(0, 0);
-      // Catch late layout shifts from images/fonts/sticky sections
-      const r1 = requestAnimationFrame(() => window.scrollTo(0, 0));
-      const t1 = window.setTimeout(() => window.scrollTo(0, 0), 60);
-      const t2 = window.setTimeout(() => window.scrollTo(0, 0), 300);
-      const onLoad = () => window.scrollTo(0, 0);
+      snapTop();
+      // Catch late layout shifts from images, fonts, and sticky pin recompute.
+      const r1 = requestAnimationFrame(snapTop);
+      const t1 = window.setTimeout(snapTop, 60);
+      const t2 = window.setTimeout(snapTop, 300);
+      const t3 = window.setTimeout(snapTop, 900);
+      const onLoad = () => snapTop();
       window.addEventListener("load", onLoad, { once: true });
+      const fonts = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts;
+      fonts?.ready.then(snapTop).catch(() => {});
+
+      // Stabilize against back/forward cache restores landing mid-page.
+      const onPageShow = (e: PageTransitionEvent) => {
+        if (e.persisted) snapTop();
+      };
+      window.addEventListener("pageshow", onPageShow);
+
       return () => {
         cancelAnimationFrame(r1);
         clearTimeout(t1);
         clearTimeout(t2);
+        clearTimeout(t3);
         window.removeEventListener("load", onLoad);
+        window.removeEventListener("pageshow", onPageShow);
         try {
           window.history.scrollRestoration = prev;
         } catch {}
@@ -69,7 +92,8 @@ function Index() {
         window.history.scrollRestoration = prev;
       } catch {}
     };
-  }, []);
+  }, [lenisRef]);
+
 
   // Reveal main content after loader
   useEffect(() => {
