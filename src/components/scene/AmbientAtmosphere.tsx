@@ -18,13 +18,14 @@ export default function AmbientAtmosphere() {
       className="pointer-events-none fixed inset-0 z-[3] overflow-hidden mix-blend-screen"
       style={{ contain: "strict" }}
     >
-      {/* Slow drifting volumetric haze — cool industrial tint */}
+      {/* Slow drifting volumetric haze — cool industrial tint.
+          Radial gradient alone gives the soft falloff; the 60–70px filter blur
+          on huge layers was a major paint cost for no visible difference. */}
       <motion.div
         className="absolute -left-[20%] top-[10%] h-[70vh] w-[70vw] rounded-full will-change-transform"
         style={{
           background:
             "radial-gradient(circle at center, oklch(0.5 0.06 240 / 0.05), transparent 65%)",
-          filter: "blur(60px)",
         }}
         animate={{ x: [0, 40, 0], y: [0, -20, 0], opacity: [0.7, 1, 0.7] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
@@ -34,7 +35,6 @@ export default function AmbientAtmosphere() {
         style={{
           background:
             "radial-gradient(circle at center, oklch(0.45 0.05 260 / 0.045), transparent 70%)",
-          filter: "blur(70px)",
         }}
         animate={{ x: [0, -30, 0], y: [0, 18, 0], opacity: [0.65, 1, 0.65] }}
         transition={{ duration: 40, repeat: Infinity, ease: "easeInOut", delay: 4 }}

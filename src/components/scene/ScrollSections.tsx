@@ -254,10 +254,6 @@ function MotionReveal({
 }
 
 export default function ScrollSections() {
-  const { scrollYProgress } = useScroll();
-  const sectionProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.22 });
-  const drift = useTransform(sectionProgress, [0, 1], [0, -64]);
-
   // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
   const storyChapters = chapters.slice(1);
   const totalChapters = 7;
@@ -266,11 +262,13 @@ export default function ScrollSections() {
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
 
-      <motion.div style={{ y: drift }} className="render-stable">
-        <HeroSection />
-      </motion.div>
+      {/* Hero is no longer wrapped in a scroll-driven translate: the parallax
+          drift was forcing the entire hero subtree (silhouette + heading) to
+          recomposite on every scroll frame for negligible visual gain. */}
+      <HeroSection />
 
       <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
+
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
       <VentureConstellation ventures={ventures} />
