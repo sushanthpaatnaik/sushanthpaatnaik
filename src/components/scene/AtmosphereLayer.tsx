@@ -92,6 +92,28 @@ export default function AtmosphereLayer() {
   const particleY = useTransform(pSlow, [0, 1], [0, -94]);
   const particleOpacity = useTransform(pSlow, STOPS, [0.85, 0.66, 0.98, 0.94, 0.52, 0.62, 0.73, 0.36]);
 
+  /* ---------- Per-section gradient SCENES — crossfade between chapters ----------
+   * Each section owns a distinct color atmosphere. Opacity peaks at its stop and
+   * fades to 0 in adjacent sections, so scrolling drives a cinematic crossfade
+   * between named "scenes" rather than a continuous wallpaper.
+   */
+  const peak = (i: number): number[] =>
+    STOPS.map((_, j) => (i === j ? 0.85 : Math.abs(i - j) === 1 ? 0.12 : 0));
+
+  const scene0 = useTransform(pSlow, STOPS, peak(0)); // Origin — deep graphite
+  const scene1 = useTransform(pSlow, STOPS, peak(1)); // Vision — twilight indigo
+  const scene2 = useTransform(pSlow, STOPS, peak(2)); // Graphene — graphite + cyan
+  const scene3 = useTransform(pSlow, STOPS, peak(3)); // Intelligence — electric cyan
+  const scene4 = useTransform(pSlow, STOPS, peak(4)); // Ventures — deep cobalt
+  const scene5 = useTransform(pSlow, STOPS, peak(5)); // Process — warm steel
+  const scene6 = useTransform(pSlow, STOPS, peak(6)); // Impact — emerald drift
+  const scene7 = useTransform(pSlow, STOPS, peak(7)); // Contact — obsidian stillness
+
+  /* ---------- Aurora glow — sweeps position across the scene timeline ---------- */
+  const auroraX = useTransform(pSlow, [0, 1], ["20%", "80%"]);
+  const auroraY = useTransform(pSlow, [0, 1], ["30%", "70%"]);
+  const auroraOpacity = useTransform(pSlow, STOPS, [0.10, 0.18, 0.26, 0.34, 0.20, 0.16, 0.22, 0.12]);
+
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
       {/* Video atmosphere — cinematic camera drifting through the environment */}
