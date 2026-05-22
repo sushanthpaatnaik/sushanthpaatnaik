@@ -32,13 +32,13 @@ function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1)
 }
 
 function useSceneScale(phase: MotionValue<number>, center: number) {
-  return useTransform(phase, (v) => 1.08 - (v - center) * 0.05);
+  return useTransform(phase, (v) => 1.04 - (v - center) * 0.025);
 }
 
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    return d * d * 10;
+    return d * d * 5;
   });
 }
 
@@ -96,9 +96,9 @@ export default function AnimatedBackground({
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
-    stiffness: 22,
-    damping: 38,
-    mass: 1.4,
+    stiffness: 34,
+    damping: 42,
+    mass: 1.1,
   });
 
   const phase = useTransform(progress, [0, 1], [0, stages - 1]);
@@ -163,10 +163,10 @@ export default function AnimatedBackground({
 
       {/* Subtle electric-blue glow for premium readability */}
       <div
-        className="absolute inset-0 mix-blend-screen"
+        className="absolute inset-0 render-stable"
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.71 0.13 240 / 0.08), transparent 70%)",
+            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.71 0.13 240 / 0.06), transparent 70%)",
         }}
       />
     </div>
