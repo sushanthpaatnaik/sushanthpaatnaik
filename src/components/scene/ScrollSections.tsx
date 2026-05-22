@@ -288,7 +288,7 @@ export default function ScrollSections() {
           <MotionReveal>
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Dossier · Honors of Record</p>
             <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
-              Three decades of work, condensed.
+              A quiet record.
             </h3>
           </MotionReveal>
           <div className="grid grid-cols-2 gap-x-10 gap-y-12 md:grid-cols-4 md:gap-x-14">
@@ -309,39 +309,16 @@ export default function ScrollSections() {
             ))}
           </div>
 
-          {/* Media imprints — slow horizontal drift, restrained */}
-          <MotionReveal delay={0.2} className="mt-20 md:mt-28">
-            <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">Featured · Imprints</p>
-            <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_15%,#000_85%,transparent)]">
-              <div className="flex w-max gap-14 animate-marquee">
-                {[
-                  "MIT Technology Review",
-                  "TED India",
-                  "Times of India",
-                  "India Today",
-                  "Business Standard",
-                  "Global Indian",
-                  "NIF-India · IGNITE",
-                  "Govt. of India · President's Awards",
-                ].concat([
-                  "MIT Technology Review",
-                  "TED India",
-                  "Times of India",
-                  "India Today",
-                  "Business Standard",
-                  "Global Indian",
-                  "NIF-India · IGNITE",
-                  "Govt. of India · President's Awards",
-                ]).map((label, i) => (
-                  <span key={`${label}-${i}`} className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.42em] text-foreground/55">
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
+          {/* Featured imprints — single restrained editorial line */}
+          <MotionReveal delay={0.22} className="mt-20 md:mt-28">
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45 leading-loose blur-[0.3px]">
+              MIT Technology Review &middot; TED India &middot; Times of India &middot; India Today &middot; Business Standard &middot; Global Indian &middot; NIF-India IGNITE
+            </p>
           </MotionReveal>
         </div>
       </section>
+
+
 
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
