@@ -162,7 +162,7 @@ function HeroSection() {
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: false, amount: 0.8 }}
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
-            className="mx-auto mt-12 max-w-xl text-sm text-muted-foreground md:text-base"
+            className="mx-auto mt-10 md:mt-12 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
           >
             Curiosity turned into inventions, patents, companies, and industrial technologies — graphene, nano-materials, and deep-tech ventures built from India for the world.
           </motion.p>
