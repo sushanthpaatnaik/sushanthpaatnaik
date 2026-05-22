@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, Bloom, DepthOfField, Vignette } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, DepthOfField } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import GrapheneAtmosphere from "./GrapheneAtmosphere";
@@ -69,9 +69,8 @@ function GrapheneCanvas({ scrollProgress, mouse }: Props) {
         <CanvasOpacity scrollProgress={scrollProgress} />
 
         <EffectComposer multisampling={0}>
-          <Bloom intensity={0.28} luminanceThreshold={0.42} luminanceSmoothing={0.94} />
-          <DepthOfField focusDistance={0.02} focalLength={0.045} bokehScale={1.6} />
-          <Vignette eskil={false} offset={0.2} darkness={0.7} />
+          <Bloom intensity={0.24} luminanceThreshold={0.45} luminanceSmoothing={0.94} />
+          <DepthOfField focusDistance={0.02} focalLength={0.045} bokehScale={1.4} />
         </EffectComposer>
       </Suspense>
     </Canvas>

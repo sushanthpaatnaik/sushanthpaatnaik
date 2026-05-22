@@ -160,15 +160,6 @@ export default function AnimatedBackground({
       />
 
       {children?.({ progress, phase })}
-
-      {/* Subtle electric-blue glow for premium readability */}
-      <div
-        className="absolute inset-0 render-stable"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.71 0.13 240 / 0.06), transparent 70%)",
-        }}
-      />
     </div>
   );
 }
