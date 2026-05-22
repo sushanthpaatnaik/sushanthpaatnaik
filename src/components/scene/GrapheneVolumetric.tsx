@@ -51,9 +51,9 @@ function CanvasOpacity({ scrollProgress }: { scrollProgress: Props["scrollProgre
 function GrapheneCanvas({ scrollProgress, mouse }: Props) {
   return (
     <Canvas
-      dpr={[1, 1.6]}
+      dpr={[1, 1.25]}
       camera={{ position: [0, 0, 9], fov: 38 }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent" }}
     >
       <Suspense fallback={null}>
@@ -68,9 +68,10 @@ function GrapheneCanvas({ scrollProgress, mouse }: Props) {
         <ParallaxCamera scrollProgress={scrollProgress} mouse={mouse} />
         <CanvasOpacity scrollProgress={scrollProgress} />
 
+        {/* DoF removed — was the heaviest single postprocess. Bloom alone
+            preserves the volumetric, atmospheric glow at a fraction of cost. */}
         <EffectComposer multisampling={0}>
-          <Bloom intensity={0.24} luminanceThreshold={0.45} luminanceSmoothing={0.94} />
-          <DepthOfField focusDistance={0.02} focalLength={0.045} bokehScale={1.4} />
+          <Bloom intensity={0.22} luminanceThreshold={0.5} luminanceSmoothing={0.94} />
         </EffectComposer>
       </Suspense>
     </Canvas>
