@@ -23,7 +23,7 @@ const chapters: readonly StoryChapter[] = [
     id: "recognition",
     eyebrow: "02 — Recognition",
     title: "Awarded early. Responsible forever.",
-    body: "Six-time Indian Presidential awardee between 2008 and 2013. One of the youngest speakers invited to TED-India. Featured by MIT Technology Review, India Today, Times of India and Global Indian. Recognition is a lagging indicator — the work remains in the next prototype.",
+    body: "Six-time Indian Presidential awardee between 2008 and 2013. NIF-India IGNITE awardee. One of the youngest speakers invited to TED-India. Featured by MIT Technology Review, India Today, Times of India, Business Standard, and Global Indian. Recognition is a lagging indicator — the work remains in the next prototype.",
     align: "left",
   },
   {
@@ -281,6 +281,68 @@ export default function ScrollSections() {
 
       <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
 
+      {/* Dossier — honors of record. Editorial, not corporate. */}
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_50%_50%,oklch(0.10_0.03_245/0.10),transparent_72%)]" />
+        <div className="mx-auto w-full max-w-5xl pointer-events-auto">
+          <MotionReveal>
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Dossier · Honors of Record</p>
+            <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
+              Three decades of work, condensed.
+            </h3>
+          </MotionReveal>
+          <div className="grid grid-cols-2 gap-x-10 gap-y-12 md:grid-cols-4 md:gap-x-14">
+            {[
+              { k: "27", u: "", l: "Honors of record", s: "National + international" },
+              { k: "21", u: "", l: "Patents & awards", s: "Times of India · profiled" },
+              { k: "50", u: "+", l: "Media imprints", s: "Print · broadcast · digital" },
+              { k: "10", u: "+", l: "Working prototypes", s: "Bench to industrial pilot" },
+            ].map((m, i) => (
+              <MotionReveal key={m.l} delay={i * 0.08} className="border-t border-foreground/[0.08] pt-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-primary/70">{m.l}</p>
+                <div className="mt-5 flex items-baseline gap-1">
+                  <span className="font-display text-5xl font-medium text-gradient md:text-6xl">{m.k}</span>
+                  <span className="font-display text-2xl text-muted-foreground/60">{m.u}</span>
+                </div>
+                <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground/70">{m.s}</p>
+              </MotionReveal>
+            ))}
+          </div>
+
+          {/* Media imprints — slow horizontal drift, restrained */}
+          <MotionReveal delay={0.2} className="mt-20 md:mt-28">
+            <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">Featured · Imprints</p>
+            <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_15%,#000_85%,transparent)]">
+              <div className="flex w-max gap-14 animate-marquee">
+                {[
+                  "MIT Technology Review",
+                  "TED India",
+                  "Times of India",
+                  "India Today",
+                  "Business Standard",
+                  "Global Indian",
+                  "NIF-India · IGNITE",
+                  "Govt. of India · President's Awards",
+                ].concat([
+                  "MIT Technology Review",
+                  "TED India",
+                  "Times of India",
+                  "India Today",
+                  "Business Standard",
+                  "Global Indian",
+                  "NIF-India · IGNITE",
+                  "Govt. of India · President's Awards",
+                ]).map((label, i) => (
+                  <span key={`${label}-${i}`} className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.42em] text-foreground/55">
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </MotionReveal>
+        </div>
+      </section>
+
 
       {/* Ventures — supports chapter 05 (Founder Layer) */}
       <VentureConstellation ventures={ventures} />
@@ -310,6 +372,45 @@ export default function ScrollSections() {
                   <span className="text-xs sm:text-sm text-muted-foreground">{metric.u}</span>
                 </div>
                 <p className="mt-3 md:mt-4 text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground">{metric.l}</p>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Technology Portfolio — editorial archive of material & systems domains.
+          Restrained list, not a card grid. */}
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.11_0.03_245/0.10),transparent_72%)]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Portfolio</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              The lattice, downstream.
+            </h3>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Nine material and systems domains where graphene, nano-additives, and intelligent process design converge into industrial outcomes.
+            </p>
+          </MotionReveal>
+
+          <div className="md:col-span-8">
+            {[
+              { n: "01", t: "Graphene Systems", b: "Atomic-thin carbon — synthesized, functionalized, and integrated as the substrate of next-generation industrial platforms." },
+              { n: "02", t: "Nano-Materials", b: "Engineered 2D and quantum-confined structures, designed for conductivity, strength, and catalytic surface area." },
+              { n: "03", t: "Industrial Coatings", b: "Anti-corrosion, thermal, and photonic coatings for solar, marine, aerospace, and heavy infrastructure." },
+              { n: "04", t: "Polymer Additives", b: "Carbon dispersions that lift mechanical, electrical, and barrier properties in mainstream polymers." },
+              { n: "05", t: "Concrete Technologies", b: "Carbon-augmented binders reducing cement intensity while extending the lifespan of structural systems." },
+              { n: "06", t: "Battery & Energy Storage", b: "Electrode architectures shortening charge cycles and lifting energy density at industrial scale." },
+              { n: "07", t: "Fuel & Coal Systems", b: "Moisture, sulphur, and combustion-efficiency interventions for legacy fuel infrastructure in transition." },
+              { n: "08", t: "Filtration & Water", b: "Membrane and adsorbent systems for industrial effluent, potable water, and air-quality recovery." },
+              { n: "09", t: "Climate Infrastructure", b: "Carbon-capture surfaces, sensing networks, and decarbonization pathways for industrial corridors." },
+            ].map((d, i) => (
+              <MotionReveal key={d.n} delay={i * 0.04} className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/10 py-7 md:py-8 transition-colors duration-500 hover:border-foreground/25">
+                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{d.n}</span>
+                <div>
+                  <h4 className="mb-2 font-display text-lg tracking-[-0.02em] md:text-2xl">{d.t}</h4>
+                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground/85">{d.b}</p>
+                </div>
               </MotionReveal>
             ))}
           </div>
