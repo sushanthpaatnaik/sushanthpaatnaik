@@ -69,11 +69,16 @@ function SectionCopy({
         {body}
       </motion.p>
 
-      <div
-        className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}
+      <motion.div
+        initial={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.8 }}
+        transition={{ duration: 0 }}
+        className={`absolute top-10 hidden md:block text-[10px] font-extralight uppercase tracking-[0.3em] text-muted-foreground/25 blur-[0.3px] ${counterPosition}`}
+        style={{ mixBlendMode: "soft-light" }}
       >
         {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </div>
+      </motion.div>
     </div>
   );
 }
