@@ -20,12 +20,12 @@ export default function AtmosphereLayer({
   // Pre-computed floating molecular particles
   const particles = useMemo(
     () =>
-      Array.from({ length: 28 }, (_, i) => ({
+      Array.from({ length: 18 }, (_, i) => ({
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: 1 + Math.random() * 2.2,
-        delay: Math.random() * 20,
-        dur: 22 + Math.random() * 28,
+        size: 0.8 + Math.random() * 1.6,
+        delay: Math.random() * 24,
+        dur: 28 + Math.random() * 32,
         seed: i,
       })),
     [],
