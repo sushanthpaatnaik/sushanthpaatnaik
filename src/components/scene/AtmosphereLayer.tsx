@@ -94,9 +94,9 @@ export default function AtmosphereLayer({
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Cinematic color grade — graphite blacks, restrained cyan-blue conductive cast */}
-        <div className="absolute inset-0 mix-blend-color bg-[linear-gradient(135deg,oklch(0.14_0.03_240)_0%,oklch(0.18_0.05_220)_55%,oklch(0.16_0.04_255)_100%)] opacity-80" />
+        <div className="absolute inset-0 mix-blend-color bg-[linear-gradient(135deg,oklch(0.12_0.02_240)_0%,oklch(0.15_0.04_220)_55%,oklch(0.13_0.03_255)_100%)] opacity-60" />
         {/* Tonal crush — lift shadows into graphite */}
-        <div className="absolute inset-0 mix-blend-multiply bg-[#0a0d14]/70" />
+        <div className="absolute inset-0 mix-blend-multiply bg-[#0a0d14]/75" />
       </div>
 
       {/* Deep graphite darkening — readability */}
