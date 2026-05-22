@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
 import type { StoryChapter } from "./StorySection";
@@ -285,23 +285,8 @@ function MotionReveal({
 }
 
 export default function ScrollSections() {
-  const sectionProgress = useMotionValue(0);
-
-  useEffect(() => {
-    const handle = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      sectionProgress.set(max > 0 ? window.scrollY / max : 0);
-    };
-
-    handle();
-    window.addEventListener("scroll", handle, { passive: true });
-    window.addEventListener("resize", handle);
-    return () => {
-      window.removeEventListener("scroll", handle);
-      window.removeEventListener("resize", handle);
-    };
-  }, [sectionProgress]);
-
+  const { scrollYProgress } = useScroll();
+  const sectionProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.22 });
   const drift = useTransform(sectionProgress, [0, 1], [0, -64]);
 
   // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
