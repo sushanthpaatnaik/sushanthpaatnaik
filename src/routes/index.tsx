@@ -169,6 +169,9 @@ function Index() {
       {/* Sitewide ambient atmosphere — near-imperceptible haze + grain for spatial life */}
       {entered && <AmbientAtmosphere />}
 
+      {/* Hidden cinematic interaction — a faint cool aura that trails the cursor */}
+      {entered && <CursorAura />}
+
       {/* Custom cursor */}
       <div
         ref={cursorRef}
