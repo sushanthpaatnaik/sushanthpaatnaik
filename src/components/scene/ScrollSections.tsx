@@ -300,53 +300,43 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Founder presence — asymmetric editorial composition.
-          Silhouette + handwritten quote; cinematic, mysterious, invention-driven. */}
-      <section className="relative min-h-[110vh] px-6 py-32 md:px-20">
-        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
-          {/* Asymmetric image — offset left, occupies 7 of 12 columns */}
+      {/* Founder Voice — seamless cinematic composition.
+          Portrait bleeds into the environment via radial masks; no boxes, no frames. */}
+      <section className="relative min-h-[120vh] overflow-hidden px-6 py-32 md:px-20">
+        {/* Ambient volumetric wash behind the figure */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-[-10%] top-1/2 h-[80vh] w-[70vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.18_0.05_240/0.35),transparent_65%)] blur-3xl" />
+          <div className="absolute right-[-15%] top-[20%] h-[60vh] w-[50vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.1_0.02_260/0.4),transparent_70%)] blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          {/* Asymmetric portrait — no container, soft-edge masked into the scene */}
           <MotionReveal className="relative md:col-span-7 md:col-start-1">
-            <div className="relative overflow-hidden">
-              <div className="absolute -top-3 left-0 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
-                Plate 02 · Inventor at the bench
-              </div>
+            <div className="relative">
+              <p className="absolute -top-2 left-0 z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/50">
+                Plate 02 · Founder
+              </p>
               <img
                 src={founderPresence}
-                alt="Inventor silhouette at a graphite workbench, lit by cool blue light, surrounded by patent diagrams, microscope and graphene wafer."
-                width={1024}
-                height={1024}
+                alt="Sushanth Paatnaik — founder portrait emerging from industrial darkness."
+                width={896}
+                height={1200}
                 loading="lazy"
                 decoding="async"
-                className="mt-6 aspect-square w-full object-cover grayscale-[0.18] contrast-[1.05] [filter:brightness(0.92)_saturate(0.8)]"
+                className="relative mt-8 w-full grayscale-[0.18] contrast-[1.08] [filter:brightness(0.88)_saturate(0.75)] [mask-image:radial-gradient(ellipse_60%_70%_at_50%_45%,#000_45%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_60%_70%_at_50%_45%,#000_45%,transparent_92%)]"
               />
-              {/* Soft lens diffusion + vignette over the plate */}
-              <div className="pointer-events-none absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_at_50%_55%,transparent_35%,oklch(0.05_0_0/0.7)_100%)]" />
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,oklch(0.04_0_0/0.55)_100%)]" />
-
-              {/* Plate 03 — laboratory inset, offset for editorial layering */}
-              <div className="absolute -bottom-12 -right-8 hidden w-[42%] md:block lg:-right-16 lg:-bottom-16">
-                <div className="relative overflow-hidden border border-foreground/10 shadow-[0_30px_80px_-30px_oklch(0.04_0_0/0.9)]">
-                  <div className="absolute -top-3 left-0 z-10 font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/60">
-                    Plate 03 · Laboratory
-                  </div>
-                  <img
-                    src={founderLab}
-                    alt="Inventor at the laboratory bench with instrumentation, shallow depth of field, industrial grading."
-                    width={1024}
-                    height={1024}
-                    loading="lazy"
-                    decoding="async"
-                    className="mt-3 aspect-square w-full object-cover grayscale-[0.15] contrast-[1.05] [filter:brightness(0.9)_saturate(0.8)]"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.04_0_0/0.6)_100%)]" />
-                </div>
-              </div>
+              {/* Cinematic shadow integration */}
+              <div className="pointer-events-none absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_70%_80%_at_50%_50%,transparent_30%,oklch(0.03_0_0/0.95)_95%)]" />
+              {/* Subtle volumetric rim light from the right */}
+              <div className="pointer-events-none absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_30%_50%_at_72%_38%,oklch(0.45_0.1_240/0.18),transparent_60%)]" />
+              {/* Bottom fade into darkness */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,oklch(0.04_0_0)_92%)]" />
             </div>
           </MotionReveal>
 
-          {/* Editorial quote — pushed right + down for cinematic asymmetry */}
-          <MotionReveal delay={0.12} className="md:col-span-5 md:col-start-8 md:pt-32 lg:pt-48">
-            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/80">
+          {/* Editorial quote — offset down-right for cinematic asymmetry */}
+          <MotionReveal delay={0.12} className="md:col-span-5 md:col-start-8 md:pt-40 lg:pt-56">
+            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
               Founder · Voice
             </p>
             <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-4xl">
