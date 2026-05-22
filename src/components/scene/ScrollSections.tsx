@@ -300,42 +300,53 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Founder Voice — seamless cinematic composition.
-          Portrait bleeds into the environment via radial masks; no boxes, no frames. */}
-      <section className="relative min-h-[120vh] overflow-hidden px-6 py-32 md:px-20">
+      {/* Founder Voice — cinematic editorial frame.
+          Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
+      <section className="relative min-h-[140vh] overflow-hidden px-6 py-32 md:px-20">
+        {/* Heavy atmospheric scrim that pushes the India network bg deep into the scene */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_50%,oklch(0.04_0_0/0.78),oklch(0.03_0_0/0.95))] backdrop-blur-[6px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.6),transparent_25%,transparent_70%,oklch(0.03_0_0/0.85))]" />
+
         {/* Ambient volumetric wash behind the figure */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-10%] top-1/2 h-[80vh] w-[70vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.18_0.05_240/0.35),transparent_65%)] blur-3xl" />
-          <div className="absolute right-[-15%] top-[20%] h-[60vh] w-[50vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.1_0.02_260/0.4),transparent_70%)] blur-3xl" />
+          <div className="absolute left-[-15%] top-1/2 h-[95vh] w-[80vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.16_0.05_240/0.32),transparent_62%)] blur-3xl" />
+          <div className="absolute right-[-20%] top-[15%] h-[70vh] w-[55vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.09_0.02_260/0.45),transparent_70%)] blur-3xl" />
+          <div className="absolute left-[20%] bottom-[-10%] h-[50vh] w-[45vw] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.06_0_0/0.7),transparent_70%)] blur-3xl" />
         </div>
 
-        <div className="relative mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
-          {/* Asymmetric portrait — no container, soft-edge masked into the scene */}
-          <MotionReveal className="relative md:col-span-7 md:col-start-1">
+        <div className="relative mx-auto grid w-full max-w-7xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          {/* Asymmetric portrait — enlarged, fully dissolved into the scene */}
+          <MotionReveal className="relative md:col-span-8 md:col-start-1 md:-ml-[6%] lg:-ml-[10%]">
             <div className="relative">
-              <p className="absolute -top-2 left-0 z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/50">
+              <p className="absolute top-4 left-[12%] z-10 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
                 Plate 02 · Founder
               </p>
               <img
                 src={founderPresence}
-                alt="Sushanth Paatnaik — founder portrait emerging from industrial darkness."
-                width={896}
-                height={1200}
+                alt="Sushanth Paatnaik — founder portrait dissolving into industrial darkness."
+                width={1100}
+                height={1450}
                 loading="lazy"
                 decoding="async"
-                className="relative mt-8 w-full grayscale-[0.18] contrast-[1.08] [filter:brightness(0.88)_saturate(0.75)] [mask-image:radial-gradient(ellipse_60%_70%_at_50%_45%,#000_45%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_60%_70%_at_50%_45%,#000_45%,transparent_92%)]"
+                className="relative w-full grayscale-[0.22] contrast-[1.1] [filter:brightness(0.82)_saturate(0.7)] [mask-image:radial-gradient(ellipse_55%_62%_at_50%_42%,#000_28%,rgba(0,0,0,0.55)_55%,transparent_88%)] [-webkit-mask-image:radial-gradient(ellipse_55%_62%_at_50%_42%,#000_28%,rgba(0,0,0,0.55)_55%,transparent_88%)]"
               />
-              {/* Cinematic shadow integration */}
-              <div className="pointer-events-none absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_70%_80%_at_50%_50%,transparent_30%,oklch(0.03_0_0/0.95)_95%)]" />
+              {/* Deep cinematic shadow integration */}
+              <div className="pointer-events-none absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_65%_75%_at_50%_48%,transparent_22%,oklch(0.02_0_0/0.98)_92%)]" />
               {/* Subtle volumetric rim light from the right */}
-              <div className="pointer-events-none absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_30%_50%_at_72%_38%,oklch(0.45_0.1_240/0.18),transparent_60%)]" />
-              {/* Bottom fade into darkness */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,oklch(0.04_0_0)_92%)]" />
+              <div className="pointer-events-none absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_28%_45%_at_70%_36%,oklch(0.45_0.1_240/0.16),transparent_60%)]" />
+              {/* Atmospheric haze drift across the figure */}
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_40%,oklch(0.1_0.02_240/0.18)_60%,transparent_85%)]" />
+              {/* Top + bottom fade into darkness */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-[linear-gradient(180deg,oklch(0.03_0_0)_8%,transparent)]" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-[linear-gradient(180deg,transparent,oklch(0.03_0_0)_88%)]" />
+              {/* Side vignettes */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-[linear-gradient(90deg,oklch(0.03_0_0)_12%,transparent)]" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-1/5 bg-[linear-gradient(270deg,oklch(0.03_0_0)_12%,transparent)]" />
             </div>
           </MotionReveal>
 
           {/* Editorial quote — offset down-right for cinematic asymmetry */}
-          <MotionReveal delay={0.12} className="md:col-span-5 md:col-start-8 md:pt-40 lg:pt-56">
+          <MotionReveal delay={0.14} className="md:col-span-5 md:col-start-8 md:pt-56 lg:pt-72">
             <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
               Founder · Voice
             </p>
