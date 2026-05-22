@@ -27,7 +27,7 @@ function SectionCopy({
     align === "center"
       ? "text-center mx-auto"
       : align === "right"
-        ? "ml-auto text-right"
+        ? "mr-auto md:ml-auto md:mr-0 text-left md:text-right"
         : "mr-auto text-left";
   const counterPosition =
     align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
