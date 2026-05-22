@@ -121,7 +121,7 @@ function SectionCopy({
       </motion.p>
 
       <div className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}>
-        {String(index + 1).padStart(2, "0")} / 07
+        {String(index + 1).padStart(2, "0")} / 04
       </div>
     </div>
   );
