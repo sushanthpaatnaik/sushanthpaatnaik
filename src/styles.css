@@ -33,31 +33,37 @@
 
 :root {
   --radius: 0.5rem;
-  /* Deep cinematic dark */
-  --background: oklch(0.08 0.012 260);
-  --foreground: oklch(0.97 0.005 260);
-  --card: oklch(0.12 0.015 260);
-  --card-foreground: oklch(0.97 0.005 260);
-  --popover: oklch(0.12 0.015 260);
-  --popover-foreground: oklch(0.97 0.005 260);
-  --primary: oklch(0.85 0.15 220);
-  --primary-foreground: oklch(0.08 0.012 260);
-  --secondary: oklch(0.18 0.02 260);
-  --secondary-foreground: oklch(0.97 0.005 260);
-  --muted: oklch(0.16 0.018 260);
-  --muted-foreground: oklch(0.65 0.02 260);
-  --accent: oklch(0.7 0.2 280);
-  --accent-foreground: oklch(0.97 0.005 260);
+  /* Luxury deep-tech: black, graphite, electric blue, copper-gold, white */
+  --background: oklch(0.045 0.006 260);
+  --foreground: oklch(0.98 0.004 260);
+  --card: oklch(0.1 0.012 260);
+  --card-foreground: oklch(0.98 0.004 260);
+  --popover: oklch(0.1 0.012 260);
+  --popover-foreground: oklch(0.98 0.004 260);
+  /* Electric blue */
+  --primary: oklch(0.78 0.18 235);
+  --primary-foreground: oklch(0.05 0.006 260);
+  --secondary: oklch(0.16 0.014 258);
+  --secondary-foreground: oklch(0.98 0.004 260);
+  --muted: oklch(0.14 0.012 258);
+  --muted-foreground: oklch(0.66 0.014 258);
+  /* Copper-gold accent */
+  --accent: oklch(0.74 0.13 58);
+  --accent-foreground: oklch(0.05 0.006 260);
   --destructive: oklch(0.65 0.24 27);
   --destructive-foreground: oklch(0.97 0.005 260);
-  --border: oklch(0.22 0.02 260 / 50%);
-  --input: oklch(0.2 0.02 260);
-  --ring: oklch(0.7 0.15 220);
+  --border: oklch(0.22 0.014 258 / 45%);
+  --input: oklch(0.18 0.014 258);
+  --ring: oklch(0.78 0.18 235);
 
-  --glow-primary: 0 0 60px oklch(0.85 0.15 220 / 0.4);
-  --glow-accent: 0 0 80px oklch(0.7 0.2 280 / 0.35);
+  --color-graphite: oklch(0.18 0.008 258);
+  --color-copper: oklch(0.74 0.13 58);
+  --color-electric: oklch(0.78 0.18 235);
+
+  --glow-primary: 0 0 60px oklch(0.78 0.18 235 / 0.4);
+  --glow-accent: 0 0 80px oklch(0.74 0.13 58 / 0.35);
   --gradient-hero: radial-gradient(ellipse at center, oklch(0.18 0.05 250 / 0.6), transparent 70%);
-  --gradient-text: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.7 0.05 260) 100%);
+  --gradient-text: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.82 0.06 235) 60%, oklch(0.74 0.13 58) 100%);
 }
 
 .dark {

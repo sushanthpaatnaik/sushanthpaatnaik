@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 const labels = [
-  "Discover",
-  "Ideate",
-  "Invent",
-  "Validate",
-  "Protect",
-  "Prototype",
-  "Commercialize",
-  "Scale",
-  "Deployment",
+  "Spark",
+  "Origin",
+  "Material",
+  "Stack",
+  "Founder",
+  "India → World",
+  "Future",
 ];
 
 export default function HUD({

@@ -8,27 +8,23 @@ import {
   type MotionValue,
 } from "framer-motion";
 
-import scene01 from "@/assets/scene-01-discover.jpg";
-import scene02 from "@/assets/scene-02-ideate.jpg";
-import scene03 from "@/assets/scene-03-invent.jpg";
-import scene04 from "@/assets/scene-04-validate.jpg";
-import scene05 from "@/assets/scene-05-protect.jpg";
-import scene06 from "@/assets/scene-06-prototype.jpg";
-import scene07 from "@/assets/scene-07-commercialize.jpg";
-import scene08 from "@/assets/scene-08-scale.jpg";
-import scene09 from "@/assets/scene-09-deployment.jpg";
+import scene01 from "@/assets/story-01-spark.jpg";
+import scene02 from "@/assets/story-02-origin.jpg";
+import scene03 from "@/assets/story-03-material.jpg";
+import scene04 from "@/assets/story-04-stack.jpg";
+import scene05 from "@/assets/story-05-founder.jpg";
+import scene06 from "@/assets/story-06-india.jpg";
+import scene07 from "@/assets/story-07-future.jpg";
 
-// 9 cinematic stages mapped to the innovation lifecycle.
+// 7 cinematic chapters: Spark → Origin → Material → Stack → Founder → India → Future.
 const SCENES = [
-  { src: scene01, alt: "Discover — conceptual particles, idea formation" },
-  { src: scene02, alt: "Ideate — graphene lattice, molecular exploration" },
-  { src: scene03, alt: "Invent — conductive pathways, engineering precision" },
-  { src: scene04, alt: "Validate — lab atmosphere, prototype validation" },
-  { src: scene05, alt: "Protect — IP vault, secure system architecture" },
-  { src: scene06, alt: "Prototype — advanced manufacturing, product emergence" },
-  { src: scene07, alt: "Commercialize — industrial-scale infrastructure" },
-  { src: scene08, alt: "Scale — global climate-tech deployment network" },
-  { src: scene09, alt: "Deployment — visionary stillness, future resolution" },
+  { src: scene01, alt: "The Spark — single particle, idea forming in the void" },
+  { src: scene02, alt: "Origin — young inventor's workshop, gadgets and blueprints" },
+  { src: scene03, alt: "The Material Layer — graphene honeycomb lattice" },
+  { src: scene04, alt: "The Innovation Stack — solar, battery, polymer, concrete" },
+  { src: scene05, alt: "The Founder Layer — constellation of companies" },
+  { src: scene06, alt: "India to the World — India glowing outward to global network" },
+  { src: scene07, alt: "The Future System — living industrial ecosystem at dawn" },
 ];
 
 const STAGES = SCENES.length;
@@ -53,7 +49,6 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    // Sharp at center; soft blur only while transitioning between scenes.
     return d * d * 10;
   });
 }
@@ -76,7 +71,8 @@ function SceneLayer({
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
   const blurPx = useSceneBlur(phase, index);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.68) contrast(1.02) saturate(0.55) hue-rotate(-8deg)`;
+  // Preserve electric-blue + copper-gold inherent to each scene; restrained grade.
+  const filter = useMotionTemplate`blur(${blurPx}px) brightness(0.78) contrast(1.05) saturate(0.92)`;
   const y = useTransform(parallax, (p) => p * (index % 2 === 0 ? 1 : -1) * 40);
 
   return (
@@ -120,6 +116,7 @@ export default function AtmosphereLayer() {
         blur: 1 + Math.random() * 2.5,
         delay: Math.random() * 14,
         duration: 24 + Math.random() * 30,
+        copper: index % 3 === 0,
       })),
     [],
   );
@@ -128,14 +125,14 @@ export default function AtmosphereLayer() {
   const particleOpacity = useTransform(
     progressSlow,
     STOPS,
-    [0.5, 0.46, 0.42, 0.38, 0.34, 0.3, 0.24, 0.18, 0.1],
+    [0.55, 0.46, 0.4, 0.34, 0.3, 0.24, 0.16],
   );
 
-  // Darker bookends, slightly lighter mid-journey so imagery breathes.
+  // Darker at the spark and founder/india interludes; lighter through material/stack/future.
   const overlayOpacity = useTransform(
     progressSlow,
     STOPS,
-    [0.62, 0.5, 0.46, 0.5, 0.54, 0.48, 0.46, 0.5, 0.6],
+    [0.7, 0.55, 0.46, 0.5, 0.52, 0.5, 0.55],
   );
 
   return (
@@ -158,7 +155,7 @@ export default function AtmosphereLayer() {
         style={{
           opacity: overlayOpacity,
           background:
-            "linear-gradient(180deg, oklch(0.04 0.01 258 / 0.6) 0%, oklch(0.04 0.01 258 / 0.4) 50%, oklch(0.04 0.01 258 / 0.7) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.65) 0%, oklch(0.03 0.006 260 / 0.38) 50%, oklch(0.03 0.006 260 / 0.72) 100%)",
         }}
       />
 
@@ -167,7 +164,7 @@ export default function AtmosphereLayer() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 38%, oklch(0.02 0.01 255 / 0.85) 100%)",
+            "radial-gradient(ellipse at center, transparent 38%, oklch(0.02 0.006 260 / 0.88) 100%)",
         }}
       />
 
@@ -176,18 +173,18 @@ export default function AtmosphereLayer() {
         className="absolute inset-x-0 top-0 h-64"
         style={{
           background:
-            "linear-gradient(to bottom, oklch(0.02 0.01 255 / 0.92), transparent)",
+            "linear-gradient(to bottom, oklch(0.02 0.006 260 / 0.92), transparent)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-64"
         style={{
           background:
-            "linear-gradient(to top, oklch(0.02 0.01 255 / 0.92), transparent)",
+            "linear-gradient(to top, oklch(0.02 0.006 260 / 0.92), transparent)",
         }}
       />
 
-      {/* Drifting particles */}
+      {/* Drifting particles — mixed electric-blue + copper-gold */}
       <motion.div
         className="absolute inset-0 will-change-transform"
         style={{ y: particleY, opacity: particleOpacity }}
@@ -203,23 +200,26 @@ export default function AtmosphereLayer() {
               height: `${particle.size}px`,
               opacity: 0.32,
               filter: `blur(${particle.blur}px)`,
-              background: "oklch(0.92 0.04 220)",
-              boxShadow: "0 0 10px oklch(0.74 0.08 220 / 0.35)",
+              background: particle.copper
+                ? "oklch(0.82 0.13 58)"
+                : "oklch(0.92 0.06 235)",
+              boxShadow: particle.copper
+                ? "0 0 10px oklch(0.74 0.13 58 / 0.45)"
+                : "0 0 10px oklch(0.78 0.18 235 / 0.4)",
               animation: `atmosDrift ${particle.duration}s ease-in-out ${particle.delay}s infinite alternate`,
             }}
           />
         ))}
       </motion.div>
 
-      {/* Subtle cyan glow for premium readability */}
+      {/* Subtle electric-blue glow for premium readability */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.74 0.12 220 / 0.12), transparent 70%)",
+            "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.78 0.18 235 / 0.1), transparent 70%)",
         }}
       />
-
 
       <style>{`
         @keyframes atmosDrift {
