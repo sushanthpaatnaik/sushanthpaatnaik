@@ -416,31 +416,10 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Outcomes — supports chapter 06 (India → World) */}
-      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_70%_50%,oklch(0.11_0.03_245/0.10),transparent_72%)]" />
-        <div className="mx-auto w-full max-w-6xl pointer-events-auto">
-          <MotionReveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Outcomes</p>
-            <h3 className="mb-14 md:mb-20 max-w-3xl font-display text-[clamp(2rem,8vw,4rem)] leading-[1.04] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">
-              Measured in tons of carbon, joules of energy, years of life.
-            </h3>
-          </MotionReveal>
-          <div className="grid gap-px bg-foreground/[0.06] md:grid-cols-3">
-            {[
-              { k: "GW", l: "Energy systems", s: "Graphene-enabled storage & transmission" },
-              { k: "Gt CO₂", l: "Climate trajectory", s: "Material pathways for decarbonization" },
-              { k: "10⁹", l: "Lives downstream", s: "Filtration, sensing, intelligent infrastructure" },
-            ].map((metric, index) => (
-              <MotionReveal key={metric.l} delay={index * 0.08} className="panel-surface p-7 sm:p-10 md:p-14">
-                <div className="font-display text-4xl font-medium text-gradient sm:text-5xl md:text-6xl">{metric.k}</div>
-                <p className="mt-4 text-xs sm:text-sm uppercase tracking-[0.3em] text-foreground/80">{metric.l}</p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground/70">{metric.s}</p>
-              </MotionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Outcomes section removed — the Dossier and Carbon Intelligence panels
+          already carry the credibility layer. Speculative stats diluted both. */}
+
+
 
       {/* Founder Voice — cinematic editorial frame.
           Portrait dissolves into atmospheric darkness; India map is pushed deep. */}
