@@ -106,7 +106,7 @@ export default function AtmosphereLayer({
       <div
         ref={hazeRef}
         className="absolute inset-0 will-change-transform"
-        style={{ opacity: 1.14 }}
+        style={{ opacity: 0.14 }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,oklch(0.26_0.05_240/0.4),transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_70%,oklch(0.24_0.04_230/0.32),transparent_65%)]" />
