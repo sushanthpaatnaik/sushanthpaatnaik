@@ -23,9 +23,8 @@ const SCENE_COUNT = 7;
 const STOPS = Array.from({ length: SCENE_COUNT }, (_, i) => i / (SCENE_COUNT - 1));
 
 // Triangle weight: 1 at its own stop, 0 at neighbors → smooth crossfade.
-function sceneWeight(i: number, p: MotionValue<number>) {
-  const weights = STOPS.map((_, j) => (i === j ? 1 : Math.abs(i - j) === 1 ? 0 : 0));
-  // expand: peak 1 at i, 0 at i±1, 0 elsewhere → motion interpolates linearly
+function sceneWeight(i: number, p: MotionValue<number>): MotionValue<number> {
+  const weights: number[] = STOPS.map((_, j) => (i === j ? 1 : 0));
   return useTransform(p, STOPS, weights);
 }
 
