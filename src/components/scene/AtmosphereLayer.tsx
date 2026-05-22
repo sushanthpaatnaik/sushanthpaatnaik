@@ -1,18 +1,17 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import {
   motion,
   useMotionTemplate,
-  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import atmosphereVideo from "@/assets/atmosphere.mp4";
 
 // 4 stages: Ideation → Innovation → Commercialisation → Industry Deployment
 const STAGES = 4;
 const STOPS = Array.from({ length: STAGES }, (_, i) => i / (STAGES - 1));
+
 
 function useStageOpacity(phase: MotionValue<number>, center: number, spread = 0.85) {
   return useTransform(phase, (value) => {
