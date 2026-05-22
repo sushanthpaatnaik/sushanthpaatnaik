@@ -58,14 +58,14 @@ export default function AtmosphereLayer() {
    * All motion values reduced by ~15% for luxury restraint.
    */
   //                              Hero  Vision Mater. Intel. Vent.  Proc.  Impact Contact
-  const scale      = useTransform(pFast, STOPS, [1.03, 1.06, 1.09, 1.10, 1.08, 1.09, 1.07, 1.12]);
-  const translateY = useTransform(pFast, STOPS, [   0,  -12,   -7,  -19,  -14,  -24,  -17,  -31]);
-  const rotate     = useTransform(pFast, STOPS, [   0, -0.34, 0.26, -0.17, 0.34, -0.26, 0.17, -0.43]);
-  const blurPx     = useTransform(pFast, STOPS, [ 0.17, 1.19, 0.51, 0.77, 1.53, 1.28, 1.87, 1.70]);
-  const brightness = useTransform(pFast, STOPS, [0.89, 0.66, 0.80, 0.75, 0.60, 0.63, 0.70, 0.51]);
-  const contrast   = useTransform(pFast, STOPS, [1.06, 1.03, 1.11, 1.09, 1.14, 1.06, 0.99, 1.08]);
-  const saturate   = useTransform(pFast, STOPS, [0.90, 0.75, 0.92, 0.97, 0.72, 0.77, 0.82, 0.63]);
-  const videoOpacity = useTransform(pFast, STOPS, [0.90, 0.74, 0.85, 0.81, 0.71, 0.74, 0.76, 0.63]);
+  const scale      = useTransform(pFast, STOPS, [1.02, 1.07, 1.11, 1.13, 1.09, 1.11, 1.06, 1.15]);
+  const translateY = useTransform(pFast, STOPS, [   0,  -16,   -8,  -26,  -18,  -32,  -22,  -42]);
+  const rotate     = useTransform(pFast, STOPS, [   0, -0.45, 0.34, -0.22, 0.45, -0.34, 0.22, -0.58]);
+  const blurPx     = useTransform(pFast, STOPS, [ 0.12, 1.50, 0.45, 0.85, 1.90, 1.55, 2.30, 2.10]);
+  const brightness = useTransform(pFast, STOPS, [0.94, 0.62, 0.84, 0.78, 0.55, 0.60, 0.68, 0.46]);
+  const contrast   = useTransform(pFast, STOPS, [1.08, 1.00, 1.16, 1.13, 1.20, 1.06, 0.94, 1.12]);
+  const saturate   = useTransform(pFast, STOPS, [0.94, 0.70, 0.96, 1.02, 0.66, 0.74, 0.80, 0.55]);
+  const videoOpacity = useTransform(pFast, STOPS, [0.94, 0.70, 0.88, 0.84, 0.66, 0.70, 0.74, 0.58]);
 
   const videoFilter = useTransform(
     [blurPx, brightness, contrast, saturate] as never,
@@ -74,22 +74,22 @@ export default function AtmosphereLayer() {
   );
 
   /* ---------- Darkening / readability overlay — slower, deeper ---------- */
-  const darkOpacity = useTransform(pSlow, STOPS, [0.31, 0.46, 0.37, 0.41, 0.54, 0.49, 0.46, 0.61]);
+  const darkOpacity = useTransform(pSlow, STOPS, [0.26, 0.50, 0.34, 0.42, 0.60, 0.52, 0.48, 0.68]);
 
   /* ---------- Atmospheric haze — drifts gently upward with heavy lag ---------- */
-  const hazeOpacity = useTransform(pSlow, STOPS, [0.16, 0.29, 0.22, 0.24, 0.22, 0.24, 0.33, 0.28]);
-  const hazeY       = useTransform(pSlow, [0, 1], [0, -60]);
+  const hazeOpacity = useTransform(pSlow, STOPS, [0.12, 0.34, 0.20, 0.26, 0.22, 0.26, 0.38, 0.30]);
+  const hazeY       = useTransform(pSlow, [0, 1], [0, -90]);
 
   /* ---------- Conductive cyan glow — softer, more restrained ---------- */
-  const glowOpacity = useTransform(pSlow, STOPS, [0.06, 0.09, 0.15, 0.22, 0.10, 0.09, 0.10, 0.08]);
-  const glowScale   = useTransform(pSlow, STOPS, [1.01, 1.05, 1.10, 1.16, 1.06, 1.04, 1.08, 1.03]);
+  const glowOpacity = useTransform(pSlow, STOPS, [0.05, 0.10, 0.18, 0.28, 0.10, 0.08, 0.10, 0.07]);
+  const glowScale   = useTransform(pSlow, STOPS, [1.00, 1.06, 1.13, 1.20, 1.06, 1.04, 1.09, 1.02]);
 
   /* ---------- Vignette depth — deeper for cinematic immersion ---------- */
-  const vignetteOpacity = useTransform(pSlow, STOPS, [0.54, 0.73, 0.65, 0.69, 0.82, 0.76, 0.71, 0.91]);
+  const vignetteOpacity = useTransform(pSlow, STOPS, [0.48, 0.76, 0.62, 0.70, 0.88, 0.78, 0.72, 0.96]);
 
   /* ---------- Foreground particle parallax — heavy atmospheric lag ---------- */
-  const particleY = useTransform(pSlow, [0, 1], [0, -77]);
-  const particleOpacity = useTransform(pSlow, STOPS, [0.83, 0.70, 0.96, 0.92, 0.58, 0.66, 0.75, 0.41]);
+  const particleY = useTransform(pSlow, [0, 1], [0, -110]);
+  const particleOpacity = useTransform(pSlow, STOPS, [0.86, 0.66, 1.00, 0.96, 0.52, 0.62, 0.74, 0.36]);
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
