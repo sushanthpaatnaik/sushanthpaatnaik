@@ -157,8 +157,8 @@ export default function AtmosphereLayer() {
               top: `${pt.top}%`,
               width: `${pt.size}px`,
               height: `${pt.size}px`,
-              opacity: 0.24,
-              filter: "blur(1.4px)",
+              opacity: 0.20,
+              filter: "blur(1.6px)",
               boxShadow: "0 0 4px oklch(0.7 0.08 220 / 0.22)",
               animation: `atmosDrift ${pt.dur}s ease-in-out ${pt.delay}s infinite alternate`,
             }}
