@@ -41,11 +41,11 @@ const chapters = [
     align: "left" as const,
   },
   {
-    id: "deployment",
-    eyebrow: "Chapter 06 — Deployment",
-    title: "Climate-tech in the real world.",
+    id: "impact",
+    eyebrow: "Chapter 06 — Impact",
+    title: "Climate technology, deployed.",
     body:
-      "Intelligent infrastructure deployed where it matters — energy systems, decarbonization platforms, water and air, structural sensing. Frontier science arriving as climate-grade reality.",
+      "Intelligent infrastructure arriving where it matters — energy systems, decarbonization platforms, water and air, structural sensing. Frontier science transformed into climate-grade industrial reality.",
     align: "right" as const,
   },
 ];
