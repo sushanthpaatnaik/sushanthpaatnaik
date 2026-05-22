@@ -67,26 +67,14 @@ function Index() {
     <div className="relative bg-background text-foreground noise">
       <Loader />
 
-      {/* Fixed full-viewport 3D canvas */}
+      {/* Sitewide cinematic atmosphere — Framer Motion driven */}
       <div
-        className={`fixed inset-0 z-0 transition-[opacity,transform,filter] duration-[1800ms] ease-out ${
-          entered ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-[1.06] blur-md"
+        className={`fixed inset-0 z-0 transition-[opacity,filter] duration-[1800ms] ease-out ${
+          entered ? "opacity-100 blur-0" : "opacity-0 blur-md"
         }`}
       >
-        <Scene scrollProgress={scrollProgress} mouse={mouse} />
-        {/* Cinematic vignette */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,oklch(0.04_0.01_260/0.85)_100%)]" />
-        {/* Letterbox gradients */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background/80 to-transparent" />
-        {/* Holographic scanlines — very subtle */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.018] bg-[repeating-linear-gradient(0deg,transparent_0,transparent_2px,#ffffff_2px,#ffffff_3px)] mix-blend-overlay" />
-        {/* Soft atmospheric haze */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,oklch(0.18_0.04_250/0.25),transparent_70%)]" />
+        <AtmosphereLayer />
       </div>
-
-      {/* Sitewide cinematic atmosphere — scroll-reactive video layer */}
-      <AtmosphereLayer />
 
       {/* Custom cursor */}
       <div
