@@ -55,7 +55,7 @@ function SectionCopy({
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.55 }}
         transition={{ duration: 1.15, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-        className="font-display text-[clamp(2.25rem,5.5vw,5rem)] leading-[1] tracking-[-0.035em] font-medium text-gradient mb-8"
+        className="font-display text-[clamp(2rem,9vw,5rem)] leading-[1.02] md:leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient mb-7 md:mb-8"
       >
         {title}
       </motion.h2>
