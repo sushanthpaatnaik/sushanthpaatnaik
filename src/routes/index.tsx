@@ -1,26 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRef, useCallback } from "react";
+import Scene from "@/components/scene/Scene";
+import ScrollSections from "@/components/scene/ScrollSections";
+import Nav from "@/components/scene/Nav";
+import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Nova — Beyond the Surface" },
+      {
+        name: "description",
+        content:
+          "A cinematic 3D scrollytelling experience. Engineered in light, motion you can feel.",
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function Index() {
+  const scrollProgress = useRef(0);
+
+  const handleScroll = useCallback((p: number) => {
+    scrollProgress.current = p;
+  }, []);
+
+  useLenis(handleScroll);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="relative bg-background text-foreground noise">
+      {/* Fixed full-viewport 3D canvas */}
+      <div className="fixed inset-0 z-0">
+        <Scene scrollProgress={scrollProgress} />
+        {/* Cinematic vignette */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,oklch(0.05_0.01_260/0.7)_100%)]" />
+        {/* Subtle motion-blur veil */}
+        <div className="pointer-events-none absolute inset-0 backdrop-blur-[0.5px]" />
+      </div>
+
+      <Nav />
+      <ScrollSections />
     </div>
   );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
 }
