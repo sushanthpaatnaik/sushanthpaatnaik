@@ -126,15 +126,15 @@ export default function AtmosphereLayer({
         {particles.map((p) => (
           <span
             key={p.seed}
-            className="absolute rounded-full bg-[oklch(0.85_0.06_220)] atmos-particle"
+            className="absolute rounded-full bg-[oklch(0.8_0.04_220)] atmos-particle"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
               width: `${p.size}px`,
               height: `${p.size}px`,
-              opacity: 0.35,
-              filter: "blur(0.5px)",
-              boxShadow: "0 0 6px oklch(0.7 0.1 220 / 0.4)",
+              opacity: 0.22,
+              filter: "blur(1.2px)",
+              boxShadow: "0 0 4px oklch(0.65 0.06 220 / 0.22)",
               animation: `atmosDrift ${p.dur}s ease-in-out ${p.delay}s infinite alternate`,
             }}
           />
