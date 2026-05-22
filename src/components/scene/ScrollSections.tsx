@@ -449,21 +449,21 @@ export default function ScrollSections() {
 
 
       {/* Chapter 07 — The Future System */}
-      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-6 text-center">
-        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-24 pb-12 render-stable">
+      <section id="future" className="relative min-h-[calc(var(--viewport-height)*1.24)] px-5 sm:px-6 text-center">
+        <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-28 md:pt-24 pb-12 render-stable">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
-              <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
+              <p className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
                 07 — The Future System
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
-              <h2 className="mb-12 font-display text-[clamp(2.5rem,7.5vw,7rem)] leading-[0.95] tracking-[-0.045em] font-medium text-gradient">
+              <h2 className="mb-10 md:mb-12 font-display text-[clamp(2.2rem,9vw,7rem)] leading-[0.98] md:leading-[0.95] tracking-[-0.04em] md:tracking-[-0.045em] font-medium text-gradient">
                 Cleaner materials. Faster systems. Smarter infrastructure.
               </h2>
             </MotionReveal>
             <MotionReveal delay={0.16}>
-              <div className="flex flex-col items-center justify-center gap-5 sm:flex-row">
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
                 <a href="mailto:me@sushanthpaatnaik.com?subject=Collaborate" className="btn-cinematic">
                   Collaborate
                 </a>
@@ -476,7 +476,7 @@ export default function ScrollSections() {
               </div>
             </MotionReveal>
             <MotionReveal delay={0.24}>
-              <div className="mt-24 flex items-center justify-center gap-8 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
+              <div className="mt-16 md:mt-24 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:gap-8 font-mono text-[10px] uppercase tracking-[0.32em] md:tracking-[0.4em] text-muted-foreground/60">
                 <span>Graphene</span>
                 <span className="h-1 w-1 rounded-full bg-primary" />
                 <span>Nano-Materials</span>
