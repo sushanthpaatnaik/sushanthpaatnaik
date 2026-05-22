@@ -336,13 +336,7 @@ export default function Scene({ scrollProgress, mouse }: SceneProps) {
         <EffectComposer multisampling={0}>
           <Bloom intensity={1.1} luminanceThreshold={0.22} luminanceSmoothing={0.9} mipmapBlur />
           <DepthOfField focusDistance={0.02} focalLength={0.05} bokehScale={2.2} />
-          <ChromaticAberration
-            blendFunction={BlendFunction.NORMAL}
-            offset={[0.0007, 0.0012] as unknown as [number, number]}
-            radialModulation={false}
-            modulationOffset={0}
-          />
-          <Noise opacity={0.035} />
+          <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
           <Vignette eskil={false} offset={0.2} darkness={0.85} />
         </EffectComposer>
       </Suspense>
