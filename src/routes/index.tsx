@@ -86,6 +86,9 @@ function Index() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,oklch(0.18_0.04_250/0.25),transparent_70%)]" />
       </div>
 
+      {/* Sitewide cinematic atmosphere — scroll-reactive video layer */}
+      <AtmosphereLayer scrollProgress={scrollProgress} />
+
       {/* Custom cursor */}
       <div
         ref={cursorRef}
