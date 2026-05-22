@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useCallback, useEffect, useState } from "react";
-import Scene from "@/components/scene/Scene";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
