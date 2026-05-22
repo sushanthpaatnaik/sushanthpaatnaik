@@ -41,8 +41,8 @@ export default function AtmosphereLayer() {
   // Dual-spring parallax depth system:
   //   pFast  — video camera responds with restrained immediacy
   //   pSlow  — atmospheric overlays drift heavier, creating dimensional depth
-  const pFast = useSpring(scrollYProgress, { stiffness: 32, damping: 42, mass: 1.2 });
-  const pSlow = useSpring(scrollYProgress, { stiffness: 18, damping: 52, mass: 2.0 });
+  const pFast = useSpring(scrollYProgress, { stiffness: 27, damping: 44, mass: 1.2 });
+  const pSlow = useSpring(scrollYProgress, { stiffness: 15, damping: 54, mass: 2.0 });
 
   /* ---------- Video "camera" — drifting through the environment ----------
    * Each section keyframe matches the emotional brief:
@@ -55,17 +55,18 @@ export default function AtmosphereLayer() {
    *   Impact     — softer focus, more atmospheric diffusion
    *   Contact    — elegant darkness, stillness
    *
-   * All motion values reduced by ~15% for luxury restraint.
+   * Motion intensity reduced 15%. Softness and atmospheric depth increased
+   * for emotional immersion and luxury restraint.
    */
   //                              Hero  Vision Mater. Intel. Vent.  Proc.  Impact Contact
-  const scale      = useTransform(pFast, STOPS, [1.02, 1.07, 1.11, 1.13, 1.09, 1.11, 1.06, 1.15]);
-  const translateY = useTransform(pFast, STOPS, [   0,  -16,   -8,  -26,  -18,  -32,  -22,  -42]);
-  const rotate     = useTransform(pFast, STOPS, [   0, -0.45, 0.34, -0.22, 0.45, -0.34, 0.22, -0.58]);
-  const blurPx     = useTransform(pFast, STOPS, [ 0.12, 1.50, 0.45, 0.85, 1.90, 1.55, 2.30, 2.10]);
-  const brightness = useTransform(pFast, STOPS, [0.94, 0.62, 0.84, 0.78, 0.55, 0.60, 0.68, 0.46]);
-  const contrast   = useTransform(pFast, STOPS, [1.08, 1.00, 1.16, 1.13, 1.20, 1.06, 0.94, 1.12]);
-  const saturate   = useTransform(pFast, STOPS, [0.94, 0.70, 0.96, 1.02, 0.66, 0.74, 0.80, 0.55]);
-  const videoOpacity = useTransform(pFast, STOPS, [0.94, 0.70, 0.88, 0.84, 0.66, 0.70, 0.74, 0.58]);
+  const scale      = useTransform(pFast, STOPS, [1.02, 1.06, 1.09, 1.11, 1.08, 1.09, 1.05, 1.13]);
+  const translateY = useTransform(pFast, STOPS, [   0,  -14,   -7,  -22,  -15,  -27,  -19,  -36]);
+  const rotate     = useTransform(pFast, STOPS, [   0, -0.38, 0.29, -0.19, 0.38, -0.29, 0.19, -0.49]);
+  const blurPx     = useTransform(pFast, STOPS, [ 0.13, 1.58, 0.47, 0.89, 2.00, 1.63, 2.42, 2.21]);
+  const brightness = useTransform(pFast, STOPS, [0.93, 0.64, 0.84, 0.79, 0.57, 0.62, 0.69, 0.49]);
+  const contrast   = useTransform(pFast, STOPS, [1.07, 1.00, 1.15, 1.12, 1.18, 1.05, 0.95, 1.11]);
+  const saturate   = useTransform(pFast, STOPS, [0.93, 0.72, 0.95, 1.00, 0.68, 0.75, 0.81, 0.57]);
+  const videoOpacity = useTransform(pFast, STOPS, [0.95, 0.72, 0.89, 0.85, 0.68, 0.72, 0.76, 0.60]);
 
   const videoFilter = useTransform(
     [blurPx, brightness, contrast, saturate] as never,
@@ -73,23 +74,23 @@ export default function AtmosphereLayer() {
       `blur(${b.toFixed(2)}px) brightness(${br.toFixed(2)}) contrast(${ct.toFixed(2)}) saturate(${sa.toFixed(2)})`,
   );
 
-  /* ---------- Darkening / readability overlay — slower, deeper ---------- */
-  const darkOpacity = useTransform(pSlow, STOPS, [0.26, 0.50, 0.34, 0.42, 0.60, 0.52, 0.48, 0.68]);
+  /* ---------- Darkening / readability overlay — softer, more restrained ---------- */
+  const darkOpacity = useTransform(pSlow, STOPS, [0.23, 0.44, 0.30, 0.37, 0.53, 0.46, 0.42, 0.60]);
 
-  /* ---------- Atmospheric haze — drifts gently upward with heavy lag ---------- */
-  const hazeOpacity = useTransform(pSlow, STOPS, [0.12, 0.34, 0.20, 0.26, 0.22, 0.26, 0.38, 0.30]);
-  const hazeY       = useTransform(pSlow, [0, 1], [0, -90]);
+  /* ---------- Atmospheric haze — deeper, slower, more immersive ---------- */
+  const hazeOpacity = useTransform(pSlow, STOPS, [0.13, 0.37, 0.22, 0.29, 0.24, 0.29, 0.42, 0.33]);
+  const hazeY       = useTransform(pSlow, [0, 1], [0, -77]);
 
-  /* ---------- Conductive cyan glow — softer, more restrained ---------- */
-  const glowOpacity = useTransform(pSlow, STOPS, [0.05, 0.10, 0.18, 0.28, 0.10, 0.08, 0.10, 0.07]);
-  const glowScale   = useTransform(pSlow, STOPS, [1.00, 1.06, 1.13, 1.20, 1.06, 1.04, 1.09, 1.02]);
+  /* ---------- Conductive cyan glow — softer, breathing with the story ---------- */
+  const glowOpacity = useTransform(pSlow, STOPS, [0.05, 0.11, 0.19, 0.30, 0.11, 0.09, 0.11, 0.08]);
+  const glowScale   = useTransform(pSlow, STOPS, [1.00, 1.05, 1.11, 1.17, 1.05, 1.03, 1.07, 1.02]);
 
-  /* ---------- Vignette depth — deeper for cinematic immersion ---------- */
-  const vignetteOpacity = useTransform(pSlow, STOPS, [0.48, 0.76, 0.62, 0.70, 0.88, 0.78, 0.72, 0.96]);
+  /* ---------- Vignette depth — deeper cinematic immersion ---------- */
+  const vignetteOpacity = useTransform(pSlow, STOPS, [0.51, 0.81, 0.66, 0.74, 0.93, 0.83, 0.76, 1.00]);
 
   /* ---------- Foreground particle parallax — heavy atmospheric lag ---------- */
-  const particleY = useTransform(pSlow, [0, 1], [0, -110]);
-  const particleOpacity = useTransform(pSlow, STOPS, [0.86, 0.66, 1.00, 0.96, 0.52, 0.62, 0.74, 0.36]);
+  const particleY = useTransform(pSlow, [0, 1], [0, -94]);
+  const particleOpacity = useTransform(pSlow, STOPS, [0.85, 0.66, 0.98, 0.94, 0.52, 0.62, 0.73, 0.36]);
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
@@ -114,7 +115,7 @@ export default function AtmosphereLayer() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Cinematic color grade — graphite blacks, restrained cyan-blue conductive cast */}
-        <div className="absolute inset-0 mix-blend-color bg-[linear-gradient(135deg,oklch(0.12_0.02_240)_0%,oklch(0.15_0.04_220)_55%,oklch(0.13_0.03_255)_100%)] opacity-55" />
+        <div className="absolute inset-0 mix-blend-color bg-[linear-gradient(135deg,oklch(0.12_0.02_240)_0%,oklch(0.15_0.04_220)_55%,oklch(0.13_0.03_255)_100%)] opacity-48" />
         {/* Tonal crush — lift shadows into graphite */}
         <div className="absolute inset-0 mix-blend-multiply bg-[#0a0d14]/60" />
       </motion.div>
@@ -156,8 +157,8 @@ export default function AtmosphereLayer() {
               top: `${pt.top}%`,
               width: `${pt.size}px`,
               height: `${pt.size}px`,
-              opacity: 0.24,
-              filter: "blur(1.4px)",
+              opacity: 0.20,
+              filter: "blur(1.6px)",
               boxShadow: "0 0 4px oklch(0.7 0.08 220 / 0.22)",
               animation: `atmosDrift ${pt.dur}s ease-in-out ${pt.delay}s infinite alternate`,
             }}
@@ -177,7 +178,7 @@ export default function AtmosphereLayer() {
 
       {/* Procedural grain — more restrained */}
       <div
-        className="absolute inset-0 opacity-[0.028] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.034] mix-blend-overlay"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.7  0 0 0 0 0.75  0 0 0 0 0.85  0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
@@ -187,8 +188,8 @@ export default function AtmosphereLayer() {
       <style>{`
         @keyframes atmosDrift {
           0%   { transform: translate3d(0, 0, 1px); opacity: 0.15; }
-          50%  { transform: translate3d(5px, -9px, 1px); opacity: 0.30; }
-          100% { transform: translate3d(-3px, -17px, 1px); opacity: 0.19; }
+          50%  { transform: translate3d(4px, -8px, 1px); opacity: 0.28; }
+          100% { transform: translate3d(-3px, -14px, 1px); opacity: 0.19; }
         }
       `}</style>
     </div>
