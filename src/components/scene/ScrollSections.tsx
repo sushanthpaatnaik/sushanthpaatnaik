@@ -494,7 +494,7 @@ export default function ScrollSections() {
 
       {/* Chapter 07 — The Future System */}
       <section id="future" className="relative min-h-[135vh] px-6 text-center">
-        <div className="sticky top-0 flex h-screen flex-col items-center justify-center">
+        <div className="sticky top-0 flex h-screen flex-col items-center justify-center pt-24 pb-12">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
