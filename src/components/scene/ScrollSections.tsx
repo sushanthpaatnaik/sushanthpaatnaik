@@ -307,21 +307,20 @@ export default function ScrollSections() {
       </section>
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
-      <section className="relative viewport-section flex items-center px-6 py-24 md:px-20">
+      <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_50%,oklch(0.10_0.03_250/0.09),transparent_72%)]" />
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Method</p>
-            <h3 className="mb-20 max-w-2xl font-display text-4xl leading-[1] tracking-[-0.035em] text-gradient md:text-6xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Method</p>
+            <h3 className="mb-14 md:mb-20 max-w-2xl font-display text-[clamp(2rem,8vw,4rem)] leading-[1] tracking-[-0.03em] md:tracking-[-0.035em] text-gradient md:text-6xl">
               From invention to industrial scale.
-
             </h3>
           </MotionReveal>
-          <div className="grid gap-10 md:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-10">
             {processSteps.map((step, index) => (
-              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-6">
+              <MotionReveal key={step.n} delay={index * 0.08} className="border-t border-foreground/15 pt-5 md:pt-6">
                 <span className="font-mono text-xs tracking-[0.3em] text-primary/80">{step.n}</span>
-                <h4 className="mt-4 mb-3 font-display text-2xl tracking-[-0.02em]">{step.t}</h4>
+                <h4 className="mt-4 mb-3 font-display text-xl md:text-2xl tracking-[-0.02em]">{step.t}</h4>
                 <p className="text-sm leading-relaxed text-muted-foreground">{step.b}</p>
               </MotionReveal>
             ))}
