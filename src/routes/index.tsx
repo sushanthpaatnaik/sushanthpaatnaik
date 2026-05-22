@@ -12,11 +12,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Nova — Beyond the Surface" },
+      { title: "[Your Name] — Deep-Tech Founder · Graphene, Nano-Materials & AI" },
       {
         name: "description",
         content:
-          "A cinematic 3D scrollytelling experience. Engineered in light, motion you can feel.",
+          "Building future-facing deep-tech ventures at the intersection of graphene, nano-materials, AI, energy, climate, and intelligent systems.",
       },
     ],
   }),
