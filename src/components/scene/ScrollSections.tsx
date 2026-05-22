@@ -3,62 +3,39 @@ import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform }
 
 const chapters = [
   {
-    id: "origin",
-    eyebrow: "Chapter 01 — Origin",
+    id: "ideation",
+    eyebrow: "Stage 01 — Ideation",
     title: "Where intelligent matter begins as possibility.",
     body:
-      "Abstract particles, atmospheric darkness, and a first pulse of energy. The journey opens in conceptual space — where future industry exists only as a scientific signal.",
+      "Abstract particles, atmospheric darkness, and a first pulse of conceptual energy. The journey opens in pure ideation — frontier science existing only as a signal of future industry.",
     align: "center" as const,
   },
   {
-    id: "discovery",
-    eyebrow: "Chapter 02 — Discovery",
-    title: "The substrate starts to reveal structure.",
+    id: "innovation",
+    eyebrow: "Stage 02 — Innovation",
+    title: "Discovery becomes engineered breakthrough.",
     body:
-      "Graphene lattices, molecular systems, and material emergence sharpen into view. Scientific curiosity condenses into a tangible basis for the next industrial era.",
+      "Graphene lattices, molecular systems, conductive pathways and structural precision. Scientific curiosity condenses into engineered material systems ready to leave the lab.",
     align: "right" as const,
   },
   {
-    id: "engineering",
-    eyebrow: "Chapter 03 — Engineering",
-    title: "Designing systems that conduct, sense, and endure.",
+    id: "commercialisation",
+    eyebrow: "Stage 03 — Commercialisation",
+    title: "Prototypes become products, products become production.",
     body:
-      "Conductive pathways, structural precision, and engineered intelligence translate frontier physics into manufacturable material systems.",
+      "Sensors, cells, membranes and modules graduate from bench to pilot line. Industrial form, applied performance, and the first real economics of a new material category.",
     align: "left" as const,
   },
   {
-    id: "prototype",
-    eyebrow: "Chapter 04 — Prototype",
-    title: "The first industrial forms take shape.",
+    id: "deployment",
+    eyebrow: "Stage 04 — Industry Deployment",
+    title: "Frontier science becomes world-scale infrastructure.",
     body:
-      "Sensors, cells, membranes, and modules move beyond the lab bench. Matter becomes device, mechanism, and applied performance.",
+      "Advanced materials move into energy systems, decarbonisation platforms and resilient supply chains — climate-grade deployment replacing lab-scale promise with industrial reality.",
     align: "right" as const,
-  },
-  {
-    id: "scale",
-    eyebrow: "Chapter 05 — Scale",
-    title: "Infrastructure expands around the material breakthrough.",
-    body:
-      "Pilot lines become production lines. Energy, filtration, and intelligent sensing start to inhabit real industrial networks and supply chains.",
-    align: "left" as const,
-  },
-  {
-    id: "impact",
-    eyebrow: "Chapter 06 — Impact",
-    title: "Frontier science becomes climate-grade deployment.",
-    body:
-      "Advanced materials move into energy systems, decarbonization platforms, and resilient infrastructure — industrial reality replacing lab-scale promise.",
-    align: "right" as const,
-  },
-  {
-    id: "future",
-    eyebrow: "Chapter 07 — Future",
-    title: "A calmer horizon, built from intelligent matter.",
-    body:
-      "The final state is not spectacle, but direction: a world-scale industrial future shaped by deep-tech systems that began at the atomic edge.",
-    align: "center" as const,
   },
 ];
+
 
 const services = [
   {
@@ -144,7 +121,7 @@ function SectionCopy({
       </motion.p>
 
       <div className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}>
-        {String(index + 1).padStart(2, "0")} / 07
+        {String(index + 1).padStart(2, "0")} / 04
       </div>
     </div>
   );
@@ -192,7 +169,7 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
             className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            01 — Origin / Deep-Tech Founder · Graphene · Nano-Materials · AI · Climate Innovation
+            01 — Ideation / Deep-Tech Founder · Graphene · Nano-Materials · AI · Climate Innovation
           </motion.p>
           <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
             {[
@@ -229,7 +206,7 @@ function HeroSection() {
             className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#scale"
+              href="#commercialisation"
               className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
             >
               Explore the Work
@@ -325,7 +302,7 @@ export default function ScrollSections() {
         <HeroSection />
       </motion.div>
 
-      {chapters.slice(1, 6).map((chapter, index) => (
+      {chapters.slice(1).map((chapter, index) => (
         <StoryPanel key={chapter.id} chapter={chapter} index={index + 1} />
       ))}
 
@@ -446,7 +423,7 @@ export default function ScrollSections() {
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
-                07 — Future / Open to founders, scientists, funds & climate operators
+                Beyond Deployment / Open to founders, scientists, funds & climate operators
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
