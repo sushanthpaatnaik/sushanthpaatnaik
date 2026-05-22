@@ -165,6 +165,9 @@ function Index() {
       {/* Volumetric graphene lattice — 3D depth + parallax + DoF, lives inside the scene */}
       {entered && <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />}
 
+      {/* Sitewide ambient atmosphere — near-imperceptible haze + grain for spatial life */}
+      {entered && <AmbientAtmosphere />}
+
       {/* Custom cursor */}
       <div
         ref={cursorRef}
