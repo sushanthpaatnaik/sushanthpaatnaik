@@ -51,14 +51,14 @@ export default function VentureConstellation({
   subtitle = "Operating companies carrying frontier science from lab into the industrial world.",
 }: VentureConstellationProps) {
   return (
-    <section className="viewport-section px-6 py-24 md:px-20 pointer-events-auto">
-      <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
+    <section className="viewport-section px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24 pointer-events-auto">
+      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-12 md:gap-12">
         <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32 render-stable">
-          <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">{eyebrow}</p>
-          <h3 className="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">
+          <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">{eyebrow}</p>
+          <h3 className="font-display text-[clamp(2rem,8vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">
             {title}
           </h3>
-          <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
+          <p className="mt-5 md:mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
         </MotionReveal>
 
         <div className="flex flex-col md:col-span-8">
@@ -66,13 +66,13 @@ export default function VentureConstellation({
             <MotionReveal
               key={venture.n}
               delay={index * 0.06}
-              className="group grid grid-cols-[auto_1fr] items-start gap-8 border-t border-foreground/10 py-10 transition-colors duration-500 hover:border-foreground/30"
+              className="group grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/10 py-8 md:py-10 transition-colors duration-500 hover:border-foreground/30"
             >
               <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">
                 {venture.n}
               </span>
               <div>
-                <h4 className="mb-3 font-display text-2xl tracking-[-0.02em] transition-all duration-500 group-hover:text-glow md:text-3xl">
+                <h4 className="mb-3 font-display text-xl tracking-[-0.02em] transition-all duration-500 group-hover:text-glow md:text-3xl">
                   {venture.title}
                 </h4>
                 <p className="max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">
