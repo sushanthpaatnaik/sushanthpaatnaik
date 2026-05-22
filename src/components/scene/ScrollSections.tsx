@@ -74,18 +74,18 @@ function HeroSection() {
   const { scrollYProgress } = useScroll();
   // Progressive founder reveal: starts deeply hidden, subtly emerges as user scrolls into journey
   const silhouetteOpacity = useTransform(scrollYProgress, [0, 0.04, 0.1], [0.08, 0.18, 0.32]);
-  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [28, 14]);
+  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [18, 10]);
   const silhouetteFilter = useTransform(silhouetteBlur, (b) => `blur(${b}px) grayscale(0.4) contrast(1.05)`);
-  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.08, 1]);
+  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.04, 1]);
 
   return (
-    <section id="spark" className="relative min-h-[150vh] px-6">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden text-center pt-24 pb-12">
+    <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-6">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-24 pb-12 render-stable">
         {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
         <motion.div
           aria-hidden
           style={{ opacity: silhouetteOpacity, filter: silhouetteFilter, scale: silhouetteScale }}
-          className="pointer-events-none absolute inset-0 z-0"
+          className="pointer-events-none absolute inset-0 z-0 render-stable"
         >
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -110,7 +110,7 @@ function HeroSection() {
           />
           {/* Cool rim atmospheric wash — gentle breathing */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ opacity: [0.75, 1, 0.75] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -120,7 +120,7 @@ function HeroSection() {
           />
           {/* Drifting volumetric haze — slow horizontal breath */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ x: ["-2%", "2%", "-2%"], opacity: [0.6, 0.95, 0.6] }}
             transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -130,7 +130,7 @@ function HeroSection() {
           />
           {/* Counter-drift atmospheric layer for parallax depth */}
           <motion.div
-            className="absolute inset-0 mix-blend-screen"
+            className="absolute inset-0 mix-blend-screen render-stable"
             animate={{ x: ["1.5%", "-1.5%", "1.5%"], opacity: [0.4, 0.7, 0.4] }}
             transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
             style={{
@@ -140,7 +140,7 @@ function HeroSection() {
           />
           {/* Subtle particle dust — almost imperceptible */}
           <motion.div
-            className="absolute inset-0 opacity-[0.04] mix-blend-screen"
+            className="absolute inset-0 opacity-[0.03] mix-blend-screen render-stable"
             animate={{ backgroundPositionY: ["0px", "-40px", "0px"] }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             style={{
