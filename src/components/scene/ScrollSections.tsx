@@ -135,11 +135,11 @@ function HeroSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.8 }}
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-            className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
+            className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground"
           >
             01 — Spark
           </motion.p>
-          <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
+          <motion.h1 className="font-display text-[clamp(2.6rem,11vw,10rem)] leading-[0.94] md:leading-[0.92] tracking-[-0.04em] md:tracking-[-0.045em] font-medium">
             {[
               { text: "I build", delay: 0.2 },
               { text: "what does not", delay: 0.34 },
