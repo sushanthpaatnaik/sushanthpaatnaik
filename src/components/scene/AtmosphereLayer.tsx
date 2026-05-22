@@ -165,26 +165,8 @@ export default function AtmosphereLayer() {
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
-      <motion.div
-        className="absolute inset-0 will-change-transform"
-        style={{
-          x: videoX,
-          y: videoY,
-          scale: videoScale,
-          rotate: videoRotate,
-          opacity: videoOpacity,
-          filter: videoFilter,
-        }}
-      >
-        <video
-          ref={videoRef}
-          src={atmosphereVideo}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      </motion.div>
+
+
 
       <motion.div
         className="absolute inset-0"
