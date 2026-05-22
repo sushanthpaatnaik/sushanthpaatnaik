@@ -34,6 +34,26 @@ function Index() {
 
   const lenisRef = useLenis(handleScroll);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const root = document.documentElement;
+    const setViewportVars = () => {
+      root.style.setProperty("--viewport-height", `${window.innerHeight}px`);
+      root.style.setProperty("--viewport-width", `${window.innerWidth}px`);
+      lenisRef.current?.resize();
+    };
+
+    setViewportVars();
+    window.addEventListener("resize", setViewportVars, { passive: true });
+    window.addEventListener("orientationchange", setViewportVars);
+
+    return () => {
+      window.removeEventListener("resize", setViewportVars);
+      window.removeEventListener("orientationchange", setViewportVars);
+    };
+  }, [lenisRef]);
+
   // Disable browser scroll restoration and force hero on first paint
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -42,8 +62,9 @@ function Index() {
       window.history.scrollRestoration = "manual";
     } catch {}
 
-    const hasIntentionalHash =
-      window.location.hash && window.location.hash.length > 1;
+    const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const hasIntentionalHash = Boolean(window.location.hash && window.location.hash.length > 1);
+    const shouldForceTop = !hasIntentionalHash || navEntry?.type === "reload";
 
     const snapTop = () => {
       // Use Lenis when available so its internal target stays in sync,
@@ -57,13 +78,14 @@ function Index() {
       }
     };
 
-    if (!hasIntentionalHash) {
+    if (shouldForceTop) {
       snapTop();
       // Catch late layout shifts from images, fonts, and sticky pin recompute.
       const r1 = requestAnimationFrame(snapTop);
       const t1 = window.setTimeout(snapTop, 60);
       const t2 = window.setTimeout(snapTop, 300);
       const t3 = window.setTimeout(snapTop, 900);
+      const t4 = window.setTimeout(snapTop, 1600);
       const onLoad = () => snapTop();
       window.addEventListener("load", onLoad, { once: true });
       const fonts = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts;
@@ -71,7 +93,7 @@ function Index() {
 
       // Stabilize against back/forward cache restores landing mid-page.
       const onPageShow = (e: PageTransitionEvent) => {
-        if (e.persisted) snapTop();
+        if (e.persisted && !window.location.hash) snapTop();
       };
       window.addEventListener("pageshow", onPageShow);
 
@@ -80,6 +102,7 @@ function Index() {
         clearTimeout(t1);
         clearTimeout(t2);
         clearTimeout(t3);
+        clearTimeout(t4);
         window.removeEventListener("load", onLoad);
         window.removeEventListener("pageshow", onPageShow);
         try {
