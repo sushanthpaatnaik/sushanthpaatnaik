@@ -3,62 +3,39 @@ import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform }
 
 const chapters = [
   {
-    id: "origin",
-    eyebrow: "Chapter 01 — Origin",
+    id: "ideation",
+    eyebrow: "Stage 01 — Ideation",
     title: "Where intelligent matter begins as possibility.",
     body:
-      "Abstract particles, atmospheric darkness, and a first pulse of energy. The journey opens in conceptual space — where future industry exists only as a scientific signal.",
+      "Abstract particles, atmospheric darkness, and a first pulse of conceptual energy. The journey opens in pure ideation — frontier science existing only as a signal of future industry.",
     align: "center" as const,
   },
   {
-    id: "discovery",
-    eyebrow: "Chapter 02 — Discovery",
-    title: "The substrate starts to reveal structure.",
+    id: "innovation",
+    eyebrow: "Stage 02 — Innovation",
+    title: "Discovery becomes engineered breakthrough.",
     body:
-      "Graphene lattices, molecular systems, and material emergence sharpen into view. Scientific curiosity condenses into a tangible basis for the next industrial era.",
+      "Graphene lattices, molecular systems, conductive pathways and structural precision. Scientific curiosity condenses into engineered material systems ready to leave the lab.",
     align: "right" as const,
   },
   {
-    id: "engineering",
-    eyebrow: "Chapter 03 — Engineering",
-    title: "Designing systems that conduct, sense, and endure.",
+    id: "commercialisation",
+    eyebrow: "Stage 03 — Commercialisation",
+    title: "Prototypes become products, products become production.",
     body:
-      "Conductive pathways, structural precision, and engineered intelligence translate frontier physics into manufacturable material systems.",
+      "Sensors, cells, membranes and modules graduate from bench to pilot line. Industrial form, applied performance, and the first real economics of a new material category.",
     align: "left" as const,
   },
   {
-    id: "prototype",
-    eyebrow: "Chapter 04 — Prototype",
-    title: "The first industrial forms take shape.",
+    id: "deployment",
+    eyebrow: "Stage 04 — Industry Deployment",
+    title: "Frontier science becomes world-scale infrastructure.",
     body:
-      "Sensors, cells, membranes, and modules move beyond the lab bench. Matter becomes device, mechanism, and applied performance.",
+      "Advanced materials move into energy systems, decarbonisation platforms and resilient supply chains — climate-grade deployment replacing lab-scale promise with industrial reality.",
     align: "right" as const,
-  },
-  {
-    id: "scale",
-    eyebrow: "Chapter 05 — Scale",
-    title: "Infrastructure expands around the material breakthrough.",
-    body:
-      "Pilot lines become production lines. Energy, filtration, and intelligent sensing start to inhabit real industrial networks and supply chains.",
-    align: "left" as const,
-  },
-  {
-    id: "impact",
-    eyebrow: "Chapter 06 — Impact",
-    title: "Frontier science becomes climate-grade deployment.",
-    body:
-      "Advanced materials move into energy systems, decarbonization platforms, and resilient infrastructure — industrial reality replacing lab-scale promise.",
-    align: "right" as const,
-  },
-  {
-    id: "future",
-    eyebrow: "Chapter 07 — Future",
-    title: "A calmer horizon, built from intelligent matter.",
-    body:
-      "The final state is not spectacle, but direction: a world-scale industrial future shaped by deep-tech systems that began at the atomic edge.",
-    align: "center" as const,
   },
 ];
+
 
 const services = [
   {
