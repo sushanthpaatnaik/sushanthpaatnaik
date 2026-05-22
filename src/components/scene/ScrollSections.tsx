@@ -1,103 +1,81 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 
+// 7-chapter cinematic storyline.
+// Chapter 01 (Spark) is rendered by HeroSection.
+// Chapter 07 (Future) is rendered by the closing CTA section.
+// The sticky StoryPanels cover chapters 02–06.
 const chapters = [
   {
-    id: "discover",
-    eyebrow: "Stage 01 — Discover",
-    title: "The signal before the science.",
+    id: "spark",
+    eyebrow: "01 — The Spark",
+    title: "I build what does not yet exist.",
     body:
-      "Every industry begins as a weak signal at the edge of physics. Scouting frontier research, mapping emerging materials, and listening for the breakthroughs that will define the next industrial era.",
+      "From curiosity to carbon intelligence — engineering the materials behind a cleaner century.",
     align: "center" as const,
   },
   {
-    id: "ideate",
-    eyebrow: "Stage 02 — Ideate",
-    title: "From signal to thesis.",
+    id: "origin",
+    eyebrow: "02 — Origin",
+    title: "Curiosity became a discipline. Recognition became responsibility.",
     body:
-      "An idea worth pursuing is testable, scalable, and inevitable. Material, system, and market converge into a deep-tech thesis that justifies a decade of conviction.",
-    align: "right" as const,
-  },
-  {
-    id: "invent",
-    eyebrow: "Stage 03 — Invent",
-    title: "Engineering intelligent matter.",
-    body:
-      "Graphene, 2D materials, nano-composites and AI-assisted molecular design. Invention is where physics becomes a manufacturable system — lattice, junction, and interface.",
+      "A young inventor's bench. Dismantled gadgets, blueprint fragments, quiet awards. Where the instinct to take things apart became the discipline to engineer what comes next.",
     align: "left" as const,
   },
   {
-    id: "validate",
-    eyebrow: "Stage 04 — Validate",
-    title: "Proof before production.",
+    id: "material",
+    eyebrow: "03 — The Material Layer",
+    title: "At the atomic scale, small changes rewrite industries.",
     body:
-      "Characterisation, pilot testing, and digital-twin simulation advance TRL from concept to capital-ready evidence. Validation turns conviction into measurable performance.",
+      "Graphene. 2D materials. Nano-composites. The honeycomb lattice that bends into roads, panels, batteries, polymers. A single layer of carbon — engineered into a century of leverage.",
     align: "right" as const,
   },
   {
-    id: "protect",
-    eyebrow: "Stage 05 — Protect",
-    title: "The architecture of defensibility.",
+    id: "stack",
+    eyebrow: "04 — The Innovation Stack",
+    title: "One platform. Many industries. One objective: performance with less waste.",
     body:
-      "Patents, trade secrets, and freedom-to-operate. What cannot be defended cannot be deployed at scale — IP is the load-bearing structure of industrial deep-tech.",
+      "Solar. Battery. Concrete. Polymer. Fuel. Coal efficiency. Each industry rebuilt from the material upward — measured in joules, tons of CO₂, and decades of service life.",
     align: "left" as const,
   },
   {
-    id: "prototype",
-    eyebrow: "Stage 06 — Prototype",
-    title: "Matter becomes mechanism.",
+    id: "founder",
+    eyebrow: "05 — The Founder Layer",
+    title: "I don't only invent technologies. I build vehicles that carry them to the world.",
     body:
-      "Sensors, cells, membranes and modules graduate from bench to physical form. The first prototype is the first honest argument that the science will hold in the world.",
+      "Monoatom Labs. Grafillium. SPI Industries. InThinks. Starunico Capital. A constellation of companies — research translated into operating ventures, and ventures translated into industrial reality.",
     align: "right" as const,
   },
   {
-    id: "commercialize",
-    eyebrow: "Stage 07 — Commercialize",
-    title: "From lab to ledger.",
+    id: "india",
+    eyebrow: "06 — India to the World",
+    title: "Built in India. Designed for global industrial transformation.",
     body:
-      "Pricing, partnerships, supply chain, regulatory pathways and unit economics. Commercialisation is the engineering of revenue around a defensible material breakthrough.",
+      "Frontier materials engineered at home, deployed across continents. India as the launchpad — global energy, mobility, and climate infrastructure as the destination.",
     align: "left" as const,
   },
-  {
-    id: "scale",
-    eyebrow: "Stage 08 — Scale",
-    title: "Infrastructure as the new molecule.",
-    body:
-      "Gigafactories, grid-scale storage, distributed sensing, and orchestrated supply chains. Scale is where physics meets policy meets capital — and the breakthrough becomes infrastructure.",
-    align: "right" as const,
-  },
-  {
-    id: "deployment",
-    eyebrow: "Stage 09 — Industrial Deployment",
-    title: "Climate-grade, world-scale.",
-    body:
-      "Deep-tech earns its name only when it deploys at industrial scale. Energy, mobility, water, semiconductors and climate infrastructure — material breakthroughs operating in the real world.",
-    align: "center" as const,
-  },
-];
+] as const;
 
-
-
-const services = [
+const ventures = [
   {
     n: "01",
-    title: "Graphene & nano-materials",
-    body: "Synthesis, characterization, and applied research turning 2D materials into platforms for energy, sensing, and resilient infrastructure.",
+    title: "Monoatom Labs",
+    body: "Frontier graphene and 2D-material synthesis — the research engine behind every downstream platform.",
   },
   {
     n: "02",
-    title: "AI for materials & climate",
-    body: "Machine intelligence for molecular design, system optimization, and climate-scale modeling that compresses discovery cycles.",
+    title: "Grafillium",
+    body: "Graphene-enabled materials engineered for energy, mobility, and industrial-scale deployment.",
   },
   {
     n: "03",
-    title: "Deep-tech venture building",
-    body: "Founding and operating companies where advanced materials, intelligent systems, and climate deployment intersect.",
+    title: "SPI Industries",
+    body: "Operating arm translating advanced materials into production-grade infrastructure and supply.",
   },
   {
     n: "04",
-    title: "Frontier advisory",
-    body: "Collaborating with founders, labs, and funds navigating the early-to-industrial arc of deep-tech ventures.",
+    title: "InThinks · Starunico Capital",
+    body: "Intelligent systems and capital architecture — the vehicles that carry deep-tech from lab to ledger.",
   },
 ];
 
@@ -114,12 +92,14 @@ function SectionCopy({
   body,
   align,
   index,
+  total,
 }: {
   eyebrow: string;
   title: string;
   body: string;
   align: "left" | "right" | "center";
   index: number;
+  total: number;
 }) {
   const textAlign = align === "center" ? "text-center mx-auto" : align === "right" ? "ml-auto text-right" : "mr-auto text-left";
   const counterPosition = align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
@@ -131,7 +111,7 @@ function SectionCopy({
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.55 }}
         transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-        className={`h-px w-24 mb-8 origin-left bg-gradient-to-r from-primary to-transparent ${align === "right" ? "ml-auto origin-right bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
+        className={`h-px w-24 mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "ml-auto origin-right bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
         initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
@@ -162,90 +142,24 @@ function SectionCopy({
       </motion.p>
 
       <div className={`absolute top-10 hidden md:block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50 ${counterPosition}`}>
-        {String(index + 1).padStart(2, "0")} / 09
+        {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
       </div>
     </div>
   );
 }
 
-// Per-section themed backdrop — reinforces each chapter's identity
-// behind the global AtmosphereLayer. Pure CSS / Framer Motion.
-function SceneBackdrop({ id }: { id: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 30, mass: 0.6 });
-
-  // Reveal arc: invisible at edges, full at center of section
-  const opacity = useTransform(progress, [0, 0.35, 0.5, 0.65, 1], [0, 0.85, 1, 0.85, 0]);
-  const scale = useTransform(progress, [0, 0.5, 1], [1.08, 1, 0.96]);
-  const blur = useTransform(progress, [0, 0.5, 1], ["12px", "0px", "12px"]);
-  const filter = useTransform(blur, (b) => `blur(${b})`);
-  const y = useTransform(progress, [0, 1], ["6%", "-6%"]);
-
-  const motif = SCENE_MOTIFS[id];
-  if (!motif) return <div ref={ref} className="absolute inset-0" />;
-
-  return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none">
-      <motion.div
-        className="absolute inset-0 will-change-transform"
-        style={{ opacity, scale, filter, y }}
-      >
-        {motif}
-      </motion.div>
-    </div>
-  );
-}
-
-// Restrained graphite + steel-blue + conductive-cyan palette.
-// Differentiate through position, depth, and intensity — not through color flooding.
-const MOTIF_GRAPHITE = "radial-gradient(ellipse at 50% 60%, oklch(0.16 0.02 250 / 0.5), transparent 70%)";
-const MOTIF_CYAN_LOW = (pos: string) =>
-  `radial-gradient(ellipse at ${pos}, oklch(0.55 0.06 220 / 0.18), transparent 68%)`;
-const MOTIF_STEEL = (angle: string) =>
-  `linear-gradient(${angle}, oklch(0.12 0.018 250 / 0.55), transparent 70%)`;
-
-const SCENE_MOTIFS: Record<string, ReactNode> = {
-  discover: (
-    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("50% 65%") }} />
-  ),
-  ideate: (
-    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("40% 50%") }} />
-  ),
-  invent: (
-    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("55% 50%") }} />
-  ),
-  validate: (
-    <div className="absolute inset-0" style={{ background: MOTIF_STEEL("180deg") }} />
-  ),
-  protect: (
-    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.08 0.015 250 / 0.65), oklch(0.05 0.01 250 / 0.8))" }} />
-  ),
-  prototype: (
-    <div className="absolute inset-0" style={{ background: MOTIF_GRAPHITE }} />
-  ),
-  commercialize: (
-    <div className="absolute inset-0" style={{ background: MOTIF_STEEL("160deg") }} />
-  ),
-  scale: (
-    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, oklch(0.14 0.02 250 / 0.55), transparent 72%)" }} />
-  ),
-  deployment: (
-    <div className="absolute inset-0" style={{ background: MOTIF_CYAN_LOW("50% 55%") }} />
-  ),
-};
-
 function StoryPanel({
   chapter,
   index,
+  total,
 }: {
   chapter: (typeof chapters)[number];
   index: number;
+  total: number;
 }) {
   return (
     <section id={chapter.id} className="story-panel relative min-h-[130vh] px-6 md:px-20">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <SceneBackdrop id={chapter.id} />
         <motion.div
           initial={{ opacity: 0.65, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -259,6 +173,7 @@ function StoryPanel({
             body={chapter.body}
             align={chapter.align}
             index={index}
+            total={total}
           />
         </motion.div>
       </div>
@@ -268,7 +183,7 @@ function StoryPanel({
 
 function HeroSection() {
   return (
-    <section id="hero" className="relative min-h-[150vh] px-6">
+    <section id="spark" className="relative min-h-[150vh] px-6">
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center text-center">
         <div className="max-w-5xl">
           <motion.p
@@ -278,13 +193,13 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
             className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            01 — Discover / Deep-Tech Innovation & Commercialization Architect · Graphene · Advanced Materials · AI · Energy · Climate
+            01 — The Spark · Deep-Tech Founder · Graphene · Advanced Materials · AI · Energy · Climate
           </motion.p>
           <motion.h1 className="font-display text-[clamp(3rem,10vw,10rem)] leading-[0.92] tracking-[-0.045em] font-medium">
             {[
-              { text: "Sushanth.", delay: 0.2 },
-              { text: "Engineering", delay: 0.34 },
-              { text: "Intelligent Matter.", delay: 0.48 },
+              { text: "I build", delay: 0.2 },
+              { text: "what does not", delay: 0.34 },
+              { text: "yet exist.", delay: 0.48 },
             ].map((line, index) => (
               <motion.span
                 key={line.text}
@@ -305,7 +220,7 @@ function HeroSection() {
             transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
             className="mx-auto mt-12 max-w-xl text-sm text-muted-foreground md:text-base"
           >
-            Deep-tech founder building future-facing ventures across graphene, nano-materials, AI, energy, climate, and intelligent systems.
+            From curiosity to carbon intelligence — engineering the materials behind a cleaner century.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -315,16 +230,16 @@ function HeroSection() {
             className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#commercialize"
+              href="#material"
               className="glass pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
             >
-              Explore the Work
+              Enter the Journey
             </a>
             <a
               href="#future"
               className="pointer-events-auto rounded-full px-8 py-4 text-sm tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground"
             >
-              Connect
+              Collaborate
             </a>
           </motion.div>
         </div>
@@ -403,6 +318,11 @@ export default function ScrollSections() {
 
   const drift = useTransform(sectionProgress, [0, 1], [0, -120]);
 
+  // Chapters 02–06 render as sticky story panels (chapter 01 is the hero,
+  // chapter 07 is the closing CTA below).
+  const storyChapters = chapters.slice(1);
+  const totalChapters = 7;
+
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
@@ -411,33 +331,39 @@ export default function ScrollSections() {
         <HeroSection />
       </motion.div>
 
-      {chapters.slice(1).map((chapter, index) => (
-        <StoryPanel key={chapter.id} chapter={chapter} index={index + 1} />
+      {storyChapters.map((chapter, index) => (
+        <StoryPanel
+          key={chapter.id}
+          chapter={chapter}
+          index={index + 1}
+          total={totalChapters}
+        />
       ))}
 
+      {/* Ventures — supports chapter 05 (Founder Layer) */}
       <section className="min-h-screen px-6 py-32 md:px-20 pointer-events-auto">
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12">
           <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32">
             <p className="mb-4 text-[10px] uppercase tracking-[0.5em] text-primary/80">Ventures</p>
-            <h3 className="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">Where I build.</h3>
+            <h3 className="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">The vehicles.</h3>
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Founding and operating across graphene, nano-materials, AI, and climate infrastructure — research translated into companies.
+              Operating companies carrying frontier science from lab into the industrial world.
             </p>
           </MotionReveal>
 
           <div className="flex flex-col md:col-span-8">
-            {services.map((service, index) => (
+            {ventures.map((venture, index) => (
               <MotionReveal
-                key={service.n}
+                key={venture.n}
                 delay={index * 0.06}
                 className="group grid grid-cols-[auto_1fr] items-start gap-8 border-t border-foreground/10 py-10 transition-colors duration-500 hover:border-foreground/30"
               >
-                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{service.n}</span>
+                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{venture.n}</span>
                 <div>
                   <h4 className="mb-3 font-display text-2xl tracking-[-0.02em] transition-all duration-500 group-hover:text-glow md:text-3xl">
-                    {service.title}
+                    {venture.title}
                   </h4>
-                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">{service.body}</p>
+                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">{venture.body}</p>
                 </div>
               </MotionReveal>
             ))}
@@ -445,6 +371,7 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Substrate metrics — supports chapter 03 (Material Layer) */}
       <section className="min-h-screen flex items-center px-6 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal className="text-center">
@@ -474,6 +401,7 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Method — supports chapter 04 (Innovation Stack) */}
       <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
@@ -494,6 +422,7 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Outcomes — supports chapter 06 (India → World) */}
       <section className="min-h-screen flex items-center px-6 py-32 md:px-20">
         <div className="mx-auto w-full max-w-6xl pointer-events-auto">
           <MotionReveal>
@@ -522,22 +451,23 @@ export default function ScrollSections() {
         <MotionReveal className="mx-auto max-w-4xl pointer-events-auto">
           <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">Voice</p>
           <blockquote className="font-display text-2xl leading-[1.2] tracking-[-0.025em] text-gradient md:text-4xl lg:text-5xl">
-            “Collaborating with founders, scientists, funds, and climate operators to move frontier science from lab-scale possibility to industrial reality.”
+            “Cleaner materials. Faster systems. Smarter infrastructure. Built in India — designed for the world.”
           </blockquote>
         </MotionReveal>
       </section>
 
+      {/* Chapter 07 — The Future System */}
       <section id="future" className="relative min-h-[135vh] px-6 text-center">
         <div className="sticky top-0 flex h-screen flex-col items-center justify-center">
           <div className="max-w-3xl pointer-events-auto">
             <MotionReveal>
               <p className="mb-10 text-[10px] uppercase tracking-[0.5em] text-muted-foreground">
-                Beyond Industrial Deployment / Open to founders, scientists, funds & climate operators
+                07 — The Future System / Open to founders, scientists, funds & climate operators
               </p>
             </MotionReveal>
             <MotionReveal delay={0.08}>
               <h2 className="mb-12 font-display text-[clamp(2.5rem,7.5vw,7rem)] leading-[0.95] tracking-[-0.045em] font-medium text-gradient">
-                Let&apos;s build the next material era.
+                Cleaner materials. Faster systems. Smarter infrastructure.
               </h2>
             </MotionReveal>
             <MotionReveal delay={0.16}>
@@ -546,13 +476,19 @@ export default function ScrollSections() {
                   href="mailto:sushanth@intelligentmatter.com"
                   className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
                 >
-                  sushanth@intelligentmatter.com
+                  Collaborate
                 </a>
                 <a
-                  href="#"
+                  href="mailto:invest@intelligentmatter.com"
+                  className="glass rounded-full px-8 py-4 text-sm tracking-wide transition-all duration-500 hover:scale-[1.03] hover:bg-foreground/10"
+                >
+                  Invest
+                </a>
+                <a
+                  href="mailto:build@intelligentmatter.com"
                   className="rounded-full px-8 py-4 text-sm tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground"
                 >
-                  Read the thesis →
+                  Build with me →
                 </a>
               </div>
             </MotionReveal>
@@ -561,13 +497,13 @@ export default function ScrollSections() {
                 <span>Graphene</span>
                 <span className="h-1 w-1 rounded-full bg-primary" />
                 <span>Nano-Materials</span>
-                <span className="h-1 w-1 rounded-full bg-primary" />
+                <span className="h-1 w-1 rounded-full bg-accent" />
                 <span>AI · Climate</span>
               </div>
             </MotionReveal>
             <MotionReveal delay={0.32}>
               <p className="mt-12 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
-                © Sushanth — Building at the frontier of intelligent matter.
+                © Sushanth — Engineering the materials behind a cleaner century.
               </p>
             </MotionReveal>
           </div>
