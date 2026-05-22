@@ -1,5 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, MeshDistortMaterial, Points, PointMaterial, Stars } from "@react-three/drei";
+import GrapheneAtmosphere from "./GrapheneAtmosphere";
 import { EffectComposer, Bloom, Vignette, Noise, DepthOfField } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import { Suspense, useMemo, useRef } from "react";
@@ -381,8 +382,11 @@ export default function Scene({ scrollProgress, mouse }: SceneProps) {
   return (
     <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 6.5], fov: 45 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
       <Suspense fallback={null}>
-        <color attach="background" args={["#03040a"]} />
-        <fog attach="fog" args={["#03040a", 5, 24]} />
+        <color attach="background" args={["#06070c"]} />
+        <fog attach="fog" args={["#06070c", 4, 22]} />
+
+        {/* Procedural graphene atmosphere — living nano-material backdrop */}
+        <GrapheneAtmosphere scrollProgress={scrollProgress} />
 
         <DynamicLights scrollProgress={scrollProgress} mouse={mouse} />
         <CameraRig scrollProgress={scrollProgress} mouse={mouse} />

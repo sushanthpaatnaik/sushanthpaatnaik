@@ -5,7 +5,6 @@ import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
-import VideoLayer from "@/components/scene/VideoLayer";
 import { useLenis } from "@/components/scene/useLenis";
 
 export const Route = createFileRoute("/")({
@@ -85,9 +84,6 @@ function Index() {
         {/* Soft atmospheric haze */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,oklch(0.18_0.04_250/0.25),transparent_70%)]" />
       </div>
-
-      {/* Graphene cinematic backdrop — Technology chapter */}
-      <VideoLayer scrollProgress={scrollProgress} start={0.42} end={0.62} />
 
       {/* Custom cursor */}
       <div
