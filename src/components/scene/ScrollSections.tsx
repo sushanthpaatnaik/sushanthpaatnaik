@@ -796,9 +796,28 @@ export default function ScrollSections() {
                 <span className="mt-1 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/45">{n.k}</span>
               </MotionReveal>
             ))}
+
+            {/* Headline imprints — actual press fragments, treated as
+                editorial atmosphere. Faint, italic, archival. */}
+            <MotionReveal delay={0.2} className="mt-16 md:mt-20 border-t border-foreground/[0.07] pt-10 md:pt-14">
+              <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">Headlines · As Printed</p>
+              <div className="space-y-4 font-display italic text-foreground/55 text-[15px] md:text-[17px] leading-[1.55] tracking-[-0.01em]">
+                <p>&ldquo;Serial entrepreneur at 20.&rdquo;</p>
+                <p>&ldquo;Susant Pattnaik: Real Life Doremon or an Innovation Champ?&rdquo;</p>
+                <p>&ldquo;Whizkid — Oriental student has 3 patents in his name.&rdquo;</p>
+                <p>&ldquo;Teenaged inventor of breathing apparatus.&rdquo;</p>
+                <p>&ldquo;Inspired to help poor techies.&rdquo;</p>
+                <p>&ldquo;Sushant Patnaik ka Spain mein hoga sammaan.&rdquo;</p>
+                <p>&ldquo;Sushant ka project Apollo Hospital mein under trial.&rdquo;</p>
+              </div>
+              <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40 blur-[0.3px]">
+                Print archive · 2008 — 2015
+              </p>
+            </MotionReveal>
           </div>
         </div>
       </section>
+
 
 
 
