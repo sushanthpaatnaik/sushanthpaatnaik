@@ -13,7 +13,7 @@ import sceneAbout from "@/assets/scene-about-notebook.jpg";
 import sceneNumbers from "@/assets/scene-numbers-field.jpg";
 import sceneEarly from "@/assets/scene-early-workshop.jpg";
 import sceneManifesto from "@/assets/scene-manifesto-paper.jpg";
-import sceneNews from "@/assets/scene-news-archive.jpg";
+import sceneNews from "@/assets/scene-media-wall.jpg";
 
 /**
  * Scroll-synchronized cinematic background — one plate per migrated chapter,
