@@ -8,7 +8,7 @@ import magppieLogo from "@/assets/clients/magppie.png";
 import vinroxLogo from "@/assets/clients/vinrox.png";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia.webp";
-import wehearLogo from "@/assets/clients/wehear.webp";
+import wehearLogo from "@/assets/clients/wehear.png";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
