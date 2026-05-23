@@ -288,30 +288,37 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.26] md:opacity-[0.29] [filter:grayscale(1)_contrast(1.08)_brightness(0.62)_saturate(1)_blur(1.3px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
         {/* Softened lower torso — reduces clothing fold visibility, preserves face */}
         <div
           aria-hidden
-          className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.30] md:opacity-[0.33] [filter:grayscale(1)_contrast(0.92)_brightness(0.58)_saturate(0)_blur(2.4px)]"
+          className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 78%" }}
         />
 
         {/* Subtle cool blue-grey rim — jawline / shoulders / glasses edges */}
-        <div className="absolute inset-1 mix-blend-screen bg-[radial-gradient(ellipse_6%_5%_at_25%_31%,oklch(0.80_0.015_232/0.14),transparent_78%)]" />
-        <div className="absolute inset-1 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(0.70_0.015_232/0.17),transparent_75%)]" />
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_22%_at_21%_59%,oklch(0.58_0.015_232/0.10),transparent_78%)]" />
-        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_10%_14%_at_30%_22%,oklch(0.76_0.02_232/0.074),transparent_82%)]" />
+        <div className="absolute inset-1 mix-blend-screen bg-[radial-gradient(ellipse_6%_5%_at_25%_31%,oklch(0.80_0.015_232/0.12),transparent_78%)]" />
+        <div className="absolute inset-1 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(0.70_0.015_232/0.15),transparent_75%)]" />
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_22%_at_21%_59%,oklch(0.58_0.015_232/0.09),transparent_78%)]" />
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_10%_14%_at_30%_22%,oklch(0.76_0.02_232/0.066),transparent_82%)]" />
 
         {/* Atmospheric haze — softens shoulders and body into the black */}
-        <div className="absolute inset-y-[8%] left-[-2%] w-[52%] mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_38%_60%,transparent_30%,oklch(0.02_0_0/0.55)_72%,oklch(0.015_0_0)_100%)]" />
+        <div className="absolute inset-y-[8%] left-[-2%] w-[52%] mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_38%_60%,transparent_30%,oklch(0.02_0_0/0.46)_72%,oklch(0.015_0_0)_100%)]" />
 
         {/* Center atmospheric depth — graphite haze + restrained warm/cool bloom */}
-        <div className="absolute inset-y-[14%] left-[34%] w-[40%] mix-blend-screen bg-[radial-gradient(ellipse_70%_62%_at_50%_50%,oklch(0.38_0.018_232/0.16),transparent_78%)] blur-3xl" />
-        <div className="absolute inset-y-[22%] left-[42%] w-[26%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.58_0.04_232/0.14),transparent_75%)] blur-2xl" />
-        <div className="absolute inset-y-[30%] left-[46%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_55%_50%_at_55%_55%,oklch(0.52_0.06_55/0.08),transparent_78%)] blur-3xl" />
+        <div className="absolute inset-y-[14%] left-[34%] w-[40%] mix-blend-screen bg-[radial-gradient(ellipse_70%_62%_at_50%_50%,oklch(0.38_0.018_232/0.14),transparent_78%)] blur-3xl" />
+        <div className="absolute inset-y-[22%] left-[42%] w-[26%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.58_0.04_232/0.12),transparent_75%)] blur-2xl" />
+        <div className="absolute inset-y-[30%] left-[46%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_55%_50%_at_55%_55%,oklch(0.52_0.06_55/0.07),transparent_78%)] blur-3xl" />
+
+        {/* Right-side lift — restores a faint structural presence on the
+            right (atmospheric, not portrait) so the frame stops feeling
+            left-heavy. Very low opacity, soft-light blend. */}
+        <div className="absolute inset-y-[18%] right-[6%] w-[34%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_60%_50%,oklch(0.50_0.02_232/0.12),transparent_78%)] blur-3xl" />
+        <div className="absolute inset-y-[28%] right-[10%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_50%_45%_at_55%_50%,oklch(0.58_0.03_232/0.06),transparent_80%)] blur-2xl" />
+
         {/* Faint molecular texture across the center void */}
         <div
           aria-hidden
@@ -325,10 +332,10 @@ function FounderScene() {
         />
 
 
-        {/* Cinematic falloff — restrained ink wash, less aggressive than before */}
+        {/* Cinematic falloff — smoothed, less left-weighted */}
         <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0)_88%)]" />
-        <div className="absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(270deg,oklch(0.018_0_0)_22%,oklch(0.025_0_0/0.55)_58%,transparent_96%)]" />
-        <div className="absolute inset-y-0 left-0 w-[10%] bg-[linear-gradient(90deg,oklch(0.018_0_0)_8%,transparent)]" />
+        <div className="absolute inset-y-0 right-0 w-[58%] bg-[linear-gradient(270deg,oklch(0.018_0_0)_14%,oklch(0.025_0_0/0.42)_54%,transparent_96%)]" />
+        <div className="absolute inset-y-0 left-0 w-[8%] bg-[linear-gradient(90deg,oklch(0.018_0_0)_6%,transparent)]" />
         <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.018_0_0)_8%,transparent)]" />
       </div>
 
