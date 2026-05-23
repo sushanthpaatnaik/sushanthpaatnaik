@@ -805,7 +805,11 @@ function NewsPage() {
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className="max-h-10 w-auto max-w-[150px] object-contain opacity-90 brightness-[1.15] contrast-[1.05] transition-all duration-700 group-hover:opacity-100 group-hover:brightness-125 group-hover:scale-[1.06] drop-shadow-[0_0_12px_oklch(1_0_0_/_0.08)] group-hover:drop-shadow-[0_0_18px_oklch(1_0_0_/_0.22)]"
+                  className={`max-h-10 w-auto max-w-[150px] object-contain opacity-95 transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.06] drop-shadow-[0_0_12px_oklch(1_0_0_/_0.08)] group-hover:drop-shadow-[0_0_18px_oklch(1_0_0_/_0.22)] ${
+                    o.lighten
+                      ? "invert brightness-[1.15] contrast-[1.1] hue-rotate-180 saturate-[0.85]"
+                      : "brightness-[1.18] contrast-[1.08]"
+                  }`}
                 />
               );
               const baseCls =
