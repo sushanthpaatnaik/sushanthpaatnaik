@@ -72,29 +72,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      { title: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
       {
         name: "description",
         content:
-          "Six-time Indian Presidential awardee. Inventor and founder building graphene, nano-materials, and industrial deep-tech from India.",
+          "Sushanth Paatnaik — six-time Indian Presidential awardee, inventor and founder building graphene, nano-materials, and industrial deep-tech ventures from India for the world.",
       },
       { name: "author", content: "Sushanth Paatnaik" },
       { name: "theme-color", content: "#070708" },
       { property: "og:site_name", content: "Sushanth Paatnaik" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      { property: "og:title", content: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
       {
         property: "og:description",
         content:
           "Inventor, founder, and six-time Indian Presidential awardee engineering graphene, nano-materials, and industrial systems from India for the world.",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      { name: "twitter:title", content: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
       {
         name: "twitter:description",
         content:
           "Graphene, nano-materials, AI, and industrial commercialization — built in India, designed for the world.",
       },
+      { name: "description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
+      { property: "og:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
+      { name: "twitter:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3eeb57ec-b3be-4eaa-be80-b43c932def15" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3eeb57ec-b3be-4eaa-be80-b43c932def15" },
     ],
     links: [
       {
