@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
-import backdrop from "@/assets/story-03-material.jpg";
+import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
 import imgGraffisol from "@/assets/innovations/graffisol.webp";

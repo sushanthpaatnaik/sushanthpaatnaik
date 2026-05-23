@@ -1,13 +1,13 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
 
-import sceneSpark from "@/assets/story-01-spark.jpg";
-import sceneMaterial from "@/assets/story-03-material.jpg";
-import sceneIndustrial from "@/assets/story-04-industrial.jpg";
-import sceneVentures from "@/assets/story-05-ventures.jpg";
-import sceneFuture from "@/assets/story-07-future.jpg";
+import sceneSpark from "@/assets/story-01-spark.webp";
+import sceneMaterial from "@/assets/story-03-material.webp";
+import sceneIndustrial from "@/assets/story-04-industrial.webp";
+import sceneVentures from "@/assets/story-05-ventures.webp";
+import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
-import sceneRecognition from "@/assets/story-02-recognition.jpg";
+import sceneRecognition from "@/assets/story-02-recognition.webp";
 
 /**
  * Homepage scroll-synchronized cinematic background.

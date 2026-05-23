@@ -4,7 +4,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-08-scale.jpg";
+import backdrop from "@/assets/scene-08-scale.webp";
 
 export const Route = createFileRoute("/services")({
   component: ServicesPage,

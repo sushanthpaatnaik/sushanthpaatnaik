@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
-import backdrop from "@/assets/story-05-ventures.jpg";
+import backdrop from "@/assets/story-05-ventures.webp";
 
 import magppieLogo from "@/assets/clients/magppie.webp";
 import vinroxLogo from "@/assets/clients/vinrox.webp";
