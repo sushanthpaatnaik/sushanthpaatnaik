@@ -145,7 +145,7 @@
     color: transparent;
   }
   .text-glow {
-    text-shadow: 0 0 28px oklch(0.71 0.13 240 / 0.22);
+    text-shadow: 0 0 18px oklch(0.71 0.13 240 / 0.14);
   }
   .text-eyebrow {
     font-size: 10px;
