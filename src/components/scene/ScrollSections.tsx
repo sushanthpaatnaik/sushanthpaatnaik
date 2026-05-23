@@ -5,6 +5,9 @@ import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
 import founderLab from "@/assets/founder-lab.jpg";
 import MediaWallBackdrop from "./MediaWallBackdrop";
+import HeroAtmosphere from "./HeroAtmosphere";
+
+
 
 
 // 7-chapter cinematic storyline.
