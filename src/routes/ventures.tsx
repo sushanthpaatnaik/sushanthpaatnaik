@@ -171,28 +171,28 @@ function VenturesPage() {
           A short ledger of the houses I quietly advise across materials, design and
           consumer technology.
         </p>
-        <div className="not-prose mt-14 grid grid-cols-2 items-stretch gap-px sm:grid-cols-3 md:grid-cols-5 bg-foreground/[0.05] rounded-sm overflow-hidden ring-1 ring-foreground/[0.05]">
+        <div className="not-prose mt-14 grid grid-cols-2 items-stretch gap-px sm:grid-cols-3 md:grid-cols-5 bg-foreground/[0.03] rounded-sm overflow-hidden ring-1 ring-foreground/[0.04]">
           {advisories.map((a) => (
             <div
               key={a.name}
-              className="group relative flex flex-col items-center justify-between gap-7 px-5 py-10 md:py-12 text-center overflow-hidden bg-[oklch(0.06_0.008_245)] transition-all duration-700"
+              className="group relative flex flex-col items-center justify-center gap-5 px-4 py-8 md:py-9 text-center overflow-hidden bg-[oklch(0.055_0.006_240)] transition-all duration-700"
             >
-              {/* Atmospheric well — deep cinematic base behind the mark */}
+              {/* Atmospheric well — calmer cinematic base behind the mark */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(85% 75% at 50% 38%, oklch(0.13 0.012 240 / 0.85) 0%, oklch(0.05 0.006 245 / 0.96) 72%)",
+                    "radial-gradient(80% 70% at 50% 42%, oklch(0.10 0.008 240 / 0.55) 0%, oklch(0.05 0.006 245 / 0.92) 78%)",
                 }}
               />
-              {/* Volumetric key light — soft directional glow appears on hover */}
+              {/* Volumetric key light — softer directional glow appears on hover */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 group-hover:opacity-100"
                 style={{
                   background:
-                    "radial-gradient(55% 45% at 50% 28%, oklch(0.62 0.05 230 / 0.20), transparent 75%)",
+                    "radial-gradient(50% 42% at 50% 32%, oklch(0.62 0.04 230 / 0.14), transparent 76%)",
                 }}
               />
               {/* Reflective floor — subtle industrial sheen at the base */}
@@ -201,25 +201,29 @@ function VenturesPage() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
                 style={{
                   background:
-                    "linear-gradient(to top, oklch(0.10 0.01 240 / 0.55), transparent)",
+                    "linear-gradient(to top, oklch(0.08 0.008 240 / 0.40), transparent)",
                 }}
               />
-              {/* Logo plate — equal optical container, mass-balanced sizing */}
-              <div className="relative z-10 flex flex-1 items-center justify-center w-full min-h-[64px] md:min-h-[80px]">
+              {/* Logo plate — fixed optical container, per-mark scaling */}
+              <div className="relative z-10 flex items-center justify-center w-full h-[68px] md:h-[78px]">
                 <img
                   src={a.logo}
                   alt={`${a.name} — ${a.sector}`}
                   loading="lazy"
-                  className="max-h-[48px] md:max-h-[58px] max-w-[72%] w-auto h-auto object-contain opacity-90 drop-shadow-[0_2px_18px_oklch(0_0_0/0.7)] transition-all duration-700 group-hover:opacity-100"
+                  style={{
+                    maxHeight: `${Math.round(54 * a.scale)}px`,
+                    maxWidth: `${Math.round(74 * a.scale)}%`,
+                  }}
+                  className="w-auto h-auto object-contain opacity-95 drop-shadow-[0_2px_14px_oklch(0_0_0/0.55)] transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.03]"
                 />
               </div>
               {/* Editorial caption block — hairline + tracked label */}
-              <div className="relative z-10 flex flex-col items-center gap-3">
+              <div className="relative z-10 flex flex-col items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="block h-px w-6 bg-foreground/15 transition-all duration-700 group-hover:w-10 group-hover:bg-accent/40"
+                  className="block h-px w-7 bg-foreground/20 transition-all duration-700 group-hover:w-11 group-hover:bg-accent/45"
                 />
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.42em] leading-none text-foreground/55 transition-colors duration-700 group-hover:text-foreground/80">
+                <span className="font-mono text-[10px] uppercase tracking-[0.38em] leading-none text-foreground/70 transition-colors duration-700 group-hover:text-foreground/90">
                   {a.sector}
                 </span>
               </div>
