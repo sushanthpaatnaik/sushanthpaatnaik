@@ -387,6 +387,15 @@ function RecognitionsPage() {
       </EditorialSection>
       <ArchiveMosaic items={eraPresent} />
 
+      <EditorialSection number="10b · Hall of Fame" heading="The reel — media, stage, and honour.">
+        <p>
+          A continuous cinematic strip — newspaper clippings, mainstage
+          moments, presidential demonstrations and honorary citations
+          arranged as a single archival reel.
+        </p>
+      </EditorialSection>
+      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+
       <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
         <p>
           The complete register, in chronological order — the public-record
