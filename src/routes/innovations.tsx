@@ -325,11 +325,11 @@ function HeroCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-80 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
-        style={{ filter: "grayscale(0.18) contrast(1.06) saturate(0.88) brightness(0.9)" }}
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
+        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.08} className="mix-blend-screen" />
+      <LatticeField intensity={0.06} className="mix-blend-screen" />
       {/* Cinematic gradient */}
       <div
         aria-hidden
