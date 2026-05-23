@@ -555,8 +555,8 @@ function IntelligenceStrip() {
     <StatsStrip
       items={[
         { v: "18", l: "Publications of record" },
-        { v: "15", l: "Years of coverage" },
-        { v: "16", l: "Archived dispatches" },
+        { v: "16", l: "Years of coverage" },
+        { v: "18", l: "Archived dispatches" },
         { v: "EN · ଓଡ଼ିଆ", l: "Languages in archive" },
       ]}
     />
@@ -667,7 +667,7 @@ function NewsPage() {
           <span className="hidden sm:inline text-muted-foreground/40">
             Volume XV · MMXXVI
           </span>
-          <span>Folio 01 — 16</span>
+          <span>Folio 01 — 18</span>
         </div>
         <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
@@ -716,6 +716,7 @@ function NewsPage() {
 
       {/* Archive — grouped by editorial desk, with year markers */}
       <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
+
         <p>
           Filed under five desks — from teenage assistive tech in{" "}
           <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
