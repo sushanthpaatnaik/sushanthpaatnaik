@@ -756,20 +756,14 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
-                        m.imageFit === "contain"
-                          ? "aspect-[5/4] md:aspect-[16/11]"
-                          : m.major
-                            ? "aspect-[4/3] md:aspect-[5/4]"
-                            : "aspect-[4/3] md:aspect-[4/3]"
-                      } ${onLeft ? "md:mr-8" : "md:ml-8"}`}
+                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ${onLeft ? "md:mr-8" : "md:ml-8"}`}
                     >
                       <img
                         src={m.image}
                         alt={m.title}
                         loading={i < 2 ? "eager" : "lazy"}
                         className={`absolute inset-0 h-full w-full opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
-                          m.imageFit === "contain" ? "object-contain p-3 md:p-4" : "object-cover"
+                          m.imageFit === "contain" ? "object-contain p-6 md:p-8" : "object-cover"
                         }`}
                         style={{
                           objectPosition: m.imageFocus ?? "center 30%",
