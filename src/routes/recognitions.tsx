@@ -317,7 +317,7 @@ const eraPresidential: ArchiveItem[] = [
     caption: "Presidential Trophy · President Pranab Mukherjee",
     meta: "Presidential Award · 2013",
     category: "Award",
-    focus: "center 35%",
+    focus: "22% center",
     institution: "National Innovation Foundation",
     recognition: "Presidential Recognition · 2013",
     presenter: "Presented by Shri Pranab Mukherjee",
