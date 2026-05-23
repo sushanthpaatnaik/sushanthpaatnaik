@@ -958,7 +958,7 @@ function ClosingInvitation() {
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-              08 — The Future System
+              09 — The Future System
             </p>
           </MotionReveal>
 
