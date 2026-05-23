@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
+import LatticeField from "@/components/scene/LatticeField";
 import backdrop from "@/assets/story-03-material.jpg";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -51,36 +53,58 @@ export const Route = createFileRoute("/innovations")({
 });
 
 type Stage = "Commercial" | "Pilot" | "R&D";
-type Item = { title: string; stage: Stage; metric: string; body: string; img: string };
+type Item = {
+  title: string;
+  stage: Stage;
+  metric: string;
+  body: string;
+  img: string;
+  domain: string;
+  status: string;
+  featured?: boolean;
+};
 
 const items: Item[] = [
-  { title: "Graphacrete", stage: "Commercial", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete },
-  { title: "Graffisol", stage: "Commercial", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol },
-  { title: "Ceraphene", stage: "Commercial", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene },
-  { title: "HD-G-PE", stage: "Commercial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe },
-  { title: "Graphenodes", stage: "Commercial", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes },
-  { title: "Ignitron D", stage: "Commercial", metric: "+15% economy · −15% emissions", body: "Nano-catalytic diesel additive improving fuel economy and slashing emissions.", img: imgIgnitronD },
-  { title: "Coalorix", stage: "Pilot", metric: "+15% efficiency · −35% emissions", body: "Nano-combustion improver enhancing coal efficiency while cutting emissions.", img: imgCoalorix },
-  { title: "Aquamax", stage: "Pilot", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax },
-  { title: "Ignitron P", stage: "Pilot", metric: "+10% economy · −12% emissions", body: "Molecular combustion enhancer for petrol engines.", img: imgIgnitronP },
-  { title: "Lubritron", stage: "Pilot", metric: "+6% savings · −40% wear", body: "Nano-enabled oil additive lowering wear and saving fuel.", img: imgLubritron },
-  { title: "Rustene", stage: "Pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene },
-  { title: "Gryogen", stage: "Pilot", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen },
-  { title: "Mariphene", stage: "Pilot", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene },
-  { title: "Aerophenter", stage: "Pilot", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter },
-  { title: "Fibrasphene", stage: "Pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgFibrasphene },
-  { title: "Voltaphene", stage: "Pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene },
-  { title: "Bitumax", stage: "R&D", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax },
-  { title: "Pyronex", stage: "R&D", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex },
-  { title: "Graphyre", stage: "R&D", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre },
-  { title: "Graphosite", stage: "R&D", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite },
-  { title: "Thermaphene", stage: "R&D", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene },
-  { title: "Armophene", stage: "R&D", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene },
-  { title: "Hydrocell", stage: "R&D", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell },
+  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, featured: true },
+  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, featured: true },
+  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene },
+  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe },
+  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes },
+  { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "+15% economy · −15% emissions", body: "Nano-catalytic diesel additive improving fuel economy and slashing emissions.", img: imgIgnitronD },
+  { title: "Coalorix", stage: "Pilot", domain: "Thermal Power · Combustion", status: "Plant pilot", metric: "+15% efficiency · −35% emissions", body: "Nano-combustion improver enhancing coal efficiency while cutting emissions.", img: imgCoalorix, featured: true },
+  { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, featured: true },
+  { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "+10% economy · −12% emissions", body: "Molecular combustion enhancer for petrol engines.", img: imgIgnitronP },
+  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "+6% savings · −40% wear", body: "Nano-enabled oil additive lowering wear and saving fuel.", img: imgLubritron },
+  { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene },
+  { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen },
+  { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene },
+  { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter },
+  { title: "Fibrasphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgFibrasphene },
+  { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene },
+  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, featured: true },
+  { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, featured: true },
+  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax },
+  { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex },
+  { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre },
+  { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite },
+  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene },
 ];
 
 const filters = ["All", "Commercial", "Pilot", "R&D"] as const;
 type Filter = (typeof filters)[number];
+
+const materialSpec = [
+  { k: "Atomic Layers", v: "1", note: "Monolayer carbon" },
+  { k: "Tensile Strength", v: "130 GPa", note: "≈ 200× steel" },
+  { k: "Surface Area", v: "2,630 m²/g", note: "Per gram" },
+  { k: "Thermal Conductivity", v: "5,000 W/mK", note: "≈ 13× copper" },
+];
+
+const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
+  Commercial: { label: "Field-Deployed", sub: "Manufacturing · Market", tone: "Stage I" },
+  Pilot: { label: "Plant & Field Pilots", sub: "Validation · Scale-up", tone: "Stage II" },
+  "R&D": { label: "R&D · Bench", sub: "Formulation · Prototyping", tone: "Stage III" },
+};
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
@@ -88,6 +112,13 @@ function InnovationsPage() {
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
   );
+
+  const grouped = useMemo(() => {
+    const stages: Stage[] = ["Commercial", "Pilot", "R&D"];
+    return stages
+      .map((s) => ({ stage: s, list: visible.filter((it) => it.stage === s) }))
+      .filter((g) => g.list.length > 0);
+  }, [visible]);
 
   return (
     <CinematicPageShell
@@ -103,8 +134,54 @@ function InnovationsPage() {
         meta="Field · R&D Bench"
       />
 
-      <div className="not-prose">
-        <div className="mb-10 flex flex-wrap items-center gap-2">
+      {/* Material Spec Sheet — the substrate behind everything */}
+      <div className="not-prose relative mt-12 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
+        <LatticeField intensity={0.07} />
+        <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
+          <div className="mb-7 flex items-center gap-3">
+            <span className="h-px w-8 bg-accent/60" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+              Material · Substrate Specification
+            </span>
+            <span className="h-px flex-1 bg-foreground/[0.08]" />
+            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+              C · sp² · 0.142 nm
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+            {materialSpec.map((s, i) => (
+              <motion.div
+                key={s.k}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+                className="flex flex-col gap-1.5"
+              >
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/50">
+                  {s.k}
+                </span>
+                <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
+                  {s.v}
+                </span>
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/45">
+                  {s.note}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Filter pills */}
+      <div className="not-prose mt-14">
+        <div className="mb-5 flex items-center gap-3">
+          <span className="h-px w-8 bg-foreground/[0.12]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+            Catalogue · Filter by readiness stage
+          </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
           {filters.map((f) => {
             const isActive = f === filter;
             const count = f === "All" ? items.length : items.filter((i) => i.stage === f).length;
@@ -123,37 +200,174 @@ function InnovationsPage() {
             );
           })}
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {visible.map((it) => (
-            <article
-              key={it.title}
-              className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.02]"
-            >
-              <img
-                src={it.img}
-                alt={`${it.title} — ${it.body}`}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover opacity-70 grayscale-[0.4] contrast-[1.05] brightness-[0.85] transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.04]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 md:p-4">
-                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-primary/80">{it.stage}</p>
-                <h3 className="mt-1 font-display text-base md:text-lg tracking-[-0.01em] text-foreground/95 leading-tight">{it.title}</h3>
-                <p className="mt-1 text-[10px] md:text-[11px] text-foreground/65 line-clamp-1">{it.metric}</p>
-              </div>
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/85 px-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="text-center">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-primary/80">{it.stage}</p>
-                  <h3 className="mt-1 font-display text-lg text-gradient">{it.title}</h3>
-                  <p className="mt-2 text-[11px] leading-relaxed text-foreground/80 line-clamp-4">{it.body}</p>
-                  <p className="mt-2 text-[10px] text-foreground/70">{it.metric}</p>
+      {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
+      <div className="not-prose mt-12 space-y-20">
+        {grouped.map((group) => {
+          const meta = stageMeta[group.stage];
+          const heroes = group.list.filter((i) => i.featured);
+          const rest = group.list.filter((i) => !i.featured);
+          return (
+            <section key={group.stage} className="relative">
+              <header className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-foreground/[0.08] pt-6">
+                <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
+                  {meta.tone}
+                </span>
+                <h2 className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
+                  {meta.label}
+                </h2>
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+                  {meta.sub}
+                </span>
+                <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
+                  {String(group.list.length).padStart(2, "0")} · Programs
+                </span>
+              </header>
+
+              {/* Hero cards — large, with lattice */}
+              {heroes.length > 0 && (
+                <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {heroes.map((it) => (
+                    <HeroCard key={it.title} item={it} />
+                  ))}
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              )}
+
+              {/* Supporting cards */}
+              {rest.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+                  {rest.map((it) => (
+                    <CompactCard key={it.title} item={it} />
+                  ))}
+                </div>
+              )}
+            </section>
+          );
+        })}
       </div>
     </CinematicPageShell>
+  );
+}
+
+function HeroCard({ item }: { item: Item }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
+      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
+    >
+      <img
+        src={item.img}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-80 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+        style={{ filter: "grayscale(0.18) contrast(1.06) saturate(0.88) brightness(0.9)" }}
+      />
+      {/* Lattice overlay — restrained scientific texture */}
+      <LatticeField intensity={0.08} className="mix-blend-screen" />
+      {/* Cinematic gradient */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.34) 0%, transparent 30%, transparent 45%, oklch(0.02 0.006 245 / 0.82) 82%, oklch(0.014 0.006 245 / 0.97) 100%)",
+        }}
+      />
+      {/* Corner technical readout */}
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+        <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/45">
+          {item.status}
+        </span>
+        <span className="h-1 w-1 rounded-full bg-accent/70" />
+      </div>
+      <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+        <span className="h-px w-6 bg-accent/70" />
+        <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+          Flagship
+        </span>
+      </div>
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
+        <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
+          {item.domain}
+        </p>
+        <h3 className="mt-2 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/98 leading-[1.1]">
+          {item.title}
+        </h3>
+        <p className="mt-2.5 max-w-xl text-[13px] md:text-[14px] leading-snug text-foreground/75">
+          {item.body}
+        </p>
+        <div className="mt-3 flex items-center gap-3">
+          <span className="h-px w-5 bg-accent/60" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
+            {item.metric}
+          </span>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function CompactCard({ item }: { item: Item }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+      className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)]"
+    >
+      <img
+        src={item.img}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.04]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.96) 100%)",
+        }}
+      />
+      {/* Hairline scientific marker */}
+      <div className="absolute left-3 top-3 z-10 h-px w-5 bg-accent/60" />
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
+        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
+          {item.domain}
+        </p>
+        <h3 className="mt-1 font-display text-base md:text-lg tracking-[-0.01em] text-foreground/95 leading-tight">
+          {item.title}
+        </h3>
+        <p className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+          {item.metric}
+        </p>
+      </div>
+      {/* Hover detail */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-[oklch(0.04_0.006_245/0.92)] px-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="text-center">
+          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent/80">
+            {item.status}
+          </p>
+          <h3 className="mt-1.5 font-display text-lg tracking-[-0.01em] text-foreground/98">
+            {item.title}
+          </h3>
+          <p className="mt-2 text-[11px] leading-relaxed text-foreground/80 line-clamp-4">
+            {item.body}
+          </p>
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <span className="h-px w-4 bg-accent/60" />
+            <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-foreground/70">
+              {item.metric}
+            </p>
+            <span className="h-px w-4 bg-accent/60" />
+          </div>
+        </div>
+      </div>
+    </motion.article>
   );
 }
