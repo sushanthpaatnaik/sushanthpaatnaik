@@ -1,6 +1,36 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, type MotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import mediaWall from "@/assets/scene-media-wall.jpg";
+
+type Fragment = {
+  t: string;
+  x: string;
+  y: string;
+  size: string;
+  delay: number;
+  depth: number;
+};
+
+function HeadlineFragment({ f, p, reduce }: { f: Fragment; p: MotionValue<number>; reduce: boolean }) {
+  const opacity = useTransform(p, [0, 0.3 + f.delay * 0.1, 0.7, 1], [0, 0.55, 0.45, 0]);
+  const y = useTransform(p, [0, 1], reduce ? ["0%", "0%"] : [`${f.depth * 30}px`, `${-f.depth * 30}px`]);
+  return (
+    <motion.span
+      aria-hidden
+      className={`absolute font-display ${f.size} tracking-[-0.01em] text-foreground/30 italic select-none whitespace-nowrap`}
+      style={{
+        left: f.x,
+        top: f.y,
+        opacity,
+        y,
+        filter: "blur(0.4px)",
+        textShadow: "0 0 18px oklch(0.04 0 0 / 0.9)",
+      }}
+    >
+      {f.t}
+    </motion.span>
+  );
+}
 
 /**
  * Cinematic archival media wall — a parallax background layer for the
