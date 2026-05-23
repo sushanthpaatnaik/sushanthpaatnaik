@@ -30,35 +30,41 @@ export const Route = createFileRoute("/news")({
 const archive = [
   {
     n: "MIT Technology Review",
-    title: "Graphene work & venture architecture",
+    title: "Featured Innovator · Graphene work & venture architecture",
     body: "Editorial coverage of the materials platform and the operating group built around it.",
   },
   {
+    n: "Global Indian",
+    title: "Cover Story · India to world",
+    body: "Cover feature on Indian invention reaching global industrial deployment.",
+  },
+  {
     n: "India Today",
-    title: "From borrowed workshop to operating group",
+    title: "Profile · From borrowed workshop to operating group",
     body: "Long-form profile on the journey from origin inventions to a deep-tech ecosystem.",
   },
   {
     n: "Times of India",
-    title: "National recognitions & downstream work",
-    body: "Recurring coverage of Presidential awards and the inventions that followed.",
+    title: "21 Patents & Awards · National recognitions",
+    body: "Recurring national reporting on Presidential awards and the twenty-one-strong patent record.",
   },
   {
     n: "Business Standard",
-    title: "Deep-tech commercialization in India",
-    body: "Reporting on the architecture spanning research, industrial products, AI, and capital.",
+    title: "Battery Breakthrough · Deep-tech commercialization",
+    body: "Reporting on graphene-augmented battery work and the architecture spanning research, industrial products, AI, and capital.",
   },
   {
-    n: "Global Indian",
-    title: "India to world",
-    body: "Editorial on Indian invention reaching global industrial deployment.",
+    n: "NIF-India",
+    title: "IGNITE Awardee · National Innovation Foundation",
+    body: "Recognised under the IGNITE programme of the National Innovation Foundation for original invention at a school-age stage.",
   },
   {
     n: "TED-India",
-    title: "One of the youngest invited speakers",
+    title: "Speaker · One of the youngest invited",
     body: "A talk on engineering, dignity, and the discipline of inventing for one person at a time.",
   },
 ];
+
 
 function NewsPage() {
   return (
