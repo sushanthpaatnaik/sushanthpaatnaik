@@ -569,16 +569,36 @@ function InHisWordsScene() {
           }}
         />
 
-        {/* Deep navy atmospheric haze */}
-        <div className="absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.10_0.02_245/0.55),transparent_78%)]" />
+        {/* Stage atmosphere — warm spotlight diffusion from above replaces
+            the cool industrial wash. Reads as a speaking environment. */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_55%_45%_at_50%_8%,oklch(0.62_0.09_55/0.28),transparent_72%)]" />
+
+        {/* Deep stage shadow base — pulls the lower frame into theatre dark */}
+        <div className="absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_50%_95%,oklch(0.06_0.012_55/0.85),transparent_78%)]" />
+
+        {/* Volumetric haze — soft horizontal stage fog, slow breathing */}
+        <motion.div
+          className="absolute inset-x-0 top-[18%] h-[55%] mix-blend-screen"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.42 0.04 55 / 0.10) 30%, oklch(0.38 0.03 55 / 0.08) 60%, transparent 100%)",
+            filter: "blur(14px)",
+          }}
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { opacity: [0.55, 0.85, 0.6], y: [0, -6, 0] }
+          }
+          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         {/* Subtle graphene hex lattice — slow rotational drift behind quotes */}
         <motion.div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140vh] h-[140vh] opacity-[0.07] mix-blend-screen"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140vh] h-[140vh] opacity-[0.045] mix-blend-screen"
           style={{
             rotate: prefersReducedMotion ? 0 : latticeRot,
             backgroundImage:
-              "radial-gradient(circle at center, oklch(0.78 0.05 232 / 0.5) 0.6px, transparent 1.4px)",
+              "radial-gradient(circle at center, oklch(0.78 0.04 55 / 0.5) 0.6px, transparent 1.4px)",
             backgroundSize: "44px 44px",
             maskImage:
               "radial-gradient(ellipse 55% 50% at 50% 50%, #000 25%, transparent 78%)",
@@ -587,34 +607,34 @@ function InHisWordsScene() {
           }}
         />
 
-        {/* Single cool key beam — drifts almost imperceptibly */}
+        {/* Warm key spotlight — slowly drifts, simulates stage lighting */}
         <motion.div
           className="absolute inset-0 mix-blend-screen"
           style={{
             background:
-              "radial-gradient(ellipse 32% 60% at 22% 18%, oklch(0.62 0.05 232 / 0.16), transparent 70%)",
-            filter: "blur(2px)",
+              "radial-gradient(ellipse 28% 50% at 50% 0%, oklch(0.72 0.10 55 / 0.20), transparent 72%)",
+            filter: "blur(3px)",
           }}
           animate={
             prefersReducedMotion
               ? undefined
-              : { opacity: [0.55, 0.85, 0.55], x: [-8, 6, -8] }
+              : { opacity: [0.65, 0.95, 0.65], x: [-4, 4, -4] }
           }
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Restrained amber accent — single pinpoint, lower right */}
+        {/* Faint cool counter-light — keeps cinematic depth, lower-left */}
         <motion.div
           className="absolute inset-0 mix-blend-screen"
           style={{
             background:
-              "radial-gradient(ellipse 14% 18% at 88% 86%, oklch(0.55 0.08 55 / 0.10), transparent 72%)",
-            filter: "blur(3px)",
+              "radial-gradient(ellipse 18% 22% at 12% 88%, oklch(0.55 0.05 232 / 0.08), transparent 72%)",
+            filter: "blur(4px)",
           }}
           animate={
-            prefersReducedMotion ? undefined : { opacity: [0.45, 0.7, 0.45] }
+            prefersReducedMotion ? undefined : { opacity: [0.4, 0.65, 0.4] }
           }
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Cinematic grain */}
@@ -628,12 +648,12 @@ function InHisWordsScene() {
           }}
         />
 
-        {/* Readability overlay — protects typography */}
-        <div className="absolute inset-0 bg-[oklch(0.014_0_0/0.42)]" />
+        {/* Readability overlay — warmer tint protects typography */}
+        <div className="absolute inset-0 bg-[oklch(0.018_0.004_55/0.46)]" />
 
         {/* Top/bottom continuity falloff into adjacent scenes */}
-        <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_8%,transparent)]" />
-        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_92%)]" />
+        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_12%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[30%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_94%)]" />
       </div>
 
       {/* Drifting motes — material atmosphere */}
@@ -682,38 +702,38 @@ function InHisWordsScene() {
         </MotionReveal>
 
         {/* Fragments — oversized editorial cadence, alternating alignment */}
-        <div className="flex flex-col gap-28 md:gap-40">
+        <div className="flex flex-col gap-32 md:gap-48">
           {fragments.map((f, i) => {
             const alignRight = i % 2 === 1;
             return (
               <MotionReveal key={f.n} delay={0.04 + i * 0.04}>
                 <figure
-                  className={`grid md:grid-cols-12 gap-y-6 ${
+                  className={`grid md:grid-cols-12 gap-y-7 ${
                     alignRight ? "md:text-right" : ""
                   }`}
                 >
                   <div
-                    className={`md:col-span-10 ${
-                      alignRight ? "md:col-start-3" : "md:col-start-1"
+                    className={`md:col-span-9 ${
+                      alignRight ? "md:col-start-4" : "md:col-start-1"
                     }`}
                   >
-                    <span className="block mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+                    <span className="block mb-7 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
                       {f.n}
                     </span>
-                    <blockquote className="font-display font-light text-[clamp(1.7rem,5.4vw,3.6rem)] leading-[1.08] tracking-[-0.03em] text-gradient [text-wrap:balance]">
-                      {f.line}
+                    <blockquote className="font-display font-extralight italic text-[clamp(1.45rem,4.2vw,2.85rem)] leading-[1.22] tracking-[-0.018em] text-foreground/92 [text-wrap:balance]">
+                      &ldquo;{f.line}&rdquo;
                     </blockquote>
                     <figcaption
-                      className={`mt-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 ${
+                      className={`mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/50 ${
                         alignRight ? "md:justify-end" : ""
                       }`}
                     >
                       {!alignRight && (
-                        <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
+                        <span className="h-px w-12 bg-gradient-to-r from-[oklch(0.62_0.10_55/0.5)] to-transparent" />
                       )}
                       <span>{f.note}</span>
                       {alignRight && (
-                        <span className="h-px w-10 bg-gradient-to-l from-foreground/25 to-transparent" />
+                        <span className="h-px w-12 bg-gradient-to-l from-[oklch(0.62_0.10_55/0.5)] to-transparent" />
                       )}
                     </figcaption>
                   </div>
