@@ -48,30 +48,31 @@ const awards = [
 const press = [
   {
     n: "MIT Technology Review",
-    title: "Featured · Advanced materials & invention",
+    title: "Featured Innovator · Advanced materials & invention",
     body: "Editorial coverage of graphene work and the venture architecture behind it.",
   },
   {
+    n: "Global Indian",
+    title: "Cover Story · India to world",
+    body: "Cover feature on Indian invention reaching global industrial deployment.",
+  },
+  {
     n: "India Today",
-    title: "Profiled · Inventor & founder",
+    title: "Profile · Inventor & founder",
     body: "Long-form profile on the journey from a borrowed workshop to a deep-tech operating group.",
   },
   {
     n: "Times of India",
-    title: "Reported · Awards & invention",
-    body: "Recurring national coverage of Presidential recognitions and downstream work.",
+    title: "21 Patents & Awards · National coverage",
+    body: "Recurring national reporting on Presidential recognitions and the twenty-one-strong patent record.",
   },
   {
     n: "Business Standard",
-    title: "Featured · Deep-tech commercialization",
-    body: "Reporting on the commercialization architecture spanning materials, AI, and capital.",
-  },
-  {
-    n: "Global Indian",
-    title: "Profiled · India to world",
-    body: "Editorial on Indian invention reaching global industrial deployment.",
+    title: "Battery Breakthrough · Deep-tech commercialization",
+    body: "Reporting on graphene-augmented battery work and the commercialization architecture spanning materials, AI, and capital.",
   },
 ];
+
 
 function RecognitionsPage() {
   return (
