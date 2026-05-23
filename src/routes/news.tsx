@@ -849,7 +849,7 @@ function NewsPage() {
                   src={t.logo}
                   alt={`${t.role} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[150px] object-contain opacity-65 mix-blend-screen"
+                  className="max-h-9 w-auto max-w-[150px] object-contain opacity-90 brightness-[1.12] drop-shadow-[0_0_10px_oklch(1_0_0_/_0.08)]"
                 />
               </div>
               <div>
