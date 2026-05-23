@@ -171,9 +171,9 @@ function ChapterMarker({
           className="font-mono text-[9px] uppercase tracking-[0.35em] select-none"
           style={{
             color: active
-              ? "oklch(0.76 0.07 232 / 0.96)"
-              : "oklch(0.62 0.0 0 / 0.42)",
-            transition: "color 0.9s cubic-bezier(0.19, 1, 0.22, 1)",
+              ? "oklch(0.78 0.07 232 / 0.98)"
+              : "oklch(0.68 0.0 0 / 0.56)",
+            transition: "color 0.95s cubic-bezier(0.19, 1, 0.22, 1)",
           }}
         >
           {chapter.n}
