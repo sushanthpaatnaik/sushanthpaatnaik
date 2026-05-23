@@ -31,11 +31,11 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneSpark,
     alt: "01 — Spark · a single glowing particle in dark space",
-    tint: "radial-gradient(ellipse at 50% 50%, oklch(0.45 0.13 245 / 0.45), oklch(0.10 0.04 260 / 0.20) 70%)",
+    tint: "radial-gradient(ellipse at 50% 50%, oklch(0.42 0.12 245 / 0.32), oklch(0.08 0.03 260 / 0.14) 70%)",
     overlay:
-      "radial-gradient(ellipse 70% 60% at 50% 52%, oklch(0.04 0.01 260 / 0.55) 0%, oklch(0.03 0.006 260 / 0.85) 75%)",
-    parallax: 0.6,
-    filter: "brightness(0.72) contrast(1.08) saturate(0.88)",
+      "radial-gradient(ellipse 72% 64% at 50% 52%, oklch(0.04 0.01 260 / 0.62) 0%, oklch(0.03 0.006 260 / 0.92) 75%)",
+    parallax: 0.5,
+    filter: "brightness(0.58) contrast(1.06) saturate(0.78)",
   },
   {
     src: sceneFounder,

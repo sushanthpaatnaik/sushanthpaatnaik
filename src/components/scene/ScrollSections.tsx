@@ -50,41 +50,50 @@ function HeroSection() {
   return (
     <section
       id="spark"
-      className="relative min-h-[calc(var(--viewport-height)*1.28)] px-5 sm:px-6"
+      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6"
     >
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-28 md:pt-24 pb-12 render-stable">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
 
+        {/* Atmospheric vignette — deep ink falloff on all edges */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(180deg, oklch(0.03 0 0) 0%, transparent 22%, transparent 70%, oklch(0.03 0 0) 100%)",
+              "linear-gradient(180deg, oklch(0.025 0 0) 0%, transparent 28%, transparent 64%, oklch(0.025 1.004 260 / 0.92) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-1 z-[1]"
+          style={{
+            background:
+              "radial-gradient(ellipse 72% 62% at 50% 48%, transparent 45%, oklch(0.025 0 0 / 0.78) 100%)",
           }}
         />
 
-        <div className="relative z-10 max-w-5xl pointer-events-auto">
+        <div className="relative z-10 max-w-4xl pointer-events-auto">
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-            className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground"
+            className="mb-10 md:mb-12 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80"
           >
             01 — Spark
           </motion.p>
-          <motion.h1 className="font-display text-[clamp(2.6rem,11vw,10rem)] leading-[0.94] md:leading-[0.92] tracking-[-0.04em] md:tracking-[-0.045em] font-medium">
+          <motion.h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
             {[
               { text: "I build", delay: 0.2 },
-              { text: "what does not", delay: 0.34 },
-              { text: "yet exist.", delay: 0.48 },
+              { text: "what does not", delay: 0.36 },
+              { text: "yet exist.", delay: 0.52 },
             ].map((line, index) => (
               <motion.span
                 key={line.text}
-                initial={{ opacity: 0, y: 72, filter: "blur(18px)" }}
+                initial={{ opacity: 0, y: 56, filter: "blur(16px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 1.2, delay: line.delay, ease: [0.19, 1, 0.22, 1] }}
-                className={`block ${index < 2 ? "text-gradient" : "text-glow text-foreground"}`}
+                className={`block py-1 ${index < 2 ? "text-gradient" : "text-foreground/95"}`}
               >
                 {line.text}
               </motion.span>
@@ -93,8 +102,8 @@ function HeroSection() {
           <motion.p
             initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.05, delay: 0.72, ease: [0.19, 1, 0.22, 1] }}
-            className="mx-auto mt-10 md:mt-12 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
+            transition={{ duration: 1.05, delay: 0.78, ease: [0.19, 1, 0.22, 1] }}
+            className="mx-auto mt-12 md:mt-16 max-w-md text-sm leading-relaxed text-muted-foreground/80 md:text-[0.9375rem]"
           >
             Inventor and deep-tech founder. Six-time Indian Presidential awardee. Building from India — for the world.
           </motion.p>
@@ -104,14 +113,14 @@ function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, delay: 1.2 }}
-          className="absolute bottom-12 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/55"
+          className="absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/40"
           style={{ mixBlendMode: "soft-light" }}
         >
           <span className="blur-[0.3px]">Scroll to enter</span>
           <motion.div
-            animate={{ opacity: [0.2, 0.6, 0.2], scaleY: [1, 1.12, 1] }}
+            animate={{ opacity: [0.15, 0.45, 0.15], scaleY: [1, 1.12, 1] }}
             transition={{ duration: 3.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-16 w-px origin-top bg-gradient-to-b from-foreground/30 to-transparent"
+            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/20 to-transparent"
           />
         </motion.div>
       </div>

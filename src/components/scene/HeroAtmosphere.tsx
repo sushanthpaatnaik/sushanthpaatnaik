@@ -22,11 +22,11 @@ export default function HeroAtmosphere() {
       {/* Layer 1 — distant cinematic glow, slow breath. */}
       <motion.div
         className="absolute inset-0 mix-blend-screen"
-        animate={reduce ? undefined : { opacity: [0.55, 0.85, 0.55] }}
+        animate={reduce ? undefined : { opacity: [0.30, 0.50, 0.30] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(ellipse 48% 38% at 50% 52%, oklch(0.42 0.07 240 / 0.10), transparent 70%)",
+            "radial-gradient(ellipse 44% 34% at 50% 54%, oklch(0.40 0.06 240 / 0.08), transparent 70%)",
           transform: "translateZ(0)",
         }}
       />
@@ -36,18 +36,18 @@ export default function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.45) 0%, transparent 28%, transparent 72%, oklch(0.03 0.006 260 / 0.6) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.55) 0%, transparent 32%, transparent 68%, oklch(0.03 0.006 260 / 0.72) 100%)",
         }}
       />
 
       {/* Layer 3 — faint copper rim, off-axis, barely there. */}
       <motion.div
         className="absolute inset-0 mix-blend-screen"
-        animate={reduce ? undefined : { opacity: [0.35, 0.6, 0.35] }}
+        animate={reduce ? undefined : { opacity: [0.18, 0.32, 0.18] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 4 }}
         style={{
           background:
-            "radial-gradient(ellipse 32% 22% at 78% 22%, oklch(0.62 0.10 55 / 0.07), transparent 70%)",
+            "radial-gradient(ellipse 28% 18% at 76% 24%, oklch(0.62 0.10 55 / 0.05), transparent 70%)",
         }}
       />
 
