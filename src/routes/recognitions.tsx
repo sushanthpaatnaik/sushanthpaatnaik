@@ -697,12 +697,27 @@ function RecognitionsPage() {
         items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
       />
 
-      {/* 05 · Era archives — progressive disclosure */}
-      <EditorialSection number="05 · Archives" heading="Open the era you want to walk through.">
+      {/* 04.5 · Documentary Mosaic — dense cinematic collage across the full archive */}
+      <EditorialSection
+        number="05 · Documentary"
+        heading="A cinematic mosaic of the record."
+      >
+        <p>
+          Newspaper plates, ministerial moments, presidential citations, and
+          mainstage photography — drawn from the full archive and intercut as
+          a single documentary collage. The visual register before the
+          chronology opens.
+        </p>
+      </EditorialSection>
+      <ArchiveMosaic items={documentaryMosaic} />
+
+      {/* 06 · Era archives — progressive disclosure */}
+      <EditorialSection number="06 · Archives" heading="Open the era you want to walk through.">
         <p>
           Four eras, four archives. Each opens into the full photographic
-          plates and the year-by-year register for that period. Closed by
-          default so the chronology can be read at the pace of attention.
+          plates and the year-by-year register for that period. A preview
+          strip remains visible for every era so the depth of the record is
+          always felt, even when the chronology is closed.
         </p>
       </EditorialSection>
 
@@ -714,6 +729,7 @@ function RecognitionsPage() {
           description="Six citations, three sitting Presidents of India. The earliest plates in the archive — when the prototypes still smelled of school workshop and the country was just beginning to notice."
           plateCount={eraPresidential.length}
           registryCount={ledgerSlice(["2008", "2009", "2013"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraPresidential}
           defaultOpen
         >
           <ArchivePlateSeries
@@ -736,6 +752,7 @@ function RecognitionsPage() {
           description="TED-India, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraGlobal}
         >
           <ArchivePlateSeries
             items={eraGlobal}
@@ -757,6 +774,7 @@ function RecognitionsPage() {
           description="The diplomatic and ministerial years — embassies, BRICS, G20, the Ministry of Power, and the signing of MoUs that turn frontier research into national infrastructure."
           plateCount={eraIndustrial.length}
           registryCount={ledgerSlice(["2021", "2022", "2023"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraIndustrial}
         >
           <ArchivePlateSeries
             items={eraIndustrial}
@@ -778,6 +796,7 @@ function RecognitionsPage() {
           description="IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond Retreat, Bharatiya Knowledge Systems. The current chapter — where materials, ventures and public address converge."
           plateCount={eraPresent.length}
           registryCount={ledgerSlice(["2024", "2025"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraPresent}
         >
           <ArchivePlateSeries
             items={eraPresent}
