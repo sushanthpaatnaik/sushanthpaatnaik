@@ -956,20 +956,27 @@ function InHisWordsScene() {
   );
 }
 
-/* ───────────── Scene 08 — Closing invitation ───────────── */
+/* ───────────── Scene 09 — Closing invitation ───────────── */
 function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative flex min-h-[calc(var(--viewport-height)*1.0)] items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-28 text-center"
+      className="relative flex min-h-[calc(var(--viewport-height)*1.15)] items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-28 md:pt-36 pb-40 md:pb-56 text-center"
     >
-      {/* Architectural system node — restrained, integrated, atmospheric.
-          Replaces the disconnected floating ring with a faint intelligent
-          node that breathes with the scene rather than overlaying it. */}
+      {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
+        {/* Soft cinematic dawn — keeps the closing frame from collapsing
+            into pure black. A faint horizon glow rises from the lower third. */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[72%]"
+          style={{
+            background:
+              "radial-gradient(ellipse 90% 70% at 50% 100%, oklch(0.22 0.04 232 / 0.32) 0%, oklch(0.10 0.02 232 / 0.18) 38%, transparent 78%)",
+          }}
+        />
         <motion.div
           className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
@@ -981,12 +988,20 @@ function ClosingInvitation() {
           animate={{ opacity: [0.55, 0.78, 0.55], scale: [1, 1.012, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Atmospheric continuity — extends the scene lower in the frame */}
+        {/* Layered cinematic gradient — softer than flat black, top continuity in */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[58%]"
+          className="absolute inset-x-0 top-0 h-[24%]"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.55) 55%, oklch(0.014 0.004 250 / 0.92) 100%)",
+              "linear-gradient(180deg, oklch(0.014 0.004 250 / 0.92) 0%, oklch(0.018 0.005 250 / 0.55) 55%, transparent 100%)",
+          }}
+        />
+        {/* Bottom resolution — never collapses to pure void; carries glow to footer */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[40%]"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.022 0.006 245 / 0.55) 55%, oklch(0.018 0.006 245 / 0.75) 100%)",
           }}
         />
       </div>
@@ -1004,13 +1019,13 @@ function ClosingInvitation() {
             </p>
           </MotionReveal>
           <MotionReveal delay={0.12}>
-            <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance]">
-              Energy as infrastructure.<br /> Industry at planetary scale.
+            <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance] pb-1">
+              The next industrial century<br /> will be materially engineered.
             </h2>
           </MotionReveal>
           <MotionReveal delay={0.2}>
             <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
-              The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
+              Calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
             </p>
           </MotionReveal>
           <MotionReveal delay={0.28}>
@@ -1024,7 +1039,7 @@ function ClosingInvitation() {
             </div>
           </MotionReveal>
           <MotionReveal delay={0.34}>
-            <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+            <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/55">
               <span>Advanced Materials</span>
               <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
               <span>Energy Systems</span>
@@ -1032,16 +1047,28 @@ function ClosingInvitation() {
               <span>Planetary Infrastructure</span>
             </div>
           </MotionReveal>
+
+          {/* Signature plate — resolves the cinematic arc with structural closure */}
           <MotionReveal delay={0.42}>
-            <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
-              © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
-            </p>
+            <div className="mt-24 md:mt-32 flex flex-col items-center gap-5">
+              <span className="h-px w-24 bg-gradient-to-r from-transparent via-foreground/25 to-transparent" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55">
+                Sushanth Paatnaik
+              </p>
+              <p className="font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/45">
+                Inventor · Deep-Tech Founder · India
+              </p>
+              <p className="mt-6 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
+                © Sushanth Paatnaik — Engineering systems for the next civilization layer.
+              </p>
+            </div>
           </MotionReveal>
         </div>
       </div>
     </section>
   );
 }
+
 
 export default function ScrollSections() {
   const totalChapters = 9;
