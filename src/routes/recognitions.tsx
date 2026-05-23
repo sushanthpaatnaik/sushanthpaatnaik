@@ -845,6 +845,148 @@ function RecognitionsPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* 07 · Future Signal — cinematic decompression into forward momentum */}
+      <section className="not-prose relative mt-2 overflow-hidden">
+        {/* Atmospheric planetary backdrop */}
+        <div aria-hidden className="absolute inset-0 z-0 overflow-hidden">
+          <div
+            className="absolute inset-1"
+            style={{
+              backgroundImage: `url(${futureBackdrop})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 62%",
+              filter: "blur(6px) saturate(0.22) brightness(0.28) contrast(1.05)",
+              transform: "scale(1.14)",
+            }}
+          />
+          <div
+            className="absolute inset-1"
+            style={{
+              backgroundImage: `url(${futureBackdrop})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 62%",
+              filter: "blur(40px) saturate(0.18) brightness(0.22)",
+              transform: "scale(1.26)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 72% 62% at 50% 52%, transparent 32%, #000 90%)",
+              maskImage:
+                "radial-gradient(ellipse 72% 62% at 50% 52%, transparent 32%, #000 90%)",
+              opacity: 0.85,
+            }}
+          />
+          {/* Deep matte overlay — heavier than closure for more silence */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, oklch(0.032 0.005 260 / 0.94) 0%, oklch(0.028 0.004 260 / 0.96) 45%, oklch(0.030 0.005 260 / 0.94) 100%)",
+            }}
+          />
+          {/* Faint infrastructure glow — industrial geometry */}
+          <div
+            className="absolute inset-0 mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(60% 48% at 50% 68%, oklch(0.55 0.07 250 / 0.04), transparent 70%)",
+            }}
+          />
+          {/* Bottom edge fade to pure black */}
+          <div
+            className="absolute inset-x-5 bottom-0 h-32"
+            style={{
+              background:
+                "linear-gradient(to top, oklch(0.025 0.003 260 / 0.95), transparent)",
+            }}
+          />
+        </div>
+
+        {/* Content — extreme vertical breathing, center-weighted */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-36 md:py-52 lg:py-64">
+          {/* Eyebrow — forward signal */}
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.7 }}
+            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+            className="font-mono text-[9px] uppercase tracking-[0.55em] text-muted-foreground/30 mb-20 md:mb-28"
+          >
+            07 · Future Signal
+          </motion.p>
+
+          {/* Primary statement — monumental, whispered */}
+          <motion.h2
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1.4, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
+            className="font-display text-[36px] md:text-[56px] lg:text-[72px] leading-[1.06] tracking-[-0.04em] text-foreground/[0.82] max-w-[14ch]"
+          >
+            The archive closes here.
+            <br />
+            The work does not.
+          </motion.h2>
+
+          {/* Hairline divider — slower, more patient */}
+          <motion.div
+            initial={{ scaleX: 1 }}
+            whileInView={{ scaleX: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 1.6, delay: 0.65, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-16 md:mt-20 h-px w-28 md:w-32 bg-foreground/10 origin-center"
+            style={{ scaleX: 0 }}
+          />
+
+          {/* Secondary quiet signal */}
+          <motion.p
+            initial={{ opacity: 1, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 1 }}
+            transition={{ duration: 1.2, delay: 0.55, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-16 md:mt-20 font-display text-[15px] md:text-[19px] leading-[1.45] tracking-[-0.012em] text-foreground/40 max-w-[26ch]"
+          >
+            The next systems are already under construction.
+          </motion.p>
+
+          {/* Single refined CTA — absolute minimalism */}
+          <motion.div
+            initial={{ opacity: 1, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 1.0, delay: 0.9, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-20 md:mt-28"
+          >
+            <Link
+              to="/engage"
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 md:px-12 md:py-6 bg-[oklch(0.065_0.004_245)]/50 border border-foreground/[0.08] rounded-sm transition-all duration-700 hover:border-foreground/20 hover:bg-[oklch(0.08_0.005_245)]/60"
+            >
+              <span
+                aria-hidden
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+                style={{
+                  background:
+                    "radial-gradient(130% 110% at 50% 0%, color-mix(in oklab, var(--foreground) 2.5%, transparent) 0%, transparent 55%)",
+                }}
+              />
+              <span className="relative font-mono text-[11px] uppercase tracking-[0.38em] text-foreground/60 group-hover:text-foreground/80 transition-colors duration-700">
+                Begin a Conversation
+              </span>
+              <span className="relative font-mono text-[10px] text-foreground/30 group-hover:text-foreground/50 transition-colors duration-700">→</span>
+            </Link>
+          </motion.div>
+
+          {/* Terminal signature — the quietest possible close */}
+          <motion.p
+            initial={{ opacity: 1 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.9 }}
+            transition={{ duration: 2.0, delay: 1.4, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-28 md:mt-36 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
+          >
+            Monoatom Labs · 2025
+          </motion.p>
+        </div>
+      </section>
     </CinematicPageShell>
   );
 }
