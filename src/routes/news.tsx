@@ -331,25 +331,25 @@ function outletHref(name: string): string | undefined {
 // `lighten` flags publications whose marks are inherently dark/grayscale —
 // they get inverted+desaturated so they read as soft silver on the dark wall.
 // `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
-const outlets: { name: string; logo: string; lighten?: boolean; scale?: number }[] = [
-  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.05 },
-  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.08 },
-  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.18 },
-  { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 0.88 },
-  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.12 },
-  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.20 },
-  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.05 },
-  { name: "TED India",              logo: tedLogo,               scale: 0.82 },
-  { name: "NIF India",              logo: nifLogo,               scale: 1.32 },
-  { name: "Governance Now",         logo: governanceNowLogo,     scale: 1.32 },
-  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.10 },
-  { name: "ProductNation",          logo: productNationLogo,     scale: 1.08 },
-  { name: "YourStory",              logo: yourStoryLogo,         scale: 1.00 },
-  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.05 },
-  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.08 },
-  { name: "ThePrint",               logo: thePrintLogo,          scale: 0.95 },
-  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.12 },
-  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.00 },
+const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; transparentBg?: boolean }[] = [
+  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.10 },
+  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.14 },
+  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.22 },
+  { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 0.96 },
+  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.18 },
+  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.26 },
+  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
+  { name: "TED India",              logo: tedLogo,               scale: 0.92 },
+  { name: "NIF India",              logo: nifLogo,               scale: 1.36 },
+  { name: "Governance Now",         logo: governanceNowLogo,     scale: 1.36 },
+  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.16 },
+  { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
+  { name: "YourStory",              logo: yourStoryLogo,         scale: 1.06 },
+  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.10 },
+  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.14 },
+  { name: "ThePrint",               logo: thePrintLogo,          scale: 1.02 },
+  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.18 },
+  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.08, transparentBg: true },
 ];
 
 const testimonials = [
