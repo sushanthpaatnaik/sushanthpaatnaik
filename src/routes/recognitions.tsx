@@ -45,6 +45,9 @@ import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.webp";
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
 import honorIntelIris from "@/assets/honor-intel-iris.png";
+import honorPresidentialTrio from "@/assets/honor-presidential-trio.png";
+import honorMitFab from "@/assets/honor-mit-fab.png";
+import honorMitTr35 from "@/assets/honor-mit-tr35.png";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";
@@ -94,12 +97,12 @@ type Milestone = {
 
 const milestones: Milestone[] = [
   {
-    year: "2008",
+    year: "2008–2013",
     sortYear: 2008,
-    title: "First Presidential recognition",
-    body: "Felicitated by Dr. A.P.J. Abdul Kalam at Rashtrapati Bhavan — the first of six citations issued by three sitting Presidents of India between 2008 and 2013 for sustained contribution to indigenous deep-tech and assistive innovation.",
-    image: awardKalam,
-    imageFocus: "center 28%",
+    title: "Six-Time Indian Presidential Awardee",
+    body: "Recognized by three Presidents of India across six national innovation honours — Dr. A.P.J. Abdul Kalam (2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
+    image: honorPresidentialTrio,
+    imageFocus: "center center",
     institution: "President of India · National Innovation Foundation",
     major: true,
   },
@@ -107,8 +110,9 @@ const milestones: Milestone[] = [
     year: "2010",
     sortYear: 2010,
     title: "MIT TR-35 Awardee",
-    body: "Recognised by MIT Technology Review among the world's top young innovators under 35 — for early work on sustainable materials and assistive technology.",
-    image: fellowCert,
+    body: "Recognized by MIT Technology Review among the world's leading young innovators under 35 — for early work on sustainable materials and assistive technology.",
+    image: honorMitTr35,
+    imageFocus: "center 25%",
     institution: "MIT Technology Review · Cambridge",
   },
   {
@@ -141,8 +145,9 @@ const milestones: Milestone[] = [
     year: "2013–14",
     sortYear: 2013,
     title: "MIT Fab-10 & Fab-11 Awardee",
-    body: "Selected at the MIT Fab-10 (Barcelona) and Fab-11 international conferences for original prototypes built end-to-end inside MIT's Center for Bits and Atoms personal fabrication network.",
-    image: fellowCert,
+    body: "Selected at MIT Fab-10 (Barcelona) and Fab-11 for fabrication-led prototype systems and experimental engineering — built end-to-end inside MIT's Center for Bits and Atoms personal fabrication network.",
+    image: honorMitFab,
+    imageFocus: "center 35%",
     institution: "MIT · Center for Bits and Atoms",
   },
 ];
