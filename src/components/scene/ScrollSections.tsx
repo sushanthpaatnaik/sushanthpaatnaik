@@ -520,27 +520,149 @@ const fragments = [
 
 function InHisWordsScene() {
   const prefersReducedMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  // Slow parallax drift on the backdrop plate.
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.02, 1.08]);
+  const bgOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.18, 0.82, 1],
+    [0, 0.62, 0.62, 0],
+  );
+  const latticeRot = useTransform(scrollYProgress, [0, 1], [-3, 3]);
+
   return (
     <section
+      ref={sectionRef}
       id="in-his-words"
       className="relative min-h-[calc(var(--viewport-height)*1.4)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
     >
-      {/* Atmospheric backdrop — deep ink, single cool key, slow drift */}
+      {/* ─── Scroll-synced cinematic backdrop ─────────────────────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_42%,oklch(0.06_0.008_245)_0%,oklch(0.022_0.004_245)_60%,oklch(0.014_0_0)_100%)]" />
+        {/* Black base */}
+        <div className="absolute inset-0 bg-[oklch(0.014_0_0)]" />
+
+        {/* Backdrop plate — blueprint schematics + dissolved silhouette,
+            slow parallax + breathing scale, fades in/out with the section. */}
+        <motion.div
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${inHisWordsBackdrop})`,
+            y: prefersReducedMotion ? 0 : bgY,
+            scale: prefersReducedMotion ? 1.04 : bgScale,
+            opacity: prefersReducedMotion ? 0.55 : bgOpacity,
+            filter: "contrast(1.05) brightness(0.92) saturate(0.85)",
+          }}
+        />
+
+        {/* Edge vignette — crush the borders into pure black so the plate
+            never reads as a rectangular image. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 78% 70% at 50% 50%, transparent 38%, oklch(0.014 0 0 / 0.72) 78%, oklch(0.012 0 0) 100%)",
+          }}
+        />
+
+        {/* Deep navy atmospheric haze */}
+        <div className="absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.10_0.02_245/0.55),transparent_78%)]" />
+
+        {/* Subtle graphene hex lattice — slow rotational drift behind quotes */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140vh] h-[140vh] opacity-[0.07] mix-blend-screen"
+          style={{
+            rotate: prefersReducedMotion ? 0 : latticeRot,
+            backgroundImage:
+              "radial-gradient(circle at center, oklch(0.78 0.05 232 / 0.5) 0.6px, transparent 1.4px)",
+            backgroundSize: "44px 44px",
+            maskImage:
+              "radial-gradient(ellipse 55% 50% at 50% 50%, #000 25%, transparent 78%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 55% 50% at 50% 50%, #000 25%, transparent 78%)",
+          }}
+        />
+
+        {/* Single cool key beam — drifts almost imperceptibly */}
         <motion.div
           className="absolute inset-0 mix-blend-screen"
           style={{
             background:
-              "radial-gradient(ellipse 40% 50% at 50% 38%, oklch(0.6 0.04 232 / 0.08), transparent 72%)",
+              "radial-gradient(ellipse 32% 60% at 22% 18%, oklch(0.62 0.05 232 / 0.16), transparent 70%)",
             filter: "blur(2px)",
           }}
-          animate={prefersReducedMotion ? undefined : { opacity: [0.5, 0.78, 0.5] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { opacity: [0.55, 0.85, 0.55], x: [-8, 6, -8] }
+          }
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div className="absolute inset-x-0 bottom-0 h-[38%] bg-[linear-gradient(180deg,transparent,oklch(0.016_0_0)_92%)]" />
-        <div className="absolute inset-x-0 top-0 h-[16%] bg-[linear-gradient(180deg,oklch(0.016_0_0)_10%,transparent)]" />
+
+        {/* Restrained amber accent — single pinpoint, lower right */}
+        <motion.div
+          className="absolute inset-0 mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(ellipse 14% 18% at 88% 86%, oklch(0.55 0.08 55 / 0.10), transparent 72%)",
+            filter: "blur(3px)",
+          }}
+          animate={
+            prefersReducedMotion ? undefined : { opacity: [0.45, 0.7, 0.45] }
+          }
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Cinematic grain */}
+        <div
+          className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0.5px, transparent 1.2px), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px), radial-gradient(circle at 45% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px)",
+            backgroundSize: "140px 140px, 200px 200px, 110px 110px",
+            filter: "blur(0.4px)",
+          }}
+        />
+
+        {/* Readability overlay — protects typography */}
+        <div className="absolute inset-0 bg-[oklch(0.014_0_0/0.42)]" />
+
+        {/* Top/bottom continuity falloff into adjacent scenes */}
+        <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_8%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_92%)]" />
       </div>
+
+      {/* Drifting motes — material atmosphere */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
+        {[
+          { x: "18%", y: "32%", d: 30, delay: 0 },
+          { x: "72%", y: "44%", d: 36, delay: 4 },
+          { x: "34%", y: "68%", d: 32, delay: 8 },
+          { x: "58%", y: "22%", d: 34, delay: 2 },
+          { x: "82%", y: "72%", d: 28, delay: 6 },
+        ].map((p, i) => (
+          <motion.span
+            key={i}
+            className="absolute h-[2px] w-[2px] rounded-full bg-foreground/35"
+            style={{ left: p.x, top: p.y, filter: "blur(0.7px)" }}
+            animate={
+              prefersReducedMotion
+                ? { opacity: 0.18 }
+                : {
+                    opacity: [0, 0.35, 0.15, 0.3, 0],
+                    y: [0, -14, -28, -44, -60],
+                    x: [0, 3, -2, 4, 0],
+                  }
+            }
+            transition={{ duration: p.d, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          />
+        ))}
+      </div>
+
 
       {/* Header — chapter mark */}
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
