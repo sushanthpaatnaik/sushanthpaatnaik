@@ -74,10 +74,19 @@ function EngagePage() {
         </p>
         <p>
           <a
-            href="mailto:me@sushanthpaatnaik.com?subject=Engage"
+            href="mailto:info@sushanthpaatnaik.com?subject=Engage"
             className="text-foreground underline-offset-4 hover:underline"
           >
-            me@sushanthpaatnaik.com
+            info@sushanthpaatnaik.com
+          </a>
+          {" · "}
+          <a
+            href="https://www.linkedin.com/in/sushanthpaatnaik/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground underline-offset-4 hover:underline"
+          >
+            LinkedIn ↗
           </a>
           {" · "}direct, read, and triaged personally.
         </p>

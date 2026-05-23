@@ -129,7 +129,7 @@ function EssaysIndex() {
 
         <p className="mt-24 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/40">
           — More essays in the works ·{" "}
-          <a href="mailto:me@sushanthpaatnaik.com?subject=Subscribe" className="underline-offset-4 hover:underline">
+          <a href="mailto:info@sushanthpaatnaik.com?subject=Subscribe" className="underline-offset-4 hover:underline">
             subscribe
           </a>{" "}
           to be notified —

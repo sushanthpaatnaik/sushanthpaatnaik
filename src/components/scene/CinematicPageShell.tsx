@@ -155,10 +155,10 @@ export default function CinematicPageShell({
           <div className="mx-auto max-w-4xl flex flex-wrap items-center justify-between gap-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
             <span>Sushanth Paatnaik · India → World</span>
             <a
-              href="mailto:me@sushanthpaatnaik.com"
+              href="mailto:info@sushanthpaatnaik.com"
               className="hover:text-foreground/80 transition-colors"
             >
-              me@sushanthpaatnaik.com
+              info@sushanthpaatnaik.com
             </a>
           </div>
         </footer>

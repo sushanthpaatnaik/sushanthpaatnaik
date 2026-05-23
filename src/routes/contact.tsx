@@ -35,13 +35,22 @@ function ContactPage() {
       backdrop={backdrop}
       overlay={0.76}
     >
-      <EditorialSection heading="Direct email">
+      <EditorialSection heading="Direct lines">
         <p>
           <a
-            href="mailto:me@sushanthpaatnaik.com?subject=Hello"
+            href="mailto:info@sushanthpaatnaik.com?subject=Hello"
             className="text-foreground underline-offset-4 hover:underline"
           >
-            me@sushanthpaatnaik.com
+            info@sushanthpaatnaik.com
+          </a>
+          {" · "}
+          <a
+            href="https://www.linkedin.com/in/sushanthpaatnaik/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground underline-offset-4 hover:underline"
+          >
+            LinkedIn ↗
           </a>
         </p>
         <p className="text-foreground/65">
