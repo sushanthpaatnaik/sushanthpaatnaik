@@ -122,15 +122,15 @@ function ChapterMarker({
         <motion.div
           className="absolute inset-1 rounded-full"
           style={{
-            background: "oklch(0.71 0.06 232 / 0.22)",
-            boxShadow: "0 0 22px oklch(0.71 0.06 232 / 0.34)",
+            background: "oklch(0.74 0.06 232 / 0.26)",
+            boxShadow: "0 0 18px oklch(0.74 0.06 232 / 0.32), 0 0 36px oklch(0.74 0.06 232 / 0.14)",
           }}
           initial={false}
           animate={{
             opacity: active ? 1 : 0,
             scale: active ? 1 : 1.5,
           }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
         />
 
         {/* Core dot */}
