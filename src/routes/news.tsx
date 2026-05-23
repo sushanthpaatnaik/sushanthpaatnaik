@@ -447,7 +447,7 @@ function LeadFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose mt-8 group"
+      className="not-prose mt-6 group"
     >
       {/* Dateline strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
