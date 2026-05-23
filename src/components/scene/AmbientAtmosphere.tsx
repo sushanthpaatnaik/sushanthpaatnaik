@@ -26,7 +26,7 @@ export default function AmbientAtmosphere() {
         className="absolute -left-[20%] top-[10%] h-[70vh] w-[70vw] rounded-full will-change-transform"
         style={{
           background:
-            "radial-gradient(circle at center, oklch(0.5 0.06 240 / 0.05), transparent 65%)",
+            "radial-gradient(circle at center, oklch(0.48 0.03 230 / 0.05), transparent 65%)",
         }}
         animate={{ x: [0, 40, 0], y: [0, -20, 0], opacity: [0.7, 1, 0.7] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
@@ -35,7 +35,7 @@ export default function AmbientAtmosphere() {
         className="absolute -right-[15%] bottom-[8%] h-[60vh] w-[60vw] rounded-full will-change-transform"
         style={{
           background:
-            "radial-gradient(circle at center, oklch(0.45 0.05 260 / 0.045), transparent 70%)",
+            "radial-gradient(circle at center, oklch(0.42 0.025 232 / 0.045), transparent 70%)",
         }}
         animate={{ x: [0, -30, 0], y: [0, 18, 0], opacity: [0.65, 1, 0.65] }}
         transition={{ duration: 40, repeat: Infinity, ease: "easeInOut", delay: 4 }}
@@ -45,7 +45,7 @@ export default function AmbientAtmosphere() {
         className="absolute left-[35%] top-[35%] hidden h-[55vh] w-[55vw] rounded-full will-change-transform md:block"
         style={{
           background:
-            "radial-gradient(circle at center, oklch(0.55 0.08 55 / 0.028), transparent 70%)",
+            "radial-gradient(circle at center, oklch(0.5 0.04 50 / 0.028), transparent 70%)",
         }}
         animate={{ x: [0, 24, -10, 0], y: [0, -16, 12, 0], opacity: [0.5, 0.95, 0.6, 0.5] }}
         transition={{ duration: 54, repeat: Infinity, ease: "easeInOut", delay: 8 }}
@@ -69,7 +69,7 @@ export default function AmbientAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.06 0.01 260 / 0.10) 0%, transparent 30%, transparent 70%, oklch(0.05 0.01 260 / 0.12) 100%)",
+            "linear-gradient(180deg, oklch(0.05 0.006 232 / 0.10) 0%, transparent 30%, transparent 70%, oklch(0.04 0.006 232 / 0.12) 100%)",
         }}
       />
 
@@ -78,7 +78,7 @@ export default function AmbientAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 45%, oklch(0.62 0.05 235 / 0.035), transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 50% 45%, oklch(0.55 0.03 232 / 0.035), transparent 70%)",
         }}
         animate={{ opacity: [0.55, 1, 0.55] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
@@ -90,7 +90,7 @@ export default function AmbientAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 78% 72%, oklch(0.50 0.06 250 / 0.028), transparent 75%)",
+            "radial-gradient(ellipse 60% 45% at 78% 72%, oklch(0.45 0.025 232 / 0.028), transparent 75%)",
         }}
         animate={{ opacity: [0.4, 0.95, 0.4] }}
         transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 11 }}
@@ -103,7 +103,7 @@ export default function AmbientAtmosphere() {
         className="absolute left-0 right-0 top-[42%] h-[26vh] will-change-transform"
         style={{
           background:
-            "linear-gradient(180deg, transparent, oklch(0.45 0.05 240 / 0.035) 50%, transparent)",
+            "linear-gradient(180deg, transparent, oklch(0.42 0.025 232 / 0.035) 50%, transparent)",
           filter: "blur(40px)",
         }}
         animate={{ x: ["-6%", "6%", "-6%"], opacity: [0.5, 0.85, 0.5] }}
