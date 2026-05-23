@@ -515,7 +515,7 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-10 block"
+      className="group not-prose mt-7 block"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
         <span className="text-accent/70">Latest Dispatch</span>
