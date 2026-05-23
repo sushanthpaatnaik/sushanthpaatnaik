@@ -106,11 +106,12 @@ const ventures: Venture[] = [
 ];
 
 const advisories = [
-  { name: "Magppie", sector: "Design · Living", logo: magppieLogo },
-  { name: "Vinrox", sector: "Materials", logo: vinroxLogo },
-  { name: "VPRPL", sector: "Industrial", logo: vprplLogo },
-  { name: "Tileopedia", sector: "Surfaces", logo: tileopediaLogo },
-  { name: "WeHear", sector: "Consumer Tech", logo: wehearLogo },
+  // scale: per-logo optical normalization (1.0 = baseline)
+  { name: "Magppie", sector: "Design · Living", logo: magppieLogo, scale: 1.18 },
+  { name: "Vinrox", sector: "Materials", logo: vinroxLogo, scale: 1.0 },
+  { name: "VPRPL", sector: "Industrial", logo: vprplLogo, scale: 0.86 },
+  { name: "Tileopedia", sector: "Surfaces", logo: tileopediaLogo, scale: 1.15 }, // "Eurogres" parent — slightly larger
+  { name: "WeHear", sector: "Consumer Tech", logo: wehearLogo, scale: 0.88 },
 ];
 
 function VenturesPage() {
