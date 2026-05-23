@@ -75,6 +75,31 @@
   --gradient-hero: radial-gradient(ellipse at center, oklch(0.18 0.03 245 / 0.45), transparent 70%);
   --gradient-text: linear-gradient(180deg, oklch(0.967 0 0) 0%, oklch(0.82 0.07 235) 65%, oklch(0.71 0.13 240) 100%);
   --gradient-metallic: linear-gradient(180deg, oklch(0.22 0 0) 0%, oklch(0.11 0 0) 100%);
+
+  /* ─── Cinematic Design System ─────────────────────────────────────
+     Shared tokens for surfaces, overlays, image grading, and motion.
+     Every section should consume these — never invent local values. */
+
+  /* Surfaces — deep industrial plates */
+  --surface-plate:       oklch(0.05 0.006 245);
+  --surface-plate-soft:  oklch(0.055 0.006 245);
+  --surface-hairline:    oklch(0.967 0 0 / 0.08);
+  --surface-hairline-strong: oklch(0.967 0 0 / 0.25);
+
+  /* Atmospheric washes — cold blue + restrained copper, off-axis */
+  --wash-blue:     radial-gradient(70% 55% at 18% 12%, oklch(0.42 0.07 240 / 0.10), transparent 65%);
+  --wash-copper:   radial-gradient(60% 50% at 85% 88%, oklch(0.62 0.10 55 / 0.06), transparent 65%);
+  --wash-vignette: radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.55) 100%);
+
+  /* Glass / panel translucency */
+  --glass-plate: oklch(0.05 0.006 245 / 0.80);
+  --glass-blur:  blur(14px) saturate(135%);
+
+  /* Motion */
+  --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-reveal: 1.15s;
+  --dur-hover:  0.7s;
+  --dur-slow:   1200ms;
 }
 
 @supports (height: 100dvh) {
