@@ -705,7 +705,7 @@ function ClosingInvitation() {
 }
 
 export default function ScrollSections() {
-  const totalChapters = 7;
+  const totalChapters = 8;
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
@@ -728,7 +728,10 @@ export default function ScrollSections() {
       {/* 06 — Ecosystem gateway */}
       <EcosystemGateway />
 
-      {/* 07 — Closing invitation */}
+      {/* 07 — In His Words (reflective philosophical chapter) */}
+      <InHisWordsScene />
+
+      {/* 08 — Closing invitation */}
       <ClosingInvitation />
     </div>
   );
