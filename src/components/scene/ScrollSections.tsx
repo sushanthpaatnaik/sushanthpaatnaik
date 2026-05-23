@@ -156,39 +156,51 @@ function MotionReveal({
   );
 }
 
-/* ───────────── Scene 02 — Founder presence ───────────── */
+/* ───────────── Scene 02 — Founder presence (mystery atmospheric layer) ─────────────
+ * The portrait is NOT a plate, card, or rectangular image. It dissolves
+ * into the industrial darkness as an environmental presence — faintly
+ * legible, edge-lit, masked to a soft elliptical halo, heavily vignetted
+ * and blurred at the margins. The Voice quote sits on top as the only
+ * resolved foreground element.
+ * ─────────────────────────────────────────────────────────────────────── */
 function FounderScene() {
   return (
     <section
       id="founder"
-      className="relative min-h-[calc(var(--viewport-height)*1.05)] flex items-center px-5 sm:px-6 py-28 md:py-36"
+      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 py-32 md:py-44"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.55),transparent_18%,transparent_82%,oklch(0.03_0_0/0.6))]" />
-      <div className="relative mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
-        <MotionReveal className="relative md:col-span-7">
-          <p className="absolute top-4 left-[10%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
-            02 — Founder
-          </p>
-          <div className="relative">
-            <img
-              src={founderPresence}
-              alt="Sushanth Paatnaik — founder portrait dissolving into industrial darkness."
-              width={1100}
-              height={1400}
-              loading="lazy"
-              decoding="async"
-              className="relative w-full grayscale-[0.22] contrast-[1.1] [filter:brightness(0.8)_saturate(0.65)] [mask-image:radial-gradient(ellipse_55%_62%_at_50%_42%,#000_28%,rgba(0,0,0,0.55)_55%,transparent_88%)] [-webkit-mask-image:radial-gradient(ellipse_55%_62%_at_50%_42%,#000_28%,rgba(0,0,0,0.55)_55%,transparent_88%)]"
-            />
-            <div className="pointer-events-none absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_65%_75%_at_50%_48%,transparent_22%,oklch(0.02_0_0/0.97)_92%)]" />
-            <div className="pointer-events-none absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_28%_45%_at_70%_36%,oklch(0.45_0.1_240/0.15),transparent_60%)]" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-[linear-gradient(180deg,oklch(0.03_0_0)_8%,transparent)]" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-[linear-gradient(180deg,transparent,oklch(0.03_0_0)_88%)]" />
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-[linear-gradient(90deg,oklch(0.03_0_0)_12%,transparent)]" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/5 bg-[linear-gradient(270deg,oklch(0.03_0_0)_12%,transparent)]" />
-          </div>
-        </MotionReveal>
+      {/* Environmental founder presence — dissolved, edge-lit, no boundary */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {/* Graphite-black base atmosphere */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_38%_50%,oklch(0.08_0_0)_0%,oklch(0.04_0_0)_55%,oklch(0.02_0_0)_100%)]" />
 
-        <MotionReveal delay={0.12} className="md:col-span-5 md:pt-40 lg:pt-56">
+        {/* The portrait itself — partially visible, dissolving */}
+        <div
+          aria-hidden
+          className="absolute inset-y-[-6%] left-[-4%] w-[78%] md:w-[62%] lg:w-[55%] bg-center bg-no-repeat bg-cover opacity-[0.55] md:opacity-[0.6] [filter:grayscale(0.5)_contrast(1.18)_brightness(0.62)_saturate(0.55)_blur(0.6px)] [mask-image:radial-gradient(ellipse_48%_58%_at_46%_44%,#000_18%,rgba(0,0,0,0.85)_38%,rgba(0,0,0,0.35)_62%,transparent_82%)] [-webkit-mask-image:radial-gradient(ellipse_48%_58%_at_46%_44%,#000_18%,rgba(0,0,0,0.85)_38%,rgba(0,0,0,0.35)_62%,transparent_82%)] mix-blend-screen"
+          style={{ backgroundImage: `url(${founderPresence})` }}
+        />
+
+        {/* Soft cool edge-light catching the face / glasses */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_22%_36%_at_30%_38%,oklch(0.55_0.08_240/0.18),transparent_62%)]" />
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_8%_3%_at_33%_40%,oklch(0.85_0.05_240/0.22),transparent_75%)]" />
+
+        {/* Volumetric haze pulling the portrait into the room */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_28%_42%,transparent_30%,oklch(0.03_0_0/0.55)_72%,oklch(0.02_0_0/0.9)_100%)]" />
+
+        {/* Cinematic falloff — top, bottom, right ink */}
+        <div className="absolute inset-x-0 top-0 h-1/3 bg-[linear-gradient(180deg,oklch(0.02_0_0)_8%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,oklch(0.02_0_0)_82%)]" />
+        <div className="absolute inset-y-0 right-0 w-2/3 bg-[linear-gradient(270deg,oklch(0.02_0_0)_18%,transparent_85%)]" />
+        <div className="absolute inset-y-0 left-0 w-[18%] bg-[linear-gradient(90deg,oklch(0.02_0_0)_10%,transparent)]" />
+      </div>
+
+      <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
+        02 — Founder
+      </p>
+
+      <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12 pointer-events-auto">
+        <MotionReveal delay={0.12} className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Founder · Voice
           </p>
