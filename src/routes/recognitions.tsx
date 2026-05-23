@@ -332,22 +332,36 @@ function RecognitionsPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
-      {/* Counters — quantitative ledger header */}
-      <div className="not-prose mt-6 grid grid-cols-2 gap-px bg-foreground/[0.05] sm:grid-cols-4 rounded-sm overflow-hidden ring-1 ring-foreground/[0.05]">
-        {counters.map((c) => (
-          <div
-            key={c.label}
-            className="flex flex-col items-center justify-center gap-2 bg-[oklch(0.05_0.006_245)] px-4 py-8"
-          >
-            <span className="font-display text-3xl md:text-5xl tracking-[-0.03em] text-foreground/95">
-              {c.value}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
-              {c.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* Institutional statistics — authority block */}
+      <StatsAuthorityBlock items={counters} eyebrow="Archive · Register of Record" />
+
+      {/* Chronological prestige flow — single legible arc */}
+      <LegacyTimeline
+        eyebrow="Legacy · Chronological Prestige"
+        items={[
+          { year: "2008", title: "First Presidential Award", institution: "Dr. A.P.J. Abdul Kalam · NIF" },
+          { year: "2009", title: "Second & Third Presidential Awards", institution: "Smt. Pratibha Patil · Dr. A.P.J. Abdul Kalam" },
+          { year: "2010", title: "MIT TR-35 Innovator", institution: "MIT Technology Review" },
+          { year: "2011", title: "NASA International Recognition", institution: "Kennedy Space Center" },
+          { year: "2012", title: "TED-India Speaker", institution: "TED · Mysore" },
+          { year: "2013", title: "Sixth Presidential Award", institution: "Shri Pranab Mukherjee · NIF" },
+          { year: "2013–14", title: "MIT Fab-10 & Fab-11", institution: "MIT · Barcelona" },
+          { year: "2022", title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum" },
+          { year: "2023", title: "Startup20 · G20 Presidency", institution: "Government of India" },
+          { year: "2024", title: "Silicon Valley Address", institution: "Bay Area · USA" },
+          { year: "2025", title: "Innovision Keynote", institution: "NIT Rourkela" },
+        ]}
+      />
+
+      {/* Hall of Fame overture — cinematic reel as opening movement */}
+      <EditorialSection number="06 · Overture" heading="A continuous archival reel.">
+        <p>
+          Before the chronology — an opening movement. Newspaper clippings,
+          mainstage moments, presidential demonstrations and honorary
+          citations arranged as a single cinematic strip.
+        </p>
+      </EditorialSection>
+      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
       <EditorialList items={milestones} />
 
@@ -387,14 +401,6 @@ function RecognitionsPage() {
       </EditorialSection>
       <ArchiveMosaic items={eraPresent} />
 
-      <EditorialSection number="10b · Hall of Fame" heading="The reel — media, stage, and honour.">
-        <p>
-          A continuous cinematic strip — newspaper clippings, mainstage
-          moments, presidential demonstrations and honorary citations
-          arranged as a single archival reel.
-        </p>
-      </EditorialSection>
-      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
       <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
         <p>
