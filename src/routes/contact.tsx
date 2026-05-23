@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
+import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-07-future.jpg";
 
 export const Route = createFileRoute("/contact")({
