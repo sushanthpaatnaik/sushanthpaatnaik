@@ -102,50 +102,10 @@ const institutional: Voice[] = [
   },
 ];
 
-const editorial: Voice[] = [
-  {
-    source: "India Today",
-    role: "Long-form profile",
-    quote:
-      "Profiled as a young inventor whose laboratory has moved steadily from prototype to industrial product.",
-    logo: indiaTodayLogo,
-  },
-  {
-    source: "The Telegraph",
-    role: "Front-page feature · Enabler",
-    quote:
-      "Front-page feature on the Enabler prototype — among the first national press recognitions of the early-works arc.",
-    logo: telegraphLogo,
-  },
-  {
-    source: "Business Standard",
-    role: "Industry coverage",
-    quote:
-      "Tracked as part of India's deep-tech materials cohort building toward export-grade industrial graphene applications.",
-    logo: businessStandardLogo,
-  },
-  {
-    source: "Global Indian",
-    role: "Diaspora feature",
-    quote:
-      "Featured among Indian inventors translating frontier science into global industrial product.",
-    logo: globalIndianLogo,
-  },
-  {
-    source: "YourStory",
-    role: "Founder profile · Capattery",
-    quote:
-      "Founder profile on the Capattery work and the broader operating-group thesis.",
-    logo: yourStoryLogo,
-  },
-  {
-    source: "The Print",
-    role: "Long-form portrait",
-    quote:
-      "Long-form portrait on the trajectory from teenage Presidential awardee to deep-tech operating-group architect.",
-    logo: thePrintLogo,
-  },
-];
+// Editorial / press voices have been moved out of this section. Media
+// coverage and the press archive live exclusively on the /news page so
+// Voices remains a pure wall of institutional endorsement.
+
 
 function VoicesStrip() {
   return (
