@@ -31,91 +31,78 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneSpark,
     alt: "01 — Spark · blueprint origin · systems emergence",
-    // Pre-dawn cobalt with a faint blueprint-grade wash — the beginning of
-    // systems thinking, not a generic glow.
-    tint: "radial-gradient(ellipse at 50% 52%, oklch(0.40 0.038 232 / 0.16), oklch(0.05 0.010 232 / 0.12) 72%)",
+    tint: "radial-gradient(ellipse at 50% 52%, oklch(0.40 0.038 232 / 0.14), oklch(0.05 0.010 232 / 0.10) 72%)",
     overlay:
-      "radial-gradient(ellipse 74% 66% at 50% 52%, oklch(0.028 0.005 232 / 0.62) 0%, oklch(0.020 0.004 232 / 0.90) 78%)",
+      "radial-gradient(ellipse 74% 66% at 50% 52%, oklch(0.028 0.005 232 / 0.50) 0%, oklch(0.020 0.004 232 / 0.78) 82%)",
     parallax: 0.5,
-    filter: "brightness(0.52) contrast(1.08) saturate(0.62)",
+    filter: "brightness(0.62) contrast(1.06) saturate(0.68)",
   },
   {
     src: sceneFounder,
     alt: "02 — Founder · portrait dissolving into industrial darkness",
-    // Restrained warm graphite + ember vault — intimate, archival.
-    tint: "linear-gradient(120deg, oklch(0.42 0.040 50 / 0.10), transparent 58%, oklch(0.10 0.018 232 / 0.26))",
+    tint: "linear-gradient(120deg, oklch(0.42 0.040 50 / 0.09), transparent 58%, oklch(0.10 0.018 232 / 0.22))",
     overlay:
-      "radial-gradient(ellipse 56% 66% at 38% 50%, oklch(0.030 0.006 40 / 0.30) 0%, oklch(0.022 0.004 232 / 0.78) 88%)",
+      "radial-gradient(ellipse 56% 66% at 38% 50%, oklch(0.030 0.006 40 / 0.22) 0%, oklch(0.022 0.004 232 / 0.66) 90%)",
     parallax: 0.4,
-    filter: "brightness(0.66) contrast(1.10) saturate(0.70) sepia(0.04)",
+    filter: "brightness(0.78) contrast(1.08) saturate(0.76) sepia(0.04)",
   },
   {
     src: sceneMaterial,
     alt: "03 — Carbon intelligence · graphene lattice and nano-materials",
-    // Stronger material-science chroma: cool cyan-graphene with a slight
-    // hex-lattice atmosphere reading.
-    tint: "linear-gradient(180deg, oklch(0.54 0.10 200 / 0.20), oklch(0.18 0.05 230 / 0.18))",
+    tint: "linear-gradient(180deg, oklch(0.54 0.10 200 / 0.16), oklch(0.18 0.05 230 / 0.14))",
     overlay:
-      "linear-gradient(180deg, oklch(0.028 0.006 260 / 0.62) 0%, oklch(0.035 0.012 220 / 0.30) 45%, oklch(0.028 0.006 260 / 0.68) 100%)",
+      "linear-gradient(180deg, oklch(0.028 0.006 260 / 0.50) 0%, oklch(0.035 0.012 220 / 0.22) 45%, oklch(0.028 0.006 260 / 0.56) 100%)",
     parallax: 1.05,
-    filter: "brightness(0.78) contrast(1.10) saturate(1.02) hue-rotate(-8deg)",
+    filter: "brightness(0.90) contrast(1.08) saturate(1.06) hue-rotate(-8deg)",
   },
   {
     src: sceneIndustrial,
     alt: "04 — Industrial future · infrastructure, manufacturing, energy",
-    // Steel-blue + restrained copper — manufacturing scale, less fog so
-    // industrial forms register more clearly.
-    tint: "linear-gradient(135deg, oklch(0.32 0.07 240 / 0.22) 0%, oklch(0.52 0.10 55 / 0.09) 100%)",
+    tint: "linear-gradient(135deg, oklch(0.32 0.07 240 / 0.18) 0%, oklch(0.52 0.10 55 / 0.07) 100%)",
     overlay:
-      "linear-gradient(165deg, oklch(0.028 0.006 260 / 0.66) 0%, oklch(0.045 0.018 240 / 0.32) 45%, oklch(0.028 0.006 260 / 0.66) 100%)",
+      "linear-gradient(165deg, oklch(0.028 0.006 260 / 0.54) 0%, oklch(0.045 0.018 240 / 0.24) 45%, oklch(0.028 0.006 260 / 0.54) 100%)",
     parallax: 1.15,
-    filter: "brightness(0.76) contrast(1.12) saturate(0.96)",
+    filter: "brightness(0.88) contrast(1.10) saturate(1.00)",
   },
   {
     src: sceneRecognition,
     alt: "05 — Recognition signal · archival ink, blueprints, public memory",
-    // Archival sepia + ink — paper-and-ink institutional memory.
-    tint: "linear-gradient(180deg, oklch(0.46 0.045 60 / 0.12), oklch(0.13 0.022 40 / 0.26))",
+    tint: "linear-gradient(180deg, oklch(0.46 0.045 60 / 0.10), oklch(0.13 0.022 40 / 0.22))",
     overlay:
-      "radial-gradient(ellipse 76% 66% at 50% 50%, oklch(0.035 0.010 40 / 0.54) 0%, oklch(0.025 0.006 260 / 0.82) 80%)",
+      "radial-gradient(ellipse 76% 66% at 50% 50%, oklch(0.035 0.010 40 / 0.42) 0%, oklch(0.025 0.006 260 / 0.70) 82%)",
     parallax: 0.5,
-    filter: "brightness(0.62) contrast(1.08) saturate(0.54) sepia(0.18)",
+    filter: "brightness(0.74) contrast(1.06) saturate(0.62) sepia(0.18)",
   },
   {
     src: sceneVentures,
     alt: "06 — Ecosystem · interconnected industrial ventures · India → World",
-    // Twilight indigo with faint corridor-glow on the right — logistics
-    // and industrial network continuity, not a startup globalization wash.
-    tint: "radial-gradient(ellipse 70% 60% at 56% 46%, oklch(0.40 0.048 240 / 0.20), oklch(0.07 0.016 232 / 0.22) 72%)",
+    tint: "radial-gradient(ellipse 70% 60% at 56% 46%, oklch(0.40 0.048 240 / 0.16), oklch(0.07 0.016 232 / 0.18) 72%)",
     overlay:
-      "radial-gradient(ellipse 82% 72% at 50% 46%, oklch(0.030 0.006 232 / 0.52) 0%, oklch(0.022 0.004 232 / 0.80) 88%)",
+      "radial-gradient(ellipse 82% 72% at 50% 46%, oklch(0.030 0.006 232 / 0.40) 0%, oklch(0.022 0.004 232 / 0.68) 90%)",
     parallax: 0.85,
-    filter: "brightness(0.70) contrast(1.08) saturate(0.78)",
+    filter: "brightness(0.82) contrast(1.06) saturate(0.84)",
   },
   {
     src: sceneFuture,
     alt: "07 — Future · planetary-scale industrial intelligence, energy grids",
-    // Earth-at-night origin glow scaling outward — realistic futurism,
-    // not neon sci-fi.
-    tint: "radial-gradient(ellipse 72% 60% at 60% 52%, oklch(0.36 0.042 232 / 0.12), oklch(0.04 0.010 245 / 0.32) 72%)",
+    tint: "radial-gradient(ellipse 72% 60% at 60% 52%, oklch(0.36 0.042 232 / 0.10), oklch(0.04 0.010 245 / 0.26) 72%)",
     overlay:
-      "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.56) 0%, oklch(0.018 0.005 250 / 0.82) 78%, oklch(0.014 0.004 250 / 0.92) 100%)",
+      "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
     parallax: 0.7,
-    filter: "brightness(0.64) contrast(1.10) saturate(0.74) hue-rotate(-4deg)",
+    filter: "brightness(0.76) contrast(1.08) saturate(0.82) hue-rotate(-4deg)",
   },
 ];
 
-// Soft baseline dim — reduced ~12% from the prior pass to improve clarity
-// and breathing room without losing cinematic depth. Each value is the
-// floor below the chapter's own overlay, never the dominant layer.
+// Reduced baseline dim ~15% — backgrounds now read as story environments
+// while typography still owns the foreground via per-chapter overlays.
 const OVERLAY_STOPS = [
-  0.30, // 01 Spark
-  0.25, // 02 Founder
-  0.21, // 03 Carbon Intelligence
-  0.24, // 04 Industrial
-  0.28, // 05 Recognition
-  0.25, // 06 Ecosystem
-  0.28, // 07 Future
+  0.24, // 01 Spark
+  0.20, // 02 Founder
+  0.16, // 03 Carbon Intelligence
+  0.19, // 04 Industrial
+  0.23, // 05 Recognition
+  0.20, // 06 Ecosystem
+  0.23, // 07 Future
 ];
 
 export default function AtmosphereLayer() {
