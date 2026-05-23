@@ -717,7 +717,7 @@ function InHisWordsScene() {
   const bgOpacity = useTransform(
     scrollYProgress,
     [0, 0.18, 0.82, 1],
-    [0, 0.62, 0.62, 0],
+    [0, 0.78, 0.78, 0],
   );
   const latticeRot = useTransform(scrollYProgress, [0, 1], [-3, 3]);
 
