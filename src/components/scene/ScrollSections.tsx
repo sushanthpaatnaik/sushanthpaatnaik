@@ -484,7 +484,140 @@ function EcosystemGateway() {
   );
 }
 
-/* ───────────── Scene 07 — Closing invitation ───────────── */
+/* ───────────── Scene 07 — In His Words (reflective philosophical chapter) ─────────────
+ * A cinematic pause before the closing Future scene. Founder voice as
+ * philosophical fragments, not articles — oversized editorial typography,
+ * generous negative space, slow reveal pacing, restrained atmosphere.
+ * ─────────────────────────────────────────────────────────────────────── */
+const fragments = [
+  {
+    n: "i.",
+    line: "A material is a decision compressed into atoms.",
+    note: "On engineering as moral act.",
+  },
+  {
+    n: "ii.",
+    line: "The grid is not infrastructure. It is the country's nervous system.",
+    note: "On energy as civic architecture.",
+  },
+  {
+    n: "iii.",
+    line: "Patience is the rarest input in any industrial supply chain.",
+    note: "On the discipline of long horizons.",
+  },
+  {
+    n: "iv.",
+    line: "We do not build for the demo. We build for the decade after it.",
+    note: "On systems thinking.",
+  },
+  {
+    n: "v.",
+    line: "Sovereignty begins in a lab — long before it reaches a podium.",
+    note: "On India's deep-tech century.",
+  },
+];
+
+function InHisWordsScene() {
+  const prefersReducedMotion = useReducedMotion();
+  return (
+    <section
+      id="in-his-words"
+      className="relative min-h-[calc(var(--viewport-height)*1.4)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+    >
+      {/* Atmospheric backdrop — deep ink, single cool key, slow drift */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_42%,oklch(0.06_0.008_245)_0%,oklch(0.022_0.004_245)_60%,oklch(0.014_0_0)_100%)]" />
+        <motion.div
+          className="absolute inset-0 mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(ellipse 40% 50% at 50% 38%, oklch(0.6 0.04 232 / 0.08), transparent 72%)",
+            filter: "blur(2px)",
+          }}
+          animate={prefersReducedMotion ? undefined : { opacity: [0.5, 0.78, 0.5] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-[38%] bg-[linear-gradient(180deg,transparent,oklch(0.016_0_0)_92%)]" />
+        <div className="absolute inset-x-0 top-0 h-[16%] bg-[linear-gradient(180deg,oklch(0.016_0_0)_10%,transparent)]" />
+      </div>
+
+      {/* Header — chapter mark */}
+      <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
+        <MotionReveal>
+          <div className="mb-16 md:mb-24 flex items-center gap-4">
+            <span className="h-px w-10 bg-foreground/20" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
+              07 — In His Words
+            </span>
+          </div>
+        </MotionReveal>
+
+        <MotionReveal delay={0.08}>
+          <p className="max-w-xl text-[11px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-20 md:mb-28">
+            Notes from the founder's operating philosophy. Read slowly.
+          </p>
+        </MotionReveal>
+
+        {/* Fragments — oversized editorial cadence, alternating alignment */}
+        <div className="flex flex-col gap-28 md:gap-40">
+          {fragments.map((f, i) => {
+            const alignRight = i % 2 === 1;
+            return (
+              <MotionReveal key={f.n} delay={0.04 + i * 0.04}>
+                <figure
+                  className={`grid md:grid-cols-12 gap-y-6 ${
+                    alignRight ? "md:text-right" : ""
+                  }`}
+                >
+                  <div
+                    className={`md:col-span-10 ${
+                      alignRight ? "md:col-start-3" : "md:col-start-1"
+                    }`}
+                  >
+                    <span className="block mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+                      {f.n}
+                    </span>
+                    <blockquote className="font-display font-light text-[clamp(1.7rem,5.4vw,3.6rem)] leading-[1.08] tracking-[-0.03em] text-gradient [text-wrap:balance]">
+                      {f.line}
+                    </blockquote>
+                    <figcaption
+                      className={`mt-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 ${
+                        alignRight ? "md:justify-end" : ""
+                      }`}
+                    >
+                      {!alignRight && (
+                        <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
+                      )}
+                      <span>{f.note}</span>
+                      {alignRight && (
+                        <span className="h-px w-10 bg-gradient-to-l from-foreground/25 to-transparent" />
+                      )}
+                    </figcaption>
+                  </div>
+                </figure>
+              </MotionReveal>
+            );
+          })}
+        </div>
+
+        {/* Soft handoff to Future */}
+        <MotionReveal delay={0.2}>
+          <div className="mt-32 md:mt-44 flex items-center gap-4">
+            <span className="h-px flex-1 bg-foreground/[0.08]" />
+            <Link
+              to="/essays"
+              className="font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/65 hover:text-foreground transition-colors"
+            >
+              Read the essays →
+            </Link>
+          </div>
+        </MotionReveal>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────── Scene 08 — Closing invitation ───────────── */
 function ClosingInvitation() {
   return (
     <section
@@ -522,9 +655,10 @@ function ClosingInvitation() {
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-              07 — The Future System
+              08 — The Future System
             </p>
           </MotionReveal>
+
           <MotionReveal delay={0.06}>
             <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
               Not a forecast. A working hypothesis — built one industrial system at a time.
