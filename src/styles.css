@@ -369,7 +369,7 @@
     font-weight: 400;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: oklch(0.62 0.005 250);
+    color: oklch(0.74 0.005 250);
     border: none;
     background: transparent;
     transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
