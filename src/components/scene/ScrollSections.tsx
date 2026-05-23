@@ -428,7 +428,7 @@ function EcosystemGateway() {
   return (
     <section
       id="ecosystem"
-      className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 py-28 md:py-36"
+      className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
