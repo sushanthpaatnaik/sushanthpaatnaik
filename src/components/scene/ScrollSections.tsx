@@ -185,24 +185,55 @@ function FounderScene() {
         {/* Graphite-black base atmosphere */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_30%_48%,oklch(0.07_0_0)_0%,oklch(0.035_0_0)_55%,oklch(0.015_0_0)_100%)]" />
 
-        {/* The portrait — concealed: heavy desaturation, deep crush, soft blur,
-            tight elliptical reveal that fades quickly into ink. */}
+        {/* The portrait — concealed but legible: moderate desaturation, soft
+            crush, faint blur, elliptical reveal with eyes near the upper-left
+            focal zone. Shifted downward so the head sits comfortably below
+            the top fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[-4%] left-[-4%] w-[70%] md:w-[52%] lg:w-[44%] bg-center bg-no-repeat bg-cover opacity-[0.42] md:opacity-[0.48] [filter:grayscale(0.95)_contrast(1.18)_brightness(0.52)_saturate(0.35)_blur(1.6px)] [mask-image:radial-gradient(ellipse_46%_58%_at_42%_42%,#000_18%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.28)_68%,transparent_88%)] [-webkit-mask-image:radial-gradient(ellipse_46%_58%_at_42%_42%,#000_18%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.28)_68%,transparent_88%)]"
-          style={{ backgroundImage: `url(${founderPresence})` }}
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.54] md:opacity-[0.60] [filter:grayscale(0.82)_contrast(1.14)_brightness(0.62)_saturate(0.42)_blur(1.1px)] [mask-image:radial-gradient(ellipse_52%_64%_at_38%_38%,#000_22%,rgba(0,0,0,0.82)_52%,rgba(0,0,0,0.36)_72%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_64%_at_38%_38%,#000_22%,rgba(0,0,0,0.82)_52%,rgba(0,0,0,0.36)_72%,transparent_92%)]"
+          style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
-        {/* Cool contour key-light — barely catches glasses + brow */}
-        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_30%_36%,oklch(0.7_0.06_240/0.22),transparent_72%)]" />
+        {/* Cool contour key-light — sculpts brow, glasses, cheekbone */}
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_22%_28%_at_28%_34%,oklch(0.72_0.05_232/0.32),transparent_72%)]" />
+        {/* Secondary cool fill — lifts jacket shoulder out of the ink */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_18%_22%_at_22%_60%,oklch(0.45_0.03_232/0.10),transparent_78%)]" />
         {/* Warm copper rim — jawline contour from the right */}
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_10%_22%_at_40%_44%,oklch(0.62_0.10_55/0.10),transparent_75%)]" />
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_12%_24%_at_42%_46%,oklch(0.64_0.09_55/0.14),transparent_75%)]" />
 
-        {/* Cinematic falloff — deep ink wash holds the quote and absorbs the figure */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,oklch(0.015_0_0)_82%)]" />
-        <div className="absolute inset-y-0 right-0 w-[68%] bg-[linear-gradient(270deg,oklch(0.015_0_0)_28%,oklch(0.025_0_0/0.7)_58%,transparent_94%)]" />
-        <div className="absolute inset-y-0 left-0 w-[14%] bg-[linear-gradient(90deg,oklch(0.015_0_0)_12%,transparent)]" />
-        <div className="absolute inset-x-0 top-0 h-1/4 bg-[linear-gradient(180deg,oklch(0.015_0_0)_10%,transparent)]" />
+        {/* Ambient volumetric diffusion — soft haze between portrait & quote */}
+        <div className="absolute inset-y-[20%] left-[38%] w-[34%] mix-blend-screen bg-[radial-gradient(ellipse_70%_55%_at_50%_50%,oklch(0.35_0.02_232/0.10),transparent_75%)] blur-2xl" />
+
+        {/* Cinematic falloff — restrained ink wash, less aggressive than before */}
+        <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0)_88%)]" />
+        <div className="absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(270deg,oklch(0.018_0_0)_22%,oklch(0.025_0_0/0.55)_58%,transparent_96%)]" />
+        <div className="absolute inset-y-0 left-0 w-[10%] bg-[linear-gradient(90deg,oklch(0.018_0_0)_8%,transparent)]" />
+        <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.018_0_0)_8%,transparent)]" />
+      </div>
+
+      {/* Faint lattice particles — extremely low opacity, drifting motes
+          between portrait and quote, reinforcing the material atmosphere. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
+        {[
+          { x: "32%", y: "28%", d: 32, delay: 0 },
+          { x: "44%", y: "52%", d: 38, delay: 5 },
+          { x: "38%", y: "70%", d: 30, delay: 9 },
+          { x: "52%", y: "38%", d: 36, delay: 2 },
+          { x: "28%", y: "62%", d: 34, delay: 7 },
+        ].map((p, i) => (
+          <motion.span
+            key={i}
+            className="absolute h-[2px] w-[2px] rounded-full bg-foreground/40"
+            style={{ left: p.x, top: p.y, filter: "blur(0.7px)" }}
+            animate={{
+              opacity: [0, 0.4, 0.18, 0.35, 0],
+              y: [0, -14, -28, -44, -60],
+              x: [0, 3, -2, 4, 0],
+            }}
+            transition={{ duration: p.d, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          />
+        ))}
       </div>
 
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
