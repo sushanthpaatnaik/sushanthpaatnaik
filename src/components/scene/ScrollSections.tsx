@@ -849,8 +849,9 @@ function InHisWordsScene() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,oklch(0.018_0.004_55/0.20)_38%,oklch(0.018_0.004_55/0.55)_70%,oklch(0.018_0.004_55/0.68)_100%)]" />
 
         {/* Top/bottom continuity falloff into adjacent scenes */}
-        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_12%,transparent)]" />
-        <div className="absolute inset-x-0 bottom-0 h-[30%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_94%)]" />
+        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0/0.80)_8%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[32%] bg-[linear-gradient(180deg,transparent,oklch(0.016_0_0/0.65)_72%,oklch(0.018_0_0/0.55)_100%)]" />
+
       </div>
 
       {/* Drifting motes — material atmosphere */}
