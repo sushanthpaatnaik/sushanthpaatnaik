@@ -22,7 +22,7 @@ import futureBackdrop from "@/assets/scene-future-signal.webp";
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
-import awardPranabDemo from "@/assets/hof/award-pranab-demo.webp";
+import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.png";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
 import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
