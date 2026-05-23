@@ -855,7 +855,7 @@ function NewsPage() {
         </ul>
       </EditorialSection>
 
-      <EditorialSection number="10 · Posture" heading="Curated, not complete.">
+      <EditorialSection number="11 · Posture" heading="Curated, not complete.">
         <p>
           The archive is selective. Press is useful when it accelerates the
           work and quiet when it does not. New coverage is added here as it
