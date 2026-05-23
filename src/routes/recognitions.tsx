@@ -664,44 +664,154 @@ function RecognitionsPage() {
         </p>
       </EditorialSection>
 
-      <div className="not-prose mt-12 grid grid-cols-1 md:grid-cols-2 gap-px bg-foreground/[0.06] border border-foreground/[0.06]">
-        {milestones.map((m, i) => (
-          <motion.article
-            key={m.title}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 1.1, delay: (i % 2) * 0.08, ease: [0.19, 1, 0.22, 1] }}
-            className="group relative bg-[oklch(0.045_0.003_245)] p-8 md:p-12 transition-colors duration-700 hover:bg-[oklch(0.062_0.003_245)]"
-          >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
-              style={{
-                background:
-                  "radial-gradient(120% 80% at 50% 0%, color-mix(in oklab, var(--foreground) 4%, transparent) 0%, transparent 60%)",
-              }}
-            />
-            <div className="relative flex items-baseline justify-between gap-6 mb-6">
-              <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
-                Milestone · {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="font-display text-sm md:text-base tracking-[-0.02em] text-foreground/55">
-                {m.n}
-              </span>
-            </div>
-            <h3 className="relative font-display text-2xl md:text-[28px] leading-[1.15] tracking-[-0.028em] text-foreground/95">
-              {m.title}
-            </h3>
-            <p className="relative mt-5 text-[14px] md:text-[14.5px] leading-[1.75] text-foreground/65 max-w-[52ch]">
-              {m.body}
-            </p>
-            <div
-              aria-hidden
-              className="relative mt-8 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
-            />
-          </motion.article>
-        ))}
+      {/* Cinematic institutional timeline tree — alternating archival panels
+          on a single vertical spine. Major recognitions render as full
+          archival plates; secondary recognitions as quieter nodes. */}
+      <div className="not-prose relative mt-16 md:mt-20">
+        {/* Center spine — runs the full length of the timeline */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px md:-translate-x-1/2"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 0%, oklch(var(--foreground) / 0.12) 8%, oklch(var(--foreground) / 0.18) 50%, oklch(var(--foreground) / 0.12) 92%, transparent 100%)",
+          }}
+        />
+        {/* Top cap */}
+        <div
+          aria-hidden
+          className="absolute left-6 md:left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-foreground/40 ring-4 ring-[oklch(0.045_0.003_245)]"
+        />
+
+        <ol className="flex flex-col">
+          {milestones
+            .slice()
+            .sort((a, b) => a.sortYear - b.sortYear)
+            .map((m, i) => {
+              const onLeft = i % 2 === 0;
+              return (
+                <li
+                  key={m.title}
+                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-12 md:py-20"
+                >
+                  {/* Year anchor at the spine */}
+                  <div className="md:col-span-2 md:absolute md:left-1/2 md:top-12 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
+                    <span
+                      aria-hidden
+                      className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[oklch(0.045_0.003_245)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
+                    />
+                    <span className="md:hidden absolute left-6 top-14 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
+                    <div className="md:mt-1 md:px-3 md:py-1 md:bg-[oklch(0.045_0.003_245)]">
+                      <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.42em] text-foreground/65">
+                        {m.year}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Alternating panel — image + content together on one side of spine */}
+                  <motion.article
+                    initial={{ opacity: 0, y: 36 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+                    className={`group relative col-start-2 md:col-start-1 md:col-end-3 md:grid md:grid-cols-2 md:gap-16 ${
+                      onLeft ? "" : "md:[&>*:first-child]:order-2"
+                    }`}
+                  >
+                    {/* Archival image plate */}
+                    <figure
+                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
+                        m.major
+                          ? "aspect-[4/3] md:aspect-[5/4]"
+                          : "aspect-[4/3] md:aspect-[4/3]"
+                      } ${onLeft ? "md:mr-12" : "md:ml-12"}`}
+                    >
+                      <img
+                        src={m.image}
+                        alt={m.title}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover opacity-85 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+                        style={{
+                          objectPosition: m.imageFocus ?? "center 30%",
+                          filter: "grayscale(0.18) contrast(1.06) saturate(0.82) brightness(0.90)",
+                        }}
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.18) 0%, transparent 38%, oklch(0.02 0.006 245 / 0.72) 88%, oklch(0.014 0.006 245 / 0.95) 100%)",
+                        }}
+                      />
+                      {/* Subtle archival glow on hover */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+                        style={{
+                          background:
+                            "radial-gradient(60% 50% at 50% 100%, oklch(var(--foreground) / 0.06), transparent 70%)",
+                        }}
+                      />
+                      <figcaption className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
+                        <span className="block font-mono text-[9px] uppercase tracking-[0.4em] text-accent/75">
+                          {m.major ? "Major recognition" : "Recognition"}
+                        </span>
+                        <span className="mt-1.5 block font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
+                          {m.institution}
+                        </span>
+                      </figcaption>
+                    </figure>
+
+                    {/* Editorial content */}
+                    <div
+                      className={`relative pt-6 md:pt-2 ${
+                        onLeft ? "md:pl-2" : "md:pr-2"
+                      }`}
+                    >
+                      <div className="flex items-baseline gap-4 mb-5">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
+                          Milestone · {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {m.major && (
+                          <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-foreground/55">
+                            · Anchor
+                          </span>
+                        )}
+                      </div>
+                      <h3
+                        className={`font-display leading-[1.12] tracking-[-0.03em] text-foreground/95 ${
+                          m.major
+                            ? "text-[26px] md:text-[34px] lg:text-[40px]"
+                            : "text-[22px] md:text-[26px]"
+                        }`}
+                      >
+                        {m.title}
+                      </h3>
+                      <p className="mt-5 text-[14px] md:text-[14.5px] leading-[1.75] text-foreground/65 max-w-[52ch]">
+                        {m.body}
+                      </p>
+                      <div
+                        aria-hidden
+                        className="mt-8 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
+                      />
+                    </div>
+                  </motion.article>
+                </li>
+              );
+            })}
+        </ol>
+
+        {/* Bottom cap — continuation marker */}
+        <div
+          aria-hidden
+          className="absolute left-6 md:left-1/2 bottom-0 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <div className="h-2 w-2 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]" />
+          <span className="hidden md:block font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/40 mt-1">
+            The chronology continues
+          </span>
+        </div>
       </div>
 
       {/* 02 · Authority block — institutional register at a glance */}
