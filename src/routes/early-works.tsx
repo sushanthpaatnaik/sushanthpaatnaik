@@ -486,14 +486,12 @@ function EarlyWorksPage() {
           a material answer, a year. The hero specimens anchor their eras; the
           rest follow in chronological order.
         </p>
-        <div className="not-prose mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {hero.map((w, i) => (
+        <div className="not-prose mt-12 flex flex-col gap-10 md:gap-14">
+          {works.map((w, i) => (
             <SpecimenCard key={w.title} w={w} index={i} />
           ))}
-          {rest.map((w, i) => (
-            <SpecimenCard key={w.title} w={w} index={i + hero.length} />
-          ))}
         </div>
+
       </EditorialSection>
 
       {/* Newspaper archive plate */}
