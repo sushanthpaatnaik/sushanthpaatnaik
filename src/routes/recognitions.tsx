@@ -7,7 +7,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 
-import {
+import ArchiveMosaic, {
   HallOfFameRibbon,
 
   StatsAuthorityBlock,
@@ -126,9 +126,10 @@ const ledgerByYear: LedgerYear[] = [
     year: "2008",
     entries: [
       { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
-      { title: "35th Jawaharlal Nehru National Science Exhibition", institution: "NCERT" },
-      { title: "CBSE National Science Exhibition Award" },
-      { title: "Institute of Physics Exhibition Award" },
+      { title: "35th Jawaharlal Nehru National Science Exhibition", institution: "NCERT · Govt of India" },
+      { title: "CBSE National Science Exhibition Award", institution: "Central Board of Secondary Education" },
+      { title: "Institute of Physics Exhibition Award", institution: "IOP · Bhubaneswar" },
+      { title: "State Level Science Talent Search", institution: "Govt of Odisha" },
     ],
   },
   {
@@ -136,80 +137,111 @@ const ledgerByYear: LedgerYear[] = [
     entries: [
       { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
       { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
-      { title: "KVPY Fellow", institution: "Department of Science & Technology" },
-      { title: "NCSC Award" },
+      { title: "KVPY Fellow", institution: "Department of Science & Technology, Govt of India" },
+      { title: "NCSC National Award", institution: "National Children's Science Congress" },
+      { title: "Young Scientist Citation", institution: "NIF-India" },
+      { title: "Inspire Award", institution: "Ministry of Science & Technology" },
     ],
   },
   {
     year: "2010",
     entries: [
       { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
-      { title: "Intel IRIS · Best Popular Invention Award", featured: true },
-      { title: "INK Fellow" },
+      { title: "Intel IRIS · Best Popular Invention Award", institution: "Intel Foundation · National Science Fair", featured: true },
+      { title: "INK Fellow", institution: "INK Talks · TED Partner" },
+      { title: "Young Innovator Citation", institution: "Lockheed Martin India Innovation Growth Programme" },
+      { title: "Featured · The Hindu · Times of India", institution: "Press archive" },
     ],
   },
   {
     year: "2011",
     entries: [
       { title: "NASA Award", institution: "Kennedy Space Center · Huntsville", featured: true },
-      { title: "DLF–Pramerica Spirit of Community Award" },
-      { title: "Eureka-11 · IIT-Bombay Business Plan Contest" },
+      { title: "DLF–Pramerica Spirit of Community Award", institution: "Prudential · DLF Foundation" },
+      { title: "Eureka-11 · IIT-Bombay Business Plan Contest", institution: "E-Cell · IIT Bombay" },
+      { title: "U.S. Space & Rocket Center Recognition", institution: "Huntsville · Alabama" },
+      { title: "Indian Achievers' Award", institution: "Indian Achievers' Forum" },
     ],
   },
   {
     year: "2012",
     entries: [
       { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
-      { title: "Golden Book of World Record Holder" },
-      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest" },
-      { title: "Innovio-12 · KIIT Business Plan Contest" },
-      { title: "Judge · SELL-X Exodia · IIT-Mandi" },
+      { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
+      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest", institution: "E-Cell · IIT Kanpur" },
+      { title: "Innovio-12 · KIIT Business Plan Contest", institution: "KIIT University" },
+      { title: "Judge · SELL-X Exodia · IIT-Mandi", institution: "IIT Mandi" },
+      { title: "Limca Book of Records — Young Inventor", institution: "Limca · India Records" },
     ],
   },
   {
     year: "2013",
     entries: [
       { title: "President of India Award", institution: "Shri Pranab Mukherjee · NIF", featured: true },
-      { title: "ICAI Abu Dhabi Speaker" },
+      { title: "ICAI Abu Dhabi Speaker", institution: "Institute of Chartered Accountants of India" },
+      { title: "Presidential Innovation Showcase", institution: "Rashtrapati Bhavan · New Delhi" },
+      { title: "Featured · Forbes India 30 Under 30 Watchlist", institution: "Forbes India" },
     ],
   },
   {
     year: "2013–14",
     entries: [
-      { title: "MIT Fab-10 & Fab-11 Awardee", institution: "MIT · Barcelona", featured: true },
+      { title: "MIT Fab-10 & Fab-11 Awardee", institution: "MIT · Barcelona / MIT Cambridge", featured: true },
       { title: "Under-35 CEO Award", institution: "Yinka Brand" },
+      { title: "Fab Academy Diploma Holder", institution: "MIT Center for Bits and Atoms" },
     ],
   },
   {
     year: "2021",
     entries: [
       { title: "STPI-Chunauti Winner", institution: "Software Technology Parks of India" },
+      { title: "ESC-STPI Startup Initiative · Building the Next Unicorn", institution: "Electronics & Computer Software Export Promotion Council" },
+      { title: "Atmanirbhar Bharat Innovation Citation", institution: "Govt of India" },
     ],
   },
   {
     year: "2022",
     entries: [
       { title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum", featured: true },
+      { title: "LEA Excellence Award · with Dia Mirza", institution: "Lions Excellence Awards · Mumbai" },
+      { title: "TiECON Mumbai · India Unicorn Summit Speaker", institution: "TiE Mumbai" },
+      { title: "INK Fellows Retreat · Bengaluru", institution: "INK Talks" },
+      { title: "STPI Certificate of Merit", institution: "National Conclave Winner" },
+      { title: "Italian Embassy Felicitation", institution: "H.E. Antonio Bartoli · Ambassador" },
     ],
   },
   {
     year: "2023",
     entries: [
-      { title: "Startup20 · G20 Presidency", institution: "Government of India", featured: true },
+      { title: "Startup20 · G20 Presidency", institution: "Government of India · Gurugram", featured: true },
+      { title: "Audience with H.H. Prince Fahad bin Mansour Al-Saud", institution: "Startup20 · G20" },
+      { title: "Ministry of Power · BEE Recognition", institution: "Bureau of Energy Efficiency · Govt of India" },
+      { title: "British High Commission Address", institution: "New Delhi" },
+      { title: "Felicitation by Shri Nitin Gadkari", institution: "Union Minister · Transport Bhawan" },
+      { title: "DRIIV MoU · Office of the Principal Scientific Adviser", institution: "Govt of India" },
+      { title: "Mauritius High Commission Engagement", institution: "H.E. Mrs. Sheilabai Bappoo, G.O.S.K." },
     ],
   },
   {
     year: "2024",
     entries: [
-      { title: "ELECRAMA Winner" },
+      { title: "ELECRAMA Winner", institution: "IEEMA · Greater Noida" },
       { title: "Silicon Valley Speaker", institution: "Bay Area · USA", featured: true },
+      { title: "IEEMA Finalist · Buildelec, Intelect, Distribuelec", institution: "Indian Electrical & Electronics Manufacturers' Association" },
+      { title: "IEEMA Mainstage Address · Buildelec Mumbai", institution: "IEEMA" },
+      { title: "FICCI Bharat Summit Delegate", institution: "Federation of Indian Chambers of Commerce & Industry" },
+      { title: "Bharatiya Knowledge Systems Symposium Felicitation", institution: "School of Information Technology" },
+      { title: "Audience with Shri Sujoy Choudhury, Director (P&BD)", institution: "Indian Oil Corporation" },
     ],
   },
   {
     year: "2025",
     entries: [
-      { title: "CEO Club Speaker" },
+      { title: "CEO Club Speaker", institution: "Hyderabad" },
       { title: "Innovision Keynote", institution: "NIT Rourkela" },
+      { title: "Beyond Retreat · Uncharted Paths Speaker", institution: "Ahmedabad · March 2025" },
+      { title: "GMR Innovex Innovation Summit Felicitation", institution: "GMRIT" },
+      { title: "Monoatom Labs · DRIIV Graphene Innovation Pavilion", institution: "Delhi Research Implementation & Innovation" },
     ],
   },
 ];
@@ -361,6 +393,30 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
 ];
 
+// Documentary Mosaic — dense cinematic collage drawn from the full archive,
+// intermixing newspaper plates, ministerial moments, presidential citations,
+// fellowship certificates and mainstage photography. Restores archival
+// realism and historical scale without expanding the chronological registry.
+const documentaryMosaic: ArchiveItem[] = [
+  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
+  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Mysore · 2012", category: "Keynote" },
+  { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
+  { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
+  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
+  { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award", shape: "wide", focus: "left top" },
+  { src: honorG20, caption: "Startup20 · G20 India Presidency", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide" },
+  { src: keynoteBrics, caption: "BRICS Diplomatic Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
+  { src: awardPranabDemo, caption: "Presidential Demonstration", meta: "New Delhi · 2013", category: "Award", focus: "center 35%" },
+  { src: honorItalian, caption: "Italian Embassy", meta: "H.E. Antonio Bartoli", category: "Honor" },
+  { src: keynoteIeema, caption: "IEEMA Buildelec Mainstage", meta: "Mumbai · 2024", category: "Keynote", shape: "wide" },
+  { src: awardLeaDiaMirza, caption: "LEA Excellence Award", meta: "with Dia Mirza · 2022", category: "Award" },
+  { src: honorGadkari, caption: "With Shri Nitin Gadkari", meta: "Transport Bhawan · 2023", category: "Honor", focus: "center 22%" },
+  { src: keynoteBritish, caption: "British High Commission", meta: "New Delhi", category: "Keynote" },
+  { src: honorDriiv, caption: "DRIIV MoU Signing", meta: "PSA · Govt of India", category: "Honor", shape: "wide" },
+];
+
+
 function EraAccordion({
   number,
   era,
@@ -369,6 +425,7 @@ function EraAccordion({
   defaultOpen = false,
   plateCount,
   registryCount,
+  previewPlates,
   children,
 }: {
   number: string;
@@ -378,6 +435,7 @@ function EraAccordion({
   defaultOpen?: boolean;
   plateCount: number;
   registryCount: number;
+  previewPlates?: ArchiveItem[];
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -418,6 +476,42 @@ function EraAccordion({
             />
           </span>
         </div>
+
+        {/* Always-visible archival preview strip — restores documentary depth without forcing scroll */}
+        {previewPlates && previewPlates.length > 0 && !open && (
+          <div className="mt-8 md:mt-10 pl-0 md:pl-[calc(theme(spacing.12)+1.5rem)]">
+            <div className="grid grid-cols-4 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] rounded-sm overflow-hidden">
+              {previewPlates.slice(0, 4).map((p, i) => (
+                <figure
+                  key={p.src + i}
+                  className="relative aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)]"
+                >
+                  <img
+                    src={p.src}
+                    alt={p.caption}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-1000 group-hover/era:opacity-85"
+                    style={{
+                      objectPosition: p.focus ?? "center 30%",
+                      filter: "grayscale(0.25) contrast(1.06) saturate(0.78) brightness(0.86)",
+                    }}
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, transparent 45%, oklch(0.02 0.006 245 / 0.82) 100%)",
+                    }}
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 px-2.5 py-2 font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
+                    {p.category}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
       </Collapsible.Trigger>
       <AnimatePresence initial={false}>
         {open && (
@@ -603,12 +697,27 @@ function RecognitionsPage() {
         items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
       />
 
-      {/* 05 · Era archives — progressive disclosure */}
-      <EditorialSection number="05 · Archives" heading="Open the era you want to walk through.">
+      {/* 04.5 · Documentary Mosaic — dense cinematic collage across the full archive */}
+      <EditorialSection
+        number="05 · Documentary"
+        heading="A cinematic mosaic of the record."
+      >
+        <p>
+          Newspaper plates, ministerial moments, presidential citations, and
+          mainstage photography — drawn from the full archive and intercut as
+          a single documentary collage. The visual register before the
+          chronology opens.
+        </p>
+      </EditorialSection>
+      <ArchiveMosaic items={documentaryMosaic} />
+
+      {/* 06 · Era archives — progressive disclosure */}
+      <EditorialSection number="06 · Archives" heading="Open the era you want to walk through.">
         <p>
           Four eras, four archives. Each opens into the full photographic
-          plates and the year-by-year register for that period. Closed by
-          default so the chronology can be read at the pace of attention.
+          plates and the year-by-year register for that period. A preview
+          strip remains visible for every era so the depth of the record is
+          always felt, even when the chronology is closed.
         </p>
       </EditorialSection>
 
@@ -620,6 +729,7 @@ function RecognitionsPage() {
           description="Six citations, three sitting Presidents of India. The earliest plates in the archive — when the prototypes still smelled of school workshop and the country was just beginning to notice."
           plateCount={eraPresidential.length}
           registryCount={ledgerSlice(["2008", "2009", "2013"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraPresidential}
           defaultOpen
         >
           <ArchivePlateSeries
@@ -642,6 +752,7 @@ function RecognitionsPage() {
           description="TED-India, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraGlobal}
         >
           <ArchivePlateSeries
             items={eraGlobal}
@@ -663,6 +774,7 @@ function RecognitionsPage() {
           description="The diplomatic and ministerial years — embassies, BRICS, G20, the Ministry of Power, and the signing of MoUs that turn frontier research into national infrastructure."
           plateCount={eraIndustrial.length}
           registryCount={ledgerSlice(["2021", "2022", "2023"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraIndustrial}
         >
           <ArchivePlateSeries
             items={eraIndustrial}
@@ -684,6 +796,7 @@ function RecognitionsPage() {
           description="IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond Retreat, Bharatiya Knowledge Systems. The current chapter — where materials, ventures and public address converge."
           plateCount={eraPresent.length}
           registryCount={ledgerSlice(["2024", "2025"]).reduce((a, g) => a + g.entries.length, 0)}
+          previewPlates={eraPresent}
         >
           <ArchivePlateSeries
             items={eraPresent}
