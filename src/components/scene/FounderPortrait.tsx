@@ -30,6 +30,7 @@ export default function FounderPortrait({
   meta,
   eyebrow,
   narrative,
+  plate,
 }: FounderPortraitProps) {
   const src = variant === "documentary" ? lab : editorial;
   const isDoc = variant === "documentary";
@@ -40,9 +41,30 @@ export default function FounderPortrait({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-20 md:my-24 max-w-[640px] md:max-w-[680px]"
+      className="not-prose relative mx-auto my-28 md:my-40 max-w-[640px] md:max-w-[680px]"
     >
-      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
+      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
+        {/* Founder plate — minimal editorial identity */}
+        {plate && (
+          <div className="flex items-center justify-between border-b border-foreground/[0.05] px-6 py-3.5 md:px-8 md:py-4">
+            <div className="flex items-baseline gap-3">
+              <span className="font-display text-[13px] tracking-[-0.01em] text-foreground/80">
+                Sushanth Paatnaik
+              </span>
+              <span className="hidden sm:inline h-2.5 w-px bg-foreground/[0.10]" />
+              <span className="hidden sm:inline font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/40">
+                Founder & Inventor
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="h-px w-6 bg-foreground/[0.08]" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/35">
+                India
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Portrait — readable face, restrained cinematic grade */}
         <div
           className={
