@@ -741,7 +741,8 @@ function RecognitionsPage() {
               return (
                 <li
                   key={m.title}
-                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-12 md:py-20"
+                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-10 md:py-14"
+
                 >
                   <div className="md:col-span-2 md:absolute md:left-1/2 md:top-12 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
                     <span
@@ -999,7 +1000,7 @@ function RecognitionsPage() {
       </div>
 
       {/* 07 · Achievement Ledger — full 27 honors, always visible */}
-      <div id="ledger" className="scroll-mt-24 mt-32 md:mt-40">
+      <div id="ledger" className="scroll-mt-24 mt-20 md:mt-28">
         <EditorialSection number="07 · Register" heading="Achievement ledger · 27 of record.">
           <p>
             The complete year-by-year register — every Presidential citation,
@@ -1012,7 +1013,7 @@ function RecognitionsPage() {
       </div>
 
       {/* 06 · Legacy Closure — cinematic institutional farewell */}
-      <section className="not-prose relative mt-32 md:mt-44 overflow-hidden">
+      <section className="not-prose relative mt-20 md:mt-28 overflow-hidden">
         {/* Atmospheric backdrop plate */}
         <div aria-hidden className="absolute inset-1 z-0 overflow-hidden rounded-sm">
           <div
@@ -1057,7 +1058,7 @@ function RecognitionsPage() {
         </div>
 
         {/* Content — generous vertical breathing room */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-32 md:py-48 lg:py-56">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-24 md:py-32 lg:py-40">
           {/* Eyebrow — archival marker */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
