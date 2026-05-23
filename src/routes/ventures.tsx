@@ -353,9 +353,8 @@ function VenturesPage() {
                   {a.name}
                 </span>
               </div>
-
-              </div>
             </motion.div>
+
           ))}
         </div>
       </EditorialSection>
