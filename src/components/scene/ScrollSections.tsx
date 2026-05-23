@@ -118,7 +118,7 @@ function HeroSection() {
             <span className="h-px w-8 bg-foreground/20" />
           </motion.div>
 
-          <motion.h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
+          <motion.h1 className="font-display text-[clamp(2rem,7.4vw,6rem)] leading-[1.1] md:leading-[1.04] tracking-[-0.035em] md:tracking-[-0.04em] font-medium pb-2">
             {[
               { text: "I build", delay: 0.2 },
               { text: "what does not", delay: 0.36 },
@@ -129,12 +129,13 @@ function HeroSection() {
                 initial={{ opacity: 0, y: 56, filter: "blur(16px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 1.2, delay: line.delay, ease: [0.19, 1, 0.22, 1] }}
-                className={`block py-1 ${index < 2 ? "text-gradient" : "text-foreground/95"}`}
+                className={`block py-2 md:py-2.5 ${index < 2 ? "text-gradient" : "text-foreground/95"}`}
               >
                 {line.text}
               </motion.span>
             ))}
           </motion.h1>
+
 
           {/* Subtitle hierarchy — primary line, then a quieted credential register */}
           <motion.div
