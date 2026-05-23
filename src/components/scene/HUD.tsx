@@ -104,10 +104,10 @@ function ChapterMarker({
     >
       {/* Active backdrop glow — soft documentary spotlight */}
       <motion.div
-        className="absolute -inset-x-3 -inset-y-2 rounded-md pointer-events-none"
+        className="absolute -inset-x-4 -inset-y-2.5 rounded-md pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 80% at 30% 50%, oklch(0.71 0.06 232 / 0.14), transparent 72%)",
+            "radial-gradient(ellipse 70% 80% at 30% 50%, oklch(0.71 0.06 232 / 0.18), transparent 72%)",
         }}
         initial={false}
         animate={{
@@ -120,15 +120,15 @@ function ChapterMarker({
       <div className="relative z-10 flex items-center justify-center w-[23px] h-[23px]">
         {/* Glow ring (active only) */}
         <motion.div
-          className="absolute inset-1.5 rounded-full"
+          className="absolute inset-1 rounded-full"
           style={{
-            background: "oklch(0.71 0.06 232 / 0.18)",
-            boxShadow: "0 0 18px oklch(0.71 0.06 232 / 0.28)",
+            background: "oklch(0.71 0.06 232 / 0.22)",
+            boxShadow: "0 0 22px oklch(0.71 0.06 232 / 0.34)",
           }}
           initial={false}
           animate={{
-            opacity: active ? 1 : 1,
-            scale: active ? 1 : 0.5,
+            opacity: active ? 1 : 0,
+            scale: active ? 1 : 1.5,
           }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
         />
@@ -138,10 +138,10 @@ function ChapterMarker({
           className="relative z-10 rounded-full"
           style={{
             background: active
-              ? "oklch(0.95 0.0 0)"
+              ? "oklch(0.97 0.0 0)"
               : "oklch(0.55 0.0 0 / 0.38)",
             boxShadow: active
-              ? "0 0 1.0px 0px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.40)"
+              ? "0 1px 4px rgba(0,0,0,0.55), 1px 2px 3px rgba(0,0,0,0.38)"
               : "none",
           }}
           initial={false}
@@ -149,7 +149,7 @@ function ChapterMarker({
             width: active ? 7 : 4,
             height: active ? 7 : 4,
             background: active
-              ? "oklch(0.95 0.0 0)"
+              ? "oklch(0.97 0.0 0)"
               : "oklch(0.55 0.0 0 / 0.38)",
           }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
@@ -161,8 +161,8 @@ function ChapterMarker({
         className="relative z-10 flex items-baseline gap-2"
         initial={false}
         animate={{
-          opacity: active ? 0.92 : visible ? (hovered ? 0.72 : 0.45) : 0.22,
-          x: active ? 0 : 0,
+          opacity: active ? 0.96 : visible ? (hovered ? 0.72 : 0.45) : 0.22,
+          x: active ? 1 : 0,
         }}
         transition={{ duration: 0.75, ease: [0.19, 1, 0.22, 1] }}
       >
@@ -171,7 +171,7 @@ function ChapterMarker({
           className="font-mono text-[9px] uppercase tracking-[0.35em] select-none"
           style={{
             color: active
-              ? "oklch(0.71 0.06 232 / 0.95)"
+              ? "oklch(0.76 0.07 232 / 0.96)"
               : "oklch(0.62 0.0 0 / 0.42)",
             transition: "color 0.9s cubic-bezier(0.19, 1, 0.22, 1)",
           }}
@@ -184,7 +184,7 @@ function ChapterMarker({
           className="text-[10px] uppercase tracking-[0.32em] font-light select-none whitespace-nowrap"
           style={{
             color: active
-              ? "oklch(0.967 0.0 0 / 0.92)"
+              ? "oklch(0.967 0.0 0 / 0.96)"
               : "oklch(0.62 0.0 0 / 0.48)",
           }}
           initial={false}
