@@ -37,40 +37,60 @@ export default function FounderPortrait({
 
   return (
     <motion.figure
-      initial={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 1.0 }}
-      transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-32 md:my-44 max-w-[540px] md:max-w-[600px]"
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+      className="not-prose relative mx-auto my-32 md:my-44 max-w-[520px] md:max-w-[580px]"
     >
-      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.04] bg-[oklch(0.04_0_0)] shadow-[0_24px_64px_-24px_oklch(0_0_0/0.72)]">
-        {/* Founder plate — subtle editorial identity */}
+      {/* Cinematic edge diffusion — dissolves the plate into the room */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-16 -inset-y-20 md:-inset-x-24 md:-inset-y-28"
+        style={{
+          background:
+            "radial-gradient(60% 55% at 50% 50%, oklch(0.18 0.02 245 / 0.32), transparent 72%)",
+          filter: "blur(28px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-8 -inset-y-10"
+        style={{
+          background:
+            "radial-gradient(45% 40% at 50% 35%, oklch(0.52 0.04 232 / 0.10), transparent 78%)",
+          filter: "blur(18px)",
+        }}
+      />
+
+      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[oklch(0.04_0_0)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
+        {/* Founder plate — strengthened editorial identity */}
         {plate && (
-          <div className="flex items-center justify-between border-b border-foreground/[0.04] px-6 py-3 md:px-8 md:py-3.5">
-            <div className="flex items-baseline gap-3">
-              <span className="font-display text-[12px] tracking-[-0.01em] text-foreground/70">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/[0.06] px-6 py-4 md:px-8 md:py-5">
+            <div className="flex items-center gap-4 md:gap-5">
+              <span className="font-display text-[15px] md:text-[16px] tracking-[-0.012em] text-foreground/90">
                 Sushanth Paatnaik
               </span>
-              <span className="hidden sm:inline h-2 w-px bg-foreground/[0.08]" />
-              <span className="hidden sm:inline font-mono text-[8px] uppercase tracking-[0.32em] text-muted-foreground/35">
-                Founder & Inventor
+              <span className="h-3 w-px bg-foreground/15" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/60">
+                Founder &amp; Inventor
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-px w-5 bg-foreground/[0.06]" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.32em] text-muted-foreground/30">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-6 bg-foreground/15" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 India
               </span>
             </div>
           </div>
         )}
 
-        {/* Portrait — readable face, restrained cinematic grade */}
+        {/* Portrait — reduced height (~15% shorter), more breathing room */}
         <div
           className={
             isDoc
-              ? "relative aspect-[4/5] md:aspect-[16/10] w-full overflow-hidden"
-              : "relative aspect-[4/5] md:aspect-[3/4] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
+              ? "relative aspect-[4/4.3] md:aspect-[16/8.5] w-full overflow-hidden"
+              : "relative aspect-[5/6] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
           }
         >
           <img
@@ -88,17 +108,16 @@ export default function FounderPortrait({
             }
           />
 
-          {/* Cinematic grading overlays — more restrained */}
+          {/* Cinematic grading overlays */}
           <div
             aria-hidden
-            className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full mix-blend-multiply"
+            className="absolute inset-0 mix-blend-multiply"
             style={{
               background: isDoc
                 ? "linear-gradient(180deg, oklch(0.05 0.01 240 / 0.32) 0%, oklch(0.04 0.005 240 / 0.16) 50%, oklch(0.03 0 0 / 0.50) 100%)"
-                : "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.24) 45%, oklch(0.02 0 0 / 0.62) 100%)",
+                : "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.22) 45%, oklch(0.02 0 0 / 0.60) 100%)",
             }}
           />
-          {/* Cool key-light wash — softer */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-soft-light"
@@ -107,7 +126,6 @@ export default function FounderPortrait({
                 "radial-gradient(ellipse 55% 50% at 50% 38%, oklch(0.58 0.05 240 / 0.18), transparent 70%)",
             }}
           />
-          {/* Restrained copper rim accent — top-right, quieter */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-screen"
@@ -116,7 +134,6 @@ export default function FounderPortrait({
                 "radial-gradient(ellipse 28% 36% at 84% 20%, oklch(0.62 0.10 55 / 0.08), transparent 65%)",
             }}
           />
-          {/* Balancing cool rim — bottom-left */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-screen"
@@ -125,36 +142,44 @@ export default function FounderPortrait({
                 "radial-gradient(ellipse 30% 36% at 16% 80%, oklch(0.52 0.04 232 / 0.06), transparent 68%)",
             }}
           />
-          {/* Edge vignette — dissolves into atmosphere */}
+          {/* Inner edge dissolve — image bleeds into the plate */}
           <div
             aria-hidden
-            className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
+            className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(115% 85% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.60) 100%)",
+                "radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+            style={{
+              background:
+                "linear-gradient(to top, oklch(0.04 0 0) 0%, transparent 100%)",
             }}
           />
         </div>
 
-        {/* Editorial caption strip — restrained, cinematic, archival */}
+        {/* Editorial caption strip */}
         {(caption || meta || eyebrow || narrative?.length) && (
-          <figcaption className="border-t border-foreground/[0.04] px-6 py-6 md:px-8 md:py-7">
+          <figcaption className="border-t border-foreground/[0.06] px-6 py-7 md:px-8 md:py-8">
             {(eyebrow || narrative?.length) && (
-              <div className="mb-6 md:mb-7 flex flex-col gap-3">
+              <div className="mb-6 md:mb-7 flex flex-col gap-4">
                 {eyebrow && (
                   <div className="flex items-center gap-3">
-                    <span className="h-px w-4 bg-foreground/[0.10]" />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.48em] text-muted-foreground/45">
+                    <span className="h-px w-5 bg-foreground/15" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                       {eyebrow}
                     </span>
                   </div>
                 )}
                 {narrative?.length ? (
-                  <div className="mt-2 space-y-2">
+                  <div className="mt-1 space-y-2">
                     {narrative.map((line) => (
                       <p
                         key={line}
-                        className="font-display text-[14px] md:text-[16px] leading-[1.5] tracking-[-0.008em] text-foreground/70"
+                        className="font-display text-[15px] md:text-[17px] leading-[1.5] tracking-[-0.01em] text-foreground/75"
                       >
                         {line}
                       </p>
@@ -164,14 +189,14 @@ export default function FounderPortrait({
               </div>
             )}
             {(caption || meta) && (
-              <div className="flex flex-wrap items-baseline justify-between gap-3 pt-5 border-t border-foreground/[0.03]">
+              <div className="flex flex-wrap items-baseline justify-between gap-3 pt-5 border-t border-foreground/[0.05]">
                 {caption && (
-                  <p className="text-[11.5px] md:text-[12.5px] leading-relaxed text-foreground/55 max-w-[85%]">
+                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/55 max-w-[85%]">
                     {caption}
                   </p>
                 )}
                 {meta && (
-                  <p className="font-mono text-[9px] uppercase tracking-[0.38em] text-muted-foreground/40">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
                     {meta}
                   </p>
                 )}
