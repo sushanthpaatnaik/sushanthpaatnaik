@@ -4,7 +4,6 @@ import VentureConstellation, { type Venture } from "./VentureConstellation";
 import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
 import founderLab from "@/assets/founder-lab.jpg";
-import mediaWall from "@/assets/scene-media-wall.jpg";
 import MediaWallBackdrop from "./MediaWallBackdrop";
 
 
