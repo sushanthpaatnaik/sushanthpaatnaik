@@ -10,7 +10,7 @@ const navLinks = [
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
   { to: "/early-works", label: "Early Works" },
-  { to: "/services", label: "Services" },
+  
   { to: "/voices", label: "Voices" },
   { to: "/essays", label: "In His Words" },
   { to: "/engage", label: "Engage" },
