@@ -320,23 +320,42 @@ function MediaPlate({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden bg-[oklch(0.045_0.006_245)] ${className}`}>
       <img
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-70 grayscale-[0.55] contrast-[1.08] brightness-[0.9] transition-all duration-[1200ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.025]"
+        className="absolute inset-0 h-full w-full object-cover opacity-65 grayscale contrast-[1.12] brightness-[0.88] transition-all duration-[1400ms] group-hover:opacity-95 group-hover:grayscale-[0.4] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+      {/* Newspaper halftone texture */}
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-50"
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay"
         style={{
-          background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.78) 100%)",
+          backgroundImage:
+            "radial-gradient(oklch(0 0 0) 0.6px, transparent 0.8px)",
+          backgroundSize: "3px 3px",
         }}
       />
-      {/* Archival corner marks */}
+      {/* Paper grain */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, oklch(1 0 0) 0 1px, transparent 1px 3px)",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 50% 50%, transparent 42%, oklch(0.02 0 0 / 0.82) 100%)",
+        }}
+      />
+      {/* Archival corner registration marks */}
       <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />
       <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/30" />
       <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/30" />
@@ -354,39 +373,40 @@ function LeadFeature({ item }: { item: PressItem }) {
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-10 block"
+      transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+      className="group not-prose mt-14 block"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/85">
-          Above The Fold · Lead Story
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-          {item.outlet} · {item.date}
-        </p>
+      {/* Dateline strip */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.12] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/85">Above The Fold</span>
+        <span className="hidden md:inline text-muted-foreground/40">
+          Dateline · {item.date}
+        </span>
+        <span className="text-primary/75">{item.outlet}</span>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
+      <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
+        <div className="md:col-span-7">
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/70">
+            {item.tag}
+          </p>
+          <h2 className="mt-6 font-display text-[clamp(1.9rem,4.2vw,3.2rem)] leading-[1.02] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
+            {item.title}
+          </h2>
+          <div className="mt-9 h-px w-14 bg-accent/45 transition-all duration-700 group-hover:w-24" />
+          <p className="mt-8 font-display italic text-[17px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/75">
+            {item.body}
+          </p>
+          <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Read the dispatch &nbsp;—↗
+          </p>
+        </div>
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/9] rounded-sm border border-foreground/[0.08] md:col-span-7"
+          className="aspect-[4/5] border border-foreground/[0.08] md:col-span-5 md:aspect-[3/4]"
         />
-        <div className="md:col-span-5">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/75">
-            {item.tag}
-          </p>
-          <h2 className="mt-5 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
-            {item.title}
-          </h2>
-          <p className="mt-6 font-display italic text-[15px] md:text-[17px] leading-[1.55] text-foreground/80">
-            {item.body}
-          </p>
-          <p className="mt-7 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Read the dispatch ↗
-          </p>
-        </div>
       </div>
     </motion.a>
   );
@@ -402,37 +422,36 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-16 block"
+      className="group not-prose mt-24 md:mt-32 block"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/70">
-          Below The Fold · Featured
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-          {item.outlet} · {item.date}
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.08] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/65">Below The Fold</span>
+        <span className="text-muted-foreground/40 hidden md:inline">
+          Dateline · {item.date}
+        </span>
+        <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-7 md:order-2">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">
-            {item.tag}
-          </p>
-          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.02em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
-            {item.title}
-          </h3>
-          <p className="mt-5 text-[15px] leading-[1.7] text-foreground/70">
-            {item.body}
-          </p>
-          <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Continue ↗
-          </p>
-        </div>
+      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/10] rounded-sm border border-foreground/[0.08] md:col-span-5 md:order-1"
+          className="aspect-[16/10] border border-foreground/[0.08] md:col-span-6"
         />
+        <div className="md:col-span-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
+            {item.tag}
+          </p>
+          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
+            {item.title}
+          </h3>
+          <p className="mt-6 text-[15px] leading-[1.8] text-foreground/70">
+            {item.body}
+          </p>
+          <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Continue &nbsp;—↗
+          </p>
+        </div>
       </div>
     </motion.a>
   );
@@ -527,18 +546,27 @@ function NewsPage() {
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
-      {/* Masthead */}
-      <div className="mt-16 flex flex-wrap items-baseline justify-between gap-3 border-t border-b border-foreground/[0.1] py-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
-        <span className="text-primary/80">Press Of Record · MMXXVI</span>
-        <span>Curated, Not Complete</span>
-        <span>Folio · 01–16</span>
+      {/* Newspaper nameplate */}
+      <div className="mt-20 border-y border-foreground/20 py-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
+          <span className="text-primary/80">Press of Record</span>
+          <span className="hidden sm:inline text-muted-foreground/40">
+            Volume XV · MMXXVI
+          </span>
+          <span>Folio 01 — 16</span>
+        </div>
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+          <span>Bhubaneswar · Delhi · Boston</span>
+          <span className="hidden md:inline">Curated, not complete</span>
+          <span>English · ଓଡ଼ିଆ</span>
+        </div>
       </div>
 
       {/* Lead + secondary features */}
       <LeadFeature item={featured} />
       <SecondaryFeature item={secondary} />
 
-      {/* Archive — newspaper register */}
+      {/* Archive — newspaper register, grouped by year */}
       <EditorialSection number="07 · Archive" heading="Sixteen dispatches of record.">
         <p>
           The press archive in chronological reach — from teenage assistive
@@ -546,12 +574,49 @@ function NewsPage() {
           MIT TR and Wikipedia, to deep-tech reporting on Capattery, GraphIN
           and the battery breakthrough.
         </p>
-        <ol className="not-prose mt-12 flex flex-col">
-          {coverage.map((item, i) => (
-            <ArchiveEntry key={item.href} item={item} index={i} />
-          ))}
-          <li className="border-t border-foreground/[0.08]" />
-        </ol>
+
+        {(() => {
+          // Group entries by year (extract trailing 4-digit year from date strings)
+          const byYear = new Map<string, { item: PressItem; index: number }[]>();
+          coverage.forEach((item, index) => {
+            const m = item.date.match(/\b(19|20)\d{2}\b/);
+            const year = m ? m[0] : "—";
+            if (!byYear.has(year)) byYear.set(year, []);
+            byYear.get(year)!.push({ item, index });
+          });
+          const years = Array.from(byYear.keys()).sort(
+            (a, b) => Number(b) - Number(a),
+          );
+          return (
+            <div className="not-prose mt-14 flex flex-col gap-16 md:gap-20">
+              {years.map((year) => (
+                <section key={year}>
+                  <div className="grid grid-cols-[5rem_1fr] gap-6 md:grid-cols-[8rem_1fr] md:gap-10">
+                    <div className="pt-2">
+                      <p className="font-display text-3xl md:text-[3rem] font-extralight tracking-[-0.025em] text-foreground/35">
+                        {year}
+                      </p>
+                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                        {String(byYear.get(year)!.length).padStart(2, "0")}{" "}
+                        Entr{byYear.get(year)!.length === 1 ? "y" : "ies"}
+                      </p>
+                    </div>
+                    <ol className="flex flex-col">
+                      {byYear.get(year)!.map(({ item, index }) => (
+                        <ArchiveEntry
+                          key={item.href}
+                          item={item}
+                          index={index}
+                        />
+                      ))}
+                      <li className="border-t border-foreground/[0.08]" />
+                    </ol>
+                  </div>
+                </section>
+              ))}
+            </div>
+          );
+        })()}
       </EditorialSection>
 
       {/* Mastheads register */}
