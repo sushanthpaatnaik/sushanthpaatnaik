@@ -1058,7 +1058,7 @@ function RecognitionsPage() {
         </div>
 
         {/* Content — generous vertical breathing room */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-32 md:py-48 lg:py-56">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-24 md:py-32 lg:py-40">
           {/* Eyebrow — archival marker */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
