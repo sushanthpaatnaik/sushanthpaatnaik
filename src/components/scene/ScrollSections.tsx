@@ -525,6 +525,29 @@ function ScaleValidationScene() {
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[oklch(0.014_0_0)]" />
 
+        {/* Planetary infrastructure plate — blueprint schematics, satellites,
+            graphene lattices, power grids, horizon glow. Heavily crushed,
+            edge-faded, slow parallax + breathing scale. Atmosphere, not image. */}
+        <motion.div
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${scaleValidationBackdrop})`,
+            y: prefersReducedMotion ? 0 : bgY,
+            scale: prefersReducedMotion ? 1.04 : plateScale,
+            opacity: prefersReducedMotion ? 0.42 : plateOpacity,
+            filter: "grayscale(0.4) contrast(1.08) brightness(0.74) saturate(0.85)",
+            maskImage:
+              "radial-gradient(ellipse 82% 78% at 50% 52%, #000 32%, rgba(0,0,0,0.55) 64%, transparent 96%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 82% 78% at 50% 52%, #000 32%, rgba(0,0,0,0.55) 64%, transparent 96%)",
+          }}
+        />
+
+        {/* Cool steel-blue wash over the plate — pulls the amber pinpoints
+            into a unified industrial palette without killing them */}
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_85%_75%_at_50%_50%,oklch(0.46_0.04_232/0.32),transparent_82%)]" />
+
+
         {/* Faint blueprint grid — measurement / evidence architecture */}
         <motion.div
           className="absolute inset-0 opacity-[0.055] mix-blend-screen"
