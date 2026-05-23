@@ -396,7 +396,57 @@ function RecognitionsPage() {
       </EditorialSection>
       <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
-      <EditorialList items={milestones} />
+      <EditorialSection
+        number="06b · Featured"
+        heading="Six recognitions that define the archive."
+      >
+        <p>
+          The gravitational anchors of the register — the citations that the
+          rest of the chronology orbits. Read each as an institutional plate
+          rather than a line item.
+        </p>
+      </EditorialSection>
+
+      <div className="not-prose mt-12 grid grid-cols-1 md:grid-cols-2 gap-px bg-foreground/[0.06] border border-foreground/[0.06]">
+        {milestones.map((m, i) => (
+          <motion.article
+            key={m.title}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 1.1, delay: (i % 2) * 0.08, ease: [0.19, 1, 0.22, 1] }}
+            className="group relative bg-[oklch(0.045_0.003_245)] p-8 md:p-12 transition-colors duration-700 hover:bg-[oklch(0.062_0.003_245)]"
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+              style={{
+                background:
+                  "radial-gradient(120% 80% at 50% 0%, color-mix(in oklab, var(--foreground) 4%, transparent) 0%, transparent 60%)",
+              }}
+            />
+            <div className="relative flex items-baseline justify-between gap-6 mb-6">
+              <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
+                Milestone · {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="font-display text-sm md:text-base tracking-[-0.02em] text-foreground/55">
+                {m.n}
+              </span>
+            </div>
+            <h3 className="relative font-display text-2xl md:text-[28px] leading-[1.15] tracking-[-0.028em] text-foreground/95">
+              {m.title}
+            </h3>
+            <p className="relative mt-5 text-[14px] md:text-[14.5px] leading-[1.75] text-foreground/65 max-w-[52ch]">
+              {m.body}
+            </p>
+            <div
+              aria-hidden
+              className="relative mt-8 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
+            />
+          </motion.article>
+        ))}
+      </div>
+
 
       <EditorialSection number="07 · Centerpiece" heading="Three Presidents of India. Six citations.">
         <p>
