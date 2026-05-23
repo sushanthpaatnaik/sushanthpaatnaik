@@ -8,7 +8,8 @@ const chapters = [
   { id: "industrial", label: "Industrial", n: "04" },
   { id: "recognition", label: "Recognition", n: "05" },
   { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "future", label: "Future", n: "07" },
+  { id: "in-his-words", label: "In His Words", n: "07" },
+  { id: "future", label: "Future", n: "08" },
 ];
 
 export default function HUD({
