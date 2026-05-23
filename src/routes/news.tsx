@@ -716,6 +716,7 @@ function NewsPage() {
 
       {/* Archive — grouped by editorial desk, with year markers */}
       <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
+
         <p>
           Filed under five desks — from teenage assistive tech in{" "}
           <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
