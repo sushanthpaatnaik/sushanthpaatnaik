@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Nav from "@/components/scene/Nav";
+import { AtmosphericWash } from "@/components/scene/cinematic";
 
 interface EssayMeta {
   slug: string;
