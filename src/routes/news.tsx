@@ -57,7 +57,7 @@ export const Route = createFileRoute("/news")({
       {
         name: "description",
         content:
-          "Editorial archive across MIT Technology Review, The Global Indian, India Today, Times of India, Business Standard, ThePrint, Rediff, Telegraph, Wikipedia and more — fifteen years of coverage.",
+          "Editorial archive of press coverage across MIT Technology Review, India Today, Times of India, Business Standard, ThePrint and more.",
       },
       { property: "og:title", content: "News — Sushanth Paatnaik" },
       {

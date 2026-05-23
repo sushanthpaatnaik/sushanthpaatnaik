@@ -15,7 +15,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Founder philosophy, journey, and mission of Sushanth Paatnaik — inventor, deep-tech founder, and six-time Indian Presidential awardee building from India for the world.",
+          "The philosophy, journey, and mission of Sushanth Paatnaik — inventor and six-time Indian Presidential awardee building from India.",
       },
       { property: "og:title", content: "About — Sushanth Paatnaik" },
       {

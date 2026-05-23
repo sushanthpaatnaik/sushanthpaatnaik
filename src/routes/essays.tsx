@@ -22,7 +22,7 @@ export const essays: EssayMeta[] = [
     title: "On engineering with empathy",
     pull: "The most important specification on any drawing I make is the human being it is meant for.",
     description:
-      "Why the wheelchair I built at fourteen taught me everything I now know about deep-tech, dignity, and the discipline of building for someone — not for an audience.",
+      "Why the wheelchair I built at fourteen taught me about deep-tech, dignity, and building for someone — not an audience.",
   },
   {
     slug: "graphene-and-the-next-century",
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/essays")({
       {
         name: "description",
         content:
-          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering with empathy, graphene and the carbon century, and the discipline of staying a beginner.",
+          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.",
       },
       { property: "og:title", content: "In His Words — Essays" },
       {

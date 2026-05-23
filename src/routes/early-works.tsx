@@ -24,7 +24,7 @@ export const Route = createFileRoute("/early-works")({
       {
         name: "description",
         content:
-          "Between 2008 and 2013, still in his teens, Sushanth designed six original devices — each tackling a real human problem. An archival record of the teenage inventions that earned six Presidential Awards.",
+          "Archival record of the six teenage inventions (2008–2013) that earned Sushanth Paatnaik six Indian Presidential Awards.",
       },
       { property: "og:title", content: "Early Works — Origin Archive" },
       {

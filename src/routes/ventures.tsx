@@ -15,7 +15,7 @@ export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
   head: () => ({
     meta: [
-      { title: "Ventures — Monoatom, Grafillium, SPI, InThinks, Starunico, Magppie" },
+      { title: "Ventures — Operating Group · Sushanth Paatnaik" },
       {
         name: "description",
         content:

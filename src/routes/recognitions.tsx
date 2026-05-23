@@ -73,7 +73,7 @@ export const Route = createFileRoute("/recognitions")({
       {
         name: "description",
         content:
-          "An archival journey of recognition: six Indian Presidential awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11, Golden Book of World Records — and a photographic record of two decades on stage.",
+          "Archival journey of recognition: six Indian Presidential awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.",
       },
       { property: "og:title", content: "Recognitions — Sushanth Paatnaik" },
       {

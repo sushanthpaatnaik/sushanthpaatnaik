@@ -76,7 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Sushanth Paatnaik — six-time Indian Presidential awardee, inventor and founder building graphene, nano-materials, and industrial deep-tech ventures from India for the world.",
+          "Six-time Indian Presidential awardee. Inventor and founder building graphene, nano-materials, and industrial deep-tech from India.",
       },
       { name: "author", content: "Sushanth Paatnaik" },
       { name: "theme-color", content: "#070708" },

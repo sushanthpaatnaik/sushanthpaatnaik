@@ -14,7 +14,7 @@ export const Route = createFileRoute("/engage")({
       {
         name: "description",
         content:
-          "Selective engagement protocol for industrial partnerships, capital co-architecture, research collaboration, and advisory with Sushanth Paatnaik and the operating group.",
+          "Selective engagement for industrial partnerships, capital co-architecture, research collaboration, and advisory with the operating group.",
       },
       { property: "og:title", content: "Engage — Sushanth Paatnaik" },
       {
