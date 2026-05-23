@@ -766,37 +766,67 @@ function NewsPage() {
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-12 overflow-hidden rounded-[2px] border border-foreground/[0.06] bg-[oklch(0.045_0.003_245)]">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.025] sm:grid-cols-3 lg:grid-cols-6">
+        <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[oklch(0.046_0.003_245)]">
+          {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{
+              background:
+                "radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1] opacity-[0.045] mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+              backgroundSize: "180px 180px",
+            }}
+          />
+          <div className="relative z-[2] grid grid-cols-2 gap-px bg-foreground/[0.018] sm:grid-cols-3 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 40px at scale 1.0; clamped 30-58px for fuller, more intentional wall.
-              const optical = Math.round(Math.min(58, Math.max(30, 40 * scale)));
+              // Optical baseline ~ 40px at scale 1.0; clamped 28-62px for fuller, more intentional wall.
+              const optical = Math.round(Math.min(62, Math.max(28, 40 * scale)));
               const imgStyle: CSSProperties = { maxHeight: `${optical}px` };
               if (o.transparentBg) {
                 imgStyle.mixBlendMode = "screen";
               }
+              if (o.nudgeY) {
+                imgStyle.transform = `translateY(${o.nudgeY}px)`;
+              }
+              // Tone modifier: "muted" damps an overpowering brand mark; "lift" boosts a faint one.
+              const colorTone =
+                o.tone === "muted"
+                  ? "opacity-[0.74] saturate-[0.58] brightness-[0.94] contrast-[1.0] group-hover:opacity-[0.88] group-hover:saturate-[0.72] group-hover:brightness-[1.0]"
+                  : o.tone === "lift"
+                  ? "opacity-[0.98] saturate-[0.86] brightness-[1.08] contrast-[1.06] group-hover:opacity-100 group-hover:saturate-[1.0] group-hover:brightness-[1.14]"
+                  : "opacity-[0.92] saturate-[0.78] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:saturate-[0.92] group-hover:brightness-[1.08]";
+              const lightenTone =
+                o.tone === "lift"
+                  ? "invert opacity-[0.96] brightness-[1.14] contrast-[1.08] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.22]"
+                  : "invert opacity-[0.86] brightness-[1.06] contrast-[1.04] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.14]";
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
                   style={imgStyle}
-                  className={`w-auto max-w-[86%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.05] ${
+                  className={`w-auto max-w-[84%] object-contain transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
                     o.transparentBg
-                      ? // Ink-on-white plate: invert so light bg becomes dark, then blend out via screen.
-                        "invert opacity-[0.88] brightness-[1.12] contrast-[1.1] saturate-0 group-hover:opacity-[0.98]"
+                      ? // Ink-on-light plate: invert so light bg becomes dark, then blend out via screen.
+                        "invert opacity-[0.86] brightness-[1.12] contrast-[1.1] saturate-0 group-hover:opacity-[0.98]"
                       : o.lighten
-                      ? // Dark/black-ink mastheads: invert to soft silver, no color
-                        "invert opacity-[0.86] brightness-[1.06] contrast-[1.04] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.14]"
-                      : // Color brand marks: matte-normalized, slight desaturation for editorial cohesion
-                        "opacity-[0.92] saturate-[0.78] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:saturate-[0.92] group-hover:brightness-[1.08]"
+                      ? lightenTone
+                      : colorTone
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-6 transition-all duration-700 ease-out hover:bg-[oklch(0.072_0.003_245)] hover:shadow-[inset_0_0_60px_oklch(1_0_0_/_0.04)]";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-6 transition-all duration-[900ms] ease-out hover:bg-[oklch(0.072_0.003_245)] hover:shadow-[inset_0_0_80px_oklch(1_0_0_/_0.05),0_0_42px_-12px_oklch(0.7_0.08_232_/_0.18)]";
 
               return href ? (
                 <a
