@@ -393,6 +393,30 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
 ];
 
+// Documentary Mosaic — dense cinematic collage drawn from the full archive,
+// intermixing newspaper plates, ministerial moments, presidential citations,
+// fellowship certificates and mainstage photography. Restores archival
+// realism and historical scale without expanding the chronological registry.
+const documentaryMosaic: ArchiveItem[] = [
+  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
+  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Mysore · 2012", category: "Keynote" },
+  { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
+  { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
+  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
+  { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award", shape: "wide", focus: "left top" },
+  { src: honorG20, caption: "Startup20 · G20 India Presidency", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide" },
+  { src: keynoteBrics, caption: "BRICS Diplomatic Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
+  { src: awardPranabDemo, caption: "Presidential Demonstration", meta: "New Delhi · 2013", category: "Award", focus: "center 35%" },
+  { src: honorItalian, caption: "Italian Embassy", meta: "H.E. Antonio Bartoli", category: "Honor" },
+  { src: keynoteIeema, caption: "IEEMA Buildelec Mainstage", meta: "Mumbai · 2024", category: "Keynote", shape: "wide" },
+  { src: awardLeaDiaMirza, caption: "LEA Excellence Award", meta: "with Dia Mirza · 2022", category: "Award" },
+  { src: honorGadkari, caption: "With Shri Nitin Gadkari", meta: "Transport Bhawan · 2023", category: "Honor", focus: "center 22%" },
+  { src: keynoteBritish, caption: "British High Commission", meta: "New Delhi", category: "Keynote" },
+  { src: honorDriiv, caption: "DRIIV MoU Signing", meta: "PSA · Govt of India", category: "Honor", shape: "wide" },
+];
+
+
 function EraAccordion({
   number,
   era,
