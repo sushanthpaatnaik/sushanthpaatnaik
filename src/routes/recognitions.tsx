@@ -107,34 +107,105 @@ const milestones = [
   },
 ];
 
-const ledger = [
-  "President of India Award by Dr. APJ Abdul Kalam, NIF · 2008",
-  "35th Jawaharlal Nehru National Science Exhibition Award, NCERT · 2008",
-  "CBSE National Science Exhibition Award · 2008",
-  "Institute of Physics Exhibition Award · 2008",
-  "President of India Award by Smt. Pratibha Devisingh Patil, NIF · 2009",
-  "President of India Award by Dr. APJ Abdul Kalam, NIF · 2009",
-  "KVPY Fellow · 2009",
-  "NCSC Award · 2009",
-  "TR-35 Award, MIT Technology Review · 2010",
-  "INK Fellow · 2010",
-  "Intel IRIS Best Popular Invention Award · 2010",
-  "NASA Award · 2011",
-  "DLF–Pramerica Spirit of Community Award · 2011",
-  "Eureka-11, IIT-Bombay Business Plan Contest · 2011",
-  "Golden Book of World Record Holder · 2012",
-  "TED-India Speaker · 2012",
-  "IDEAS-12, IIT-Kanpur Business Plan Contest · 2012",
-  "Innovio-12, KIIT Business Plan Contest · 2012",
-  "Judge at SELL-X Exodia, IIT-Mandi · 2012",
-  "President of India Award by Shri Pranab Mukherjee, NIF · 2013",
-  "Under-35 CEO Award by Yinka Brand · 2014",
-  "MIT Fab-10 & Fab-11 Awardee · 2013–14",
-  "ICAI Abu Dhabi Speaker · 2013",
-  "STPI-Chunauti Winner · 2021",
-  "ELECRAMA Winner · 2024",
-  "Silicon Valley Speaker · 2024",
-  "CEO Club Speaker · 2025",
+// Archival ledger — chronologically grouped, with featured milestones
+// marked for cinematic hierarchy (Presidential, MIT TR-35, NASA, TED,
+// Intel IRIS, MIT Fab-10/11, BRICS, G20, Silicon Valley). Featured
+// entries get a foregrounded archival marker; the rest sit as supporting
+// register lines beneath the year anchor.
+type LedgerEntry = { title: string; institution?: string; featured?: boolean };
+type LedgerYear = { year: string; entries: LedgerEntry[] };
+
+const ledgerByYear: LedgerYear[] = [
+  {
+    year: "2008",
+    entries: [
+      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "35th Jawaharlal Nehru National Science Exhibition", institution: "NCERT" },
+      { title: "CBSE National Science Exhibition Award" },
+      { title: "Institute of Physics Exhibition Award" },
+    ],
+  },
+  {
+    year: "2009",
+    entries: [
+      { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
+      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "KVPY Fellow", institution: "Department of Science & Technology" },
+      { title: "NCSC Award" },
+    ],
+  },
+  {
+    year: "2010",
+    entries: [
+      { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
+      { title: "Intel IRIS · Best Popular Invention Award", featured: true },
+      { title: "INK Fellow" },
+    ],
+  },
+  {
+    year: "2011",
+    entries: [
+      { title: "NASA Award", institution: "Kennedy Space Center · Huntsville", featured: true },
+      { title: "DLF–Pramerica Spirit of Community Award" },
+      { title: "Eureka-11 · IIT-Bombay Business Plan Contest" },
+    ],
+  },
+  {
+    year: "2012",
+    entries: [
+      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
+      { title: "Golden Book of World Record Holder" },
+      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest" },
+      { title: "Innovio-12 · KIIT Business Plan Contest" },
+      { title: "Judge · SELL-X Exodia · IIT-Mandi" },
+    ],
+  },
+  {
+    year: "2013",
+    entries: [
+      { title: "President of India Award", institution: "Shri Pranab Mukherjee · NIF", featured: true },
+      { title: "ICAI Abu Dhabi Speaker" },
+    ],
+  },
+  {
+    year: "2013–14",
+    entries: [
+      { title: "MIT Fab-10 & Fab-11 Awardee", institution: "MIT · Barcelona", featured: true },
+      { title: "Under-35 CEO Award", institution: "Yinka Brand" },
+    ],
+  },
+  {
+    year: "2021",
+    entries: [
+      { title: "STPI-Chunauti Winner", institution: "Software Technology Parks of India" },
+    ],
+  },
+  {
+    year: "2022",
+    entries: [
+      { title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum", featured: true },
+    ],
+  },
+  {
+    year: "2023",
+    entries: [
+      { title: "Startup20 · G20 Presidency", institution: "Government of India", featured: true },
+    ],
+  },
+  {
+    year: "2024",
+    entries: [
+      { title: "ELECRAMA Winner" },
+      { title: "Silicon Valley Speaker", institution: "Bay Area · USA", featured: true },
+    ],
+  },
+  {
+    year: "2025",
+    entries: [
+      { title: "CEO Club Speaker" },
+      { title: "Innovision Keynote", institution: "NIT Rourkela" },
+    ],
+  },
 ];
 
 // Era 1 — Young inventor & presidential years (2008–2013) · curated 6
