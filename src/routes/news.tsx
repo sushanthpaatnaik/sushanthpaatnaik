@@ -819,53 +819,23 @@ function NewsPage() {
         </div>
       </EditorialSection>
 
-      {/* Voices — broadsheet pull-quotes */}
-      <EditorialSection number="10 · Voices" heading="On the work, in their words.">
-        <p>
-          A short reel of voices from institutions that have seen the work
-          firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
-        </p>
-        <ul className="not-prose mt-8 flex flex-col">
-          {testimonials.map((t, i) => (
-            <motion.li
-              key={t.author}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.05, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-              className="grid grid-cols-1 gap-6 border-t border-foreground/[0.08] py-7 md:grid-cols-[160px_1fr] md:gap-12 md:py-8"
-            >
-              <div className="flex h-10 items-center md:h-12">
-                <img
-                  src={t.logo}
-                  alt={`${t.role} logo`}
-                  loading="lazy"
-                  className="max-h-9 w-auto max-w-[150px] object-contain opacity-90 brightness-[1.12] drop-shadow-[0_0_10px_oklch(1_0_0_/_0.08)]"
-                />
-              </div>
-              <div>
-                <blockquote className="font-display italic text-xl md:text-2xl leading-[1.4] tracking-[-0.005em] text-foreground/90">
-                  “{t.quote}”
-                </blockquote>
-                <div className="mt-6 flex items-baseline gap-3">
-                  <span className="h-px w-6 bg-accent/50" />
-                  <p className="font-display text-[14px] text-foreground/90">{t.author}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55">
-                    {t.role}
-                  </p>
-                </div>
-              </div>
-            </motion.li>
-          ))}
-          <li className="border-t border-foreground/[0.08]" />
-        </ul>
-      </EditorialSection>
-
-      <EditorialSection number="11 · Posture" heading="Curated, not complete.">
+      {/* 10 · Posture — single closing statement.
+          Institutional testimonials and on-record quotes have been moved to the
+          dedicated /voices page so News stays a pure press/coverage archive. */}
+      <EditorialSection number="10 · Posture" heading="Curated, not complete.">
         <p>
           The archive is selective. Press is useful when it accelerates the
           work and quiet when it does not. New coverage is added here as it
           stabilises.
+        </p>
+        <p className="not-prose mt-10">
+          <Link
+            to="/voices"
+            className="group inline-flex items-center gap-3 border-b border-foreground/20 pb-1 font-mono text-[11px] uppercase tracking-[0.38em] text-foreground/75 transition-colors duration-500 hover:border-foreground/60 hover:text-foreground"
+          >
+            <span>Institutional voices · on-record</span>
+            <span className="text-foreground/45 transition-transform duration-500 group-hover:translate-x-1">→</span>
+          </Link>
         </p>
       </EditorialSection>
     </CinematicPageShell>
