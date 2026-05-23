@@ -50,9 +50,10 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    // 0px at center → ~2.6px mid-transition → fades back to 0 at next center.
+    // 0px at center → ~1.9px mid-transition. Reduced from 2.6px to cut
+    // blur stacking and keep imagery legibly behind typography.
     const eased = d * d * (3 - 2 * d);
-    return `blur(${(eased * 2.6).toFixed(2)}px)`;
+    return `blur(${(eased * 1.9).toFixed(2)}px)`;
   });
 }
 
@@ -169,29 +170,30 @@ export default function AnimatedBackground({
         }}
       />
 
-      {/* Vignette — keeps focus pulled to center across all chapters. */}
+      {/* Vignette — softened from 0.86 → 0.72 alpha so the focal pull
+          remains cinematic without crushing the plate edges into mud. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 40%, oklch(0.02 0.006 260 / 0.86) 100%)",
+            "radial-gradient(ellipse at center, transparent 44%, oklch(0.02 0.006 260 / 0.72) 100%)",
         }}
       />
 
-      {/* Edge fades — softened so the cinematic plate carries continuously
-          across section boundaries rather than dropping into a dead-black band. */}
+      {/* Edge fades — trimmed so the cinematic plate carries continuously
+          across section boundaries with reduced overlap. */}
       <div
-        className="absolute inset-x-0 top-0 h-40"
+        className="absolute inset-x-0 top-0 h-32"
         style={{
           background:
-            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.55), transparent)",
+            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.42), transparent)",
         }}
       />
       <div
-        className="absolute inset-x-0 bottom-0 h-40"
+        className="absolute inset-x-0 bottom-0 h-32"
         style={{
           background:
-            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.55), transparent)",
+            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.42), transparent)",
         }}
       />
 
