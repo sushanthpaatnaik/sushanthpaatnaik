@@ -178,10 +178,14 @@ function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 32, mass: 0.5 });
   return (
-    <div className="fixed left-0 right-0 top-0 z-[55] h-[2px] bg-foreground/5">
+    <div className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]">
       <motion.div
-        className="h-full origin-left bg-gradient-to-r from-primary via-accent to-primary"
-        style={{ scaleX }}
+        className="h-full origin-left"
+        style={{
+          scaleX,
+          background:
+            "linear-gradient(90deg, transparent, oklch(0.78 0.02 232 / 0.55) 35%, oklch(0.86 0.02 232 / 0.72) 65%, transparent)",
+        }}
       />
     </div>
   );
