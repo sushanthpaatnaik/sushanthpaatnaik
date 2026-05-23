@@ -196,6 +196,115 @@
     box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.03);
   }
 
+  /* ─── Cinematic system utilities ──────────────────────────────────
+     Unified surface, image grading, and atmospheric helpers. */
+
+  .surface-plate {
+    background: var(--surface-plate);
+  }
+  .surface-plate-soft {
+    background: var(--surface-plate-soft);
+  }
+  .hairline {
+    border: 1px solid var(--surface-hairline);
+  }
+  .hairline-t {
+    border-top: 1px solid var(--surface-hairline);
+  }
+  .hairline-b {
+    border-bottom: 1px solid var(--surface-hairline);
+  }
+
+  /* Restrained translucent panel — used by forms, CTA blocks, lead plates */
+  .cinematic-glass {
+    background: var(--glass-plate);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--surface-hairline);
+  }
+
+  /* Unified image grading — every cinematic image opts in.
+     Rest state: lifted blacks, slight desaturation, premium contrast.
+     Hover state: returns to full color, gently zoomed. */
+  .cinematic-image {
+    opacity: 0.72;
+    filter: grayscale(0.4) contrast(1.05) brightness(0.92);
+    transition:
+      opacity var(--dur-slow) var(--ease-cinematic),
+      filter var(--dur-slow) var(--ease-cinematic),
+      transform var(--dur-slow) var(--ease-cinematic);
+  }
+  .group:hover .cinematic-image,
+  .cinematic-image:hover {
+    opacity: 1;
+    filter: grayscale(0) contrast(1.02) brightness(1);
+    transform: scale(1.03);
+  }
+
+  /* Cinematic dark overlay — read on top of any cinematic image.
+     Use as an absolute layer or via ::after pseudo. */
+  .cinematic-overlay::before,
+  .cinematic-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cinematic-overlay::before {
+    background: linear-gradient(
+      to top,
+      var(--color-background),
+      color-mix(in oklab, var(--color-background) 45%, transparent) 60%,
+      transparent
+    );
+  }
+  .cinematic-overlay::after {
+    background: radial-gradient(
+      120% 80% at 50% 50%,
+      transparent 45%,
+      oklch(0.02 0 0 / 0.78) 100%
+    );
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+  }
+
+  /* Atmospheric page wash — for pages that don't use CinematicPageShell.
+     Apply to a fixed inset-0 z-0 layer behind your content. */
+  .atmosphere-wash {
+    background:
+      var(--wash-blue),
+      var(--wash-copper),
+      var(--wash-vignette);
+  }
+
+  /* Archival corner registration marks — for image plates */
+  .corner-marks {
+    position: relative;
+  }
+  .corner-marks::before,
+  .corner-marks::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    border-color: oklch(0.967 0 0 / 0.3);
+  }
+  .corner-marks::before {
+    top: 12px;
+    left: 12px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .corner-marks::after {
+    bottom: 12px;
+    right: 12px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+
+
+
   /* Premium cinematic button system — luxury-industrial interaction */
   .btn-cinematic {
     position: relative;
