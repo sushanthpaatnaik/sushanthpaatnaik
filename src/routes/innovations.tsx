@@ -173,15 +173,19 @@ function InnovationsPage() {
         </div>
       </div>
 
-      {/* Filter pills */}
+      {/* Instrument bar — readiness-stage selector */}
       <div className="not-prose mt-14">
         <div className="mb-5 flex items-center gap-3">
           <span className="h-px w-8 bg-foreground/[0.12]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
             Catalogue · Filter by readiness stage
           </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/40">
+            TRL · I — III
+          </span>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex divide-x divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
           {filters.map((f) => {
             const isActive = f === filter;
             const count = f === "All" ? items.length : items.filter((i) => i.stage === f).length;
@@ -189,18 +193,31 @@ function InnovationsPage() {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-[0.3em] border transition-all ${
-                  isActive
-                    ? "bg-foreground text-background border-foreground"
-                    : "border-foreground/15 text-muted-foreground hover:border-foreground/40 hover:text-foreground"
+                className={`group relative flex-1 px-4 py-4 text-left transition-colors duration-500 ${
+                  isActive ? "bg-foreground/[0.04]" : "hover:bg-foreground/[0.02]"
                 }`}
               >
-                {f} · {String(count).padStart(2, "0")}
+                <span
+                  aria-hidden
+                  className={`absolute left-0 right-0 top-0 h-px transition-colors duration-500 ${
+                    isActive ? "bg-accent/70" : "bg-transparent group-hover:bg-foreground/15"
+                  }`}
+                />
+                <span className={`block font-mono text-[9px] uppercase tracking-[0.38em] transition-colors duration-500 ${isActive ? "text-accent/85" : "text-foreground/45"}`}>
+                  {f === "All" ? "All Stages" : f === "R&D" ? "Stage III" : f === "Pilot" ? "Stage II" : "Stage I"}
+                </span>
+                <span className={`mt-2 block font-display text-[15px] tracking-[-0.01em] transition-colors duration-500 ${isActive ? "text-foreground/95" : "text-foreground/70"}`}>
+                  {f}
+                </span>
+                <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/40">
+                  {String(count).padStart(2, "0")} · Programs
+                </span>
               </button>
             );
           })}
         </div>
       </div>
+
 
       {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
       <div className="not-prose mt-12 space-y-20">
@@ -246,7 +263,52 @@ function InnovationsPage() {
           );
         })}
       </div>
+
+      {/* Patent · IP Register — closing institutional ledger */}
+      <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
+        <LatticeField intensity={0.05} />
+        <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
+          <div className="mb-7 flex items-center gap-3">
+            <span className="h-px w-8 bg-accent/60" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+              Patent · IP Register
+            </span>
+            <span className="h-px flex-1 bg-foreground/[0.08]" />
+            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+              Filed · Pending · In-Drafting
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+            {[
+              { k: "Patents Filed", v: items.filter(i => i.status.includes("Patent")).length.toString().padStart(2,"0"), note: "Across stages" },
+              { k: "Application Domains", v: "10+", note: "Industrial verticals" },
+              { k: "Programs of Record", v: items.length.toString().padStart(2,"0"), note: "Catalogued formulations" },
+              { k: "Research Years", v: "14+", note: "Continuous bench → field" },
+            ].map((s, i) => (
+              <motion.div
+                key={s.k}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+                className="flex flex-col gap-1.5"
+              >
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/50">
+                  {s.k}
+                </span>
+                <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
+                  {s.v}
+                </span>
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/45">
+                  {s.note}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
     </CinematicPageShell>
+
   );
 }
 
@@ -290,6 +352,15 @@ function HeroCard({ item }: { item: Item }) {
           Flagship
         </span>
       </div>
+      {/* Patent stamp — bottom-right technical readout sticker */}
+      <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          IP · Filed
+        </span>
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
+          {item.status}
+        </span>
+      </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
         <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
@@ -324,8 +395,11 @@ function CompactCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.04]"
+        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.035]"
       />
+      {/* Restrained lattice — scientific texture */}
+      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
+
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -334,9 +408,16 @@ function CompactCard({ item }: { item: Item }) {
             "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.96) 100%)",
         }}
       />
-      {/* Hairline scientific marker */}
-      <div className="absolute left-3 top-3 z-10 h-px w-5 bg-accent/60" />
-      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
+      {/* Corner technical readout — status + hairline */}
+      <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+        <span className="h-px w-5 bg-accent/60" />
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+          IP · Filed
+        </span>
+      </div>
+
+      {/* Resting plate — domain · title · metric */}
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4 transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[44px]">
         <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
@@ -347,27 +428,20 @@ function CompactCard({ item }: { item: Item }) {
           {item.metric}
         </p>
       </div>
-      {/* Hover detail */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-[oklch(0.04_0.006_245/0.92)] px-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="text-center">
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent/80">
-            {item.status}
-          </p>
-          <h3 className="mt-1.5 font-display text-lg tracking-[-0.01em] text-foreground/98">
-            {item.title}
-          </h3>
-          <p className="mt-2 text-[11px] leading-relaxed text-foreground/80 line-clamp-4">
-            {item.body}
-          </p>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <span className="h-px w-4 bg-accent/60" />
-            <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-foreground/70">
-              {item.metric}
-            </p>
-            <span className="h-px w-4 bg-accent/60" />
-          </div>
-        </div>
+
+      {/* Scientific data-plate — slides up on hover, restrained */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 translate-y-full border-t border-accent/25 bg-[oklch(0.04_0.006_245/0.92)] px-3.5 py-3 opacity-0 transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          {item.status}
+        </p>
+        <p className="mt-1.5 text-[11px] leading-snug text-foreground/80 line-clamp-2">
+          {item.body}
+        </p>
       </div>
     </motion.article>
   );
 }
+
