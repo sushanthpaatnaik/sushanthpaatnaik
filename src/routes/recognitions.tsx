@@ -460,7 +460,7 @@ function RecognitionsPage() {
         </ul>
       </EditorialSection>
 
-      <EditorialSection number="12 · Posture" heading="Recognition is a lagging indicator.">
+      <EditorialSection number="13 · Posture" heading="Recognition is a lagging indicator.">
         <p>
           The catalogue is a record, not a destination. By the time an award
           arrives the work it celebrates is already behind. The next prototype —
