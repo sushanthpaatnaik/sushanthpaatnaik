@@ -94,15 +94,16 @@ const SCENES: BackgroundScene[] = [
 ];
 
 // Soft baseline dim — normalized across chapters so typography always reads
-// as the primary layer. Values bumped ~10–15% darker globally.
+// as the primary layer. Trimmed ~10% to reduce muddiness while preserving
+// cinematic depth and chapter-to-chapter cohesion.
 const OVERLAY_STOPS = [
-  0.40, // Spark
-  0.32, // Founder
-  0.28, // Material
-  0.32, // Industrial
-  0.36, // Recognition
-  0.32, // Ecosystem
-  0.28, // India → World
+  0.36, // Spark
+  0.29, // Founder
+  0.25, // Material
+  0.29, // Industrial
+  0.32, // Recognition
+  0.29, // Ecosystem
+  0.25, // India → World
 ];
 
 export default function AtmosphereLayer() {

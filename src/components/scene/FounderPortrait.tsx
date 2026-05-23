@@ -103,8 +103,8 @@ export default function FounderPortrait({
             loading="lazy"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.06)_saturate(0.74)_brightness(0.85)_blur(0.3px)]"
-                : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.22)_contrast(1.06)_saturate(0.68)_brightness(0.88)]"
+                ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.03)_saturate(0.74)_brightness(0.86)_blur(0.3px)]"
+                : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
             }
           />
 

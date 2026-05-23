@@ -410,13 +410,19 @@
   }
 }
 
+/* Global caption contrast lift — small uppercase micro-typography on dark
+   backgrounds gets a subtle bump so the editorial register stays readable
+   without breaking the restrained hierarchy. */
+.text-muted-foreground\/45 { color: color-mix(in oklab, var(--muted-foreground) 56%, transparent); }
+.text-muted-foreground\/40 { color: color-mix(in oklab, var(--muted-foreground) 52%, transparent); }
+.text-muted-foreground\/35 { color: color-mix(in oklab, var(--muted-foreground) 48%, transparent); }
+
 /* Mobile cinematic optimization — preserve atmosphere, lighten render load.
-   Touch devices get simpler blends and lift the smallest text from /45 → /60
-   so micro-typography on dark backgrounds stays legible without redesign. */
+   Touch devices get simpler blends and a further caption lift. */
 @media (max-width: 768px) {
   .mix-blend-screen { mix-blend-mode: normal; }
-  .text-muted-foreground\/45 { color: color-mix(in oklab, var(--muted-foreground) 60%, transparent); }
-  .text-muted-foreground\/40 { color: color-mix(in oklab, var(--muted-foreground) 58%, transparent); }
+  .text-muted-foreground\/45 { color: color-mix(in oklab, var(--muted-foreground) 65%, transparent); }
+  .text-muted-foreground\/40 { color: color-mix(in oklab, var(--muted-foreground) 60%, transparent); }
 }
 
 @keyframes streak {
