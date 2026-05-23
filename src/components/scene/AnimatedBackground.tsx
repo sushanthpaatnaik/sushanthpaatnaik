@@ -50,9 +50,10 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
 function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    // 0px at center → ~2.6px mid-transition → fades back to 0 at next center.
+    // 0px at center → ~1.9px mid-transition. Reduced from 2.6px to cut
+    // blur stacking and keep imagery legibly behind typography.
     const eased = d * d * (3 - 2 * d);
-    return `blur(${(eased * 2.6).toFixed(2)}px)`;
+    return `blur(${(eased * 1.9).toFixed(2)}px)`;
   });
 }
 
