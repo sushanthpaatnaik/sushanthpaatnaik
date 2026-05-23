@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialList,
   EditorialSection,
@@ -11,7 +12,7 @@ import {
   PresidentialTriptych,
   type ArchiveItem,
 } from "@/components/scene/ArchiveMosaic";
-import backdrop from "@/assets/story-02-recognition.webp";
+import backdrop from "@/assets/scene-recognition-archive.webp";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
@@ -107,34 +108,105 @@ const milestones = [
   },
 ];
 
-const ledger = [
-  "President of India Award by Dr. APJ Abdul Kalam, NIF · 2008",
-  "35th Jawaharlal Nehru National Science Exhibition Award, NCERT · 2008",
-  "CBSE National Science Exhibition Award · 2008",
-  "Institute of Physics Exhibition Award · 2008",
-  "President of India Award by Smt. Pratibha Devisingh Patil, NIF · 2009",
-  "President of India Award by Dr. APJ Abdul Kalam, NIF · 2009",
-  "KVPY Fellow · 2009",
-  "NCSC Award · 2009",
-  "TR-35 Award, MIT Technology Review · 2010",
-  "INK Fellow · 2010",
-  "Intel IRIS Best Popular Invention Award · 2010",
-  "NASA Award · 2011",
-  "DLF–Pramerica Spirit of Community Award · 2011",
-  "Eureka-11, IIT-Bombay Business Plan Contest · 2011",
-  "Golden Book of World Record Holder · 2012",
-  "TED-India Speaker · 2012",
-  "IDEAS-12, IIT-Kanpur Business Plan Contest · 2012",
-  "Innovio-12, KIIT Business Plan Contest · 2012",
-  "Judge at SELL-X Exodia, IIT-Mandi · 2012",
-  "President of India Award by Shri Pranab Mukherjee, NIF · 2013",
-  "Under-35 CEO Award by Yinka Brand · 2014",
-  "MIT Fab-10 & Fab-11 Awardee · 2013–14",
-  "ICAI Abu Dhabi Speaker · 2013",
-  "STPI-Chunauti Winner · 2021",
-  "ELECRAMA Winner · 2024",
-  "Silicon Valley Speaker · 2024",
-  "CEO Club Speaker · 2025",
+// Archival ledger — chronologically grouped, with featured milestones
+// marked for cinematic hierarchy (Presidential, MIT TR-35, NASA, TED,
+// Intel IRIS, MIT Fab-10/11, BRICS, G20, Silicon Valley). Featured
+// entries get a foregrounded archival marker; the rest sit as supporting
+// register lines beneath the year anchor.
+type LedgerEntry = { title: string; institution?: string; featured?: boolean };
+type LedgerYear = { year: string; entries: LedgerEntry[] };
+
+const ledgerByYear: LedgerYear[] = [
+  {
+    year: "2008",
+    entries: [
+      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "35th Jawaharlal Nehru National Science Exhibition", institution: "NCERT" },
+      { title: "CBSE National Science Exhibition Award" },
+      { title: "Institute of Physics Exhibition Award" },
+    ],
+  },
+  {
+    year: "2009",
+    entries: [
+      { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
+      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "KVPY Fellow", institution: "Department of Science & Technology" },
+      { title: "NCSC Award" },
+    ],
+  },
+  {
+    year: "2010",
+    entries: [
+      { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
+      { title: "Intel IRIS · Best Popular Invention Award", featured: true },
+      { title: "INK Fellow" },
+    ],
+  },
+  {
+    year: "2011",
+    entries: [
+      { title: "NASA Award", institution: "Kennedy Space Center · Huntsville", featured: true },
+      { title: "DLF–Pramerica Spirit of Community Award" },
+      { title: "Eureka-11 · IIT-Bombay Business Plan Contest" },
+    ],
+  },
+  {
+    year: "2012",
+    entries: [
+      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
+      { title: "Golden Book of World Record Holder" },
+      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest" },
+      { title: "Innovio-12 · KIIT Business Plan Contest" },
+      { title: "Judge · SELL-X Exodia · IIT-Mandi" },
+    ],
+  },
+  {
+    year: "2013",
+    entries: [
+      { title: "President of India Award", institution: "Shri Pranab Mukherjee · NIF", featured: true },
+      { title: "ICAI Abu Dhabi Speaker" },
+    ],
+  },
+  {
+    year: "2013–14",
+    entries: [
+      { title: "MIT Fab-10 & Fab-11 Awardee", institution: "MIT · Barcelona", featured: true },
+      { title: "Under-35 CEO Award", institution: "Yinka Brand" },
+    ],
+  },
+  {
+    year: "2021",
+    entries: [
+      { title: "STPI-Chunauti Winner", institution: "Software Technology Parks of India" },
+    ],
+  },
+  {
+    year: "2022",
+    entries: [
+      { title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum", featured: true },
+    ],
+  },
+  {
+    year: "2023",
+    entries: [
+      { title: "Startup20 · G20 Presidency", institution: "Government of India", featured: true },
+    ],
+  },
+  {
+    year: "2024",
+    entries: [
+      { title: "ELECRAMA Winner" },
+      { title: "Silicon Valley Speaker", institution: "Bay Area · USA", featured: true },
+    ],
+  },
+  {
+    year: "2025",
+    entries: [
+      { title: "CEO Club Speaker" },
+      { title: "Innovision Keynote", institution: "NIT Rourkela" },
+    ],
+  },
 ];
 
 // Era 1 — Young inventor & presidential years (2008–2013) · curated 6
@@ -394,25 +466,98 @@ function RecognitionsPage() {
 
 
 
-      <EditorialSection number="12 · Ledger" heading="Achievement milestones · 27 of record.">
+      <EditorialSection number="12 · Register" heading="The legacy register, year by year.">
         <p>
-          The complete register, in chronological order — the public-record
-          ledger that the photographic archive above sits on top of.
+          The complete chronological record — the public archive that the
+          photographic plates above sit on top of. Featured citations are
+          marked as cinematic milestone anchors; the rest read as the
+          institutional register beneath them.
         </p>
-        <ul className="not-prose mt-8 grid gap-x-10 gap-y-3 md:grid-cols-2">
-          {ledger.map((line) => (
-            <li
-              key={line}
-              className="flex gap-3 border-t border-foreground/[0.06] pt-3 text-[13px] leading-relaxed text-foreground/70"
-            >
-              <span className="font-mono text-[10px] tracking-[0.3em] text-primary/70 mt-1">
-                ◦
-              </span>
-              <span>{line}</span>
-            </li>
-          ))}
-        </ul>
       </EditorialSection>
+
+      <div className="not-prose relative mt-12">
+        {/* Vertical archival rail */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-[88px] md:left-[140px] top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-foreground/[0.10] to-transparent"
+        />
+
+        <ol className="flex flex-col gap-16 md:gap-20">
+          {ledgerByYear.map((group, gi) => (
+            <motion.li
+              key={group.year}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.1, delay: gi * 0.04, ease: [0.19, 1, 0.22, 1] }}
+              className="relative grid grid-cols-[80px_1fr] md:grid-cols-[132px_1fr] gap-x-8 md:gap-x-14"
+            >
+              {/* Year anchor */}
+              <div className="relative">
+                <div
+                  aria-hidden
+                  className="absolute right-[-8px] md:right-[-6px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]"
+                />
+                <h3 className="font-display text-2xl md:text-4xl tracking-[-0.04em] text-foreground/85 leading-none pt-2">
+                  {group.year}
+                </h3>
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/45">
+                  Archive · {String(gi + 1).padStart(2, "0")}
+                </p>
+              </div>
+
+              {/* Entries column */}
+              <ul className="flex flex-col">
+                {group.entries.map((e, ei) => (
+                  <li
+                    key={`${group.year}-${ei}`}
+                    className={`group relative border-t border-foreground/[0.06] transition-colors duration-700 hover:border-foreground/20 ${
+                      e.featured
+                        ? "py-5 md:py-6"
+                        : "py-3.5 md:py-4"
+                    } ${ei === group.entries.length - 1 ? "border-b border-foreground/[0.06]" : ""}`}
+                  >
+                    {e.featured ? (
+                      <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
+                        <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-foreground/55 pt-1.5">
+                          ◆ Milestone
+                        </span>
+                        <div>
+                          <h4 className="font-display text-[17px] md:text-[19px] tracking-[-0.018em] text-foreground/95 leading-snug">
+                            {e.title}
+                          </h4>
+                          {e.institution && (
+                            <p className="mt-1.5 text-[12.5px] leading-relaxed text-foreground/55">
+                              {e.institution}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
+                        <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
+                          ·
+                        </span>
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                          <span className="text-[13.5px] leading-relaxed text-foreground/72">
+                            {e.title}
+                          </span>
+                          {e.institution && (
+                            <span className="text-[11.5px] text-muted-foreground/55">
+                              {e.institution}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </motion.li>
+          ))}
+        </ol>
+      </div>
+
 
       <EditorialSection number="13 · Posture" heading="Recognition is a lagging indicator.">
         <p>
