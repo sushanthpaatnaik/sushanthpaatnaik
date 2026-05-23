@@ -6,14 +6,16 @@ export function useLenis(onScroll?: (progress: number) => void) {
 
   useEffect(() => {
     const lenis = new Lenis({
-      // Longer glide + gentler easing for film-like scroll continuity.
-      duration: 1.45,
-      easing: (t) => 1 - Math.pow(1 - t, 3.2),
+      // Cinematic glide — slightly shorter for snappier release between
+      // sections, softer easing so motion settles without a hard stop.
+      duration: 1.15,
+      easing: (t) => 1 - Math.pow(1 - t, 2.6),
       smoothWheel: true,
-      wheelMultiplier: 0.82,
-      touchMultiplier: 0.95,
+      wheelMultiplier: 0.88,
+      touchMultiplier: 1.0,
       syncTouch: true,
     });
+
     lenisRef.current = lenis;
 
     lenis.on("scroll", ({ progress }: { progress: number }) => {
