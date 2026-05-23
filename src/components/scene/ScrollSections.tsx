@@ -61,7 +61,7 @@ function HeroSection() {
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(180deg, oklch(0.025 0 0) 0%, transparent 28%, transparent 64%, oklch(0.025 1.004 260 / 0.92) 100%)",
+              "linear-gradient(180deg, oklch(0.025 0 0) 0%, transparent 28%, transparent 64%, oklch(0.025 0.004 232 / 0.92) 100%)",
           }}
         />
         <div
