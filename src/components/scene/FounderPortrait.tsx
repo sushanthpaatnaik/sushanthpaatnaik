@@ -10,6 +10,7 @@ interface FounderPortraitProps {
   meta?: string;
   eyebrow?: string;
   narrative?: string[];
+  plate?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export default function FounderPortrait({
   meta,
   eyebrow,
   narrative,
+  plate,
 }: FounderPortraitProps) {
   const src = variant === "documentary" ? lab : editorial;
   const isDoc = variant === "documentary";
@@ -39,9 +41,30 @@ export default function FounderPortrait({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-20 md:my-24 max-w-[640px] md:max-w-[680px]"
+      className="not-prose relative mx-auto my-28 md:my-40 max-w-[640px] md:max-w-[680px]"
     >
-      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
+      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
+        {/* Founder plate — minimal editorial identity */}
+        {plate && (
+          <div className="flex items-center justify-between border-b border-foreground/[0.05] px-6 py-3.5 md:px-8 md:py-4">
+            <div className="flex items-baseline gap-3">
+              <span className="font-display text-[13px] tracking-[-0.01em] text-foreground/80">
+                Sushanth Paatnaik
+              </span>
+              <span className="hidden sm:inline h-2.5 w-px bg-foreground/[0.10]" />
+              <span className="hidden sm:inline font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/40">
+                Founder & Inventor
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="h-px w-6 bg-foreground/[0.08]" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/35">
+                India
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Portrait — readable face, restrained cinematic grade */}
         <div
           className={
@@ -113,22 +136,25 @@ export default function FounderPortrait({
           />
         </div>
 
-        {/* Editorial caption strip */}
+        {/* Editorial caption strip — restrained, cinematic, archival */}
         {(caption || meta || eyebrow || narrative?.length) && (
-          <figcaption className="border-t border-foreground/[0.06] px-5 py-5 md:px-7 md:py-6">
+          <figcaption className="border-t border-foreground/[0.05] px-6 py-6 md:px-8 md:py-7">
             {(eyebrow || narrative?.length) && (
-              <div className="mb-4 md:mb-5 flex flex-col gap-2">
+              <div className="mb-5 md:mb-6 flex flex-col gap-2.5">
                 {eyebrow && (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-                    {eyebrow}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="h-px w-5 bg-foreground/[0.12]" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/50">
+                      {eyebrow}
+                    </span>
+                  </div>
                 )}
                 {narrative?.length ? (
-                  <div className="mt-1 space-y-1">
+                  <div className="mt-1.5 space-y-1.5">
                     {narrative.map((line) => (
                       <p
                         key={line}
-                        className="font-display text-[13px] md:text-[14px] leading-[1.5] tracking-[-0.005em] text-foreground/70"
+                        className="font-display text-[13.5px] md:text-[15px] leading-[1.55] tracking-[-0.005em] text-foreground/75"
                       >
                         {line}
                       </p>
@@ -138,14 +164,14 @@ export default function FounderPortrait({
               </div>
             )}
             {(caption || meta) && (
-              <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-3 pt-4 border-t border-foreground/[0.04]">
                 {caption && (
-                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/60">
+                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/65 max-w-[85%]">
                     {caption}
                   </p>
                 )}
                 {meta && (
-                  <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55">
+                  <p className="font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/50">
                     {meta}
                   </p>
                 )}
