@@ -528,11 +528,11 @@ function EraAccordion({
                   <img
                     src={p.src}
                     alt={p.caption}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-1000 group-hover/era:opacity-85"
+                    loading="eager"
+                    className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-1000 group-hover/era:opacity-100"
                     style={{
                       objectPosition: p.focus ?? "center 30%",
-                      filter: "grayscale(0.25) contrast(1.06) saturate(0.78) brightness(0.86)",
+                      filter: "grayscale(0.12) contrast(1.05) saturate(0.88) brightness(0.95)",
                     }}
                   />
                   <div
