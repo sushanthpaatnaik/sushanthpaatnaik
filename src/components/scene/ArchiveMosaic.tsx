@@ -62,7 +62,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
             "radial-gradient(70% 55% at 50% 0%, oklch(0.62 0.10 55 / 0.18), transparent 65%)",
         }}
       />
-      <figcaption className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
+      <div className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
         <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/75">
           {item.category}
         </span>
@@ -72,7 +72,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
         <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55">
           {item.meta}
         </span>
-      </figcaption>
+      </div>
     </motion.div>
   );
 }
