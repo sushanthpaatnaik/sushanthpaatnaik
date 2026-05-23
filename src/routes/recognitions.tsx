@@ -80,36 +80,69 @@ export const Route = createFileRoute("/recognitions")({
   }),
 });
 
-const milestones = [
+type Milestone = {
+  year: string;
+  sortYear: number;
+  title: string;
+  body: string;
+  image: string;
+  imageFocus?: string;
+  institution: string;
+  major?: boolean;
+};
+
+const milestones: Milestone[] = [
   {
-    n: "2008–13",
-    title: "Six-time Indian Presidential awardee",
-    body: "Honoured six times by three sitting Presidents of India — Dr. A.P.J. Abdul Kalam, Smt. Pratibha Patil and Shri Pranab Mukherjee — for sustained contribution to indigenous deep-tech and assistive innovation.",
+    year: "2008",
+    sortYear: 2008,
+    title: "First Presidential recognition",
+    body: "Felicitated by Dr. A.P.J. Abdul Kalam at Rashtrapati Bhavan — the first of six citations issued by three sitting Presidents of India between 2008 and 2013 for sustained contribution to indigenous deep-tech and assistive innovation.",
+    image: awardKalam,
+    imageFocus: "center 28%",
+    institution: "President of India · National Innovation Foundation",
+    major: true,
   },
   {
-    n: "2013–14",
-    title: "MIT Fab-10 & Fab-11 Awardee",
-    body: "Selected at the MIT Fab-10 (Barcelona) and Fab-11 international conferences for original prototypes built end-to-end in personal fabrication labs.",
+    year: "2010",
+    sortYear: 2010,
+    title: "MIT TR-35 Awardee",
+    body: "Recognised by MIT Technology Review among the world's top young innovators under 35 — for early work on sustainable materials and assistive technology.",
+    image: fellowCert,
+    institution: "MIT Technology Review · Cambridge",
   },
   {
-    n: "2012",
+    year: "2010",
+    sortYear: 2010.5,
+    title: "Intel IRIS Awardee",
+    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fifteen-year practice in deep-tech.",
+    image: fellowCert,
+    institution: "Intel Foundation · National Science Fair",
+  },
+  {
+    year: "2011",
+    sortYear: 2011,
+    title: "NASA recognition",
+    body: "International recognition at NASA Kennedy Space Center — including a research visit to the Mobile Quarantine Facility at the U.S. Space & Rocket Center, Huntsville — for breakthrough engineering in human–machine interfaces.",
+    image: honorNasa,
+    institution: "NASA · Kennedy Space Center",
+    major: true,
+  },
+  {
+    year: "2012",
+    sortYear: 2012,
     title: "TED-India Speaker",
     body: "Invited to TED-India as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
+    image: keynoteTed,
+    institution: "TED · Mysore",
+    major: true,
   },
   {
-    n: "2010",
-    title: "MIT TR-35 Awardee",
-    body: "Recognised by MIT Technology Review among the world's top young innovators for work on sustainable materials and assistive technology.",
-  },
-  {
-    n: "2011",
-    title: "NASA Awardee",
-    body: "International recognition at NASA Kennedy Space Center — including a research visit to the Mobile Quarantine Facility — for breakthrough engineering in human–machine interfaces.",
-  },
-  {
-    n: "2010",
-    title: "Intel IRIS Awardee",
-    body: "Won the Intel IRIS National Science Fair for the breath-operated wheelchair — the school-bench prototype that opened a fifteen-year practice in deep-tech.",
+    year: "2013–14",
+    sortYear: 2013,
+    title: "MIT Fab-10 & Fab-11 Awardee",
+    body: "Selected at the MIT Fab-10 (Barcelona) and Fab-11 international conferences for original prototypes built end-to-end inside MIT's Center for Bits and Atoms personal fabrication network.",
+    image: fellowCert,
+    institution: "MIT · Center for Bits and Atoms",
   },
 ];
 
