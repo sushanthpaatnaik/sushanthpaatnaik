@@ -328,13 +328,16 @@ function outletHref(name: string): string | undefined {
   return all.find((p) => norm(p.outlet).startsWith(target.split("·")[0]))?.href;
 }
 
-const outlets = [
+// `lighten` flags publications whose marks are inherently dark/grayscale —
+// they get an extra brightness/invert lift so the wordmark reads against
+// the cinematic black tile.
+const outlets: { name: string; logo: string; lighten?: boolean }[] = [
   { name: "India Today", logo: indiaTodayLogo },
-  { name: "The Times of India", logo: toiLogo },
+  { name: "The Times of India", logo: toiLogo, lighten: true },
   { name: "Business Standard", logo: businessStandardLogo },
-  { name: "Deccan Chronicle", logo: deccanLogo },
-  { name: "The Telegraph", logo: telegraphLogo },
-  { name: "The Global Indian", logo: globalIndianLogo },
+  { name: "Deccan Chronicle", logo: deccanLogo, lighten: true },
+  { name: "The Telegraph", logo: telegraphLogo, lighten: true },
+  { name: "The Global Indian", logo: globalIndianLogo, lighten: true },
   { name: "MIT Technology Review", logo: mitTrLogo },
   { name: "TED India", logo: tedLogo },
   { name: "NIF India", logo: nifLogo },
@@ -343,9 +346,9 @@ const outlets = [
   { name: "ProductNation", logo: productNationLogo },
   { name: "YourStory", logo: yourStoryLogo },
   { name: "WeRIndia · Fusion", logo: werIndiaLogo },
-  { name: "Wikipedia", logo: wikipediaLogo },
+  { name: "Wikipedia", logo: wikipediaLogo, lighten: true },
   { name: "ThePrint", logo: thePrintLogo },
-  { name: "The New Indian Express", logo: newIndianExpressLogo },
+  { name: "The New Indian Express", logo: newIndianExpressLogo, lighten: true },
   { name: "INK Talks", logo: inkTalksLogo },
 ];
 
