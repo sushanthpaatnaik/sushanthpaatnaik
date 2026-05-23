@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VenturesRouteImport } from './routes/ventures'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RecognitionsRouteImport } from './routes/recognitions'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as InnovationsRouteImport } from './routes/innovations'
@@ -24,6 +25,11 @@ import { Route as EssaysSlugRouteImport } from './routes/essays.$slug'
 const VenturesRoute = VenturesRouteImport.update({
   id: '/ventures',
   path: '/ventures',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecognitionsRoute = RecognitionsRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
+    | '/sitemap.xml'
     | '/ventures'
     | '/essays/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
+    | '/sitemap.xml'
     | '/ventures'
     | '/essays/$slug'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
+    | '/sitemap.xml'
     | '/ventures'
     | '/essays/$slug'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   InnovationsRoute: typeof InnovationsRoute
   NewsRoute: typeof NewsRoute
   RecognitionsRoute: typeof RecognitionsRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VenturesRoute: typeof VenturesRoute
 }
 
@@ -179,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/ventures'
       fullPath: '/ventures'
       preLoaderRoute: typeof VenturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recognitions': {
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   InnovationsRoute: InnovationsRoute,
   NewsRoute: NewsRoute,
   RecognitionsRoute: RecognitionsRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   VenturesRoute: VenturesRoute,
 }
 export const routeTree = rootRouteImport
