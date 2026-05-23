@@ -197,10 +197,10 @@ function VenturesPage() {
             <div className="absolute top-1/2 left-0 h-px w-0 bg-accent/30 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0 group-hover:w-full" />
 
             <div className="relative py-9 md:py-11 transition-all duration-700">
-              {/* Code · Year row */}
+              {/* Code · Year · Industry layer */}
               <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50">
                 <span>{v.code} · {v.year}</span>
-                <span>{v.domain}</span>
+                <span className="text-accent/70">{v.category}</span>
               </div>
 
               {/* Name */}
@@ -208,10 +208,13 @@ function VenturesPage() {
                 {v.name}
               </h3>
 
-              {/* Role */}
-              <p className="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-accent/70">
-                {v.role}
+              {/* Role · Domain */}
+              <p className="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-foreground/55">
+                <span className="text-accent/75">{v.role}</span>
+                <span className="mx-2 text-foreground/25">·</span>
+                <span>{v.domain}</span>
               </p>
+
 
               {/* Thesis */}
               <p className="mt-4 max-w-2xl text-[15px] md:text-[15px] leading-[1.72] text-foreground/65 transition-colors duration-700 group-hover:text-foreground/80">
