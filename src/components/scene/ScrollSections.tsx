@@ -603,9 +603,62 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Patents Ledger — quiet editorial register of filed inventions.
+          A scroll of titles, not a table. */}
+      <section id="patents" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.10_0.03_245/0.08),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.32),transparent_18%,transparent_82%,oklch(0.03_0_0/0.32))]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="md:col-span-4 md:sticky md:top-32 self-start">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Patents · Ledger</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              Twenty-one filings, one continuous lattice.
+            </h3>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              An institutional record of inventions filed between the workshop and the industrial pilot. Read as ledger, not as catalogue.
+            </p>
+            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40 blur-[0.3px]">
+              India · Filed · 2008 — Present
+            </p>
+          </MotionReveal>
+          <div className="md:col-span-8">
+            {[
+              { n: "P · 01", t: "Breath-Actuated Mobility Interface", c: "Assistive systems" },
+              { n: "P · 02", t: "Ash-Fall Protective Respiratory Apparatus", c: "Public health · industrial" },
+              { n: "P · 03", t: "Low-Power Anti-Fog Optical Coating", c: "Surface chemistry" },
+              { n: "P · 04", t: "Smart Helmet · Impact & Telemetry", c: "Wearable safety" },
+              { n: "P · 05", t: "Rapid-Charge Battery Electrode Architecture", c: "Energy storage" },
+              { n: "P · 06", t: "Carbon-Augmented Concrete Binder", c: "Construction materials" },
+              { n: "P · 07", t: "Photonic Solar Thin-Film Coating", c: "Renewable energy" },
+              { n: "P · 08", t: "Polymer Conductivity Additive System", c: "Engineering polymers" },
+              { n: "P · 09", t: "Coal Moisture Reduction Process", c: "Legacy fuel · efficiency" },
+              { n: "P · 10", t: "Graphene Oxide Synthesis Pathway", c: "Advanced materials" },
+              { n: "P · 11", t: "Industrial Effluent Membrane Stack", c: "Water systems" },
+              { n: "P · 12", t: "Atmospheric CO₂ Adsorbent Surface", c: "Climate infrastructure" },
+              { n: "P · 13", t: "AI-Assisted Lattice Discovery Loop", c: "Computational materials" },
+              { n: "P · 14", t: "Functionalised Anti-Corrosion Stack", c: "Heavy infrastructure" },
+              { n: "P · 15", t: "Sensor-Embedded Industrial Cladding", c: "Smart surfaces" },
+              { n: "P · 16", t: "Thermal Management Composite", c: "Aerospace · electronics" },
+              { n: "P · 17", t: "EMI-Shielding Engineering Polymer", c: "Defence · industrial" },
+              { n: "P · 18", t: "Catalytic Surface for Hydrogen Pathways", c: "Energy transition" },
+              { n: "P · 19", t: "Adsorbent Recovery for Mineral Processing", c: "Mining · circularity" },
+              { n: "P · 20", t: "Low-Embodied Carbon Cement Pre-Mix", c: "Decarbonization" },
+              { n: "P · 21", t: "Process Intelligence for Materials Pilot Lines", c: "Manufacturing systems" },
+            ].map((p, i) => (
+              <MotionReveal key={p.n} delay={i * 0.025} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-5 sm:gap-8 border-t border-foreground/[0.07] py-5 md:py-6 transition-colors duration-500 hover:border-foreground/20">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55 min-w-[4rem]">{p.n}</span>
+                <h4 className="font-display text-base md:text-lg tracking-[-0.015em] text-foreground/90 leading-snug">{p.t}</h4>
+                <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-muted-foreground/40 text-right hidden sm:block">{p.c}</span>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ░░ Chapter 04 — Industrial Applications ░░ */}
 
       <StorySection chapter={industrialChapter} index={4} total={totalChapters} />
+
 
       {/* Method — supports chapter 04 (Industrial Applications) */}
       <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
