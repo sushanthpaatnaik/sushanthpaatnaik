@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import spLogo from "@/assets/sp-logo.svg";
+
 
 const navLinks = [
   { to: "/about", label: "About" },
@@ -35,9 +37,17 @@ export default function Nav() {
         }}
       />
       <header className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5 md:py-6 flex items-center justify-between pointer-events-none">
-        <Link to="/" className="flex items-center gap-2 pointer-events-auto">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent shadow-[0_0_20px_oklch(0.85_0.15_220/0.6)]" />
-          <span className="text-[11px] md:text-sm tracking-[0.28em] md:tracking-[0.3em] uppercase font-medium">
+        <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik — Home">
+          <img
+            src={spLogo}
+            alt=""
+            aria-hidden
+            width={28}
+            height={28}
+            className="h-7 w-7 md:h-8 md:w-8 select-none transition-[opacity,filter] duration-500 opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))]"
+            draggable={false}
+          />
+          <span className="text-[11px] md:text-sm tracking-[0.28em] md:tracking-[0.3em] uppercase font-medium leading-none">
             Sushanth Paatnaik
           </span>
         </Link>
