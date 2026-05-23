@@ -227,9 +227,10 @@
      Rest state: lifted blacks, slight desaturation, premium contrast.
      Hover state: returns to full color, gently zoomed. */
   .cinematic-image {
-    opacity: 0.72;
-    filter: grayscale(0.4) contrast(1.05) brightness(0.92);
+    opacity: 0.86;
+    filter: grayscale(0.22) contrast(1.04) brightness(0.97);
     transition:
+
       opacity var(--dur-slow) var(--ease-cinematic),
       filter var(--dur-slow) var(--ease-cinematic),
       transform var(--dur-slow) var(--ease-cinematic);
