@@ -129,6 +129,9 @@ const featured: PressItem = {
   body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar — from a breath-controlled wheelchair built at 14 to founding multiple deep-tech ventures.",
   href: "https://www.globalindian.com/story/global-indian-exclusive/six-times-president-awardee-sushant-pattnaiks-ground-breaking-innovations/",
   image: globalImg,
+  category: "Global Features & Interviews",
+  weight: "major",
+  logo: globalIndianLogo,
 };
 
 const secondary: PressItem = {
@@ -139,6 +142,9 @@ const secondary: PressItem = {
   body: "National coverage of GraphIN 2026 in Kochi — the conference convening industry, academia and government to chart India's graphene future.",
   href: "https://www.rediff.com/news/report/graphin-2026-graphene-conference-opens-in-kochi/20260309.htm",
   image: rediffImg,
+  category: "Scientific & Deep-Tech Coverage",
+  weight: "major",
+  logo: rediffLogo,
 };
 
 const coverage: PressItem[] = [
@@ -150,6 +156,8 @@ const coverage: PressItem[] = [
     body: "India Today profiles the youngest serial entrepreneur to be honoured by three Presidents of India, with prototypes spanning assistive tech, robotics and energy.",
     href: "https://www.indiatoday.in/india/north/story/innovator-susant-pattnaik-serial-entrepreneur-155970-2013-03-11",
     image: indiaTodayImg,
+    category: "Global Features & Interviews",
+    weight: "major",
   },
   {
     outlet: "Deccan Chronicle",
@@ -159,6 +167,7 @@ const coverage: PressItem[] = [
     body: "The Sunday Chronicle profiles the breath-operated wheelchair innovator and co-founder of two companies — honoured thrice by the President of India before turning 21.",
     href: "https://www.deccanchronicle.com/131208/commentary-sunday-chronicle/article/susant-pattnaik-serial-entrepreneur-20",
     image: deccanImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "The Telegraph India",
@@ -168,6 +177,8 @@ const coverage: PressItem[] = [
     body: "At seventeen, Sushant's breath-sensor apparatus drew national attention as a life-changing assistive technology for the physically challenged.",
     href: "https://www.telegraphindia.com/odisha/wonderboy-innovates-technological-marvel-seventeen-year-old-sushant-pattnaik-s-device-can-change-lives-of-disabled-people/cid/477938",
     image: telegraphEnablerImg,
+    category: "Scientific & Deep-Tech Coverage",
+    weight: "major",
   },
   {
     outlet: "National Innovation Foundation",
@@ -177,6 +188,7 @@ const coverage: PressItem[] = [
     body: "NIF-India recognises the IGNITE awardee whose work has led to ten working prototypes, four companies, an MIT Technology Review feature and a TED India talk.",
     href: "https://nif.org.in/innovation/breathing-sensor-apparatus-to-assist-physically-challenged/398",
     image: nifChairImg,
+    category: "Awards & Recognition",
   },
   {
     outlet: "ProductNation · iSPIRT",
@@ -186,6 +198,7 @@ const coverage: PressItem[] = [
     body: "A long-form profile by India's product think-tank on the young innovator whose gadgets — once compared to Doraemon's — are now solving real-world problems.",
     href: "https://pn.ispirt.in/susant-pattnaik-real-life-doremon-or-an-innovation-champ/",
     image: ispirtImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "WeRIndia · Fusion",
@@ -195,6 +208,7 @@ const coverage: PressItem[] = [
     body: "An 'Unknown Wizards' feature spotlighting Sushant's portfolio of inventions and the social impact of his assistive and clean-tech innovations.",
     href: "https://fusion.werindia.com/unknown-wizards/susant-pattnaik-one-of-the-youngest-inventors-of-several-innovative-products",
     image: werindiaImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "Governance Now",
@@ -204,6 +218,7 @@ const coverage: PressItem[] = [
     body: "Governance Now profiles the breath-sensor apparatus at the NIF-organised Delhi exhibition — an innovation enabling paralysed and physically challenged people to perform basic chores independently.",
     href: "https://www.governancenow.com/news/regular-story/resolve-every-breath-bhopal-teen-helps-special-people-live-anew",
     image: governanceNowImg,
+    category: "Scientific & Deep-Tech Coverage",
   },
   {
     outlet: "Times of India · Bhopal",
@@ -213,6 +228,7 @@ const coverage: PressItem[] = [
     body: "TOI Bhopal chronicles a third-year engineering student already holding 21 awards, multiple patents and inventions ranging from a roti-status SMS device to assistive breath-controlled systems.",
     href: "https://timesofindia.indiatimes.com/city/bhopal/susant-stuns-with-patent-run-roti-sms/articleshow/46903296.cms",
     image: toiBhopalImg,
+    category: "Awards & Recognition",
   },
   {
     outlet: "Wikipedia (Odia)",
@@ -223,6 +239,8 @@ const coverage: PressItem[] = [
     href: "https://or.wikipedia.org/wiki/%E0%AC%B8%E0%AD%81%E0%AC%B6%E0%AC%BE%E0%AC%A8%E0%AD%8D%E0%AC%A4_%E0%AC%AA%E0%AC%9F%E0%AD%8D%E0%AC%9F%E0%AC%A8%E0%AC%BE%E0%AD%9F%E0%AC%95",
     image: wikipediaImg,
     objectPosition: "center 18%",
+    category: "Awards & Recognition",
+    weight: "major",
   },
   {
     outlet: "Business Standard · ANI",
@@ -232,6 +250,8 @@ const coverage: PressItem[] = [
     body: "Business Standard reports on Sushant's breakthrough in rapid battery charging — a technology poised to charge a smartphone in seconds and reshape the EV and consumer electronics landscape.",
     href: "https://www.business-standard.com/content/press-releases-ani/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik-122032100710_1.html",
     image: businessStandardImg,
+    category: "Scientific & Deep-Tech Coverage",
+    weight: "major",
   },
   {
     outlet: "ThePrint · ANI",
@@ -241,6 +261,7 @@ const coverage: PressItem[] = [
     body: "ThePrint syndicates the ANI dispatch on Sushant's nano-material battery breakthrough — promising smartphone charges in seconds and EV refuels in minutes.",
     href: "https://theprint.in/ani-press-releases/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik/881783/",
     image: thePrintImg,
+    category: "Scientific & Deep-Tech Coverage",
   },
   {
     outlet: "The New Indian Express",
@@ -250,6 +271,7 @@ const coverage: PressItem[] = [
     body: "The New Indian Express profiles a young Sushant Pattnaik on his determination to channel honours into a foundation that supports under-resourced innovators across India.",
     href: "https://www.newindianexpress.com/education/edex/2011/Nov/07/inspired-to-help-poor-techies-307824.html",
     image: newIndianExpressImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "YourStory",
@@ -259,6 +281,8 @@ const coverage: PressItem[] = [
     body: "YourStory's company profile of Capattery, the deep-tech venture co-founded by Sushant Pattnaik, building patent-pending graphene nanomaterials for next-generation Battery Energy Storage Systems.",
     href: "https://yourstory.com/companies/capattery",
     image: yourStoryImg,
+    category: "Startup & Venture Press",
+    weight: "major",
   },
   {
     outlet: "INK Talks",
@@ -269,6 +293,8 @@ const coverage: PressItem[] = [
     href: "https://inktalks.com/people/susant-pattnaik/",
     image: inkStageImg,
     objectPosition: "right top",
+    category: "Public Speaking & Thought Leadership",
+    weight: "major",
   },
   {
     outlet: "Times of India · Bhopal",
@@ -278,6 +304,7 @@ const coverage: PressItem[] = [
     body: "TOI Bhopal profiles Sushant — then a second-year engineering student with a string of patents — selected to be honoured at the FAB10 international conference in Barcelona.",
     href: "https://timesofindia.indiatimes.com/city/bhopal/a-wiz-kid-on-an-invention-spree/articleshow/35132755.cms",
     image: toiFab10Img,
+    category: "Public Speaking & Thought Leadership",
   },
   {
     outlet: "Golden Book of World Records",
@@ -287,8 +314,19 @@ const coverage: PressItem[] = [
     body: "The Golden Book of World Records officially recognises Susant Pattnaik for the world record of 'the Youngest Inventor and Social Entrepreneur' — citing his MIT TR-35 selection at 17 and a string of national and international honours.",
     href: "https://goldenbookofworldrecords.com/youngest-inventor-and-social-interpreneur/",
     image: goldenBookImg,
+    category: "Awards & Recognition",
   },
 ];
+
+// Outlet → canonical link (their first article in the archive) for the
+// mastheads register. Used to make the logo grid clickable rather than
+// decorative.
+function outletHref(name: string): string | undefined {
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, "");
+  const target = norm(name);
+  const all = [featured, secondary, ...coverage];
+  return all.find((p) => norm(p.outlet).startsWith(target.split("·")[0]))?.href;
+}
 
 const outlets = [
   { name: "India Today", logo: indiaTodayLogo },
