@@ -170,16 +170,44 @@ function VenturesPage() {
           A short ledger of the houses I quietly advise across materials, design and
           consumer technology.
         </p>
-        <div className="not-prose mt-8 grid grid-cols-2 items-center gap-x-8 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
+        <div className="not-prose mt-12 grid grid-cols-2 items-stretch gap-4 sm:grid-cols-3 md:grid-cols-5 md:gap-5">
           {advisories.map((a) => (
-            <div key={a.name} className="flex flex-col items-center gap-3 text-center">
+            <div
+              key={a.name}
+              className="group relative flex flex-col items-center justify-center gap-4 rounded-sm px-4 py-8 md:py-10 text-center overflow-hidden transition-all duration-700"
+            >
+              {/* Volumetric halo — soft directional glow behind each mark */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-700 group-hover:opacity-100"
+                style={{
+                  background:
+                    "radial-gradient(60% 55% at 50% 42%, oklch(0.55 0.04 235 / 0.18), transparent 70%)",
+                }}
+              />
+              {/* Subtle local lift — raises contrast around the logo without flattening atmosphere */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-4 top-4 bottom-12 rounded-sm opacity-60 transition-opacity duration-700 group-hover:opacity-90"
+                style={{
+                  background:
+                    "radial-gradient(70% 60% at 50% 50%, oklch(0.18 0.01 240 / 0.55), transparent 75%)",
+                  boxShadow:
+                    "inset 0 1px 0 oklch(1 0 0 / 0.04), inset 0 -1px 0 oklch(0 0 0 / 0.3)",
+                }}
+              />
+              {/* Hairline frame — editorial separation */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-sm border border-foreground/[0.06] transition-colors duration-700 group-hover:border-foreground/[0.14]"
+              />
               <img
                 src={a.logo}
                 alt={`${a.name} — ${a.sector}`}
                 loading="lazy"
-                className="h-10 md:h-12 w-auto max-w-full object-contain opacity-70 saturate-50 contrast-[0.95] mix-blend-screen transition-opacity duration-300 hover:opacity-100"
+                className="relative z-10 h-11 md:h-14 w-auto max-w-[78%] object-contain opacity-90 saturate-[0.85] contrast-[1.05] brightness-[1.08] mix-blend-screen drop-shadow-[0_2px_12px_oklch(0_0_0/0.55)] transition-all duration-700 group-hover:opacity-100 group-hover:brightness-[1.15]"
               />
-              <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/55">
+              <span className="relative z-10 font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/55 transition-colors duration-700 group-hover:text-foreground/75">
                 {a.sector}
               </span>
             </div>
