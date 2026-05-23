@@ -50,7 +50,7 @@ function HeroSection() {
   return (
     <section
       id="spark"
-      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6"
+      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6 lg:pl-32 xl:pl-36"
     >
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
