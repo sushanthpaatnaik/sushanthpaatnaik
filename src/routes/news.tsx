@@ -796,30 +796,37 @@ function NewsPage() {
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-12 overflow-hidden rounded-[2px] border border-foreground/[0.07] bg-[oklch(0.045_0.003_245)]">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.04] sm:grid-cols-3 lg:grid-cols-6">
+        <div className="not-prose mt-12 overflow-hidden rounded-[2px] border border-foreground/[0.06] bg-[oklch(0.045_0.003_245)]">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.025] sm:grid-cols-3 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 34px at scale 1.0; clamped 24-48px.
-              const optical = Math.round(Math.min(48, Math.max(24, 34 * scale)));
+              // Optical baseline ~ 40px at scale 1.0; clamped 30-58px for fuller, more intentional wall.
+              const optical = Math.round(Math.min(58, Math.max(30, 40 * scale)));
+              const imgStyle: React.CSSProperties = { maxHeight: `${optical}px` };
+              if (o.transparentBg) {
+                imgStyle.mixBlendMode = "screen";
+              }
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  style={{ maxHeight: `${optical}px` }}
-                  className={`w-auto max-w-[82%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.04] ${
-                    o.lighten
+                  style={imgStyle}
+                  className={`w-auto max-w-[86%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.05] ${
+                    o.transparentBg
+                      ? // Ink-on-white plate: invert so light bg becomes dark, then blend out via screen.
+                        "invert opacity-[0.88] brightness-[1.12] contrast-[1.1] saturate-0 group-hover:opacity-[0.98]"
+                      : o.lighten
                       ? // Dark/black-ink mastheads: invert to soft silver, no color
-                        "invert opacity-[0.95] brightness-[1.08] contrast-[1.05] saturate-0 group-hover:opacity-100"
-                      : // Color brand marks: keep brand color, matte-normalized
-                        "opacity-100 saturate-[0.95] brightness-[1.05] contrast-[1.04] group-hover:saturate-[1.0]"
+                        "invert opacity-[0.86] brightness-[1.06] contrast-[1.04] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.14]"
+                      : // Color brand marks: matte-normalized, slight desaturation for editorial cohesion
+                        "opacity-[0.92] saturate-[0.78] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:saturate-[0.92] group-hover:brightness-[1.08]"
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-24 md:h-28 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-5 transition-colors duration-700 ease-out hover:bg-[oklch(0.07_0.003_245)]";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-6 transition-all duration-700 ease-out hover:bg-[oklch(0.072_0.003_245)] hover:shadow-[inset_0_0_60px_oklch(1_0_0_/_0.04)]";
 
               return href ? (
                 <a
