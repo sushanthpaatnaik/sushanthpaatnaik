@@ -31,8 +31,8 @@ const SAT_BY_PHASE = [1.0, 0.78, 1.05, 1.0, 0.6, 0.95, 1.05];
 export default function ParticleField({
   progress,
   phase,
-  opacityStops = [0.55, 0.46, 0.4, 0.34, 0.3, 0.24, 0.16],
-  count = 20,
+  opacityStops = [0.42, 0.36, 0.32, 0.28, 0.24, 0.20, 0.12],
+  count = 15,
   primaryColor = "oklch(0.81 0.1 235)",
   accentColor = "oklch(0.63 0.1 75)",
 }: ParticleFieldProps) {
