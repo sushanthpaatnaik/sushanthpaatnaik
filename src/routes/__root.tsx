@@ -98,8 +98,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
       { property: "og:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
       { name: "twitter:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3eeb57ec-b3be-4eaa-be80-b43c932def15" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3eeb57ec-b3be-4eaa-be80-b43c932def15" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779545237906-12345.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779545237906-12345.webp" },
     ],
     links: [
       {
