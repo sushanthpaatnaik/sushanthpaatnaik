@@ -240,7 +240,7 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.30] md:opacity-[0.33] [filter:grayscale(1)_contrast(1.15)_brightness(0.65)_saturate(1)_blur(1.1px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.26] md:opacity-[0.29] [filter:grayscale(1)_contrast(1.08)_brightness(0.62)_saturate(1)_blur(1.3px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
