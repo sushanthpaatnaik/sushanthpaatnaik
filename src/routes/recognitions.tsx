@@ -664,7 +664,11 @@ function RecognitionsPage() {
   return (
     <CinematicPageShell
       eyebrow="Recognitions · Twenty-Seven Honors of Record"
-      title={<>An archival journey<br className="hidden md:inline" /> of recognition.</>}
+      title={
+        <>
+          An archival journey<br className="hidden md:inline" /> of recognition.
+        </>
+      }
       lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley — a photographic record of two decades on stage, in the lab, and in conversation with institutions."
       backdrop={backdrop}
       overlay={0.74}
