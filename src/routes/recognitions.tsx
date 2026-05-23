@@ -284,8 +284,7 @@ const counters = [
   { value: "14+", label: "Years of industrial research" },
 ];
 
-// Hall of Fame ribbon — media coverage, stage moments, honorary moments,
-// public demonstrations. A continuous archival reel.
+// Hall of Fame ribbon — curated continuous archival reel (9 plates).
 const hallOfFame: ArchiveItem[] = [
   { src: keynoteTed, caption: "TED-India Main Stage", meta: "Mysore · 2012", category: "Keynote" },
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Rashtrapati Bhavan · 2008", category: "Award", focus: "center 28%" },
@@ -294,11 +293,8 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorNasa, caption: "NASA Recognition", meta: "Kennedy Space Center · 2011", category: "Honor" },
   { src: keynoteBrics, caption: "BRICS Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
   { src: keynoteIeema, caption: "IEEMA Mainstage", meta: "Mumbai · 2024", category: "Keynote" },
-  { src: keynoteStage, caption: "INK Main Stage", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
   { src: awardLeaDiaMirza, caption: "LEA Excellence Award", meta: "Mumbai · 2022", category: "Award" },
-  { src: keynoteNit, caption: "Innovision · NIT Rourkela", meta: "Nov 2025", category: "Keynote" },
   { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
-  { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Youth & Entrepreneurs", category: "Keynote" },
 ];
 
 function RecognitionsPage() {
