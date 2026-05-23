@@ -1013,7 +1013,7 @@ function RecognitionsPage() {
       </div>
 
       {/* 06 · Legacy Closure — cinematic institutional farewell */}
-      <section className="not-prose relative mt-32 md:mt-44 overflow-hidden">
+      <section className="not-prose relative mt-20 md:mt-28 overflow-hidden">
         {/* Atmospheric backdrop plate */}
         <div aria-hidden className="absolute inset-1 z-0 overflow-hidden rounded-sm">
           <div
