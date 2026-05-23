@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import editorial from "@/assets/founder-editorial.png";
-import lab from "@/assets/founder-lab-portrait.png";
+import editorial from "@/assets/founder-editorial.webp";
+import lab from "@/assets/founder-lab-portrait.webp";
 
 type Variant = "editorial" | "documentary";
 

@@ -6,7 +6,7 @@ import sceneMaterial from "@/assets/story-03-material.jpg";
 import sceneIndustrial from "@/assets/story-04-industrial.jpg";
 import sceneVentures from "@/assets/story-05-ventures.jpg";
 import sceneFuture from "@/assets/story-07-future.jpg";
-import sceneFounder from "@/assets/founder-presence.jpg";
+import sceneFounder from "@/assets/founder-presence.webp";
 import sceneRecognition from "@/assets/story-02-recognition.jpg";
 
 /**

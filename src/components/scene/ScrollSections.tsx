@@ -2,7 +2,7 @@ import { useRef, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
-import founderPresence from "@/assets/founder-editorial.png";
+import founderPresence from "@/assets/founder-editorial.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 
 /* ──────────────────────────────────────────────────────────────────
