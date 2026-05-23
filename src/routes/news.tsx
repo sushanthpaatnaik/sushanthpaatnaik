@@ -71,6 +71,13 @@ export const Route = createFileRoute("/news")({
   }),
 });
 
+type Category =
+  | "Awards & Recognition"
+  | "Scientific & Deep-Tech Coverage"
+  | "Startup & Venture Press"
+  | "Public Speaking & Thought Leadership"
+  | "Global Features & Interviews";
+
 type PressItem = {
   outlet: string;
   date: string;
@@ -80,7 +87,38 @@ type PressItem = {
   href: string;
   image: string;
   objectPosition?: string;
+  category: Category;
+  weight?: "major" | "secondary"; // visual hierarchy
+  logo?: string;
 };
+
+const CATEGORIES: { id: Category; code: string; blurb: string }[] = [
+  {
+    id: "Global Features & Interviews",
+    code: "I",
+    blurb: "Long-form profiles and cover stories across the Indian and international press.",
+  },
+  {
+    id: "Scientific & Deep-Tech Coverage",
+    code: "II",
+    blurb: "Reporting on the inventions, the materials science and the deep-tech ventures.",
+  },
+  {
+    id: "Awards & Recognition",
+    code: "III",
+    blurb: "Citations, encyclopedic entries and the public record of national honours.",
+  },
+  {
+    id: "Startup & Venture Press",
+    code: "IV",
+    blurb: "Coverage of the companies — Capattery, Monoatom Labs and the wider portfolio.",
+  },
+  {
+    id: "Public Speaking & Thought Leadership",
+    code: "V",
+    blurb: "The stage record — TED, INK Talks, FAB10 and the global conference circuit.",
+  },
+];
 
 const featured: PressItem = {
   outlet: "The Global Indian",
