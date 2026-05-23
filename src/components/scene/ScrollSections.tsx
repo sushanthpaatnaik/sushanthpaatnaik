@@ -659,10 +659,10 @@ function ScaleValidationScene() {
           <div className="mt-24 md:mt-32 flex items-center gap-4">
             <span className="h-px flex-1 bg-foreground/[0.08]" />
             <Link
-              to="/numbers"
+              to="/recognitions"
               className="font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/65 hover:text-foreground transition-colors"
             >
-              Open the full ledger →
+              Walk the recognitions archive →
             </Link>
           </div>
         </MotionReveal>
