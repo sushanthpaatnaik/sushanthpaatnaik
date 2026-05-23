@@ -34,12 +34,6 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
       transition={{ duration: 0.95, delay: (index % 6) * 0.05, ease: [0.19, 1, 0.22, 1] }}
       className={`group relative overflow-hidden bg-[oklch(0.05_0.006_245)] ring-1 ring-foreground/[0.06] ${span} ${aspect}`}
     >
-      ref={ref}
-      initial={{ opacity: 0, y: 22 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.95, delay: (index % 6) * 0.05, ease: [0.19, 1, 0.22, 1] }}
-      className={`group relative overflow-hidden bg-[oklch(0.05_0.006_245)] ring-1 ring-foreground/[0.06] ${span} ${aspect}`}
-    >
       <img
         src={item.src}
         alt={`${item.caption} — ${item.meta}`}
@@ -79,7 +73,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
           {item.meta}
         </span>
       </figcaption>
-    </motion.figure>
+    </motion.div>
   );
 }
 
