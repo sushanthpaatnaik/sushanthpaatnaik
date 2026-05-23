@@ -122,15 +122,15 @@ function ChapterMarker({
         <motion.div
           className="absolute inset-1 rounded-full"
           style={{
-            background: "oklch(0.71 0.06 232 / 0.22)",
-            boxShadow: "0 0 22px oklch(0.71 0.06 232 / 0.34)",
+            background: "oklch(0.74 0.06 232 / 0.26)",
+            boxShadow: "0 0 18px oklch(0.74 0.06 232 / 0.32), 0 0 36px oklch(0.74 0.06 232 / 0.14)",
           }}
           initial={false}
           animate={{
             opacity: active ? 1 : 0,
             scale: active ? 1 : 1.5,
           }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
         />
 
         {/* Core dot */}
@@ -161,19 +161,19 @@ function ChapterMarker({
         className="relative z-10 flex items-baseline gap-2"
         initial={false}
         animate={{
-          opacity: active ? 0.96 : visible ? (hovered ? 0.72 : 0.45) : 0.22,
+          opacity: active ? 0.98 : visible ? (hovered ? 0.82 : 0.58) : 0.34,
           x: active ? 1 : 0,
         }}
-        transition={{ duration: 0.75, ease: [0.19, 1, 0.22, 1] }}
+        transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
       >
         {/* Chapter number — always visible, very quiet */}
         <span
           className="font-mono text-[9px] uppercase tracking-[0.35em] select-none"
           style={{
             color: active
-              ? "oklch(0.76 0.07 232 / 0.96)"
-              : "oklch(0.62 0.0 0 / 0.42)",
-            transition: "color 0.9s cubic-bezier(0.19, 1, 0.22, 1)",
+              ? "oklch(0.78 0.07 232 / 0.98)"
+              : "oklch(0.68 0.0 0 / 0.56)",
+            transition: "color 0.95s cubic-bezier(0.19, 1, 0.22, 1)",
           }}
         >
           {chapter.n}
