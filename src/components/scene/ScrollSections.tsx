@@ -959,7 +959,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[calc(var(--viewport-height)*1.0)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
+      className="relative flex min-h-[calc(var(--viewport-height)*1.0)] items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-28 text-center"
     >
       {/* Architectural system node — restrained, integrated, atmospheric.
           Replaces the disconnected floating ring with a faint intelligent
@@ -988,7 +988,7 @@ function ClosingInvitation() {
           }}
         />
       </div>
-      <div className="relative z-10 flex flex-col items-center justify-center pt-28 md:pt-32 pb-16 md:pb-20 render-stable">
+      <div className="relative z-10 flex w-full flex-col items-center justify-center render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
