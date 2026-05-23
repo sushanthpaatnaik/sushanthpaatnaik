@@ -725,7 +725,7 @@ function InHisWordsScene() {
     <section
       ref={sectionRef}
       id="in-his-words"
-      className="relative min-h-[calc(var(--viewport-height)*1.4)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+      className="relative min-h-[calc(var(--viewport-height)*1.1)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
     >
       {/* ─── Scroll-synced cinematic backdrop ─────────────────────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
