@@ -15,9 +15,7 @@ import backdrop from "@/assets/story-02-recognition.jpg";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
-import awardPranab2 from "@/assets/hof/award-pranab-mukherjee-2.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
-import awardPatil2 from "@/assets/hof/award-pratibha-patil-2.webp";
 import awardPranabDemo from "@/assets/hof/award-pranab-demo.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.jpg";
@@ -26,7 +24,6 @@ import awardStpiCert from "@/assets/hof/award-stpi-certificate.jpg";
 import awardBharatiya from "@/assets/hof/award-bharatiya-knowledge-symposium.jpg";
 
 import keynoteTed from "@/assets/hof/keynote-ted.webp";
-import keynoteStage from "@/assets/hof/keynote-stage.webp";
 import keynoteIit from "@/assets/hof/keynote-iit.webp";
 import keynoteSV from "@/assets/hof/keynote-silicon-valley.webp";
 import keynoteJosh from "@/assets/hof/keynote-josh-talks.webp";
@@ -35,33 +32,23 @@ import keynoteTiecon from "@/assets/hof/keynote-tiecon-mumbai.jpg";
 import keynoteBritish from "@/assets/hof/keynote-british-high-commission.jpg";
 import keynoteBeyond from "@/assets/hof/keynote-beyond-retreat-uncharted.jpg";
 import keynoteGmr from "@/assets/hof/keynote-gmr-innovex.jpg";
-import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.jpg";
 import keynoteNit from "@/assets/hof/keynote-nit-rourkela.jpg";
-import keynoteMkm from "@/assets/hof/keynote-mkm-foundation.png";
 import keynoteIeema from "@/assets/hof/keynote-ieema-stage.jpg";
 import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.jpg";
 import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.jpg";
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
-import fellowMashaal from "@/assets/hof/fellowship-mashaal.webp";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
-import honorBricsDip from "@/assets/hof/honor-brics-diplomat.jpg";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.jpg";
-import honorRepublic from "@/assets/hof/honor-republic-day-event.jpg";
-import honorGlobal from "@/assets/hof/honor-global-flags.jpg";
-import honorBada from "@/assets/hof/honor-bada-business.jpg";
-import honorBeyond from "@/assets/hof/honor-beyond-retreat-trophy.jpg";
 import honorItalian from "@/assets/hof/honor-italian-embassy.jpg";
 import honorFicci from "@/assets/hof/honor-ficci-bharat.jpg";
 import honorStpi from "@/assets/hof/honor-stpi-startup-group.jpg";
-import honorUk from "@/assets/hof/honor-uk-envoy-trophy.jpg";
 import honorGadkari from "@/assets/hof/honor-nitin-gadkari.jpg";
 import honorBricsMedal from "@/assets/hof/honor-brics-medal.jpg";
 import honorMop from "@/assets/hof/honor-ministry-power-bee.jpg";
 import honorG20 from "@/assets/hof/honor-startup20-g20.jpg";
 import honorMauritius from "@/assets/hof/honor-mauritius-high-commissioner.jpg";
-import honorTrophies from "@/assets/hof/honor-monoatom-labs-trophies.jpg";
 import honorIocl from "@/assets/hof/honor-sujoy-choudhury-iocl.jpg";
 import honorDriiv from "@/assets/hof/honor-driiv-mou.jpg";
 
