@@ -443,18 +443,20 @@ export function ArchivePlateSeries({
   startIndex = 1,
 }: {
   items: ArchiveItem[];
-  eyebrow: string;
+  eyebrow?: string;
   startIndex?: number;
 }) {
   return (
     <div className="not-prose mt-10">
-      <div className="mb-6 flex items-center gap-3">
-        <span className="h-px flex-1 bg-foreground/[0.08]" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
-          {eyebrow}
-        </span>
-        <span className="h-px flex-1 bg-foreground/[0.08]" />
-      </div>
+      {eyebrow && (
+        <div className="mb-6 flex items-center gap-3">
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+            {eyebrow}
+          </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+        </div>
+      )}
       <div className="flex flex-col gap-px bg-foreground/[0.04]">
         {items.map((item, i) => (
           <ArchivePlate

@@ -927,7 +927,6 @@ function RecognitionsPage() {
         >
           <ArchivePlateSeries
             items={eraPresidential}
-            eyebrow="Archive I · Presidential Years"
             startIndex={1}
           />
         </EraAccordion>
