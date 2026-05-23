@@ -485,7 +485,167 @@ function EcosystemGateway() {
   );
 }
 
-/* ───────────── Scene 07 — In His Words (reflective philosophical chapter) ─────────────
+/* ───────────── Scene 07 — Scale & Validation (cinematic proof layer) ─────────────
+ * The Numbers ledger reimagined as a narrative validation checkpoint inside
+ * the storyline rail. Not a KPI dashboard — oversized editorial numerals,
+ * blueprint overlays, restrained kinetic counters, deep industrial dark.
+ * The scale of the work becoming measurable, mid-journey.
+ * ─────────────────────────────────────────────────────────────────────── */
+const proofSignals: { n: string; v: string; suffix?: string; l: string; note: string }[] = [
+  { n: "i.",   v: "06",  l: "Presidential Recognitions",   note: "Honored across three Presidents of India — IGNITE, NIF, National Inspire." },
+  { n: "ii.",  v: "18",  l: "Publications of Record",      note: "India Today, Times of India, MIT Tech Review, The Telegraph, Deccan Chronicle, Global Indian." },
+  { n: "iii.", v: "15", suffix: "+", l: "Years of Research",    note: "From a teenage IGNITE awardee to deep-tech operating-group architect." },
+  { n: "iv.",  v: "30", suffix: "+", l: "Innovations",          note: "Patented and in-process — coatings, energy, water, defense, mobility, construction." },
+  { n: "v.",   v: "10", suffix: "+", l: "Industrial Sectors",   note: "Graphene-anchored materials shipped into operating ventures across the stack." },
+  { n: "vi.",  v: "12", suffix: "+", l: "Deep-Tech Ventures",   note: "MonoAtom, DRIIV, and partner industrial vehicles carrying frontier matter to product." },
+  { n: "vii.", v: "60", suffix: "+", l: "Institutional Talks",  note: "TED-India · MIT · IITs · British High Commission · BRICS · Silicon Valley." },
+  { n: "viii.",v: "40", suffix: "+", l: "Global Media Features",note: "An editorial record across two decades of invention." },
+];
+
+function ScaleValidationScene() {
+  const prefersReducedMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const latticeRot = useTransform(scrollYProgress, [0, 1], [-2, 2]);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="scale-validation"
+      className="relative min-h-[calc(var(--viewport-height)*1.5)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+    >
+      {/* ─── Atmospheric backdrop — industrial blueprint mood ─────────── */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[oklch(0.014_0_0)]" />
+
+        {/* Faint blueprint grid — measurement / evidence architecture */}
+        <motion.div
+          className="absolute inset-0 opacity-[0.055] mix-blend-screen"
+          style={{
+            y: prefersReducedMotion ? 0 : bgY,
+            backgroundImage:
+              "linear-gradient(oklch(0.62 0.02 232 / 0.5) 1px, transparent 1px), linear-gradient(90deg, oklch(0.62 0.02 232 / 0.5) 1px, transparent 1px)",
+            backgroundSize: "88px 88px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 88%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 88%)",
+          }}
+        />
+
+        {/* Hex lattice — slow rotation reinforces material substrate */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vh] h-[150vh] opacity-[0.04] mix-blend-screen"
+          style={{
+            rotate: prefersReducedMotion ? 0 : latticeRot,
+            backgroundImage:
+              "radial-gradient(circle at center, oklch(0.78 0.02 232 / 0.5) 0.6px, transparent 1.4px)",
+            backgroundSize: "48px 48px",
+            maskImage:
+              "radial-gradient(ellipse 55% 50% at 50% 50%, #000 25%, transparent 78%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 55% 50% at 50% 50%, #000 25%, transparent 78%)",
+          }}
+        />
+
+        {/* Cool industrial key from above */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_45%_40%_at_50%_0%,oklch(0.58_0.04_232/0.18),transparent_72%)]" />
+
+        {/* Deep base shadow */}
+        <div className="absolute inset-0 mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,oklch(0.04_0.006_232/0.85),transparent_78%)]" />
+
+        {/* Cinematic grain */}
+        <div
+          className="absolute inset-0 opacity-[0.045] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0.5px, transparent 1.2px), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px), radial-gradient(circle at 45% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px)",
+            backgroundSize: "140px 140px, 200px 200px, 110px 110px",
+            filter: "blur(0.4px)",
+          }}
+        />
+
+        {/* Top/bottom continuity falloff into adjacent scenes */}
+        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_14%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_94%)]" />
+      </div>
+
+      {/* Chapter mark */}
+      <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
+        <MotionReveal>
+          <div className="mb-14 md:mb-20 flex items-center gap-4">
+            <span className="h-px w-10 bg-foreground/20" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
+              07 — Scale &amp; Validation
+            </span>
+          </div>
+        </MotionReveal>
+
+        <MotionReveal delay={0.06}>
+          <h2 className="max-w-4xl font-display text-[clamp(1.9rem,5.8vw,3.6rem)] leading-[1.05] tracking-[-0.035em] text-gradient [text-wrap:balance]">
+            The arc, measured.
+          </h2>
+        </MotionReveal>
+
+        <MotionReveal delay={0.14}>
+          <p className="mt-8 max-w-xl text-[13px] md:text-[14.5px] leading-[1.7] text-foreground/65">
+            Two decades of invention and industrial reach, distilled into eight signals of record. Not metrics. Evidence.
+          </p>
+        </MotionReveal>
+
+        {/* Proof grid — oversized numerals, restrained editorial cadence */}
+        <ul className="mt-20 md:mt-28 grid grid-cols-1 md:grid-cols-2 gap-x-14 lg:gap-x-20 gap-y-0">
+          {proofSignals.map((s, i) => (
+            <MotionReveal key={s.l} delay={0.04 + (i % 2) * 0.05}>
+              <li className="group grid grid-cols-[auto_1fr] items-baseline gap-x-8 border-t border-foreground/[0.08] py-10 md:py-12 transition-colors duration-700 hover:border-foreground/25">
+                <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 pt-3 w-10">
+                  {s.n}
+                </span>
+                <div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-display font-extralight text-[clamp(3rem,8vw,5.4rem)] leading-[0.92] tracking-[-0.05em] text-gradient">
+                      {s.v}
+                    </span>
+                    {s.suffix && (
+                      <span className="font-display font-extralight text-[clamp(1.4rem,3vw,2rem)] leading-none tracking-[-0.04em] text-foreground/55">
+                        {s.suffix}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="mt-5 font-display text-[15px] md:text-[16px] uppercase tracking-[0.22em] text-foreground/85">
+                    {s.l}
+                  </h3>
+                  <p className="mt-3 max-w-md text-[13px] leading-[1.7] text-foreground/55">
+                    {s.note}
+                  </p>
+                </div>
+              </li>
+            </MotionReveal>
+          ))}
+        </ul>
+
+        {/* Footer — handoff into In His Words */}
+        <MotionReveal delay={0.16}>
+          <div className="mt-24 md:mt-32 flex items-center gap-4">
+            <span className="h-px flex-1 bg-foreground/[0.08]" />
+            <Link
+              to="/numbers"
+              className="font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/65 hover:text-foreground transition-colors"
+            >
+              Open the full ledger →
+            </Link>
+          </div>
+        </MotionReveal>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────── Scene 08 — In His Words (reflective philosophical chapter) ─────────────
  * A cinematic pause before the closing Future scene. Founder voice as
  * philosophical fragments, not articles — oversized editorial typography,
  * generous negative space, slow reveal pacing, restrained atmosphere.
