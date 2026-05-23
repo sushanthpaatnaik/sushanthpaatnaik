@@ -144,19 +144,20 @@ export default function AnimatedBackground({
         }}
       />
 
-      {/* Edge fades */}
+      {/* Edge fades — softened so the cinematic plate carries continuously
+          across section boundaries rather than dropping into a dead-black band. */}
       <div
-        className="absolute inset-x-0 top-0 h-64"
+        className="absolute inset-x-0 top-0 h-40"
         style={{
           background:
-            "linear-gradient(to bottom, oklch(0.02 0.006 260 / 0.92), transparent)",
+            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.55), transparent)",
         }}
       />
       <div
-        className="absolute inset-x-0 bottom-0 h-64"
+        className="absolute inset-x-0 bottom-0 h-40"
         style={{
           background:
-            "linear-gradient(to top, oklch(0.02 0.006 260 / 0.92), transparent)",
+            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.55), transparent)",
         }}
       />
 
