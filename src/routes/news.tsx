@@ -401,13 +401,13 @@ function MediaPlate({
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-65 grayscale contrast-[1.12] brightness-[0.88] transition-all duration-[1400ms] group-hover:opacity-95 group-hover:grayscale-[0.4] group-hover:scale-[1.02]"
+        className="absolute inset-0 h-full w-full object-cover opacity-80 grayscale-[0.55] contrast-[1.08] brightness-[0.95] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:grayscale-[0.2] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
       {/* Newspaper halftone texture */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay"
         style={{
           backgroundImage:
             "radial-gradient(oklch(0 0 0) 0.6px, transparent 0.8px)",
@@ -417,18 +417,18 @@ function MediaPlate({
       {/* Paper grain */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light"
+        className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light"
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, oklch(1 0 0) 0 1px, transparent 1px 3px)",
         }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent" />
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-35"
         style={{
           background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 42%, oklch(0.02 0 0 / 0.82) 100%)",
+            "radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%)",
         }}
       />
       {/* Archival corner registration marks */}
