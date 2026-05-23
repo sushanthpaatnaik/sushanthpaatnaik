@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
+import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-media-wall.jpg";
 
 
