@@ -440,7 +440,7 @@ function RecognitionsPage() {
 
 
 
-      <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
+      <EditorialSection number="12 · Ledger" heading="Achievement milestones · 27 of record.">
         <p>
           The complete register, in chronological order — the public-record
           ledger that the photographic archive above sits on top of.
