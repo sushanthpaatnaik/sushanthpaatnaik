@@ -217,9 +217,7 @@ function ScrollCue() {
             : { duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
         }
       />
-        </motion.div>
-      </div>
-    </section>
+    </motion.button>
   );
 }
 
