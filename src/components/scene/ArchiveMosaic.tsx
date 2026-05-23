@@ -334,3 +334,209 @@ export function StatsAuthorityBlock({
     </div>
   );
 }
+
+/**
+ * ArchivePlate — single museum-style plate. One image, one rich editorial
+ * caption block. Alternates left/right at md+. Replaces the dense masonry
+ * grid for a deliberate, institutional reading rhythm.
+ */
+export function ArchivePlate({
+  item,
+  index,
+  plateNumber,
+}: {
+  item: ArchiveItem;
+  index: number;
+  plateNumber: string;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { amount: 0.2, once: true });
+  const flip = index % 2 === 1;
+
+  return (
+    <motion.figure
+      ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.05, ease: [0.19, 1, 0.22, 1] }}
+      className={`group grid grid-cols-1 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] md:grid-cols-12 ${
+        flip ? "md:[&>figcaption]:order-first" : ""
+      }`}
+    >
+      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
+        <img
+          src={item.src}
+          alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover opacity-95 transition-all duration-[1500ms] ease-out group-hover:scale-[1.025] group-hover:opacity-100"
+          style={{
+            objectPosition: item.focus ?? "center 30%",
+            filter: "grayscale(0.08) contrast(1.07) saturate(0.92) brightness(0.96)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.30) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.45) 100%)",
+          }}
+        />
+        {/* Archival corner mark */}
+        <div className="absolute left-5 top-5 z-10 flex items-center gap-2">
+          <span className="h-px w-6 bg-accent/70" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-accent/85">
+            Plate {plateNumber}
+          </span>
+        </div>
+      </div>
+
+      <figcaption className="relative col-span-1 flex flex-col justify-between gap-8 bg-[oklch(0.045_0.006_245)] p-7 md:col-span-4 md:p-9">
+        <div>
+          <span className="block font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
+            {item.category}
+          </span>
+          <span className="mt-5 block font-display text-[22px] leading-[1.18] tracking-[-0.012em] text-foreground/95 md:text-[26px]">
+            {item.institution ?? item.caption}
+          </span>
+          {item.recognition && (
+            <span className="mt-3 block font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/65">
+              {item.recognition}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          {item.presenter && (
+            <p className="font-display text-[14px] italic leading-snug text-foreground/75">
+              {item.presenter}
+            </p>
+          )}
+          {item.venue && (
+            <p className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+              {item.venue}
+            </p>
+          )}
+          {!item.presenter && !item.venue && (
+            <p className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+              {item.meta}
+            </p>
+          )}
+        </div>
+
+        <span
+          aria-hidden
+          className="absolute inset-y-7 left-0 hidden w-px bg-foreground/[0.06] md:block"
+        />
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+/**
+ * ArchivePlateSeries — stacks plates with a hairline separator and an
+ * archival series header. Museum-exhibit reading rhythm.
+ */
+export function ArchivePlateSeries({
+  items,
+  eyebrow,
+  startIndex = 1,
+}: {
+  items: ArchiveItem[];
+  eyebrow: string;
+  startIndex?: number;
+}) {
+  return (
+    <div className="not-prose mt-10">
+      <div className="mb-6 flex items-center gap-3">
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+          {eyebrow}
+        </span>
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+      </div>
+      <div className="flex flex-col gap-px bg-foreground/[0.04]">
+        {items.map((item, i) => (
+          <ArchivePlate
+            key={item.src + i}
+            item={item}
+            index={i}
+            plateNumber={String(startIndex + i).padStart(2, "0")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * PresidentialTriptych — three monumental columns for the three Presidents
+ * of India. The centerpiece of the archive.
+ */
+export function PresidentialTriptych({
+  items,
+  eyebrow = "Presidential Recognitions · Three Sitting Presidents of India",
+}: {
+  items: ArchiveItem[];
+  eyebrow?: string;
+}) {
+  return (
+    <div className="not-prose mt-12">
+      <div className="mb-6 flex items-center gap-3">
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+          {eyebrow}
+        </span>
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+      </div>
+      <div className="grid grid-cols-1 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] md:grid-cols-3">
+        {items.map((item, i) => (
+          <motion.figure
+            key={item.src + i}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 1.1, delay: i * 0.12, ease: [0.19, 1, 0.22, 1] }}
+            className="group relative flex flex-col bg-[oklch(0.05_0.006_245)]"
+          >
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <img
+                src={item.src}
+                alt={item.presenter ?? item.caption}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover opacity-92 transition-all duration-[1600ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100"
+                style={{
+                  objectPosition: item.focus ?? "center 28%",
+                  filter: "grayscale(0.10) contrast(1.08) saturate(0.90) brightness(0.95)",
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.32) 0%, transparent 40%, oklch(0.02 0.006 245 / 0.78) 88%, oklch(0.014 0.006 245 / 0.96) 100%)",
+                }}
+              />
+              <span className="absolute left-4 top-4 font-mono text-[9px] uppercase tracking-[0.42em] text-accent/85">
+                № {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <figcaption className="flex flex-col gap-2 p-6">
+              <span className="font-mono text-[9.5px] uppercase tracking-[0.34em] text-accent/75">
+                {item.recognition ?? item.meta}
+              </span>
+              <span className="font-display text-[18px] leading-[1.18] tracking-[-0.01em] text-foreground/95">
+                {item.presenter ?? item.caption}
+              </span>
+              <span className="mt-1 h-px w-8 bg-accent/40" />
+              <span className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+                {item.venue ?? item.institution}
+              </span>
+            </figcaption>
+          </motion.figure>
+        ))}
+      </div>
+    </div>
+  );
+}
