@@ -170,46 +170,58 @@ function VenturesPage() {
           A short ledger of the houses I quietly advise across materials, design and
           consumer technology.
         </p>
-        <div className="not-prose mt-12 grid grid-cols-2 items-stretch gap-4 sm:grid-cols-3 md:grid-cols-5 md:gap-5">
+        <div className="not-prose mt-14 grid grid-cols-2 items-stretch gap-px sm:grid-cols-3 md:grid-cols-5 bg-foreground/[0.05] rounded-sm overflow-hidden ring-1 ring-foreground/[0.05]">
           {advisories.map((a) => (
             <div
               key={a.name}
-              className="group relative flex flex-col items-center justify-center gap-4 rounded-sm px-4 py-8 md:py-10 text-center overflow-hidden transition-all duration-700"
+              className="group relative flex flex-col items-center justify-between gap-7 px-5 py-10 md:py-12 text-center overflow-hidden bg-[oklch(0.06_0.008_245)] transition-all duration-700"
             >
-              {/* Volumetric halo — soft directional glow behind each mark */}
+              {/* Atmospheric well — deep cinematic base behind the mark */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-700 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(60% 55% at 50% 42%, oklch(0.55 0.04 235 / 0.18), transparent 70%)",
+                    "radial-gradient(85% 75% at 50% 38%, oklch(0.13 0.012 240 / 0.85) 0%, oklch(0.05 0.006 245 / 0.96) 72%)",
                 }}
               />
-              {/* Subtle local lift — raises contrast around the logo without flattening atmosphere */}
+              {/* Volumetric key light — soft directional glow appears on hover */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-4 top-4 bottom-12 rounded-sm opacity-60 transition-opacity duration-700 group-hover:opacity-90"
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 group-hover:opacity-100"
                 style={{
                   background:
-                    "radial-gradient(70% 60% at 50% 50%, oklch(0.18 0.01 240 / 0.55), transparent 75%)",
-                  boxShadow:
-                    "inset 0 1px 0 oklch(1 0 0 / 0.04), inset 0 -1px 0 oklch(0 0 0 / 0.3)",
+                    "radial-gradient(55% 45% at 50% 28%, oklch(0.62 0.05 230 / 0.20), transparent 75%)",
                 }}
               />
-              {/* Hairline frame — editorial separation */}
+              {/* Reflective floor — subtle industrial sheen at the base */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-sm border border-foreground/[0.06] transition-colors duration-700 group-hover:border-foreground/[0.14]"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+                style={{
+                  background:
+                    "linear-gradient(to top, oklch(0.10 0.01 240 / 0.55), transparent)",
+                }}
               />
-              <img
-                src={a.logo}
-                alt={`${a.name} — ${a.sector}`}
-                loading="lazy"
-                className="relative z-10 h-12 md:h-16 w-auto max-w-[82%] object-contain opacity-95 mix-blend-screen drop-shadow-[0_2px_14px_oklch(0_0_0/0.6)] transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.02]"
-              />
-              <span className="relative z-10 font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/55 transition-colors duration-700 group-hover:text-foreground/75">
-                {a.sector}
-              </span>
+              {/* Logo plate — equal optical container, mass-balanced sizing */}
+              <div className="relative z-10 flex flex-1 items-center justify-center w-full min-h-[64px] md:min-h-[80px]">
+                <img
+                  src={a.logo}
+                  alt={`${a.name} — ${a.sector}`}
+                  loading="lazy"
+                  className="max-h-[48px] md:max-h-[58px] max-w-[72%] w-auto h-auto object-contain opacity-90 drop-shadow-[0_2px_18px_oklch(0_0_0/0.7)] transition-all duration-700 group-hover:opacity-100"
+                />
+              </div>
+              {/* Editorial caption block — hairline + tracked label */}
+              <div className="relative z-10 flex flex-col items-center gap-3">
+                <span
+                  aria-hidden
+                  className="block h-px w-6 bg-foreground/15 transition-all duration-700 group-hover:w-10 group-hover:bg-accent/40"
+                />
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.42em] leading-none text-foreground/55 transition-colors duration-700 group-hover:text-foreground/80">
+                  {a.sector}
+                </span>
+              </div>
             </div>
           ))}
         </div>
