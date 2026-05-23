@@ -456,9 +456,11 @@ function EraAccordion({
   title,
   description,
   defaultOpen = false,
+  forceOpen,
   plateCount,
   registryCount,
   previewPlates,
+  anchorId,
   children,
 }: {
   number: string;
@@ -466,17 +468,21 @@ function EraAccordion({
   title: string;
   description: string;
   defaultOpen?: boolean;
+  forceOpen?: boolean;
   plateCount: number;
   registryCount: number;
   previewPlates?: ArchiveItem[];
+  anchorId?: string;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const open = forceOpen ?? internalOpen;
   return (
     <Collapsible.Root
       open={open}
-      onOpenChange={setOpen}
-      className="not-prose group/era relative border-t border-foreground/[0.08]"
+      onOpenChange={setInternalOpen}
+      id={anchorId}
+      className="not-prose group/era relative border-t border-foreground/[0.08] scroll-mt-28"
     >
       <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[oklch(0.05_0.003_245)]/40">
         <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-8 md:gap-x-12">
@@ -522,11 +528,11 @@ function EraAccordion({
                   <img
                     src={p.src}
                     alt={p.caption}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-1000 group-hover/era:opacity-85"
+                    loading="eager"
+                    className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-1000 group-hover/era:opacity-100"
                     style={{
                       objectPosition: p.focus ?? "center 30%",
-                      filter: "grayscale(0.25) contrast(1.06) saturate(0.78) brightness(0.86)",
+                      filter: "grayscale(0.12) contrast(1.05) saturate(0.88) brightness(0.95)",
                     }}
                   />
                   <div
@@ -643,7 +649,18 @@ function ledgerSlice(years: string[]): LedgerYear[] {
   return ledgerByYear.filter((g) => years.includes(g.year));
 }
 
+const sectionNav = [
+  { id: "overview", label: "Overview" },
+  { id: "hall-of-fame", label: "Hall of Fame" },
+  { id: "presidential", label: "Presidential" },
+  { id: "global", label: "Global Stages" },
+  { id: "industrial", label: "Industrial & Diplomatic" },
+  { id: "present", label: "Present Field" },
+  { id: "ledger", label: "Achievement Ledger" },
+];
+
 function RecognitionsPage() {
+  const [expandAll, setExpandAll] = useState(false);
   return (
     <CinematicPageShell
       eyebrow="Recognitions · Twenty-Seven Honors of Record"
@@ -652,9 +669,42 @@ function RecognitionsPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
-      {/* 01 · Featured Recognition — cinematic highlight tier (lead) */}
+      {/* In-page section index — sticky archival navigation */}
+      <nav
+        id="overview"
+        aria-label="Recognitions sections"
+        className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-14 backdrop-blur-xl bg-[oklch(0.04_0.003_245)]/75 border-y border-foreground/[0.08] scroll-mt-2"
+      >
+        <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-3.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {sectionNav.map((s) => (
+            <li key={s.id} className="flex-shrink-0">
+              <a
+                href={`#${s.id}`}
+                className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55 hover:text-foreground/95 transition-colors duration-500"
+              >
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* 01 · Hall of Fame — brought up front for immediate visual archive */}
+      <div id="hall-of-fame" className="scroll-mt-24">
+        <EditorialSection number="01 · Overture" heading="Moments of recognition.">
+          <p>
+            A continuous cinematic strip — mainstage keynotes, presidential
+            demonstrations, diplomatic honours and institutional citations —
+            offered up front so the visual depth of the record is felt
+            before the chronology begins.
+          </p>
+        </EditorialSection>
+        <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+      </div>
+
+      {/* 02 · Featured Recognition — cinematic highlight tier */}
       <EditorialSection
-        number="01 · Featured"
+        number="02 · Featured"
         heading="Six recognitions that define the archive."
       >
         <p>
@@ -664,11 +714,8 @@ function RecognitionsPage() {
         </p>
       </EditorialSection>
 
-      {/* Cinematic institutional timeline tree — alternating archival panels
-          on a single vertical spine. Major recognitions render as full
-          archival plates; secondary recognitions as quieter nodes. */}
+      {/* Cinematic institutional timeline tree */}
       <div className="not-prose relative mt-16 md:mt-20">
-        {/* Center spine — runs the full length of the timeline */}
         <div
           aria-hidden
           className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px md:-translate-x-1/2"
@@ -677,7 +724,6 @@ function RecognitionsPage() {
               "linear-gradient(to bottom, transparent 0%, oklch(var(--foreground) / 0.12) 8%, oklch(var(--foreground) / 0.18) 50%, oklch(var(--foreground) / 0.12) 92%, transparent 100%)",
           }}
         />
-        {/* Top cap */}
         <div
           aria-hidden
           className="absolute left-6 md:left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-foreground/40 ring-4 ring-[oklch(0.045_0.003_245)]"
@@ -694,7 +740,6 @@ function RecognitionsPage() {
                   key={m.title}
                   className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-12 md:py-20"
                 >
-                  {/* Year anchor at the spine */}
                   <div className="md:col-span-2 md:absolute md:left-1/2 md:top-12 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
                     <span
                       aria-hidden
@@ -708,7 +753,6 @@ function RecognitionsPage() {
                     </div>
                   </div>
 
-                  {/* Alternating panel — image + content together on one side of spine */}
                   <motion.article
                     initial={{ opacity: 0, y: 36 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -718,7 +762,6 @@ function RecognitionsPage() {
                       onLeft ? "" : "md:[&>*:first-child]:order-2"
                     }`}
                   >
-                    {/* Archival image plate */}
                     <figure
                       className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
                         m.major
@@ -729,11 +772,11 @@ function RecognitionsPage() {
                       <img
                         src={m.image}
                         alt={m.title}
-                        loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover opacity-85 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+                        loading={i < 2 ? "eager" : "lazy"}
+                        className="absolute inset-0 h-full w-full object-cover opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
                         style={{
                           objectPosition: m.imageFocus ?? "center 30%",
-                          filter: "grayscale(0.18) contrast(1.06) saturate(0.82) brightness(0.90)",
+                          filter: "grayscale(0.10) contrast(1.05) saturate(0.92) brightness(0.98)",
                         }}
                       />
                       <div
@@ -741,10 +784,9 @@ function RecognitionsPage() {
                         className="absolute inset-0"
                         style={{
                           background:
-                            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.18) 0%, transparent 38%, oklch(0.02 0.006 245 / 0.72) 88%, oklch(0.014 0.006 245 / 0.95) 100%)",
+                            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.14) 0%, transparent 42%, oklch(0.02 0.006 245 / 0.62) 90%, oklch(0.014 0.006 245 / 0.92) 100%)",
                         }}
                       />
-                      {/* Subtle archival glow on hover */}
                       <div
                         aria-hidden
                         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
@@ -763,7 +805,6 @@ function RecognitionsPage() {
                       </figcaption>
                     </figure>
 
-                    {/* Editorial content */}
                     <div
                       className={`relative pt-6 md:pt-2 ${
                         onLeft ? "md:pl-2" : "md:pr-2"
@@ -802,7 +843,6 @@ function RecognitionsPage() {
             })}
         </ol>
 
-        {/* Bottom cap — continuation marker */}
         <div
           aria-hidden
           className="absolute left-6 md:left-1/2 bottom-0 -translate-x-1/2 flex flex-col items-center gap-2"
@@ -814,33 +854,25 @@ function RecognitionsPage() {
         </div>
       </div>
 
-      {/* 02 · Authority block — institutional register at a glance */}
+      {/* 03 · Authority block */}
       <StatsAuthorityBlock items={counters} eyebrow="Archive · Register of Record" />
 
-      {/* 03 · Hall of Fame overture — cinematic reel as visual pause */}
-      <EditorialSection number="03 · Overture" heading="A continuous archival reel.">
-        <p>
-          A single cinematic strip — newspaper plates, mainstage moments,
-          presidential demonstrations and honorary citations — before the
-          deeper archive opens.
-        </p>
-      </EditorialSection>
-      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+      {/* 04 · Presidential triptych — centerpiece */}
+      <div id="presidential" className="scroll-mt-24">
+        <EditorialSection number="04 · Centerpiece" heading="Three Presidents of India. Six citations.">
+          <p>
+            The defining plate of the archive — felicitated by three sitting
+            Presidents of India across six separate citations between 2008 and
+            2013. The gravitational centre around which the rest of the
+            recognitions orbit.
+          </p>
+        </EditorialSection>
+        <PresidentialTriptych
+          items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
+        />
+      </div>
 
-      {/* 04 · Centerpiece — Presidential triptych */}
-      <EditorialSection number="04 · Centerpiece" heading="Three Presidents of India. Six citations.">
-        <p>
-          The defining plate of the archive — felicitated by three sitting
-          Presidents of India across six separate citations between 2008 and
-          2013. The gravitational centre around which the rest of the
-          recognitions orbit.
-        </p>
-      </EditorialSection>
-      <PresidentialTriptych
-        items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
-      />
-
-      {/* 04.5 · Documentary Mosaic — dense cinematic collage across the full archive */}
+      {/* 05 · Documentary mosaic */}
       <EditorialSection
         number="05 · Documentary"
         heading="A cinematic mosaic of the record."
@@ -848,23 +880,40 @@ function RecognitionsPage() {
         <p>
           Newspaper plates, ministerial moments, presidential citations, and
           mainstage photography — drawn from the full archive and intercut as
-          a single documentary collage. The visual register before the
-          chronology opens.
+          a single documentary collage.
         </p>
       </EditorialSection>
       <ArchiveMosaic items={documentaryMosaic} />
 
-      {/* 06 · Era archives — progressive disclosure */}
+      {/* 06 · Era archives — progressive disclosure with expand-all */}
       <EditorialSection number="06 · Archives" heading="Open the era you want to walk through.">
         <p>
           Four eras, four archives. Each opens into the full photographic
-          plates and the year-by-year register for that period. A preview
-          strip remains visible for every era so the depth of the record is
-          always felt, even when the chronology is closed.
+          plates for that period. A preview strip remains visible for every
+          era so the depth of the record is always felt — or expand the full
+          archive at once.
         </p>
       </EditorialSection>
 
-      <div className="not-prose mt-10 border-b border-foreground/[0.08]">
+      <div className="not-prose mt-8 flex flex-wrap items-center justify-between gap-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+          {expandAll ? "Full archive · all eras open" : "Tap an era to walk through · or expand all"}
+        </p>
+        <button
+          type="button"
+          onClick={() => setExpandAll((v) => !v)}
+          className="group inline-flex items-center gap-3 border border-foreground/15 hover:border-foreground/45 px-5 py-2.5 rounded-sm transition-all duration-500 hover:bg-[oklch(0.06_0.004_245)]/70"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/70 group-hover:text-foreground transition-colors duration-500">
+            {expandAll ? "Collapse full archive" : "Expand full archive"}
+          </span>
+          <span className="font-mono text-[10px] text-foreground/35 group-hover:text-foreground/65 transition-colors duration-500">
+            {expandAll ? "−" : "+"}
+          </span>
+        </button>
+      </div>
+
+      <div className="not-prose mt-6 border-b border-foreground/[0.08]">
         <EraAccordion
           number="I"
           era="2008 – 2013"
@@ -874,18 +923,13 @@ function RecognitionsPage() {
           registryCount={ledgerSlice(["2008", "2009", "2013"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraPresidential}
           defaultOpen
+          forceOpen={expandAll ? true : undefined}
         >
           <ArchivePlateSeries
             items={eraPresidential}
             eyebrow="Archive I · Presidential Years"
             startIndex={1}
           />
-          <div className="mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
-              Register · Year by Year
-            </p>
-            <LedgerYearGroup groups={ledgerSlice(["2008", "2009", "2013"])} />
-          </div>
         </EraAccordion>
 
         <EraAccordion
@@ -896,18 +940,14 @@ function RecognitionsPage() {
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraGlobal}
+          anchorId="global"
+          forceOpen={expandAll ? true : undefined}
         >
           <ArchivePlateSeries
             items={eraGlobal}
             eyebrow="Archive II · Global Stages"
             startIndex={eraPresidential.length + 1}
           />
-          <div className="mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
-              Register · Year by Year
-            </p>
-            <LedgerYearGroup groups={ledgerSlice(["2010", "2011", "2012", "2013–14"])} />
-          </div>
         </EraAccordion>
 
         <EraAccordion
@@ -918,18 +958,14 @@ function RecognitionsPage() {
           plateCount={eraIndustrial.length}
           registryCount={ledgerSlice(["2021", "2022", "2023"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraIndustrial}
+          anchorId="industrial"
+          forceOpen={expandAll ? true : undefined}
         >
           <ArchivePlateSeries
             items={eraIndustrial}
             eyebrow="Archive III · Industrial & Diplomatic"
             startIndex={eraPresidential.length + eraGlobal.length + 1}
           />
-          <div className="mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
-              Register · Year by Year
-            </p>
-            <LedgerYearGroup groups={ledgerSlice(["2021", "2022", "2023"])} />
-          </div>
         </EraAccordion>
 
         <EraAccordion
@@ -940,19 +976,28 @@ function RecognitionsPage() {
           plateCount={eraPresent.length}
           registryCount={ledgerSlice(["2024", "2025"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraPresent}
+          anchorId="present"
+          forceOpen={expandAll ? true : undefined}
         >
           <ArchivePlateSeries
             items={eraPresent}
             eyebrow="Archive IV · The Present Field"
             startIndex={eraPresidential.length + eraGlobal.length + eraIndustrial.length + 1}
           />
-          <div className="mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
-              Register · Year by Year
-            </p>
-            <LedgerYearGroup groups={ledgerSlice(["2024", "2025"])} />
-          </div>
         </EraAccordion>
+      </div>
+
+      {/* 07 · Achievement Ledger — full 27 honors, always visible */}
+      <div id="ledger" className="scroll-mt-24 mt-32 md:mt-40">
+        <EditorialSection number="07 · Register" heading="Achievement ledger · 27 of record.">
+          <p>
+            The complete year-by-year register — every Presidential citation,
+            fellowship, award, keynote and felicitation on file from 2008 to
+            2025. Featured entries are marked with a diamond; the full
+            chronology is always open here.
+          </p>
+        </EditorialSection>
+        <LedgerYearGroup groups={ledgerByYear} />
       </div>
 
       {/* 06 · Legacy Closure — cinematic institutional farewell */}
