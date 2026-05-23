@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Nav from "@/components/scene/Nav";
+import { AtmosphericWash } from "@/components/scene/cinematic";
 import { essays } from "./essays";
 
 type EssaySection = { heading?: string; paragraphs: string[]; bullets?: string[] };
