@@ -193,125 +193,124 @@ function HairlinePlate({
 }
 
 function SpecimenCard({ w, index }: { w: Work; index: number }) {
-  const isHero = w.hero;
+  const flip = index % 2 === 1;
   return (
     <motion.article
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 1.15, delay: index * 0.04, ease: [0.19, 1, 0.22, 1] }}
-      className={`group relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.025] ${
-        isHero ? "md:col-span-2" : ""
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 1.15, delay: 0.04, ease: [0.19, 1, 0.22, 1] }}
+      className={`group relative grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.04] md:grid-cols-12 ${
+        flip ? "md:[&>.specimen-notes]:order-first" : ""
       }`}
     >
-      <div
-        className={`relative overflow-hidden ${
-          isHero ? "aspect-[16/9]" : "aspect-[4/3]"
-        }`}
-      >
+      {/* ── Plate image ── */}
+      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)] md:col-span-7 md:aspect-auto md:min-h-[460px]">
         <img
           src={w.img}
           alt={`${w.title} — ${w.tagline}`}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.35] contrast-[1.04] transition-all duration-[1200ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.03]"
+          className="absolute inset-0 h-full w-full object-cover opacity-78 grayscale-[0.35] contrast-[1.05] brightness-[0.95] transition-all duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.02]"
         />
-        {/* Cinematic overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/45 to-transparent" />
+        {/* Cinematic vignette */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-60"
+          className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
           style={{
             background:
-              "radial-gradient(110% 80% at 50% 50%, transparent 40%, oklch(0.02 0 0 / 0.72) 100%)",
+              "radial-gradient(110% 80% at 50% 50%, transparent 40%, oklch(0.02 0 0 / 0.78) 100%)",
           }}
         />
-        {/* Archival corner marks */}
-        <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />
-        <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/30" />
-        <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/30" />
-        <div className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-foreground/30" />
-        {/* Plate ID */}
-        <div className="absolute left-4 top-4 font-mono text-[9px] uppercase tracking-[0.35em] text-foreground/75 mix-blend-screen">
-          {w.code} · {w.year}
+        {/* Archival corner registration marks */}
+        <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/35" />
+        <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/35" />
+        <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/35" />
+        <div className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-foreground/35" />
+        {/* Plate header strip */}
+        <div className="absolute left-4 top-4 z-10 flex items-center gap-3">
+          <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-foreground/85 mix-blend-screen">
+            {w.code}
+          </span>
+          <span className="h-px w-5 bg-accent/65" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+            {w.year} · {w.age}
+          </span>
         </div>
-        {isHero && (
-          <div className="absolute right-4 top-4 font-mono text-[9px] uppercase tracking-[0.35em] text-accent/85">
-            Plate I · Hero Specimen
+        {w.hero && (
+          <div className="absolute right-4 top-4 z-10 font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+            Hero Specimen
           </div>
         )}
       </div>
 
-      <div className={`p-6 md:p-8 ${isHero ? "md:p-10" : ""}`}>
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/75">
+      {/* ── Field notes column ── */}
+      <div className="specimen-notes relative col-span-1 flex flex-col justify-between gap-8 bg-[oklch(0.045_0.006_245)] p-7 md:col-span-5 md:p-10">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-primary/75">
             {w.category}
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground/55">
-            {w.age}
+          <h3 className="mt-5 font-display text-[26px] md:text-[32px] leading-[1.1] tracking-[-0.018em] text-foreground/95">
+            {w.title}
+          </h3>
+          <p className="mt-3 font-display italic text-[14px] tracking-[0.01em] text-accent/80">
+            {w.tagline}
+          </p>
+          <p className="mt-6 max-w-md text-[14.5px] leading-[1.75] text-foreground/70">
+            {w.body}
           </p>
         </div>
 
-        <h3
-          className={`mt-4 font-display tracking-[-0.018em] text-foreground/95 ${
-            isHero
-              ? "text-3xl md:text-4xl"
-              : "text-xl md:text-2xl"
-          }`}
-        >
-          {w.title}
-        </h3>
-        <p className="mt-2 font-display italic text-[13px] md:text-[14px] tracking-[0.01em] text-accent/80">
-          {w.tagline}
-        </p>
-
-        <p
-          className={`mt-5 leading-relaxed text-foreground/70 ${
-            isHero ? "text-[15px] md:text-base max-w-2xl" : "text-[14px]"
-          }`}
-        >
-          {w.body}
-        </p>
-
-        {/* Archival field plate */}
-        <dl className="mt-6 grid grid-cols-1 gap-3 border-t border-foreground/[0.08] pt-5 text-[12px] md:grid-cols-2">
+        {/* Field plate */}
+        <dl className="grid grid-cols-1 gap-4 border-t border-foreground/[0.08] pt-5 text-[12px]">
           <div>
             <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
-              Problem
+              Problem in the world
             </dt>
-            <dd className="mt-1 text-foreground/75">{w.problem}</dd>
+            <dd className="mt-1.5 text-foreground/80 font-display italic">{w.problem}</dd>
           </div>
           <div>
             <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
-              Material
+              Material answer
             </dt>
-            <dd className="mt-1 text-foreground/75">{w.material}</dd>
+            <dd className="mt-1.5 text-foreground/75">{w.material}</dd>
           </div>
         </dl>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-          {w.press && (
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/65">
-              {w.press}
-            </span>
-          )}
-          {w.video && (
-            <a
-              href={
-                w.videoSource === "vimeo"
-                  ? `https://vimeo.com/${w.video}`
-                  : `https://www.youtube.com/watch?v=${w.video}`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/80 hover:text-accent transition-colors"
-            >
-              Watch demo <span className="opacity-70">↗</span>
-            </a>
-          )}
-        </div>
+        {/* Press · demo footnote */}
+        {(w.press || w.video) && (
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-foreground/[0.06] pt-5">
+            {w.press && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/65">
+                {w.press}
+              </span>
+            )}
+            {w.video && (
+              <a
+                href={
+                  w.videoSource === "vimeo"
+                    ? `https://vimeo.com/${w.video}`
+                    : `https://www.youtube.com/watch?v=${w.video}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/80 hover:text-accent transition-colors"
+              >
+                Watch field demo <span className="opacity-70">↗</span>
+              </a>
+            )}
+          </div>
+        )}
+
+        {/* Hairline column rule */}
+        <span
+          aria-hidden
+          className="absolute inset-y-7 left-0 hidden w-px bg-foreground/[0.06] md:block"
+        />
       </div>
     </motion.article>
   );
 }
+
 
 function OriginStats() {
   return (
