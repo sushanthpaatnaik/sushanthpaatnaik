@@ -43,7 +43,8 @@ function CanvasOpacity({ scrollProgress }: { scrollProgress: Props["scrollProgre
     const p = scrollProgress.current;
     // Visible across chapters 02 → 06, peak around chapter 03 (Carbon Intelligence).
     const v = Math.max(range(p, 0.14, 0.82, 0.1, 0.12), range(p, 0.28, 0.45, 0.05, 0.1));
-    wrapper.style.opacity = String(0.55 * v);
+    // Lowered ceiling — ambient atmosphere, never spectacle.
+    wrapper.style.opacity = String(0.38 * v);
   });
   return null;
 }
@@ -59,19 +60,18 @@ function GrapheneCanvas({ scrollProgress, mouse }: Props) {
       <Suspense fallback={null}>
         <fog attach="fog" args={["#06070a", 6, 24]} />
 
-        <ambientLight intensity={0.18} />
-        <directionalLight position={[6, 4, 5]} intensity={0.45} color="#9bb8d8" />
-        <pointLight position={[-5, -2, -2]} intensity={1.1} distance={18} color="#3FA9F5" />
-        <pointLight position={[4, 3, 1]} intensity={0.6} distance={16} color="#7CCBFF" />
+        <ambientLight intensity={0.16} />
+        <directionalLight position={[6, 4, 5]} intensity={0.38} color="#9bb8d8" />
+        <pointLight position={[-5, -2, -2]} intensity={0.78} distance={18} color="#3FA9F5" />
+        <pointLight position={[4, 3, 1]} intensity={0.42} distance={16} color="#7CCBFF" />
 
         <GrapheneAtmosphere scrollProgress={scrollProgress} />
         <ParallaxCamera scrollProgress={scrollProgress} mouse={mouse} />
         <CanvasOpacity scrollProgress={scrollProgress} />
 
-        {/* DoF removed — was the heaviest single postprocess. Bloom alone
-            preserves the volumetric, atmospheric glow at a fraction of cost. */}
+        {/* Restrained bloom — volumetric diffusion, not spectacle. */}
         <EffectComposer multisampling={0}>
-          <Bloom intensity={0.22} luminanceThreshold={0.5} luminanceSmoothing={0.94} />
+          <Bloom intensity={0.14} luminanceThreshold={0.62} luminanceSmoothing={0.96} />
         </EffectComposer>
       </Suspense>
     </Canvas>
