@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import monogram from "@/assets/sp-monogram.svg";
 
 export default function Loader() {
   const [progress, setProgress] = useState(0);
@@ -30,7 +31,22 @@ export default function Loader() {
       {/* center mark */}
       <div className="flex flex-col items-center gap-10">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent shadow-[0_0_40px_oklch(0.85_0.15_220/0.6)] animate-pulse" />
+          <div className="relative flex items-center justify-center">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -m-4 rounded-full animate-pulse"
+              style={{
+                background:
+                  "radial-gradient(circle, oklch(0.78 0.13 80 / 0.32) 0%, oklch(0.72 0.14 75 / 0.14) 45%, transparent 72%)",
+                filter: "blur(8px)",
+              }}
+            />
+            <img
+              src={monogram}
+              alt="SP monogram"
+              className="relative w-10 h-10 md:w-11 md:h-11 object-contain drop-shadow-[0_0_14px_oklch(0.78_0.13_80/0.45)]"
+            />
+          </div>
           <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-medium whitespace-pre-line text-center leading-relaxed">
             SUSHANTH{"\n"}PAATNAIK
           </span>
