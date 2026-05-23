@@ -741,7 +741,8 @@ function RecognitionsPage() {
               return (
                 <li
                   key={m.title}
-                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-12 md:py-20"
+                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-10 md:py-14"
+
                 >
                   <div className="md:col-span-2 md:absolute md:left-1/2 md:top-12 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
                     <span
