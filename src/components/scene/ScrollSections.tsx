@@ -318,6 +318,43 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Recognitions — chronological honors as an editorial ledger.
+          Not a trophy wall: a quiet timeline of national record. */}
+      <section id="recognitions" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.10_0.03_245/0.08),transparent_72%)]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="md:col-span-4 md:sticky md:top-32 self-start">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Recognitions</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              An institutional ledger.
+            </h3>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Honors recorded by the Republic, the academy, and the press. Read as record, not as résumé.
+            </p>
+          </MotionReveal>
+          <div className="md:col-span-8">
+            {[
+              { y: "2008–2013", t: "Indian Presidential Awardee", b: "Six awards conferred by the President of India between 2008 and 2013 — for invention, design, and engineering at school and college age." },
+              { y: "2010", t: "NIF-India · IGNITE", b: "National Innovation Foundation honor for grassroots-engineered prototypes addressing real-world systems gaps." },
+              { y: "2010", t: "TED India · Speaker", b: "Among the youngest speakers invited to the inaugural Indian programme — a national platform for original thought." },
+              { y: "—", t: "MIT Technology Review · Featured", b: "Profiled as a featured innovator within the global advanced-materials and deep-tech track." },
+              { y: "—", t: "Global Indian · Cover", b: "Editorial cover feature framing the long-arc inventor narrative for an international Indian readership." },
+              { y: "—", t: "Times of India · 21 Patents", b: "Profiled at the milestone of twenty-one filed patents — a published institutional acknowledgement." },
+              { y: "—", t: "Business Standard · Battery", b: "Editorial coverage of an early battery-systems breakthrough originating in independent research." },
+              { y: "—", t: "India Today · Profile", b: "Long-form national-press profile examining the trajectory from school inventor to deep-tech founder." },
+            ].map((r, i) => (
+              <MotionReveal key={r.t} delay={i * 0.04} className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/[0.08] py-6 md:py-7 transition-colors duration-500 hover:border-foreground/20">
+                <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55 min-w-[5rem]">{r.y}</span>
+                <div>
+                  <h4 className="mb-2 font-display text-base md:text-xl tracking-[-0.015em]">{r.t}</h4>
+                  <p className="max-w-lg text-[13px] leading-relaxed text-muted-foreground/80">{r.b}</p>
+                </div>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
 
 
@@ -394,6 +431,46 @@ export default function ScrollSections() {
         </div>
       </section>
 
+      {/* Selected Inventions — cinematic innovation archive.
+          Named breakthroughs, not generic domains. Industrial future systems. */}
+      <section id="innovations" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_60%_45%,oklch(0.12_0.04_245/0.10),transparent_72%)]" />
+        <div className="mx-auto w-full max-w-6xl pointer-events-auto">
+          <MotionReveal className="max-w-3xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Selected Inventions</p>
+            <h3 className="mb-5 font-display text-[clamp(2rem,7vw,3.75rem)] leading-[1.02] tracking-[-0.03em] text-gradient">
+              An archive of working systems.
+            </h3>
+            <p className="mb-16 md:mb-20 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground">
+              A non-exhaustive index of prototypes, processes, and patented systems engineered between the workshop bench and the industrial pilot floor.
+            </p>
+          </MotionReveal>
+          <div className="grid gap-px bg-foreground/[0.06] md:grid-cols-2">
+            {[
+              { n: "I", t: "Breath-Powered Mobility", y: "2007", b: "The first invention. A wheelchair controlled by breath cadence, engineered at fourteen for a man who could no longer speak. The empathic origin of every system that followed." },
+              { n: "II", t: "Single-Atom Graphene Synthesis", y: "Ongoing", b: "Clean, scalable manufacture of one-atom-thick carbon — the substrate beneath every downstream platform from solar to storage." },
+              { n: "III", t: "Rapid-Charge Battery Architecture", y: "Published", b: "Electrode geometries reducing charge cycles to minutes at industrial energy density. Covered in the national press as an early breakthrough." },
+              { n: "IV", t: "Coal-Moisture Reduction System", y: "Patent", b: "An industrial process intervention reducing in-stream moisture in thermal-grade coal — extracting efficiency from legacy fuel infrastructure in transition." },
+              { n: "V", t: "Carbon-Augmented Concrete", y: "Pilot", b: "Cement binders engineered with carbon additives — less clinker, longer service life, lower embodied emissions per cubic metre placed." },
+              { n: "VI", t: "Photonic Solar Coatings", y: "Lab", b: "Thin-film coatings lifting the spectral capture window of conventional photovoltaic surfaces under real-world deployment conditions." },
+              { n: "VII", t: "Polymer Conductivity Additives", y: "Industrial", b: "Carbon dispersions transforming insulating polymers into conductive, EMI-shielding, structural-grade engineering materials." },
+              { n: "VIII", t: "Membrane Water Recovery", y: "Field", b: "Adsorbent and membrane systems for industrial effluent recovery and potable water in resource-constrained corridors." },
+              { n: "IX", t: "Carbon-Capture Surfaces", y: "Research", b: "Functionalised surface chemistries for passive atmospheric CO₂ adsorption integrated into industrial cladding and infrastructure." },
+              { n: "X", t: "AI · Materials Discovery Loop", y: "Internal", b: "A closed loop where AI proposes lattice configurations, simulation prunes them, and the lab returns failure data — compressing the discovery cycle." },
+            ].map((inv, i) => (
+              <MotionReveal key={inv.t} delay={i * 0.04} className="panel-surface p-6 sm:p-8 md:p-10">
+                <div className="flex items-baseline justify-between gap-4 mb-4">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-primary/70">{inv.n}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/45">{inv.y}</span>
+                </div>
+                <h4 className="mb-3 font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">{inv.t}</h4>
+                <p className="text-[13px] leading-relaxed text-muted-foreground/80">{inv.b}</p>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Method — supports chapter 04 (Industrial Applications) */}
       <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_50%,oklch(0.10_0.03_250/0.09),transparent_72%)]" />
@@ -416,8 +493,75 @@ export default function ScrollSections() {
         </div>
       </section>
 
-      {/* Outcomes section removed — the Dossier and Carbon Intelligence panels
-          already carry the credibility layer. Speculative stats diluted both. */}
+      {/* Early Works — atmospheric origin archive.
+          Emotionally authentic, not nostalgic. */}
+      <section id="early-works" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,oklch(0.08_0.02_245/0.12),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.6))]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="md:col-span-5 md:sticky md:top-32 self-start">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Origin Archive</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
+              Before the lattice, the workshop.
+            </h3>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              The early years — borrowed tools, school benches, an inheritance of curiosity. The inventor as he was, before the institutions arrived.
+            </p>
+            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40 blur-[0.3px]">
+              Bhubaneswar · 2007 — 2013
+            </p>
+          </MotionReveal>
+          <div className="md:col-span-7">
+            {[
+              { y: "Age 14", t: "The breath-powered wheelchair", b: "A neighbour, paralysed, could no longer speak. The first design — mobility controlled by inhalation cadence. Empathy as the first specification." },
+              { y: "Age 15", t: "The school bench prototypes", b: "Salvaged motors, scavenged circuit boards, a desk lamp for soldering. A pattern emerges: invention as a private discipline, before it becomes a public claim." },
+              { y: "Age 16", t: "First Presidential recognition", b: "The Republic notices. The work continues unchanged. The award is filed; the next prototype is started the same week." },
+              { y: "Age 17", t: "TED India · the youngest voice", b: "An invitation to speak on a national stage. The talk is short; the workshop is long. Public recognition redirected back into private practice." },
+              { y: "Age 18–20", t: "KVPY · IISER Bhopal", b: "Formal science under the KVPY-SP scholarship. The intuition of the workshop meets the rigor of the laboratory — and survives the encounter." },
+              { y: "Age 21+", t: "From bench to industrial pilot", b: "The slow migration of early prototypes into the language of materials, supply chains, and patents. The inventor learns the second discipline: commercialization." },
+            ].map((e, i) => (
+              <MotionReveal key={e.t} delay={i * 0.05} className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/[0.07] py-6 md:py-7">
+                <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55 min-w-[4rem]">{e.y}</span>
+                <div>
+                  <h4 className="mb-2 font-display text-base md:text-lg tracking-[-0.015em] text-foreground/90">{e.t}</h4>
+                  <p className="max-w-lg text-[13px] leading-relaxed text-muted-foreground/75">{e.b}</p>
+                </div>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Voices — restrained editorial pull-quotes from external observers.
+          Three quiet attestations, not a testimonial wall. */}
+      <section id="voices" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_40%_50%,oklch(0.10_0.03_245/0.08),transparent_72%)]" />
+        <div className="mx-auto w-full max-w-5xl pointer-events-auto">
+          <MotionReveal className="mb-16 md:mb-24 text-center">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Voices</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
+              On record, in other words.
+            </h3>
+          </MotionReveal>
+          <div className="space-y-20 md:space-y-28">
+            {[
+              { q: "A rare instance where original invention, scientific discipline, and industrial intent appear in the same person — and persist past adolescence into deployable systems.", s: "Editorial · National Innovation Foundation", a: "left" },
+              { q: "The graphene work is technically credible; what is harder to find is the operating discipline beneath it — the willingness to carry the science through to the supply chain.", s: "Industry observer · Advanced materials", a: "right" },
+              { q: "He represents a class of Indian inventor the country has rarely produced at scale: empirical, patient, and unwilling to mistake recognition for the work itself.", s: "Cover essay · Global Indian", a: "left" },
+            ].map((v, i) => (
+              <MotionReveal key={v.s} delay={i * 0.08} className={v.a === "right" ? "md:ml-auto md:text-right max-w-2xl" : "max-w-2xl"}>
+                <span className={`block h-px w-12 mb-7 bg-gradient-to-r from-primary/40 via-accent/30 to-transparent ${v.a === "right" ? "md:ml-auto md:bg-gradient-to-l" : ""}`} />
+                <blockquote className="font-display text-xl md:text-2xl lg:text-[1.7rem] leading-[1.35] tracking-[-0.015em] text-foreground/90">
+                  &ldquo;{v.q}&rdquo;
+                </blockquote>
+                <p className="mt-7 font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55">
+                  — {v.s}
+                </p>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
 
 
@@ -511,6 +655,78 @@ export default function ScrollSections() {
               </p>
             </div>
           </MotionReveal>
+        </div>
+      </section>
+
+      {/* In His Words — manifesto. Six principles, cinematically restrained. */}
+      <section id="manifesto" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_50%,oklch(0.10_0.03_245/0.10),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.55),transparent_20%,transparent_80%,oklch(0.03_0_0/0.65))]" />
+        <div className="mx-auto w-full max-w-6xl pointer-events-auto">
+          <MotionReveal className="mb-20 md:mb-28 max-w-3xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">In His Words</p>
+            <h3 className="font-display text-[clamp(2.2rem,8vw,4.5rem)] leading-[1] tracking-[-0.035em] text-gradient">
+              Six working principles.
+            </h3>
+          </MotionReveal>
+          <div className="grid gap-x-14 gap-y-16 md:grid-cols-2 md:gap-y-20">
+            {[
+              { n: "I", p: "Begin with the human", b: "The most important specification on any drawing is the human being it is meant for. Everything else is engineering downstream of that decision." },
+              { n: "II", p: "Engineer matter, not features", b: "Lasting industrial change is decided at the level of materials. The shape of the product is a consequence; the lattice is the cause." },
+              { n: "III", p: "Treat recognition as a lagging indicator", b: "Awards arrive after the work is already obsolete in your own hands. The next prototype is the only honest answer to the last one." },
+              { n: "IV", p: "Build the company, not only the invention", b: "An unbuilt company is a half-finished invention. Capital, supply chain, and operating discipline are the second half of the lattice." },
+              { n: "V", p: "Patience is the strategic asset", b: "Frontier science compounds on a decade clock, not a quarter. The country, the venture, and the inventor all need the same temperament." },
+              { n: "VI", p: "From India, for the world", b: "Indian invention is no longer regional. The translation from local breakthrough to global industrial deployment is the strategic question of this decade." },
+            ].map((m, i) => (
+              <MotionReveal key={m.n} delay={i * 0.06} className="border-t border-foreground/[0.08] pt-6">
+                <div className="flex items-baseline gap-5 mb-4">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-primary/70">{m.n}</span>
+                  <span className="h-px flex-1 bg-foreground/[0.06]" />
+                </div>
+                <h4 className="mb-4 font-display text-2xl md:text-[1.65rem] leading-[1.2] tracking-[-0.02em] text-foreground/95">
+                  {m.p}.
+                </h4>
+                <p className="max-w-md text-[13px] md:text-sm leading-relaxed text-muted-foreground/80">{m.b}</p>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* News — editorial media archive. A quiet chronological list. */}
+      <section id="news" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.10_0.03_245/0.08),transparent_72%)]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="md:col-span-4 md:sticky md:top-32 self-start">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">News &amp; Media</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              An editorial archive.
+            </h3>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+              Selected imprints across print, broadcast, and digital — fifty plus over the long arc of the work.
+            </p>
+          </MotionReveal>
+          <div className="md:col-span-8">
+            {[
+              { o: "MIT Technology Review", h: "Featured innovator · advanced materials and deep-tech", k: "Feature" },
+              { o: "TED India", h: "Among the youngest invited speakers at the inaugural programme", k: "Talk" },
+              { o: "Times of India", h: "Profiled at the milestone of twenty-one filed patents", k: "Profile" },
+              { o: "India Today", h: "Long-form national-press profile of the inventor trajectory", k: "Profile" },
+              { o: "Business Standard", h: "Editorial coverage of an early battery-systems breakthrough", k: "Report" },
+              { o: "Global Indian", h: "Cover essay framing the long-arc inventor narrative", k: "Cover" },
+              { o: "NIF-India · IGNITE", h: "National Innovation Foundation editorial recognition", k: "Citation" },
+              { o: "Doordarshan · National Broadcast", h: "Television feature on Presidential-honoured invention", k: "Broadcast" },
+              { o: "Regional Press · Odisha", h: "Sustained local coverage of the Bhubaneswar workshop years", k: "Archive" },
+            ].map((n, i) => (
+              <MotionReveal key={n.o + n.h} delay={i * 0.04} className="grid grid-cols-[1fr_auto] items-start gap-5 sm:gap-8 border-t border-foreground/[0.07] py-6 md:py-7 transition-colors duration-500 hover:border-foreground/20">
+                <div>
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.35em] text-primary/70">{n.o}</p>
+                  <h4 className="font-display text-base md:text-lg tracking-[-0.015em] text-foreground/90 leading-snug max-w-xl">{n.h}</h4>
+                </div>
+                <span className="mt-1 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/45">{n.k}</span>
+              </MotionReveal>
+            ))}
+          </div>
         </div>
       </section>
 
