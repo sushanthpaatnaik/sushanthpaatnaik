@@ -25,11 +25,12 @@ export default function Nav() {
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent shadow-[0_0_20px_oklch(0.85_0.15_220/0.6)]" />
           <span className="text-[11px] md:text-sm tracking-[0.28em] md:tracking-[0.3em] uppercase font-medium">Sushanth Paatnaik</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-9 text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
-          <a href="/#carbon-intelligence" className="hover:text-foreground transition-colors">Materials</a>
+        <nav className="hidden md:flex items-center gap-7 text-[11px] uppercase tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
+          <a href="/#about" className="hover:text-foreground transition-colors">About</a>
+          <a href="/#innovations" className="hover:text-foreground transition-colors">Innovations</a>
           <a href="/#ventures" className="hover:text-foreground transition-colors">Ventures</a>
+          <a href="/#engagement" className="hover:text-foreground transition-colors">Engage</a>
           <Link to="/essays" className="hover:text-foreground transition-colors">Essays</Link>
-          <a href="/#future" className="hover:text-foreground transition-colors">Connect</a>
         </nav>
         <a href="mailto:me@sushanthpaatnaik.com?subject=Connect" className="btn-cinematic btn-cinematic-sm pointer-events-auto">
           Connect
