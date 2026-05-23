@@ -52,7 +52,7 @@ function HeroSection() {
   return (
     <section
       id="spark"
-      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6 lg:pl-32 xl:pl-36"
+      className="relative min-h-[calc(var(--viewport-height)*1.05)] px-5 sm:px-6 lg:pl-32 xl:pl-36"
     >
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
@@ -276,7 +276,7 @@ function FounderScene() {
   return (
     <section
       id="founder"
-      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44"
+      className="relative isolate min-h-[calc(var(--viewport-height)*1.0)] flex items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32"
     >
       {/* Founder presence — dissolved into industrial darkness. Silhouette,
           glasses, and jawline barely legible; edge-lit by a cool key from
@@ -399,7 +399,7 @@ function RecognitionSignal() {
   return (
     <section
       id="recognition"
-      className="relative min-h-[calc(var(--viewport-height)*0.95)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
+      className="relative min-h-[calc(var(--viewport-height)*0.85)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-20 md:py-28"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
@@ -437,7 +437,7 @@ function EcosystemGateway() {
   return (
     <section
       id="ecosystem"
-      className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
+      className="relative min-h-[calc(var(--viewport-height)*1.0)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
@@ -519,7 +519,7 @@ function ScaleValidationScene() {
     <section
       ref={sectionRef}
       id="scale-validation"
-      className="relative min-h-[calc(var(--viewport-height)*1.5)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
     >
       {/* ─── Atmospheric backdrop — industrial blueprint mood ─────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -725,7 +725,7 @@ function InHisWordsScene() {
     <section
       ref={sectionRef}
       id="in-his-words"
-      className="relative min-h-[calc(var(--viewport-height)*1.4)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+      className="relative min-h-[calc(var(--viewport-height)*1.1)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
     >
       {/* ─── Scroll-synced cinematic backdrop ─────────────────────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -959,7 +959,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
+      className="relative min-h-[calc(var(--viewport-height)*1.0)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
     >
       {/* Architectural system node — restrained, integrated, atmospheric.
           Replaces the disconnected floating ring with a faint intelligent
@@ -988,7 +988,7 @@ function ClosingInvitation() {
           }}
         />
       </div>
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-36 md:pt-40 pb-12 render-stable">
+      <div className="relative z-10 flex flex-col items-center justify-center pt-28 md:pt-32 pb-16 md:pb-20 render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
