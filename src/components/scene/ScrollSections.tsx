@@ -289,7 +289,7 @@ export default function ScrollSections() {
           not a CV. Bhubaneswar origin → IISER → current operating seats. */}
       <section id="about" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.10_0.03_245/0.09),transparent_72%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_22%,transparent_78%,oklch(0.03_0_0/0.6))]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.28),transparent_18%,transparent_82%,oklch(0.03_0_0/0.32))]" />
         <div className="mx-auto w-full max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-6 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">About · Journey</p>
@@ -342,7 +342,7 @@ export default function ScrollSections() {
           Emotionally authentic, not nostalgic. */}
       <section id="early-works" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,oklch(0.08_0.02_245/0.12),transparent_72%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.6))]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.28),transparent_15%,transparent_85%,oklch(0.03_0_0/0.32))]" />
         <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
           <MotionReveal className="md:col-span-5 md:sticky md:top-32 self-start">
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Origin Archive</p>
