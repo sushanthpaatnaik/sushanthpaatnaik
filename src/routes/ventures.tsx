@@ -38,6 +38,7 @@ type Venture = {
   name: string;
   year: string;
   role: string;
+  category: string;
   domain: string;
   thesis: string;
   href: string;
@@ -49,6 +50,7 @@ const ventures: Venture[] = [
     name: "Monoatom Labs",
     year: "2025",
     role: "Co-Founder & CEO",
+    category: "Materials",
     domain: "Graphene at scale",
     thesis:
       "An innovative, scalable and economical method to manufacture graphene — and the applications that turn it into real-world performance gains.",
@@ -59,6 +61,7 @@ const ventures: Venture[] = [
     name: "Grafillium",
     year: "2025",
     role: "Co-Founder & CIO",
+    category: "Materials",
     domain: "Eco nano additives",
     thesis:
       "Deep-tech nanomaterial additive technologies that boost efficiency and cut carbon emissions across power, logistics and heavy industry.",
@@ -69,6 +72,7 @@ const ventures: Venture[] = [
     name: "SPI Industries",
     year: "2024",
     role: "Founder & CEO",
+    category: "Industrial Systems",
     domain: "R&D industrial solutions",
     thesis:
       "Innovative R&D-led industrial solutions in nanomaterial engineering — translating advanced materials science into deployable systems that move the needle for industry.",
@@ -79,7 +83,8 @@ const ventures: Venture[] = [
     name: "InThinks",
     year: "2026",
     role: "Co-Founder",
-    domain: "Innovation studio",
+    category: "Innovation Studio",
+    domain: "Ideation & IP transfer",
     thesis:
       "An ideation and innovation studio that shapes early-stage thinking into products, then transfers or licenses the technology to partner organisations.",
     href: "https://inthinks.com/",
@@ -89,7 +94,8 @@ const ventures: Venture[] = [
     name: "Starunico Capital",
     year: "2026",
     role: "Co-Founder",
-    domain: "Deep-tech capital",
+    category: "Deep-Tech Capital",
+    domain: "Materials & energy",
     thesis:
       "Backing founders building the materials and energy layer of the next century.",
     href: "https://starunico.com/",
@@ -99,6 +105,7 @@ const ventures: Venture[] = [
     name: "Magppie",
     year: "2025",
     role: "Chief Innovation Officer",
+    category: "Design + Living",
     domain: "Stone wellness kitchens",
     thesis:
       "Pioneering the world's first 100% stone-built modular kitchen — transforming ordinary homes into wellness homes that protect family and planet.",
@@ -107,23 +114,26 @@ const ventures: Venture[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Advisory roster — refined optical scaling per mark                */
+/*  Advisory roster — five marks, five industry layers                */
 /* ------------------------------------------------------------------ */
 type Advisory = {
   name: string;
-  sector: string;
+  category: string;
   logo: string;
+  /** Optical scale — normalised so every mark reads at the same weight. */
   scale: number;
-  offsetY?: number; /* px — vertical nudge for optical centering */
+  /** Px vertical nudge for optical centering. */
+  offsetY?: number;
 };
 
 const advisories: Advisory[] = [
-  { name: "Magppie", sector: "Design · Living", logo: magppieLogo, scale: 1.12, offsetY: 1 },
-  { name: "Vinrox", sector: "Materials", logo: vinroxLogo, scale: 1.0, offsetY: 0 },
-  { name: "VPRPL", sector: "Industrial", logo: vprplLogo, scale: 0.82, offsetY: -1 },
-  { name: "Tileopedia", sector: "Surfaces", logo: tileopediaLogo, scale: 1.08, offsetY: 2 },
-  { name: "WeHear", sector: "Consumer Tech", logo: wehearLogo, scale: 0.85, offsetY: 0 },
+  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0 },
+  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
+  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
+  { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
+  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1 },
 ];
+
 
 /* ------------------------------------------------------------------ */
 /*  Holdings authority block                                          */
