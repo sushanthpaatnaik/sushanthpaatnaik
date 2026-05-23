@@ -85,11 +85,11 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneFuture,
     alt: "07 — India → World · Earth at night, global industrial network scaling from an Indian origin",
-    tint: "radial-gradient(ellipse 70% 60% at 62% 52%, oklch(0.38 0.05 232 / 0.14), oklch(0.04 0.010 245 / 0.32) 70%)",
+    tint: "radial-gradient(ellipse 70% 60% at 62% 52%, oklch(0.34 0.04 232 / 0.11), oklch(0.04 0.010 245 / 0.36) 70%)",
     overlay:
-      "radial-gradient(ellipse 95% 80% at 50% 55%, oklch(0.022 0.006 245 / 0.50) 0%, oklch(0.018 0.005 250 / 0.82) 78%, oklch(0.014 0.004 250 / 0.94) 100%)",
+      "radial-gradient(ellipse 95% 80% at 50% 55%, oklch(0.022 0.006 245 / 0.62) 0%, oklch(0.018 0.005 250 / 0.88) 75%, oklch(0.014 0.004 250 / 0.96) 100%)",
     parallax: 0.7,
-    filter: "brightness(0.70) contrast(1.10) saturate(0.78) hue-rotate(-4deg)",
+    filter: "brightness(0.60) contrast(1.08) saturate(0.70) hue-rotate(-4deg)",
   },
 ];
 
@@ -103,7 +103,7 @@ const OVERLAY_STOPS = [
   0.29, // Industrial
   0.32, // Recognition
   0.29, // Ecosystem
-  0.25, // India → World
+  0.32, // India → World — deepened so molecular plate sits behind typography
 ];
 
 export default function AtmosphereLayer() {
