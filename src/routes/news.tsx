@@ -442,49 +442,66 @@ function MediaPlate({
 
 function LeadFeature({ item }: { item: PressItem }) {
   return (
-    <motion.a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.article
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-14 block"
+      className="not-prose mt-10 group"
     >
       {/* Dateline strip */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.12] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/85">Above The Fold</span>
-        <span className="hidden md:inline text-muted-foreground/40">
-          Dateline · {item.date}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
+        <span className="text-accent/90">★ Featured Story</span>
+        <span className="hidden md:inline text-muted-foreground/45">
+          {item.category} · {item.date}
         </span>
-        <span className="text-primary/75">{item.outlet}</span>
+        <span className="text-primary/80">{item.outlet}</span>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
-        <div className="md:col-span-7">
-          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/70">
-            {item.tag}
-          </p>
-          <h2 className="mt-6 font-display text-[clamp(1.9rem,4.2vw,3.2rem)] leading-[1.02] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
-            {item.title}
-          </h2>
-          <div className="mt-9 h-px w-14 bg-accent/45 transition-all duration-700 group-hover:w-24" />
-          <p className="mt-8 font-display italic text-[17px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/75">
-            {item.body}
-          </p>
-          <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Read the dispatch &nbsp;—↗
-          </p>
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-8 block"
+      >
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+          <MediaPlate
+            src={item.image}
+            alt={`${item.title} — ${item.outlet}`}
+            objectPosition={item.objectPosition}
+            className="aspect-[4/5] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5]"
+          />
+
+          {/* Editorial reading panel — slight surface plate so copy
+              wins against the cinematic backdrop. */}
+          <div className="md:col-span-6 rounded-sm bg-[oklch(0.045_0.006_245)]/55 p-6 md:p-8 backdrop-blur-[2px] hairline">
+            {item.logo && (
+              <div className="flex h-8 items-center">
+                <img
+                  src={item.logo}
+                  alt={`${item.outlet} logo`}
+                  loading="lazy"
+                  className="max-h-7 w-auto max-w-[160px] object-contain opacity-80 saturate-[0.6] brightness-[1.05] mix-blend-screen"
+                />
+              </div>
+            )}
+            <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.45em] text-primary/75">
+              {item.tag} · {item.date}
+            </p>
+            <h2 className="mt-4 font-display text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.04] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
+              {item.title}
+            </h2>
+            <div className="mt-6 h-px w-14 bg-accent/55 transition-all duration-700 group-hover:w-24" />
+            <p className="mt-5 font-display italic text-[16px] md:text-[18px] leading-[1.55] tracking-[-0.005em] text-foreground/78">
+              {item.body}
+            </p>
+            <span className="mt-7 inline-flex items-center gap-3 border border-foreground/25 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/85 transition-all duration-500 group-hover:border-accent/70 group-hover:text-accent group-hover:bg-accent/[0.04]">
+              Read Coverage <span aria-hidden>↗</span>
+            </span>
+          </div>
         </div>
-        <MediaPlate
-          src={item.image}
-          alt={`${item.title} — ${item.outlet}`}
-          objectPosition={item.objectPosition}
-          className="aspect-[4/5] border border-foreground/[0.08] md:col-span-5 md:aspect-[3/4]"
-        />
-      </div>
-    </motion.a>
+      </a>
+    </motion.article>
   );
 }
 
@@ -498,16 +515,16 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-24 md:mt-32 block"
+      className="group not-prose mt-16 block"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.08] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/65">Below The Fold</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/70">Latest Dispatch</span>
         <span className="text-muted-foreground/40 hidden md:inline">
-          Dateline · {item.date}
+          {item.category} · {item.date}
         </span>
         <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
@@ -518,13 +535,13 @@ function SecondaryFeature({ item }: { item: PressItem }) {
           <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
             {item.tag}
           </p>
-          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
+          <h3 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.1] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
             {item.title}
           </h3>
-          <p className="mt-6 text-[15px] leading-[1.8] text-foreground/70">
+          <p className="mt-5 text-[15px] leading-[1.75] text-foreground/72">
             {item.body}
           </p>
-          <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+          <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
             Continue &nbsp;—↗
           </p>
         </div>
@@ -548,33 +565,45 @@ function IntelligenceStrip() {
 
 function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
   const folio = String(index + 1).padStart(2, "0");
+  const isMajor = item.weight === "major";
   return (
     <motion.li
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 1, delay: (index % 6) * 0.04, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ duration: 0.9, delay: (index % 6) * 0.04, ease: [0.19, 1, 0.22, 1] }}
     >
       <a
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative grid grid-cols-[auto_1fr] gap-5 border-t border-foreground/[0.08] py-8 md:grid-cols-[88px_120px_1fr] md:gap-7 md:py-10 transition-colors duration-700 hover:border-foreground/25"
+        className={`group relative grid grid-cols-[auto_1fr] gap-4 border-t py-6 md:grid-cols-[72px_104px_1fr] md:gap-6 md:py-7 transition-colors duration-700 ${
+          isMajor
+            ? "border-foreground/[0.14] hover:border-foreground/35"
+            : "border-foreground/[0.07] hover:border-foreground/25"
+        }`}
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-accent/40 transition-all duration-700 group-hover:w-24"
+          className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-accent/50 transition-all duration-700 group-hover:w-24"
         />
         {/* Folio + date */}
         <div className="pt-1">
-          <p className="font-display text-2xl font-extralight tracking-[-0.02em] text-foreground/30 transition-colors duration-500 group-hover:text-accent/85">
+          <p
+            className={`font-display font-extralight tracking-[-0.02em] transition-colors duration-500 ${
+              isMajor
+                ? "text-[1.6rem] text-foreground/55 group-hover:text-accent"
+                : "text-2xl text-foreground/30 group-hover:text-accent/85"
+            }`}
+          >
+            {isMajor && <span className="mr-1 text-accent/80">★</span>}
             {folio}
           </p>
-          <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
             {item.date}
           </p>
         </div>
-        {/* Thumbnail — restrained, only on md+ */}
+        {/* Thumbnail */}
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
@@ -583,27 +612,36 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
         />
         {/* Body */}
         <div className="col-span-2 md:col-span-1">
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/80">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
               {item.outlet}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
-              {item.tag}
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/55">
+              · {item.tag}
             </span>
           </div>
-          <h3 className="mt-3 font-display text-lg md:text-xl leading-[1.2] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient">
+          <h3
+            className={`mt-2 font-display leading-[1.18] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient ${
+              isMajor ? "text-xl md:text-[1.45rem]" : "text-base md:text-lg"
+            }`}
+          >
             {item.title}
           </h3>
-          <p className="mt-3 max-w-2xl text-[14px] leading-[1.7] text-foreground/65">
+          <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
             {item.body}
           </p>
-          <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/45 transition-colors duration-500 group-hover:text-accent/90">
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/45 transition-colors duration-500 group-hover:text-accent/90">
             Read ↗
           </p>
         </div>
       </a>
     </motion.li>
   );
+}
+
+function dateOrder(d: string): number {
+  const m = d.match(/\b(19|20)\d{2}\b/);
+  return m ? Number(m[0]) : 0;
 }
 
 function NewsPage() {
