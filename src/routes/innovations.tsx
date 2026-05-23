@@ -395,10 +395,10 @@ function CompactCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.035]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.76] grayscale-[0.32] contrast-[1.04] brightness-[0.86] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.03]"
       />
       {/* Restrained lattice — scientific texture */}
-      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
+      <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
 
       <div
         aria-hidden
