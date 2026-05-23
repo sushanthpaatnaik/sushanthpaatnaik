@@ -804,7 +804,7 @@ function NewsPage() {
               const scale = o.scale ?? 1;
               // Optical baseline ~ 40px at scale 1.0; clamped 30-58px for fuller, more intentional wall.
               const optical = Math.round(Math.min(58, Math.max(30, 40 * scale)));
-              const imgStyle: React.CSSProperties = { maxHeight: `${optical}px` };
+              const imgStyle: CSSProperties = { maxHeight: `${optical}px` };
               if (o.transparentBg) {
                 imgStyle.mixBlendMode = "screen";
               }
