@@ -9,9 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VoicesRouteImport } from './routes/voices'
 import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RecognitionsRouteImport } from './routes/recognitions'
+import { Route as NumbersRouteImport } from './routes/numbers'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as InnovationsRouteImport } from './routes/innovations'
 import { Route as EssaysRouteImport } from './routes/essays'
@@ -22,6 +25,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysSlugRouteImport } from './routes/essays.$slug'
 
+const VoicesRoute = VoicesRouteImport.update({
+  id: '/voices',
+  path: '/voices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VenturesRoute = VenturesRouteImport.update({
   id: '/ventures',
   path: '/ventures',
@@ -32,9 +40,19 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecognitionsRoute = RecognitionsRouteImport.update({
   id: '/recognitions',
   path: '/recognitions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NumbersRoute = NumbersRouteImport.update({
+  id: '/numbers',
+  path: '/numbers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -92,9 +110,12 @@ export interface FileRoutesByFullPath {
   '/essays': typeof EssaysRouteWithChildren
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
+  '/numbers': typeof NumbersRoute
   '/recognitions': typeof RecognitionsRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRoutesByTo {
@@ -106,9 +127,12 @@ export interface FileRoutesByTo {
   '/essays': typeof EssaysRouteWithChildren
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
+  '/numbers': typeof NumbersRoute
   '/recognitions': typeof RecognitionsRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRoutesById {
@@ -121,9 +145,12 @@ export interface FileRoutesById {
   '/essays': typeof EssaysRouteWithChildren
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
+  '/numbers': typeof NumbersRoute
   '/recognitions': typeof RecognitionsRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRouteTypes {
@@ -137,9 +164,12 @@ export interface FileRouteTypes {
     | '/essays'
     | '/innovations'
     | '/news'
+    | '/numbers'
     | '/recognitions'
+    | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -151,9 +181,12 @@ export interface FileRouteTypes {
     | '/essays'
     | '/innovations'
     | '/news'
+    | '/numbers'
     | '/recognitions'
+    | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   id:
     | '__root__'
@@ -165,9 +198,12 @@ export interface FileRouteTypes {
     | '/essays'
     | '/innovations'
     | '/news'
+    | '/numbers'
     | '/recognitions'
+    | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -180,13 +216,23 @@ export interface RootRouteChildren {
   EssaysRoute: typeof EssaysRouteWithChildren
   InnovationsRoute: typeof InnovationsRoute
   NewsRoute: typeof NewsRoute
+  NumbersRoute: typeof NumbersRoute
   RecognitionsRoute: typeof RecognitionsRoute
+  ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VenturesRoute: typeof VenturesRoute
+  VoicesRoute: typeof VoicesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/voices': {
+      id: '/voices'
+      path: '/voices'
+      fullPath: '/voices'
+      preLoaderRoute: typeof VoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ventures': {
       id: '/ventures'
       path: '/ventures'
@@ -201,11 +247,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recognitions': {
       id: '/recognitions'
       path: '/recognitions'
       fullPath: '/recognitions'
       preLoaderRoute: typeof RecognitionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/numbers': {
+      id: '/numbers'
+      path: '/numbers'
+      fullPath: '/numbers'
+      preLoaderRoute: typeof NumbersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -294,9 +354,12 @@ const rootRouteChildren: RootRouteChildren = {
   EssaysRoute: EssaysRouteWithChildren,
   InnovationsRoute: InnovationsRoute,
   NewsRoute: NewsRoute,
+  NumbersRoute: NumbersRoute,
   RecognitionsRoute: RecognitionsRoute,
+  ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VenturesRoute: VenturesRoute,
+  VoicesRoute: VoicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
