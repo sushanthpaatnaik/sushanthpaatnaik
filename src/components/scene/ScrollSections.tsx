@@ -519,7 +519,7 @@ function ScaleValidationScene() {
     <section
       ref={sectionRef}
       id="scale-validation"
-      className="relative min-h-[calc(var(--viewport-height)*1.5)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44 overflow-hidden"
+      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
     >
       {/* ─── Atmospheric backdrop — industrial blueprint mood ─────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
