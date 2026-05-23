@@ -702,38 +702,38 @@ function InHisWordsScene() {
         </MotionReveal>
 
         {/* Fragments — oversized editorial cadence, alternating alignment */}
-        <div className="flex flex-col gap-28 md:gap-40">
+        <div className="flex flex-col gap-32 md:gap-48">
           {fragments.map((f, i) => {
             const alignRight = i % 2 === 1;
             return (
               <MotionReveal key={f.n} delay={0.04 + i * 0.04}>
                 <figure
-                  className={`grid md:grid-cols-12 gap-y-6 ${
+                  className={`grid md:grid-cols-12 gap-y-7 ${
                     alignRight ? "md:text-right" : ""
                   }`}
                 >
                   <div
-                    className={`md:col-span-10 ${
-                      alignRight ? "md:col-start-3" : "md:col-start-1"
+                    className={`md:col-span-9 ${
+                      alignRight ? "md:col-start-4" : "md:col-start-1"
                     }`}
                   >
-                    <span className="block mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
+                    <span className="block mb-7 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/40">
                       {f.n}
                     </span>
-                    <blockquote className="font-display font-light text-[clamp(1.7rem,5.4vw,3.6rem)] leading-[1.08] tracking-[-0.03em] text-gradient [text-wrap:balance]">
-                      {f.line}
+                    <blockquote className="font-display font-extralight italic text-[clamp(1.45rem,4.2vw,2.85rem)] leading-[1.22] tracking-[-0.018em] text-foreground/92 [text-wrap:balance]">
+                      &ldquo;{f.line}&rdquo;
                     </blockquote>
                     <figcaption
-                      className={`mt-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 ${
+                      className={`mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/50 ${
                         alignRight ? "md:justify-end" : ""
                       }`}
                     >
                       {!alignRight && (
-                        <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
+                        <span className="h-px w-12 bg-gradient-to-r from-[oklch(0.62_0.10_55/0.5)] to-transparent" />
                       )}
                       <span>{f.note}</span>
                       {alignRight && (
-                        <span className="h-px w-10 bg-gradient-to-l from-foreground/25 to-transparent" />
+                        <span className="h-px w-12 bg-gradient-to-l from-[oklch(0.62_0.10_55/0.5)] to-transparent" />
                       )}
                     </figcaption>
                   </div>
