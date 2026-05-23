@@ -133,23 +133,23 @@ function HeroSection() {
             ))}
           </motion.h1>
 
-          {/* Subtitle hierarchy — primary line + meta credential row */}
+          {/* Subtitle hierarchy — primary line, then a quieted credential register */}
           <motion.div
             initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.05, delay: 0.78, ease: [0.19, 1, 0.22, 1] }}
-            className="mx-auto mt-12 md:mt-16 max-w-xl"
+            className="mx-auto mt-14 md:mt-20 max-w-xl"
           >
-            <p className="font-display text-[15px] md:text-[17px] leading-[1.55] tracking-[-0.005em] text-foreground/85">
+            <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
               Inventor and deep-tech founder.<br className="hidden md:inline" />
-              <span className="text-foreground/65">Building from India — for the world.</span>
+              <span className="text-foreground/55">Building from India — for the world.</span>
             </p>
-            <div className="mt-7 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/55">
-              <span className="h-px w-6 bg-foreground/15" />
+            <div className="mt-10 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.45em] text-muted-foreground/50">
+              <span className="h-px w-8 bg-foreground/12" />
               <span>Six-time Presidential awardee</span>
-              <span className="h-px w-1.5 bg-foreground/25" />
+              <span className="h-px w-1 bg-foreground/20" />
               <span>TED · MIT TR-35</span>
-              <span className="h-px w-6 bg-foreground/15" />
+              <span className="h-px w-8 bg-foreground/12" />
             </div>
           </motion.div>
         </div>
@@ -157,15 +157,15 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, delay: 1.4 }}
-          className="absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/40"
+          transition={{ duration: 1.4, delay: 1.6 }}
+          className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-5 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/35"
           style={{ mixBlendMode: "soft-light" }}
         >
           <span className="blur-[0.3px]">Scroll to enter</span>
           <motion.div
-            animate={{ opacity: [0.12, 0.42, 0.12], scaleY: [1, 1.15, 1] }}
-            transition={{ duration: 3.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/22 to-transparent"
+            animate={{ opacity: [0.10, 0.35, 0.10], scaleY: [1, 1.12, 1] }}
+            transition={{ duration: 4.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="h-16 w-px origin-top bg-gradient-to-b from-foreground/20 to-transparent"
           />
         </motion.div>
       </div>
