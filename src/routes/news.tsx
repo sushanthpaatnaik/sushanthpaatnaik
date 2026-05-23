@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import CinematicPageShell, {
