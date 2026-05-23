@@ -47,8 +47,6 @@ import wikipediaLogo from "@/assets/outlets/wikipedia.svg";
 import thePrintLogo from "@/assets/outlets/theprint.webp";
 import newIndianExpressLogo from "@/assets/outlets/new-indian-express.webp";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
-import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
-import ioclLogo from "@/assets/outlets/iocl.webp";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
