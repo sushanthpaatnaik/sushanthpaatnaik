@@ -11,7 +11,7 @@ export type ArchiveItem = {
 };
 
 function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
-  const ref = useRef<HTMLFigureElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.18, once: true });
   const span =
     item.shape === "wide"
