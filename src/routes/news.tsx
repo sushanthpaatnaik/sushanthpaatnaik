@@ -305,126 +305,336 @@ const testimonials = [
   },
 ];
 
-function FeatureCard({ item, lead = false }: { item: PressItem; lead?: boolean }) {
+/* ---------- Editorial primitives ---------- */
+
+function MediaPlate({
+  src,
+  alt,
+  objectPosition,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  objectPosition?: string;
+  className?: string;
+}) {
   return (
-    <a
+    <div className={`relative overflow-hidden ${className}`}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-70 grayscale-[0.55] contrast-[1.08] brightness-[0.9] transition-all duration-[1200ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.025]"
+        style={{ objectPosition: objectPosition ?? "center" }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-50"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.78) 100%)",
+        }}
+      />
+      {/* Archival corner marks */}
+      <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />
+      <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/30" />
+      <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/30" />
+      <div className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-foreground/30" />
+    </div>
+  );
+}
+
+function LeadFeature({ item }: { item: PressItem }) {
+  return (
+    <motion.a
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.02] transition-all duration-500 hover:border-foreground/20"
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+      className="group not-prose mt-10 block"
     >
-      <div className={`relative overflow-hidden ${lead ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
-        <img
+      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/85">
+          Above The Fold · Lead Story
+        </p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+          {item.outlet} · {item.date}
+        </p>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
+        <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover opacity-75 grayscale-[0.4] contrast-[1.05] brightness-[0.85] transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.03]"
-          style={{ objectPosition: item.objectPosition ?? "center" }}
+          objectPosition={item.objectPosition}
+          className="aspect-[16/9] rounded-sm border border-foreground/[0.08] md:col-span-7"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-      </div>
-      <div className="p-5 md:p-6">
-        <div className="flex flex-wrap items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-primary/80">
-          <span>{item.tag}</span>
-          <span className="text-muted-foreground/60">{item.outlet} · {item.date}</span>
+        <div className="md:col-span-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/75">
+            {item.tag}
+          </p>
+          <h2 className="mt-5 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
+            {item.title}
+          </h2>
+          <p className="mt-6 font-display italic text-[15px] md:text-[17px] leading-[1.55] text-foreground/80">
+            {item.body}
+          </p>
+          <p className="mt-7 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Read the dispatch ↗
+          </p>
         </div>
-        <h3 className={`mt-3 font-display tracking-[-0.015em] text-foreground/95 ${lead ? "text-xl md:text-2xl" : "text-lg md:text-xl"} leading-tight`}>
-          {item.title}
-        </h3>
-        <p className="mt-3 text-[14px] leading-relaxed text-foreground/70">
-          {item.body}
+      </div>
+    </motion.a>
+  );
+}
+
+function SecondaryFeature({ item }: { item: PressItem }) {
+  return (
+    <motion.a
+      href={item.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
+      className="group not-prose mt-16 block"
+    >
+      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/70">
+          Below The Fold · Featured
         </p>
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/60 group-hover:text-foreground transition-colors">
-          Continue reading ↗
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+          {item.outlet} · {item.date}
         </p>
       </div>
-    </a>
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-7 md:order-2">
+          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">
+            {item.tag}
+          </p>
+          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.02em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
+            {item.title}
+          </h3>
+          <p className="mt-5 text-[15px] leading-[1.7] text-foreground/70">
+            {item.body}
+          </p>
+          <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Continue ↗
+          </p>
+        </div>
+        <MediaPlate
+          src={item.image}
+          alt={`${item.title} — ${item.outlet}`}
+          objectPosition={item.objectPosition}
+          className="aspect-[16/10] rounded-sm border border-foreground/[0.08] md:col-span-5 md:order-1"
+        />
+      </div>
+    </motion.a>
+  );
+}
+
+function IntelligenceStrip() {
+  const items = [
+    { v: "18", l: "Publications of record" },
+    { v: "15", l: "Years of coverage" },
+    { v: "16", l: "Archived dispatches" },
+    { v: "EN · ଓଡ଼ିଆ", l: "Languages in archive" },
+  ];
+  return (
+    <div className="not-prose grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.06] md:grid-cols-4">
+      {items.map((s, i) => (
+        <motion.div
+          key={s.l}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
+          className="bg-[oklch(0.05_0.006_245)] px-5 py-7 md:px-7 md:py-9"
+        >
+          <p className="font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">
+            {s.v}
+          </p>
+          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/60">
+            {s.l}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
+  const folio = String(index + 1).padStart(2, "0");
+  return (
+    <motion.li
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1, delay: (index % 6) * 0.04, ease: [0.19, 1, 0.22, 1] }}
+    >
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative grid grid-cols-[auto_1fr] gap-5 border-t border-foreground/[0.08] py-8 md:grid-cols-[88px_120px_1fr] md:gap-7 md:py-10 transition-colors duration-700 hover:border-foreground/25"
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-accent/40 transition-all duration-700 group-hover:w-24"
+        />
+        {/* Folio + date */}
+        <div className="pt-1">
+          <p className="font-display text-2xl font-extralight tracking-[-0.02em] text-foreground/30 transition-colors duration-500 group-hover:text-accent/85">
+            {folio}
+          </p>
+          <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+            {item.date}
+          </p>
+        </div>
+        {/* Thumbnail — restrained, only on md+ */}
+        <MediaPlate
+          src={item.image}
+          alt={`${item.title} — ${item.outlet}`}
+          objectPosition={item.objectPosition}
+          className="hidden aspect-[4/3] rounded-sm border border-foreground/[0.08] md:block"
+        />
+        {/* Body */}
+        <div className="col-span-2 md:col-span-1">
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/80">
+              {item.outlet}
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+              {item.tag}
+            </span>
+          </div>
+          <h3 className="mt-3 font-display text-lg md:text-xl leading-[1.2] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient">
+            {item.title}
+          </h3>
+          <p className="mt-3 max-w-2xl text-[14px] leading-[1.7] text-foreground/65">
+            {item.body}
+          </p>
+          <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/45 transition-colors duration-500 group-hover:text-accent/90">
+            Read ↗
+          </p>
+        </div>
+      </a>
+    </motion.li>
   );
 }
 
 function NewsPage() {
   return (
     <CinematicPageShell
-      eyebrow="News · Editorial Archive"
-      title={<>Featured coverage<br className="hidden md:inline" /> across the global press.</>}
-      lead="Selected dispatches from the press, the wires, and the conference circuit — coverage that traces an arc from teenage prototypes to deep-tech ventures of national consequence."
+      eyebrow="News · Media Intelligence · Vol. XV"
+      title={
+        <>
+          The press<br className="hidden md:inline" /> of record.
+        </>
+      }
+      lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
       overlay={0.78}
     >
-      {/* Featured + secondary */}
-      <div className="not-prose grid grid-cols-1 gap-5 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <FeatureCard item={featured} lead />
-        </div>
-        <FeatureCard item={secondary} />
+      {/* Intelligence strip */}
+      <IntelligenceStrip />
+
+      {/* Masthead */}
+      <div className="mt-16 flex flex-wrap items-baseline justify-between gap-3 border-t border-b border-foreground/[0.1] py-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
+        <span className="text-primary/80">Press Of Record · MMXXVI</span>
+        <span>Curated, Not Complete</span>
+        <span>Folio · 01–16</span>
       </div>
 
-      {/* Archive grid */}
-      <EditorialSection number="07 · Archive" heading="Sixteen of record.">
+      {/* Lead + secondary features */}
+      <LeadFeature item={featured} />
+      <SecondaryFeature item={secondary} />
+
+      {/* Archive — newspaper register */}
+      <EditorialSection number="07 · Archive" heading="Sixteen dispatches of record.">
         <p>
           The press archive in chronological reach — from teenage assistive
           tech in <em>The Telegraph</em> and NIF, to global recognition in
           MIT TR and Wikipedia, to deep-tech reporting on Capattery, GraphIN
           and the battery breakthrough.
         </p>
-        <div className="not-prose mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {coverage.map((item) => (
-            <FeatureCard key={item.href} item={item} />
+        <ol className="not-prose mt-12 flex flex-col">
+          {coverage.map((item, i) => (
+            <ArchiveEntry key={item.href} item={item} index={i} />
           ))}
-        </div>
+          <li className="border-t border-foreground/[0.08]" />
+        </ol>
       </EditorialSection>
 
-      {/* Outlets marquee */}
-      <EditorialSection number="08 · Outlets" heading="Eighteen publications of record.">
+      {/* Mastheads register */}
+      <EditorialSection number="08 · Mastheads" heading="Eighteen publications of record.">
         <p>
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-10 grid grid-cols-2 items-center gap-x-8 gap-y-10 sm:grid-cols-3 md:grid-cols-6">
-          {outlets.map((o) => (
-            <div key={o.name} className="flex h-12 items-center justify-center">
-              <img
-                src={o.logo}
-                alt={`${o.name} logo`}
-                loading="lazy"
-                className="max-h-10 w-auto max-w-[140px] object-contain opacity-70 saturate-[0.6] brightness-[1.05] mix-blend-screen transition-all duration-500 hover:opacity-100 hover:saturate-100"
-              />
-            </div>
-          ))}
+        <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 md:grid-cols-6">
+            {outlets.map((o) => (
+              <div
+                key={o.name}
+                className="group flex h-24 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4"
+                title={o.name}
+              >
+                <img
+                  src={o.logo}
+                  alt={`${o.name} logo`}
+                  loading="lazy"
+                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </EditorialSection>
 
-      {/* Testimonials */}
+      {/* Voices — broadsheet pull-quotes */}
       <EditorialSection number="09 · Voices" heading="On the work, in their words.">
         <p>
           A short reel of voices from institutions that have seen the work
           firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
         </p>
-        <ul className="not-prose mt-10 grid gap-5 md:grid-cols-2">
-          {testimonials.map((t) => (
-            <li
+        <ul className="not-prose mt-12 flex flex-col">
+          {testimonials.map((t, i) => (
+            <motion.li
               key={t.author}
-              className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.02] p-6 md:p-7"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.05, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
+              className="grid grid-cols-1 gap-6 border-t border-foreground/[0.08] py-10 md:grid-cols-[160px_1fr] md:gap-12 md:py-12"
             >
-              <div className="flex h-10 items-center">
+              <div className="flex h-10 items-center md:h-12">
                 <img
                   src={t.logo}
                   alt={`${t.role} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[160px] object-contain opacity-75 mix-blend-screen"
+                  className="max-h-9 w-auto max-w-[150px] object-contain opacity-65 mix-blend-screen"
                 />
               </div>
-              <blockquote className="mt-5 font-display text-base md:text-lg leading-snug text-foreground/90">
-                "{t.quote}"
-              </blockquote>
-              <div className="mt-5 border-t border-foreground/[0.07] pt-4">
-                <p className="text-[13px] font-semibold text-foreground/90">{t.author}</p>
-                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">
-                  {t.role}
-                </p>
+              <div>
+                <blockquote className="font-display italic text-xl md:text-2xl leading-[1.4] tracking-[-0.005em] text-foreground/90">
+                  “{t.quote}”
+                </blockquote>
+                <div className="mt-6 flex items-baseline gap-3">
+                  <span className="h-px w-6 bg-accent/50" />
+                  <p className="font-display text-[14px] text-foreground/90">{t.author}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55">
+                    {t.role}
+                  </p>
+                </div>
               </div>
-            </li>
+            </motion.li>
           ))}
+          <li className="border-t border-foreground/[0.08]" />
         </ul>
       </EditorialSection>
 
@@ -438,3 +648,4 @@ function NewsPage() {
     </CinematicPageShell>
   );
 }
+
