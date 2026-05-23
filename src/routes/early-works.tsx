@@ -429,8 +429,47 @@ function EarlyWorksPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
+      {/* Cinematic introduction — narrative framing before the archive opens */}
+      <motion.section
+        initial={{ opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.25, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose mx-auto mt-4 md:mt-6 max-w-[680px]"
+      >
+        <div className="flex items-center gap-3">
+          <span className="h-px w-8 bg-accent/45" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.55em] text-accent/80">
+            Prelude · 2008 – 2013
+          </span>
+        </div>
+
+        <p className="mt-9 font-display text-[clamp(1.5rem,3.2vw,2rem)] leading-[1.2] tracking-[-0.022em] text-foreground/90">
+          Before the companies. Before the keynotes. Before the awards.
+        </p>
+
+        <p className="mt-7 text-[15.5px] md:text-[16.5px] leading-[1.78] text-foreground/65">
+          The origin of this practice is not a laboratory or a lecture hall —
+          it is a teenager's notebook of problems, a borrowed soldering iron,
+          and the conviction that anything seen could be re-engineered. Between
+          fifteen and twenty, six working devices left that workshop. Each one
+          began with a person whose life the engineering had to reach.
+        </p>
+
+        <p className="mt-5 text-[14.5px] md:text-[15px] leading-[1.8] text-foreground/55">
+          What follows is the archival record of those years — prototypes,
+          field notes, press clippings, and the systems thinking that ran
+          beneath them. Presented in the order it was made, with the marks of
+          its making intact.
+        </p>
+
+        <div className="mt-10 h-px w-12 bg-foreground/15" />
+      </motion.section>
+
       {/* Stats authority strip */}
-      <OriginStats />
+      <div className="mt-10 md:mt-14">
+        <OriginStats />
+      </div>
 
       {/* Workshop atmosphere plate */}
       <div className="mt-16 md:mt-24">

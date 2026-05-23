@@ -41,25 +41,27 @@ export default function FounderPortrait({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-32 md:my-44 max-w-[520px] md:max-w-[580px]"
+      className="not-prose relative mx-auto my-28 md:my-40 max-w-[460px] md:max-w-[520px]"
     >
-      {/* Cinematic edge diffusion — dissolves the plate into the room */}
+      {/* Cinematic edge diffusion — dissolves the plate into the room.
+          Softened texture so the portrait integrates with the page atmosphere
+          rather than reading as a discrete object. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-x-16 -inset-y-20 md:-inset-x-24 md:-inset-y-28"
+        className="pointer-events-none absolute -inset-x-20 -inset-y-24 md:-inset-x-32 md:-inset-y-36"
         style={{
           background:
-            "radial-gradient(60% 55% at 50% 50%, oklch(0.18 0.02 245 / 0.32), transparent 72%)",
-          filter: "blur(28px)",
+            "radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%)",
+          filter: "blur(34px)",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-x-8 -inset-y-10"
+        className="pointer-events-none absolute -inset-x-10 -inset-y-12"
         style={{
           background:
-            "radial-gradient(45% 40% at 50% 35%, oklch(0.52 0.04 232 / 0.10), transparent 78%)",
-          filter: "blur(18px)",
+            "radial-gradient(42% 38% at 50% 32%, oklch(0.50 0.035 232 / 0.07), transparent 80%)",
+          filter: "blur(22px)",
         }}
       />
 
