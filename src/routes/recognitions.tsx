@@ -150,7 +150,7 @@ const ledger = [
   "CEO Club Speaker · 2025",
 ];
 
-// Era 1 — Young inventor & presidential years (2008–2013)
+// Era 1 — Young inventor & presidential years (2008–2013) · curated 6
 const eraPresidential: ArchiveItem[] = [
   {
     src: awardKalam,
@@ -176,15 +176,6 @@ const eraPresidential: ArchiveItem[] = [
     venue: "Rashtrapati Bhavan · New Delhi",
   },
   {
-    src: awardPatil2,
-    caption: "Felicitation by President Patil",
-    meta: "Rashtrapati Bhavan · 2009",
-    category: "Award",
-    institution: "Office of the President of India",
-    recognition: "Felicitation · 2009",
-    venue: "Rashtrapati Bhavan · New Delhi",
-  },
-  {
     src: awardPranab,
     caption: "With President Pranab Mukherjee",
     meta: "Presidential Award · 2013",
@@ -194,15 +185,6 @@ const eraPresidential: ArchiveItem[] = [
     institution: "National Innovation Foundation",
     recognition: "Presidential Recognition · 2013",
     presenter: "Presented by Shri Pranab Mukherjee",
-    venue: "Rashtrapati Bhavan · New Delhi",
-  },
-  {
-    src: awardPranab2,
-    caption: "President Pranab Mukherjee",
-    meta: "Rashtrapati Bhavan · 2013",
-    category: "Award",
-    institution: "Office of the President of India",
-    recognition: "Citation Ceremony · 2013",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
   {
@@ -235,7 +217,7 @@ const eraPresidential: ArchiveItem[] = [
   },
 ];
 
-// Era 2 — Global stages & institutional recognition (2010–2014)
+// Era 2 — Global stages & institutional recognition (2010–2014) · curated 5
 const eraGlobal: ArchiveItem[] = [
   {
     src: keynoteTed,
@@ -248,7 +230,6 @@ const eraGlobal: ArchiveItem[] = [
     presenter: "Among the youngest speakers ever featured",
     venue: "Mysore · India",
   },
-  { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
   {
     src: honorNasa,
     caption: "NASA Mobile Quarantine Facility",
@@ -261,49 +242,39 @@ const eraGlobal: ArchiveItem[] = [
   },
   { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote", shape: "tall" },
-  { src: fellowMashaal, caption: "Mashaal — passing the torch", meta: "INK / MKM Foundation", category: "Fellowship" },
   { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote", shape: "wide" },
 ];
 
-// Era 3 — Industrial leadership & diplomacy (2020–2025)
+// Era 3 — Industrial leadership & diplomacy (2020–2025) · curated 11
 const eraIndustrial: ArchiveItem[] = [
   { src: honorDriiv, caption: "MoU Signing · DRIIV, PSA, Govt of India", meta: "Delhi Research Implementation & Innovation", category: "Honor", shape: "wide" },
   { src: honorIocl, caption: "With Shri Sujoy Choudhury", meta: "Director (P&BD) · Indian Oil Corporation", category: "Honor", shape: "tall" },
-  { src: honorBricsDip, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor", shape: "tall" },
   { src: keynoteBrics, caption: "BRICS Roundtable Address", meta: "Diplomatic Forum · New Delhi · 2022", category: "Keynote", shape: "wide", focus: "70% center" },
   { src: honorBricsMedal, caption: "BRICS Honour", meta: "International Recognition · 2022", category: "Honor", focus: "center 25%" },
   { src: honorItalian, caption: "With H.E. Antonio Bartoli", meta: "Ambassador of Italy to India", category: "Honor" },
-  { src: honorUk, caption: "Trophy Presentation · Embassy of Italy", meta: "New Delhi", category: "Honor" },
   { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius", category: "Honor", shape: "wide", focus: "center 30%" },
   { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 · G20 · Gurugram · 2023", category: "Honor", shape: "hero", focus: "center 25%", institution: "Startup20 Engagement Group", recognition: "G20 India Presidency · 2023", presenter: "With H.H. Prince Fahad bin Mansour Al-Saud", venue: "Gurugram · India" },
   { src: keynoteBritish, caption: "British High Commission", meta: "Address · New Delhi", category: "Keynote" },
   { src: honorGadkari, caption: "With Shri Nitin Gadkari", meta: "Union Minister · Transport Bhawan", category: "Honor", focus: "center 22%" },
   { src: honorMop, caption: "Ministry of Power · Bureau of Energy Efficiency", meta: "Govt of India · New Delhi · 2023", category: "Honor", focus: "center 30%" },
-  { src: honorRepublic, caption: "With Mr. Amit Jain, CarDekho", meta: "Founder & CEO · CarDekho Group", category: "Honor" },
   { src: honorFicci, caption: "FICCI Bharat Summit", meta: "Delegate · 2024", category: "Honor", shape: "tall", focus: "center 20%" },
-  { src: honorGlobal, caption: "Global Forum Delegate", meta: "International Summit · 2023", category: "Honor", focus: "30% center" },
 ];
 
-// Era 4 — Awards, stages, and the present field (2022–2025)
+// Era 4 — Awards, stages, and the present field (2022–2025) · curated 13
 const eraPresent: ArchiveItem[] = [
   { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award", shape: "hero", institution: "Lions Excellence Awards", recognition: "Excellence in Innovation · 2022", presenter: "Felicitated alongside Dia Mirza", venue: "Mumbai · India" },
   { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
   { src: honorIeema, caption: "IEEMA Finalists", meta: "Buildelec · Intelect · Distribuelec · 2024", category: "Honor", shape: "wide", focus: "70% center" },
   { src: awardIeemaCheque, caption: "IEEMA Award Presentation", meta: "Young Innovator Recognition · 2024", category: "Award" },
   { src: keynoteIeema, caption: "IEEMA Mainstage Address", meta: "Buildelec · Mumbai · Jan 2024", category: "Keynote", shape: "wide" },
-  { src: honorBeyond, caption: "Beyond Retreat Honour", meta: "Session Chair Recognition · Mar 2025", category: "Honor" },
   { src: keynoteBeyond, caption: "Beyond Retreat · Uncharted Paths", meta: "Speaker · Ahmedabad · Mar 2025", category: "Keynote", shape: "wide" },
   { src: keynoteGmr, caption: "GMR Innovex Innovation Summit", meta: "Felicitation · GMRIT", category: "Keynote" },
-  { src: keynoteGmrFel, caption: "GMR Innovex · Stage Felicitation", meta: "GMRIT Innovation Summit", category: "Keynote", focus: "45% center" },
   { src: keynoteNit, caption: "Innovision · NIT Rourkela", meta: "Marine Matrix Keynote · Nov 2025", category: "Keynote", shape: "wide" },
   { src: awardStpiCert, caption: "STPI Certificate of Merit", meta: "National Conclave Winner · 2022", category: "Award", shape: "tall" },
   { src: honorStpi, caption: "ESC–STPI Startup Initiative Winners", meta: "Building the Next Unicorn · 2022", category: "Honor", shape: "wide" },
-  { src: keynoteMkm, caption: "Monoatom Labs Address", meta: "MKM Foundation · Mashaal", category: "Keynote", focus: "center" },
   { src: keynoteDriiv, caption: "Monoatom Labs · DRIIV Showcase", meta: "Graphene Innovation Pavilion", category: "Keynote", shape: "wide", focus: "30% center" },
   { src: awardBharatiya, caption: "Bharatiya Knowledge Systems Symposium", meta: "Felicitation · School of IT · 2024", category: "Award", shape: "tall", focus: "center 60%" },
-  { src: honorBada, caption: "With Dr. Vivek Bindra", meta: "Bada Business HQ · 2023", category: "Honor", focus: "right 20%" },
   { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide" },
-  { src: honorTrophies, caption: "Founder's Desk · Monoatom Labs", meta: "TEDx · Startup Summit · SGSAST · Trophies", category: "Honor", shape: "wide", focus: "center center" },
 ];
 
 const counters = [
