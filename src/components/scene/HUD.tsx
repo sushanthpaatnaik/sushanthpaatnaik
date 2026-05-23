@@ -37,16 +37,16 @@ export default function HUD({
         {/* Translucent backing panel — dissolves into darkness at edges */}
         <div
           aria-hidden
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-28 h-[420px]"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[400px]"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.88) 0%, oklch(0.025 0.006 245 / 0.62) 55%, transparent 100%)",
-            WebkitBackdropFilter: "blur(18px) saturate(125%)",
-            backdropFilter: "blur(18px) saturate(125%)",
+              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.72) 0%, oklch(0.025 0.006 245 / 0.42) 50%, transparent 100%)",
+            WebkitBackdropFilter: "blur(10px) saturate(120%)",
+            backdropFilter: "blur(10px) saturate(120%)",
             maskImage:
-              "linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%)",
           }}
         />
 
