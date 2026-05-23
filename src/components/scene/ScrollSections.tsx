@@ -511,25 +511,25 @@ function ClosingInvitation() {
           }}
         />
       </div>
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-28 md:pt-24 pb-12 render-stable">
+      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-36 md:pt-40 pb-12 render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
-            <p className="mb-8 md:mb-10 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
+            <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
               07 — The Future System
             </p>
           </MotionReveal>
           <MotionReveal delay={0.06}>
-            <p className="mx-auto mb-10 md:mb-12 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+            <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
               Not a forecast. A working hypothesis — built one industrial system at a time.
             </p>
           </MotionReveal>
           <MotionReveal delay={0.12}>
-            <h2 className="mb-10 md:mb-12 font-display text-[clamp(2.0rem,8.2vw,6.3rem)] leading-[0.98] md:leading-[0.95] tracking-[-0.04em] md:tracking-[-0.045em] font-medium text-gradient">
-              Material intelligence.<br /> Energy as infrastructure.<br /> Industry at planetary scale.
+            <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance]">
+              Energy as infrastructure.<br /> Industry at planetary scale.
             </h2>
           </MotionReveal>
           <MotionReveal delay={0.2}>
-            <p className="mx-auto mb-12 md:mb-14 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/65">
+            <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
               The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
             </p>
           </MotionReveal>
