@@ -9,6 +9,8 @@ export type ArchiveItem = {
   category: "Award" | "Keynote" | "Honor" | "Fellowship";
   shape?: "hero" | "wide" | "tall" | "square";
   focus?: string;
+  /** Force object-fit on triptych/large frames. Defaults to "cover". */
+  fit?: "cover" | "contain";
   /** Issuing institution, e.g. "National Innovation Foundation". */
   institution?: string;
   /** Recognition + year, e.g. "Presidential Recognition · 2008". */
