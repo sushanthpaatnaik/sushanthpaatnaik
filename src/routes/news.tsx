@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/scene-media-wall.jpg";
+
 
 // Press article images
 import globalImg from "@/assets/news/global.webp";
