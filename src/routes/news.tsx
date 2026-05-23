@@ -555,8 +555,8 @@ function IntelligenceStrip() {
     <StatsStrip
       items={[
         { v: "18", l: "Publications of record" },
-        { v: "15", l: "Years of coverage" },
-        { v: "16", l: "Archived dispatches" },
+        { v: "16", l: "Years of coverage" },
+        { v: "18", l: "Archived dispatches" },
         { v: "EN · ଓଡ଼ିଆ", l: "Languages in archive" },
       ]}
     />
