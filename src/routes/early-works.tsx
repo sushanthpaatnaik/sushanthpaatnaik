@@ -413,8 +413,8 @@ function HandwrittenNote() {
 }
 
 function EarlyWorksPage() {
-  const hero = works.filter((w) => w.hero);
-  const rest = works.filter((w) => !w.hero);
+
+
 
   return (
     <CinematicPageShell
