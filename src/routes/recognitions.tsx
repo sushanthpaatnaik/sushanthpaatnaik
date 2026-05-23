@@ -44,6 +44,7 @@ import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.webp";
 import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.webp";
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
+import honorIntelIris from "@/assets/honor-intel-iris.png";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";
