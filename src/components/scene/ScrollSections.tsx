@@ -850,7 +850,7 @@ function InHisWordsScene() {
           <div className="mb-16 md:mb-24 flex items-center gap-4">
             <span className="h-px w-10 bg-foreground/20" />
             <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
-              07 — In His Words
+              08 — In His Words
             </span>
           </div>
         </MotionReveal>
