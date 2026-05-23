@@ -39,8 +39,26 @@ export default function CinematicPageShell({
             backgroundImage: `url(${backdrop})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(3px) saturate(0.42) brightness(0.5) contrast(1.06)",
-            transform: "scale(1.08)",
+            filter: "blur(4px) saturate(0.38) brightness(0.46) contrast(1.05)",
+            transform: "scale(1.10)",
+          }}
+        />
+        {/* Edge-haze mask — heavier blur on the image perimeter so the
+            archival plate dissolves into atmosphere rather than sitting
+            cleanly framed behind the typography. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${backdrop})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(28px) saturate(0.32) brightness(0.42)",
+            transform: "scale(1.16)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
+            opacity: 0.85,
           }}
         />
         {/* Graphite/blue-black wash */}
@@ -66,12 +84,24 @@ export default function CinematicPageShell({
               "radial-gradient(70% 55% at 18% 78%, oklch(0.42 0.07 240 / 0.10), transparent 65%)",
           }}
         />
-        {/* Full vignette */}
+        {/* Slow breathing center luminance — keeps the page alive even when
+            scrolling stalls. */}
+        <motion.div
+          className="absolute inset-0 mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(55% 45% at 50% 50%, oklch(0.55 0.05 235 / 0.05), transparent 70%)",
+          }}
+          animate={{ opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Full vignette — deepened so the archival plate falls off
+            cinematically toward the corners. */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 80% at 50% 50%, transparent 40%, oklch(0.02 0 0 / 0.55) 100%)",
+              "radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.02 0 0 / 0.72) 100%)",
           }}
         />
       </div>
