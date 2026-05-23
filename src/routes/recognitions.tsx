@@ -333,16 +333,6 @@ const eraPresidential: ArchiveItem[] = [
     venue: "Rashtrapati Bhavan · New Delhi",
   },
   {
-    src: awardPranabTrophy,
-    caption: "Presidential Trophy",
-    meta: "NIF-India · 2013",
-    category: "Award",
-    shape: "tall",
-    institution: "National Innovation Foundation",
-    recognition: "Presidential Trophy · 2013",
-    venue: "Government of India · New Delhi",
-  },
-  {
     src: fellowCert,
     caption: "Honour Certificate",
     meta: "Record of Recognition",
