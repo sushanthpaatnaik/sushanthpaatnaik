@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
@@ -9,13 +9,14 @@ import CinematicPageShell, {
 
 import {
   HallOfFameRibbon,
-  
+
   StatsAuthorityBlock,
   ArchivePlateSeries,
   PresidentialTriptych,
   type ArchiveItem,
 } from "@/components/scene/ArchiveMosaic";
 import backdrop from "@/assets/scene-recognition-archive.webp";
+import closureBackdrop from "@/assets/scene-legacy-closure.webp";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
