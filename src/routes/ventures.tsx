@@ -255,94 +255,105 @@ function VenturesPage() {
         </p>
       </EditorialSection>
 
-      {/* ---------- Advisory roster ---------- */}
-      <EditorialSection number="08 · Advisory" heading="Counsel to industrial & climate houses.">
+      {/* ---------- Advisory roster · Industry layer wall ---------- */}
+      <EditorialSection number="08 · Advisory" heading="Counsel across five industry layers.">
         <p>
-          A short ledger of the houses I quietly advise across materials, design and
-          consumer technology.
+          A short ledger of the houses I quietly advise — one mark per layer
+          of the industrial network: materials, industrial systems, consumer
+          technology, surface technologies, and design + living.
         </p>
 
-        {/* Premium institutional advisory grid */}
-        <div className="not-prose mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-4">
+        {/* Industry-layer header strip — anchors the wall as one network */}
+        <div className="not-prose mt-14 mb-px flex items-center gap-3">
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+            Industry Layers · Advisory Network
+          </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+        </div>
+
+        {/* Unified glass-dark mark wall — equal cells, optical normalisation */}
+        <div className="not-prose grid grid-cols-2 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] sm:grid-cols-3 md:grid-cols-5 rounded-sm overflow-hidden">
           {advisories.map((a, i) => (
             <motion.div
               key={a.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.8, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
-              className="group relative flex flex-col items-center justify-between gap-6 px-4 py-8 md:py-10 text-center overflow-hidden rounded-sm"
-              style={{
-                background: "oklch(0.055 0.006 240 / 0.85)",
-                border: "1px solid oklch(1 0 0 / 0.05)",
-                boxShadow: "inset 1px 1.5px 0 oklch(1 1 0 / 0.03), 0 4px 24px -12px oklch(1 0 0 / 1)",
-              }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.9, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+              className="group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[oklch(0.05_0.006_245)] px-5 py-10 md:py-12 text-center"
             >
-              {/* ── Atmospheric base layer ── */}
+              {/* ── Atmospheric base — restrained graphene wash ── */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-1"
+                className="pointer-events-none absolute inset-0"
                 style={{
-                  borderRadius: "1px",
                   background:
-                    "radial-gradient(80% 65% at 50% 40%, oklch(0.10 0.008 240 / 0.48) 0%, oklch(0.05 0.006 245 / 0.92) 78%)",
+                    "radial-gradient(85% 60% at 50% 35%, oklch(0.11 0.012 235 / 0.32) 0%, transparent 75%)",
                 }}
               />
 
-              {/* ── Hover volumetric key light ── */}
+              {/* ── Cinematic glass sheen ── */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[900ms] group-hover:opacity-100"
+                className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
                 style={{
                   background:
-                    "radial-gradient(45% 40% at 50% 30%, oklch(0.65 0.05 230 / 0.10), transparent 72%)",
+                    "linear-gradient(180deg, oklch(1 0 0 / 0.025) 0%, transparent 100%)",
                 }}
               />
 
-              {/* ── Metallic floor reflection ── */}
+              {/* ── Restrained blue diffusion on hover (matches site wash) ── */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-1 h-[28%]"
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
                 style={{
                   background:
-                    "linear-gradient(to top, oklch(0.09 0.01 240 / 0.45), transparent)",
+                    "radial-gradient(60% 50% at 50% 30%, oklch(0.78 0.02 232 / 0.10), transparent 72%)",
                 }}
               />
 
-              {/* ── Hairline top accent ── */}
+              {/* ── Hairline top — turns accent on hover ── */}
               <div
                 aria-hidden
-                className="absolute top-0 left-0 right-0 h-px bg-foreground/[0.08] transition-all duration-[900ms] group-hover:bg-accent/25"
+                className="absolute left-0 right-0 top-0 h-px bg-foreground/[0.06] transition-all duration-[1100ms] group-hover:bg-accent/30"
               />
 
-              {/* ── Logo plate ── */}
+              {/* ── Industry layer eyebrow ── */}
+              <span className="relative z-10 font-mono text-[9px] uppercase tracking-[0.42em] text-accent/70">
+                {a.category}
+              </span>
+
+              {/* ── Logo plate — fixed canvas for optical normalisation ── */}
               <div
                 className="relative z-10 flex items-center justify-center w-full"
-                style={{ height: "72px" }}
+                style={{ height: "64px" }}
               >
                 <img
                   src={a.logo}
-                  alt={`${a.name} — ${a.sector}`}
+                  alt={`${a.name} — ${a.category}`}
                   loading="lazy"
                   style={{
-                    maxHeight: `${Math.round(48 * a.scale)}px`,
-                    maxWidth: `${Math.round(72 * a.scale)}%`,
+                    maxHeight: `${Math.round(46 * a.scale)}px`,
+                    maxWidth: `${Math.round(74 * a.scale)}%`,
                     transform: `translateY(${a.offsetY || 0}px)`,
-                    filter: "grayscale(12%) brightness(0.97)",
+                    filter: "grayscale(0.18) brightness(0.95) contrast(1.04)",
                   }}
-                  className="w-auto h-auto object-contain opacity-[0.88] drop-shadow-[0_2px_12px_oklch(0_0_0/0.5)] transition-all duration-[900ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:drop-shadow-[0_3px_18px_oklch(0_0_0/0.65)]"
+                  className="h-auto w-auto object-contain opacity-[0.82] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:grayscale-0"
                 />
               </div>
 
               {/* ── Editorial caption ── */}
-              <div className="relative z-10 flex flex-col items-center gap-2">
+              <div className="relative z-10 flex flex-col items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="block h-px w-6 bg-foreground/18 transition-all duration-[900ms] group-hover:w-9 group-hover:bg-foreground/35"
+                  className="block h-px w-6 bg-foreground/20 transition-all duration-[1100ms] group-hover:w-10 group-hover:bg-accent/45"
                 />
-                <span className="font-mono text-[9px] uppercase tracking-[0.36em] leading-none text-foreground/55 transition-colors duration-[900ms] group-hover:text-foreground/85">
-                  {a.sector}
+                <span className="font-display text-[13px] tracking-[-0.005em] text-foreground/80 transition-colors duration-[1100ms] group-hover:text-foreground/95">
+                  {a.name}
                 </span>
+              </div>
+
               </div>
             </motion.div>
           ))}
