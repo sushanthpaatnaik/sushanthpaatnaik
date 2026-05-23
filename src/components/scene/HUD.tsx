@@ -111,7 +111,7 @@ function ChapterMarker({
         }}
         initial={false}
         animate={{
-          opacity: active ? 1 : 1,
+          opacity: active ? 1 : 0,
         }}
         transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
       />
@@ -138,7 +138,7 @@ function ChapterMarker({
           className="relative z-10 rounded-full"
           style={{
             background: active
-              ? "oklch(0.97 1.0 0)"
+              ? "oklch(0.97 0.0 0)"
               : "oklch(0.55 0.0 0 / 0.38)",
             boxShadow: active
               ? "0 1px 4px rgba(0,0,0,0.55), 1px 2px 3px rgba(0,0,0,0.38)"
@@ -149,7 +149,7 @@ function ChapterMarker({
             width: active ? 7 : 4,
             height: active ? 7 : 4,
             background: active
-              ? "oklch(0.97 1.0 0)"
+              ? "oklch(0.97 0.0 0)"
               : "oklch(0.55 0.0 0 / 0.38)",
           }}
           transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
