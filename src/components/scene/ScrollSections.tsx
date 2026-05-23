@@ -5,6 +5,9 @@ import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
 import founderLab from "@/assets/founder-lab.jpg";
 import MediaWallBackdrop from "./MediaWallBackdrop";
+import HeroAtmosphere from "./HeroAtmosphere";
+
+
 
 
 // 7-chapter cinematic storyline.
@@ -73,54 +76,13 @@ const processSteps = [
 ];
 
 function HeroSection() {
-  const { scrollYProgress } = useScroll();
-  // Progressive founder reveal: starts deeply hidden, subtly emerges as user scrolls into journey
-  const silhouetteOpacity = useTransform(scrollYProgress, [0, 0.04, 0.1], [0.08, 0.18, 0.32]);
-  const silhouetteBlur = useTransform(scrollYProgress, [0, 0.1], [18, 10]);
-  const silhouetteFilter = useTransform(silhouetteBlur, (b) => `blur(${b}px) grayscale(0.4) contrast(1.05)`);
-  const silhouetteScale = useTransform(scrollYProgress, [0, 0.1], [1.04, 1]);
-
   return (
     <section id="spark" className="relative min-h-[calc(var(--viewport-height)*1.32)] px-5 sm:px-6">
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-28 md:pt-24 pb-12 render-stable">
-        {/* Atmospheric founder silhouette — subtle, environmental, behind typography */}
-        <motion.div
-          aria-hidden
-          style={{ opacity: silhouetteOpacity, filter: silhouetteFilter, scale: silhouetteScale }}
-          className="pointer-events-none absolute inset-0 z-0 render-stable"
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${founderPresence})`,
-              backgroundPosition: "center 30%",
-              backgroundSize: "auto 95%",
-              backgroundRepeat: "no-repeat",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 42% 58% at 50% 48%, #000 18%, rgba(0,0,0,0.55) 48%, transparent 82%)",
-              maskImage:
-                "radial-gradient(ellipse 42% 58% at 50% 48%, #000 18%, rgba(0,0,0,0.55) 48%, transparent 82%)",
-            }}
-          />
-          {/* Volumetric haze wash across silhouette */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, oklch(0.04 0 0 / 0.55) 70%, oklch(0.03 0 0) 95%)",
-            }}
-          />
-          {/* Single cool rim breath — replaces 3 drift layers + dust grid */}
-          <motion.div
-            className="absolute inset-0 mix-blend-screen render-stable"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              background:
-                "radial-gradient(ellipse 42% 48% at 60% 44%, oklch(0.5 0.08 240 / 0.09) 0%, transparent 65%)",
-            }}
-          />
-        </motion.div>
+        {/* Invisible environmental depth — volumetric haze, hidden graphene
+            blueprint trace, particle drift, distant glow. No portrait, no
+            literal imagery. Threshold-of-a-future-world atmosphere only. */}
+        <HeroAtmosphere />
 
         {/* Cinematic top + bottom fade so silhouette dissolves into page */}
         <div
@@ -131,6 +93,7 @@ function HeroSection() {
               "linear-gradient(180deg, oklch(0.03 0 0) 0%, transparent 22%, transparent 70%, oklch(0.03 0 0) 100%)",
           }}
         />
+
         <div className="relative z-10 max-w-5xl">
           <motion.p
             initial={{ opacity: 0, y: 18 }}
