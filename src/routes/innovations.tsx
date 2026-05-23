@@ -173,15 +173,19 @@ function InnovationsPage() {
         </div>
       </div>
 
-      {/* Filter pills */}
+      {/* Instrument bar — readiness-stage selector */}
       <div className="not-prose mt-14">
         <div className="mb-5 flex items-center gap-3">
           <span className="h-px w-8 bg-foreground/[0.12]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
             Catalogue · Filter by readiness stage
           </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/40">
+            TRL · I — III
+          </span>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex divide-x divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
           {filters.map((f) => {
             const isActive = f === filter;
             const count = f === "All" ? items.length : items.filter((i) => i.stage === f).length;
@@ -189,18 +193,31 @@ function InnovationsPage() {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-[0.3em] border transition-all ${
-                  isActive
-                    ? "bg-foreground text-background border-foreground"
-                    : "border-foreground/15 text-muted-foreground hover:border-foreground/40 hover:text-foreground"
+                className={`group relative flex-1 px-4 py-4 text-left transition-colors duration-500 ${
+                  isActive ? "bg-foreground/[0.04]" : "hover:bg-foreground/[0.02]"
                 }`}
               >
-                {f} · {String(count).padStart(2, "0")}
+                <span
+                  aria-hidden
+                  className={`absolute left-0 right-0 top-0 h-px transition-colors duration-500 ${
+                    isActive ? "bg-accent/70" : "bg-transparent group-hover:bg-foreground/15"
+                  }`}
+                />
+                <span className={`block font-mono text-[9px] uppercase tracking-[0.38em] transition-colors duration-500 ${isActive ? "text-accent/85" : "text-foreground/45"}`}>
+                  {f === "All" ? "All Stages" : f === "R&D" ? "Stage III" : f === "Pilot" ? "Stage II" : "Stage I"}
+                </span>
+                <span className={`mt-2 block font-display text-[15px] tracking-[-0.01em] transition-colors duration-500 ${isActive ? "text-foreground/95" : "text-foreground/70"}`}>
+                  {f}
+                </span>
+                <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/40">
+                  {String(count).padStart(2, "0")} · Programs
+                </span>
               </button>
             );
           })}
         </div>
       </div>
+
 
       {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
       <div className="not-prose mt-12 space-y-20">
