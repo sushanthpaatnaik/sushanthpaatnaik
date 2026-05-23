@@ -456,9 +456,11 @@ function EraAccordion({
   title,
   description,
   defaultOpen = false,
+  forceOpen,
   plateCount,
   registryCount,
   previewPlates,
+  anchorId,
   children,
 }: {
   number: string;
@@ -466,17 +468,21 @@ function EraAccordion({
   title: string;
   description: string;
   defaultOpen?: boolean;
+  forceOpen?: boolean;
   plateCount: number;
   registryCount: number;
   previewPlates?: ArchiveItem[];
+  anchorId?: string;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const open = forceOpen ?? internalOpen;
   return (
     <Collapsible.Root
       open={open}
-      onOpenChange={setOpen}
-      className="not-prose group/era relative border-t border-foreground/[0.08]"
+      onOpenChange={setInternalOpen}
+      id={anchorId}
+      className="not-prose group/era relative border-t border-foreground/[0.08] scroll-mt-28"
     >
       <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[oklch(0.05_0.003_245)]/40">
         <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-8 md:gap-x-12">
