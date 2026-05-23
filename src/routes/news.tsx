@@ -329,27 +329,27 @@ function outletHref(name: string): string | undefined {
 }
 
 // `lighten` flags publications whose marks are inherently dark/grayscale —
-// they get an extra brightness/invert lift so the wordmark reads against
-// the cinematic black tile.
-const outlets: { name: string; logo: string; lighten?: boolean }[] = [
-  { name: "India Today", logo: indiaTodayLogo },
-  { name: "The Times of India", logo: toiLogo, lighten: true },
-  { name: "Business Standard", logo: businessStandardLogo },
-  { name: "Deccan Chronicle", logo: deccanLogo, lighten: true },
-  { name: "The Telegraph", logo: telegraphLogo, lighten: true },
-  { name: "The Global Indian", logo: globalIndianLogo, lighten: true },
-  { name: "MIT Technology Review", logo: mitTrLogo },
-  { name: "TED India", logo: tedLogo },
-  { name: "NIF India", logo: nifLogo },
-  { name: "Governance Now", logo: governanceNowLogo },
-  { name: "Rediff · PTI", logo: rediffLogo },
-  { name: "ProductNation", logo: productNationLogo },
-  { name: "YourStory", logo: yourStoryLogo },
-  { name: "WeRIndia · Fusion", logo: werIndiaLogo },
-  { name: "Wikipedia", logo: wikipediaLogo, lighten: true },
-  { name: "ThePrint", logo: thePrintLogo },
-  { name: "The New Indian Express", logo: newIndianExpressLogo, lighten: true },
-  { name: "INK Talks", logo: inkTalksLogo },
+// they get inverted+desaturated so they read as soft silver on the dark wall.
+// `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
+const outlets: { name: string; logo: string; lighten?: boolean; scale?: number }[] = [
+  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.00 },
+  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.05 },
+  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.00 },
+  { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 0.82 },
+  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 0.95 },
+  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.18 },
+  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.00 },
+  { name: "TED India",              logo: tedLogo,               scale: 0.78 },
+  { name: "NIF India",              logo: nifLogo,               scale: 1.20 },
+  { name: "Governance Now",         logo: governanceNowLogo,     scale: 1.22 },
+  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 0.95 },
+  { name: "ProductNation",          logo: productNationLogo,     scale: 1.00 },
+  { name: "YourStory",              logo: yourStoryLogo,         scale: 0.95 },
+  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.00 },
+  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.05 },
+  { name: "ThePrint",               logo: thePrintLogo,          scale: 0.82 },
+  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.00 },
+  { name: "INK Talks",              logo: inkTalksLogo,          scale: 0.95 },
 ];
 
 const testimonials = [
@@ -796,24 +796,28 @@ function NewsPage() {
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.14] bg-[oklch(0.085_0.006_245)]/85 shadow-[0_0_60px_-20px_oklch(0.62_0.10_55_/_0.18)_inset]">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.1] sm:grid-cols-3 md:grid-cols-6">
+        <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.10] bg-[oklch(0.055_0.004_245)]/90 shadow-[0_0_80px_-30px_oklch(0.62_0.10_55_/_0.14)_inset]">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
+              const scale = o.scale ?? 1;
+              // Optical baseline ~ 34px at scale 1.0; clamped 24-46px.
+              const optical = Math.round(Math.min(46, Math.max(24, 34 * scale)));
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className={`max-h-10 w-auto max-w-[150px] object-contain opacity-95 transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.06] drop-shadow-[0_0_12px_oklch(1_0_0_/_0.08)] group-hover:drop-shadow-[0_0_18px_oklch(1_0_0_/_0.22)] ${
+                  style={{ maxHeight: `${optical}px`, mixBlendMode: "lighten" }}
+                  className={`w-auto max-w-[78%] object-contain opacity-[0.82] transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.04] ${
                     o.lighten
-                      ? "invert brightness-[1.15] contrast-[1.1] hue-rotate-180 saturate-[0.85]"
-                      : "brightness-[1.18] contrast-[1.08]"
+                      ? "invert brightness-[1.1] contrast-[1.08] hue-rotate-180 saturate-[0.75]"
+                      : "brightness-[1.12] contrast-[1.05] saturate-[0.9]"
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-24 items-center justify-center bg-[oklch(0.08_0.006_245)] px-4 transition-colors duration-500 before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-700 before:bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.10_55_/_0.10),transparent_65%)] hover:before:opacity-100";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.055_0.004_245)] px-6 py-6 transition-colors duration-500 before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-700 before:bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.10_55_/_0.08),transparent_70%)] hover:before:opacity-100";
               return href ? (
                 <a
                   key={o.name}
@@ -821,7 +825,7 @@ function NewsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`${o.name} — read coverage ↗`}
-                  className={`${baseCls} hover:bg-[oklch(0.11_0.008_245)]`}
+                  className={`${baseCls} hover:bg-[oklch(0.085_0.006_245)]`}
                 >
                   {inner}
                 </a>
