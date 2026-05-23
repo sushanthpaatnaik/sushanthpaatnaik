@@ -99,7 +99,7 @@ function AboutPage() {
       title={<>An inventor, quietly building<br className="hidden md:inline" /> industrial futures.</>}
       lead="Born in Bhubaneswar, Odisha. The work began in a borrowed workshop at fourteen — and has not really paused since."
       backdrop={backdrop}
-      overlay={0.74}
+      overlay={0.82}
     >
       {/* ── Founder plate ── */}
       <FounderPortrait
