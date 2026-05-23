@@ -655,13 +655,13 @@ function NewsPage() {
       }
       lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
-      overlay={0.84}
+      overlay={0.68}
     >
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
       {/* Newspaper nameplate */}
-      <div className="mt-12 border-y border-foreground/20 py-5">
+      <div className="mt-8 border-y border-foreground/20 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
           <span className="text-primary/80">Press of Record</span>
           <span className="hidden sm:inline text-muted-foreground/40">
@@ -669,28 +669,23 @@ function NewsPage() {
           </span>
           <span>Folio 01 — 18</span>
         </div>
-        <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+        <div className="mt-2.5 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
           <span className="hidden md:inline">Curated, not complete</span>
           <span>English · ଓଡ଼ିଆ</span>
         </div>
       </div>
 
-      {/* Lead + secondary features */}
-      <LeadFeature item={featured} />
-      <SecondaryFeature item={secondary} />
-
-      {/* Category index → Archive — one continuous editorial flow,
-          no double-section gap between the desks grid and the first dispatch. */}
-      <EditorialSection number="07 · Desks & Archive" heading="Five desks. Eighteen dispatches.">
-        <p>
-          The archive grouped by editorial desk — features and interviews,
-          deep-tech reporting, recognitions of record, venture press, and the
-          stage record. From teenage assistive tech in <em>The Telegraph</em>{" "}
-          and NIF, to global recognition in MIT TR and Wikipedia, to deep-tech
-          reporting on Capattery, GraphIN and the battery breakthrough.
-        </p>
-        <nav className="not-prose mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+      {/* Desks navigation — placed up-front so readers can jump straight
+          to the desk they care about before the flagship feature lands. */}
+      <div className="mt-7">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+          <span className="text-accent/80">06 · Desks</span>
+          <span className="hidden md:inline text-muted-foreground/40">
+            Five desks · eighteen dispatches
+          </span>
+        </div>
+        <nav className="not-prose mt-4 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
           {CATEGORIES.map((c) => {
             const count = [featured, secondary, ...coverage].filter(
               (i) => i.category === c.id,
@@ -715,11 +710,26 @@ function NewsPage() {
             );
           })}
         </nav>
+      </div>
 
-        {/* Hairline bridge — visually anchors the archive directly under the desks grid */}
-        <div className="not-prose mt-4 flex items-center gap-3 border-t border-foreground/[0.12] pt-3">
+      {/* Flagship feature lands directly below the desks — no dead air. */}
+      <LeadFeature item={featured} />
+      <SecondaryFeature item={secondary} />
+
+      {/* The archive proper */}
+      <EditorialSection number="07 · The Archive" heading="Filed chronologically. Read selectively.">
+        <p>
+          The full register — features and interviews, deep-tech reporting,
+          recognitions of record, venture press, and the stage record. From
+          teenage assistive tech in <em>The Telegraph</em> and NIF, to global
+          recognition in MIT TR and Wikipedia, to deep-tech reporting on
+          Capattery, GraphIN and the battery breakthrough.
+        </p>
+
+        {/* Hairline bridge — visually anchors the archive directly under the section opener */}
+        <div className="not-prose mt-5 flex items-center gap-3 border-t border-foreground/[0.12] pt-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
-            ▸ The Archive
+            ▸ Dispatches
           </span>
           <span className="h-px flex-1 bg-foreground/[0.08]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 hidden md:inline">
@@ -730,7 +740,7 @@ function NewsPage() {
         {(() => {
           const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-3 flex flex-col gap-8 md:gap-10">
+            <div className="not-prose mt-3 flex flex-col gap-7 md:gap-9">
               {CATEGORIES.map((c) => {
                 const items = all
                   .filter((i) => i.category === c.id)
