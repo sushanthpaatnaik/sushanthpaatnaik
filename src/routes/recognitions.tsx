@@ -401,6 +401,7 @@ function EraAccordion({
   defaultOpen = false,
   plateCount,
   registryCount,
+  previewPlates,
   children,
 }: {
   number: string;
@@ -410,6 +411,7 @@ function EraAccordion({
   defaultOpen?: boolean;
   plateCount: number;
   registryCount: number;
+  previewPlates?: ArchiveItem[];
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -450,6 +452,42 @@ function EraAccordion({
             />
           </span>
         </div>
+
+        {/* Always-visible archival preview strip — restores documentary depth without forcing scroll */}
+        {previewPlates && previewPlates.length > 0 && !open && (
+          <div className="mt-8 md:mt-10 pl-0 md:pl-[calc(theme(spacing.12)+1.5rem)]">
+            <div className="grid grid-cols-4 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] rounded-sm overflow-hidden">
+              {previewPlates.slice(0, 4).map((p, i) => (
+                <figure
+                  key={p.src + i}
+                  className="relative aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)]"
+                >
+                  <img
+                    src={p.src}
+                    alt={p.caption}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-1000 group-hover/era:opacity-85"
+                    style={{
+                      objectPosition: p.focus ?? "center 30%",
+                      filter: "grayscale(0.25) contrast(1.06) saturate(0.78) brightness(0.86)",
+                    }}
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, transparent 45%, oklch(0.02 0.006 245 / 0.82) 100%)",
+                    }}
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 px-2.5 py-2 font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
+                    {p.category}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
       </Collapsible.Trigger>
       <AnimatePresence initial={false}>
         {open && (
