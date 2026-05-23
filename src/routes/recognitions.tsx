@@ -1000,7 +1000,7 @@ function RecognitionsPage() {
       </div>
 
       {/* 07 · Achievement Ledger — full 27 honors, always visible */}
-      <div id="ledger" className="scroll-mt-24 mt-32 md:mt-40">
+      <div id="ledger" className="scroll-mt-24 mt-20 md:mt-28">
         <EditorialSection number="07 · Register" heading="Achievement ledger · 27 of record.">
           <p>
             The complete year-by-year register — every Presidential citation,
