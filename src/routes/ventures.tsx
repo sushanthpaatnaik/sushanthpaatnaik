@@ -5,11 +5,11 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.jpg";
 
-import magppieLogo from "@/assets/clients/magppie.png";
-import vinroxLogo from "@/assets/clients/vinrox.png";
+import magppieLogo from "@/assets/clients/magppie.webp";
+import vinroxLogo from "@/assets/clients/vinrox.webp";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia.webp";
-import wehearLogo from "@/assets/clients/wehear.png";
+import wehearLogo from "@/assets/clients/wehear.webp";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
