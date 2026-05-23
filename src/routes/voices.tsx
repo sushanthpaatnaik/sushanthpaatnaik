@@ -175,13 +175,13 @@ function VoicesList({ items }: { items: Voice[] }) {
 function VoicesPage() {
   return (
     <CinematicPageShell
-      eyebrow="Voices · Institutions, Stages & Press"
+      eyebrow="Voices · Institutional Endorsements"
       title={
         <>
           What the institutions<br className="hidden md:inline" /> have on record.
         </>
       }
-      lead="A curated set of institutional voices, on-record recognitions, and editorial endorsements — drawn from sovereign honors, global stages, and the long press trail. Quotes are paraphrased from public record; primary sources are linked in News and Recognitions."
+      lead="A curated wall of institutional endorsement — sovereign bodies, foundations, and global platforms speaking on the work. Quotes are paraphrased from public record."
       backdrop={backdrop}
       overlay={0.76}
     >
