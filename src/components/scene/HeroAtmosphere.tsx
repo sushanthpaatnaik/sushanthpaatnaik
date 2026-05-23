@@ -53,33 +53,33 @@ export default function HeroAtmosphere() {
 
       {/* Layer 4 — volumetric haze drift, asymmetric. */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-1"
         animate={reduce ? undefined : { x: ["-2%", "2%", "-2%"] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 30% 60%, oklch(0.10 0.02 245 / 0.18), transparent 65%)",
+            "radial-gradient(ellipse 62% 52% at 32% 58%, oklch(0.10 0.02 245 / 0.12), transparent 65%)",
         }}
       />
 
       {/* Layer 5 — hidden graphene blueprint trace (extremely faint SVG). */}
       <div
-        className="absolute inset-0 opacity-[0.035] mix-blend-screen"
+        className="absolute inset-0 opacity-[0.022] mix-blend-screen"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g fill='none' stroke='%2380a8d8' stroke-width='0.35'><polygon points='100,20 160,55 160,125 100,160 40,125 40,55'/><polygon points='100,55 130,72.5 130,107.5 100,125 70,107.5 70,72.5'/><line x1='100' y1='20' x2='100' y2='55'/><line x1='160' y1='55' x2='130' y2='72.5'/><line x1='160' y1='125' x2='130' y2='107.5'/><line x1='100' y1='160' x2='100' y2='125'/><line x1='40' y1='125' x2='70' y2='107.5'/><line x1='40' y1='55' x2='70' y2='72.5'/></g></svg>\")",
           backgroundSize: "320px 320px",
           backgroundRepeat: "repeat",
           maskImage:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.4) 50%, transparent 85%)",
+            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.3) 50%, transparent 85%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.4) 50%, transparent 85%)",
+            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.3) 50%, transparent 85%)",
         }}
       />
 
       {/* Layer 6 — microscopic material texture (very low-amplitude noise). */}
       <div
-        className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>\")",
@@ -118,7 +118,7 @@ export default function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 65% at 50% 50%, transparent 40%, oklch(0.02 0.005 260 / 0.7) 100%)",
+            "radial-gradient(ellipse 74% 68% at 50% 50%, transparent 36%, oklch(0.022 1.004 260 / 0.82) 100%)",
         }}
       />
     </div>
