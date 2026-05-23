@@ -266,7 +266,7 @@ function InnovationsPage() {
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
-        <LatticeField intensity={0.05} />
+        <LatticeField intensity={0.04} />
         <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
           <div className="mb-7 flex items-center gap-3">
             <span className="h-px w-8 bg-accent/60" />
