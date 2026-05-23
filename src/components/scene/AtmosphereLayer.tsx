@@ -76,11 +76,11 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneVentures,
     alt: "06 — Ecosystem · a constellation of operating worlds",
-    tint: "radial-gradient(ellipse at 50% 40%, oklch(0.45 0.13 270 / 0.30), oklch(0.10 0.05 250 / 0.25) 70%)",
+    tint: "radial-gradient(ellipse at 50% 40%, oklch(0.40 0.05 235 / 0.22), oklch(0.08 0.018 232 / 0.22) 70%)",
     overlay:
-      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.04 0.01 260 / 0.45) 0%, oklch(0.03 0.006 260 / 0.78) 85%)",
+      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.035 0.006 232 / 0.50) 0%, oklch(0.025 0.004 232 / 0.82) 85%)",
     parallax: 0.9,
-    filter: "brightness(0.78) contrast(1.08) saturate(0.95) hue-rotate(-4deg)",
+    filter: "brightness(0.74) contrast(1.06) saturate(0.78)",
   },
   {
     src: sceneFuture,
