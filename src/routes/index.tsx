@@ -133,7 +133,7 @@ function Index() {
 
   // Reveal main content after loader
   useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 2400);
+    const t = setTimeout(() => setEntered(true), 750);
     return () => clearTimeout(t);
   }, []);
 

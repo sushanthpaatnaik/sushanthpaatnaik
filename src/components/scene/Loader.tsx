@@ -8,17 +8,17 @@ export default function Loader() {
   useEffect(() => {
     let p = 0;
     const id = setInterval(() => {
-      // Eased fake progress that decelerates near 100
-      p += (100 - p) * 0.08 + 0.6;
+      // Eased fake progress — reaches 100 in ~500ms
+      p += (100 - p) * 0.22 + 2.5;
       if (p >= 99.5) {
         p = 100;
         setProgress(100);
         clearInterval(id);
-        setTimeout(() => setDone(true), 900);
+        setTimeout(() => setDone(true), 220);
       } else {
         setProgress(p);
       }
-    }, 60);
+    }, 32);
     return () => clearInterval(id);
   }, []);
 
