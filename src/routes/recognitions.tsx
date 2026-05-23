@@ -3,7 +3,7 @@ import CinematicPageShell, {
   EditorialList,
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
-import ArchiveMosaic, { HallOfFameRibbon, type ArchiveItem } from "@/components/scene/ArchiveMosaic";
+import ArchiveMosaic, { HallOfFameRibbon, LegacyTimeline, StatsAuthorityBlock, type ArchiveItem } from "@/components/scene/ArchiveMosaic";
 import backdrop from "@/assets/story-02-recognition.jpg";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
@@ -268,7 +268,7 @@ const eraIndustrial: ArchiveItem[] = [
   { src: honorItalian, caption: "With H.E. Antonio Bartoli", meta: "Ambassador of Italy to India", category: "Honor" },
   { src: honorUk, caption: "Trophy Presentation · Embassy of Italy", meta: "New Delhi", category: "Honor" },
   { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius", category: "Honor", shape: "wide", focus: "center 30%" },
-  { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 · G20 · Gurugram · 2023", category: "Honor", shape: "tall", focus: "center 25%" },
+  { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 · G20 · Gurugram · 2023", category: "Honor", shape: "hero", focus: "center 25%", institution: "Startup20 Engagement Group", recognition: "G20 India Presidency · 2023", presenter: "With H.H. Prince Fahad bin Mansour Al-Saud", venue: "Gurugram · India" },
   { src: keynoteBritish, caption: "British High Commission", meta: "Address · New Delhi", category: "Keynote" },
   { src: honorGadkari, caption: "With Shri Nitin Gadkari", meta: "Union Minister · Transport Bhawan", category: "Honor", focus: "center 22%" },
   { src: honorMop, caption: "Ministry of Power · Bureau of Energy Efficiency", meta: "Govt of India · New Delhi · 2023", category: "Honor", focus: "center 30%" },
@@ -279,7 +279,7 @@ const eraIndustrial: ArchiveItem[] = [
 
 // Era 4 — Awards, stages, and the present field (2022–2025)
 const eraPresent: ArchiveItem[] = [
-  { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award", shape: "wide" },
+  { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award", shape: "hero", institution: "Lions Excellence Awards", recognition: "Excellence in Innovation · 2022", presenter: "Felicitated alongside Dia Mirza", venue: "Mumbai · India" },
   { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
   { src: honorIeema, caption: "IEEMA Finalists", meta: "Buildelec · Intelect · Distribuelec · 2024", category: "Honor", shape: "wide", focus: "70% center" },
   { src: awardIeemaCheque, caption: "IEEMA Award Presentation", meta: "Young Innovator Recognition · 2024", category: "Award" },
@@ -332,22 +332,36 @@ function RecognitionsPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
-      {/* Counters — quantitative ledger header */}
-      <div className="not-prose mt-6 grid grid-cols-2 gap-px bg-foreground/[0.05] sm:grid-cols-4 rounded-sm overflow-hidden ring-1 ring-foreground/[0.05]">
-        {counters.map((c) => (
-          <div
-            key={c.label}
-            className="flex flex-col items-center justify-center gap-2 bg-[oklch(0.05_0.006_245)] px-4 py-8"
-          >
-            <span className="font-display text-3xl md:text-5xl tracking-[-0.03em] text-foreground/95">
-              {c.value}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
-              {c.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* Institutional statistics — authority block */}
+      <StatsAuthorityBlock items={counters} eyebrow="Archive · Register of Record" />
+
+      {/* Chronological prestige flow — single legible arc */}
+      <LegacyTimeline
+        eyebrow="Legacy · Chronological Prestige"
+        items={[
+          { year: "2008", title: "First Presidential Award", institution: "Dr. A.P.J. Abdul Kalam · NIF" },
+          { year: "2009", title: "Second & Third Presidential Awards", institution: "Smt. Pratibha Patil · Dr. A.P.J. Abdul Kalam" },
+          { year: "2010", title: "MIT TR-35 Innovator", institution: "MIT Technology Review" },
+          { year: "2011", title: "NASA International Recognition", institution: "Kennedy Space Center" },
+          { year: "2012", title: "TED-India Speaker", institution: "TED · Mysore" },
+          { year: "2013", title: "Sixth Presidential Award", institution: "Shri Pranab Mukherjee · NIF" },
+          { year: "2013–14", title: "MIT Fab-10 & Fab-11", institution: "MIT · Barcelona" },
+          { year: "2022", title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum" },
+          { year: "2023", title: "Startup20 · G20 Presidency", institution: "Government of India" },
+          { year: "2024", title: "Silicon Valley Address", institution: "Bay Area · USA" },
+          { year: "2025", title: "Innovision Keynote", institution: "NIT Rourkela" },
+        ]}
+      />
+
+      {/* Hall of Fame overture — cinematic reel as opening movement */}
+      <EditorialSection number="06 · Overture" heading="A continuous archival reel.">
+        <p>
+          Before the chronology — an opening movement. Newspaper clippings,
+          mainstage moments, presidential demonstrations and honorary
+          citations arranged as a single cinematic strip.
+        </p>
+      </EditorialSection>
+      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
       <EditorialList items={milestones} />
 
@@ -387,14 +401,6 @@ function RecognitionsPage() {
       </EditorialSection>
       <ArchiveMosaic items={eraPresent} />
 
-      <EditorialSection number="10b · Hall of Fame" heading="The reel — media, stage, and honour.">
-        <p>
-          A continuous cinematic strip — newspaper clippings, mainstage
-          moments, presidential demonstrations and honorary citations
-          arranged as a single archival reel.
-        </p>
-      </EditorialSection>
-      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
       <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
         <p>

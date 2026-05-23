@@ -239,3 +239,98 @@ export function HallOfFameRibbon({
     </div>
   );
 }
+
+/**
+ * LegacyTimeline — chronological prestige flow. A horizontal museum-style
+ * timeline that anchors the archive in a single legible arc of years and
+ * defining institutional moments.
+ */
+export function LegacyTimeline({
+  items,
+  eyebrow = "Legacy · Chronological Prestige",
+}: {
+  items: { year: string; title: string; institution: string }[];
+  eyebrow?: string;
+}) {
+  return (
+    <div className="not-prose mt-12">
+      <div className="mb-5 flex items-center gap-3">
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+          {eyebrow}
+        </span>
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+      </div>
+      <div
+        className="relative flex gap-px overflow-x-auto bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
+                   [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((it, i) => (
+          <motion.div
+            key={it.year + i}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.75, delay: (i % 8) * 0.05, ease: [0.19, 1, 0.22, 1] }}
+            className="relative flex w-[200px] md:w-[220px] flex-shrink-0 flex-col gap-2 bg-[oklch(0.05_0.006_245)] px-5 py-6"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/80">
+              {it.year}
+            </span>
+            <span className="font-display text-[14px] md:text-[15px] leading-snug text-foreground/95 tracking-[-0.005em]">
+              {it.title}
+            </span>
+            <span className="mt-auto font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/55 line-clamp-2">
+              {it.institution}
+            </span>
+            <span className="absolute left-0 right-0 top-1/2 h-px bg-foreground/[0.04]" aria-hidden />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * StatsAuthorityBlock — institutional statistics with a museum-style
+ * eyebrow header. Replaces the bare counters strip.
+ */
+export function StatsAuthorityBlock({
+  items,
+  eyebrow = "Archive · Register of Record",
+}: {
+  items: { value: string; label: string }[];
+  eyebrow?: string;
+}) {
+  return (
+    <div className="not-prose mt-6">
+      <div className="mb-5 flex items-center gap-3">
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+          {eyebrow}
+        </span>
+        <span className="h-px flex-1 bg-foreground/[0.08]" />
+      </div>
+      <div className="grid grid-cols-2 gap-px bg-foreground/[0.05] sm:grid-cols-4 rounded-sm overflow-hidden ring-1 ring-foreground/[0.05]">
+        {items.map((c, i) => (
+          <motion.div
+            key={c.label}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.8, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
+            className="flex flex-col items-center justify-center gap-2 bg-[oklch(0.05_0.006_245)] px-4 py-10"
+          >
+            <span className="font-display text-4xl md:text-6xl tracking-[-0.035em] text-foreground/95">
+              {c.value}
+            </span>
+            <span className="h-px w-6 bg-accent/40" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/60 text-center">
+              {c.label}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
