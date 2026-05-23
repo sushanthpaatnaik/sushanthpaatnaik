@@ -841,8 +841,9 @@ function InHisWordsScene() {
           }}
         />
 
-        {/* Readability overlay — warmer tint protects typography */}
-        <div className="absolute inset-0 bg-[oklch(0.018_0.004_55/0.46)]" />
+        {/* Readability overlay — gradient that protects right-side typography
+            while leaving the left-side portrait emerging from darkness. */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,oklch(0.018_0.004_55/0.20)_38%,oklch(0.018_0.004_55/0.55)_70%,oklch(0.018_0.004_55/0.68)_100%)]" />
 
         {/* Top/bottom continuity falloff into adjacent scenes */}
         <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_12%,transparent)]" />
