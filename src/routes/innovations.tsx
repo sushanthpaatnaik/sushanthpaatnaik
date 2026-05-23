@@ -263,7 +263,52 @@ function InnovationsPage() {
           );
         })}
       </div>
+
+      {/* Patent · IP Register — closing institutional ledger */}
+      <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
+        <LatticeField intensity={0.05} />
+        <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
+          <div className="mb-7 flex items-center gap-3">
+            <span className="h-px w-8 bg-accent/60" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
+              Patent · IP Register
+            </span>
+            <span className="h-px flex-1 bg-foreground/[0.08]" />
+            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+              Filed · Pending · In-Drafting
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+            {[
+              { k: "Patents Filed", v: items.filter(i => i.status.includes("Patent")).length.toString().padStart(2,"0"), note: "Across stages" },
+              { k: "Application Domains", v: "10+", note: "Industrial verticals" },
+              { k: "Programs of Record", v: items.length.toString().padStart(2,"0"), note: "Catalogued formulations" },
+              { k: "Research Years", v: "14+", note: "Continuous bench → field" },
+            ].map((s, i) => (
+              <motion.div
+                key={s.k}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+                className="flex flex-col gap-1.5"
+              >
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/50">
+                  {s.k}
+                </span>
+                <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
+                  {s.v}
+                </span>
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/45">
+                  {s.note}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
     </CinematicPageShell>
+
   );
 }
 
