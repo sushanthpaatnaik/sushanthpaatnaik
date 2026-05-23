@@ -398,7 +398,5 @@ function CompactCard({ item }: { item: Item }) {
       </div>
     </motion.article>
   );
-
-    </motion.article>
-  );
 }
+
