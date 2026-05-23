@@ -690,7 +690,7 @@ function NewsPage() {
           and NIF, to global recognition in MIT TR and Wikipedia, to deep-tech
           reporting on Capattery, GraphIN and the battery breakthrough.
         </p>
-        <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+        <nav className="not-prose mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
           {CATEGORIES.map((c) => {
             const count = [featured, secondary, ...coverage].filter(
               (i) => i.category === c.id,
