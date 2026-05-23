@@ -320,23 +320,42 @@ function MediaPlate({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden bg-[oklch(0.045_0.006_245)] ${className}`}>
       <img
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-70 grayscale-[0.55] contrast-[1.08] brightness-[0.9] transition-all duration-[1200ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.025]"
+        className="absolute inset-0 h-full w-full object-cover opacity-65 grayscale contrast-[1.12] brightness-[0.88] transition-all duration-[1400ms] group-hover:opacity-95 group-hover:grayscale-[0.4] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+      {/* Newspaper halftone texture */}
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-50"
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay"
         style={{
-          background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.78) 100%)",
+          backgroundImage:
+            "radial-gradient(oklch(0 0 0) 0.6px, transparent 0.8px)",
+          backgroundSize: "3px 3px",
         }}
       />
-      {/* Archival corner marks */}
+      {/* Paper grain */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, oklch(1 0 0) 0 1px, transparent 1px 3px)",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 50% 50%, transparent 42%, oklch(0.02 0 0 / 0.82) 100%)",
+        }}
+      />
+      {/* Archival corner registration marks */}
       <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />
       <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/30" />
       <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/30" />
