@@ -29,7 +29,9 @@ interface AnimatedBackgroundProps {
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
-function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.25) {
+function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.55) {
+  // Wider spread → chapters carry across boundaries instead of disappearing
+  // into black gaps. The smootherstep curve keeps the handoff organic.
   return useTransform(phase, (v) => {
     const d = Math.abs(v - center) / spread;
     if (d >= 1) return 0;
