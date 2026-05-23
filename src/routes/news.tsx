@@ -717,7 +717,7 @@ function NewsPage() {
         </nav>
 
         {/* Hairline bridge — visually anchors the archive directly under the desks grid */}
-        <div className="not-prose mt-10 md:mt-12 flex items-center gap-4 border-t border-foreground/[0.12] pt-5">
+        <div className="not-prose mt-5 md:mt-6 flex items-center gap-3 border-t border-foreground/[0.12] pt-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
             ▸ The Archive
           </span>
@@ -730,7 +730,7 @@ function NewsPage() {
         {(() => {
           const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-8 md:mt-10 flex flex-col gap-14 md:gap-16">
+            <div className="not-prose mt-4 md:mt-5 flex flex-col gap-10 md:gap-12">
               {CATEGORIES.map((c) => {
                 const items = all
                   .filter((i) => i.category === c.id)
