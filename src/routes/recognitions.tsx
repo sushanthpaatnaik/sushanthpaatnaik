@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import * as Collapsible from "@radix-ui/react-collapsible";
+
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
