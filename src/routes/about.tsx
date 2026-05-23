@@ -105,15 +105,65 @@ function AboutPage() {
       <FounderPortrait
         variant="editorial"
         plate
-        eyebrow="02 — Founder"
-        narrative={[
-          "Industrial systems builder.",
-          "Materials strategist.",
-          "Deep-tech founder from India.",
-        ]}
         caption="Inventor, deep-tech founder, and six-time Indian Presidential awardee."
         meta="Portrait · Bhubaneswar, India"
       />
+
+      {/* ── Founder dossier — premium narrative block ── */}
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose mx-auto -mt-12 md:-mt-16 max-w-[640px]"
+      >
+        <div className="flex items-center gap-4">
+          <span className="h-px w-8 bg-accent/45" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.55em] text-accent/80">
+            02 — Founder
+          </span>
+        </div>
+
+        <div className="mt-10 space-y-3 md:space-y-4">
+          {[
+            "Industrial systems builder.",
+            "Deep-tech founder.",
+            "Materials strategist.",
+            "Building from India for the world.",
+          ].map((line) => (
+            <p
+              key={line}
+              className="font-display text-[clamp(1.5rem,3.4vw,2.2rem)] leading-[1.18] tracking-[-0.025em] text-foreground/90"
+            >
+              {line}
+            </p>
+          ))}
+        </div>
+
+        <div className="mt-14 h-px w-12 bg-foreground/20" />
+
+        <p className="mt-10 text-[16px] md:text-[17px] leading-[1.85] text-foreground/70">
+          Fifteen years inside the workshop have taught one lesson without
+          exception: frontier science only matters when it reaches the
+          industrial world. The brief is not a paper, not a prototype, not even
+          a product — it is the discipline of carrying invention through capital,
+          through manufacturing, and through the long quiet years before scale.
+        </p>
+
+        <p className="mt-7 font-display italic text-[18px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/80">
+          The philosophy is simple. Engineer matter. Engineer capital. Engineer
+          scale. Hold all three in one hand long enough for the work to
+          outlive the inventor.
+        </p>
+
+        <p className="mt-7 text-[15px] md:text-[16px] leading-[1.8] text-foreground/60">
+          The direction is narrower still — graphene and advanced materials,
+          patient industrial capital, and a vertically integrated stack
+          designed to make Indian deep-tech globally inevitable in the carbon
+          century ahead.
+        </p>
+      </motion.section>
+
 
       {/* ── Origin ── */}
       <EditorialSection number="01 · Origin" heading="A workshop, a wheelchair, and a question.">
