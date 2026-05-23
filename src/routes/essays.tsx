@@ -54,7 +54,7 @@ export const Route = createFileRoute("/essays")({
       {
         name: "description",
         content:
-          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering with empathy, graphene and the carbon century, and the discipline of staying a beginner.",
+          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.",
       },
       { property: "og:title", content: "In His Words — Essays" },
       {
