@@ -809,17 +809,18 @@ function NewsPage() {
                   alt={`${o.name} logo`}
                   loading="lazy"
                   style={{ maxHeight: `${optical}px` }}
-                  className={`w-auto max-w-[78%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.03] ${
+                  className={`w-auto max-w-[82%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.04] ${
                     o.lighten
                       ? // Dark/black-ink mastheads: invert to soft silver, no color
-                        "invert opacity-[0.82] brightness-[1.05] contrast-[1.05] saturate-0 group-hover:opacity-100"
+                        "invert opacity-[0.95] brightness-[1.08] contrast-[1.05] saturate-0 group-hover:opacity-100"
                       : // Color brand marks: keep brand color, matte-normalized
-                        "opacity-[0.92] saturate-[0.88] brightness-[1.02] contrast-[1.03] group-hover:opacity-100 group-hover:saturate-[1.0]"
+                        "opacity-100 saturate-[0.95] brightness-[1.05] contrast-[1.04] group-hover:saturate-[1.0]"
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.045_0.003_245)] px-7 py-7 transition-colors duration-700 ease-out hover:bg-[oklch(0.062_0.003_245)]";
+                "group relative flex h-24 md:h-28 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-5 transition-colors duration-700 ease-out hover:bg-[oklch(0.07_0.003_245)]";
+
               return href ? (
                 <a
                   key={o.name}
