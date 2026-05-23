@@ -91,6 +91,7 @@ type Milestone = {
   body: string;
   image: string;
   imageFocus?: string;
+  imageFit?: "cover" | "contain";
   institution: string;
   major?: boolean;
 };
@@ -103,6 +104,7 @@ const milestones: Milestone[] = [
     body: "Recognized by three Presidents of India across six national innovation honours — Dr. A.P.J. Abdul Kalam (2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
     image: honorPresidentialTrio,
     imageFocus: "center center",
+    imageFit: "contain",
     institution: "President of India · National Innovation Foundation",
     major: true,
   },
