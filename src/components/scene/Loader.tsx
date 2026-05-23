@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import monogram from "@/assets/sp-monogram.svg";
 
 export default function Loader() {
   const [progress, setProgress] = useState(0);
