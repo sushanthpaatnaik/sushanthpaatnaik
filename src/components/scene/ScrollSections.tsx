@@ -55,13 +55,40 @@ function HeroSection() {
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
 
+        {/* Restrained volumetric key — a single cool beam, very low opacity,
+            drifting almost imperceptibly. Adds cinematic depth without
+            gradient noise or glow. */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1] mix-blend-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.55, 0.78, 0.55] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(ellipse 42% 58% at 50% 38%, oklch(0.62 0.04 232 / 0.10), transparent 70%)",
+            filter: "blur(2px)",
+          }}
+        />
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1] mix-blend-screen"
+          animate={{ x: [-12, 14, -12], opacity: [0.35, 0.55, 0.35] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(ellipse 18% 70% at 50% 50%, oklch(0.72 0.05 232 / 0.07), transparent 75%)",
+            filter: "blur(8px)",
+          }}
+        />
+
         {/* Atmospheric vignette — deep ink falloff on all edges */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(180deg, oklch(0.025 0 0) 0%, transparent 28%, transparent 64%, oklch(0.025 0.004 232 / 0.92) 100%)",
+              "linear-gradient(180deg, oklch(0.025 0 0) 0%, transparent 30%, transparent 62%, oklch(0.022 0.004 232 / 0.94) 100%)",
           }}
         />
         <div
@@ -69,19 +96,25 @@ function HeroSection() {
           className="pointer-events-none absolute inset-1 z-[1]"
           style={{
             background:
-              "radial-gradient(ellipse 72% 62% at 50% 48%, transparent 45%, oklch(0.025 0 0 / 0.78) 100%)",
+              "radial-gradient(ellipse 74% 64% at 50% 48%, transparent 46%, oklch(0.022 0 0 / 0.80) 100%)",
           }}
         />
 
         <div className="relative z-10 max-w-4xl pointer-events-auto">
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
+          {/* Eyebrow — archival corner mark */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-            className="mb-10 md:mb-12 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80"
+            className="mb-10 md:mb-12 flex items-center justify-center gap-3"
           >
-            01 — Spark
-          </motion.p>
+            <span className="h-px w-8 bg-foreground/20" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
+              01 — Spark
+            </span>
+            <span className="h-px w-8 bg-foreground/20" />
+          </motion.div>
+
           <motion.h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
             {[
               { text: "I build", delay: 0.2 },
@@ -99,34 +132,47 @@ function HeroSection() {
               </motion.span>
             ))}
           </motion.h1>
-          <motion.p
+
+          {/* Subtitle hierarchy — primary line + meta credential row */}
+          <motion.div
             initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.05, delay: 0.78, ease: [0.19, 1, 0.22, 1] }}
-            className="mx-auto mt-12 md:mt-16 max-w-md text-sm leading-relaxed text-muted-foreground/80 md:text-[0.9375rem]"
+            className="mx-auto mt-12 md:mt-16 max-w-xl"
           >
-            Inventor and deep-tech founder. Six-time Indian Presidential awardee. Building from India — for the world.
-          </motion.p>
+            <p className="font-display text-[15px] md:text-[17px] leading-[1.55] tracking-[-0.005em] text-foreground/85">
+              Inventor and deep-tech founder.<br className="hidden md:inline" />
+              <span className="text-foreground/65">Building from India — for the world.</span>
+            </p>
+            <div className="mt-7 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/55">
+              <span className="h-px w-6 bg-foreground/15" />
+              <span>Six-time Presidential awardee</span>
+              <span className="h-px w-1.5 bg-foreground/25" />
+              <span>TED · MIT TR-35</span>
+              <span className="h-px w-6 bg-foreground/15" />
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, delay: 1.2 }}
+          transition={{ duration: 1.4, delay: 1.4 }}
           className="absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4 text-[10px] font-extralight uppercase tracking-[0.45em] text-muted-foreground/40"
           style={{ mixBlendMode: "soft-light" }}
         >
           <span className="blur-[0.3px]">Scroll to enter</span>
           <motion.div
-            animate={{ opacity: [0.15, 0.45, 0.15], scaleY: [1, 1.12, 1] }}
-            transition={{ duration: 3.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/20 to-transparent"
+            animate={{ opacity: [0.12, 0.42, 0.12], scaleY: [1, 1.15, 1] }}
+            transition={{ duration: 3.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="h-14 w-px origin-top bg-gradient-to-b from-foreground/22 to-transparent"
           />
         </motion.div>
       </div>
     </section>
   );
 }
+
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
