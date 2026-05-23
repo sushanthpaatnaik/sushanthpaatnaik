@@ -649,9 +649,6 @@ function ledgerSlice(years: string[]): LedgerYear[] {
   return ledgerByYear.filter((g) => years.includes(g.year));
 }
 
-function RecognitionsPage() {
-  return (
-    <CinematicPageShell
 const sectionNav = [
   { id: "overview", label: "Overview" },
   { id: "hall-of-fame", label: "Hall of Fame" },
