@@ -49,13 +49,13 @@ export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
-      { title: "Essays — Sushanth Paatnaik" },
+      { title: "In His Words — Essays by Sushanth Paatnaik" },
       {
         name: "description",
         content:
-          "Long-form notes from Sushanth Paatnaik on engineering with empathy, graphene and the carbon century, and the discipline of staying a beginner.",
+          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering with empathy, graphene and the carbon century, and the discipline of staying a beginner.",
       },
-      { property: "og:title", content: "Essays — Sushanth Paatnaik" },
+      { property: "og:title", content: "In His Words — Essays" },
       {
         property: "og:description",
         content:
@@ -69,71 +69,172 @@ export const Route = createFileRoute("/essays")({
 });
 
 function EssaysIndex() {
+  const [lead, ...rest] = essays;
+
   return (
-    <div className="relative min-h-screen bg-background text-foreground noise">
+    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
+      {/* Subtle paper-grade atmospheric wash */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(70% 55% at 20% 12%, oklch(0.42 0.07 240 / 0.10), transparent 65%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60% 50% at 85% 88%, oklch(0.62 0.10 55 / 0.06), transparent 65%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.55) 100%)",
+          }}
+        />
+      </div>
+
       <Nav />
-      <main className="mx-auto max-w-3xl px-5 sm:px-6 pt-36 md:pt-44 pb-24 md:pb-32">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-          className="text-[10px] uppercase tracking-[0.45em] text-primary/80"
-        >
-          Essays · Vol. 01
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.3, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-6 font-display text-[clamp(2.2rem,7vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-gradient"
-        >
-          Notes from the workshop.
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.25, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
-        >
-          Occasional dispatches on deep-tech, graphene, and the quiet discipline of inventing for one specific person at a time.
-        </motion.p>
 
-        <ol className="mt-20 md:mt-28 flex flex-col gap-16 md:gap-20">
-          {essays.map((essay, i) => (
-            <motion.li
-              key={essay.slug}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1.1, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
-            >
-              <Link
-                to="/essays/$slug"
-                params={{ slug: essay.slug }}
-                className="group block border-t border-foreground/[0.08] pt-8 transition-colors duration-700 hover:border-foreground/25"
+      <main className="relative z-10 mx-auto max-w-3xl px-5 sm:px-6 pt-36 md:pt-44 pb-24 md:pb-32">
+        {/* Masthead */}
+        <header className="border-b border-foreground/[0.08] pb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+            className="flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55"
+          >
+            <span className="text-primary/80">In His Words · Vol. 01</span>
+            <span>Editorial Archive · MMXXVI</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, delay: 0.12, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-10 font-display text-[clamp(2.6rem,8vw,5rem)] leading-[0.98] tracking-[-0.04em] text-gradient"
+          >
+            Notes from <em className="not-italic font-display italic text-foreground/85">the workshop.</em>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.28, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-8 max-w-xl text-[15px] leading-[1.7] text-foreground/70 md:text-base"
+          >
+            Occasional dispatches on deep-tech, graphene, and the quiet
+            discipline of inventing for one specific person at a time. Filed in
+            the order they were written; read in the order you wish.
+          </motion.p>
+        </header>
+
+        {/* Lead essay — broadsheet feature treatment */}
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+          className="mt-16 md:mt-24"
+        >
+          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/80">
+            Lead Essay · Featured
+          </p>
+          <Link
+            to="/essays/$slug"
+            params={{ slug: lead.slug }}
+            className="group mt-6 block"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+              Essay {lead.number} · {lead.date} · {lead.readTime}
+            </p>
+            <h2 className="mt-5 font-display text-3xl md:text-5xl leading-[1.02] tracking-[-0.03em] text-foreground/95 transition-colors duration-700 group-hover:text-gradient">
+              {lead.title}
+            </h2>
+            <blockquote className="mt-8 border-l border-accent/40 pl-6 md:pl-8">
+              <p className="font-display italic text-xl md:text-2xl leading-[1.45] tracking-[-0.005em] text-foreground/85">
+                “{lead.pull}”
+              </p>
+            </blockquote>
+            <p className="mt-7 max-w-xl text-[15px] leading-[1.75] text-foreground/65 md:text-base">
+              {lead.description}
+            </p>
+            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent/90">
+              Read the essay →
+            </p>
+          </Link>
+        </motion.section>
+
+        {/* Archive list */}
+        <section className="mt-24 md:mt-32">
+          <div className="flex items-baseline justify-between border-t border-foreground/[0.08] pt-6">
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+              The Archive · {String(rest.length).padStart(2, "0")} Entries
+            </p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+              Chronological
+            </p>
+          </div>
+
+          <ol className="mt-12 md:mt-16 flex flex-col">
+            {rest.map((essay, i) => (
+              <motion.li
+                key={essay.slug}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{
+                  duration: 1.1,
+                  delay: i * 0.08,
+                  ease: [0.19, 1, 0.22, 1],
+                }}
               >
-                <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
-                  {essay.number} · {essay.date} · {essay.readTime}
-                </p>
-                <h2 className="mt-5 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/90 transition-colors duration-500 group-hover:text-gradient">
-                  {essay.title}
-                </h2>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-foreground/70 md:text-base">
-                  <span className="text-foreground/90">{essay.pull}</span>{" "}
-                  {essay.description}
-                </p>
-              </Link>
-            </motion.li>
-          ))}
-        </ol>
+                <Link
+                  to="/essays/$slug"
+                  params={{ slug: essay.slug }}
+                  className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 border-t border-foreground/[0.08] py-10 md:py-12 transition-colors duration-700 hover:border-foreground/25"
+                >
+                  <div className="pt-1 font-display text-3xl md:text-4xl font-extralight tracking-[-0.02em] text-foreground/30 transition-colors duration-500 group-hover:text-accent/80">
+                    {essay.number}
+                  </div>
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
+                      {essay.date} · {essay.readTime}
+                    </p>
+                    <h3 className="mt-4 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/90 transition-colors duration-500 group-hover:text-gradient">
+                      {essay.title}
+                    </h3>
+                    <p className="mt-5 font-display italic text-[15px] md:text-[17px] leading-[1.55] text-foreground/75">
+                      “{essay.pull}”
+                    </p>
+                    <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-foreground/60">
+                      {essay.description}
+                    </p>
+                  </div>
+                </Link>
+              </motion.li>
+            ))}
+            <li className="border-t border-foreground/[0.08]" />
+          </ol>
+        </section>
 
-        <p className="mt-24 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/40">
-          — More essays in the works ·{" "}
-          <a href="mailto:info@sushanthpaatnaik.com?subject=Subscribe" className="underline-offset-4 hover:underline">
-            subscribe
-          </a>{" "}
-          to be notified —
-        </p>
+        {/* Colophon */}
+        <footer className="mt-24 border-t border-foreground/[0.08] pt-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+            <span>Set in Display Serif &amp; Mono</span>
+            <a
+              href="mailto:info@sushanthpaatnaik.com?subject=Subscribe"
+              className="hover:text-foreground/80 underline-offset-4 hover:underline"
+            >
+              Subscribe to dispatches →
+            </a>
+          </div>
+        </footer>
       </main>
     </div>
   );
