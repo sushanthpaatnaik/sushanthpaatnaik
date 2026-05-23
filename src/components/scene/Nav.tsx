@@ -13,8 +13,8 @@ const navLinks = [
   
   { to: "/voices", label: "Voices" },
 
-  { to: "/engage", label: "Engage" },
   { to: "/news", label: "News" },
+  { to: "/engage", label: "Engage" },
 ] as const;
 
 export default function Nav() {
