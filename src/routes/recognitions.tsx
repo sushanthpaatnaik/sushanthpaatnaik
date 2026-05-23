@@ -698,14 +698,152 @@ function RecognitionsPage() {
         </EraAccordion>
       </div>
 
-      {/* 06 · Posture — closing */}
-      <EditorialSection number="06 · Posture" heading="Recognition is a lagging indicator.">
-        <p>
-          The catalogue is a record, not a destination. By the time an award
-          arrives the work it celebrates is already behind. The next prototype —
-          the one that doesn't yet exist — is where the real work continues.
-        </p>
-      </EditorialSection>
+      {/* 06 · Legacy Closure — cinematic institutional farewell */}
+      <section className="not-prose relative mt-32 md:mt-44 overflow-hidden">
+        {/* Atmospheric backdrop plate */}
+        <div aria-hidden className="absolute inset-1 z-0 overflow-hidden rounded-sm">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${closureBackdrop})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 55%",
+              filter: "blur(5px) saturate(0.30) brightness(0.40) contrast(1.06)",
+              transform: "scale(1.12)",
+            }}
+          />
+          <div
+            className="absolute inset-1"
+            style={{
+              backgroundImage: `url(${closureBackdrop})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 55%",
+              filter: "blur(32px) saturate(0.24) brightness(0.36)",
+              transform: "scale(1.20)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 68% 58% at 50% 48%, transparent 28%, #000 88%)",
+              maskImage:
+                "radial-gradient(ellipse 68% 58% at 50% 48%, transparent 28%, #000 88%)",
+              opacity: 0.90,
+            }}
+          />
+          <div
+            className="absolute inset-1"
+            style={{
+              background:
+                "linear-gradient(180deg, oklch( 0.035 0.006 260 / 0.88) 0%, oklch(0.03 0.005 260 / 0.92) 50%, oklch(0.032 0.005 260 / 0.90) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-1 mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(55% 42% at 78% 22%, oklch(0.60 0.09 55 / 0.055), transparent 65%)",
+            }}
+          />
+        </div>
+
+        {/* Content — generous vertical breathing room */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-32 md:py-48 lg:py-56">
+          {/* Eyebrow — archival marker */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 1.0, ease: [0.19, 1, 0.22, 1] }}
+            className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45 mb-16 md:mb-20"
+          >
+            06 · Legacy
+          </motion.p>
+
+          {/* Primary statement — oversized, calm, architectural */}
+          <motion.h2
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1.2, delay: 1.15, ease: [0.19, 1, 0.22, 1] }}
+            className="font-display text-[32px] md:text-[52px] lg:text-[64px] leading-[1.08] tracking-[-0.035em] text-foreground/92 max-w-[16ch]"
+          >
+            Recognition was never the objective.
+          </motion.h2>
+
+          {/* Divider — hairline, slow reveal */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.7 }}
+            transition={{ duration: 1.4, delay: 1.38, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-14 md:mt-16 h-px w-20 md:w-24 bg-foreground/18 origin-center"
+          />
+
+          {/* Secondary statements — quiet, reflective */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1.1, delay: 1.55, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-14 md:mt-16 flex flex-col items-center gap-5 md:gap-6"
+          >
+            <p className="font-display text-[17px] md:text-[22px] leading-[1.35] tracking-[-0.018em] text-foreground/55 max-w-[28ch]">
+              The archive documents the journey.
+            </p>
+            <p className="font-display text-[17px] md:text-[22px] leading-[1.35] tracking-[-0.018em] text-foreground/55 max-w-[28ch]">
+              Infrastructure remains.
+            </p>
+            <p className="font-display text-[17px] md:text-[22px] leading-[1.35] tracking-[-0.018em] text-foreground/55 max-w-[28ch]">
+              The work continues beyond the record.
+            </p>
+          </motion.div>
+
+          {/* Final decompression — signature line */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 1.6, delay: 1.9, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-20 md:mt-24 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/30"
+          >
+            Sushanth Paatnaik · Monoatom Labs
+          </motion.p>
+
+          {/* Refined CTA — matte black luxury */}
+          <motion.div
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 1.0, delay: 1.12, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-20 md:mt-28 flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
+          >
+            <Link
+              to="/ventures"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+            >
+              <span
+                aria-hidden
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+                style={{
+                  background:
+                    "radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, var(--foreground) 3%, transparent) 0%, transparent 55%)",
+                }}
+              />
+              <span className="relative font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/75 group-hover:text-foreground/90 transition-colors duration-700">
+                Explore the Work
+              </span>
+              <span className="relative font-mono text-[10px] text-foreground/40 group-hover:text-foreground/60 transition-colors duration-700">→</span>
+            </Link>
+
+            <Link
+              to="/engage"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+            >
+              <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
+                Begin a Conversation
+              </span>
+              <span className="font-mono text-[10px] text-foreground/30 group-hover:text-foreground/50 transition-colors duration-700">→</span>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </CinematicPageShell>
   );
 }
