@@ -504,11 +504,25 @@ export function PresidentialTriptych({
             className="group relative flex flex-col bg-[oklch(0.05_0.006_245)]"
           >
             <div className="relative aspect-[3/4] overflow-hidden">
+              {item.fit === "contain" && (
+                <img
+                  src={item.src}
+                  alt=""
+                  aria-hidden
+                  className="absolute inset-0 h-full w-full object-cover scale-110"
+                  style={{
+                    objectPosition: item.focus ?? "center",
+                    filter: "blur(28px) brightness(0.45) saturate(0.7)",
+                  }}
+                />
+              )}
               <img
                 src={item.src}
                 alt={item.presenter ?? item.caption}
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover opacity-92 transition-all duration-[1600ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100"
+                className={`absolute inset-0 h-full w-full opacity-92 transition-all duration-[1600ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
+                  item.fit === "contain" ? "object-contain" : "object-cover"
+                }`}
                 style={{
                   objectPosition: item.focus ?? "center 28%",
                   filter: "grayscale(0.10) contrast(1.08) saturate(0.90) brightness(0.95)",
