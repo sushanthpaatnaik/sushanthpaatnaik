@@ -735,13 +735,20 @@ function InHisWordsScene() {
         {/* Backdrop plate — blueprint schematics + dissolved silhouette,
             slow parallax + breathing scale, fades in/out with the section. */}
         <motion.div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+          className="absolute inset-0 bg-no-repeat"
           style={{
             backgroundImage: `url(${inHisWordsBackdrop})`,
+            backgroundSize: "auto 95%",
+            backgroundPosition: "left center",
             y: prefersReducedMotion ? 0 : bgY,
             scale: prefersReducedMotion ? 1.04 : bgScale,
-            opacity: prefersReducedMotion ? 0.55 : bgOpacity,
-            filter: "contrast(1.05) brightness(0.92) saturate(0.85)",
+            opacity: prefersReducedMotion ? 0.7 : bgOpacity,
+            filter: "grayscale(1) contrast(1.08) brightness(0.96) saturate(0)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 60% 75% at 28% 50%, #000 35%, transparent 78%)",
+            maskImage:
+              "radial-gradient(ellipse 60% 75% at 28% 50%, #000 35%, transparent 78%)",
+            mixBlendMode: "screen",
           }}
         />
 
@@ -751,7 +758,7 @@ function InHisWordsScene() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 78% 70% at 50% 50%, transparent 38%, oklch(0.014 0 0 / 0.72) 78%, oklch(0.012 0 0) 100%)",
+              "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 50%, oklch(0.014 0 0 / 0.78) 84%, oklch(0.012 0 0) 100%)",
           }}
         />
 
