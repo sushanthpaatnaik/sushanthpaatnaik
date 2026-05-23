@@ -113,21 +113,7 @@ export default function MediaWallBackdrop() {
 
       {/* Floating publication-headline fragments. */}
       {fragments.map((f) => (
-        <motion.span
-          key={f.t}
-          aria-hidden
-          className={`absolute font-display ${f.size} tracking-[-0.01em] text-foreground/30 italic select-none whitespace-nowrap`}
-          style={{
-            left: f.x,
-            top: f.y,
-            opacity: useTransform(p, [0, 0.3 + f.delay * 0.1, 0.7, 1], [0, 0.55, 0.45, 0]),
-            y: useTransform(p, [0, 1], reduce ? ["0%", "0%"] : [`${f.depth * 30}px`, `${-f.depth * 30}px`]),
-            filter: "blur(0.4px)",
-            textShadow: "0 0 18px oklch(0.04 0 0 / 0.9)",
-          }}
-        >
-          {f.t}
-        </motion.span>
+        <HeadlineFragment key={f.t} f={f} p={p} reduce={!!reduce} />
       ))}
 
       {/* Final darkness scrim — guarantees foreground typography wins. */}
