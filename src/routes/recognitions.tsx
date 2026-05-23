@@ -761,22 +761,26 @@ function RecognitionsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.25 }}
                     transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-                    className={`group relative col-start-2 md:col-start-1 md:col-end-3 md:grid md:grid-cols-2 md:gap-16 ${
+                    className={`group relative col-start-2 md:col-start-1 md:col-end-3 md:grid md:grid-cols-2 md:gap-10 lg:gap-12 md:items-center ${
                       onLeft ? "" : "md:[&>*:first-child]:order-2"
                     }`}
                   >
                     <figure
                       className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
-                        m.major
-                          ? "aspect-[4/3] md:aspect-[5/4]"
-                          : "aspect-[4/3] md:aspect-[4/3]"
-                      } ${onLeft ? "md:mr-12" : "md:ml-12"}`}
+                        m.imageFit === "contain"
+                          ? "aspect-[5/4] md:aspect-[16/11]"
+                          : m.major
+                            ? "aspect-[4/3] md:aspect-[5/4]"
+                            : "aspect-[4/3] md:aspect-[4/3]"
+                      } ${onLeft ? "md:mr-8" : "md:ml-8"}`}
                     >
                       <img
                         src={m.image}
                         alt={m.title}
                         loading={i < 2 ? "eager" : "lazy"}
-                        className="absolute inset-0 h-full w-full object-cover opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+                        className={`absolute inset-0 h-full w-full opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
+                          m.imageFit === "contain" ? "object-contain p-3 md:p-4" : "object-cover"
+                        }`}
                         style={{
                           objectPosition: m.imageFocus ?? "center 30%",
                           filter: "grayscale(0.10) contrast(1.05) saturate(0.92) brightness(0.98)",
@@ -787,7 +791,9 @@ function RecognitionsPage() {
                         className="absolute inset-0"
                         style={{
                           background:
-                            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.14) 0%, transparent 42%, oklch(0.02 0.006 245 / 0.62) 90%, oklch(0.014 0.006 245 / 0.92) 100%)",
+                            m.imageFit === "contain"
+                              ? "linear-gradient(180deg, transparent 0%, transparent 70%, oklch(0.02 0.006 245 / 0.55) 100%)"
+                              : "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 45%, oklch(0.02 0.006 245 / 0.45) 88%, oklch(0.014 0.006 245 / 0.78) 100%)",
                         }}
                       />
                       <div
@@ -798,36 +804,36 @@ function RecognitionsPage() {
                             "radial-gradient(60% 50% at 50% 100%, oklch(var(--foreground) / 0.06), transparent 70%)",
                         }}
                       />
-                      <figcaption className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
-                        <span className="block font-mono text-[9px] uppercase tracking-[0.4em] text-accent/75">
+                      <figcaption className="absolute inset-x-0 bottom-0 z-10 px-4 py-3 md:px-5 md:py-3.5">
+                        <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70">
                           {m.major ? "Major recognition" : "Recognition"}
                         </span>
-                        <span className="mt-1.5 block font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
+                        <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/50 line-clamp-1">
                           {m.institution}
                         </span>
                       </figcaption>
                     </figure>
 
                     <div
-                      className={`relative pt-6 md:pt-2 ${
+                      className={`relative pt-6 md:pt-0 ${
                         onLeft ? "md:pl-2" : "md:pr-2"
                       }`}
                     >
-                      <div className="flex items-baseline gap-4 mb-5">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
-                          Milestone · {String(i + 1).padStart(2, "0")}
+                      <div className="flex items-baseline gap-3 mb-4">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/55">
+                          Milestone {String(i + 1).padStart(2, "0")}
                         </span>
                         {m.major && (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-foreground/55">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-foreground/45">
                             · Anchor
                           </span>
                         )}
                       </div>
                       <h3
-                        className={`font-display leading-[1.12] tracking-[-0.03em] text-foreground/95 ${
+                        className={`font-display leading-[1.18] tracking-[-0.025em] text-foreground/95 ${
                           m.major
-                            ? "text-[26px] md:text-[34px] lg:text-[40px]"
-                            : "text-[22px] md:text-[26px]"
+                            ? "text-[22px] md:text-[28px] lg:text-[34px]"
+                            : "text-[20px] md:text-[23px]"
                         }`}
                       >
                         {m.title}
@@ -841,6 +847,7 @@ function RecognitionsPage() {
                       />
                     </div>
                   </motion.article>
+
                 </li>
               );
             })}
