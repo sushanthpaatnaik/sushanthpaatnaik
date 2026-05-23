@@ -351,38 +351,9 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.08, transparentBg: true },
 ];
 
-const testimonials = [
-  {
-    quote: "Sushant is an amazing innovator and always innovates with high social impact.",
-    author: "Anil K. Gupta",
-    role: "Professor, IIM-Ahmedabad · VC, NIF India",
-    logo: nifLogo,
-  },
-  {
-    quote: "The best AI live demo ever seen so far. This demo really made my day.",
-    author: "P. R. Ramesh",
-    role: "Chairman, Deloitte India",
-    logo: deloitteLogo,
-  },
-  {
-    quote: "Very effective and innovative solution for underground pipelines.",
-    author: "Mr. Joseph",
-    role: "IOCL Eastern Zone, India",
-    logo: ioclLogo,
-  },
-  {
-    quote: "A very inspiring entrepreneur and great social-revolutionary products.",
-    author: "Shradha Sharma",
-    role: "Founder & CEO, YourStory",
-    logo: yourStoryLogo,
-  },
-  {
-    quote: "A life-changing innovation 'Enabler' for the disabled — highly appreciable.",
-    author: "Mr. Srinivas",
-    role: "Senior Journalist, MIT TR Magazine",
-    logo: mitTrLogo,
-  },
-];
+// Testimonials and institutional voices now live exclusively on the dedicated
+// /voices page. News stays a pure press / coverage archive.
+
 
 /* ---------- Editorial primitives ---------- */
 
