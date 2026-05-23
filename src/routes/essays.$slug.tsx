@@ -198,81 +198,192 @@ export const Route = createFileRoute("/essays/$slug")({
 
 function EssayPage() {
   const { essay } = Route.useLoaderData() as { essay: EssayContent };
+  const totalSections = essay.sections.length;
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground noise">
+    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
+      {/* Atmospheric reading wash — restrained, paper-like */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(65% 55% at 18% 10%, oklch(0.42 0.07 240 / 0.08), transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(55% 45% at 88% 92%, oklch(0.62 0.10 55 / 0.05), transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(115% 78% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.6) 100%)",
+          }}
+        />
+      </div>
+
       <Nav />
-      <main className="mx-auto max-w-2xl px-5 sm:px-6 pt-36 md:pt-44 pb-24 md:pb-32">
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
+
+      <main className="relative z-10 mx-auto max-w-2xl px-5 sm:px-6 pt-36 md:pt-44 pb-24 md:pb-32">
+        {/* Masthead crumb */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-          className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55"
+          className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55"
         >
-          <Link to="/essays" className="hover:text-foreground/80">All essays</Link>
-          <span className="mx-3 opacity-40">·</span>
-          Essay {essay.number} · {essay.date} · {essay.readTime}
-        </motion.p>
+          <Link to="/essays" className="hover:text-foreground/85 transition-colors">
+            ← In His Words
+          </Link>
+          <span>
+            Essay {essay.number} · {essay.date} · {essay.readTime}
+          </span>
+        </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.4, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-8 font-display text-[clamp(2rem,6vw,3.6rem)] leading-[1.05] tracking-[-0.035em] text-gradient"
-        >
-          {essay.title}
-        </motion.h1>
+        {/* Title block */}
+        <header className="mt-12 md:mt-16">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.0, delay: 0.05, ease: [0.19, 1, 0.22, 1] }}
+            className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/80"
+          >
+            № {essay.number} · Editorial
+          </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.22, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-8 font-display text-xl leading-[1.4] text-foreground/85 italic md:text-2xl"
-        >
-          {essay.description}
-        </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, delay: 0.12, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-7 font-display text-[clamp(2.1rem,6.5vw,3.8rem)] leading-[1.03] tracking-[-0.035em] text-gradient"
+          >
+            {essay.title}
+          </motion.h1>
 
-        <article className="mt-16 md:mt-20 flex flex-col gap-12">
-          {essay.sections.map((section, i) => (
-            <motion.section
-              key={i}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-            >
-              {section.heading && (
-                <h2 className="mb-5 font-display text-lg uppercase tracking-[0.2em] text-foreground/70 md:text-xl">
-                  {section.heading}
-                </h2>
-              )}
-              {section.paragraphs.map((p, j) => (
-                <p key={j} className="mb-5 text-base leading-[1.75] text-foreground/75 md:text-[17px]">
-                  {p}
-                </p>
-              ))}
-              {section.bullets && (
-                <ul className="mt-2 flex flex-col gap-3 border-l border-foreground/[0.08] pl-5">
-                  {section.bullets.map((b, k) => (
-                    <li key={k} className="text-base leading-[1.7] text-foreground/75 md:text-[17px]">
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </motion.section>
-          ))}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1.4, delay: 0.32, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-10 h-px w-20 origin-left bg-accent/40"
+          />
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.36, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-8 font-display italic text-xl md:text-[28px] leading-[1.4] tracking-[-0.005em] text-foreground/85"
+          >
+            {essay.description}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-10 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55"
+          >
+            By Sushanth Paatnaik
+          </motion.p>
+        </header>
+
+        {/* Body */}
+        <article className="mt-20 md:mt-24 flex flex-col gap-16 md:gap-20">
+          {essay.sections.map((section, i) => {
+            const sectionNumber = String(i + 1).padStart(2, "0");
+            return (
+              <motion.section
+                key={i}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1.1, delay: i * 0.04, ease: [0.19, 1, 0.22, 1] }}
+              >
+                {section.heading && (
+                  <div className="mb-8 flex items-baseline gap-5 border-t border-foreground/[0.08] pt-6">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
+                      {sectionNumber} / {String(totalSections).padStart(2, "0")}
+                    </span>
+                    <h2 className="font-display text-[15px] uppercase tracking-[0.22em] text-foreground/75 md:text-[16px]">
+                      {section.heading}
+                    </h2>
+                  </div>
+                )}
+                {section.paragraphs.map((p, j) => {
+                  const isLead = i === 0 && j === 0;
+                  return (
+                    <p
+                      key={j}
+                      className={`mb-7 text-[16px] leading-[1.8] text-foreground/80 md:text-[18px] md:leading-[1.78] ${
+                        isLead
+                          ? "first-letter:font-display first-letter:text-[3.6rem] first-letter:md:text-[4.2rem] first-letter:font-normal first-letter:leading-[0.9] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-foreground/95"
+                          : ""
+                      }`}
+                    >
+                      {p}
+                    </p>
+                  );
+                })}
+                {section.bullets && (
+                  <ul className="mt-6 flex flex-col gap-4 border-l border-accent/30 pl-6 md:pl-7">
+                    {section.bullets.map((b, k) => (
+                      <li
+                        key={k}
+                        className="text-[16px] leading-[1.75] text-foreground/75 md:text-[17px]"
+                      >
+                        <span className="mr-3 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/45">
+                          {String(k + 1).padStart(2, "0")}
+                        </span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </motion.section>
+            );
+          })}
         </article>
 
+        {/* End mark */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+          className="mt-20 flex items-center justify-center gap-4"
+        >
+          <span className="h-px w-10 bg-foreground/15" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/50">
+            Fin
+          </span>
+          <span className="h-px w-10 bg-foreground/15" />
+        </motion.div>
+
+        {/* Colophon */}
         <div className="mt-20 border-t border-foreground/[0.08] pt-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">— Filed</p>
-          <p className="mt-3 text-sm text-foreground/70">Sushanth Paatnaik · Bhubaneswar</p>
-          <Link
-            to="/essays"
-            className="mt-10 inline-block text-[11px] uppercase tracking-[0.35em] text-foreground/60 underline-offset-4 hover:text-foreground/90 hover:underline"
-          >
-            More essays →
-          </Link>
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+                Filed
+              </p>
+              <p className="mt-3 font-display italic text-[15px] text-foreground/75">
+                Sushanth Paatnaik · Bhubaneswar
+              </p>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+                {essay.date}
+              </p>
+            </div>
+            <Link
+              to="/essays"
+              className="font-mono text-[11px] uppercase tracking-[0.4em] text-foreground/65 underline-offset-4 hover:text-accent hover:underline"
+            >
+              Return to the archive →
+            </Link>
+          </div>
         </div>
       </main>
     </div>
