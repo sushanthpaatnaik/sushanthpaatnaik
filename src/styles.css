@@ -383,7 +383,7 @@
     left: 1.5rem;
     width: calc(100% - 3rem);
     height: 0.5px;
-    background: oklch(0.62 0.005 250 / 0.35);
+    background: oklch(0.74 0.005 250 / 0.42);
     transform: scaleX(1);
     transform-origin: left;
     transition: background 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
