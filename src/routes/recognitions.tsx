@@ -3,7 +3,14 @@ import CinematicPageShell, {
   EditorialList,
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
-import ArchiveMosaic, { HallOfFameRibbon, LegacyTimeline, StatsAuthorityBlock, type ArchiveItem } from "@/components/scene/ArchiveMosaic";
+import {
+  HallOfFameRibbon,
+  LegacyTimeline,
+  StatsAuthorityBlock,
+  ArchivePlateSeries,
+  PresidentialTriptych,
+  type ArchiveItem,
+} from "@/components/scene/ArchiveMosaic";
 import backdrop from "@/assets/story-02-recognition.jpg";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
