@@ -32,19 +32,19 @@ export default function HUD({
   return (
     <>
       {/* Left: chapter ladder */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-5 pointer-events-none opacity-70 mix-blend-screen">
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-5 pointer-events-none opacity-[0.82] mix-blend-screen">
         {labels.map((l, i) => {
           const active = i === idx;
           return (
             <div key={l} className="flex items-center gap-3">
               <div
                 className={`h-px transition-all duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] ${
-                  active ? "w-8 bg-foreground/70" : "w-3 bg-foreground/12"
+                  active ? "w-8 bg-foreground/85" : "w-3 bg-foreground/20"
                 }`}
               />
               <span
                 className={`text-[9px] uppercase tracking-[0.45em] transition-all duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] ${
-                  active ? "text-foreground/75" : "text-muted-foreground/25"
+                  active ? "text-foreground/90" : "text-muted-foreground/40"
                 }`}
               >
                 {String(i + 1).padStart(2, "0")} {l}
