@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
+import FounderPortrait from "@/components/scene/FounderPortrait";
 import backdrop from "@/assets/scene-about-notebook.jpg";
 
 export const Route = createFileRoute("/about")({
