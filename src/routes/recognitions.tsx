@@ -313,18 +313,6 @@ const eraPresidential: ArchiveItem[] = [
     venue: "Rashtrapati Bhavan · New Delhi",
   },
   {
-    src: awardPranab,
-    caption: "With President Pranab Mukherjee",
-    meta: "Presidential Award · 2013",
-    category: "Award",
-    shape: "wide",
-    focus: "left top",
-    institution: "National Innovation Foundation",
-    recognition: "Presidential Recognition · 2013",
-    presenter: "Presented by Shri Pranab Mukherjee",
-    venue: "Rashtrapati Bhavan · New Delhi",
-  },
-  {
     src: awardPranabDemo,
     caption: "Presidential Trophy · President Pranab Mukherjee",
     meta: "Presidential Award · 2013",
