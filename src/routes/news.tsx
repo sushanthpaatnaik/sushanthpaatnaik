@@ -793,8 +793,8 @@ function NewsPage() {
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 md:grid-cols-6">
+        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.14] bg-[oklch(0.085_0.006_245)]/85 shadow-[0_0_60px_-20px_oklch(0.62_0.10_55_/_0.18)_inset]">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.1] sm:grid-cols-3 md:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const inner = (
@@ -802,11 +802,11 @@ function NewsPage() {
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-[1.04]"
+                  className="max-h-10 w-auto max-w-[150px] object-contain opacity-90 brightness-[1.15] contrast-[1.05] transition-all duration-700 group-hover:opacity-100 group-hover:brightness-125 group-hover:scale-[1.06] drop-shadow-[0_0_12px_oklch(1_0_0_/_0.08)] group-hover:drop-shadow-[0_0_18px_oklch(1_0_0_/_0.22)]"
                 />
               );
               const baseCls =
-                "group flex h-20 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4 transition-colors duration-500";
+                "group relative flex h-24 items-center justify-center bg-[oklch(0.08_0.006_245)] px-4 transition-colors duration-500 before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-700 before:bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.10_55_/_0.10),transparent_65%)] hover:before:opacity-100";
               return href ? (
                 <a
                   key={o.name}
@@ -814,7 +814,7 @@ function NewsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`${o.name} — read coverage ↗`}
-                  className={`${baseCls} hover:bg-[oklch(0.07_0.008_245)]`}
+                  className={`${baseCls} hover:bg-[oklch(0.11_0.008_245)]`}
                 >
                   {inner}
                 </a>
