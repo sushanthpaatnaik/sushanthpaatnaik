@@ -510,7 +510,9 @@ function ScaleValidationScene() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const plateScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.02, 1.08]);
+  const plateOpacity = useTransform(scrollYProgress, [0, 0.2, 0.82, 1], [0, 0.5, 0.5, 0]);
   const latticeRot = useTransform(scrollYProgress, [0, 1], [-2, 2]);
 
   return (
