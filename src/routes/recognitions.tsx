@@ -44,6 +44,7 @@ import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.webp";
 import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.webp";
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
+import honorIntelIris from "@/assets/honor-intel-iris.png";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";
@@ -113,9 +114,9 @@ const milestones: Milestone[] = [
   {
     year: "2010",
     sortYear: 2010.5,
-    title: "Intel IRIS Awardee",
+    title: "Intel IRIS National Recognition",
     body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fifteen-year practice in deep-tech.",
-    image: fellowCert,
+    image: honorIntelIris,
     institution: "Intel Foundation · National Science Fair",
   },
   {
