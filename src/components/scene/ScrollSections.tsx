@@ -484,6 +484,33 @@ function ClosingInvitation() {
       id="future"
       className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 text-center"
     >
+      {/* Architectural system node — restrained, integrated, atmospheric.
+          Replaces the disconnected floating ring with a faint intelligent
+          node that breathes with the scene rather than overlaying it. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, transparent 58%, oklch(0.58 0.03 232 / 0.06) 62%, transparent 66%)",
+            boxShadow:
+              "inset 0 0 120px oklch(0.04 0.008 245 / 0.85)",
+          }}
+          animate={{ opacity: [0.55, 0.78, 0.55], scale: [1, 1.012, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Atmospheric continuity — extends the scene lower in the frame */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[58%]"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.55) 55%, oklch(0.014 0.004 250 / 0.92) 100%)",
+          }}
+        />
+      </div>
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-28 md:pt-24 pb-12 render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
@@ -497,7 +524,7 @@ function ClosingInvitation() {
             </p>
           </MotionReveal>
           <MotionReveal delay={0.12}>
-            <h2 className="mb-10 md:mb-12 font-display text-[clamp(2.1rem,8.6vw,6.6rem)] leading-[0.98] md:leading-[0.95] tracking-[-0.04em] md:tracking-[-0.045em] font-medium text-gradient">
+            <h2 className="mb-10 md:mb-12 font-display text-[clamp(2.0rem,8.2vw,6.3rem)] leading-[0.98] md:leading-[0.95] tracking-[-0.04em] md:tracking-[-0.045em] font-medium text-gradient">
               Material intelligence.<br /> Energy as infrastructure.<br /> Industry at planetary scale.
             </h2>
           </MotionReveal>
