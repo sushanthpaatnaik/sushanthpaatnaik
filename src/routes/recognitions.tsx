@@ -749,11 +749,12 @@ function RecognitionsPage() {
                       className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[oklch(0.045_0.003_245)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
                     />
                     <span className="md:hidden absolute left-6 top-14 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
-                    <div className="md:mt-1 md:px-3 md:py-1 md:bg-[oklch(0.045_0.003_245)]">
-                      <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.42em] text-foreground/65">
+                    <div className="md:mt-1 md:px-3 md:py-[3px] md:bg-[oklch(0.045_0.003_245)] md:border md:border-foreground/10">
+                      <span className="font-mono text-[10px] md:text-[10.5px] uppercase tracking-[0.32em] text-foreground/60">
                         {m.year}
                       </span>
                     </div>
+
                   </div>
 
                   <motion.article
