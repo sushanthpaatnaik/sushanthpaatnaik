@@ -84,6 +84,32 @@ export default function AmbientAtmosphere() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
 
+      {/* Counter-phase breathing — fills the opposing corner so empty
+          regions on either side of the page never feel digitally dead. */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 45% at 78% 72%, oklch(0.50 0.06 250 / 0.028), transparent 75%)",
+        }}
+        animate={{ opacity: [0.4, 0.95, 0.4] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 11 }}
+      />
+
+      {/* Horizontal atmospheric haze band — a slow drifting strip of warm
+          haze that crosses mid-screen, eliminating empty black mid-sections
+          between chapters. */}
+      <motion.div
+        className="absolute left-0 right-0 top-[42%] h-[26vh] will-change-transform"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent, oklch(0.45 0.05 240 / 0.035) 50%, transparent)",
+          filter: "blur(40px)",
+        }}
+        animate={{ x: ["-6%", "6%", "-6%"], opacity: [0.5, 0.85, 0.5] }}
+        transition={{ duration: 48, repeat: Infinity, ease: "easeInOut" }}
+      />
+
       {/* Organic film grain — barely perceptible industrial texture */}
       <div
         className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
