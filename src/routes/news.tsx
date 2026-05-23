@@ -801,23 +801,25 @@ function NewsPage() {
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 32px at scale 1.0; clamped 22-44px.
-              const optical = Math.round(Math.min(44, Math.max(22, 32 * scale)));
+              // Optical baseline ~ 34px at scale 1.0; clamped 24-48px.
+              const optical = Math.round(Math.min(48, Math.max(24, 34 * scale)));
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  style={{ maxHeight: `${optical}px`, mixBlendMode: "lighten" }}
-                  className={`w-auto max-w-[72%] object-contain opacity-[0.72] transition-all duration-700 ease-out group-hover:opacity-[0.96] group-hover:scale-[1.025] ${
+                  style={{ maxHeight: `${optical}px` }}
+                  className={`w-auto max-w-[78%] object-contain transition-all duration-700 ease-out group-hover:scale-[1.03] ${
                     o.lighten
-                      ? "invert brightness-[1.0] contrast-[1.0] hue-rotate-180 saturate-[0.0]"
-                      : "brightness-[1.0] contrast-[1.0] saturate-[0.0]"
+                      ? // Dark/black-ink mastheads: invert to soft silver, no color
+                        "invert opacity-[0.82] brightness-[1.05] contrast-[1.05] saturate-0 group-hover:opacity-100"
+                      : // Color brand marks: keep brand color, matte-normalized
+                        "opacity-[0.92] saturate-[0.88] brightness-[1.02] contrast-[1.03] group-hover:opacity-100 group-hover:saturate-[1.0]"
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.045_0.003_245)] px-7 py-7 transition-colors duration-700 ease-out hover:bg-[oklch(0.065_0.003_245)]";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.045_0.003_245)] px-7 py-7 transition-colors duration-700 ease-out hover:bg-[oklch(0.062_0.003_245)]";
               return href ? (
                 <a
                   key={o.name}
