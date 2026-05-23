@@ -689,9 +689,78 @@ export default function ScrollSections() {
       {/* Ventures — supports chapter 05 (Founder Layer) */}
       <VentureConstellation ventures={ventures} />
 
+      {/* Ecosystem Map — cinematic editorial line.
+          Reach of the operating system: sectors × geographies × partners. */}
+      <section id="ecosystem" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,oklch(0.10_0.03_245/0.09),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.28),transparent_18%,transparent_82%,oklch(0.03_0_0/0.32))]" />
+        <div className="mx-auto w-full max-w-6xl pointer-events-auto">
+          <MotionReveal className="mb-16 md:mb-24 max-w-3xl">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Ecosystem · Map</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-gradient">
+              One operating system, distributed.
+            </h3>
+            <p className="mt-6 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground/85">
+              The lattice extends across sectors, cities, and institutions — research, manufacture, capital, and policy all addressed by the same continuous practice.
+            </p>
+          </MotionReveal>
+
+          <div className="grid gap-12 md:grid-cols-3 md:gap-16">
+            <MotionReveal delay={0.05}>
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">Sectors</p>
+              <div className="space-y-3 text-[13px] md:text-sm leading-relaxed text-muted-foreground/85">
+                <p>Advanced Materials · Graphene</p>
+                <p>Energy Storage · Batteries</p>
+                <p>Renewable · Solar Coatings</p>
+                <p>Construction · Low-Carbon Cement</p>
+                <p>Water · Filtration · Effluent</p>
+                <p>Climate Infrastructure</p>
+                <p>AI · Materials Discovery</p>
+                <p>Industrial Design · Magppie</p>
+              </div>
+            </MotionReveal>
+
+            <MotionReveal delay={0.1}>
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">Geographies</p>
+              <div className="space-y-3 text-[13px] md:text-sm leading-relaxed text-muted-foreground/85">
+                <p>Bhubaneswar · Workshop origin</p>
+                <p>Bhopal · IISER · Research</p>
+                <p>New Delhi · Capital · Policy</p>
+                <p>Hyderabad · Industrial pilot</p>
+                <p>Pune · Manufacturing corridor</p>
+                <p>Bangalore · Deep-tech network</p>
+                <p>Europe · Material exports</p>
+                <p>Americas · Strategic dialogue</p>
+              </div>
+            </MotionReveal>
+
+            <MotionReveal delay={0.15}>
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">Institutions</p>
+              <div className="space-y-3 text-[13px] md:text-sm leading-relaxed text-muted-foreground/85">
+                <p>Government of India · Presidential</p>
+                <p>NIF-India · IGNITE</p>
+                <p>KVPY-SP · DST</p>
+                <p>IISER Bhopal</p>
+                <p>TED India</p>
+                <p>MIT Technology Review</p>
+                <p>Industry · Family offices</p>
+                <p>Academic partners · National labs</p>
+              </div>
+            </MotionReveal>
+          </div>
+
+          <MotionReveal delay={0.22} className="mt-20 md:mt-28">
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45 leading-loose blur-[0.3px]">
+              5 Ventures &middot; 1 CIO Seat &middot; 21 Patents &middot; 27 Honors &middot; 50+ Media Imprints &middot; 10+ Industrial Pilots
+            </p>
+          </MotionReveal>
+        </div>
+      </section>
+
       {/* ░░ Chapter 06 — India to World ░░ */}
 
       <StorySection chapter={indiaChapter} index={6} total={totalChapters} />
+
 
       {/* News — editorial media archive. A quiet chronological list. */}
       <section id="news" className="relative viewport-section flex items-center overflow-hidden px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
