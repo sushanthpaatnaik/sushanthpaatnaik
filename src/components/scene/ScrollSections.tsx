@@ -240,14 +240,22 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.30] md:opacity-[0.33] [filter:grayscale(1)_contrast(1.15)_brightness(0.7)_saturate(0)_blur(1.1px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.30] md:opacity-[0.33] [filter:grayscale(1)_contrast(1.15)_brightness(0.65)_saturate(1)_blur(1.1px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.85)_44%,rgba(0,0,0,0.35)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
+        {/* Softened lower torso — reduces clothing fold visibility, preserves face */}
+        <div
+          aria-hidden
+          className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.30] md:opacity-[0.33] [filter:grayscale(1)_contrast(0.92)_brightness(0.58)_saturate(0)_blur(2.4px)]"
+          style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 78%" }}
+        />
+
         {/* Subtle cool blue-grey rim — jawline / shoulders / glasses edges */}
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_8%_5%_at_24%_32%,oklch(0.82_0.025_232/0.18),transparent_78%)]" />
-        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_20%_26%_at_28%_36%,oklch(0.72_0.03_232/0.22),transparent_75%)]" />
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_22%_24%_at_20%_60%,oklch(0.58_0.02_232/0.12),transparent_80%)]" />
+        <div className="absolute inset-1 mix-blend-screen bg-[radial-gradient(ellipse_6%_5%_at_25%_31%,oklch(0.80_1.5_232/0.17),transparent_78%)]" />
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(0.70_1.5_232/0.21),transparent_75%)]" />
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_22%_at_21%_59%,oklch(0.58_0.015_232/0.12),transparent_78%)]" />
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_10%_14%_at_30%_22%,oklch(0.76_0.02_232/0.09),transparent_82%)]" />
 
         {/* Atmospheric haze — softens shoulders and body into the black */}
         <div className="absolute inset-y-[8%] left-[-2%] w-[52%] mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_38%_60%,transparent_30%,oklch(0.02_0_0/0.55)_72%,oklch(0.015_0_0)_100%)]" />
@@ -309,7 +317,7 @@ function FounderScene() {
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Founder · Voice
           </p>
-          <blockquote className="font-display text-2xl leading-[1.15] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem]">
+          <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem]">
             "The most important specification on any drawing I make is the human being it is meant for."
           </blockquote>
           <div className="mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
