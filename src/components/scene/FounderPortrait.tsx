@@ -136,22 +136,25 @@ export default function FounderPortrait({
           />
         </div>
 
-        {/* Editorial caption strip */}
+        {/* Editorial caption strip — restrained, cinematic, archival */}
         {(caption || meta || eyebrow || narrative?.length) && (
-          <figcaption className="border-t border-foreground/[0.06] px-5 py-5 md:px-7 md:py-6">
+          <figcaption className="border-t border-foreground/[0.05] px-6 py-6 md:px-8 md:py-7">
             {(eyebrow || narrative?.length) && (
-              <div className="mb-4 md:mb-5 flex flex-col gap-2">
+              <div className="mb-5 md:mb-6 flex flex-col gap-2.5">
                 {eyebrow && (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-                    {eyebrow}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="h-px w-5 bg-foreground/[0.12]" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/50">
+                      {eyebrow}
+                    </span>
+                  </div>
                 )}
                 {narrative?.length ? (
-                  <div className="mt-1 space-y-1">
+                  <div className="mt-1.5 space-y-1.5">
                     {narrative.map((line) => (
                       <p
                         key={line}
-                        className="font-display text-[13px] md:text-[14px] leading-[1.5] tracking-[-0.005em] text-foreground/70"
+                        className="font-display text-[13.5px] md:text-[15px] leading-[1.55] tracking-[-0.005em] text-foreground/75"
                       >
                         {line}
                       </p>
@@ -161,14 +164,14 @@ export default function FounderPortrait({
               </div>
             )}
             {(caption || meta) && (
-              <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-3 pt-4 border-t border-foreground/[0.04]">
                 {caption && (
-                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/60">
+                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/65 max-w-[85%]">
                     {caption}
                   </p>
                 )}
                 {meta && (
-                  <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55">
+                  <p className="font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/50">
                     {meta}
                   </p>
                 )}
