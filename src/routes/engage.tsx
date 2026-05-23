@@ -144,6 +144,13 @@ function CTABlock() {
         </span>
       </div>
 
+      <p className="mt-10 max-w-2xl font-display text-[18px] md:text-[21px] leading-[1.5] tracking-[-0.015em] text-foreground/80">
+        Building systems for industrial futures and material intelligence.
+        <span className="block mt-3 text-foreground/55 italic text-[15px] md:text-[16px]">
+          When the work is right, the desk opens.
+        </span>
+      </p>
+
       <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr] md:items-end md:gap-16">
         <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.15] tracking-[-0.025em] text-foreground/95">
           One paragraph on context.

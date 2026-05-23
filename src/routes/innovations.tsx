@@ -124,9 +124,9 @@ function InnovationsPage() {
     <CinematicPageShell
       eyebrow={`Innovations · Catalogue · ${items.length} of ${items.length}`}
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-three industrial expressions.</>}
-      lead="Graphene engineered for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage, and armour — across commercial, pilot, and R&D stages."
+      lead="A private R&D archive of advanced materials engineering — graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
-      overlay={0.74}
+      overlay={0.78}
     >
       <FounderPortrait
         variant="documentary"
@@ -136,7 +136,7 @@ function InnovationsPage() {
 
       {/* Material Spec Sheet — the substrate behind everything */}
       <div className="not-prose relative mt-12 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
-        <LatticeField intensity={0.07} />
+        <LatticeField intensity={0.05} />
         <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
           <div className="mb-7 flex items-center gap-3">
             <span className="h-px w-8 bg-accent/60" />
@@ -266,7 +266,7 @@ function InnovationsPage() {
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
-        <LatticeField intensity={0.05} />
+        <LatticeField intensity={0.04} />
         <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
           <div className="mb-7 flex items-center gap-3">
             <span className="h-px w-8 bg-accent/60" />
@@ -325,11 +325,11 @@ function HeroCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-80 transition-all duration-[1400ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
-        style={{ filter: "grayscale(0.18) contrast(1.06) saturate(0.88) brightness(0.9)" }}
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
+        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.08} className="mix-blend-screen" />
+      <LatticeField intensity={0.06} className="mix-blend-screen" />
       {/* Cinematic gradient */}
       <div
         aria-hidden
@@ -395,10 +395,10 @@ function CompactCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.035]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.76] grayscale-[0.32] contrast-[1.04] brightness-[0.86] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.03]"
       />
       {/* Restrained lattice — scientific texture */}
-      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
+      <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
 
       <div
         aria-hidden

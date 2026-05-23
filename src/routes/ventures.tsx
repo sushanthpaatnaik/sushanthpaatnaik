@@ -195,8 +195,17 @@ function VenturesPage() {
             <div className="absolute top-0 left-0 right-0 h-px bg-foreground/[0.06]" />
             {/* Hover accent line — restrained copper-gold */}
             <div className="absolute top-1/2 left-0 h-px w-0 bg-accent/30 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0 group-hover:w-full" />
+            {/* Cinematic atmospheric wash on hover — restrained graphene diffusion */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-[-2%] inset-y-2 opacity-0 transition-opacity duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+              style={{
+                background:
+                  "radial-gradient(60% 70% at 22% 50%, oklch(0.62 0.025 232 / 0.08), transparent 72%)",
+              }}
+            />
 
-            <div className="relative py-9 md:py-11 transition-all duration-700">
+            <div className="relative py-9 md:py-11 transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[2px]">
               {/* Code · Year · Industry layer */}
               <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50">
                 <span>{v.code} · {v.year}</span>

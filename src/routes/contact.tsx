@@ -315,6 +315,24 @@ function ContactPage() {
     >
       <AccessAuthority />
 
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose mt-20 border-t border-foreground/[0.08] pt-12"
+      >
+        <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/75">
+          Closing Statement
+        </p>
+        <p className="mt-6 max-w-2xl font-display text-[19px] md:text-[22px] leading-[1.5] tracking-[-0.015em] text-foreground/85">
+          Building systems for industrial futures and material intelligence.
+          <span className="block mt-3 text-foreground/55 italic">
+            The desk is small on purpose — opened only for work that deserves a multi-year horizon.
+          </span>
+        </p>
+      </motion.div>
+
       <AccessForm />
 
       <EditorialSection number="07 · Direct lines" heading="The shortest path.">
