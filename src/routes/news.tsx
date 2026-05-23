@@ -655,13 +655,13 @@ function NewsPage() {
       }
       lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
-      overlay={0.78}
+      overlay={0.84}
     >
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
       {/* Newspaper nameplate */}
-      <div className="mt-20 border-y border-foreground/20 py-6">
+      <div className="mt-12 border-y border-foreground/20 py-5">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
           <span className="text-primary/80">Press of Record</span>
           <span className="hidden sm:inline text-muted-foreground/40">
@@ -669,7 +669,7 @@ function NewsPage() {
           </span>
           <span>Folio 01 — 16</span>
         </div>
-        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+        <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
           <span className="hidden md:inline">Curated, not complete</span>
           <span>English · ଓଡ଼ିଆ</span>
@@ -680,81 +680,135 @@ function NewsPage() {
       <LeadFeature item={featured} />
       <SecondaryFeature item={secondary} />
 
-      {/* Archive — newspaper register, grouped by year */}
-      <EditorialSection number="07 · Archive" heading="Sixteen dispatches of record.">
+      {/* Category index — editorial dossier table of contents */}
+      <EditorialSection number="07 · Desks" heading="Five editorial desks.">
         <p>
-          The press archive in chronological reach — from teenage assistive
-          tech in <em>The Telegraph</em> and NIF, to global recognition in
-          MIT TR and Wikipedia, to deep-tech reporting on Capattery, GraphIN
-          and the battery breakthrough.
+          The archive grouped by editorial desk — features and interviews,
+          deep-tech reporting, recognitions of record, venture press, and the
+          stage record.
+        </p>
+        <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+          {CATEGORIES.map((c) => {
+            const count = [featured, secondary, ...coverage].filter(
+              (i) => i.category === c.id,
+            ).length;
+            const anchor = `desk-${c.code.toLowerCase()}`;
+            return (
+              <a
+                key={c.id}
+                href={`#${anchor}`}
+                className="group block bg-[oklch(0.045_0.006_245)]/70 p-5 transition-colors duration-500 hover:bg-[oklch(0.06_0.008_245)]/80"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/75">
+                  Desk {c.code}
+                </p>
+                <p className="mt-3 font-display text-[15px] leading-[1.25] tracking-[-0.015em] text-foreground/92 group-hover:text-foreground">
+                  {c.id}
+                </p>
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/50">
+                  {String(count).padStart(2, "0")} dispatches
+                </p>
+              </a>
+            );
+          })}
+        </nav>
+      </EditorialSection>
+
+      {/* Archive — grouped by editorial desk, with year markers */}
+      <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
+        <p>
+          Filed under five desks — from teenage assistive tech in{" "}
+          <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
+          Wikipedia, to deep-tech reporting on Capattery, GraphIN and the
+          battery breakthrough.
         </p>
 
         {(() => {
-          // Group entries by year (extract trailing 4-digit year from date strings)
-          const byYear = new Map<string, { item: PressItem; index: number }[]>();
-          coverage.forEach((item, index) => {
-            const m = item.date.match(/\b(19|20)\d{2}\b/);
-            const year = m ? m[0] : "—";
-            if (!byYear.has(year)) byYear.set(year, []);
-            byYear.get(year)!.push({ item, index });
-          });
-          const years = Array.from(byYear.keys()).sort(
-            (a, b) => Number(b) - Number(a),
-          );
+          const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-14 flex flex-col gap-16 md:gap-20">
-              {years.map((year) => (
-                <section key={year}>
-                  <div className="grid grid-cols-[5rem_1fr] gap-6 md:grid-cols-[8rem_1fr] md:gap-10">
-                    <div className="pt-2">
-                      <p className="font-display text-3xl md:text-[3rem] font-extralight tracking-[-0.025em] text-foreground/35">
-                        {year}
-                      </p>
-                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
-                        {String(byYear.get(year)!.length).padStart(2, "0")}{" "}
-                        Entr{byYear.get(year)!.length === 1 ? "y" : "ies"}
-                      </p>
+            <div className="not-prose mt-12 flex flex-col gap-14 md:gap-16">
+              {CATEGORIES.map((c) => {
+                const items = all
+                  .filter((i) => i.category === c.id)
+                  .sort((a, b) => dateOrder(b.date) - dateOrder(a.date));
+                if (items.length === 0) return null;
+                const anchor = `desk-${c.code.toLowerCase()}`;
+                return (
+                  <section key={c.id} id={anchor} className="scroll-mt-28">
+                    <div className="grid grid-cols-[3.5rem_1fr] gap-5 md:grid-cols-[7rem_1fr] md:gap-10">
+                      <div className="pt-1">
+                        <p className="font-display text-3xl md:text-[2.4rem] font-extralight tracking-[-0.025em] text-foreground/40">
+                          {c.code}
+                        </p>
+                        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                          {String(items.length).padStart(2, "0")} Entr
+                          {items.length === 1 ? "y" : "ies"}
+                        </p>
+                      </div>
+                      <div>
+                        <h3 className="font-display text-[clamp(1.25rem,2.2vw,1.6rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
+                          {c.id}
+                        </h3>
+                        <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
+                          {c.blurb}
+                        </p>
+                        <ol className="mt-6 flex flex-col">
+                          {items.map((item, i) => (
+                            <ArchiveEntry
+                              key={item.href}
+                              item={item}
+                              index={i}
+                            />
+                          ))}
+                          <li className="border-t border-foreground/[0.08]" />
+                        </ol>
+                      </div>
                     </div>
-                    <ol className="flex flex-col">
-                      {byYear.get(year)!.map(({ item, index }) => (
-                        <ArchiveEntry
-                          key={item.href}
-                          item={item}
-                          index={index}
-                        />
-                      ))}
-                      <li className="border-t border-foreground/[0.08]" />
-                    </ol>
-                  </div>
-                </section>
-              ))}
+                  </section>
+                );
+              })}
             </div>
           );
         })()}
       </EditorialSection>
 
       {/* Mastheads register */}
-      <EditorialSection number="08 · Mastheads" heading="Eighteen publications of record.">
+      <EditorialSection number="09 · Mastheads" heading="Eighteen publications of record.">
         <p>
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
+        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
           <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 md:grid-cols-6">
-            {outlets.map((o) => (
-              <div
-                key={o.name}
-                className="group flex h-24 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4"
-                title={o.name}
-              >
+            {outlets.map((o) => {
+              const href = outletHref(o.name);
+              const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100"
+                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-[1.04]"
                 />
-              </div>
-            ))}
+              );
+              const baseCls =
+                "group flex h-20 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4 transition-colors duration-500";
+              return href ? (
+                <a
+                  key={o.name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`${o.name} — read coverage ↗`}
+                  className={`${baseCls} hover:bg-[oklch(0.07_0.008_245)]`}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div key={o.name} className={baseCls} title={o.name}>
+                  {inner}
+                </div>
+              );
+            })}
           </div>
         </div>
       </EditorialSection>
