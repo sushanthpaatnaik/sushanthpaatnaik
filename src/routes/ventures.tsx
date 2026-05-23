@@ -348,9 +348,11 @@ function VenturesPage() {
                     maxHeight: `${Math.round(46 * a.scale)}px`,
                     maxWidth: `${Math.round(74 * a.scale)}%`,
                     transform: `translateY(${a.offsetY || 0}px)`,
-                    filter: "grayscale(0.18) brightness(0.95) contrast(1.04)",
+                    filter: a.invert
+                      ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
+                      : "brightness(1.08) contrast(1.06)",
                   }}
-                  className="h-auto w-auto object-contain opacity-[0.82] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:grayscale-0"
+                  className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
                 />
               </div>
 
