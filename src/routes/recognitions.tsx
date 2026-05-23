@@ -11,46 +11,46 @@ import {
   PresidentialTriptych,
   type ArchiveItem,
 } from "@/components/scene/ArchiveMosaic";
-import backdrop from "@/assets/story-02-recognition.jpg";
+import backdrop from "@/assets/story-02-recognition.webp";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
 import awardPranabDemo from "@/assets/hof/award-pranab-demo.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
-import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.jpg";
-import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.jpg";
-import awardStpiCert from "@/assets/hof/award-stpi-certificate.jpg";
-import awardBharatiya from "@/assets/hof/award-bharatiya-knowledge-symposium.jpg";
+import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
+import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
+import awardStpiCert from "@/assets/hof/award-stpi-certificate.webp";
+import awardBharatiya from "@/assets/hof/award-bharatiya-knowledge-symposium.webp";
 
 import keynoteTed from "@/assets/hof/keynote-ted.webp";
 import keynoteIit from "@/assets/hof/keynote-iit.webp";
 import keynoteSV from "@/assets/hof/keynote-silicon-valley.webp";
 import keynoteJosh from "@/assets/hof/keynote-josh-talks.webp";
-import keynoteInk from "@/assets/hof/keynote-ink-fellows-retreat.jpg";
-import keynoteTiecon from "@/assets/hof/keynote-tiecon-mumbai.jpg";
-import keynoteBritish from "@/assets/hof/keynote-british-high-commission.jpg";
-import keynoteBeyond from "@/assets/hof/keynote-beyond-retreat-uncharted.jpg";
-import keynoteGmr from "@/assets/hof/keynote-gmr-innovex.jpg";
-import keynoteNit from "@/assets/hof/keynote-nit-rourkela.jpg";
-import keynoteIeema from "@/assets/hof/keynote-ieema-stage.jpg";
-import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.jpg";
-import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.jpg";
+import keynoteInk from "@/assets/hof/keynote-ink-fellows-retreat.webp";
+import keynoteTiecon from "@/assets/hof/keynote-tiecon-mumbai.webp";
+import keynoteBritish from "@/assets/hof/keynote-british-high-commission.webp";
+import keynoteBeyond from "@/assets/hof/keynote-beyond-retreat-uncharted.webp";
+import keynoteGmr from "@/assets/hof/keynote-gmr-innovex.webp";
+import keynoteNit from "@/assets/hof/keynote-nit-rourkela.webp";
+import keynoteIeema from "@/assets/hof/keynote-ieema-stage.webp";
+import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.webp";
+import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.webp";
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
-import honorIeema from "@/assets/hof/honor-ieema-finalists.jpg";
-import honorItalian from "@/assets/hof/honor-italian-embassy.jpg";
-import honorFicci from "@/assets/hof/honor-ficci-bharat.jpg";
-import honorStpi from "@/assets/hof/honor-stpi-startup-group.jpg";
-import honorGadkari from "@/assets/hof/honor-nitin-gadkari.jpg";
-import honorBricsMedal from "@/assets/hof/honor-brics-medal.jpg";
-import honorMop from "@/assets/hof/honor-ministry-power-bee.jpg";
-import honorG20 from "@/assets/hof/honor-startup20-g20.jpg";
-import honorMauritius from "@/assets/hof/honor-mauritius-high-commissioner.jpg";
-import honorIocl from "@/assets/hof/honor-sujoy-choudhury-iocl.jpg";
-import honorDriiv from "@/assets/hof/honor-driiv-mou.jpg";
+import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";
+import honorItalian from "@/assets/hof/honor-italian-embassy.webp";
+import honorFicci from "@/assets/hof/honor-ficci-bharat.webp";
+import honorStpi from "@/assets/hof/honor-stpi-startup-group.webp";
+import honorGadkari from "@/assets/hof/honor-nitin-gadkari.webp";
+import honorBricsMedal from "@/assets/hof/honor-brics-medal.webp";
+import honorMop from "@/assets/hof/honor-ministry-power-bee.webp";
+import honorG20 from "@/assets/hof/honor-startup20-g20.webp";
+import honorMauritius from "@/assets/hof/honor-mauritius-high-commissioner.webp";
+import honorIocl from "@/assets/hof/honor-sujoy-choudhury-iocl.webp";
+import honorDriiv from "@/assets/hof/honor-driiv-mou.webp";
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,

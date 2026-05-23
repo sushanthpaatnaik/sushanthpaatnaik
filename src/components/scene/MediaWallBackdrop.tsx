@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, type MotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
-import mediaWall from "@/assets/scene-media-wall.jpg";
+import mediaWall from "@/assets/scene-media-wall.webp";
 
 type Fragment = {
   t: string;

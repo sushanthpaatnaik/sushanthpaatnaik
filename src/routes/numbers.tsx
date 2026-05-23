@@ -4,7 +4,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-numbers-field.jpg";
+import backdrop from "@/assets/scene-numbers-field.webp";
 
 export const Route = createFileRoute("/numbers")({
   component: NumbersPage,

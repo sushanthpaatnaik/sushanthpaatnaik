@@ -5,7 +5,7 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-about-graphite.jpg";
+import backdrop from "@/assets/scene-about-graphite.webp";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,

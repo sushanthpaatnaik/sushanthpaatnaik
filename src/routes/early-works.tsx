@@ -4,10 +4,10 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-early-workshop.jpg";
-import workshopPlate from "@/assets/scene-early-workshop.jpg";
-import notebookPlate from "@/assets/scene-about-notebook.jpg";
-import newsPlate from "@/assets/scene-news-archive.jpg";
+import backdrop from "@/assets/scene-early-workshop.webp";
+import workshopPlate from "@/assets/scene-early-workshop.webp";
+import notebookPlate from "@/assets/scene-about-notebook.webp";
+import newsPlate from "@/assets/scene-news-archive.webp";
 
 import enabler from "@/assets/early/enabler.webp";
 import rectofit from "@/assets/early/rectofit.webp";

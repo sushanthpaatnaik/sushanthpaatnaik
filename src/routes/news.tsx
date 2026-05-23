@@ -4,12 +4,12 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-media-wall.jpg";
+import backdrop from "@/assets/scene-media-wall.webp";
 
 
 // Press article images
 import globalImg from "@/assets/news/global.webp";
-import rediffImg from "@/assets/news/rediff.jpg";
+import rediffImg from "@/assets/news/rediff.webp";
 import indiaTodayImg from "@/assets/news/indiatoday.webp";
 import deccanImg from "@/assets/news/deccan.webp";
 import ispirtImg from "@/assets/news/ispirt.webp";
@@ -17,15 +17,15 @@ import werindiaImg from "@/assets/news/werindia.webp";
 import telegraphEnablerImg from "@/assets/press/telegraph-enabler.webp";
 import nifChairImg from "@/assets/news/nif-chair.webp";
 import governanceNowImg from "@/assets/news/governance-now.webp";
-import wikipediaImg from "@/assets/news/wikipedia-portrait.jpg";
-import thePrintImg from "@/assets/news/theprint-portrait-2.jpg";
-import newIndianExpressImg from "@/assets/news/new-indian-express-portrait.jpg";
+import wikipediaImg from "@/assets/news/wikipedia-portrait.webp";
+import thePrintImg from "@/assets/news/theprint-portrait-2.webp";
+import newIndianExpressImg from "@/assets/news/new-indian-express-portrait.webp";
 import inkStageImg from "@/assets/press/inktalks-stage.webp";
 import toiBhopalImg from "@/assets/news/toi-bhopal.webp";
-import toiFab10Img from "@/assets/news/toi-fab10.jpg";
+import toiFab10Img from "@/assets/news/toi-fab10.webp";
 import businessStandardImg from "@/assets/news/business-standard.webp";
-import yourStoryImg from "@/assets/news/yourstory-capattery.jpg";
-import goldenBookImg from "@/assets/news/golden-book.jpg";
+import yourStoryImg from "@/assets/news/yourstory-capattery.webp";
+import goldenBookImg from "@/assets/news/golden-book.webp";
 
 // Outlet logos
 import indiaTodayLogo from "@/assets/outlets/india-today.webp";
@@ -43,11 +43,11 @@ import productNationLogo from "@/assets/outlets/productnation-color.webp";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 import werIndiaLogo from "@/assets/outlets/werindia-color.webp";
 import wikipediaLogo from "@/assets/outlets/wikipedia.svg";
-import thePrintLogo from "@/assets/outlets/theprint.png";
-import newIndianExpressLogo from "@/assets/outlets/new-indian-express.png";
-import inkTalksLogo from "@/assets/outlets/inktalks.png";
+import thePrintLogo from "@/assets/outlets/theprint.webp";
+import newIndianExpressLogo from "@/assets/outlets/new-indian-express.webp";
+import inkTalksLogo from "@/assets/outlets/inktalks.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
-import ioclLogo from "@/assets/outlets/iocl.png";
+import ioclLogo from "@/assets/outlets/iocl.webp";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
