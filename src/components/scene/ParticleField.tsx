@@ -4,6 +4,8 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 interface ParticleFieldProps {
   /** Spring-smoothed scroll progress, 0 → 1. */
   progress: MotionValue<number>;
+  /** Chapter phase (0 → stages-1) — drives per-chapter hue / saturation. */
+  phase?: MotionValue<number>;
   /** Opacity envelope sampled across the scroll, one stop per chapter. */
   opacityStops?: number[];
   /** Number of particles on desktop. Mobile uses ~half. */
@@ -13,12 +15,22 @@ interface ParticleFieldProps {
   accentColor?: string;
 }
 
+const PHASE_INDICES = [0, 1, 2, 3, 4, 5, 6];
+const HUE_BY_PHASE = [0, 28, -18, -8, 38, -22, 22];
+const SAT_BY_PHASE = [1.0, 0.78, 1.05, 1.0, 0.6, 0.95, 1.05];
+
 /**
  * Drifting particle layer used inside the cinematic background.
  * Mobile renders a lighter, slower field to preserve battery and smoothness.
+ *
+ * When `phase` is provided, the field shifts hue & saturation per chapter —
+ * cool cobalt in the opening, warmer amber through founder & recognition,
+ * deep indigo in the ecosystem, dawn gold at the close — so the atmosphere
+ * evolves alongside the background plates.
  */
 export default function ParticleField({
   progress,
+  phase,
   opacityStops = [0.55, 0.46, 0.4, 0.34, 0.3, 0.24, 0.16],
   count = 20,
   primaryColor = "oklch(0.81 0.1 235)",
@@ -59,8 +71,19 @@ export default function ParticleField({
   const y = useTransform(progress, [0, 1], [0, -260]);
   const opacity = useTransform(progress, stops, opacityStops);
 
+  // Always create both motion values to keep hook order stable.
+  const phaseHue = useTransform(phase ?? progress, PHASE_INDICES, HUE_BY_PHASE);
+  const phaseSat = useTransform(phase ?? progress, PHASE_INDICES, SAT_BY_PHASE);
+  const filter = useTransform(
+    [phaseHue, phaseSat] as unknown as MotionValue<number>[],
+    ([h, s]) => `hue-rotate(${h as number}deg) saturate(${s as number})`,
+  );
+
   return (
-    <motion.div className="absolute inset-0 will-change-transform" style={{ y, opacity }}>
+    <motion.div
+      className="absolute inset-0 will-change-transform"
+      style={{ y, opacity, filter: phase ? filter : undefined }}
+    >
       {particles.map((particle) => (
         <span
           key={particle.id}
