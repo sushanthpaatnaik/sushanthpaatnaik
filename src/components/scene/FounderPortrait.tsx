@@ -151,6 +151,17 @@ export default function FounderPortrait({
                 "radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%)",
             }}
           />
+          {/* Soft cinematic vignette — deepens edges, preserves center */}
+          {isDoc && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(125% 100% at 50% 50%, transparent 55%, oklch(0.015 0.004 240 / 0.55) 100%)",
+              }}
+            />
+          )}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
