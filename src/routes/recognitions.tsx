@@ -230,9 +230,28 @@ const eraPresidential: ArchiveItem[] = [
 
 // Era 2 — Global stages & institutional recognition (2010–2014)
 const eraGlobal: ArchiveItem[] = [
-  { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote", shape: "wide" },
+  {
+    src: keynoteTed,
+    caption: "TED-India Speaker",
+    meta: "Youngest at the time · 2012",
+    category: "Keynote",
+    shape: "hero",
+    institution: "TED-India",
+    recognition: "Featured Speaker · 2012",
+    presenter: "Among the youngest speakers ever featured",
+    venue: "Mysore · India",
+  },
   { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
-  { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville", category: "Honor", shape: "wide" },
+  {
+    src: honorNasa,
+    caption: "NASA Mobile Quarantine Facility",
+    meta: "U.S. Space & Rocket Center · Huntsville",
+    category: "Honor",
+    shape: "wide",
+    institution: "NASA",
+    recognition: "International Recognition · 2011",
+    venue: "Kennedy Space Center · Huntsville",
+  },
   { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote", shape: "tall" },
   { src: fellowMashaal, caption: "Mashaal — passing the torch", meta: "INK / MKM Foundation", category: "Fellowship" },
