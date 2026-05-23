@@ -680,12 +680,15 @@ function NewsPage() {
       <LeadFeature item={featured} />
       <SecondaryFeature item={secondary} />
 
-      {/* Category index — editorial dossier table of contents */}
-      <EditorialSection number="07 · Desks" heading="Five editorial desks.">
+      {/* Category index → Archive — one continuous editorial flow,
+          no double-section gap between the desks grid and the first dispatch. */}
+      <EditorialSection number="07 · Desks & Archive" heading="Five desks. Eighteen dispatches.">
         <p>
           The archive grouped by editorial desk — features and interviews,
           deep-tech reporting, recognitions of record, venture press, and the
-          stage record.
+          stage record. From teenage assistive tech in <em>The Telegraph</em>{" "}
+          and NIF, to global recognition in MIT TR and Wikipedia, to deep-tech
+          reporting on Capattery, GraphIN and the battery breakthrough.
         </p>
         <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
           {CATEGORIES.map((c) => {
@@ -712,22 +715,22 @@ function NewsPage() {
             );
           })}
         </nav>
-      </EditorialSection>
 
-      {/* Archive — grouped by editorial desk, with year markers */}
-      <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
-
-        <p>
-          Filed under five desks — from teenage assistive tech in{" "}
-          <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
-          Wikipedia, to deep-tech reporting on Capattery, GraphIN and the
-          battery breakthrough.
-        </p>
+        {/* Hairline bridge — visually anchors the archive directly under the desks grid */}
+        <div className="not-prose mt-10 md:mt-12 flex items-center gap-4 border-t border-foreground/[0.12] pt-5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
+            ▸ The Archive
+          </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 hidden md:inline">
+            Filed chronologically · most recent first
+          </span>
+        </div>
 
         {(() => {
           const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-12 flex flex-col gap-14 md:gap-16">
+            <div className="not-prose mt-8 md:mt-10 flex flex-col gap-14 md:gap-16">
               {CATEGORIES.map((c) => {
                 const items = all
                   .filter((i) => i.category === c.id)
@@ -772,6 +775,7 @@ function NewsPage() {
           );
         })()}
       </EditorialSection>
+
 
       {/* Mastheads register */}
       <EditorialSection number="09 · Mastheads" heading="Eighteen publications of record.">
