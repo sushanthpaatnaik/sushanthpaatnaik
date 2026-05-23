@@ -988,7 +988,7 @@ function ClosingInvitation() {
           }}
         />
       </div>
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-36 md:pt-40 pb-12 render-stable">
+      <div className="relative z-10 flex flex-col items-center justify-center pt-28 md:pt-32 pb-16 md:pb-20 render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
