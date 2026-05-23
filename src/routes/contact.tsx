@@ -88,194 +88,198 @@ function AccessForm() {
   const fieldClasses = (key: string) => {
     const isActive = focused === key;
     return `w-full bg-transparent border-0 border-b ${
-      isActive ? "border-accent/70" : "border-foreground/15"
-    } px-0 py-4 text-foreground/90 placeholder:text-foreground/30 focus:outline-none focus:ring-0 transition-colors duration-500`;
+      isActive ? "border-accent/60" : "border-foreground/[0.12]"
+    } px-0 py-4 font-display text-[17px] md:text-[19px] tracking-[-0.005em] text-foreground/95 placeholder:text-foreground/25 placeholder:font-display placeholder:italic focus:outline-none focus:ring-0 transition-colors duration-500`;
   };
 
   return (
     <motion.form
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mt-12 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/80 backdrop-blur-sm"
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+      className="not-prose relative mt-16"
       onSubmit={(e) => {
         e.preventDefault();
         if (!ready) return;
         window.location.href = mailto;
       }}
     >
-      {/* Soft luminous wash */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(80% 60% at 15% 0%, oklch(0.42 0.07 240 / 0.10), transparent 60%), radial-gradient(60% 50% at 100% 100%, oklch(0.62 0.10 55 / 0.07), transparent 60%)",
-        }}
-      />
+      {/* Console header — paper tape */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/15 py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/80">Access Protocol</span>
+        <span className="hidden md:inline text-muted-foreground/40">
+          Form № 01 · Single inbox
+        </span>
+        <span className="text-primary/70">Triaged personally</span>
+      </div>
 
-      <div className="relative p-7 md:p-12">
-        {/* Header strip */}
-        <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-6">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/85">
-            Access Protocol · Inquiry Form
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-            Selective · Triaged personally
-          </p>
-        </div>
-
-        {/* Intent selector */}
-        <div className="mt-9">
-          <label className="block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
+      <div className="grid grid-cols-1 gap-x-16 gap-y-14 pt-16 md:pt-20 md:grid-cols-[1fr_2fr]">
+        {/* Intent — column 01 */}
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
             01 · Intent
-          </label>
-          <div className="mt-5 flex flex-wrap gap-2">
+          </p>
+          <ul className="mt-8 flex flex-col">
             {intents.map((i) => {
               const active = intent === i.id;
               return (
-                <button
-                  key={i.id}
-                  type="button"
-                  onClick={() => setIntent(i.id)}
-                  className={`group relative inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] transition-all duration-500 ${
-                    active
-                      ? "border-accent/60 bg-accent/10 text-foreground"
-                      : "border-foreground/15 text-foreground/55 hover:border-foreground/35 hover:text-foreground/85"
-                  }`}
-                >
-                  <span
-                    className={`h-1 w-1 rounded-full transition-colors duration-500 ${
-                      active ? "bg-accent" : "bg-foreground/30"
+                <li key={i.id}>
+                  <button
+                    type="button"
+                    onClick={() => setIntent(i.id)}
+                    aria-pressed={active}
+                    className={`group grid w-full grid-cols-[1.25rem_1fr] items-baseline gap-4 border-t border-foreground/[0.08] py-4 text-left transition-colors duration-500 ${
+                      active ? "text-foreground" : "text-foreground/55 hover:text-foreground/85"
                     }`}
-                  />
-                  {i.label}
-                </button>
+                  >
+                    <span
+                      aria-hidden
+                      className={`relative mt-2 h-px w-3 transition-all duration-500 ${
+                        active ? "w-5 bg-accent" : "bg-foreground/25 group-hover:bg-foreground/55"
+                      }`}
+                    />
+                    <span className="font-display text-[17px] md:text-[18px] tracking-[-0.005em]">
+                      {i.label}
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
+            <li className="border-t border-foreground/[0.08]" />
+          </ul>
         </div>
 
-        {/* Identification */}
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+        {/* Fields — column 02 */}
+        <div className="flex flex-col gap-12">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+            <div>
+              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                02 · Name
+              </label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onFocus={() => setFocused("name")}
+                onBlur={() => setFocused(null)}
+                placeholder="Your full name"
+                className={`${fieldClasses("name")} mt-5`}
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                03 · Organisation
+              </label>
+              <input
+                type="text"
+                value={org}
+                onChange={(e) => setOrg(e.target.value)}
+                onFocus={() => setFocused("org")}
+                onBlur={() => setFocused(null)}
+                placeholder="Company, fund, lab, or independent"
+                className={`${fieldClasses("org")} mt-5`}
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-              02 · Name
+            <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              04 · Email
             </label>
             <input
-              type="text"
+              type="email"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onFocus={() => setFocused("name")}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onFocus={() => setFocused("email")}
               onBlur={() => setFocused(null)}
-              placeholder="Your full name"
-              className={fieldClasses("name")}
+              placeholder="you@domain.com"
+              className={`${fieldClasses("email")} mt-5`}
             />
           </div>
+
           <div>
-            <label className="block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-              03 · Organisation
-            </label>
-            <input
-              type="text"
-              value={org}
-              onChange={(e) => setOrg(e.target.value)}
-              onFocus={() => setFocused("org")}
+            <div className="flex items-baseline justify-between">
+              <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                05 · Context
+              </label>
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
+                {context.length.toString().padStart(3, "0")} / 600
+              </span>
+            </div>
+            <p className="mt-2 font-display italic text-[13px] text-foreground/40">
+              One paragraph on what you are building, or considering.
+            </p>
+            <textarea
+              required
+              maxLength={600}
+              rows={4}
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              onFocus={() => setFocused("context")}
               onBlur={() => setFocused(null)}
-              placeholder="Company, fund, lab, or independent"
-              className={fieldClasses("org")}
+              placeholder="Begin here…"
+              className={`${fieldClasses("context")} mt-5 resize-none leading-[1.75]`}
+            />
+          </div>
+
+          <div>
+            <div className="flex items-baseline justify-between">
+              <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                06 · Why this conversation
+              </label>
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
+                {ask.length.toString().padStart(3, "0")} / 400
+              </span>
+            </div>
+            <p className="mt-2 font-display italic text-[13px] text-foreground/40">
+              One paragraph on what a conversation would change.
+            </p>
+            <textarea
+              maxLength={400}
+              rows={3}
+              value={ask}
+              onChange={(e) => setAsk(e.target.value)}
+              onFocus={() => setFocused("ask")}
+              onBlur={() => setFocused(null)}
+              placeholder="Begin here…"
+              className={`${fieldClasses("ask")} mt-5 resize-none leading-[1.75]`}
             />
           </div>
         </div>
+      </div>
 
-        <div className="mt-8 md:mt-10">
-          <label className="block font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-            04 · Email
-          </label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onFocus={() => setFocused("email")}
-            onBlur={() => setFocused(null)}
-            placeholder="you@domain.com"
-            className={fieldClasses("email")}
-          />
-        </div>
-
-        {/* The two paragraphs */}
-        <div className="mt-10">
-          <div className="flex items-baseline justify-between">
-            <label className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-              05 · Context — one paragraph
-            </label>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/40">
-              {context.length.toString().padStart(3, "0")} / 600
-            </span>
+      {/* CTA hierarchy */}
+      <div className="mt-20 border-t border-foreground/15 pt-10">
+        <div className="flex flex-col-reverse items-stretch gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-2 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45">
+            <span>Reply window · 48 hours</span>
+            <a
+              href="mailto:info@sushanthpaatnaik.com?subject=Hello"
+              className="text-foreground/65 transition-colors hover:text-accent"
+            >
+              Or write directly &nbsp;—↗
+            </a>
           </div>
-          <textarea
-            required
-            maxLength={600}
-            rows={4}
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-            onFocus={() => setFocused("context")}
-            onBlur={() => setFocused(null)}
-            placeholder="What you are building, or considering."
-            className={`${fieldClasses("context")} resize-none leading-[1.7]`}
-          />
-        </div>
-
-        <div className="mt-10">
-          <div className="flex items-baseline justify-between">
-            <label className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/60">
-              06 · Why this conversation — one paragraph
-            </label>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/40">
-              {ask.length.toString().padStart(3, "0")} / 400
-            </span>
-          </div>
-          <textarea
-            maxLength={400}
-            rows={3}
-            value={ask}
-            onChange={(e) => setAsk(e.target.value)}
-            onFocus={() => setFocused("ask")}
-            onBlur={() => setFocused(null)}
-            placeholder="What a conversation would change."
-            className={`${fieldClasses("ask")} resize-none leading-[1.7]`}
-          />
-        </div>
-
-        {/* CTA hierarchy */}
-        <div className="mt-14 flex flex-col-reverse items-stretch gap-4 border-t border-foreground/[0.08] pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <a
-            href="mailto:info@sushanthpaatnaik.com?subject=Hello"
-            className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors hover:text-foreground/90"
-          >
-            Or write directly →
-          </a>
           <button
             type="submit"
             disabled={!ready}
-            className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-sm px-7 py-4 font-mono text-[10px] uppercase tracking-[0.4em] transition-all duration-500 ${
+            className={`group relative inline-flex items-center justify-center gap-4 overflow-hidden border px-9 py-5 font-mono text-[10px] uppercase tracking-[0.55em] transition-all duration-700 ${
               ready
-                ? "bg-foreground/95 text-background hover:bg-accent hover:text-background"
-                : "cursor-not-allowed bg-foreground/[0.06] text-foreground/35"
+                ? "border-foreground/85 bg-foreground/95 text-background hover:border-accent hover:bg-accent"
+                : "cursor-not-allowed border-foreground/15 bg-transparent text-foreground/30"
             }`}
           >
             <span className="relative z-10">Open the line</span>
-            <span className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
-              →
+            <span className="relative z-10 transition-transform duration-700 group-hover:translate-x-1.5">
+              —→
             </span>
           </button>
         </div>
-
-        <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.35em] text-muted-foreground/45">
-          Submitting opens your mail client with the inquiry pre-composed. Nothing is stored.
+        <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/40">
+          Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site.
         </p>
       </div>
     </motion.form>

@@ -135,38 +135,39 @@ function CTABlock() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mt-16 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/85 p-8 md:p-12"
+      className="not-prose relative mt-20 border-y border-foreground/15 py-14 md:py-20"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(70% 60% at 12% 0%, oklch(0.62 0.10 55 / 0.10), transparent 60%), radial-gradient(60% 50% at 100% 100%, oklch(0.42 0.07 240 / 0.10), transparent 60%)",
-        }}
-      />
-      <div className="relative flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/85">
-            Open The Line · Selective Access
-          </p>
-          <h3 className="mt-4 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
-            One paragraph on context. One on why a conversation would change the trajectory.
-          </h3>
-        </div>
-        <div className="flex flex-col items-stretch gap-3 md:items-end">
+      <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/80">Open The Line</span>
+        <span className="hidden md:inline text-muted-foreground/40">
+          Selective Access · By Appointment
+        </span>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr] md:items-end md:gap-16">
+        <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.15] tracking-[-0.025em] text-foreground/95">
+          One paragraph on context.
+          <br />
+          <em className="not-italic font-display italic text-foreground/65">
+            One on why a conversation would change the trajectory.
+          </em>
+        </h3>
+
+        <div className="flex flex-col items-stretch gap-4 md:items-end">
           <Link
             to="/contact"
-            className="group inline-flex items-center justify-center gap-3 rounded-sm bg-foreground/95 px-7 py-4 font-mono text-[10px] uppercase tracking-[0.4em] text-background transition-all duration-500 hover:bg-accent hover:text-background"
+            className="group inline-flex items-center justify-center gap-4 border border-foreground/85 bg-foreground/95 px-8 py-5 font-mono text-[10px] uppercase tracking-[0.55em] text-background transition-all duration-700 hover:border-accent hover:bg-accent"
           >
             <span>Begin the inquiry</span>
-            <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+            <span className="transition-transform duration-700 group-hover:translate-x-1.5">
+              —→
+            </span>
           </Link>
           <a
             href="mailto:info@sushanthpaatnaik.com?subject=Engage"
-            className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors hover:text-foreground/90"
+            className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors hover:text-accent"
           >
-            Or write directly →
+            Or write directly &nbsp;—↗
           </a>
         </div>
       </div>
