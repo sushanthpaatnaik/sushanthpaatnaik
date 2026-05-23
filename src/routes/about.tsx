@@ -43,6 +43,12 @@ function AboutPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
+      <FounderPortrait
+        variant="editorial"
+        caption="Sushanth Paatnaik — inventor, deep-tech founder, and six-time Indian Presidential awardee."
+        meta="Portrait · Bhubaneswar"
+      />
+
       <EditorialSection number="01 · Origin" heading="A workshop, a wheelchair, and a question.">
         <p>
           At fourteen, in a workshop borrowed for a weekend, I built a
