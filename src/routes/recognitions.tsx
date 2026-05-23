@@ -3,7 +3,7 @@ import CinematicPageShell, {
   EditorialList,
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
-import ArchiveMosaic, { type ArchiveItem } from "@/components/scene/ArchiveMosaic";
+import ArchiveMosaic, { HallOfFameRibbon, type ArchiveItem } from "@/components/scene/ArchiveMosaic";
 import backdrop from "@/assets/story-02-recognition.jpg";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
@@ -145,21 +145,113 @@ const ledger = [
 
 // Era 1 — Young inventor & presidential years (2008–2013)
 const eraPresidential: ArchiveItem[] = [
-  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · NIF · 2008", category: "Award", shape: "wide" },
-  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Presidential Award · 2009", category: "Award", shape: "tall" },
-  { src: awardPatil2, caption: "Felicitation by President Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award" },
-  { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Presidential Award · 2013", category: "Award", shape: "wide", focus: "left top" },
-  { src: awardPranab2, caption: "President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award" },
-  { src: awardPranabDemo, caption: "Demonstrating to the President", meta: "Presidential Showcase · 2013", category: "Award", focus: "center 35%" },
-  { src: awardPranabTrophy, caption: "Presidential Trophy", meta: "NIF-India · 2013", category: "Award", shape: "tall" },
-  { src: fellowCert, caption: "Honour Certificate", meta: "Record of Recognition", category: "Fellowship" },
+  {
+    src: awardKalam,
+    caption: "With Dr. A.P.J. Abdul Kalam",
+    meta: "Presidential Award · NIF · 2008",
+    category: "Award",
+    shape: "hero",
+    focus: "center 28%",
+    institution: "National Innovation Foundation",
+    recognition: "Presidential Recognition · 2008",
+    presenter: "Presented by Dr. A.P.J. Abdul Kalam",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPatil,
+    caption: "With President Pratibha Patil",
+    meta: "Presidential Award · 2009",
+    category: "Award",
+    shape: "tall",
+    institution: "National Innovation Foundation",
+    recognition: "Presidential Recognition · 2009",
+    presenter: "Presented by Smt. Pratibha Devisingh Patil",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPatil2,
+    caption: "Felicitation by President Patil",
+    meta: "Rashtrapati Bhavan · 2009",
+    category: "Award",
+    institution: "Office of the President of India",
+    recognition: "Felicitation · 2009",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPranab,
+    caption: "With President Pranab Mukherjee",
+    meta: "Presidential Award · 2013",
+    category: "Award",
+    shape: "wide",
+    focus: "left top",
+    institution: "National Innovation Foundation",
+    recognition: "Presidential Recognition · 2013",
+    presenter: "Presented by Shri Pranab Mukherjee",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPranab2,
+    caption: "President Pranab Mukherjee",
+    meta: "Rashtrapati Bhavan · 2013",
+    category: "Award",
+    institution: "Office of the President of India",
+    recognition: "Citation Ceremony · 2013",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPranabDemo,
+    caption: "Demonstrating to the President",
+    meta: "Presidential Showcase · 2013",
+    category: "Award",
+    focus: "center 35%",
+    institution: "Presidential Innovation Showcase",
+    recognition: "Demonstration · 2013",
+    venue: "Rashtrapati Bhavan · New Delhi",
+  },
+  {
+    src: awardPranabTrophy,
+    caption: "Presidential Trophy",
+    meta: "NIF-India · 2013",
+    category: "Award",
+    shape: "tall",
+    institution: "National Innovation Foundation",
+    recognition: "Presidential Trophy · 2013",
+    venue: "Government of India · New Delhi",
+  },
+  {
+    src: fellowCert,
+    caption: "Honour Certificate",
+    meta: "Record of Recognition",
+    category: "Fellowship",
+    institution: "Archival Citation",
+    recognition: "Record of Recognition",
+  },
 ];
 
 // Era 2 — Global stages & institutional recognition (2010–2014)
 const eraGlobal: ArchiveItem[] = [
-  { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote", shape: "wide" },
+  {
+    src: keynoteTed,
+    caption: "TED-India Speaker",
+    meta: "Youngest at the time · 2012",
+    category: "Keynote",
+    shape: "hero",
+    institution: "TED-India",
+    recognition: "Featured Speaker · 2012",
+    presenter: "Among the youngest speakers ever featured",
+    venue: "Mysore · India",
+  },
   { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
-  { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville", category: "Honor", shape: "wide" },
+  {
+    src: honorNasa,
+    caption: "NASA Mobile Quarantine Facility",
+    meta: "U.S. Space & Rocket Center · Huntsville",
+    category: "Honor",
+    shape: "wide",
+    institution: "NASA",
+    recognition: "International Recognition · 2011",
+    venue: "Kennedy Space Center · Huntsville",
+  },
   { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote", shape: "tall" },
   { src: fellowMashaal, caption: "Mashaal — passing the torch", meta: "INK / MKM Foundation", category: "Fellowship" },
@@ -209,9 +301,26 @@ const eraPresent: ArchiveItem[] = [
 
 const counters = [
   { value: "27", label: "Honors of record" },
-  { value: "6", label: "Presidential awards" },
+  { value: "6", label: "Presidential recognitions" },
   { value: "60+", label: "Keynotes since 2010" },
-  { value: "3", label: "Sitting Presidents of India" },
+  { value: "14+", label: "Years of industrial research" },
+];
+
+// Hall of Fame ribbon — media coverage, stage moments, honorary moments,
+// public demonstrations. A continuous archival reel.
+const hallOfFame: ArchiveItem[] = [
+  { src: keynoteTed, caption: "TED-India Main Stage", meta: "Mysore · 2012", category: "Keynote" },
+  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Rashtrapati Bhavan · 2008", category: "Award", focus: "center 28%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote" },
+  { src: awardPranabDemo, caption: "Presidential Demonstration", meta: "New Delhi · 2013", category: "Award", focus: "center 35%" },
+  { src: honorNasa, caption: "NASA Recognition", meta: "Kennedy Space Center · 2011", category: "Honor" },
+  { src: keynoteBrics, caption: "BRICS Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
+  { src: keynoteIeema, caption: "IEEMA Mainstage", meta: "Mumbai · 2024", category: "Keynote" },
+  { src: keynoteStage, caption: "INK Main Stage", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
+  { src: awardLeaDiaMirza, caption: "LEA Excellence Award", meta: "Mumbai · 2022", category: "Award" },
+  { src: keynoteNit, caption: "Innovision · NIT Rourkela", meta: "Nov 2025", category: "Keynote" },
+  { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
+  { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Youth & Entrepreneurs", category: "Keynote" },
 ];
 
 function RecognitionsPage() {
@@ -277,6 +386,15 @@ function RecognitionsPage() {
         </p>
       </EditorialSection>
       <ArchiveMosaic items={eraPresent} />
+
+      <EditorialSection number="10b · Hall of Fame" heading="The reel — media, stage, and honour.">
+        <p>
+          A continuous cinematic strip — newspaper clippings, mainstage
+          moments, presidential demonstrations and honorary citations
+          arranged as a single archival reel.
+        </p>
+      </EditorialSection>
+      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
 
       <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
         <p>
