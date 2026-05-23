@@ -235,25 +235,40 @@ function FounderScene() {
         {/* Graphite-black base atmosphere */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_30%_48%,oklch(0.07_0_0)_0%,oklch(0.035_0_0)_55%,oklch(0.015_0_0)_100%)]" />
 
-        {/* The portrait — concealed but legible: moderate desaturation, soft
-            crush, faint blur, elliptical reveal with eyes near the upper-left
-            focal zone. Shifted downward so the head sits comfortably below
-            the top fade. */}
+        {/* The portrait — concealed but cinematically intelligent: eyes,
+            glasses, facial contour and blazer edge selectively legible.
+            Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.54] md:opacity-[0.60] [filter:grayscale(0.82)_contrast(1.14)_brightness(0.62)_saturate(0.42)_blur(1.1px)] [mask-image:radial-gradient(ellipse_52%_64%_at_38%_38%,#000_22%,rgba(0,0,0,0.82)_52%,rgba(0,0,0,0.36)_72%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_64%_at_38%_38%,#000_22%,rgba(0,0,0,0.82)_52%,rgba(0,0,0,0.36)_72%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.66] md:opacity-[0.72] [filter:grayscale(0.7)_contrast(1.22)_brightness(0.72)_saturate(0.5)_blur(0.7px)] [mask-image:radial-gradient(ellipse_55%_66%_at_38%_38%,#000_30%,rgba(0,0,0,0.9)_55%,rgba(0,0,0,0.45)_74%,transparent_94%)] [-webkit-mask-image:radial-gradient(ellipse_55%_66%_at_38%_38%,#000_30%,rgba(0,0,0,0.9)_55%,rgba(0,0,0,0.45)_74%,transparent_94%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
+        {/* Selective reveal — tightened cool key on eyes / glasses bridge */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_9%_6%_at_24%_32%,oklch(0.88_0.04_232/0.28),transparent_75%)]" />
         {/* Cool contour key-light — sculpts brow, glasses, cheekbone */}
-        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_22%_28%_at_28%_34%,oklch(0.72_0.05_232/0.32),transparent_72%)]" />
-        {/* Secondary cool fill — lifts jacket shoulder out of the ink */}
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_18%_22%_at_22%_60%,oklch(0.45_0.03_232/0.10),transparent_78%)]" />
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_22%_28%_at_28%_34%,oklch(0.78_0.05_232/0.42),transparent_72%)]" />
+        {/* Secondary cool fill — lifts jacket shoulder + blazer edge out of ink */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_26%_at_20%_62%,oklch(0.55_0.03_232/0.18),transparent_78%)]" />
         {/* Warm copper rim — jawline contour from the right */}
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_12%_24%_at_42%_46%,oklch(0.64_0.09_55/0.14),transparent_75%)]" />
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_13%_26%_at_42%_46%,oklch(0.68_0.10_55/0.22),transparent_75%)]" />
 
-        {/* Ambient volumetric diffusion — soft haze between portrait & quote */}
-        <div className="absolute inset-y-[20%] left-[38%] w-[34%] mix-blend-screen bg-[radial-gradient(ellipse_70%_55%_at_50%_50%,oklch(0.35_0.02_232/0.10),transparent_75%)] blur-2xl" />
+        {/* Center atmospheric depth — graphite haze + restrained warm/cool bloom */}
+        <div className="absolute inset-y-[14%] left-[34%] w-[40%] mix-blend-screen bg-[radial-gradient(ellipse_70%_62%_at_50%_50%,oklch(0.38_0.018_232/0.16),transparent_78%)] blur-3xl" />
+        <div className="absolute inset-y-[22%] left-[42%] w-[26%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.58_0.04_232/0.14),transparent_75%)] blur-2xl" />
+        <div className="absolute inset-y-[30%] left-[46%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_55%_50%_at_55%_55%,oklch(0.52_0.06_55/0.08),transparent_78%)] blur-3xl" />
+        {/* Faint molecular texture across the center void */}
+        <div
+          aria-hidden
+          className="absolute inset-y-[10%] left-[32%] w-[44%] opacity-[0.07] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0.5px, transparent 1.2px), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px), radial-gradient(circle at 45% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1.2px)",
+            backgroundSize: "120px 120px, 180px 180px, 90px 90px",
+            filter: "blur(0.4px)",
+          }}
+        />
+
 
         {/* Cinematic falloff — restrained ink wash, less aggressive than before */}
         <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0)_88%)]" />
