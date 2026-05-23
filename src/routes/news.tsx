@@ -71,6 +71,13 @@ export const Route = createFileRoute("/news")({
   }),
 });
 
+type Category =
+  | "Awards & Recognition"
+  | "Scientific & Deep-Tech Coverage"
+  | "Startup & Venture Press"
+  | "Public Speaking & Thought Leadership"
+  | "Global Features & Interviews";
+
 type PressItem = {
   outlet: string;
   date: string;
@@ -80,7 +87,38 @@ type PressItem = {
   href: string;
   image: string;
   objectPosition?: string;
+  category: Category;
+  weight?: "major" | "secondary"; // visual hierarchy
+  logo?: string;
 };
+
+const CATEGORIES: { id: Category; code: string; blurb: string }[] = [
+  {
+    id: "Global Features & Interviews",
+    code: "I",
+    blurb: "Long-form profiles and cover stories across the Indian and international press.",
+  },
+  {
+    id: "Scientific & Deep-Tech Coverage",
+    code: "II",
+    blurb: "Reporting on the inventions, the materials science and the deep-tech ventures.",
+  },
+  {
+    id: "Awards & Recognition",
+    code: "III",
+    blurb: "Citations, encyclopedic entries and the public record of national honours.",
+  },
+  {
+    id: "Startup & Venture Press",
+    code: "IV",
+    blurb: "Coverage of the companies — Capattery, Monoatom Labs and the wider portfolio.",
+  },
+  {
+    id: "Public Speaking & Thought Leadership",
+    code: "V",
+    blurb: "The stage record — TED, INK Talks, FAB10 and the global conference circuit.",
+  },
+];
 
 const featured: PressItem = {
   outlet: "The Global Indian",
@@ -91,6 +129,9 @@ const featured: PressItem = {
   body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar — from a breath-controlled wheelchair built at 14 to founding multiple deep-tech ventures.",
   href: "https://www.globalindian.com/story/global-indian-exclusive/six-times-president-awardee-sushant-pattnaiks-ground-breaking-innovations/",
   image: globalImg,
+  category: "Global Features & Interviews",
+  weight: "major",
+  logo: globalIndianLogo,
 };
 
 const secondary: PressItem = {
@@ -101,6 +142,9 @@ const secondary: PressItem = {
   body: "National coverage of GraphIN 2026 in Kochi — the conference convening industry, academia and government to chart India's graphene future.",
   href: "https://www.rediff.com/news/report/graphin-2026-graphene-conference-opens-in-kochi/20260309.htm",
   image: rediffImg,
+  category: "Scientific & Deep-Tech Coverage",
+  weight: "major",
+  logo: rediffLogo,
 };
 
 const coverage: PressItem[] = [
@@ -112,6 +156,8 @@ const coverage: PressItem[] = [
     body: "India Today profiles the youngest serial entrepreneur to be honoured by three Presidents of India, with prototypes spanning assistive tech, robotics and energy.",
     href: "https://www.indiatoday.in/india/north/story/innovator-susant-pattnaik-serial-entrepreneur-155970-2013-03-11",
     image: indiaTodayImg,
+    category: "Global Features & Interviews",
+    weight: "major",
   },
   {
     outlet: "Deccan Chronicle",
@@ -121,6 +167,7 @@ const coverage: PressItem[] = [
     body: "The Sunday Chronicle profiles the breath-operated wheelchair innovator and co-founder of two companies — honoured thrice by the President of India before turning 21.",
     href: "https://www.deccanchronicle.com/131208/commentary-sunday-chronicle/article/susant-pattnaik-serial-entrepreneur-20",
     image: deccanImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "The Telegraph India",
@@ -130,6 +177,8 @@ const coverage: PressItem[] = [
     body: "At seventeen, Sushant's breath-sensor apparatus drew national attention as a life-changing assistive technology for the physically challenged.",
     href: "https://www.telegraphindia.com/odisha/wonderboy-innovates-technological-marvel-seventeen-year-old-sushant-pattnaik-s-device-can-change-lives-of-disabled-people/cid/477938",
     image: telegraphEnablerImg,
+    category: "Scientific & Deep-Tech Coverage",
+    weight: "major",
   },
   {
     outlet: "National Innovation Foundation",
@@ -139,6 +188,7 @@ const coverage: PressItem[] = [
     body: "NIF-India recognises the IGNITE awardee whose work has led to ten working prototypes, four companies, an MIT Technology Review feature and a TED India talk.",
     href: "https://nif.org.in/innovation/breathing-sensor-apparatus-to-assist-physically-challenged/398",
     image: nifChairImg,
+    category: "Awards & Recognition",
   },
   {
     outlet: "ProductNation · iSPIRT",
@@ -148,6 +198,7 @@ const coverage: PressItem[] = [
     body: "A long-form profile by India's product think-tank on the young innovator whose gadgets — once compared to Doraemon's — are now solving real-world problems.",
     href: "https://pn.ispirt.in/susant-pattnaik-real-life-doremon-or-an-innovation-champ/",
     image: ispirtImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "WeRIndia · Fusion",
@@ -157,6 +208,7 @@ const coverage: PressItem[] = [
     body: "An 'Unknown Wizards' feature spotlighting Sushant's portfolio of inventions and the social impact of his assistive and clean-tech innovations.",
     href: "https://fusion.werindia.com/unknown-wizards/susant-pattnaik-one-of-the-youngest-inventors-of-several-innovative-products",
     image: werindiaImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "Governance Now",
@@ -166,6 +218,7 @@ const coverage: PressItem[] = [
     body: "Governance Now profiles the breath-sensor apparatus at the NIF-organised Delhi exhibition — an innovation enabling paralysed and physically challenged people to perform basic chores independently.",
     href: "https://www.governancenow.com/news/regular-story/resolve-every-breath-bhopal-teen-helps-special-people-live-anew",
     image: governanceNowImg,
+    category: "Scientific & Deep-Tech Coverage",
   },
   {
     outlet: "Times of India · Bhopal",
@@ -175,6 +228,7 @@ const coverage: PressItem[] = [
     body: "TOI Bhopal chronicles a third-year engineering student already holding 21 awards, multiple patents and inventions ranging from a roti-status SMS device to assistive breath-controlled systems.",
     href: "https://timesofindia.indiatimes.com/city/bhopal/susant-stuns-with-patent-run-roti-sms/articleshow/46903296.cms",
     image: toiBhopalImg,
+    category: "Awards & Recognition",
   },
   {
     outlet: "Wikipedia (Odia)",
@@ -185,6 +239,8 @@ const coverage: PressItem[] = [
     href: "https://or.wikipedia.org/wiki/%E0%AC%B8%E0%AD%81%E0%AC%B6%E0%AC%BE%E0%AC%A8%E0%AD%8D%E0%AC%A4_%E0%AC%AA%E0%AC%9F%E0%AD%8D%E0%AC%9F%E0%AC%A8%E0%AC%BE%E0%AD%9F%E0%AC%95",
     image: wikipediaImg,
     objectPosition: "center 18%",
+    category: "Awards & Recognition",
+    weight: "major",
   },
   {
     outlet: "Business Standard · ANI",
@@ -194,6 +250,8 @@ const coverage: PressItem[] = [
     body: "Business Standard reports on Sushant's breakthrough in rapid battery charging — a technology poised to charge a smartphone in seconds and reshape the EV and consumer electronics landscape.",
     href: "https://www.business-standard.com/content/press-releases-ani/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik-122032100710_1.html",
     image: businessStandardImg,
+    category: "Scientific & Deep-Tech Coverage",
+    weight: "major",
   },
   {
     outlet: "ThePrint · ANI",
@@ -203,6 +261,7 @@ const coverage: PressItem[] = [
     body: "ThePrint syndicates the ANI dispatch on Sushant's nano-material battery breakthrough — promising smartphone charges in seconds and EV refuels in minutes.",
     href: "https://theprint.in/ani-press-releases/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik/881783/",
     image: thePrintImg,
+    category: "Scientific & Deep-Tech Coverage",
   },
   {
     outlet: "The New Indian Express",
@@ -212,6 +271,7 @@ const coverage: PressItem[] = [
     body: "The New Indian Express profiles a young Sushant Pattnaik on his determination to channel honours into a foundation that supports under-resourced innovators across India.",
     href: "https://www.newindianexpress.com/education/edex/2011/Nov/07/inspired-to-help-poor-techies-307824.html",
     image: newIndianExpressImg,
+    category: "Global Features & Interviews",
   },
   {
     outlet: "YourStory",
@@ -221,6 +281,8 @@ const coverage: PressItem[] = [
     body: "YourStory's company profile of Capattery, the deep-tech venture co-founded by Sushant Pattnaik, building patent-pending graphene nanomaterials for next-generation Battery Energy Storage Systems.",
     href: "https://yourstory.com/companies/capattery",
     image: yourStoryImg,
+    category: "Startup & Venture Press",
+    weight: "major",
   },
   {
     outlet: "INK Talks",
@@ -231,6 +293,8 @@ const coverage: PressItem[] = [
     href: "https://inktalks.com/people/susant-pattnaik/",
     image: inkStageImg,
     objectPosition: "right top",
+    category: "Public Speaking & Thought Leadership",
+    weight: "major",
   },
   {
     outlet: "Times of India · Bhopal",
@@ -240,6 +304,7 @@ const coverage: PressItem[] = [
     body: "TOI Bhopal profiles Sushant — then a second-year engineering student with a string of patents — selected to be honoured at the FAB10 international conference in Barcelona.",
     href: "https://timesofindia.indiatimes.com/city/bhopal/a-wiz-kid-on-an-invention-spree/articleshow/35132755.cms",
     image: toiFab10Img,
+    category: "Public Speaking & Thought Leadership",
   },
   {
     outlet: "Golden Book of World Records",
@@ -249,8 +314,19 @@ const coverage: PressItem[] = [
     body: "The Golden Book of World Records officially recognises Susant Pattnaik for the world record of 'the Youngest Inventor and Social Entrepreneur' — citing his MIT TR-35 selection at 17 and a string of national and international honours.",
     href: "https://goldenbookofworldrecords.com/youngest-inventor-and-social-interpreneur/",
     image: goldenBookImg,
+    category: "Awards & Recognition",
   },
 ];
+
+// Outlet → canonical link (their first article in the archive) for the
+// mastheads register. Used to make the logo grid clickable rather than
+// decorative.
+function outletHref(name: string): string | undefined {
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, "");
+  const target = norm(name);
+  const all = [featured, secondary, ...coverage];
+  return all.find((p) => norm(p.outlet).startsWith(target.split("·")[0]))?.href;
+}
 
 const outlets = [
   { name: "India Today", logo: indiaTodayLogo },
@@ -366,49 +442,66 @@ function MediaPlate({
 
 function LeadFeature({ item }: { item: PressItem }) {
   return (
-    <motion.a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.article
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-14 block"
+      className="not-prose mt-10 group"
     >
       {/* Dateline strip */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.12] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/85">Above The Fold</span>
-        <span className="hidden md:inline text-muted-foreground/40">
-          Dateline · {item.date}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
+        <span className="text-accent/90">★ Featured Story</span>
+        <span className="hidden md:inline text-muted-foreground/45">
+          {item.category} · {item.date}
         </span>
-        <span className="text-primary/75">{item.outlet}</span>
+        <span className="text-primary/80">{item.outlet}</span>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
-        <div className="md:col-span-7">
-          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/70">
-            {item.tag}
-          </p>
-          <h2 className="mt-6 font-display text-[clamp(1.9rem,4.2vw,3.2rem)] leading-[1.02] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
-            {item.title}
-          </h2>
-          <div className="mt-9 h-px w-14 bg-accent/45 transition-all duration-700 group-hover:w-24" />
-          <p className="mt-8 font-display italic text-[17px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/75">
-            {item.body}
-          </p>
-          <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Read the dispatch &nbsp;—↗
-          </p>
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-8 block"
+      >
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+          <MediaPlate
+            src={item.image}
+            alt={`${item.title} — ${item.outlet}`}
+            objectPosition={item.objectPosition}
+            className="aspect-[4/5] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5]"
+          />
+
+          {/* Editorial reading panel — slight surface plate so copy
+              wins against the cinematic backdrop. */}
+          <div className="md:col-span-6 rounded-sm bg-[oklch(0.045_0.006_245)]/55 p-6 md:p-8 backdrop-blur-[2px] hairline">
+            {item.logo && (
+              <div className="flex h-8 items-center">
+                <img
+                  src={item.logo}
+                  alt={`${item.outlet} logo`}
+                  loading="lazy"
+                  className="max-h-7 w-auto max-w-[160px] object-contain opacity-80 saturate-[0.6] brightness-[1.05] mix-blend-screen"
+                />
+              </div>
+            )}
+            <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.45em] text-primary/75">
+              {item.tag} · {item.date}
+            </p>
+            <h2 className="mt-4 font-display text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.04] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
+              {item.title}
+            </h2>
+            <div className="mt-6 h-px w-14 bg-accent/55 transition-all duration-700 group-hover:w-24" />
+            <p className="mt-5 font-display italic text-[16px] md:text-[18px] leading-[1.55] tracking-[-0.005em] text-foreground/78">
+              {item.body}
+            </p>
+            <span className="mt-7 inline-flex items-center gap-3 border border-foreground/25 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/85 transition-all duration-500 group-hover:border-accent/70 group-hover:text-accent group-hover:bg-accent/[0.04]">
+              Read Coverage <span aria-hidden>↗</span>
+            </span>
+          </div>
         </div>
-        <MediaPlate
-          src={item.image}
-          alt={`${item.title} — ${item.outlet}`}
-          objectPosition={item.objectPosition}
-          className="aspect-[4/5] border border-foreground/[0.08] md:col-span-5 md:aspect-[3/4]"
-        />
-      </div>
-    </motion.a>
+      </a>
+    </motion.article>
   );
 }
 
@@ -422,16 +515,16 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-24 md:mt-32 block"
+      className="group not-prose mt-16 block"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.08] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/65">Below The Fold</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/70">Latest Dispatch</span>
         <span className="text-muted-foreground/40 hidden md:inline">
-          Dateline · {item.date}
+          {item.category} · {item.date}
         </span>
         <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
@@ -442,13 +535,13 @@ function SecondaryFeature({ item }: { item: PressItem }) {
           <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
             {item.tag}
           </p>
-          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
+          <h3 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.1] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
             {item.title}
           </h3>
-          <p className="mt-6 text-[15px] leading-[1.8] text-foreground/70">
+          <p className="mt-5 text-[15px] leading-[1.75] text-foreground/72">
             {item.body}
           </p>
-          <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+          <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
             Continue &nbsp;—↗
           </p>
         </div>
@@ -472,33 +565,45 @@ function IntelligenceStrip() {
 
 function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
   const folio = String(index + 1).padStart(2, "0");
+  const isMajor = item.weight === "major";
   return (
     <motion.li
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 1, delay: (index % 6) * 0.04, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ duration: 0.9, delay: (index % 6) * 0.04, ease: [0.19, 1, 0.22, 1] }}
     >
       <a
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative grid grid-cols-[auto_1fr] gap-5 border-t border-foreground/[0.08] py-8 md:grid-cols-[88px_120px_1fr] md:gap-7 md:py-10 transition-colors duration-700 hover:border-foreground/25"
+        className={`group relative grid grid-cols-[auto_1fr] gap-4 border-t py-6 md:grid-cols-[72px_104px_1fr] md:gap-6 md:py-7 transition-colors duration-700 ${
+          isMajor
+            ? "border-foreground/[0.14] hover:border-foreground/35"
+            : "border-foreground/[0.07] hover:border-foreground/25"
+        }`}
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-accent/40 transition-all duration-700 group-hover:w-24"
+          className="pointer-events-none absolute left-0 top-0 h-px w-0 bg-accent/50 transition-all duration-700 group-hover:w-24"
         />
         {/* Folio + date */}
         <div className="pt-1">
-          <p className="font-display text-2xl font-extralight tracking-[-0.02em] text-foreground/30 transition-colors duration-500 group-hover:text-accent/85">
+          <p
+            className={`font-display font-extralight tracking-[-0.02em] transition-colors duration-500 ${
+              isMajor
+                ? "text-[1.6rem] text-foreground/55 group-hover:text-accent"
+                : "text-2xl text-foreground/30 group-hover:text-accent/85"
+            }`}
+          >
+            {isMajor && <span className="mr-1 text-accent/80">★</span>}
             {folio}
           </p>
-          <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
             {item.date}
           </p>
         </div>
-        {/* Thumbnail — restrained, only on md+ */}
+        {/* Thumbnail */}
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
@@ -507,27 +612,36 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
         />
         {/* Body */}
         <div className="col-span-2 md:col-span-1">
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/80">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
               {item.outlet}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
-              {item.tag}
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/55">
+              · {item.tag}
             </span>
           </div>
-          <h3 className="mt-3 font-display text-lg md:text-xl leading-[1.2] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient">
+          <h3
+            className={`mt-2 font-display leading-[1.18] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient ${
+              isMajor ? "text-xl md:text-[1.45rem]" : "text-base md:text-lg"
+            }`}
+          >
             {item.title}
           </h3>
-          <p className="mt-3 max-w-2xl text-[14px] leading-[1.7] text-foreground/65">
+          <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
             {item.body}
           </p>
-          <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/45 transition-colors duration-500 group-hover:text-accent/90">
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/45 transition-colors duration-500 group-hover:text-accent/90">
             Read ↗
           </p>
         </div>
       </a>
     </motion.li>
   );
+}
+
+function dateOrder(d: string): number {
+  const m = d.match(/\b(19|20)\d{2}\b/);
+  return m ? Number(m[0]) : 0;
 }
 
 function NewsPage() {
@@ -541,13 +655,13 @@ function NewsPage() {
       }
       lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
-      overlay={0.78}
+      overlay={0.84}
     >
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
       {/* Newspaper nameplate */}
-      <div className="mt-20 border-y border-foreground/20 py-6">
+      <div className="mt-12 border-y border-foreground/20 py-5">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
           <span className="text-primary/80">Press of Record</span>
           <span className="hidden sm:inline text-muted-foreground/40">
@@ -555,7 +669,7 @@ function NewsPage() {
           </span>
           <span>Folio 01 — 16</span>
         </div>
-        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+        <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
           <span className="hidden md:inline">Curated, not complete</span>
           <span>English · ଓଡ଼ିଆ</span>
@@ -566,87 +680,141 @@ function NewsPage() {
       <LeadFeature item={featured} />
       <SecondaryFeature item={secondary} />
 
-      {/* Archive — newspaper register, grouped by year */}
-      <EditorialSection number="07 · Archive" heading="Sixteen dispatches of record.">
+      {/* Category index — editorial dossier table of contents */}
+      <EditorialSection number="07 · Desks" heading="Five editorial desks.">
         <p>
-          The press archive in chronological reach — from teenage assistive
-          tech in <em>The Telegraph</em> and NIF, to global recognition in
-          MIT TR and Wikipedia, to deep-tech reporting on Capattery, GraphIN
-          and the battery breakthrough.
+          The archive grouped by editorial desk — features and interviews,
+          deep-tech reporting, recognitions of record, venture press, and the
+          stage record.
+        </p>
+        <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+          {CATEGORIES.map((c) => {
+            const count = [featured, secondary, ...coverage].filter(
+              (i) => i.category === c.id,
+            ).length;
+            const anchor = `desk-${c.code.toLowerCase()}`;
+            return (
+              <a
+                key={c.id}
+                href={`#${anchor}`}
+                className="group block bg-[oklch(0.045_0.006_245)]/70 p-5 transition-colors duration-500 hover:bg-[oklch(0.06_0.008_245)]/80"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/75">
+                  Desk {c.code}
+                </p>
+                <p className="mt-3 font-display text-[15px] leading-[1.25] tracking-[-0.015em] text-foreground/92 group-hover:text-foreground">
+                  {c.id}
+                </p>
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/50">
+                  {String(count).padStart(2, "0")} dispatches
+                </p>
+              </a>
+            );
+          })}
+        </nav>
+      </EditorialSection>
+
+      {/* Archive — grouped by editorial desk, with year markers */}
+      <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
+        <p>
+          Filed under five desks — from teenage assistive tech in{" "}
+          <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
+          Wikipedia, to deep-tech reporting on Capattery, GraphIN and the
+          battery breakthrough.
         </p>
 
         {(() => {
-          // Group entries by year (extract trailing 4-digit year from date strings)
-          const byYear = new Map<string, { item: PressItem; index: number }[]>();
-          coverage.forEach((item, index) => {
-            const m = item.date.match(/\b(19|20)\d{2}\b/);
-            const year = m ? m[0] : "—";
-            if (!byYear.has(year)) byYear.set(year, []);
-            byYear.get(year)!.push({ item, index });
-          });
-          const years = Array.from(byYear.keys()).sort(
-            (a, b) => Number(b) - Number(a),
-          );
+          const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-14 flex flex-col gap-16 md:gap-20">
-              {years.map((year) => (
-                <section key={year}>
-                  <div className="grid grid-cols-[5rem_1fr] gap-6 md:grid-cols-[8rem_1fr] md:gap-10">
-                    <div className="pt-2">
-                      <p className="font-display text-3xl md:text-[3rem] font-extralight tracking-[-0.025em] text-foreground/35">
-                        {year}
-                      </p>
-                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
-                        {String(byYear.get(year)!.length).padStart(2, "0")}{" "}
-                        Entr{byYear.get(year)!.length === 1 ? "y" : "ies"}
-                      </p>
+            <div className="not-prose mt-12 flex flex-col gap-14 md:gap-16">
+              {CATEGORIES.map((c) => {
+                const items = all
+                  .filter((i) => i.category === c.id)
+                  .sort((a, b) => dateOrder(b.date) - dateOrder(a.date));
+                if (items.length === 0) return null;
+                const anchor = `desk-${c.code.toLowerCase()}`;
+                return (
+                  <section key={c.id} id={anchor} className="scroll-mt-28">
+                    <div className="grid grid-cols-[3.5rem_1fr] gap-5 md:grid-cols-[7rem_1fr] md:gap-10">
+                      <div className="pt-1">
+                        <p className="font-display text-3xl md:text-[2.4rem] font-extralight tracking-[-0.025em] text-foreground/40">
+                          {c.code}
+                        </p>
+                        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                          {String(items.length).padStart(2, "0")} Entr
+                          {items.length === 1 ? "y" : "ies"}
+                        </p>
+                      </div>
+                      <div>
+                        <h3 className="font-display text-[clamp(1.25rem,2.2vw,1.6rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
+                          {c.id}
+                        </h3>
+                        <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
+                          {c.blurb}
+                        </p>
+                        <ol className="mt-6 flex flex-col">
+                          {items.map((item, i) => (
+                            <ArchiveEntry
+                              key={item.href}
+                              item={item}
+                              index={i}
+                            />
+                          ))}
+                          <li className="border-t border-foreground/[0.08]" />
+                        </ol>
+                      </div>
                     </div>
-                    <ol className="flex flex-col">
-                      {byYear.get(year)!.map(({ item, index }) => (
-                        <ArchiveEntry
-                          key={item.href}
-                          item={item}
-                          index={index}
-                        />
-                      ))}
-                      <li className="border-t border-foreground/[0.08]" />
-                    </ol>
-                  </div>
-                </section>
-              ))}
+                  </section>
+                );
+              })}
             </div>
           );
         })()}
       </EditorialSection>
 
       {/* Mastheads register */}
-      <EditorialSection number="08 · Mastheads" heading="Eighteen publications of record.">
+      <EditorialSection number="09 · Mastheads" heading="Eighteen publications of record.">
         <p>
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
+        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
           <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 md:grid-cols-6">
-            {outlets.map((o) => (
-              <div
-                key={o.name}
-                className="group flex h-24 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4"
-                title={o.name}
-              >
+            {outlets.map((o) => {
+              const href = outletHref(o.name);
+              const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100"
+                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-[1.04]"
                 />
-              </div>
-            ))}
+              );
+              const baseCls =
+                "group flex h-20 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4 transition-colors duration-500";
+              return href ? (
+                <a
+                  key={o.name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`${o.name} — read coverage ↗`}
+                  className={`${baseCls} hover:bg-[oklch(0.07_0.008_245)]`}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div key={o.name} className={baseCls} title={o.name}>
+                  {inner}
+                </div>
+              );
+            })}
           </div>
         </div>
       </EditorialSection>
 
       {/* Voices — broadsheet pull-quotes */}
-      <EditorialSection number="09 · Voices" heading="On the work, in their words.">
+      <EditorialSection number="10 · Voices" heading="On the work, in their words.">
         <p>
           A short reel of voices from institutions that have seen the work
           firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
@@ -687,7 +855,7 @@ function NewsPage() {
         </ul>
       </EditorialSection>
 
-      <EditorialSection number="10 · Posture" heading="Curated, not complete.">
+      <EditorialSection number="11 · Posture" heading="Curated, not complete.">
         <p>
           The archive is selective. Press is useful when it accelerates the
           work and quiet when it does not. New coverage is added here as it
