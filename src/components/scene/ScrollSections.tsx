@@ -154,19 +154,69 @@ function HeroSection() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, delay: 1.6 }}
-          className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-5 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/35"
-          style={{ mixBlendMode: "soft-light" }}
-        >
-          <span className="blur-[0.3px]">Scroll to enter</span>
-          <motion.div
-            animate={{ opacity: [0.10, 0.35, 0.10], scaleY: [1, 1.12, 1] }}
-            transition={{ duration: 4.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="h-16 w-px origin-top bg-gradient-to-b from-foreground/20 to-transparent"
-          />
+        <ScrollCue />
+      </div>
+    </section>
+  );
+}
+
+/* ───────────── Scroll cue — cinematic, restrained, accessible ───────────── */
+function ScrollCue() {
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  // Fade out within the first ~40% of the hero viewport.
+  const opacity = useTransform(scrollY, [0, 220, 420], [1, 0.45, 0]);
+  const pointerEvents = useTransform(scrollY, (v) => (v > 380 ? "none" : "auto"));
+
+  const handleClick = () => {
+    const target = document.getElementById("founder");
+    if (!target) return;
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  return (
+    <motion.button
+      type="button"
+      onClick={handleClick}
+      aria-label="Scroll to next section"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.4, delay: 1.6 }}
+      style={{ opacity, pointerEvents, mixBlendMode: "soft-light" }}
+      className="group absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-5 bg-transparent p-2 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/45 transition-colors duration-700 hover:text-foreground/70 focus-visible:outline-none focus-visible:text-foreground/75"
+    >
+      <span className="blur-[0.3px]">Scroll</span>
+      <motion.span
+        aria-hidden
+        className="block h-16 w-px origin-top bg-gradient-to-b from-foreground/22 via-foreground/12 to-transparent"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.22 }
+            : { opacity: [0.12, 0.38, 0.12], scaleY: [1, 1.12, 1] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+        }
+      />
+      <motion.span
+        aria-hidden
+        className="-mt-3 block h-1.5 w-1.5 rotate-45 border-b border-r border-foreground/35"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.45 }
+            : { y: [0, 6, 0], opacity: [0.35, 0.65, 0.35] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+        }
+      />
         </motion.div>
       </div>
     </section>
