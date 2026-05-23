@@ -372,41 +372,72 @@ function RecognitionsPage() {
 
       <EditorialList items={milestones} />
 
-      <EditorialSection number="07 · Archive I" heading="2008 – 2013 · Rashtrapati Bhavan years.">
+      <EditorialSection number="07 · Centerpiece" heading="Three Presidents of India. Six citations.">
+        <p>
+          The defining plate of the archive — felicitated by three sitting
+          Presidents of India across six separate citations, between 2008 and
+          2013. The earliest works in the register, and the gravitational
+          centre around which the rest of the recognitions orbit.
+        </p>
+      </EditorialSection>
+      <PresidentialTriptych
+        items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
+      />
+
+      <EditorialSection number="08 · Archive I" heading="2008 – 2013 · Rashtrapati Bhavan years.">
         <p>
           Six citations, three sitting Presidents of India. The earliest plates
           in the archive — when the prototypes still smelled of school workshop
           and the country was just beginning to notice.
         </p>
       </EditorialSection>
-      <ArchiveMosaic items={eraPresidential} />
+      <ArchivePlateSeries
+        items={eraPresidential}
+        eyebrow="Archive I · Presidential Years"
+        startIndex={1}
+      />
 
-      <EditorialSection number="08 · Archive II" heading="2010 – 2014 · Global stages.">
+      <EditorialSection number="09 · Archive II" heading="2010 – 2014 · Global stages.">
         <p>
           TED-India, NASA Kennedy Space Center, INK, MIT Technology Review.
           The first decade abroad — speaking, fellowshipping, and bringing the
           work into conversation with the world.
         </p>
       </EditorialSection>
-      <ArchiveMosaic items={eraGlobal} />
+      <ArchivePlateSeries
+        items={eraGlobal}
+        eyebrow="Archive II · Global Stages"
+        startIndex={eraPresidential.length + 1}
+      />
 
-      <EditorialSection number="09 · Archive III" heading="2020 – 2025 · Industrial leadership & diplomacy.">
+      <EditorialSection number="10 · Archive III" heading="2020 – 2025 · Industrial leadership & diplomacy.">
         <p>
           The diplomatic and ministerial years — embassies, BRICS, G20, the
           Ministry of Power, and the signing of MoUs that turn frontier
           research into national infrastructure.
         </p>
       </EditorialSection>
-      <ArchiveMosaic items={eraIndustrial} />
+      <ArchivePlateSeries
+        items={eraIndustrial}
+        eyebrow="Archive III · Industrial & Diplomatic"
+        startIndex={eraPresidential.length + eraGlobal.length + 1}
+      />
 
-      <EditorialSection number="10 · Archive IV" heading="2022 – 2025 · The present field.">
+      <EditorialSection number="11 · Archive IV" heading="2022 – 2025 · The present field.">
         <p>
           IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond
           Retreat, Bharatiya Knowledge Systems. The current chapter — where
           materials, ventures and public address converge.
         </p>
       </EditorialSection>
-      <ArchiveMosaic items={eraPresent} />
+      <ArchivePlateSeries
+        items={eraPresent}
+        eyebrow="Archive IV · The Present Field"
+        startIndex={
+          eraPresidential.length + eraGlobal.length + eraIndustrial.length + 1
+        }
+      />
+
 
 
       <EditorialSection number="11 · Ledger" heading="Achievement milestones · 27 of record.">
