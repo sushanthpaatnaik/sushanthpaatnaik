@@ -477,9 +477,9 @@ function ClosingInvitation() {
               <span>Planetary Infrastructure</span>
             </div>
           </MotionReveal>
-          <MotionReveal delay={0.38}>
+          <MotionReveal delay={0.42}>
             <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
-              © Sushanth Paatnaik — Engineering matter, capital, and scale.
+              © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
             </p>
           </MotionReveal>
         </div>
