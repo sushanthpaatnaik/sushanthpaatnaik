@@ -45,14 +45,15 @@ function AboutPage() {
     >
       <FounderPortrait
         variant="editorial"
+        plate
         eyebrow="02 — Founder"
         narrative={[
           "Industrial systems builder.",
           "Materials strategist.",
           "Deep-tech founder from India.",
         ]}
-        caption="Sushanth Paatnaik — inventor, deep-tech founder, and six-time Indian Presidential awardee."
-        meta="Portrait · Bhubaneswar"
+        caption="Inventor, deep-tech founder, and six-time Indian Presidential awardee."
+        meta="Portrait · Bhubaneswar, India"
       />
 
       <EditorialSection number="01 · Origin" heading="A workshop, a wheelchair, and a question.">
