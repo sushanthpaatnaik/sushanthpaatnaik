@@ -166,8 +166,8 @@ function Index() {
 
       {/* Sitewide cinematic atmosphere — Framer Motion driven scene crossfade */}
       <div
-        className={`fixed inset-0 z-0 transition-[opacity,filter] duration-[1800ms] ease-out ${
-          entered ? "opacity-100 blur-0" : "opacity-0 blur-md"
+        className={`fixed inset-0 z-0 transition-[opacity,filter] duration-[2400ms] ease-out ${
+          entered ? "opacity-100 blur-0" : "opacity-0 blur-lg"
         }`}
       >
         <AtmosphereLayer />
