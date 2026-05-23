@@ -281,6 +281,59 @@ export default function ScrollSections() {
 
       <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
 
+      {/* About / Journey — quiet biographical panel. Single column, editorial,
+          not a CV. Bhubaneswar origin → IISER → current operating seats. */}
+      <section id="about" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.10_0.03_245/0.09),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_22%,transparent_78%,oklch(0.03_0_0/0.6))]" />
+        <div className="mx-auto w-full max-w-3xl pointer-events-auto">
+          <MotionReveal>
+            <p className="mb-6 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">About · Journey</p>
+            <h3 className="mb-14 md:mb-16 font-display text-[clamp(2rem,6.5vw,3.5rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              An inventor formed in Bhubaneswar.
+            </h3>
+          </MotionReveal>
+
+          <div className="space-y-10 md:space-y-12 text-[15px] md:text-[17px] leading-[1.75] text-muted-foreground/85 font-light tracking-[-0.005em]">
+            <MotionReveal delay={0.05}>
+              <p>
+                Born in <span className="text-foreground/95">Bhubaneswar, Odisha</span>. The first invention arrived at fourteen — a breath-powered wheelchair for a paralysed elderly neighbour who could no longer speak. That encounter set the working hypothesis of every system since: empathy is the first specification, and engineering is its long second sentence.
+              </p>
+            </MotionReveal>
+            <MotionReveal delay={0.1}>
+              <p>
+                Between <span className="text-foreground/95">2008 and 2013</span>, the Government of India conferred six Presidential awards for invention and design. The Republic noticed; the workshop continued unchanged. The next prototype was started the same week each honour was filed.
+              </p>
+            </MotionReveal>
+            <MotionReveal delay={0.15}>
+              <p>
+                Formal science followed at <span className="text-foreground/95">IISER Bhopal</span> under the KVPY-SP scholarship — a BSc that taught the inventor the second discipline: rigor. A subsequent BEd in ETE from OCT Bhopal, under the Special Achiever category, closed the loop between making and teaching.
+              </p>
+            </MotionReveal>
+            <MotionReveal delay={0.2}>
+              <p>
+                Today the work is held across five operating ventures — <span className="text-foreground/95">Monoatom Labs, Grafillium, SPI Industries, InThinks, Starunico Capital</span> — and a Chief Innovation Officer seat at Magppie. Graphene, nano-materials, AI-assisted discovery, and industrial commercialization, treated as a single continuous lattice.
+              </p>
+            </MotionReveal>
+            <MotionReveal delay={0.25}>
+              <p className="text-foreground/85 italic">
+                The mission has not changed since the workshop: engineer matter at the level where it matters, and translate the result into systems the world can actually deploy.
+              </p>
+            </MotionReveal>
+          </div>
+
+          <MotionReveal delay={0.3} className="mt-16 md:mt-20 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+            <span>Bhubaneswar</span>
+            <span className="h-[3px] w-[3px] rounded-full bg-primary/50" />
+            <span>IISER Bhopal · KVPY-SP</span>
+            <span className="h-[3px] w-[3px] rounded-full bg-accent/50" />
+            <span>OCT Bhopal · BEd</span>
+            <span className="h-[3px] w-[3px] rounded-full bg-primary/50" />
+            <span>Six-time Presidential Awardee</span>
+          </MotionReveal>
+        </div>
+      </section>
+
       {/* Dossier — honors of record. Editorial, not corporate. */}
       <section className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_50%_50%,oklch(0.10_0.03_245/0.10),transparent_72%)]" />
