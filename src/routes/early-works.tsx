@@ -193,125 +193,124 @@ function HairlinePlate({
 }
 
 function SpecimenCard({ w, index }: { w: Work; index: number }) {
-  const isHero = w.hero;
+  const flip = index % 2 === 1;
   return (
     <motion.article
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 1.15, delay: index * 0.04, ease: [0.19, 1, 0.22, 1] }}
-      className={`group relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.025] ${
-        isHero ? "md:col-span-2" : ""
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 1.15, delay: 0.04, ease: [0.19, 1, 0.22, 1] }}
+      className={`group relative grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.04] md:grid-cols-12 ${
+        flip ? "md:[&>.specimen-notes]:order-first" : ""
       }`}
     >
-      <div
-        className={`relative overflow-hidden ${
-          isHero ? "aspect-[16/9]" : "aspect-[4/3]"
-        }`}
-      >
+      {/* ── Plate image ── */}
+      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)] md:col-span-7 md:aspect-auto md:min-h-[460px]">
         <img
           src={w.img}
           alt={`${w.title} — ${w.tagline}`}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.35] contrast-[1.04] transition-all duration-[1200ms] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.03]"
+          className="absolute inset-0 h-full w-full object-cover opacity-78 grayscale-[0.35] contrast-[1.05] brightness-[0.95] transition-all duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.02]"
         />
-        {/* Cinematic overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/45 to-transparent" />
+        {/* Cinematic vignette */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
         <div
-          className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-60"
+          className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
           style={{
             background:
-              "radial-gradient(110% 80% at 50% 50%, transparent 40%, oklch(0.02 0 0 / 0.72) 100%)",
+              "radial-gradient(110% 80% at 50% 50%, transparent 40%, oklch(0.02 0 0 / 0.78) 100%)",
           }}
         />
-        {/* Archival corner marks */}
-        <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />
-        <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/30" />
-        <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/30" />
-        <div className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-foreground/30" />
-        {/* Plate ID */}
-        <div className="absolute left-4 top-4 font-mono text-[9px] uppercase tracking-[0.35em] text-foreground/75 mix-blend-screen">
-          {w.code} · {w.year}
+        {/* Archival corner registration marks */}
+        <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/35" />
+        <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-foreground/35" />
+        <div className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-foreground/35" />
+        <div className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-foreground/35" />
+        {/* Plate header strip */}
+        <div className="absolute left-4 top-4 z-10 flex items-center gap-3">
+          <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-foreground/85 mix-blend-screen">
+            {w.code}
+          </span>
+          <span className="h-px w-5 bg-accent/65" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+            {w.year} · {w.age}
+          </span>
         </div>
-        {isHero && (
-          <div className="absolute right-4 top-4 font-mono text-[9px] uppercase tracking-[0.35em] text-accent/85">
-            Plate I · Hero Specimen
+        {w.hero && (
+          <div className="absolute right-4 top-4 z-10 font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+            Hero Specimen
           </div>
         )}
       </div>
 
-      <div className={`p-6 md:p-8 ${isHero ? "md:p-10" : ""}`}>
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/75">
+      {/* ── Field notes column ── */}
+      <div className="specimen-notes relative col-span-1 flex flex-col justify-between gap-8 bg-[oklch(0.045_0.006_245)] p-7 md:col-span-5 md:p-10">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-primary/75">
             {w.category}
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground/55">
-            {w.age}
+          <h3 className="mt-5 font-display text-[26px] md:text-[32px] leading-[1.1] tracking-[-0.018em] text-foreground/95">
+            {w.title}
+          </h3>
+          <p className="mt-3 font-display italic text-[14px] tracking-[0.01em] text-accent/80">
+            {w.tagline}
+          </p>
+          <p className="mt-6 max-w-md text-[14.5px] leading-[1.75] text-foreground/70">
+            {w.body}
           </p>
         </div>
 
-        <h3
-          className={`mt-4 font-display tracking-[-0.018em] text-foreground/95 ${
-            isHero
-              ? "text-3xl md:text-4xl"
-              : "text-xl md:text-2xl"
-          }`}
-        >
-          {w.title}
-        </h3>
-        <p className="mt-2 font-display italic text-[13px] md:text-[14px] tracking-[0.01em] text-accent/80">
-          {w.tagline}
-        </p>
-
-        <p
-          className={`mt-5 leading-relaxed text-foreground/70 ${
-            isHero ? "text-[15px] md:text-base max-w-2xl" : "text-[14px]"
-          }`}
-        >
-          {w.body}
-        </p>
-
-        {/* Archival field plate */}
-        <dl className="mt-6 grid grid-cols-1 gap-3 border-t border-foreground/[0.08] pt-5 text-[12px] md:grid-cols-2">
+        {/* Field plate */}
+        <dl className="grid grid-cols-1 gap-4 border-t border-foreground/[0.08] pt-5 text-[12px]">
           <div>
             <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
-              Problem
+              Problem in the world
             </dt>
-            <dd className="mt-1 text-foreground/75">{w.problem}</dd>
+            <dd className="mt-1.5 text-foreground/80 font-display italic">{w.problem}</dd>
           </div>
           <div>
             <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
-              Material
+              Material answer
             </dt>
-            <dd className="mt-1 text-foreground/75">{w.material}</dd>
+            <dd className="mt-1.5 text-foreground/75">{w.material}</dd>
           </div>
         </dl>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-          {w.press && (
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/65">
-              {w.press}
-            </span>
-          )}
-          {w.video && (
-            <a
-              href={
-                w.videoSource === "vimeo"
-                  ? `https://vimeo.com/${w.video}`
-                  : `https://www.youtube.com/watch?v=${w.video}`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/80 hover:text-accent transition-colors"
-            >
-              Watch demo <span className="opacity-70">↗</span>
-            </a>
-          )}
-        </div>
+        {/* Press · demo footnote */}
+        {(w.press || w.video) && (
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-foreground/[0.06] pt-5">
+            {w.press && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/65">
+                {w.press}
+              </span>
+            )}
+            {w.video && (
+              <a
+                href={
+                  w.videoSource === "vimeo"
+                    ? `https://vimeo.com/${w.video}`
+                    : `https://www.youtube.com/watch?v=${w.video}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/80 hover:text-accent transition-colors"
+              >
+                Watch field demo <span className="opacity-70">↗</span>
+              </a>
+            )}
+          </div>
+        )}
+
+        {/* Hairline column rule */}
+        <span
+          aria-hidden
+          className="absolute inset-y-7 left-0 hidden w-px bg-foreground/[0.06] md:block"
+        />
       </div>
     </motion.article>
   );
 }
+
 
 function OriginStats() {
   return (
@@ -329,43 +328,57 @@ function OriginStats() {
 
 function Timeline() {
   const beats = [
-    { y: "2008", t: "Power Gen Kit", n: "Specimen 01" },
-    { y: "2010", t: "Enabler", n: "Specimen 02" },
-    { y: "2011", t: "Rectofit", n: "Specimen 03" },
-    { y: "2012", t: "She Watch · Sol-Ka", n: "Specimen 04 · 05" },
-    { y: "2013", t: "Super Sense", n: "Specimen 06" },
+    { y: "2008", t: "Power Gen Kit", n: "Specimen 01", note: "A salvaged dynamo on the kitchen table — the first device that worked." },
+    { y: "2010", t: "Enabler", n: "Specimen 02", note: "Breath-operated wheelchair — built after watching a stranger struggle." },
+    { y: "2011", t: "Rectofit", n: "Specimen 03", note: "A retrofit safety kit for every car already on the road." },
+    { y: "2012", t: "She Watch · Sol-Ka", n: "Specimen 04 · 05", note: "Two devices in one year — a wearable and a quiet power source." },
+    { y: "2013", t: "Super Sense", n: "Specimen 06", note: "Computers, without a touch — the last build before the company years." },
   ];
   return (
-    <div className="not-prose mt-10">
-      <div className="relative">
-        <div className="absolute left-0 right-0 top-[34px] h-px bg-foreground/[0.1]" />
-        <ol className="relative grid grid-cols-2 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
-          {beats.map((b, i) => (
-            <motion.li
-              key={b.y}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
-              className="relative pl-1"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/70">
+    <div className="not-prose mt-12">
+      <ol className="relative flex flex-col">
+        {beats.map((b, i) => (
+          <motion.li
+            key={b.y}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 1.05, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
+            className="group relative grid grid-cols-12 gap-x-6 gap-y-3 border-t border-foreground/[0.08] py-8 md:py-10"
+          >
+            {/* Year — massive editorial numeral */}
+            <div className="col-span-12 md:col-span-3">
+              <p className="font-display text-[44px] md:text-[64px] leading-none tracking-[-0.04em] text-foreground/85 transition-colors duration-700 group-hover:text-foreground">
                 {b.y}
               </p>
-              <span className="mt-3 block h-[7px] w-[7px] rounded-full bg-accent/80 ring-4 ring-background" />
-              <p className="mt-4 font-display text-[15px] tracking-[-0.01em] text-foreground/90">
-                {b.t}
-              </p>
-              <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+              <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.36em] text-accent/70">
                 {b.n}
               </p>
-            </motion.li>
-          ))}
-        </ol>
-      </div>
+            </div>
+
+            {/* Title + note */}
+            <div className="col-span-12 md:col-span-8 md:col-start-5">
+              <p className="font-display text-[19px] md:text-[22px] tracking-[-0.012em] text-foreground/95">
+                {b.t}
+              </p>
+              <p className="mt-3 max-w-xl text-[14px] leading-[1.7] text-foreground/65 font-display italic">
+                {b.note}
+              </p>
+            </div>
+
+            {/* Hairline marker — sits on the rule */}
+            <span
+              aria-hidden
+              className="absolute left-0 top-0 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-accent/70 ring-4 ring-background"
+            />
+          </motion.li>
+        ))}
+        <div className="border-t border-foreground/[0.08]" />
+      </ol>
     </div>
   );
 }
+
 
 function HandwrittenNote() {
   return (
@@ -400,8 +413,8 @@ function HandwrittenNote() {
 }
 
 function EarlyWorksPage() {
-  const hero = works.filter((w) => w.hero);
-  const rest = works.filter((w) => !w.hero);
+
+
 
   return (
     <CinematicPageShell
@@ -473,14 +486,12 @@ function EarlyWorksPage() {
           a material answer, a year. The hero specimens anchor their eras; the
           rest follow in chronological order.
         </p>
-        <div className="not-prose mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {hero.map((w, i) => (
+        <div className="not-prose mt-12 flex flex-col gap-10 md:gap-14">
+          {works.map((w, i) => (
             <SpecimenCard key={w.title} w={w} index={i} />
           ))}
-          {rest.map((w, i) => (
-            <SpecimenCard key={w.title} w={w} index={i + hero.length} />
-          ))}
         </div>
+
       </EditorialSection>
 
       {/* Newspaper archive plate */}
