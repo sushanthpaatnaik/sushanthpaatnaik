@@ -5,7 +5,7 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import { StatsStrip } from "@/components/scene/cinematic";
-import backdrop from "@/assets/scene-about-notebook.jpg";
+import backdrop from "@/assets/scene-about-graphite.jpg";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -99,7 +99,7 @@ function AboutPage() {
       title={<>An inventor, quietly building<br className="hidden md:inline" /> industrial futures.</>}
       lead="Born in Bhubaneswar, Odisha. The work began in a borrowed workshop at fourteen — and has not really paused since."
       backdrop={backdrop}
-      overlay={0.74}
+      overlay={0.82}
     >
       {/* ── Founder plate ── */}
       <FounderPortrait
