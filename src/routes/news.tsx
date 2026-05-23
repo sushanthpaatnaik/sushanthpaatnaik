@@ -690,7 +690,7 @@ function NewsPage() {
           and NIF, to global recognition in MIT TR and Wikipedia, to deep-tech
           reporting on Capattery, GraphIN and the battery breakthrough.
         </p>
-        <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+        <nav className="not-prose mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
           {CATEGORIES.map((c) => {
             const count = [featured, secondary, ...coverage].filter(
               (i) => i.category === c.id,
@@ -717,7 +717,7 @@ function NewsPage() {
         </nav>
 
         {/* Hairline bridge — visually anchors the archive directly under the desks grid */}
-        <div className="not-prose mt-5 md:mt-6 flex items-center gap-3 border-t border-foreground/[0.12] pt-4">
+        <div className="not-prose mt-4 flex items-center gap-3 border-t border-foreground/[0.12] pt-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
             ▸ The Archive
           </span>
@@ -730,7 +730,7 @@ function NewsPage() {
         {(() => {
           const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-4 md:mt-5 flex flex-col gap-10 md:gap-12">
+            <div className="not-prose mt-3 flex flex-col gap-8 md:gap-10">
               {CATEGORIES.map((c) => {
                 const items = all
                   .filter((i) => i.category === c.id)
@@ -740,23 +740,23 @@ function NewsPage() {
                 return (
                   <section key={c.id} id={anchor} className="scroll-mt-28">
                     <div className="grid grid-cols-[3.5rem_1fr] gap-5 md:grid-cols-[7rem_1fr] md:gap-10">
-                      <div className="pt-1">
+                      <div className="pt-0">
                         <p className="font-display text-3xl md:text-[2.4rem] font-extralight tracking-[-0.025em] text-foreground/40">
                           {c.code}
                         </p>
-                        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                        <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
                           {String(items.length).padStart(2, "0")} Entr
                           {items.length === 1 ? "y" : "ies"}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-display text-[clamp(1.25rem,2.2vw,1.6rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
+                        <h3 className="font-display text-[clamp(1.15rem,2vw,1.45rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
                           {c.id}
                         </h3>
-                        <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
+                        <p className="mt-1.5 max-w-2xl text-[13.5px] leading-[1.6] text-foreground/65">
                           {c.blurb}
                         </p>
-                        <ol className="mt-6 flex flex-col">
+                        <ol className="mt-3 flex flex-col">
                           {items.map((item, i) => (
                             <ArchiveEntry
                               key={item.href}
