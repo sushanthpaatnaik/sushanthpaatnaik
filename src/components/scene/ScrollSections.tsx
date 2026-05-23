@@ -598,8 +598,9 @@ function ScaleValidationScene() {
         />
 
         {/* Top/bottom continuity falloff into adjacent scenes */}
-        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_14%,transparent)]" />
-        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,transparent,oklch(0.014_0_0)_94%)]" />
+        <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0/0.85)_8%,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[32%] bg-[linear-gradient(180deg,transparent,oklch(0.016_0_0/0.70)_72%,oklch(0.018_0_0/0.55)_100%)]" />
+
       </div>
 
       {/* Chapter mark */}
