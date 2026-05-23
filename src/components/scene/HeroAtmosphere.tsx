@@ -26,7 +26,7 @@ export default function HeroAtmosphere() {
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(ellipse 44% 34% at 50% 54%, oklch(0.40 0.06 240 / 0.08), transparent 70%)",
+            "radial-gradient(ellipse 44% 34% at 50% 54%, oklch(0.38 0.025 230 / 0.08), transparent 70%)",
           transform: "translateZ(0)",
         }}
       />
@@ -36,7 +36,7 @@ export default function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.55) 0%, transparent 32%, transparent 68%, oklch(0.03 0.006 260 / 0.72) 100%)",
+            "linear-gradient(180deg, oklch(0.025 0.004 232 / 0.55) 0%, transparent 32%, transparent 68%, oklch(0.025 0.004 232 / 0.72) 100%)",
         }}
       />
 
@@ -47,7 +47,7 @@ export default function HeroAtmosphere() {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 4 }}
         style={{
           background:
-            "radial-gradient(ellipse 28% 18% at 76% 24%, oklch(0.62 0.10 55 / 0.05), transparent 70%)",
+            "radial-gradient(ellipse 28% 18% at 76% 24%, oklch(0.55 0.05 50 / 0.05), transparent 70%)",
         }}
       />
 
@@ -58,7 +58,7 @@ export default function HeroAtmosphere() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(ellipse 62% 52% at 32% 58%, oklch(0.10 0.02 245 / 0.12), transparent 65%)",
+            "radial-gradient(ellipse 62% 52% at 32% 58%, oklch(0.08 0.012 232 / 0.12), transparent 65%)",
         }}
       />
 
@@ -118,7 +118,7 @@ export default function HeroAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 74% 68% at 50% 50%, transparent 36%, oklch(0.022 1.004 260 / 0.82) 100%)",
+            "radial-gradient(ellipse 74% 68% at 50% 50%, transparent 36%, oklch(0.022 0.004 232 / 0.82) 100%)",
         }}
       />
     </div>
