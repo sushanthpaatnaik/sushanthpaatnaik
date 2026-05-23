@@ -104,10 +104,10 @@ function ChapterMarker({
     >
       {/* Active backdrop glow — soft documentary spotlight */}
       <motion.div
-        className="absolute -inset-x-4 -inset-y-2.5 rounded-md pointer-events-none"
+        className="absolute -inset-x-3 -inset-y-2 rounded-md pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 80% at 30% 50%, oklch(0.71 0.06 232 / 0.18), transparent 72%)",
+            "radial-gradient(ellipse 60% 70% at 30% 50%, oklch(0.71 0.06 232 / 0.11), transparent 75%)",
         }}
         initial={false}
         animate={{
