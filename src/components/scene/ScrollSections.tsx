@@ -265,20 +265,23 @@ function MotionReveal({
 }
 
 export default function ScrollSections() {
-  // Chapters 02–06 render as sticky story panels (01 = hero, 07 = closing CTA).
-  const storyChapters = chapters.slice(1);
+  // 7-act cinematic arc. Chapter 01 = hero, 07 = closing CTA.
+  // Editorial layers (recognitions, technologies, ventures, news, manifesto…)
+  // are absorbed INTO their parent chapter, not appended as separate sections.
   const totalChapters = 7;
+  const recognitionChapter = chapters[1];
+  const carbonChapter = chapters[2];
+  const industrialChapter = chapters[3];
+  const venturesChapter = chapters[4];
+  const indiaChapter = chapters[5];
 
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
 
-      {/* Hero is no longer wrapped in a scroll-driven translate: the parallax
-          drift was forcing the entire hero subtree (silhouette + heading) to
-          recomposite on every scroll frame for negligible visual gain. */}
+      {/* ░░ Chapter 01 — Spark ░░ */}
       <HeroSection />
 
-      <ScrollStory chapters={storyChapters} total={totalChapters} startIndex={1} />
 
       {/* About / Journey — quiet biographical panel. Single column, editorial,
           not a CV. Bhubaneswar origin → IISER → current operating seats. */}
