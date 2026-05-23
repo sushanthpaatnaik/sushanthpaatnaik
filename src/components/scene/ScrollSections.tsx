@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-editorial.webp";
-import inHisWordsBackdrop from "@/assets/scene-in-his-words.webp";
+import inHisWordsBackdrop from "@/assets/scene-in-his-words-portrait.png";
 import scaleValidationBackdrop from "@/assets/scene-scale-validation.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 
@@ -717,7 +717,7 @@ function InHisWordsScene() {
   const bgOpacity = useTransform(
     scrollYProgress,
     [0, 0.18, 0.82, 1],
-    [0, 0.62, 0.62, 0],
+    [0, 0.78, 0.78, 0],
   );
   const latticeRot = useTransform(scrollYProgress, [0, 1], [-3, 3]);
 
@@ -735,13 +735,20 @@ function InHisWordsScene() {
         {/* Backdrop plate — blueprint schematics + dissolved silhouette,
             slow parallax + breathing scale, fades in/out with the section. */}
         <motion.div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+          className="absolute inset-0 bg-no-repeat"
           style={{
             backgroundImage: `url(${inHisWordsBackdrop})`,
+            backgroundSize: "auto 95%",
+            backgroundPosition: "left center",
             y: prefersReducedMotion ? 0 : bgY,
             scale: prefersReducedMotion ? 1.04 : bgScale,
-            opacity: prefersReducedMotion ? 0.55 : bgOpacity,
-            filter: "contrast(1.05) brightness(0.92) saturate(0.85)",
+            opacity: prefersReducedMotion ? 0.7 : bgOpacity,
+            filter: "grayscale(1) contrast(1.08) brightness(0.96) saturate(0)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 60% 75% at 28% 50%, #000 35%, transparent 78%)",
+            maskImage:
+              "radial-gradient(ellipse 60% 75% at 28% 50%, #000 35%, transparent 78%)",
+            mixBlendMode: "screen",
           }}
         />
 
@@ -751,7 +758,7 @@ function InHisWordsScene() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 78% 70% at 50% 50%, transparent 38%, oklch(0.014 0 0 / 0.72) 78%, oklch(0.012 0 0) 100%)",
+              "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 50%, oklch(0.014 0 0 / 0.78) 84%, oklch(0.012 0 0) 100%)",
           }}
         />
 
@@ -834,8 +841,9 @@ function InHisWordsScene() {
           }}
         />
 
-        {/* Readability overlay — warmer tint protects typography */}
-        <div className="absolute inset-0 bg-[oklch(0.018_0.004_55/0.46)]" />
+        {/* Readability overlay — gradient that protects right-side typography
+            while leaving the left-side portrait emerging from darkness. */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,oklch(0.018_0.004_55/0.20)_38%,oklch(0.018_0.004_55/0.55)_70%,oklch(0.018_0.004_55/0.68)_100%)]" />
 
         {/* Top/bottom continuity falloff into adjacent scenes */}
         <div className="absolute inset-x-0 top-0 h-[22%] bg-[linear-gradient(180deg,oklch(0.014_0_0)_12%,transparent)]" />
