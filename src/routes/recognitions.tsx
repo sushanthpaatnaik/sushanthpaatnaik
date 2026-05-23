@@ -11,7 +11,7 @@ import {
   PresidentialTriptych,
   type ArchiveItem,
 } from "@/components/scene/ArchiveMosaic";
-import backdrop from "@/assets/story-02-recognition.webp";
+import backdrop from "@/assets/scene-recognition-archive.webp";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
