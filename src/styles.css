@@ -255,19 +255,20 @@
     background: linear-gradient(
       to top,
       var(--color-background),
-      color-mix(in oklab, var(--color-background) 45%, transparent) 60%,
+      color-mix(in oklab, var(--color-background) 30%, transparent) 55%,
       transparent
     );
   }
   .cinematic-overlay::after {
     background: radial-gradient(
       120% 80% at 50% 50%,
-      transparent 45%,
-      oklch(0.02 0 0 / 0.78) 100%
+      transparent 50%,
+      oklch(0.02 0 0 / 0.6) 100%
     );
     mix-blend-mode: overlay;
-    opacity: 0.55;
+    opacity: 0.4;
   }
+
 
   /* Atmospheric page wash — for pages that don't use CinematicPageShell.
      Apply to a fixed inset-0 z-0 layer behind your content. */
