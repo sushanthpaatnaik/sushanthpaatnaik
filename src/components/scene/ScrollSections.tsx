@@ -169,28 +169,31 @@ function FounderScene() {
       id="founder"
       className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 py-32 md:py-44"
     >
-      {/* Editorial founder presence — readable face, cinematic grade, soft environmental darkness */}
+      {/* Founder presence — dissolved into industrial darkness. Silhouette,
+          glasses, and jawline barely legible; edge-lit by a cool key from
+          the upper-left and a faint copper rim from the right. */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         {/* Graphite-black base atmosphere */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_34%_50%,oklch(0.09_0_0)_0%,oklch(0.04_0_0)_60%,oklch(0.02_0_0)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_30%_48%,oklch(0.07_0_0)_0%,oklch(0.035_0_0)_55%,oklch(0.015_0_0)_100%)]" />
 
-        {/* The portrait — clearly visible face, cinematically graded, soft elliptical reveal */}
+        {/* The portrait — concealed: heavy desaturation, deep crush, soft blur,
+            tight elliptical reveal that fades quickly into ink. */}
         <div
           aria-hidden
-          className="absolute inset-y-[-4%] left-[-2%] w-[78%] md:w-[58%] lg:w-[48%] bg-center bg-no-repeat bg-cover opacity-[0.92] md:opacity-[0.95] [filter:grayscale(0.18)_contrast(1.08)_brightness(0.86)_saturate(0.78)] [mask-image:radial-gradient(ellipse_62%_72%_at_44%_44%,#000_42%,rgba(0,0,0,0.92)_62%,rgba(0,0,0,0.45)_82%,transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_62%_72%_at_44%_44%,#000_42%,rgba(0,0,0,0.92)_62%,rgba(0,0,0,0.45)_82%,transparent_98%)]"
+          className="absolute inset-y-[-4%] left-[-4%] w-[70%] md:w-[52%] lg:w-[44%] bg-center bg-no-repeat bg-cover opacity-[0.42] md:opacity-[0.48] [filter:grayscale(0.95)_contrast(1.18)_brightness(0.52)_saturate(0.35)_blur(1.6px)] [mask-image:radial-gradient(ellipse_46%_58%_at_42%_42%,#000_18%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.28)_68%,transparent_88%)] [-webkit-mask-image:radial-gradient(ellipse_46%_58%_at_42%_42%,#000_18%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.28)_68%,transparent_88%)]"
           style={{ backgroundImage: `url(${founderPresence})` }}
         />
 
-        {/* Soft cool key-light grading on the face */}
-        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_24%_32%_at_28%_36%,oklch(0.65_0.06_240/0.28),transparent_70%)]" />
-        {/* Warm copper rim from the right — premium editorial accent */}
-        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_18%_28%_at_42%_38%,oklch(0.62_0.10_55/0.10),transparent_72%)]" />
+        {/* Cool contour key-light — barely catches glasses + brow */}
+        <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_30%_36%,oklch(0.7_0.06_240/0.22),transparent_72%)]" />
+        {/* Warm copper rim — jawline contour from the right */}
+        <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_10%_22%_at_40%_44%,oklch(0.62_0.10_55/0.10),transparent_75%)]" />
 
-        {/* Cinematic falloff — right ink wash holds the quote */}
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-[linear-gradient(180deg,transparent,oklch(0.02_0_0)_88%)]" />
-        <div className="absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(270deg,oklch(0.02_0_0)_22%,oklch(0.03_0_0/0.55)_55%,transparent_92%)]" />
-        <div className="absolute inset-y-0 left-0 w-[10%] bg-[linear-gradient(90deg,oklch(0.02_0_0)_8%,transparent)]" />
-        <div className="absolute inset-x-0 top-0 h-1/5 bg-[linear-gradient(180deg,oklch(0.02_0_0)_6%,transparent)]" />
+        {/* Cinematic falloff — deep ink wash holds the quote and absorbs the figure */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,oklch(0.015_0_0)_82%)]" />
+        <div className="absolute inset-y-0 right-0 w-[68%] bg-[linear-gradient(270deg,oklch(0.015_0_0)_28%,oklch(0.025_0_0/0.7)_58%,transparent_94%)]" />
+        <div className="absolute inset-y-0 left-0 w-[14%] bg-[linear-gradient(90deg,oklch(0.015_0_0)_12%,transparent)]" />
+        <div className="absolute inset-x-0 top-0 h-1/4 bg-[linear-gradient(180deg,oklch(0.015_0_0)_10%,transparent)]" />
       </div>
 
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
