@@ -29,7 +29,7 @@ interface AnimatedBackgroundProps {
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
-function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.55) {
+function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.95) {
   // Wider spread → chapters carry across boundaries instead of disappearing
   // into black gaps. The smootherstep curve keeps the handoff organic.
   return useTransform(phase, (v) => {
@@ -41,7 +41,19 @@ function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.
 }
 
 function useSceneScale(phase: MotionValue<number>, center: number) {
-  return useTransform(phase, (v) => 1.03 - (v - center) * 0.018);
+  return useTransform(phase, (v) => 1.035 - (v - center) * 0.014);
+}
+
+// Subtle atmospheric blur during chapter handoff — sharpest at chapter
+// center, softly defocused while crossfading. Keeps imagery in third place
+// behind typography + atmosphere.
+function useSceneBlur(phase: MotionValue<number>, center: number) {
+  return useTransform(phase, (v) => {
+    const d = Math.min(Math.abs(v - center), 1);
+    // 0px at center → ~2.6px mid-transition → fades back to 0 at next center.
+    const eased = d * d * (3 - 2 * d);
+    return `blur(${(eased * 2.6).toFixed(2)}px)`;
+  });
 }
 
 const DEFAULT_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
@@ -63,6 +75,7 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
+  const blur = useSceneBlur(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
   const y = useTransform(
     parallax,
@@ -70,7 +83,7 @@ function SceneLayer({
   );
 
   return (
-    <motion.div className="absolute inset-0" style={{ opacity }}>
+    <motion.div className="absolute inset-0" style={{ opacity, filter: blur }}>
       <motion.img
         src={scene.src}
         alt={scene.alt}
@@ -118,9 +131,9 @@ export default function AnimatedBackground({
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
-    stiffness: 22,
-    damping: 48,
-    mass: 1.2,
+    stiffness: 14,
+    damping: 58,
+    mass: 1.45,
   });
 
   const phase = useTransform(progress, [0, 1], [0, stages - 1]);
