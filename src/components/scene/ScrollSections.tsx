@@ -782,6 +782,38 @@ export default function ScrollSections() {
           </div>
         </div>
       </section>
+      {/* Engagement — collaboration architecture. Not a services page;
+          a quiet statement of the four ways the work travels outward. */}
+      <section id="engagement" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,oklch(0.10_0.03_245/0.09),transparent_72%)]" />
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+          <MotionReveal className="md:col-span-5 md:sticky md:top-32 self-start">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">Engagement</p>
+            <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
+              Four ways the work travels.
+            </h3>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              The collaboration architecture for industrial partners, capital, institutions, and operators carrying frontier materials into deployment.
+            </p>
+          </MotionReveal>
+          <div className="md:col-span-7">
+            {[
+              { n: "01", t: "Strategic Advisory", b: "Long-arc counsel for industrial groups, family offices, and institutions positioning around advanced materials, energy systems, and climate infrastructure." },
+              { n: "02", t: "Deep-Tech Partnership", b: "Co-development of graphene, nano-material, and process-intelligence platforms with corporate R&D, public laboratories, and downstream manufacturers." },
+              { n: "03", t: "Commercialization Support", b: "Translating lab-validated science into supply chains, patent architecture, and industrial pilots — the unglamorous second half of every invention." },
+              { n: "04", t: "Innovation Systems", b: "Designing the operating discipline beneath a deep-tech portfolio: research cadence, capital sequencing, and the patient compounding that frontier science requires." },
+            ].map((s, i) => (
+              <MotionReveal key={s.n} delay={i * 0.06} className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-8 border-t border-foreground/[0.08] py-7 md:py-8">
+                <span className="mt-2 font-mono text-xs tracking-[0.3em] text-muted-foreground/60">{s.n}</span>
+                <div>
+                  <h4 className="mb-3 font-display text-lg md:text-2xl tracking-[-0.02em] text-foreground/95">{s.t}</h4>
+                  <p className="max-w-lg text-sm leading-relaxed text-muted-foreground/80">{s.b}</p>
+                </div>
+              </MotionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
 
       {/* Chapter 07 — The Future System */}
