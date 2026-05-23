@@ -424,7 +424,26 @@
   .mix-blend-screen { mix-blend-mode: normal; }
   .text-muted-foreground\/45 { color: color-mix(in oklab, var(--muted-foreground) 65%, transparent); }
   .text-muted-foreground\/40 { color: color-mix(in oklab, var(--muted-foreground) 60%, transparent); }
+
+  /* Tame GPU-heavy blur stacks on small screens so scrolling stays smooth. */
+  .blur-3xl { --tw-blur: blur(28px); filter: var(--tw-blur); }
+  .blur-2xl { --tw-blur: blur(18px); filter: var(--tw-blur); }
+  /* Soften backdrop-filter cost on iOS Safari */
+  .cinematic-glass,
+  .glass {
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+  }
+  .btn-cinematic {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.75rem;
+    backdrop-filter: blur(6px) saturate(130%);
+    -webkit-backdrop-filter: blur(6px) saturate(130%);
+  }
 }
+
+/* Belt-and-suspenders: prevent any descendant from causing horizontal scroll. */
+html, body { overflow-x: clip; max-width: 100vw; }
 
 @keyframes streak {
   0% { transform: translateX(-30%); opacity: 0; }
