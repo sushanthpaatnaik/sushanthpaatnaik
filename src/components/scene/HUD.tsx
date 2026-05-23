@@ -161,10 +161,10 @@ function ChapterMarker({
         className="relative z-10 flex items-baseline gap-2"
         initial={false}
         animate={{
-          opacity: active ? 0.96 : visible ? (hovered ? 0.72 : 0.45) : 0.22,
+          opacity: active ? 0.98 : visible ? (hovered ? 0.82 : 0.58) : 0.34,
           x: active ? 1 : 0,
         }}
-        transition={{ duration: 0.75, ease: [0.19, 1, 0.22, 1] }}
+        transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
       >
         {/* Chapter number — always visible, very quiet */}
         <span
