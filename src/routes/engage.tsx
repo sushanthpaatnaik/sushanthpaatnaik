@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
+import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-06-india.jpg";
 
 export const Route = createFileRoute("/engage")({
@@ -66,32 +67,16 @@ const lanes = [
 ];
 
 function AccessStrip() {
-  const items = [
-    { v: "05", l: "Engagement lanes" },
-    { v: "01", l: "Inbox · personally read" },
-    { v: "48h", l: "Typical reply" },
-    { v: "Selective", l: "By fit, not volume" },
-  ];
   return (
-    <div className="not-prose mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.06] md:grid-cols-4">
-      {items.map((s, i) => (
-        <motion.div
-          key={s.l}
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 1, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
-          className="bg-[oklch(0.05_0.006_245)] px-5 py-7 md:px-7 md:py-9"
-        >
-          <p className="font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">
-            {s.v}
-          </p>
-          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/60">
-            {s.l}
-          </p>
-        </motion.div>
-      ))}
-    </div>
+    <StatsStrip
+      className="mt-4"
+      items={[
+        { v: "05", l: "Engagement lanes" },
+        { v: "01", l: "Inbox · personally read" },
+        { v: "48h", l: "Typical reply" },
+        { v: "Selective", l: "By fit, not volume" },
+      ]}
+    />
   );
 }
 

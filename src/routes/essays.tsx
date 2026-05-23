@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Nav from "@/components/scene/Nav";
+import { AtmosphericWash } from "@/components/scene/cinematic";
 
 interface EssayMeta {
   slug: string;
@@ -73,30 +74,7 @@ function EssaysIndex() {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
-      {/* Subtle paper-grade atmospheric wash */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(70% 55% at 20% 12%, oklch(0.42 0.07 240 / 0.10), transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 85% 88%, oklch(0.62 0.10 55 / 0.06), transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.55) 100%)",
-          }}
-        />
-      </div>
+      <AtmosphericWash />
 
       <Nav />
 

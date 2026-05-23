@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Nav from "@/components/scene/Nav";
+import { AtmosphericWash } from "@/components/scene/cinematic";
 import { essays } from "./essays";
 
 type EssaySection = { heading?: string; paragraphs: string[]; bullets?: string[] };
@@ -202,30 +203,7 @@ function EssayPage() {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
-      {/* Atmospheric reading wash — restrained, paper-like */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(65% 55% at 18% 10%, oklch(0.42 0.07 240 / 0.08), transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(55% 45% at 88% 92%, oklch(0.62 0.10 55 / 0.05), transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(115% 78% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.6) 100%)",
-          }}
-        />
-      </div>
+      <AtmosphericWash />
 
       <Nav />
 

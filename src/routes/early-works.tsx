@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
+import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-early-workshop.jpg";
 import workshopPlate from "@/assets/scene-early-workshop.jpg";
 import notebookPlate from "@/assets/scene-about-notebook.jpg";
@@ -313,32 +314,16 @@ function SpecimenCard({ w, index }: { w: Work; index: number }) {
 }
 
 function OriginStats() {
-  const stats = [
-    { v: "06", l: "Presidential Awards" },
-    { v: "2008–2013", l: "Origin Era" },
-    { v: "15–20", l: "Age At Build" },
-    { v: "06", l: "Working Devices" },
-  ];
   return (
-    <div className="not-prose mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.06] md:grid-cols-4">
-      {stats.map((s, i) => (
-        <motion.div
-          key={s.l}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 1, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
-          className="bg-[oklch(0.05_0.006_245)] px-5 py-7 md:px-7 md:py-9"
-        >
-          <p className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
-            {s.v}
-          </p>
-          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/60">
-            {s.l}
-          </p>
-        </motion.div>
-      ))}
-    </div>
+    <StatsStrip
+      className="mt-12"
+      items={[
+        { v: "06", l: "Presidential Awards" },
+        { v: "2008–2013", l: "Origin Era" },
+        { v: "15–20", l: "Age At Build" },
+        { v: "06", l: "Working Devices" },
+      ]}
+    />
   );
 }
 
