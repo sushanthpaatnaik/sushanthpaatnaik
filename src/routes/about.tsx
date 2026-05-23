@@ -26,12 +26,19 @@ export const Route = createFileRoute("/about")({
   }),
 });
 
+const dossierStats = [
+  { n: "27", label: "Honors of record · National + International" },
+  { n: "50+", label: "Featured by news & media outlets" },
+  { n: "2", label: "Academic degrees · IISER & OCT, Bhopal" },
+  { n: "TED", label: "Global platform · among the youngest at the time" },
+];
+
 function AboutPage() {
   return (
     <CinematicPageShell
       eyebrow="About · Founder"
       title={<>An inventor, quietly building<br className="hidden md:inline" /> industrial futures.</>}
-      lead="Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks, and Starunico Capital. Chief Innovation Officer at Magppie. The work began in a borrowed workshop at fourteen — and has not really paused since."
+      lead="Born in Bhubaneswar, Odisha. Six-time Indian Presidential awardee between 2008 and 2013. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks, and Starunico Capital. Chief Innovation Officer at Magppie. The work began in a borrowed workshop at fourteen — and has not really paused since."
       backdrop={backdrop}
       overlay={0.74}
     >
@@ -49,7 +56,23 @@ function AboutPage() {
         </p>
       </EditorialSection>
 
-      <EditorialSection number="02 · Philosophy" heading="Engineer matter. Engineer capital. Engineer scale.">
+      <EditorialSection number="02 · Academia" heading="IISER Bhopal · OCT Bhopal.">
+        <p>
+          <span className="text-foreground/95">BSc.</span> from{" "}
+          <span className="text-foreground/95">IISER Bhopal</span>, admitted
+          under the <span className="text-foreground/95">KVPY-SP</span>{" "}
+          scholarship — the foundation in chemistry, physics, and the
+          discipline of asking questions matter cannot easily answer.
+        </p>
+        <p>
+          <span className="text-foreground/95">BEd.</span> in ETE from{" "}
+          <span className="text-foreground/95">OCT, Bhopal</span>, under the
+          Special Achiever category — a quiet conviction that an inventor who
+          cannot teach has not really finished the invention.
+        </p>
+      </EditorialSection>
+
+      <EditorialSection number="03 · Philosophy" heading="Engineer matter. Engineer capital. Engineer scale.">
         <p>
           Frontier science only matters when it reaches the industrial world.
           That requires three disciplines held together: invention, capital
@@ -63,7 +86,22 @@ function AboutPage() {
         </p>
       </EditorialSection>
 
-      <EditorialSection number="03 · Mission" heading="Built in India. Designed for the world.">
+      <EditorialSection number="04 · Dossier" heading="Honors of record.">
+        <ul className="not-prose mt-4 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+          {dossierStats.map((s) => (
+            <li key={s.label} className="border-t border-foreground/[0.08] pt-5">
+              <p className="font-display text-3xl tracking-[-0.02em] text-gradient md:text-4xl">
+                {s.n}
+              </p>
+              <p className="mt-3 text-[12px] uppercase tracking-[0.32em] text-muted-foreground/70">
+                {s.label}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </EditorialSection>
+
+      <EditorialSection number="05 · Mission" heading="Built in India. Designed for the world.">
         <p>
           India has the talent, the demand, and the urgency to lead the carbon
           century. What remains is patience — the institutional patience to
@@ -77,9 +115,10 @@ function AboutPage() {
         </p>
       </EditorialSection>
 
-      <EditorialSection number="04 · Evolution" heading="From inventor to ecosystem.">
+      <EditorialSection number="06 · Evolution" heading="From inventor to ecosystem.">
         <p>
-          The first decade was about inventions. The second is about systems —
+          The first decade was about inventions — ten-plus working prototypes
+          shipped from a borrowed workshop. The second is about systems —
           companies, capital, and the talent that compounds across them. The
           third, I suspect, will be about handing the work to the next
           generation of Indian builders who never had to ask permission.
