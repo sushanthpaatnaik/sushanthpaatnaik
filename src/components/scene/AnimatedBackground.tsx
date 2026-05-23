@@ -176,24 +176,24 @@ export default function AnimatedBackground({
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 44%, oklch(0.02 0.006 260 / 0.72) 100%)",
+            "radial-gradient(ellipse at center, transparent 52%, oklch(0.02 0.006 260 / 0.58) 100%)",
         }}
       />
 
-      {/* Edge fades — trimmed so the cinematic plate carries continuously
-          across section boundaries with reduced overlap. */}
+      {/* Edge fades — lighter so chapter imagery remains legible across
+          section seams without overpowering the plate. */}
       <div
-        className="absolute inset-x-0 top-0 h-32"
+        className="absolute inset-x-0 top-0 h-28"
         style={{
           background:
-            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.42), transparent)",
+            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.32), transparent)",
         }}
       />
       <div
-        className="absolute inset-x-0 bottom-0 h-32"
+        className="absolute inset-x-0 bottom-0 h-28"
         style={{
           background:
-            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.42), transparent)",
+            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.32), transparent)",
         }}
       />
 
