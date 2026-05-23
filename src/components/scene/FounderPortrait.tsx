@@ -10,6 +10,7 @@ interface FounderPortraitProps {
   meta?: string;
   eyebrow?: string;
   narrative?: string[];
+  plate?: boolean;
 }
 
 /**
