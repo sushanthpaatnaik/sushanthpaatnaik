@@ -39,7 +39,13 @@ export default function FounderPortrait({
     >
       <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
         {/* Portrait — readable face, restrained cinematic grade */}
-        <div className="relative aspect-[4/5] md:aspect-[16/10] w-full overflow-hidden">
+        <div
+          className={
+            isDoc
+              ? "relative aspect-[4/5] md:aspect-[16/10] w-full overflow-hidden"
+              : "relative aspect-[4/5] md:aspect-[3/4] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
+          }
+        >
           <img
             src={src}
             alt={
@@ -51,7 +57,7 @@ export default function FounderPortrait({
             className={
               isDoc
                 ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.04)_saturate(0.82)_brightness(0.92)]"
-                : "absolute inset-0 h-full w-full object-cover object-[center_25%] [filter:grayscale(0.18)_contrast(1.08)_saturate(0.72)_brightness(0.86)]"
+                : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.18)_contrast(1.08)_saturate(0.72)_brightness(0.9)]"
             }
           />
 
