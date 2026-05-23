@@ -329,43 +329,57 @@ function OriginStats() {
 
 function Timeline() {
   const beats = [
-    { y: "2008", t: "Power Gen Kit", n: "Specimen 01" },
-    { y: "2010", t: "Enabler", n: "Specimen 02" },
-    { y: "2011", t: "Rectofit", n: "Specimen 03" },
-    { y: "2012", t: "She Watch · Sol-Ka", n: "Specimen 04 · 05" },
-    { y: "2013", t: "Super Sense", n: "Specimen 06" },
+    { y: "2008", t: "Power Gen Kit", n: "Specimen 01", note: "A salvaged dynamo on the kitchen table — the first device that worked." },
+    { y: "2010", t: "Enabler", n: "Specimen 02", note: "Breath-operated wheelchair — built after watching a stranger struggle." },
+    { y: "2011", t: "Rectofit", n: "Specimen 03", note: "A retrofit safety kit for every car already on the road." },
+    { y: "2012", t: "She Watch · Sol-Ka", n: "Specimen 04 · 05", note: "Two devices in one year — a wearable and a quiet power source." },
+    { y: "2013", t: "Super Sense", n: "Specimen 06", note: "Computers, without a touch — the last build before the company years." },
   ];
   return (
-    <div className="not-prose mt-10">
-      <div className="relative">
-        <div className="absolute left-0 right-0 top-[34px] h-px bg-foreground/[0.1]" />
-        <ol className="relative grid grid-cols-2 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
-          {beats.map((b, i) => (
-            <motion.li
-              key={b.y}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
-              className="relative pl-1"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/70">
+    <div className="not-prose mt-12">
+      <ol className="relative flex flex-col">
+        {beats.map((b, i) => (
+          <motion.li
+            key={b.y}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 1.05, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
+            className="group relative grid grid-cols-12 gap-x-6 gap-y-3 border-t border-foreground/[0.08] py-8 md:py-10"
+          >
+            {/* Year — massive editorial numeral */}
+            <div className="col-span-12 md:col-span-3">
+              <p className="font-display text-[44px] md:text-[64px] leading-none tracking-[-0.04em] text-foreground/85 transition-colors duration-700 group-hover:text-foreground">
                 {b.y}
               </p>
-              <span className="mt-3 block h-[7px] w-[7px] rounded-full bg-accent/80 ring-4 ring-background" />
-              <p className="mt-4 font-display text-[15px] tracking-[-0.01em] text-foreground/90">
-                {b.t}
-              </p>
-              <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+              <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.36em] text-accent/70">
                 {b.n}
               </p>
-            </motion.li>
-          ))}
-        </ol>
-      </div>
+            </div>
+
+            {/* Title + note */}
+            <div className="col-span-12 md:col-span-8 md:col-start-5">
+              <p className="font-display text-[19px] md:text-[22px] tracking-[-0.012em] text-foreground/95">
+                {b.t}
+              </p>
+              <p className="mt-3 max-w-xl text-[14px] leading-[1.7] text-foreground/65 font-display italic">
+                {b.note}
+              </p>
+            </div>
+
+            {/* Hairline marker — sits on the rule */}
+            <span
+              aria-hidden
+              className="absolute left-0 top-0 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-accent/70 ring-4 ring-background"
+            />
+          </motion.li>
+        ))}
+        <div className="border-t border-foreground/[0.08]" />
+      </ol>
     </div>
   );
 }
+
 
 function HandwrittenNote() {
   return (
