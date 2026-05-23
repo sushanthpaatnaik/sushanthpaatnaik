@@ -667,7 +667,7 @@ function NewsPage() {
           <span className="hidden sm:inline text-muted-foreground/40">
             Volume XV · MMXXVI
           </span>
-          <span>Folio 01 — 16</span>
+          <span>Folio 01 — 18</span>
         </div>
         <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
