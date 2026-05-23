@@ -103,7 +103,7 @@ export default function FounderPortrait({
             loading="lazy"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.04)_saturate(0.82)_brightness(0.92)]"
+                ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.06)_saturate(0.74)_brightness(0.85)_blur(0.3px)]"
                 : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.22)_contrast(1.06)_saturate(0.68)_brightness(0.88)]"
             }
           />
@@ -151,6 +151,17 @@ export default function FounderPortrait({
                 "radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%)",
             }}
           />
+          {/* Soft cinematic vignette — deepens edges, preserves center */}
+          {isDoc && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(125% 100% at 50% 50%, transparent 55%, oklch(0.015 0.004 240 / 0.55) 100%)",
+              }}
+            />
+          )}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
