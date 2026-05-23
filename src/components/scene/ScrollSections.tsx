@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-editorial.webp";
+import inHisWordsBackdrop from "@/assets/scene-in-his-words.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 
 /* ──────────────────────────────────────────────────────────────────
