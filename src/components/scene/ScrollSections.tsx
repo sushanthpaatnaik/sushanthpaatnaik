@@ -884,7 +884,8 @@ export default function ScrollSections() {
             </MotionReveal>
           </div>
         </div>
-
+      </section>
     </div>
   );
 }
+
