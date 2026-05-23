@@ -17,6 +17,7 @@ import {
 } from "@/components/scene/ArchiveMosaic";
 import backdrop from "@/assets/scene-recognition-archive.webp";
 import closureBackdrop from "@/assets/scene-legacy-closure.webp";
+import futureBackdrop from "@/assets/scene-future-signal.webp";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
