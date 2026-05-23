@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 
 interface ParticleFieldProps {
@@ -6,7 +6,7 @@ interface ParticleFieldProps {
   progress: MotionValue<number>;
   /** Opacity envelope sampled across the scroll, one stop per chapter. */
   opacityStops?: number[];
-  /** Number of particles to render. */
+  /** Number of particles on desktop. Mobile uses ~half. */
   count?: number;
   /** Color tokens (oklch) for the alternating particle palette. */
   primaryColor?: string;
@@ -15,7 +15,7 @@ interface ParticleFieldProps {
 
 /**
  * Drifting particle layer used inside the cinematic background.
- * Extracted from AtmosphereLayer so any scene can reuse it.
+ * Mobile renders a lighter, slower field to preserve battery and smoothness.
  */
 export default function ParticleField({
   progress,
@@ -24,19 +24,31 @@ export default function ParticleField({
   primaryColor = "oklch(0.81 0.1 235)",
   accentColor = "oklch(0.63 0.1 75)",
 }: ParticleFieldProps) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const effectiveCount = isMobile ? Math.max(8, Math.round(count * 0.55)) : count;
+
   const particles = useMemo(
     () =>
-      Array.from({ length: count }, (_, index) => ({
+      Array.from({ length: effectiveCount }, (_, index) => ({
         id: index,
         left: Math.random() * 100,
         top: Math.random() * 100,
         size: 1 + Math.random() * 2,
         blur: 1 + Math.random() * 2.5,
         delay: Math.random() * 14,
-        duration: 24 + Math.random() * 30,
+        duration: (isMobile ? 36 : 24) + Math.random() * (isMobile ? 28 : 30),
         accent: index % 3 === 0,
       })),
-    [count],
+    [effectiveCount, isMobile],
   );
 
   const stops = useMemo(
