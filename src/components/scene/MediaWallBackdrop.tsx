@@ -73,36 +73,43 @@ export default function MediaWallBackdrop() {
 
   return (
     <div ref={ref} className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* The collage — graded, blurred, drifting, low-opacity. */}
+      {/* The collage — full-bleed, zoomed, anchored center-right. */}
       <motion.div
         aria-hidden
         className="absolute inset-0"
         style={{ y, scale, opacity: imageOpacity }}
       >
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-no-repeat"
           style={{
             backgroundImage: `url(${mediaWall})`,
-            filter: "blur(2px) saturate(0.55) brightness(0.55) contrast(1.05)",
+            backgroundSize: "cover",
+            backgroundPosition: "60% center",
+            filter: "blur(2.4px) saturate(0.45) brightness(0.48) contrast(1.08)",
+            transform: "scale(1.12)",
+            transformOrigin: "60% center",
           }}
         />
-        {/* Cool graphite/blue tone wash on top of the imagery. */}
-        <div className="absolute inset-0 mix-blend-color bg-[oklch(0.18_0.04_245)]" />
-        {/* Depth haze pulling the upper and lower edges into darkness. */}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.04_0_0/0.85),transparent_28%,transparent_72%,oklch(0.04_0_0/0.92))]" />
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,transparent_30%,oklch(0.03_0_0/0.85)_100%)]" />
-        {/* Restrained copper edge highlight, top-right. */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_30%_22%_at_82%_18%,oklch(0.68_0.12_55/0.10),transparent_70%)]" />
-        {/* Atmospheric grain via SVG noise. */}
+        {/* Deep graphite/blue tone wash across the imagery. */}
+        <div className="absolute inset-0 mix-blend-color bg-[oklch(0.16_0.045_245)]" />
+        {/* Heavy left-edge mask — keep reading column dark and clean. */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,oklch(0.03_0.005_260/0.92)_0%,oklch(0.03_0.005_260/0.55)_32%,transparent_60%,oklch(0.03_0.005_260/0.4)_100%)]" />
+        {/* Top/bottom depth haze pulling edges into black. */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.92),transparent_22%,transparent_72%,oklch(0.03_0_0/0.95))]" />
+        {/* Full vignette on all edges. */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_55%_50%,transparent_18%,oklch(0.03_0_0/0.55)_65%,oklch(0.02_0_0/0.92)_100%)]" />
+        {/* Restrained copper edge highlight, top-right corner. */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_28%_20%_at_85%_15%,oklch(0.65_0.11_55/0.09),transparent_70%)]" />
+        {/* Soft film grain. */}
         <div
-          className="absolute inset-0 opacity-[0.07] mix-blend-overlay"
+          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>\")",
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>\")",
           }}
         />
       </motion.div>
+
 
       {/* Light sweep — minimal cinematic accent. */}
       <motion.div
