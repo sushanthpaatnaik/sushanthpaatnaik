@@ -25,7 +25,7 @@ import sceneRecognition from "@/assets/story-02-recognition.jpg";
  *   04 Industrial   — steel-blue + restrained copper, machine-room
  *   05 Recognition  — archival sepia + ink, paper-and-ink memory
  *   06 Ecosystem    — twilight indigo, constellation depth
- *   07 Future       — dawn gold over slate, an industrial horizon
+ *   07 Future       — Earth at night, India-origin glow scaling to global network
  */
 const SCENES: BackgroundScene[] = [
   {
@@ -84,12 +84,12 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneFuture,
-    alt: "07 — Future · a living industrial ecosystem at dawn",
-    tint: "linear-gradient(180deg, oklch(0.60 0.12 60 / 0.22) 0%, oklch(0.25 0.06 240 / 0.28) 100%)",
+    alt: "07 — India → World · Earth at night, global industrial network scaling from an Indian origin",
+    tint: "radial-gradient(ellipse 70% 60% at 62% 52%, oklch(0.42 0.06 232 / 0.18), oklch(0.05 0.012 245 / 0.30) 70%)",
     overlay:
-      "linear-gradient(180deg, oklch(0.04 0.01 240 / 0.55) 0%, oklch(0.05 0.02 60 / 0.20) 55%, oklch(0.03 0.006 260 / 0.72) 100%)",
-    parallax: 1.0,
-    filter: "brightness(0.82) contrast(1.08) saturate(1.02)",
+      "radial-gradient(ellipse 95% 80% at 50% 55%, oklch(0.025 0.006 245 / 0.42) 0%, oklch(0.02 0.005 250 / 0.78) 78%, oklch(0.015 0.004 250 / 0.92) 100%)",
+    parallax: 0.7,
+    filter: "brightness(0.78) contrast(1.10) saturate(0.82) hue-rotate(-4deg)",
   },
 ];
 
@@ -102,7 +102,7 @@ const OVERLAY_STOPS = [
   0.24, // Industrial
   0.30, // Recognition
   0.26, // Ecosystem
-  0.22, // Future
+  0.18, // India → World (planetary)
 ];
 
 export default function AtmosphereLayer() {
