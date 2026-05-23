@@ -33,7 +33,7 @@ const OVERLAY_STOPS = [
   0.58, // Founder
   0.48, // Material
   0.52, // Industrial
-  0.62, // Recognition
+  0.68, // Recognition
   0.60, // Ecosystem
   0.56, // Future
 ];
