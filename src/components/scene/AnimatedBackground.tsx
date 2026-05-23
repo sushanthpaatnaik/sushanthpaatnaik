@@ -75,6 +75,7 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
+  const blur = useSceneBlur(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
   const y = useTransform(
     parallax,
@@ -82,7 +83,7 @@ function SceneLayer({
   );
 
   return (
-    <motion.div className="absolute inset-0" style={{ opacity }}>
+    <motion.div className="absolute inset-0" style={{ opacity, filter: blur }}>
       <motion.img
         src={scene.src}
         alt={scene.alt}
