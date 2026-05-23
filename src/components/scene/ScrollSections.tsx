@@ -959,7 +959,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[calc(var(--viewport-height)*1.0)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
+      className="relative flex min-h-[calc(var(--viewport-height)*1.0)] items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-28 text-center"
     >
       {/* Architectural system node — restrained, integrated, atmospheric.
           Replaces the disconnected floating ring with a faint intelligent
