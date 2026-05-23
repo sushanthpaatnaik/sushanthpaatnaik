@@ -1,12 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import * as Collapsible from "@radix-ui/react-collapsible";
+
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 
 import {
   HallOfFameRibbon,
-  LegacyTimeline,
+  
   StatsAuthorityBlock,
   ArchivePlateSeries,
   PresidentialTriptych,
@@ -356,6 +359,161 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
 ];
 
+function EraAccordion({
+  number,
+  era,
+  title,
+  description,
+  defaultOpen = false,
+  plateCount,
+  registryCount,
+  children,
+}: {
+  number: string;
+  era: string;
+  title: string;
+  description: string;
+  defaultOpen?: boolean;
+  plateCount: number;
+  registryCount: number;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <Collapsible.Root
+      open={open}
+      onOpenChange={setOpen}
+      className="not-prose group/era relative border-t border-foreground/[0.08]"
+    >
+      <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[oklch(0.05_0.003_245)]/40">
+        <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-8 md:gap-x-12">
+          <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55 pt-2">
+            {number}
+          </span>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55 mb-3">
+              Era · {era}
+            </p>
+            <h3 className="font-display text-[26px] md:text-[34px] leading-[1.1] tracking-[-0.03em] text-foreground/95">
+              {title}
+            </h3>
+            <p className="mt-4 max-w-[58ch] text-[13.5px] md:text-[14px] leading-[1.75] text-foreground/60">
+              {description}
+            </p>
+            <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+              {plateCount} plates · {registryCount} citations
+            </p>
+          </div>
+          <span
+            aria-hidden
+            className="font-mono text-[11px] uppercase tracking-[0.4em] text-foreground/55 pt-2 flex items-center gap-3 select-none"
+          >
+            <span className="hidden md:inline">{open ? "Collapse" : "Open archive"}</span>
+            <span
+              className={`inline-block h-px w-8 bg-foreground/40 transition-transform duration-700 ${
+                open ? "rotate-90" : ""
+              }`}
+            />
+          </span>
+        </div>
+      </Collapsible.Trigger>
+      <AnimatePresence initial={false}>
+        {open && (
+          <Collapsible.Content forceMount asChild>
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="pb-16 md:pb-20 pt-2">{children}</div>
+            </motion.div>
+          </Collapsible.Content>
+        )}
+      </AnimatePresence>
+    </Collapsible.Root>
+  );
+}
+
+function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
+  return (
+    <div className="relative mt-2">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[80px] md:left-[120px] top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-foreground/[0.10] to-transparent"
+      />
+      <ol className="flex flex-col gap-12 md:gap-14">
+        {groups.map((group, gi) => (
+          <li
+            key={group.year}
+            className="relative grid grid-cols-[72px_1fr] md:grid-cols-[112px_1fr] gap-x-8 md:gap-x-12"
+          >
+            <div className="relative">
+              <div
+                aria-hidden
+                className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]"
+              />
+              <h4 className="font-display text-xl md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2">
+                {group.year}
+              </h4>
+            </div>
+            <ul className="flex flex-col">
+              {group.entries.map((e, ei) => (
+                <li
+                  key={`${group.year}-${ei}`}
+                  className={`group/row border-t border-foreground/[0.06] transition-colors duration-700 hover:border-foreground/20 ${
+                    e.featured ? "py-4 md:py-5" : "py-3 md:py-3.5"
+                  } ${ei === group.entries.length - 1 ? "border-b border-foreground/[0.06]" : ""}`}
+                >
+                  {e.featured ? (
+                    <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-foreground/55 pt-1">
+                        ◆
+                      </span>
+                      <div>
+                        <h5 className="font-display text-[16px] md:text-[18px] tracking-[-0.018em] text-foreground/95 leading-snug">
+                          {e.title}
+                        </h5>
+                        {e.institution && (
+                          <p className="mt-1 text-[12px] leading-relaxed text-foreground/55">
+                            {e.institution}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
+                        ·
+                      </span>
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="text-[13px] leading-relaxed text-foreground/72">
+                          {e.title}
+                        </span>
+                        {e.institution && (
+                          <span className="text-[11px] text-muted-foreground/55">
+                            {e.institution}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+// Helper: slice ledger by year membership
+function ledgerSlice(years: string[]): LedgerYear[] {
+  return ledgerByYear.filter((g) => years.includes(g.year));
+}
+
 function RecognitionsPage() {
   return (
     <CinematicPageShell
@@ -365,39 +523,9 @@ function RecognitionsPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
-      {/* Institutional statistics — authority block */}
-      <StatsAuthorityBlock items={counters} eyebrow="Archive · Register of Record" />
-
-      {/* Chronological prestige flow — single legible arc */}
-      <LegacyTimeline
-        eyebrow="Legacy · Chronological Prestige"
-        items={[
-          { year: "2008", title: "First Presidential Award", institution: "Dr. A.P.J. Abdul Kalam · NIF" },
-          { year: "2009", title: "Second & Third Presidential Awards", institution: "Smt. Pratibha Patil · Dr. A.P.J. Abdul Kalam" },
-          { year: "2010", title: "MIT TR-35 Innovator", institution: "MIT Technology Review" },
-          { year: "2011", title: "NASA International Recognition", institution: "Kennedy Space Center" },
-          { year: "2012", title: "TED-India Speaker", institution: "TED · Mysore" },
-          { year: "2013", title: "Sixth Presidential Award", institution: "Shri Pranab Mukherjee · NIF" },
-          { year: "2013–14", title: "MIT Fab-10 & Fab-11", institution: "MIT · Barcelona" },
-          { year: "2022", title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum" },
-          { year: "2023", title: "Startup20 · G20 Presidency", institution: "Government of India" },
-          { year: "2024", title: "Silicon Valley Address", institution: "Bay Area · USA" },
-          { year: "2025", title: "Innovision Keynote", institution: "NIT Rourkela" },
-        ]}
-      />
-
-      {/* Hall of Fame overture — cinematic reel as opening movement */}
-      <EditorialSection number="06 · Overture" heading="A continuous archival reel.">
-        <p>
-          Before the chronology — an opening movement. Newspaper clippings,
-          mainstage moments, presidential demonstrations and honorary
-          citations arranged as a single cinematic strip.
-        </p>
-      </EditorialSection>
-      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
-
+      {/* 01 · Featured Recognition — cinematic highlight tier (lead) */}
       <EditorialSection
-        number="06b · Featured"
+        number="01 · Featured"
         heading="Six recognitions that define the archive."
       >
         <p>
@@ -447,169 +575,130 @@ function RecognitionsPage() {
         ))}
       </div>
 
+      {/* 02 · Authority block — institutional register at a glance */}
+      <StatsAuthorityBlock items={counters} eyebrow="Archive · Register of Record" />
 
-      <EditorialSection number="07 · Centerpiece" heading="Three Presidents of India. Six citations.">
+      {/* 03 · Hall of Fame overture — cinematic reel as visual pause */}
+      <EditorialSection number="03 · Overture" heading="A continuous archival reel.">
+        <p>
+          A single cinematic strip — newspaper plates, mainstage moments,
+          presidential demonstrations and honorary citations — before the
+          deeper archive opens.
+        </p>
+      </EditorialSection>
+      <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+
+      {/* 04 · Centerpiece — Presidential triptych */}
+      <EditorialSection number="04 · Centerpiece" heading="Three Presidents of India. Six citations.">
         <p>
           The defining plate of the archive — felicitated by three sitting
-          Presidents of India across six separate citations, between 2008 and
-          2013. The earliest works in the register, and the gravitational
-          centre around which the rest of the recognitions orbit.
+          Presidents of India across six separate citations between 2008 and
+          2013. The gravitational centre around which the rest of the
+          recognitions orbit.
         </p>
       </EditorialSection>
       <PresidentialTriptych
         items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
       />
 
-      <EditorialSection number="08 · Archive I" heading="2008 – 2013 · Rashtrapati Bhavan years.">
+      {/* 05 · Era archives — progressive disclosure */}
+      <EditorialSection number="05 · Archives" heading="Open the era you want to walk through.">
         <p>
-          Six citations, three sitting Presidents of India. The earliest plates
-          in the archive — when the prototypes still smelled of school workshop
-          and the country was just beginning to notice.
-        </p>
-      </EditorialSection>
-      <ArchivePlateSeries
-        items={eraPresidential}
-        eyebrow="Archive I · Presidential Years"
-        startIndex={1}
-      />
-
-      <EditorialSection number="09 · Archive II" heading="2010 – 2014 · Global stages.">
-        <p>
-          TED-India, NASA Kennedy Space Center, INK, MIT Technology Review.
-          The first decade abroad — speaking, fellowshipping, and bringing the
-          work into conversation with the world.
-        </p>
-      </EditorialSection>
-      <ArchivePlateSeries
-        items={eraGlobal}
-        eyebrow="Archive II · Global Stages"
-        startIndex={eraPresidential.length + 1}
-      />
-
-      <EditorialSection number="10 · Archive III" heading="2020 – 2025 · Industrial leadership & diplomacy.">
-        <p>
-          The diplomatic and ministerial years — embassies, BRICS, G20, the
-          Ministry of Power, and the signing of MoUs that turn frontier
-          research into national infrastructure.
-        </p>
-      </EditorialSection>
-      <ArchivePlateSeries
-        items={eraIndustrial}
-        eyebrow="Archive III · Industrial & Diplomatic"
-        startIndex={eraPresidential.length + eraGlobal.length + 1}
-      />
-
-      <EditorialSection number="11 · Archive IV" heading="2022 – 2025 · The present field.">
-        <p>
-          IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond
-          Retreat, Bharatiya Knowledge Systems. The current chapter — where
-          materials, ventures and public address converge.
-        </p>
-      </EditorialSection>
-      <ArchivePlateSeries
-        items={eraPresent}
-        eyebrow="Archive IV · The Present Field"
-        startIndex={
-          eraPresidential.length + eraGlobal.length + eraIndustrial.length + 1
-        }
-      />
-
-
-
-      <EditorialSection number="12 · Register" heading="The legacy register, year by year.">
-        <p>
-          The complete chronological record — the public archive that the
-          photographic plates above sit on top of. Featured citations are
-          marked as cinematic milestone anchors; the rest read as the
-          institutional register beneath them.
+          Four eras, four archives. Each opens into the full photographic
+          plates and the year-by-year register for that period. Closed by
+          default so the chronology can be read at the pace of attention.
         </p>
       </EditorialSection>
 
-      <div className="not-prose relative mt-12">
-        {/* Vertical archival rail */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-[88px] md:left-[140px] top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-foreground/[0.10] to-transparent"
-        />
+      <div className="not-prose mt-10 border-b border-foreground/[0.08]">
+        <EraAccordion
+          number="I"
+          era="2008 – 2013"
+          title="Rashtrapati Bhavan years."
+          description="Six citations, three sitting Presidents of India. The earliest plates in the archive — when the prototypes still smelled of school workshop and the country was just beginning to notice."
+          plateCount={eraPresidential.length}
+          registryCount={ledgerSlice(["2008", "2009", "2013"]).reduce((a, g) => a + g.entries.length, 0)}
+          defaultOpen
+        >
+          <ArchivePlateSeries
+            items={eraPresidential}
+            eyebrow="Archive I · Presidential Years"
+            startIndex={1}
+          />
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
+              Register · Year by Year
+            </p>
+            <LedgerYearGroup groups={ledgerSlice(["2008", "2009", "2013"])} />
+          </div>
+        </EraAccordion>
 
-        <ol className="flex flex-col gap-16 md:gap-20">
-          {ledgerByYear.map((group, gi) => (
-            <motion.li
-              key={group.year}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 1.1, delay: gi * 0.04, ease: [0.19, 1, 0.22, 1] }}
-              className="relative grid grid-cols-[80px_1fr] md:grid-cols-[132px_1fr] gap-x-8 md:gap-x-14"
-            >
-              {/* Year anchor */}
-              <div className="relative">
-                <div
-                  aria-hidden
-                  className="absolute right-[-8px] md:right-[-6px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]"
-                />
-                <h3 className="font-display text-2xl md:text-4xl tracking-[-0.04em] text-foreground/85 leading-none pt-2">
-                  {group.year}
-                </h3>
-                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/45">
-                  Archive · {String(gi + 1).padStart(2, "0")}
-                </p>
-              </div>
+        <EraAccordion
+          number="II"
+          era="2010 – 2014"
+          title="Global stages."
+          description="TED-India, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
+          plateCount={eraGlobal.length}
+          registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
+        >
+          <ArchivePlateSeries
+            items={eraGlobal}
+            eyebrow="Archive II · Global Stages"
+            startIndex={eraPresidential.length + 1}
+          />
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
+              Register · Year by Year
+            </p>
+            <LedgerYearGroup groups={ledgerSlice(["2010", "2011", "2012", "2013–14"])} />
+          </div>
+        </EraAccordion>
 
-              {/* Entries column */}
-              <ul className="flex flex-col">
-                {group.entries.map((e, ei) => (
-                  <li
-                    key={`${group.year}-${ei}`}
-                    className={`group relative border-t border-foreground/[0.06] transition-colors duration-700 hover:border-foreground/20 ${
-                      e.featured
-                        ? "py-5 md:py-6"
-                        : "py-3.5 md:py-4"
-                    } ${ei === group.entries.length - 1 ? "border-b border-foreground/[0.06]" : ""}`}
-                  >
-                    {e.featured ? (
-                      <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-foreground/55 pt-1.5">
-                          ◆ Milestone
-                        </span>
-                        <div>
-                          <h4 className="font-display text-[17px] md:text-[19px] tracking-[-0.018em] text-foreground/95 leading-snug">
-                            {e.title}
-                          </h4>
-                          {e.institution && (
-                            <p className="mt-1.5 text-[12.5px] leading-relaxed text-foreground/55">
-                              {e.institution}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
-                          ·
-                        </span>
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <span className="text-[13.5px] leading-relaxed text-foreground/72">
-                            {e.title}
-                          </span>
-                          {e.institution && (
-                            <span className="text-[11.5px] text-muted-foreground/55">
-                              {e.institution}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </motion.li>
-          ))}
-        </ol>
+        <EraAccordion
+          number="III"
+          era="2020 – 2023"
+          title="Industrial leadership & diplomacy."
+          description="The diplomatic and ministerial years — embassies, BRICS, G20, the Ministry of Power, and the signing of MoUs that turn frontier research into national infrastructure."
+          plateCount={eraIndustrial.length}
+          registryCount={ledgerSlice(["2021", "2022", "2023"]).reduce((a, g) => a + g.entries.length, 0)}
+        >
+          <ArchivePlateSeries
+            items={eraIndustrial}
+            eyebrow="Archive III · Industrial & Diplomatic"
+            startIndex={eraPresidential.length + eraGlobal.length + 1}
+          />
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
+              Register · Year by Year
+            </p>
+            <LedgerYearGroup groups={ledgerSlice(["2021", "2022", "2023"])} />
+          </div>
+        </EraAccordion>
+
+        <EraAccordion
+          number="IV"
+          era="2024 – 2025"
+          title="The present field."
+          description="IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond Retreat, Bharatiya Knowledge Systems. The current chapter — where materials, ventures and public address converge."
+          plateCount={eraPresent.length}
+          registryCount={ledgerSlice(["2024", "2025"]).reduce((a, g) => a + g.entries.length, 0)}
+        >
+          <ArchivePlateSeries
+            items={eraPresent}
+            eyebrow="Archive IV · The Present Field"
+            startIndex={eraPresidential.length + eraGlobal.length + eraIndustrial.length + 1}
+          />
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55 mb-6">
+              Register · Year by Year
+            </p>
+            <LedgerYearGroup groups={ledgerSlice(["2024", "2025"])} />
+          </div>
+        </EraAccordion>
       </div>
 
-
-      <EditorialSection number="13 · Posture" heading="Recognition is a lagging indicator.">
+      {/* 06 · Posture — closing */}
+      <EditorialSection number="06 · Posture" heading="Recognition is a lagging indicator.">
         <p>
           The catalogue is a record, not a destination. By the time an award
           arrives the work it celebrates is already behind. The next prototype —
@@ -619,3 +708,4 @@ function RecognitionsPage() {
     </CinematicPageShell>
   );
 }
+
