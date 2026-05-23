@@ -45,6 +45,12 @@ function AboutPage() {
     >
       <FounderPortrait
         variant="editorial"
+        eyebrow="02 — Founder"
+        narrative={[
+          "Industrial systems builder.",
+          "Materials strategist.",
+          "Deep-tech founder from India.",
+        ]}
         caption="Sushanth Paatnaik — inventor, deep-tech founder, and six-time Indian Presidential awardee."
         meta="Portrait · Bhubaneswar"
       />

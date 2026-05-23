@@ -8,6 +8,8 @@ interface FounderPortraitProps {
   variant?: Variant;
   caption?: string;
   meta?: string;
+  eyebrow?: string;
+  narrative?: string[];
 }
 
 /**
@@ -25,6 +27,8 @@ export default function FounderPortrait({
   variant = "editorial",
   caption,
   meta,
+  eyebrow,
+  narrative,
 }: FounderPortraitProps) {
   const src = variant === "documentary" ? lab : editorial;
   const isDoc = variant === "documentary";
@@ -35,7 +39,7 @@ export default function FounderPortrait({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-16 md:my-20 max-w-3xl"
+      className="not-prose relative mx-auto my-20 md:my-24 max-w-[640px] md:max-w-[680px]"
     >
       <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0_0)] shadow-[0_30px_80px_-30px_oklch(0_0_0/0.85)]">
         {/* Portrait — readable face, restrained cinematic grade */}
@@ -80,13 +84,22 @@ export default function FounderPortrait({
                 "radial-gradient(ellipse 55% 50% at 50% 38%, oklch(0.62 0.06 240 / 0.22), transparent 70%)",
             }}
           />
-          {/* Restrained copper rim accent */}
+          {/* Restrained copper rim accent — top-right */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-screen"
             style={{
               background:
                 "radial-gradient(ellipse 30% 40% at 82% 22%, oklch(0.62 0.10 55 / 0.10), transparent 65%)",
+            }}
+          />
+          {/* Balancing cool rim — bottom-left, prevents right-heavy lighting */}
+          <div
+            aria-hidden
+            className="absolute inset-0 mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(ellipse 32% 38% at 14% 78%, oklch(0.55 0.04 232 / 0.08), transparent 68%)",
             }}
           />
           {/* Edge vignette — dissolves into atmosphere */}
@@ -101,17 +114,42 @@ export default function FounderPortrait({
         </div>
 
         {/* Editorial caption strip */}
-        {(caption || meta) && (
-          <figcaption className="flex flex-wrap items-baseline justify-between gap-3 border-t border-foreground/[0.06] px-5 py-4 md:px-7 md:py-5">
-            {caption && (
-              <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/65">
-                {caption}
-              </p>
+        {(caption || meta || eyebrow || narrative?.length) && (
+          <figcaption className="border-t border-foreground/[0.06] px-5 py-5 md:px-7 md:py-6">
+            {(eyebrow || narrative?.length) && (
+              <div className="mb-4 md:mb-5 flex flex-col gap-2">
+                {eyebrow && (
+                  <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                    {eyebrow}
+                  </span>
+                )}
+                {narrative?.length ? (
+                  <div className="mt-1 space-y-1">
+                    {narrative.map((line) => (
+                      <p
+                        key={line}
+                        className="font-display text-[13px] md:text-[14px] leading-[1.5] tracking-[-0.005em] text-foreground/70"
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             )}
-            {meta && (
-              <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55">
-                {meta}
-              </p>
+            {(caption || meta) && (
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                {caption && (
+                  <p className="text-[12px] md:text-[13px] leading-relaxed text-foreground/60">
+                    {caption}
+                  </p>
+                )}
+                {meta && (
+                  <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/55">
+                    {meta}
+                  </p>
+                )}
+              </div>
             )}
           </figcaption>
         )}
