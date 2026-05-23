@@ -14,11 +14,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Sushanth Paatnaik — Inventor · Graphene & Advanced Materials · Deep-Tech Founder" },
+      { title: "Sushanth Paatnaik — Inventor & Deep-Tech Founder" },
       {
         name: "description",
         content:
-          "Inventor, deep-tech founder, and six-time Indian Presidential awardee. Building graphene, nano-materials, and industrial systems from India for the world. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks, Starunico Capital. CIO at Magppie.",
+          "Inventor and six-time Indian Presidential awardee building graphene, nano-materials, and industrial deep-tech ventures from India.",
       },
       { property: "og:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
       {
@@ -32,6 +32,7 @@ export const Route = createFileRoute("/")({
       { rel: "canonical", href: "/" },
     ],
   }),
+
 });
 
 function Index() {
