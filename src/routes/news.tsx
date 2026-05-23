@@ -796,28 +796,28 @@ function NewsPage() {
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.10] bg-[oklch(0.055_0.004_245)]/90 shadow-[0_0_80px_-30px_oklch(0.62_0.10_55_/_0.14)_inset]">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 lg:grid-cols-6">
+        <div className="not-prose mt-12 overflow-hidden rounded-[2px] border border-foreground/[0.07] bg-[oklch(0.045_0.003_245)]">
+          <div className="grid grid-cols-2 gap-px bg-foreground/[0.04] sm:grid-cols-3 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 34px at scale 1.0; clamped 24-46px.
-              const optical = Math.round(Math.min(46, Math.max(24, 34 * scale)));
+              // Optical baseline ~ 32px at scale 1.0; clamped 22-44px.
+              const optical = Math.round(Math.min(44, Math.max(22, 32 * scale)));
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
                   style={{ maxHeight: `${optical}px`, mixBlendMode: "lighten" }}
-                  className={`w-auto max-w-[78%] object-contain opacity-[0.82] transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.04] ${
+                  className={`w-auto max-w-[72%] object-contain opacity-[0.72] transition-all duration-700 ease-out group-hover:opacity-[0.96] group-hover:scale-[1.025] ${
                     o.lighten
-                      ? "invert brightness-[1.1] contrast-[1.08] hue-rotate-180 saturate-[0.75]"
-                      : "brightness-[1.12] contrast-[1.05] saturate-[0.9]"
+                      ? "invert brightness-[1.0] contrast-[1.0] hue-rotate-180 saturate-[0.0]"
+                      : "brightness-[1.0] contrast-[1.0] saturate-[0.0]"
                   }`}
                 />
               );
               const baseCls =
-                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.055_0.004_245)] px-6 py-6 transition-colors duration-500 before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-700 before:bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.10_55_/_0.08),transparent_70%)] hover:before:opacity-100";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.045_0.003_245)] px-7 py-7 transition-colors duration-700 ease-out hover:bg-[oklch(0.065_0.003_245)]";
               return href ? (
                 <a
                   key={o.name}
@@ -825,7 +825,7 @@ function NewsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`${o.name} — read coverage ↗`}
-                  className={`${baseCls} hover:bg-[oklch(0.085_0.006_245)]`}
+                  className={baseCls}
                 >
                   {inner}
                 </a>
