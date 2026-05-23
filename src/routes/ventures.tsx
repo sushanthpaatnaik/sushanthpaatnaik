@@ -4,8 +4,8 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.jpg";
 
-import magppieLogo from "@/assets/clients/magppie.webp";
-import vinroxLogo from "@/assets/clients/vinrox.webp";
+import magppieLogo from "@/assets/clients/magppie.png";
+import vinroxLogo from "@/assets/clients/vinrox.png";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia.webp";
 import wehearLogo from "@/assets/clients/wehear.webp";
@@ -205,7 +205,7 @@ function VenturesPage() {
                 src={a.logo}
                 alt={`${a.name} — ${a.sector}`}
                 loading="lazy"
-                className="relative z-10 h-11 md:h-14 w-auto max-w-[78%] object-contain opacity-90 saturate-[0.85] contrast-[1.05] brightness-[1.08] mix-blend-screen drop-shadow-[0_2px_12px_oklch(0_0_0/0.55)] transition-all duration-700 group-hover:opacity-100 group-hover:brightness-[1.15]"
+                className="relative z-10 h-12 md:h-16 w-auto max-w-[82%] object-contain opacity-95 mix-blend-screen drop-shadow-[0_2px_14px_oklch(0_0_0/0.6)] transition-all duration-700 group-hover:opacity-100 group-hover:scale-[1.02]"
               />
               <span className="relative z-10 font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/55 transition-colors duration-700 group-hover:text-foreground/75">
                 {a.sector}
