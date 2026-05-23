@@ -37,16 +37,16 @@ export default function HUD({
         {/* Translucent backing panel — dissolves into darkness at edges */}
         <div
           aria-hidden
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-28 h-[420px]"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[400px]"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.88) 0%, oklch(0.025 0.006 245 / 0.62) 55%, transparent 100%)",
-            WebkitBackdropFilter: "blur(18px) saturate(125%)",
-            backdropFilter: "blur(18px) saturate(125%)",
+              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.72) 0%, oklch(0.025 0.006 245 / 0.42) 50%, transparent 100%)",
+            WebkitBackdropFilter: "blur(10px) saturate(120%)",
+            backdropFilter: "blur(10px) saturate(120%)",
             maskImage:
-              "linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%)",
           }}
         />
 
@@ -104,10 +104,10 @@ function ChapterMarker({
     >
       {/* Active backdrop glow — soft documentary spotlight */}
       <motion.div
-        className="absolute -inset-x-4 -inset-y-2.5 rounded-md pointer-events-none"
+        className="absolute -inset-x-3 -inset-y-2 rounded-md pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 80% at 30% 50%, oklch(0.71 0.06 232 / 0.18), transparent 72%)",
+            "radial-gradient(ellipse 60% 70% at 30% 50%, oklch(0.71 0.06 232 / 0.11), transparent 75%)",
         }}
         initial={false}
         animate={{
@@ -122,8 +122,8 @@ function ChapterMarker({
         <motion.div
           className="absolute inset-1 rounded-full"
           style={{
-            background: "oklch(0.74 0.06 232 / 0.26)",
-            boxShadow: "0 0 18px oklch(0.74 0.06 232 / 0.32), 0 0 36px oklch(0.74 0.06 232 / 0.14)",
+            background: "oklch(0.74 0.06 232 / 0.18)",
+            boxShadow: "0 0 10px oklch(0.74 0.06 232 / 0.22), 0 0 22px oklch(0.74 0.06 232 / 0.09)",
           }}
           initial={false}
           animate={{

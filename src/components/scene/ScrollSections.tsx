@@ -50,7 +50,7 @@ function HeroSection() {
   return (
     <section
       id="spark"
-      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6"
+      className="relative min-h-[calc(var(--viewport-height)*1.12)] px-5 sm:px-6 lg:pl-32 xl:pl-36"
     >
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
@@ -274,7 +274,7 @@ function FounderScene() {
   return (
     <section
       id="founder"
-      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 py-32 md:py-44"
+      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44"
     >
       {/* Founder presence — dissolved into industrial darkness. Silhouette,
           glasses, and jawline barely legible; edge-lit by a cool key from
@@ -390,7 +390,7 @@ function RecognitionSignal() {
   return (
     <section
       id="recognition"
-      className="relative min-h-[calc(var(--viewport-height)*0.95)] flex items-center px-5 sm:px-6 py-28 md:py-36"
+      className="relative min-h-[calc(var(--viewport-height)*0.95)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
@@ -428,7 +428,7 @@ function EcosystemGateway() {
   return (
     <section
       id="ecosystem"
-      className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 py-28 md:py-36"
+      className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
@@ -482,7 +482,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 text-center"
+      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
     >
       {/* Architectural system node — restrained, integrated, atmospheric.
           Replaces the disconnected floating ring with a faint intelligent
