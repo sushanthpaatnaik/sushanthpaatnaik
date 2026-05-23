@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VoicesRouteImport } from './routes/voices'
 import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -24,6 +25,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysSlugRouteImport } from './routes/essays.$slug'
 
+const VoicesRoute = VoicesRouteImport.update({
+  id: '/voices',
+  path: '/voices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VenturesRoute = VenturesRouteImport.update({
   id: '/ventures',
   path: '/ventures',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRoutesByTo {
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRoutesById {
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
+  '/voices': typeof VoicesRoute
   '/essays/$slug': typeof EssaysSlugRoute
 }
 export interface FileRouteTypes {
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   id:
     | '__root__'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
+    | '/voices'
     | '/essays/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -209,10 +221,18 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VenturesRoute: typeof VenturesRoute
+  VoicesRoute: typeof VoicesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/voices': {
+      id: '/voices'
+      path: '/voices'
+      fullPath: '/voices'
+      preLoaderRoute: typeof VoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ventures': {
       id: '/ventures'
       path: '/ventures'
@@ -339,6 +359,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VenturesRoute: VenturesRoute,
+  VoicesRoute: VoicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
