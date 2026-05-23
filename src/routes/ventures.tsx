@@ -124,14 +124,16 @@ type Advisory = {
   scale: number;
   /** Px vertical nudge for optical centering. */
   offsetY?: number;
+  /** Logo is dark/black on transparent → invert for dark-bg visibility. */
+  invert?: boolean;
 };
 
 const advisories: Advisory[] = [
-  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0 },
-  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
+  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0,  invert: true },
+  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1, invert: true },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1 },
+  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1,  invert: true },
 ];
 
 
