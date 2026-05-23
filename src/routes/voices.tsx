@@ -202,14 +202,6 @@ function VoicesPage() {
 
       <VoicesList items={institutional} />
 
-      <EditorialSection number="02 · Editorial" heading="In the long press trail.">
-        <p>
-          Editorial endorsements across India's national press and the global
-          deep-tech discourse. Full press archive lives in News.
-        </p>
-      </EditorialSection>
-
-      <VoicesList items={editorial} />
     </CinematicPageShell>
   );
 }
