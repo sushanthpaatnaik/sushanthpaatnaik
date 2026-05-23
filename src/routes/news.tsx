@@ -373,39 +373,40 @@ function LeadFeature({ item }: { item: PressItem }) {
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-10 block"
+      transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+      className="group not-prose mt-14 block"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/85">
-          Above The Fold · Lead Story
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-          {item.outlet} · {item.date}
-        </p>
+      {/* Dateline strip */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.12] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/85">Above The Fold</span>
+        <span className="hidden md:inline text-muted-foreground/40">
+          Dateline · {item.date}
+        </span>
+        <span className="text-primary/75">{item.outlet}</span>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
+      <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
+        <div className="md:col-span-7">
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/70">
+            {item.tag}
+          </p>
+          <h2 className="mt-6 font-display text-[clamp(1.9rem,4.2vw,3.2rem)] leading-[1.02] tracking-[-0.035em] text-foreground/95 transition-colors duration-700 group-hover:text-foreground">
+            {item.title}
+          </h2>
+          <div className="mt-9 h-px w-14 bg-accent/45 transition-all duration-700 group-hover:w-24" />
+          <p className="mt-8 font-display italic text-[17px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/75">
+            {item.body}
+          </p>
+          <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Read the dispatch &nbsp;—↗
+          </p>
+        </div>
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/9] rounded-sm border border-foreground/[0.08] md:col-span-7"
+          className="aspect-[4/5] border border-foreground/[0.08] md:col-span-5 md:aspect-[3/4]"
         />
-        <div className="md:col-span-5">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/75">
-            {item.tag}
-          </p>
-          <h2 className="mt-5 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
-            {item.title}
-          </h2>
-          <p className="mt-6 font-display italic text-[15px] md:text-[17px] leading-[1.55] text-foreground/80">
-            {item.body}
-          </p>
-          <p className="mt-7 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Read the dispatch ↗
-          </p>
-        </div>
       </div>
     </motion.a>
   );
@@ -421,37 +422,36 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-16 block"
+      className="group not-prose mt-24 md:mt-32 block"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/70">
-          Below The Fold · Featured
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-          {item.outlet} · {item.date}
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.08] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+        <span className="text-accent/65">Below The Fold</span>
+        <span className="text-muted-foreground/40 hidden md:inline">
+          Dateline · {item.date}
+        </span>
+        <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-7 md:order-2">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-primary/70">
-            {item.tag}
-          </p>
-          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.02em] text-foreground/95 transition-colors duration-500 group-hover:text-gradient">
-            {item.title}
-          </h3>
-          <p className="mt-5 text-[15px] leading-[1.7] text-foreground/70">
-            {item.body}
-          </p>
-          <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
-            Continue ↗
-          </p>
-        </div>
+      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-14">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/10] rounded-sm border border-foreground/[0.08] md:col-span-5 md:order-1"
+          className="aspect-[16/10] border border-foreground/[0.08] md:col-span-6"
         />
+        <div className="md:col-span-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
+            {item.tag}
+          </p>
+          <h3 className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.08] tracking-[-0.025em] text-foreground/95 transition-colors duration-500 group-hover:text-foreground">
+            {item.title}
+          </h3>
+          <p className="mt-6 text-[15px] leading-[1.8] text-foreground/70">
+            {item.body}
+          </p>
+          <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55 transition-colors duration-500 group-hover:text-accent">
+            Continue &nbsp;—↗
+          </p>
+        </div>
       </div>
     </motion.a>
   );
