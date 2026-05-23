@@ -641,9 +641,10 @@ export default function ScrollSections() {
       <StorySection chapter={indiaChapter} index={6} total={totalChapters} />
 
       {/* News — editorial media archive. A quiet chronological list. */}
-      <section id="news" className="relative viewport-section flex items-center px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+      <section id="news" className="relative viewport-section flex items-center overflow-hidden px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24">
+        <MediaWallBackdrop />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_45%,oklch(0.10_0.03_245/0.08),transparent_72%)]" />
-        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
+        <div className="relative mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-12 md:gap-16 pointer-events-auto">
           <MotionReveal className="md:col-span-4 md:sticky md:top-32 self-start">
             <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">News &amp; Media</p>
             <h3 className="font-display text-[clamp(2rem,7vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient">
