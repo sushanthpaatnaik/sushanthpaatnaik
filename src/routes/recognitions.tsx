@@ -862,7 +862,7 @@ function RecognitionsPage() {
           </p>
         </EditorialSection>
         <PresidentialTriptych
-          items={[eraPresidential[0], eraPresidential[1], eraPresidential[3]]}
+          items={[eraPresidential[0], eraPresidential[1], eraPresidential[2]]}
         />
       </div>
 
