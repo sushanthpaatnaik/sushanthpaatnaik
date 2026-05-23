@@ -13,12 +13,6 @@ import nifLogo from "@/assets/outlets/nif-color.webp";
 import ioclLogo from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
-import globalIndianLogo from "@/assets/outlets/global-indian-color.webp";
-import telegraphLogo from "@/assets/outlets/telegraph-color.svg";
-import indiaTodayLogo from "@/assets/outlets/india-today.webp";
-import businessStandardLogo from "@/assets/outlets/business-standard-color.webp";
-import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
-import thePrintLogo from "@/assets/outlets/theprint.webp";
 
 export const Route = createFileRoute("/voices")({
   component: VoicesPage,
