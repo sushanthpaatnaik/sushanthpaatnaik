@@ -31,20 +31,20 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneSpark,
     alt: "01 — Spark · a single glowing particle in dark space",
-    tint: "radial-gradient(ellipse at 50% 50%, oklch(0.42 0.12 245 / 0.32), oklch(0.08 0.03 260 / 0.14) 70%)",
+    tint: "radial-gradient(ellipse at 50% 50%, oklch(0.38 0.035 230 / 0.20), oklch(0.06 0.010 232 / 0.14) 70%)",
     overlay:
-      "radial-gradient(ellipse 72% 64% at 50% 52%, oklch(0.04 0.01 260 / 0.62) 0%, oklch(0.03 0.006 260 / 0.92) 75%)",
+      "radial-gradient(ellipse 72% 64% at 50% 52%, oklch(0.035 0.005 232 / 0.66) 0%, oklch(0.025 0.004 232 / 0.94) 75%)",
     parallax: 0.5,
-    filter: "brightness(0.58) contrast(1.06) saturate(0.78)",
+    filter: "brightness(0.54) contrast(1.05) saturate(0.62)",
   },
   {
     src: sceneFounder,
     alt: "02 — Founder · portrait dissolving into industrial darkness",
-    tint: "linear-gradient(120deg, oklch(0.55 0.10 55 / 0.22), transparent 55%, oklch(0.15 0.05 260 / 0.35))",
+    tint: "linear-gradient(120deg, oklch(0.45 0.05 50 / 0.14), transparent 55%, oklch(0.12 0.02 232 / 0.28))",
     overlay:
-      "radial-gradient(ellipse 55% 65% at 38% 50%, oklch(0.04 0.01 40 / 0.30) 0%, oklch(0.03 0.006 260 / 0.78) 85%)",
+      "radial-gradient(ellipse 55% 65% at 38% 50%, oklch(0.035 0.006 40 / 0.30) 0%, oklch(0.025 0.004 232 / 0.82) 85%)",
     parallax: 0.4,
-    filter: "brightness(0.74) contrast(1.10) saturate(0.85) sepia(0.08)",
+    filter: "brightness(0.7) contrast(1.08) saturate(0.7) sepia(0.05)",
   },
   {
     src: sceneMaterial,
@@ -76,11 +76,11 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneVentures,
     alt: "06 — Ecosystem · a constellation of operating worlds",
-    tint: "radial-gradient(ellipse at 50% 40%, oklch(0.45 0.13 270 / 0.30), oklch(0.10 0.05 250 / 0.25) 70%)",
+    tint: "radial-gradient(ellipse at 50% 40%, oklch(0.40 0.05 235 / 0.22), oklch(0.08 0.018 232 / 0.22) 70%)",
     overlay:
-      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.04 0.01 260 / 0.45) 0%, oklch(0.03 0.006 260 / 0.78) 85%)",
+      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.035 0.006 232 / 0.50) 0%, oklch(0.025 0.004 232 / 0.82) 85%)",
     parallax: 0.9,
-    filter: "brightness(0.78) contrast(1.08) saturate(0.95) hue-rotate(-4deg)",
+    filter: "brightness(0.74) contrast(1.06) saturate(0.78)",
   },
   {
     src: sceneFuture,
