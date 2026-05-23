@@ -307,6 +307,15 @@ function HeroCard({ item }: { item: Item }) {
           Flagship
         </span>
       </div>
+      {/* Patent stamp — bottom-right technical readout sticker */}
+      <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          IP · Filed
+        </span>
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
+          {item.status}
+        </span>
+      </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
         <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
@@ -341,8 +350,11 @@ function CompactCard({ item }: { item: Item }) {
         src={item.img}
         alt={`${item.title} — ${item.body}`}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.04]"
+        className="absolute inset-0 h-full w-full object-cover opacity-72 grayscale-[0.3] contrast-[1.05] brightness-[0.88] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.035]"
       />
+      {/* Restrained lattice — scientific texture */}
+      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
+
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
