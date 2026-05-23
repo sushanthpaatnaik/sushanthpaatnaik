@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
+import FounderPortrait from "@/components/scene/FounderPortrait";
 import backdrop from "@/assets/story-03-material.jpg";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -96,6 +97,12 @@ function InnovationsPage() {
       backdrop={backdrop}
       overlay={0.74}
     >
+      <FounderPortrait
+        variant="documentary"
+        caption="Calibrating instrumentation in the R&D lab — graphene formulations under bench-scale validation."
+        meta="Field · R&D Bench"
+      />
+
       <div className="not-prose">
         <div className="mb-10 flex flex-wrap items-center gap-2">
           {filters.map((f) => {
