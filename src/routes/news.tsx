@@ -546,18 +546,27 @@ function NewsPage() {
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
-      {/* Masthead */}
-      <div className="mt-16 flex flex-wrap items-baseline justify-between gap-3 border-t border-b border-foreground/[0.1] py-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55">
-        <span className="text-primary/80">Press Of Record · MMXXVI</span>
-        <span>Curated, Not Complete</span>
-        <span>Folio · 01–16</span>
+      {/* Newspaper nameplate */}
+      <div className="mt-20 border-y border-foreground/20 py-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
+          <span className="text-primary/80">Press of Record</span>
+          <span className="hidden sm:inline text-muted-foreground/40">
+            Volume XV · MMXXVI
+          </span>
+          <span>Folio 01 — 16</span>
+        </div>
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+          <span>Bhubaneswar · Delhi · Boston</span>
+          <span className="hidden md:inline">Curated, not complete</span>
+          <span>English · ଓଡ଼ିଆ</span>
+        </div>
       </div>
 
       {/* Lead + secondary features */}
       <LeadFeature item={featured} />
       <SecondaryFeature item={secondary} />
 
-      {/* Archive — newspaper register */}
+      {/* Archive — newspaper register, grouped by year */}
       <EditorialSection number="07 · Archive" heading="Sixteen dispatches of record.">
         <p>
           The press archive in chronological reach — from teenage assistive
@@ -565,12 +574,49 @@ function NewsPage() {
           MIT TR and Wikipedia, to deep-tech reporting on Capattery, GraphIN
           and the battery breakthrough.
         </p>
-        <ol className="not-prose mt-12 flex flex-col">
-          {coverage.map((item, i) => (
-            <ArchiveEntry key={item.href} item={item} index={i} />
-          ))}
-          <li className="border-t border-foreground/[0.08]" />
-        </ol>
+
+        {(() => {
+          // Group entries by year (extract trailing 4-digit year from date strings)
+          const byYear = new Map<string, { item: PressItem; index: number }[]>();
+          coverage.forEach((item, index) => {
+            const m = item.date.match(/\b(19|20)\d{2}\b/);
+            const year = m ? m[0] : "—";
+            if (!byYear.has(year)) byYear.set(year, []);
+            byYear.get(year)!.push({ item, index });
+          });
+          const years = Array.from(byYear.keys()).sort(
+            (a, b) => Number(b) - Number(a),
+          );
+          return (
+            <div className="not-prose mt-14 flex flex-col gap-16 md:gap-20">
+              {years.map((year) => (
+                <section key={year}>
+                  <div className="grid grid-cols-[5rem_1fr] gap-6 md:grid-cols-[8rem_1fr] md:gap-10">
+                    <div className="pt-2">
+                      <p className="font-display text-3xl md:text-[3rem] font-extralight tracking-[-0.025em] text-foreground/35">
+                        {year}
+                      </p>
+                      <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                        {String(byYear.get(year)!.length).padStart(2, "0")}{" "}
+                        Entr{byYear.get(year)!.length === 1 ? "y" : "ies"}
+                      </p>
+                    </div>
+                    <ol className="flex flex-col">
+                      {byYear.get(year)!.map(({ item, index }) => (
+                        <ArchiveEntry
+                          key={item.href}
+                          item={item}
+                          index={index}
+                        />
+                      ))}
+                      <li className="border-t border-foreground/[0.08]" />
+                    </ol>
+                  </div>
+                </section>
+              ))}
+            </div>
+          );
+        })()}
       </EditorialSection>
 
       {/* Mastheads register */}
