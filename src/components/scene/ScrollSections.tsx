@@ -1,8 +1,7 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
-import ScrollStory from "./ScrollStory";
 import VentureConstellation, { type Venture } from "./VentureConstellation";
-import type { StoryChapter } from "./StorySection";
+import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-presence.jpg";
 import founderLab from "@/assets/founder-lab.jpg";
 
