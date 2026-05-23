@@ -7,7 +7,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 
-import {
+import ArchiveMosaic, {
   HallOfFameRibbon,
 
   StatsAuthorityBlock,
