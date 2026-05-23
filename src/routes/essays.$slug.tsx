@@ -207,38 +207,38 @@ function EssayPage() {
 
       <Nav />
 
-      <main className="relative z-10 mx-auto max-w-2xl px-5 sm:px-6 pt-36 md:pt-44 pb-24 md:pb-32">
-        {/* Masthead crumb */}
+      <main className="relative z-10 mx-auto max-w-[40rem] px-6 sm:px-8 pt-40 md:pt-52 pb-28 md:pb-40">
+        {/* Folio crumb */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-          className="flex flex-wrap items-baseline justify-between gap-3 border-b border-foreground/[0.08] pb-5 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55"
+          className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55"
         >
           <Link to="/essays" className="hover:text-foreground/85 transition-colors">
             ← In His Words
           </Link>
-          <span>
-            Essay {essay.number} · {essay.date} · {essay.readTime}
+          <span className="text-muted-foreground/40">
+            № {essay.number} · {essay.date} · {essay.readTime}
           </span>
         </motion.div>
 
         {/* Title block */}
-        <header className="mt-12 md:mt-16">
+        <header className="mt-24 md:mt-36">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.05, ease: [0.19, 1, 0.22, 1] }}
-            className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/80"
+            className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/75"
           >
-            № {essay.number} · Editorial
+            Essay № {essay.number}
           </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.4, delay: 0.12, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-7 font-display text-[clamp(2.1rem,6.5vw,3.8rem)] leading-[1.03] tracking-[-0.035em] text-gradient"
+            transition={{ duration: 1.5, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-8 font-display text-[clamp(2.4rem,7vw,4.25rem)] leading-[1.0] tracking-[-0.04em] text-foreground/95"
           >
             {essay.title}
           </motion.h1>
@@ -246,31 +246,31 @@ function EssayPage() {
           <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 1.4, delay: 0.32, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-10 h-px w-20 origin-left bg-accent/40"
+            transition={{ duration: 1.6, delay: 0.38, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-14 h-px w-16 origin-left bg-foreground/20"
           />
 
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.36, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-8 font-display italic text-xl md:text-[28px] leading-[1.4] tracking-[-0.005em] text-foreground/85"
+            transition={{ duration: 1.3, delay: 0.44, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-10 font-display italic text-[22px] md:text-[28px] leading-[1.4] tracking-[-0.01em] text-foreground/75"
           >
             {essay.description}
           </motion.p>
 
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-10 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.6 }}
+            className="mt-14 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/50"
           >
             By Sushanth Paatnaik
           </motion.p>
         </header>
 
         {/* Body */}
-        <article className="mt-20 md:mt-24 flex flex-col gap-16 md:gap-20">
+        <article className="mt-28 md:mt-36 flex flex-col gap-20 md:gap-28">
           {essay.sections.map((section, i) => {
             const sectionNumber = String(i + 1).padStart(2, "0");
             return (
@@ -278,15 +278,16 @@ function EssayPage() {
                 key={i}
                 initial={{ opacity: 0, y: 22 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 1.1, delay: i * 0.04, ease: [0.19, 1, 0.22, 1] }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 1.2, delay: i * 0.04, ease: [0.19, 1, 0.22, 1] }}
               >
                 {section.heading && (
-                  <div className="mb-8 flex items-baseline gap-5 border-t border-foreground/[0.08] pt-6">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
+                  <div className="mb-12 flex items-baseline gap-6">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/70">
                       {sectionNumber} / {String(totalSections).padStart(2, "0")}
                     </span>
-                    <h2 className="font-display text-[15px] uppercase tracking-[0.22em] text-foreground/75 md:text-[16px]">
+                    <span className="h-px flex-1 bg-foreground/[0.08]" />
+                    <h2 className="font-display italic text-[17px] md:text-[19px] tracking-[-0.005em] text-foreground/80">
                       {section.heading}
                     </h2>
                   </div>
@@ -296,9 +297,9 @@ function EssayPage() {
                   return (
                     <p
                       key={j}
-                      className={`mb-7 text-[16px] leading-[1.8] text-foreground/80 md:text-[18px] md:leading-[1.78] ${
+                      className={`mb-8 text-[17px] leading-[1.85] text-foreground/80 md:text-[19px] md:leading-[1.8] ${
                         isLead
-                          ? "first-letter:font-display first-letter:text-[3.6rem] first-letter:md:text-[4.2rem] first-letter:font-normal first-letter:leading-[0.9] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-foreground/95"
+                          ? "first-letter:font-display first-letter:text-[4.2rem] first-letter:md:text-[5rem] first-letter:font-normal first-letter:leading-[0.85] first-letter:float-left first-letter:mr-4 first-letter:mt-2 first-letter:text-foreground/95"
                           : ""
                       }`}
                     >
@@ -307,16 +308,16 @@ function EssayPage() {
                   );
                 })}
                 {section.bullets && (
-                  <ul className="mt-6 flex flex-col gap-4 border-l border-accent/30 pl-6 md:pl-7">
+                  <ul className="mt-10 flex flex-col gap-6">
                     {section.bullets.map((b, k) => (
                       <li
                         key={k}
-                        className="text-[16px] leading-[1.75] text-foreground/75 md:text-[17px]"
+                        className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-t border-foreground/[0.06] pt-5 text-[16px] leading-[1.8] text-foreground/75 md:text-[17px]"
                       >
-                        <span className="mr-3 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/45">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/65">
                           {String(k + 1).padStart(2, "0")}
                         </span>
-                        {b}
+                        <span>{b}</span>
                       </li>
                     ))}
                   </ul>
