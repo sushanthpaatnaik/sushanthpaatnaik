@@ -834,7 +834,7 @@ function NewsPage() {
           A short reel of voices from institutions that have seen the work
           firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
         </p>
-        <ul className="not-prose mt-12 flex flex-col">
+        <ul className="not-prose mt-8 flex flex-col">
           {testimonials.map((t, i) => (
             <motion.li
               key={t.author}
@@ -842,7 +842,7 @@ function NewsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 1.05, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-              className="grid grid-cols-1 gap-6 border-t border-foreground/[0.08] py-10 md:grid-cols-[160px_1fr] md:gap-12 md:py-12"
+              className="grid grid-cols-1 gap-6 border-t border-foreground/[0.08] py-7 md:grid-cols-[160px_1fr] md:gap-12 md:py-8"
             >
               <div className="flex h-10 items-center md:h-12">
                 <img
