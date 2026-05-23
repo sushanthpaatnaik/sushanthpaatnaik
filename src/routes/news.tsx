@@ -814,7 +814,7 @@ function NewsPage() {
       </EditorialSection>
 
       {/* Voices — broadsheet pull-quotes */}
-      <EditorialSection number="09 · Voices" heading="On the work, in their words.">
+      <EditorialSection number="10 · Voices" heading="On the work, in their words.">
         <p>
           A short reel of voices from institutions that have seen the work
           firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
