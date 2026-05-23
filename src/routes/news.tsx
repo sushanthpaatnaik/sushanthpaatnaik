@@ -447,7 +447,7 @@ function LeadFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose mt-10 group"
+      className="not-prose mt-8 group"
     >
       {/* Dateline strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
@@ -462,14 +462,14 @@ function LeadFeature({ item }: { item: PressItem }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-8 block"
+        className="mt-5 block"
       >
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
           <MediaPlate
             src={item.image}
             alt={`${item.title} — ${item.outlet}`}
             objectPosition={item.objectPosition}
-            className="aspect-[4/5] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5]"
+            className="aspect-[4/5] max-h-[540px] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5] md:max-h-[32rem]"
           />
 
           {/* Editorial reading panel — slight surface plate so copy
@@ -515,7 +515,7 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-16 block"
+      className="group not-prose mt-10 block"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
         <span className="text-accent/70">Latest Dispatch</span>
@@ -524,12 +524,12 @@ function SecondaryFeature({ item }: { item: PressItem }) {
         </span>
         <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+      <div className="mt-5 grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/10] border border-foreground/[0.08] md:col-span-6"
+          className="aspect-[16/10] max-h-[380px] border border-foreground/[0.08] md:col-span-6 md:max-h-[22rem]"
         />
         <div className="md:col-span-6">
           <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
