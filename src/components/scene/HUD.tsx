@@ -192,7 +192,7 @@ function ChapterMarker({
             opacity: showLabel ? 1 : 0,
             x: showLabel ? 0 : -6,
           }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 1 / 0.22, 1] }}
+          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
         >
           {chapter.label}
         </motion.span>

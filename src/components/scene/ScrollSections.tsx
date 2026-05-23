@@ -253,7 +253,7 @@ function FounderScene() {
 
         {/* Subtle cool blue-grey rim — jawline / shoulders / glasses edges */}
         <div className="absolute inset-1 mix-blend-screen bg-[radial-gradient(ellipse_6%_5%_at_25%_31%,oklch(0.80_0.015_232/0.14),transparent_78%)]" />
-        <div className="absolute inset-1 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(1.070_0.015_232/0.17),transparent_75%)]" />
+        <div className="absolute inset-1 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(0.70_0.015_232/0.17),transparent_75%)]" />
         <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_22%_at_21%_59%,oklch(0.58_0.015_232/0.10),transparent_78%)]" />
         <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_10%_14%_at_30%_22%,oklch(0.76_0.02_232/0.074),transparent_82%)]" />
 
