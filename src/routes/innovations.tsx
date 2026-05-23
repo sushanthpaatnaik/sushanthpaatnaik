@@ -363,9 +363,16 @@ function CompactCard({ item }: { item: Item }) {
             "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.96) 100%)",
         }}
       />
-      {/* Hairline scientific marker */}
-      <div className="absolute left-3 top-3 z-10 h-px w-5 bg-accent/60" />
-      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
+      {/* Corner technical readout — status + hairline */}
+      <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+        <span className="h-px w-5 bg-accent/60" />
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+          IP · Filed
+        </span>
+      </div>
+
+      {/* Resting plate — domain · title · metric */}
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4 transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[44px]">
         <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
@@ -376,27 +383,22 @@ function CompactCard({ item }: { item: Item }) {
           {item.metric}
         </p>
       </div>
-      {/* Hover detail */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-[oklch(0.04_0.006_245/0.92)] px-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="text-center">
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent/80">
-            {item.status}
-          </p>
-          <h3 className="mt-1.5 font-display text-lg tracking-[-0.01em] text-foreground/98">
-            {item.title}
-          </h3>
-          <p className="mt-2 text-[11px] leading-relaxed text-foreground/80 line-clamp-4">
-            {item.body}
-          </p>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <span className="h-px w-4 bg-accent/60" />
-            <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-foreground/70">
-              {item.metric}
-            </p>
-            <span className="h-px w-4 bg-accent/60" />
-          </div>
-        </div>
+
+      {/* Scientific data-plate — slides up on hover, restrained */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 translate-y-full border-t border-accent/25 bg-[oklch(0.04_0.006_245/0.92)] px-3.5 py-3 opacity-0 transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          {item.status}
+        </p>
+        <p className="mt-1.5 text-[11px] leading-snug text-foreground/80 line-clamp-2">
+          {item.body}
+        </p>
       </div>
+    </motion.article>
+  );
+
     </motion.article>
   );
 }
