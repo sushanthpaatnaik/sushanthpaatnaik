@@ -288,9 +288,6 @@ export function Product3DModal({
                   }}
                 />
               </div>
-                  }}
-                />
-              </div>
 
               {/* Hint */}
               <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] uppercase tracking-[0.38em] text-foreground/50">
