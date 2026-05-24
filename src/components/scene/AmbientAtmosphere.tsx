@@ -51,18 +51,8 @@ export default function AmbientAtmosphere() {
         transition={{ duration: 54, repeat: Infinity, ease: "easeInOut", delay: 8 }}
       />
 
-      {/* Faint blueprint trace — industrial geometric depth in the center. */}
-      <div
-        className="absolute inset-0 opacity-[0.025] md:opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'><g fill='none' stroke='%237fb1d9' stroke-width='0.4' stroke-opacity='0.55'><circle cx='210' cy='210' r='180'/><circle cx='210' cy='210' r='120'/><circle cx='210' cy='210' r='60'/><path d='M30 210 H390 M210 30 V390 M75 75 L345 345 M345 75 L75 345'/><rect x='90' y='90' width='240' height='240'/></g></svg>\")",
-          backgroundSize: "640px 640px",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          mixBlendMode: "screen",
-        }}
-      />
+      {/* Blueprint-trace SVG layer removed — it was rendering a visible
+          radial/hexagonal artifact behind hero typography under screen blend. */}
 
       {/* Faint vertical atmospheric depth */}
       <div
