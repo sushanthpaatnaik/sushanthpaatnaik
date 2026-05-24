@@ -610,22 +610,7 @@ function ClosingInvitation() {
         </MotionReveal>
         <MotionReveal delay={0.42}>
           <div className="relative mt-8 md:mt-10 inline-block">
-            {/* Faint atmospheric backlight behind the archival signature */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -inset-x-12 -inset-y-3 -z-10"
-              style={{
-                background:
-                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.24), transparent 76%)",
-                filter: "blur(22px)",
-              }}
-            />
-            <p
-              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70"
-              style={{
-                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)",
-              }}
-            >
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
             </p>
           </div>
