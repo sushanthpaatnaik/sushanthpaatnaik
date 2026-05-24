@@ -105,6 +105,9 @@ export const Route = createFileRoute("/innovations")({
 });
 
 type Stage = "Commercial" | "Pilot" | "R&D";
+
+type Spec = { k: string; v: string; note: string };
+
 type Item = {
   title: string;
   stage: Stage;
@@ -116,6 +119,9 @@ type Item = {
   domain: string;
   status: string;
   featured?: boolean;
+  specs?: Spec[];
+  positioning?: string;
+  applicationContext?: string[];
 };
 
 const items: Item[] = [
