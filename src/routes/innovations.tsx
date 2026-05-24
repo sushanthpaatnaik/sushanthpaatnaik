@@ -31,6 +31,31 @@ import imgAerophenter from "@/assets/innovations/aerophenter.webp";
 import imgFibrasphene from "@/assets/innovations/fibrasphene.webp";
 import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
+// Transparent product cut-outs — used for the 3D product viewer
+import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.png";
+import cutGraffisol from "@/assets/innovations/cutouts/graffisol.png";
+import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.png";
+import cutHdgpe from "@/assets/innovations/cutouts/hdgpe.png";
+import cutGraphenodes from "@/assets/innovations/cutouts/graphenodes.png";
+import cutCoalorix from "@/assets/innovations/cutouts/coalorix.png";
+import cutAquamax from "@/assets/innovations/cutouts/aquamax.png";
+import cutIgnitronD from "@/assets/innovations/cutouts/ignitron-d.png";
+import cutIgnitronP from "@/assets/innovations/cutouts/ignitron-p.png";
+import cutLubritron from "@/assets/innovations/cutouts/lubritron.png";
+import cutBitumax from "@/assets/innovations/cutouts/bitumax.png";
+import cutRustene from "@/assets/innovations/cutouts/rustene.png";
+import cutPyronex from "@/assets/innovations/cutouts/pyronex.png";
+import cutGraphyre from "@/assets/innovations/cutouts/graphyre.png";
+import cutGraphosite from "@/assets/innovations/cutouts/graphosite.png";
+import cutThermaphene from "@/assets/innovations/cutouts/thermaphene.png";
+import cutArmophene from "@/assets/innovations/cutouts/armophene.png";
+import cutGryogen from "@/assets/innovations/cutouts/gryogen.png";
+import cutHydrocell from "@/assets/innovations/cutouts/hydrocell.png";
+import cutMariphene from "@/assets/innovations/cutouts/mariphene.png";
+import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.png";
+import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.png";
+import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.png";
+
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
