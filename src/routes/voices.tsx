@@ -13,6 +13,12 @@ import nifLogo from "@/assets/outlets/nif-color.webp";
 import ioclLogo from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
+import globalIndianLogo from "@/assets/outlets/global-indian-color.webp";
+import telegraphLogo from "@/assets/outlets/telegraph-color.svg";
+import indiaTodayLogo from "@/assets/outlets/india-today.webp";
+import businessStandardLogo from "@/assets/outlets/business-standard-color.webp";
+import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
+import thePrintLogo from "@/assets/outlets/theprint.webp";
 
 export const Route = createFileRoute("/voices")({
   component: VoicesPage,
@@ -96,10 +102,50 @@ const institutional: Voice[] = [
   },
 ];
 
-// Editorial / press voices have been moved out of this section. Media
-// coverage and the press archive live exclusively on the /news page so
-// Voices remains a pure wall of institutional endorsement.
-
+const editorial: Voice[] = [
+  {
+    source: "India Today",
+    role: "Long-form profile",
+    quote:
+      "Profiled as a young inventor whose laboratory has moved steadily from prototype to industrial product.",
+    logo: indiaTodayLogo,
+  },
+  {
+    source: "The Telegraph",
+    role: "Front-page feature · Enabler",
+    quote:
+      "Front-page feature on the Enabler prototype — among the first national press recognitions of the early-works arc.",
+    logo: telegraphLogo,
+  },
+  {
+    source: "Business Standard",
+    role: "Industry coverage",
+    quote:
+      "Tracked as part of India's deep-tech materials cohort building toward export-grade industrial graphene applications.",
+    logo: businessStandardLogo,
+  },
+  {
+    source: "Global Indian",
+    role: "Diaspora feature",
+    quote:
+      "Featured among Indian inventors translating frontier science into global industrial product.",
+    logo: globalIndianLogo,
+  },
+  {
+    source: "YourStory",
+    role: "Founder profile · Capattery",
+    quote:
+      "Founder profile on the Capattery work and the broader operating-group thesis.",
+    logo: yourStoryLogo,
+  },
+  {
+    source: "The Print",
+    role: "Long-form portrait",
+    quote:
+      "Long-form portrait on the trajectory from teenage Presidential awardee to deep-tech operating-group architect.",
+    logo: thePrintLogo,
+  },
+];
 
 function VoicesStrip() {
   return (
@@ -175,13 +221,13 @@ function VoicesList({ items }: { items: Voice[] }) {
 function VoicesPage() {
   return (
     <CinematicPageShell
-      eyebrow="Voices · Institutional Endorsements"
+      eyebrow="Voices · Institutions, Stages & Press"
       title={
         <>
           What the institutions<br className="hidden md:inline" /> have on record.
         </>
       }
-      lead="A curated wall of institutional endorsement — sovereign bodies, foundations, and global platforms speaking on the work. Quotes are paraphrased from public record."
+      lead="A curated set of institutional voices, on-record recognitions, and editorial endorsements — drawn from sovereign honors, global stages, and the long press trail. Quotes are paraphrased from public record; primary sources are linked in News and Recognitions."
       backdrop={backdrop}
       overlay={0.76}
     >
@@ -196,6 +242,14 @@ function VoicesPage() {
 
       <VoicesList items={institutional} />
 
+      <EditorialSection number="02 · Editorial" heading="In the long press trail.">
+        <p>
+          Editorial endorsements across India's national press and the global
+          deep-tech discourse. Full press archive lives in News.
+        </p>
+      </EditorialSection>
+
+      <VoicesList items={editorial} />
     </CinematicPageShell>
   );
 }

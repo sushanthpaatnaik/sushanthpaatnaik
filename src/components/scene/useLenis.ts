@@ -1,58 +1,33 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
-export function useLenis(onScroll?: (progress: number, scrollY: number) => void) {
+export function useLenis(onScroll?: (progress: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
     const lenis = new Lenis({
-      duration: prefersReduced ? 0.001 : 1.15,
-      easing: (t) => 1 - Math.pow(1 - t, 2.6),
-      smoothWheel: !prefersReduced,
-      wheelMultiplier: 0.88,
-      touchMultiplier: 1.0,
+      // Longer glide + gentler easing for film-like scroll continuity.
+      duration: 1.45,
+      easing: (t) => 1 - Math.pow(1 - t, 3.2),
+      smoothWheel: true,
+      wheelMultiplier: 0.82,
+      touchMultiplier: 0.95,
       syncTouch: true,
     });
-
     lenisRef.current = lenis;
 
-    let lastProgress = -1;
-    let lastScroll = -1;
-    lenis.on("scroll", ({ progress, scroll }: { progress: number; scroll: number }) => {
-      // De-dupe frame-identical notifications so consumers can skip work.
-      if (progress === lastProgress && scroll === lastScroll) return;
-      lastProgress = progress;
-      lastScroll = scroll;
-      onScroll?.(progress, scroll);
+    lenis.on("scroll", ({ progress }: { progress: number }) => {
+      onScroll?.(progress);
     });
 
     let rafId = 0;
-    let running = false;
     const raf = (time: number) => {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     };
-    const start = () => {
-      if (running) return;
-      running = true;
-      rafId = requestAnimationFrame(raf);
-    };
-    const stop = () => {
-      running = false;
-      cancelAnimationFrame(rafId);
-    };
-    start();
+    rafId = requestAnimationFrame(raf);
 
-    const onVis = () => {
-      if (document.hidden) stop();
-      else start();
-    };
-    document.addEventListener("visibilitychange", onVis);
-
+    // Recompute layout-dependent scroll math once images, fonts, and late layout settle.
     const resize = () => lenis.resize();
     const snapState = () => {
       const current = window.scrollY || window.pageYOffset || 0;
@@ -68,12 +43,24 @@ export function useLenis(onScroll?: (progress: number, scrollY: number) => void)
       resize();
       snapState();
     }).catch(() => {});
-    const t1 = window.setTimeout(() => { resize(); snapState(); }, 180);
-    const t2 = window.setTimeout(() => { resize(); snapState(); }, 700);
-    const t3 = window.setTimeout(() => { resize(); snapState(); }, 1400);
+    // Catch async image decode / hydration shifts.
+    const t1 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 180);
+    const t2 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 700);
+    const t3 = window.setTimeout(() => {
+      resize();
+      snapState();
+    }, 1400);
 
     const ro = typeof ResizeObserver !== "undefined"
-      ? new ResizeObserver(() => { resize(); })
+      ? new ResizeObserver(() => {
+          resize();
+        })
       : null;
     if (ro) {
       ro.observe(document.documentElement);
@@ -81,8 +68,7 @@ export function useLenis(onScroll?: (progress: number, scrollY: number) => void)
     }
 
     return () => {
-      stop();
-      document.removeEventListener("visibilitychange", onVis);
+      cancelAnimationFrame(rafId);
       window.removeEventListener("load", onLoad);
       clearTimeout(t1);
       clearTimeout(t2);
