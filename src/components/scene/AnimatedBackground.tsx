@@ -25,6 +25,12 @@ interface AnimatedBackgroundProps {
   scenes: BackgroundScene[];
   /** Optional dark overlay opacity stops (length must equal scenes.length). */
   overlayStops?: number[];
+  /**
+   * Optional externally-driven chapter phase (integer N = chapter N centered
+   * in viewport). When provided, the background syncs to actual section
+   * positions instead of uniform scroll progress.
+   */
+  phaseSource?: MotionValue<number>;
   /** Optional children rendered on top of the scenes (e.g. ParticleField). */
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
