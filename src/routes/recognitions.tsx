@@ -104,7 +104,7 @@ const milestones: Milestone[] = [
     body: "Recognized by three Presidents of India across six national innovation honours — Dr. A.P.J. Abdul Kalam (2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
     image: honorPresidentialTrio,
     imageFocus: "center center",
-    imageFit: "contain",
+
     institution: "President of India · National Innovation Foundation",
     major: true,
   },
@@ -756,11 +756,11 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ${onLeft ? "md:mr-8" : "md:ml-8"} ${
+                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
                         m.title.includes("Presidential")
-                          ? "ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_30px_80px_-30px_oklch(0.62_0.08_55/0.35),inset_0_1px_0_oklch(1_0_0/0.05)] backdrop-blur-[2px]"
-                          : ""
-                      }`}
+                          ? "aspect-[16/10] md:aspect-[16/10] ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_30px_80px_-30px_oklch(0.62_0.08_55/0.35),inset_0_1px_0_oklch(1_0_0/0.05)]"
+                          : "aspect-[5/4] md:aspect-[5/4]"
+                      } ${onLeft ? "md:mr-8" : "md:ml-8"}`}
                     >
                       <img
                         src={m.image}
