@@ -8,7 +8,7 @@ const chapters = [
   { id: "industrial", label: "Industrial", n: "04" },
   { id: "recognition", label: "Recognition", n: "05" },
   { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "in-his-words", label: "In His Words", n: "07" },
+  { id: "scale", label: "Scale", n: "07" },
   { id: "future", label: "Future", n: "08" },
 ];
 
