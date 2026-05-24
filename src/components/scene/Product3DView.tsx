@@ -617,8 +617,8 @@ export function Product3DModal({
               </div>
             </div>
 
-            <div className="flex flex-col justify-center gap-5">
-              <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-5">
+            <div className="flex flex-col gap-7">
+              <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="h-px w-6 bg-accent/70" />
