@@ -493,12 +493,12 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-[1.2fr_1fr] gap-5">
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
                 {item.largeApplicationFrame ? (
-                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <div className="group relative aspect-[1.3/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
