@@ -85,6 +85,7 @@ type Item = {
   metric: string;
   body: string;
   img: string;
+  cutout: string;
   domain: string;
   status: string;
   featured?: boolean;
