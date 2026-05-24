@@ -403,7 +403,7 @@ function RecognitionSignal() {
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
         <MotionReveal>
           <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            05 — Recognition Signal
+            Recognition
           </p>
         </MotionReveal>
         <MotionReveal delay={0.08}>
