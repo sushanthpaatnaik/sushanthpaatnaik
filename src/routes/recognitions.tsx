@@ -918,37 +918,38 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.05_0.006_245)] md:col-span-7 aspect-[5/4] ${
+                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.045_0.006_245)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
                         m.title.includes("Presidential")
-                          ? "ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_40px_100px_-30px_oklch(0.62_0.08_55/0.40),inset_0_1px_0_oklch(1_0_0/0.05)]"
-                          : "ring-1 ring-foreground/10 shadow-[0_30px_80px_-30px_oklch(0_0_0/0.6),inset_0_1px_0_oklch(1_0_0/0.04)]"
+                          ? "ring-1 ring-foreground/10 shadow-[0_30px_70px_-30px_oklch(0_0_0/0.7),inset_0_1px_0_oklch(1_0_0/0.025)] group-hover:shadow-[0_42px_90px_-32px_oklch(0_0_0/0.78),inset_0_1px_0_oklch(1_0_0/0.03)]"
+                          : "ring-1 ring-foreground/8 shadow-[0_24px_60px_-30px_oklch(0_0_0/0.55),inset_0_1px_0_oklch(1_0_0/0.02)] group-hover:shadow-[0_34px_78px_-32px_oklch(0_0_0/0.62)]"
                       }`}
                     >
                       <img
                         src={m.image}
                         alt={m.title}
                         loading={i < 2 ? "eager" : "lazy"}
-                        className={`archival-image archival-image-hover absolute inset-0 h-full w-full opacity-95 ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
+                        className={`archival-image archival-image-hover absolute inset-0 h-full w-full opacity-90 ease-out group-hover:scale-[1.015] group-hover:opacity-95 ${
                           m.imageFit === "contain" ? "object-contain p-6 md:p-8" : "object-cover"
                         }`}
                         style={{ objectPosition: m.imageFocus ?? "center 30%" }}
                       />
+                      {/* Matte vignette — deeper edges, softer center */}
                       <div
                         aria-hidden
                         className="absolute inset-0"
                         style={{
                           background:
                             m.imageFit === "contain"
-                              ? "linear-gradient(180deg, transparent 0%, transparent 78%, oklch(0.02 0.006 245 / 0.45) 100%)"
-                              : "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.08) 0%, transparent 55%, oklch(0.02 0.006 245 / 0.35) 92%, oklch(0.014 0.006 245 / 0.62) 100%)",
+                              ? "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, oklch(0.018 0.006 245 / 0.45) 100%)"
+                              : "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 50%, oklch(0.018 0.006 245 / 0.55) 100%)",
                         }}
                       />
                       <div
                         aria-hidden
-                        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+                        className="absolute inset-0"
                         style={{
                           background:
-                            "radial-gradient(60% 50% at 50% 100%, oklch(var(--foreground) / 0.06), transparent 70%)",
+                            "linear-gradient(180deg, oklch(0.025 0.006 245 / 0.12) 0%, transparent 40%, transparent 70%, oklch(0.016 0.006 245 / 0.55) 100%)",
                         }}
                       />
                     </figure>
