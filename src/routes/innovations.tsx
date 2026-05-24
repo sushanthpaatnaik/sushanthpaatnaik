@@ -31,7 +31,7 @@ import imgAerophenter from "@/assets/innovations/aerophenter.webp";
 import imgFibrasphene from "@/assets/innovations/fibrasphene.webp";
 import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
-// Transparent product cut-outs — used for the 3D product viewer
+// Transparent product cut-outs — identity-preserved studio product staging
 import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.png";
 import cutGraffisol from "@/assets/innovations/cutouts/graffisol.png";
 import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.png";
@@ -362,44 +362,39 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
-      aria-label={`Open 3D view of ${item.title}`}
+      aria-label={`Open product inspection for ${item.title}`}
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
       <Tilt3DSurface
-        src={item.img}
+        src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        maxTilt={6}
-        imgClassName="opacity-[0.82] transition-opacity duration-[1400ms] ease-out group-hover:opacity-95"
-        imgStyle={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+        imgClassName="opacity-[0.96] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
+        imgStyle={{ filter: "drop-shadow(0 26px 38px oklch(0 0 0 / 0.72)) drop-shadow(0 0 24px oklch(0.7 0.03 225 / 0.16))" }}
       />
-      {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.06} className="mix-blend-screen" />
-      {/* Cinematic gradient */}
+      <LatticeField intensity={0.04} className="mix-blend-screen opacity-45" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.34) 0%, transparent 30%, transparent 45%, oklch(0.02 0.006 245 / 0.82) 82%, oklch(0.014 0.006 245 / 0.97) 100%)",
+            "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.24) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.84) 100%)",
         }}
       />
-      {/* Corner technical readout */}
-      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
-        <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/45">
-          {item.status}
-        </span>
-        <span className="h-1 w-1 rounded-full bg-accent/70" />
-      </div>
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
           Flagship
         </span>
       </div>
-      {/* Patent stamp — bottom-right technical readout sticker */}
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/55">
+          Studio capture
+        </span>
+      </div>
       <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
-          IP · Filed
+          {item.stage}
         </span>
         <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
           {item.status}
@@ -409,10 +404,10 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
         </p>
-        <h3 className="mt-2 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/98 leading-[1.1]">
+        <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
           {item.title}
         </h3>
-        <p className="mt-2.5 max-w-xl text-[13px] md:text-[14px] leading-snug text-foreground/75">
+        <p className="mt-2.5 max-w-xl text-[13px] leading-snug text-foreground/75 md:text-[14px]">
           {item.body}
         </p>
         <div className="mt-3 flex items-center gap-3">
@@ -437,57 +432,39 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
-      aria-label={`Open 3D view of ${item.title}`}
+      aria-label={`Open product inspection for ${item.title}`}
       className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
       <Tilt3DSurface
-        src={item.img}
+        src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        maxTilt={5}
-        imgClassName="opacity-[0.8] grayscale-[0.28] contrast-[1.04] brightness-[0.88] transition-[opacity,filter] duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0"
+        imgClassName="opacity-[0.96] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+        imgStyle={{ filter: "drop-shadow(0 20px 30px oklch(0 0 0 / 0.68)) drop-shadow(0 0 18px oklch(0.68 0.03 225 / 0.14))" }}
       />
-      {/* Restrained lattice — scientific texture */}
-      <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
-
+      <LatticeField intensity={0.03} className="mix-blend-screen opacity-45 transition-opacity duration-[1200ms] group-hover:opacity-70" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.96) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.2) 0%, transparent 34%, oklch(0.02 0.006 245 / 0.76) 84%, oklch(0.014 0.006 245 / 0.94) 100%)",
         }}
       />
-      {/* Corner technical readout — status + hairline */}
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
         <span className="h-px w-5 bg-accent/60" />
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
-          IP · Filed
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          Studio
         </span>
       </div>
-
-      {/* Resting plate — domain · title · metric */}
-      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4 transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[44px]">
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
         <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
-        <h3 className="mt-1 font-display text-base md:text-lg tracking-[-0.01em] text-foreground/95 leading-tight">
+        <h3 className="mt-1 font-display text-base leading-tight tracking-[-0.01em] text-foreground/95 md:text-lg">
           {item.title}
         </h3>
-        <p className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+        <p className="mt-1 line-clamp-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55">
           {item.metric}
-        </p>
-      </div>
-
-      {/* Scientific data-plate — slides up on hover, restrained */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 translate-y-full border-t border-accent/25 bg-[oklch(0.04_0.006_245/0.92)] px-3.5 py-3 opacity-0 transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0 group-hover:opacity-100"
-      >
-        <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
-          {item.status}
-        </p>
-        <p className="mt-1.5 text-[11px] leading-snug text-foreground/80 line-clamp-2">
-          {item.body}
         </p>
       </div>
     </motion.article>
