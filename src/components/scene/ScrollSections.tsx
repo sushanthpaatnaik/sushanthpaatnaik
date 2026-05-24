@@ -364,7 +364,7 @@ function FounderScene() {
       </div>
 
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
-        02 — Founder
+        Founder
       </p>
 
       <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12 pointer-events-auto">
