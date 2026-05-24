@@ -196,6 +196,11 @@ export interface Product3DModalData {
   specs?: { k: string; v: string; note: string }[];
   positioning?: string;
   applicationContext?: string[];
+  /** When true, hide the small product thumbnail next to the title and render
+   *  a wide cinematic Field Application Preview frame inside the info panel. */
+  largeApplicationFrame?: boolean;
+  /** Short caption shown inside the large application frame. */
+  applicationCaption?: string;
 }
 
 export function Product3DModal({
