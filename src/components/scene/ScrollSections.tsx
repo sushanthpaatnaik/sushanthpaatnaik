@@ -43,8 +43,8 @@ const gateways = [
   { to: "/ventures", n: "III", label: "Ventures", line: "Five operating companies. One stack." },
   { to: "/recognitions", n: "IV", label: "Recognitions", line: "Six Presidential awards. TED. MIT TR." },
   { to: "/essays", n: "V", label: "Essays", line: "Notes from the workshop." },
-  { to: "/engage", n: "VI", label: "Engage", line: "Partnerships, advisory, and origin archive." },
-  { to: "/news", n: "VII", label: "News", line: "Editorial archive." },
+  { to: "/news", n: "VI", label: "News", line: "Editorial archive." },
+  { to: "/engage", n: "VII", label: "Engage", line: "Partnerships, advisory, and origin archive." },
 ] as const;
 
 function HeroSection() {
