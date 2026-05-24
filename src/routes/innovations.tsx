@@ -146,7 +146,12 @@ const items: Item[] = [
     { k: "Emissions", v: "10%", note: "Reduced emissions output" },
     { k: "Dose", v: "0.2%", note: "Optimized additive integration" },
   ], positioning: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", applicationContext: ["Automotive systems", "Petrol-engine optimization", "Mobility platforms", "Fuel-performance enhancement"] },
-  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "+6% savings · −40% wear", body: "Nano-enabled oil additive lowering wear and saving fuel.", img: imgLubritron, cutout: cutLubritron, application: appLubritron },
+  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "6% fuel savings · 40% wear reduction", body: "Nano-enabled molecular engine oil additive for all engine types — improving fuel efficiency, reducing engine wear, and extending oil life.", img: imgLubritron, cutout: cutLubritron, application: appLubritron, specs: [
+    { k: "Fuel Savings", v: "Up to 6%", note: "Optimized fuel efficiency" },
+    { k: "Wear Reduction", v: "Up to 40%", note: "Engine friction reduction" },
+    { k: "Oil Life", v: "Up to 50%", note: "Extended drain interval" },
+    { k: "Dose", v: "0.2%", note: "Optimized lubricant additive integration" },
+  ], positioning: "Molecular engine oil additive for all engine types, designed to improve fuel efficiency, reduce engine wear, and extend oil life.", applicationContext: ["All engine types", "Petrol engines", "Diesel engines", "Two-stroke engines"] },
   { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene, cutout: cutRustene, application: appRustene },
   { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen, application: appGryogen },
   { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene },
