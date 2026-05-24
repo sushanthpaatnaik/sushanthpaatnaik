@@ -9,6 +9,7 @@ import { useLenis } from "@/components/scene/useLenis";
 // Heavy decorative scene layers — code-split so they don't block first paint.
 const AtmosphereLayer = lazy(() => import("@/components/scene/AtmosphereLayer"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
+const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
 const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumetric"));
 const CursorAura = lazy(() => import("@/components/scene/CursorAura"));
 
