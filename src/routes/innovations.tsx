@@ -56,6 +56,32 @@ import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.png";
 import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.png";
 import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.png";
 
+// Application / use-case imagery — shown as the secondary still in the
+// inspection modal. Each one depicts the product's real-world context.
+import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
+import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
+import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
+import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
+import appGraphenodes from "@/assets/innovations/applications/graphenodes.webp";
+import appCoalorix from "@/assets/innovations/applications/coalorix.webp";
+import appAquamax from "@/assets/innovations/applications/aquamax.webp";
+import appIgnitronD from "@/assets/innovations/applications/ignitron-d.webp";
+import appIgnitronP from "@/assets/innovations/applications/ignitron-p.webp";
+import appLubritron from "@/assets/innovations/applications/lubritron.webp";
+import appBitumax from "@/assets/innovations/applications/bitumax.webp";
+import appRustene from "@/assets/innovations/applications/rustene.webp";
+import appPyronex from "@/assets/innovations/applications/pyronex.webp";
+import appGraphyre from "@/assets/innovations/applications/graphyre.webp";
+import appGraphosite from "@/assets/innovations/applications/graphosite.webp";
+import appThermaphene from "@/assets/innovations/applications/thermaphene.webp";
+import appArmophene from "@/assets/innovations/applications/armophene.webp";
+import appGryogen from "@/assets/innovations/applications/gryogen.webp";
+import appHydrocell from "@/assets/innovations/applications/hydrocell.webp";
+import appMariphene from "@/assets/innovations/applications/mariphene.webp";
+import appAerophenter from "@/assets/innovations/applications/aerophenter.webp";
+import appFibrasphene from "@/assets/innovations/applications/fibrasphene.webp";
+import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
+
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
