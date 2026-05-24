@@ -4,7 +4,7 @@ import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform
 import StorySection, { type StoryChapter } from "./StorySection";
 import { HOME_CHAPTER_COUNT } from "./homeChapters";
 import founderPresence from "@/assets/founder-editorial.webp";
-import inHisWordsBackdrop from "@/assets/scene-in-his-words-portrait.png";
+
 import scaleValidationBackdrop from "@/assets/scene-scale-validation.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 
