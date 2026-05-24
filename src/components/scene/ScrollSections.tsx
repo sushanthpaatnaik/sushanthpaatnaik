@@ -110,7 +110,7 @@ function HeroSection() {
           >
             <span className="h-px w-8 bg-foreground/20" />
             <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
-              01 — Spark
+              Origin
             </span>
             <span className="h-px w-8 bg-foreground/20" />
           </motion.div>
