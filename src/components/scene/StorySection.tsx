@@ -29,8 +29,8 @@ function SectionCopy({
       : align === "right"
         ? "mr-auto md:ml-auto md:mr-0 text-left md:text-right"
         : "mr-auto text-left";
-  const counterPosition =
-    align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
+
+
 
   return (
     <div className={`max-w-2xl pointer-events-auto ${textAlign}`}>
@@ -70,16 +70,6 @@ function SectionCopy({
         {body}
       </motion.p>
 
-      <motion.div
-        initial={{ opacity: 1, y: 0 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.8 }}
-        transition={{ duration: 0 }}
-        className={`absolute top-10 hidden md:block text-[10px] font-extralight uppercase tracking-[0.3em] text-muted-foreground/25 blur-[0.3px] ${counterPosition}`}
-        style={{ mixBlendMode: "soft-light" }}
-      >
-        {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </motion.div>
     </div>
   );
 }

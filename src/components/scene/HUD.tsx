@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const chapters = [
-  { id: "spark", label: "Spark", n: "01" },
-  { id: "founder", label: "Founder", n: "02" },
-  { id: "carbon-intelligence", label: "Carbon Intelligence", n: "03" },
-  { id: "industrial", label: "Industrial", n: "04" },
-  { id: "recognition", label: "Recognition", n: "05" },
-  { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "future", label: "Future", n: "07" },
+  { id: "spark", label: "Origin" },
+  { id: "founder", label: "Founder" },
+  { id: "carbon-intelligence", label: "Material Intelligence" },
+  { id: "industrial", label: "Industrial Translation" },
+  { id: "recognition", label: "Recognition" },
+  { id: "ecosystem", label: "Ecosystem" },
+  { id: "future", label: "Future Systems" },
 ];
 
 export default function HUD({
@@ -114,7 +114,7 @@ function ChapterMarker({
   active,
   visible,
 }: {
-  chapter: { id: string; label: string; n: string };
+  chapter: { id: string; label: string };
   active: boolean;
   distance: number;
   visible: boolean;
@@ -182,28 +182,16 @@ function ChapterMarker({
         />
       </div>
 
-      {/* Label — chapter number + name */}
+      {/* Label — chapter name only (no numbering) */}
       <motion.div
         className="relative z-10 flex items-baseline gap-2"
         initial={false}
         animate={{
-          opacity: active ? 0.98 : visible ? (hovered ? 0.9 : 0.68) : 0.4,
+          opacity: active ? 0.98 : visible ? (hovered ? 0.9 : 0.62) : 0.36,
           x: active ? 1 : 0,
         }}
         transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
       >
-        {/* Chapter number — always visible, very quiet */}
-        <span
-          className="font-mono text-[9px] uppercase tracking-[0.35em] select-none"
-          style={{
-            color: active
-              ? "oklch(0.78 0.07 232 / 0.98)"
-              : "oklch(0.68 0.0 0 / 0.56)",
-            transition: "color 0.95s cubic-bezier(0.19, 1, 0.22, 1)",
-          }}
-        >
-          {chapter.n}
-        </span>
 
         {/* Chapter label — reveals on active / hover */}
         <motion.span

@@ -21,7 +21,7 @@ import HeroAtmosphere from "./HeroAtmosphere";
 
 const carbonChapter: StoryChapter = {
   id: "carbon-intelligence",
-  eyebrow: "03 — Carbon Intelligence",
+  eyebrow: "Material Intelligence",
   title: "Engineering intelligent matter.",
   body: "Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, manufactured cleanly and at scale, is the most under-priced strategic asset on the table this decade.",
   align: "right",
@@ -29,7 +29,7 @@ const carbonChapter: StoryChapter = {
 
 const industrialChapter: StoryChapter = {
   id: "industrial",
-  eyebrow: "04 — Industrial Future",
+  eyebrow: "Industrial Translation",
   title: "One lattice. Many industries.",
   body: "Solar coatings, batteries that charge in minutes, polymer additives, climate infrastructure — each a downstream of the same material platform.",
   align: "left",
@@ -110,7 +110,7 @@ function HeroSection() {
           >
             <span className="h-px w-8 bg-foreground/20" />
             <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
-              01 — Spark
+              Origin
             </span>
             <span className="h-px w-8 bg-foreground/20" />
           </motion.div>
@@ -364,7 +364,7 @@ function FounderScene() {
       </div>
 
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
-        02 — Founder
+        Founder
       </p>
 
       <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12 pointer-events-auto">
@@ -403,7 +403,7 @@ function RecognitionSignal() {
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
         <MotionReveal>
           <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            05 — Recognition Signal
+            Recognition
           </p>
         </MotionReveal>
         <MotionReveal delay={0.08}>
@@ -442,7 +442,7 @@ function EcosystemGateway() {
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            06 — Enter the Ecosystem
+            Ecosystem
           </p>
           <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
             Eight thresholds into the work.
@@ -518,7 +518,7 @@ function ClosingInvitation() {
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>
           <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-            07 — The Future System
+            Future Systems
           </p>
         </MotionReveal>
         <MotionReveal delay={0.06}>
