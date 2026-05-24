@@ -773,27 +773,48 @@ function RecognitionsPage() {
         </ul>
       </nav>
 
-      {/* Archival intelligence layer — quiet authority signals */}
-      <aside
+      {/* Archival intelligence layer — quiet authority signals with cinematic ambient backdrop */}
+      <motion.aside
         aria-label="Archival authority signals"
-        className="not-prose mb-16 md:mb-20 border-y border-foreground/[0.07] py-6 md:py-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose relative mb-16 md:mb-20 border-y border-foreground/[0.07] py-7 md:py-9 archival-sheen"
       >
+        {/* Soft amber archival glow behind the numbers */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 120% at 50% 50%, oklch(0.62 0.07 65 / 0.06) 0%, transparent 60%)",
+            }}
+          />
+        </div>
         <ul className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-6">
-          {authoritySignals.map((s) => (
-            <li
+          {authoritySignals.map((s, idx) => (
+            <motion.li
               key={s.label}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 1.1, delay: 0.1 + idx * 0.08, ease: [0.19, 1, 0.22, 1] }}
               className="flex flex-col items-start md:items-center text-left md:text-center"
             >
-              <span className="font-display text-[26px] md:text-[34px] leading-none tracking-[-0.04em] text-foreground/90">
+              <span className="font-display text-[26px] md:text-[36px] leading-none tracking-[-0.04em] text-foreground/92">
                 {s.value}
               </span>
-              <span className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.34em] text-muted-foreground/55">
+              <span className="mt-2.5 font-mono text-[9.5px] uppercase tracking-[0.36em] text-muted-foreground/60">
                 {s.label}
               </span>
-            </li>
+            </motion.li>
           ))}
         </ul>
-      </aside>
+      </motion.aside>
 
       {/* 01 · Hall of Fame — brought up front for immediate visual archive */}
       <div id="hall-of-fame" className="scroll-mt-24">
