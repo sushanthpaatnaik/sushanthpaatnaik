@@ -587,17 +587,9 @@ export function Product3DModal({
                 ) : (
                   <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
                     {item.applicationVideo ? (
-                      <motion.video
-                        key={item.applicationVideo}
+                      <HeroVideo
+                        key={item.applicationVideo + "-secondary"}
                         src={item.applicationVideo}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="auto"
-                        initial={{ opacity: 0, scale: 1.02 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
                         className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
                         style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
                       />
