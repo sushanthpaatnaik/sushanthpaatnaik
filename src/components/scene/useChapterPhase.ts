@@ -34,25 +34,43 @@ export function useChapterPhase(ids: readonly string[]): MotionValue<number> {
     const compute = () => {
       if (!centers.length || centers.some(Number.isNaN)) measure();
       if (!centers.length) return;
-      // Focal line: ~55% down the viewport — slightly below center keeps the
-      // background tied to the section you are actively reading rather than
-      // the one peeking in from below.
-      const focal = window.scrollY + window.innerHeight * 0.55;
+      // Focal line at exact viewport center — the section the reader's eye
+      // is on owns the frame.
+      const focal = window.scrollY + window.innerHeight * 0.5;
       const last = centers.length - 1;
-      let p = 0;
-      if (focal <= centers[0]) p = 0;
-      else if (focal >= centers[last]) p = last;
+      let raw = 0;
+      if (focal <= centers[0]) raw = 0;
+      else if (focal >= centers[last]) raw = last;
       else {
         for (let i = 0; i < last; i++) {
           const a = centers[i];
           const b = centers[i + 1];
           if (focal >= a && focal <= b) {
-            p = i + (focal - a) / Math.max(1, b - a);
+            raw = i + (focal - a) / Math.max(1, b - a);
             break;
           }
         }
       }
-      phase.set(p);
+      // Re-shape the linear position into a snap-biased curve: the phase
+      // stays close to the active integer for most of the section, and
+      // only crosses rapidly through the boundary midline. This eliminates
+      // the "two scenes visible at once for half the scroll" feel while
+      // still preserving a short crossfade.
+      const base = Math.floor(raw);
+      const f = raw - base;
+      // Custom curve: flat at 0, steep near 0.5, flat at 1.
+      // 6t^5 - 15t^4 + 10t^3 (smootherstep) is too gentle; sharpen it.
+      const sharp = (() => {
+        // remap 0..1 with a steep S that snaps before/after 0.5
+        const k = 2.4; // steepness
+        const x = (f - 0.5) * k;
+        const s = 1 / (1 + Math.exp(-x));
+        // normalise so f=0→0, f=1→1
+        const s0 = 1 / (1 + Math.exp(k * 0.5));
+        const s1 = 1 / (1 + Math.exp(-k * 0.5));
+        return (s - s0) / (s1 - s0);
+      })();
+      phase.set(base + sharp);
     };
 
     const onScroll = () => {
