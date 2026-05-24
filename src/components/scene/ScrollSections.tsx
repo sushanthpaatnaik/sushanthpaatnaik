@@ -489,13 +489,14 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center pt-32 md:pt-40 pb-24 md:pb-32 flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center pt-40 md:pt-52 pb-24 md:pb-32 flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
+        {/* Living orbital pulse — the heartbeat of the closing frame */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
@@ -507,6 +508,58 @@ function ClosingInvitation() {
           animate={{ opacity: [0.55, 0.78, 0.55], scale: [1, 1.012, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
+
+        {/* Volumetric atmospheric haze — depth fog separating typography from the planet */}
+        <motion.div
+          className="absolute left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 w-[120%] h-[42%]"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 55% at 50% 50%, oklch(0.32 0.012 232 / 0.22), oklch(0.14 0.006 240 / 0.10) 55%, transparent 78%)",
+            filter: "blur(48px)",
+            mixBlendMode: "screen",
+          }}
+          animate={{ opacity: [0.55, 0.78, 0.55] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Cinematic separation gradient — band of breath under headline */}
+        <div
+          className="absolute inset-x-0 top-[34%] h-[34%]"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.05 0.008 245 / 0.32) 50%, transparent 100%)",
+            filter: "blur(36px)",
+          }}
+        />
+
+        {/* Distant satellite — single faint drifting node */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[1.5px] w-[1.5px] rounded-full bg-foreground/40"
+          style={{
+            boxShadow: "0 0 6px oklch(0.78 0.04 232 / 0.5)",
+            transformOrigin: "0 0",
+          }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 240, repeat: Infinity, ease: "linear" }}
+        >
+          <span
+            className="absolute block rounded-full bg-foreground/60"
+            style={{ width: 1.5, height: 1.5, left: "32vh", top: 0 }}
+          />
+        </motion.div>
+
+        {/* Planetary shimmer — microscopic environmental motion */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.04) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.03) 300deg, transparent 360deg)",
+            filter: "blur(40px)",
+            mixBlendMode: "screen",
+          }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 320, repeat: Infinity, ease: "linear" }}
+        />
+
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
@@ -537,8 +590,8 @@ function ClosingInvitation() {
           </p>
         </MotionReveal>
         <MotionReveal delay={0.28}>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-            <Link to="/contact" className="btn-cinematic">
+          <div className="closing-cta-row flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
+            <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
               Begin a conversation
             </Link>
             <Link to="/engage" className="btn-cinematic-secondary">
@@ -556,9 +609,21 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.42}>
-          <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
-            © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
-          </p>
+          <div className="relative mt-14 inline-block">
+            {/* Faint atmospheric backlight behind the archival signature */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -inset-x-12 -inset-y-3 -z-10"
+              style={{
+                background:
+                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.42 0.015 232 / 0.18), transparent 75%)",
+                filter: "blur(20px)",
+              }}
+            />
+            <p className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/55">
+              © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
+            </p>
+          </div>
         </MotionReveal>
       </div>
     </section>
