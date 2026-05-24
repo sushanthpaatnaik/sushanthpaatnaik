@@ -114,7 +114,7 @@ function ChapterMarker({
   active,
   visible,
 }: {
-  chapter: { id: string; label: string; n: string };
+  chapter: { id: string; label: string };
   active: boolean;
   distance: number;
   visible: boolean;
