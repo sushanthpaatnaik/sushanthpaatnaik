@@ -5,8 +5,6 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import { useLenis } from "@/components/scene/useLenis";
-import { HOME_CHAPTER_IDS } from "@/components/scene/homeChapters";
-import { useMotionValue } from "framer-motion";
 import founderPresence from "@/assets/founder-editorial.webp";
 
 // Heavy cinematic background layers — code-split so the initial JS bundle
@@ -47,17 +45,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const pageScrollProgress = useRef(0);
-  const chapterScrollProgress = useRef(0);
-  const sceneProgress = useMotionValue(0);
-  const scenePhase = useMotionValue(0);
   const scrollYRef = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
-  // Defer heavy background scene mounting until the main thread is idle so
-  // first paint + hero typography are not delayed by Framer/lazy work.
   const [scenesReady, setScenesReady] = useState(false);
-  // Detect low-power / coarse-pointer devices — we keep the cinematic look
-  // but skip the costliest layers (custom cursor aura) on these clients.
   const [isLowPower, setIsLowPower] = useState(false);
 
   const handleScroll = useCallback((p: number, scrollY: number) => {
