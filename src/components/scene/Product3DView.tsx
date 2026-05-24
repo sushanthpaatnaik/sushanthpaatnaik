@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -182,6 +183,134 @@ export function Tilt3DSurface({
   );
 }
 
+/**
+ * HeroVideo — cinematic looping video for the field-deployment hero frame.
+ * Autoplays muted (browser policy compliant), then offers an elegant
+ * interactive unmute on click/tap or via the sound toggle. Volume ramps
+ * smoothly via requestAnimationFrame for a non-jarring audio fade-in.
+ */
+function HeroVideo({
+  src,
+  className,
+  style,
+}: {
+  src: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  const [muted, setMuted] = useState(true);
+  const [hintVisible, setHintVisible] = useState(false);
+
+  // Reveal the "Sound Available" hint after a short delay, only while muted.
+  useEffect(() => {
+    if (!muted) {
+      setHintVisible(false);
+      return;
+    }
+    const t = window.setTimeout(() => setHintVisible(true), 2400);
+    return () => window.clearTimeout(t);
+  }, [muted]);
+
+  const rampVolume = (target: number, durationMs = 650) => {
+    const el = ref.current;
+    if (!el) return;
+    const start = el.volume;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const k = Math.min(1, (now - t0) / durationMs);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - k, 3);
+      el.volume = start + (target - start) * eased;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const enableSound = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.muted = false;
+    el.volume = 0;
+    setMuted(false);
+    // Re-issue play in case the unmute requires a fresh user-gesture play.
+    el.play().catch(() => {});
+    rampVolume(1, 700);
+  };
+
+  const disableSound = () => {
+    const el = ref.current;
+    if (!el) return;
+    rampVolume(0, 350);
+    window.setTimeout(() => {
+      if (!ref.current) return;
+      ref.current.muted = true;
+      setMuted(true);
+    }, 360);
+  };
+
+  const toggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (muted) enableSound();
+    else disableSound();
+  };
+
+  return (
+    <>
+      <motion.video
+        ref={ref}
+        src={src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onClick={() => {
+          if (muted) enableSound();
+        }}
+        initial={{ opacity: 0, scale: 1.025 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+        className={`cursor-pointer ${className ?? ""}`}
+        style={style}
+      />
+      {/* Sound toggle — minimal amber/graphite control */}
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={muted ? "Enable sound" : "Mute sound"}
+        className="group/snd absolute bottom-4 right-4 z-20 flex items-center gap-2 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] px-2.5 py-1.5 backdrop-blur-md transition-all duration-300 hover:border-accent/40 hover:bg-[oklch(0.06_0.01_245/0.85)]"
+      >
+        {muted ? (
+          <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" />
+        ) : (
+          <Volume2 className="h-3.5 w-3.5 text-accent/90" />
+        )}
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
+          {muted ? "Sound On" : "Mute"}
+        </span>
+      </button>
+      {/* Subtle hint that audio is available — fades in after a moment */}
+      <AnimatePresence>
+        {muted && hintVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+            className="pointer-events-none absolute bottom-16 right-4 z-20 rounded-sm border border-accent/25 bg-[oklch(0.05_0.01_245/0.8)] px-2.5 py-1 backdrop-blur-md"
+          >
+            <span className="font-mono text-[8.5px] uppercase tracking-[0.34em] text-accent/85">
+              Sound Available
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+
 export interface Product3DModalData {
   title: string;
   domain: string;
@@ -282,17 +411,9 @@ export function Product3DModal({
               {item.largeApplicationFrame ? (
                 <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {item.applicationVideo ? (
-                    <motion.video
+                    <HeroVideo
                       key={item.applicationVideo + "-hero"}
                       src={item.applicationVideo}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="auto"
-                      initial={{ opacity: 0, scale: 1.025 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
                       style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94)" }}
                     />
@@ -334,9 +455,11 @@ export function Product3DModal({
                     <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/82">
                       {item.applicationCaption ?? `${item.title} · Deployment`}
                     </p>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
-                      {item.applicationVideo ? "Live · Loop" : "Archive · Field capture"}
-                    </p>
+                    {!item.applicationVideo && (
+                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
+                        Archive · Field capture
+                      </p>
+                    )}
                   </div>
                 </div>
               ) : (
