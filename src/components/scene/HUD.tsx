@@ -119,9 +119,9 @@ function ChapterMarker({
 
       {/* Dot indicator with animated active state */}
       <div className="relative z-10 flex items-center justify-center w-[23px] h-[23px]">
-        {/* Glow ring (active only) */}
+        {/* Glow ring (active only) — with cinematic slow pulse */}
         <motion.div
-          className="absolute inset-1 rounded-full"
+          className={`absolute inset-1 rounded-full ${active ? "hud-node-pulse" : ""}`}
           style={{
             background: "oklch(0.74 0.06 232 / 0.18)",
             boxShadow: "0 0 10px oklch(0.74 0.06 232 / 0.22), 0 0 22px oklch(0.74 0.06 232 / 0.09)",
@@ -133,6 +133,7 @@ function ChapterMarker({
           }}
           transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
         />
+
 
         {/* Core dot */}
         <motion.div
