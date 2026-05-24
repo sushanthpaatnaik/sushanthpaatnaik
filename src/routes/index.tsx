@@ -181,6 +181,9 @@ function Index() {
       {/* Sitewide ambient atmosphere — near-imperceptible haze + grain for spatial life */}
       {entered && <AmbientAtmosphere />}
 
+      {/* Orbital telemetry — slow rotating halo + scan band, "living systems" feel */}
+      {entered && <OrbitalTelemetry />}
+
       {/* Hidden cinematic interaction — a faint cool aura that trails the cursor */}
       {entered && <CursorAura />}
 
