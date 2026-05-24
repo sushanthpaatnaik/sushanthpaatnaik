@@ -489,7 +489,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center pt-40 md:pt-52 pb-24 md:pb-32 flex flex-col items-center justify-center overflow-hidden"
+      className="relative h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center py-20 md:py-24 flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
@@ -600,7 +600,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.34}>
-          <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+          <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
             <span>Advanced Materials</span>
             <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
             <span>Energy Systems</span>
@@ -609,7 +609,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.42}>
-          <div className="relative mt-14 inline-block">
+          <div className="relative mt-8 md:mt-10 inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span
               aria-hidden
