@@ -54,7 +54,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop / wide tablet nav */}
-        <nav className="hidden lg:flex items-center gap-x-5 xl:gap-x-6 text-[10px] uppercase tracking-[0.26em] xl:tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
+        <nav className="hidden xl:flex items-center gap-x-5 xl:gap-x-6 text-[10px] uppercase tracking-[0.26em] xl:tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
           {navLinks.map((l) => (
             <Link
               key={l.to}
@@ -80,7 +80,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors"
+            className="xl:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors"
           >
             <span className="sr-only">Menu</span>
             <svg
@@ -108,7 +108,7 @@ export default function Nav() {
 
       {/* Mobile / tablet cinematic overlay menu */}
       <div
-        className={`fixed inset-0 z-[45] lg:hidden transition-[opacity,backdrop-filter] duration-500 ${
+        className={`fixed inset-0 z-[45] xl:hidden transition-[opacity,backdrop-filter] duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
