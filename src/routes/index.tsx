@@ -1,14 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useCallback, useEffect, useState } from "react";
+import { useRef, useCallback, useEffect, useState, lazy, Suspense } from "react";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
-import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
-import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
-import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
-import CursorAura from "@/components/scene/CursorAura";
 import { useLenis } from "@/components/scene/useLenis";
+
+// Heavy decorative scene layers — code-split so they don't block first paint.
+const AtmosphereLayer = lazy(() => import("@/components/scene/AtmosphereLayer"));
+const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
+const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumetric"));
+const CursorAura = lazy(() => import("@/components/scene/CursorAura"));
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -37,12 +39,28 @@ function Index() {
   const mouse = useRef({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
   const [entered, setEntered] = useState(false);
+  const [scenesReady, setScenesReady] = useState(false);
+  const [isLowPower, setIsLowPower] = useState(false);
 
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
   }, []);
 
   const lenisRef = useLenis(handleScroll);
+
+  // Detect low-power / reduced-motion clients — skip the heaviest layers.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const nav = navigator as Navigator & {
+      deviceMemory?: number;
+      connection?: { saveData?: boolean; effectiveType?: string };
+    };
+    const lowMem = (nav.deviceMemory ?? 8) <= 4;
+    const slowNet = nav.connection?.saveData ||
+      ["slow-2g", "2g", "3g"].includes(nav.connection?.effectiveType ?? "");
+    setIsLowPower(Boolean(reduce || lowMem || slowNet));
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -90,12 +108,8 @@ function Index() {
       const r1 = requestAnimationFrame(snapTop);
       const t1 = window.setTimeout(snapTop, 60);
       const t2 = window.setTimeout(snapTop, 300);
-      const t3 = window.setTimeout(snapTop, 900);
-      const t4 = window.setTimeout(snapTop, 1600);
       const onLoad = () => snapTop();
       window.addEventListener("load", onLoad, { once: true });
-      const fonts = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts;
-      fonts?.ready.then(snapTop).catch(() => {});
 
       const onPageShow = (e: PageTransitionEvent) => {
         if (e.persisted && !window.location.hash) snapTop();
@@ -106,8 +120,6 @@ function Index() {
         cancelAnimationFrame(r1);
         clearTimeout(t1);
         clearTimeout(t2);
-        clearTimeout(t3);
-        clearTimeout(t4);
         window.removeEventListener("load", onLoad);
         window.removeEventListener("pageshow", onPageShow);
         try {
@@ -122,13 +134,31 @@ function Index() {
     };
   }, [lenisRef]);
 
-  // Reveal main content after loader
+  // Reveal main content quickly; defer heavy scene layers until idle.
   useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 750);
-    return () => clearTimeout(t);
+    const t = setTimeout(() => setEntered(true), 300);
+    type IdleWindow = Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    const w = window as IdleWindow;
+    let idleId = 0;
+    let fallback = 0;
+    if (w.requestIdleCallback) {
+      idleId = w.requestIdleCallback(() => setScenesReady(true), { timeout: 1500 });
+    } else {
+      fallback = window.setTimeout(() => setScenesReady(true), 900);
+    }
+    return () => {
+      clearTimeout(t);
+      if (idleId) w.cancelIdleCallback?.(idleId);
+      if (fallback) clearTimeout(fallback);
+    };
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
     let targetX = 0;
     let targetY = 0;
     const onMove = (e: MouseEvent) => {
@@ -156,19 +186,35 @@ function Index() {
     <div className="relative bg-background text-foreground noise">
       <Loader />
 
-      {/* Sitewide cinematic atmosphere */}
-      <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
-        <AtmosphereLayer />
-      </div>
+      {/* Sitewide cinematic atmosphere — deferred until idle. */}
+      {scenesReady && (
+        <Suspense fallback={null}>
+          <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
+            <AtmosphereLayer />
+          </div>
+        </Suspense>
+      )}
 
       {/* Volumetric graphene lattice */}
-      {entered && <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />}
+      {scenesReady && entered && !isLowPower && (
+        <Suspense fallback={null}>
+          <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />
+        </Suspense>
+      )}
 
       {/* Sitewide ambient atmosphere */}
-      {entered && <AmbientAtmosphere />}
+      {scenesReady && entered && (
+        <Suspense fallback={null}>
+          <AmbientAtmosphere />
+        </Suspense>
+      )}
 
-      {/* Cursor aura */}
-      {entered && <CursorAura />}
+      {/* Cursor aura — desktop, non-low-power only */}
+      {scenesReady && entered && !isLowPower && (
+        <Suspense fallback={null}>
+          <CursorAura />
+        </Suspense>
+      )}
 
       {/* Custom cursor */}
       <div
