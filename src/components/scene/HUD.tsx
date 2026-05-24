@@ -141,7 +141,7 @@ function ChapterMarker({
         className="absolute -inset-x-4 -inset-y-3 rounded-md pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 80% at 28% 50%, oklch(0.71 0.06 232 / 0.16), transparent 75%)",
+            "radial-gradient(ellipse 70% 80% at 28% 50%, oklch(0.71 0.06 232 / 0.12), transparent 78%)",
           filter: "blur(2px)",
         }}
         initial={false}

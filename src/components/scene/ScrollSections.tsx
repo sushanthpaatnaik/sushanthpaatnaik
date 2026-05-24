@@ -542,21 +542,22 @@ function ClosingInvitation() {
           className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.04) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.03) 300deg, transparent 360deg)",
-            filter: "blur(40px)",
+              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.028) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.022) 300deg, transparent 360deg)",
+            filter: "blur(48px)",
             mixBlendMode: "screen",
           }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 320, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 360, repeat: Infinity, ease: "linear" }}
         />
 
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.55) 55%, oklch(0.014 0.004 250 / 0.92) 100%)",
+              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.42) 55%, oklch(0.014 0.004 250 / 0.86) 100%)",
           }}
         />
+
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>
@@ -576,11 +577,12 @@ function ClosingInvitation() {
               textRendering: "geometricPrecision",
               WebkitFontSmoothing: "antialiased",
               textShadow:
-                "0 1px 22px oklch(0.06 0.012 240 / 0.55), 0 0 1px oklch(0.96 0.01 232 / 0.18)",
+                "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
             }}
           >
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
+
         </MotionReveal>
         <MotionReveal delay={0.2}>
           <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
