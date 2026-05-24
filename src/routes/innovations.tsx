@@ -325,21 +325,26 @@ function InnovationsPage() {
   );
 }
 
-function HeroCard({ item }: { item: Item }) {
+function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
-      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
+      onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+      aria-label={`Open 3D view of ${item.title}`}
+      className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <img
+      <Tilt3DSurface
         src={item.img}
         alt={`${item.title} — ${item.body}`}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
-        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+        maxTilt={6}
+        imgClassName="opacity-[0.82] transition-opacity duration-[1400ms] ease-out group-hover:opacity-95"
+        imgStyle={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
       />
       {/* Lattice overlay — restrained scientific texture */}
       <LatticeField intensity={0.06} className="mix-blend-screen" />
