@@ -614,11 +614,12 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-[1.35fr_1fr] gap-5">
-                {/* SECONDARY FRAME.
-                    Default: application media. When the hero is the
-                    application, this slot becomes the studio product artifact. */}
-                {item.largeApplicationFrame ? (
+              {/* Secondary media row only renders for flagship items that
+                  carry a dedicated field-deployment frame. For standard
+                  products the studio hero alone is the focal artifact —
+                  avoids duplicate imagery and right-column dead space. */}
+              {item.largeApplicationFrame && (
+                <div className="grid grid-cols-[1.35fr_1fr] gap-5">
                   <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
@@ -647,87 +648,39 @@ export function Product3DModal({
                       </p>
                     </div>
                   </div>
-                ) : (
-                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
-                    {item.applicationVideo ? (
-                      <HeroVideo
-                        key={item.applicationVideo + "-secondary"}
-                        src={item.applicationVideo}
-                        className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
-                        style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
-                      />
-                    ) : (
-                      <motion.img
-                        key={(item.detailImg ?? item.img) + "-app"}
-                        src={item.detailImg ?? item.img}
-                        alt={`${item.title} — application`}
-                        initial={{ opacity: 0, scale: 1.02 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
-                      />
-                    )}
+
+                  {/* Deployment note */}
+                  <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute inset-0"
+                      className="absolute inset-0"
                       style={{
                         background:
-                          "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
+                          "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
                       }}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
-                    <FilmGrain opacity={0.07} />
-                    <div className="absolute bottom-3 left-3 z-10">
-                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
-                        {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
-                      </p>
-                    </div>
-                    {item.applicationVideo && (
-                      <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
-                        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/80">
-                          Live · Loop
-                        </span>
+                    <div className="relative z-10 flex h-full flex-col justify-between gap-5">
+                      <div>
+                        <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-accent/75">
+                          Deployment Note
+                        </p>
+                        <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
+                          Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments.
+                        </p>
                       </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Optical / studio note */}
-                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
-                  <div
-                    aria-hidden
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
-                    }}
-                  />
-                  <div className="relative z-10 flex h-full flex-col justify-between gap-5">
-                    <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-accent/75">
-                        {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
-                      </p>
-                      <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
-                        {item.largeApplicationFrame
-                          ? "Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments."
-                          : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
-                      </p>
-                    </div>
-                    <div className="border-t border-foreground/[0.08] pt-3">
-                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
-                        {item.largeApplicationFrame ? "Capture context" : "Optical treatment"}
-                      </p>
-                      <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/62">
-                        {item.largeApplicationFrame
-                          ? "Field deployment · in-situ documentation"
-                          : "Cinema lens · shallow DOF · 16mm grain"}
-                      </p>
+                      <div className="border-t border-foreground/[0.08] pt-3">
+                        <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                          Capture context
+                        </p>
+                        <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/62">
+                          Field deployment · in-situ documentation
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
+            </div>
             </div>
 
             <div className="flex flex-col gap-6">
