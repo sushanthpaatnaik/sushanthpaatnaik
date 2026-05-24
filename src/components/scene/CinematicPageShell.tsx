@@ -105,6 +105,12 @@ export default function CinematicPageShell({
               "radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.02 0 0 / 0.72) 100%)",
           }}
         />
+        {/* Proprietary signature watermark — slow orbital lattice anchored
+            off-axis, ultra-low opacity. Becomes the brand's recurring
+            atmospheric identity object across every page. */}
+        <div className="absolute right-[-90px] bottom-[-80px] hidden md:block">
+          <SignatureMotif variant="watermark" />
+        </div>
       </div>
 
       {/* Ambient micro-life + cursor aura, matching the homepage */}
