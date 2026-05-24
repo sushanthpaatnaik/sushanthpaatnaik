@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { ProductCanvas3DModal } from "./ProductCanvas3D";
 
 
 /**
@@ -378,72 +379,7 @@ export function Product3DModal({
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Drag-to-spin state
-  const stageRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef({ down: false, lastX: 0, lastY: 0, ry: 0, rx: 0, vy: 0 });
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (!item || reduced) return;
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    let raf = 0;
-    const state = dragRef.current;
-    state.ry = -18;
-    state.rx = 6;
-
-    const apply = () => {
-      // Clamp Y so a flat cutout never rotates past edge-on (which would mirror the label).
-      state.ry = Math.max(-32, Math.min(32, state.ry));
-      stage.style.transform = `perspective(1400px) rotateX(${state.rx.toFixed(2)}deg) rotateY(${state.ry.toFixed(2)}deg)`;
-    };
-    const loop = () => {
-      if (!state.down) {
-        state.ry += state.vy;
-        state.vy *= 0.94;
-        // gentle auto-sway when idle, bouncing within clamp
-        if (Math.abs(state.vy) < 0.02) {
-          state.ry += Math.sin(Date.now() / 1400) * 0.12;
-        }
-        apply();
-      }
-
-      raf = requestAnimationFrame(loop);
-    };
-    const onDown = (e: PointerEvent) => {
-      state.down = true;
-      state.lastX = e.clientX;
-      state.lastY = e.clientY;
-      state.vy = 0;
-      (e.target as Element).setPointerCapture?.(e.pointerId);
-    };
-    const onMove = (e: PointerEvent) => {
-      if (!state.down) return;
-      const dx = e.clientX - state.lastX;
-      const dy = e.clientY - state.lastY;
-      state.ry += dx * 0.4;
-      state.rx = Math.max(-25, Math.min(25, state.rx - dy * 0.25));
-      state.vy = dx * 0.4;
-      state.lastX = e.clientX;
-      state.lastY = e.clientY;
-      apply();
-    };
-    const onUp = () => { state.down = false; };
-
-    stage.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    raf = requestAnimationFrame(loop);
-    apply();
-
-    return () => {
-      stage.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      cancelAnimationFrame(raf);
-    };
-  }, [item, reduced]);
+  // Drag-to-rotate is now handled inside the R3F canvas via OrbitControls.
 
   useEffect(() => {
     if (!item) return;
@@ -543,20 +479,11 @@ export function Product3DModal({
                 style={{ background: "radial-gradient(ellipse at 50% 38%, transparent 55%, oklch(0 0 0 / 0.55) 100%)" }}
               />
 
-              <div
-                ref={stageRef}
-                className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing will-change-transform"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <img
+              <div className="absolute inset-0 cursor-grab active:cursor-grabbing">
+                <ProductCanvas3DModal
                   src={item.img}
                   alt={item.title}
-                  draggable={false}
-                  className="max-h-[80%] max-w-[80%] object-contain"
-                  style={{
-                    filter:
-                      "contrast(1.08) saturate(0.96) brightness(1.02) drop-shadow(0 34px 44px oklch(0 0 0 / 0.7)) drop-shadow(0 0 38px oklch(0.6 0.12 220 / 0.22))",
-                  }}
+                  featured
                 />
               </div>
 
