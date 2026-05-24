@@ -178,32 +178,27 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2008",
     entries: [
-      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
-      { title: "35th Jawaharlal Nehru National Science Exhibition", institution: "NCERT · Govt of India" },
+      { title: "Former President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "35th Jawaharlal Nehru National Science Exhibition Award", institution: "NCERT · Govt of India" },
       { title: "CBSE National Science Exhibition Award", institution: "Central Board of Secondary Education" },
-      { title: "Institute of Physics Exhibition Award", institution: "IOP · Bhubaneswar" },
-      { title: "State Level Science Talent Search", institution: "Govt of Odisha" },
+      { title: "Institute of Physics Exhibition Award", institution: "IOP" },
     ],
   },
   {
     year: "2009",
     entries: [
       { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
-      { title: "President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
+      { title: "Former President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
       { title: "KVPY Fellow", institution: "Department of Science & Technology, Govt of India" },
-      { title: "NCSC National Award", institution: "National Children's Science Congress" },
-      { title: "Young Scientist Citation", institution: "NIF-India" },
-      { title: "Inspire Award", institution: "Ministry of Science & Technology" },
+      { title: "NCSC Award", institution: "National Children's Science Congress" },
     ],
   },
   {
     year: "2010",
     entries: [
       { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
-      { title: "Intel IRIS · Best Popular Invention Award", institution: "Intel Foundation · National Science Fair", featured: true },
       { title: "INK Fellow", institution: "INK Talks · TED Partner" },
-      { title: "Young Innovator Citation", institution: "Lockheed Martin India Innovation Growth Programme" },
-      { title: "Featured · The Hindu · Times of India", institution: "Press archive" },
+      { title: "Intel IRIS · Best Popular Invention Award", institution: "Intel Foundation · National Science Fair", featured: true },
     ],
   },
   {
@@ -211,20 +206,17 @@ const ledgerByYear: LedgerYear[] = [
     entries: [
       { title: "NASA Award", institution: "Kennedy Space Center · Huntsville", featured: true },
       { title: "DLF–Pramerica Spirit of Community Award", institution: "Prudential · DLF Foundation" },
-      { title: "Eureka-11 · IIT-Bombay Business Plan Contest", institution: "E-Cell · IIT Bombay" },
-      { title: "U.S. Space & Rocket Center Recognition", institution: "Huntsville · Alabama" },
-      { title: "Indian Achievers' Award", institution: "Indian Achievers' Forum" },
+      { title: "Eureka-11 · IIT-Bombay Business Plan Contest Award", institution: "E-Cell · IIT Bombay" },
     ],
   },
   {
     year: "2012",
     entries: [
-      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
       { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
-      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest", institution: "E-Cell · IIT Kanpur" },
-      { title: "Innovio-12 · KIIT Business Plan Contest", institution: "KIIT University" },
-      { title: "Judge · SELL-X Exodia · IIT-Mandi", institution: "IIT Mandi" },
-      { title: "Limca Book of Records — Young Inventor", institution: "Limca · India Records" },
+      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
+      { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest Award", institution: "E-Cell · IIT Kanpur" },
+      { title: "Judge · SELL-X Exodia · IIT-Mandi Business Plan Contest", institution: "IIT Mandi" },
+      { title: "Innovio-12 · KIIT Business Plan Contest Award", institution: "KIIT University" },
     ],
   },
   {
@@ -232,47 +224,24 @@ const ledgerByYear: LedgerYear[] = [
     entries: [
       { title: "President of India Award", institution: "Shri Pranab Mukherjee · NIF", featured: true },
       { title: "ICAI Abu Dhabi Speaker", institution: "Institute of Chartered Accountants of India" },
-      { title: "Presidential Innovation Showcase", institution: "Rashtrapati Bhavan · New Delhi" },
-      { title: "Featured · Forbes India 30 Under 30 Watchlist", institution: "Forbes India" },
     ],
   },
   {
     year: "2013–14",
     entries: [
       { title: "MIT Fab-10 & Fab-11 Awardee", institution: "MIT · Barcelona / MIT Cambridge", featured: true },
+    ],
+  },
+  {
+    year: "2014",
+    entries: [
       { title: "Under-35 CEO Award", institution: "Yinka Brand" },
-      { title: "Fab Academy Diploma Holder", institution: "MIT Center for Bits and Atoms" },
     ],
   },
   {
     year: "2021",
     entries: [
       { title: "STPI-Chunauti Winner", institution: "Software Technology Parks of India" },
-      { title: "ESC-STPI Startup Initiative · Building the Next Unicorn", institution: "Electronics & Computer Software Export Promotion Council" },
-      { title: "Atmanirbhar Bharat Innovation Citation", institution: "Govt of India" },
-    ],
-  },
-  {
-    year: "2022",
-    entries: [
-      { title: "BRICS Diplomatic Honour", institution: "BRICS Global Forum", featured: true },
-      { title: "LEA Excellence Award · with Dia Mirza", institution: "Lions Excellence Awards · Mumbai" },
-      { title: "TiECON Mumbai · India Unicorn Summit Speaker", institution: "TiE Mumbai" },
-      { title: "INK Fellows Retreat · Bengaluru", institution: "INK Talks" },
-      { title: "STPI Certificate of Merit", institution: "National Conclave Winner" },
-      { title: "Italian Embassy Felicitation", institution: "H.E. Antonio Bartoli · Ambassador" },
-    ],
-  },
-  {
-    year: "2023",
-    entries: [
-      { title: "Startup20 · G20 Presidency", institution: "Government of India · Gurugram", featured: true },
-      { title: "Audience with H.H. Prince Fahad bin Mansour Al-Saud", institution: "Startup20 · G20" },
-      { title: "Ministry of Power · BEE Recognition", institution: "Bureau of Energy Efficiency · Govt of India" },
-      { title: "British High Commission Address", institution: "New Delhi" },
-      { title: "Felicitation by Shri Nitin Gadkari", institution: "Union Minister · Transport Bhawan" },
-      { title: "DRIIV MoU · Office of the Principal Scientific Adviser", institution: "Govt of India" },
-      { title: "Mauritius High Commission Engagement", institution: "H.E. Mrs. Sheilabai Bappoo, G.O.S.K." },
     ],
   },
   {
@@ -280,24 +249,29 @@ const ledgerByYear: LedgerYear[] = [
     entries: [
       { title: "ELECRAMA Winner", institution: "IEEMA · Greater Noida" },
       { title: "Silicon Valley Speaker", institution: "Bay Area · USA", featured: true },
-      { title: "IEEMA Finalist · Buildelec, Intelect, Distribuelec", institution: "Indian Electrical & Electronics Manufacturers' Association" },
-      { title: "IEEMA Mainstage Address · Buildelec Mumbai", institution: "IEEMA" },
-      { title: "FICCI Bharat Summit Delegate", institution: "Federation of Indian Chambers of Commerce & Industry" },
-      { title: "Bharatiya Knowledge Systems Symposium Felicitation", institution: "School of Information Technology" },
-      { title: "Audience with Shri Sujoy Choudhury, Director (P&BD)", institution: "Indian Oil Corporation" },
     ],
   },
   {
     year: "2025",
     entries: [
       { title: "CEO Club Speaker", institution: "Hyderabad" },
-      { title: "Innovision Keynote", institution: "NIT Rourkela" },
-      { title: "Beyond Retreat · Uncharted Paths Speaker", institution: "Ahmedabad · March 2025" },
-      { title: "GMR Innovex Innovation Summit Felicitation", institution: "GMRIT" },
-      { title: "Monoatom Labs · DRIIV Graphene Innovation Pavilion", institution: "Delhi Research Implementation & Innovation" },
     ],
   },
 ];
+
+// Internal integrity check — the canonical Ledger of Honors of Record holds
+// exactly 27 unique entries. Logs a warning in development if drift is detected.
+const recognitionMilestones = ledgerByYear.flatMap((y) =>
+  y.entries.map((e) => ({ ...e, year: y.year })),
+);
+if (import.meta.env.DEV) {
+  if (recognitionMilestones.length !== 27) {
+    console.warn(
+      `[RecognitionsLedger] Expected 27 honors of record, got ${recognitionMilestones.length}.`,
+    );
+  }
+}
+
 
 // Era 1 — Young inventor & presidential years (2008–2013) · curated 6
 const eraPresidential: ArchiveItem[] = [
