@@ -145,9 +145,8 @@ function Index() {
     setIsLowPower(coarse || narrow || cores <= 4);
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
   // (scroll-driven scene progress is now derived internally by AnimatedBackground)
+
 
   // Mount heavy background scenes after first paint — uses requestIdleCallback
   // when available so hero typography is interactive immediately.
@@ -206,7 +205,7 @@ function Index() {
         {scenesReady && (
           <>
             <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
-              <AtmosphereLayer progress={sceneProgress} phase={scenePhase} />
+              <AtmosphereLayer />
             </div>
             <GrapheneVolumetric scrollProgress={pageScrollProgress} mouse={mouse} />
             <AmbientAtmosphere />
@@ -225,7 +224,7 @@ function Index() {
 
       {/* Primary content renders immediately — no longer gated on heavy scene load */}
       <Nav />
-      <HUD scrollProgress={chapterScrollProgress} />
+      <HUD scrollProgress={pageScrollProgress} />
       <main id="main">
         <ScrollSections />
       </main>
