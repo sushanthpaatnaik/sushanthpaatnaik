@@ -570,20 +570,21 @@ html.lenis, html.lenis body {
  * shadow rolloff, normalized contrast).
  * ============================================ */
 .archival-image {
-  filter: grayscale(0.10) contrast(1.05) saturate(0.90) brightness(0.96)
-          sepia(0.04);
+  filter: grayscale(0.18) contrast(0.96) saturate(0.78) brightness(0.86)
+          sepia(0.08);
 }
 .archival-image-soft {
-  filter: grayscale(0.14) contrast(1.04) saturate(0.85) brightness(0.93)
-          sepia(0.05);
+  filter: grayscale(0.24) contrast(0.94) saturate(0.72) brightness(0.82)
+          sepia(0.10);
 }
 .archival-image-hover {
-  transition: filter 1200ms ease-out, transform 1400ms ease-out, opacity 1000ms ease-out;
+  transition: filter 1400ms ease-out, transform 1600ms ease-out, opacity 1200ms ease-out;
+  will-change: filter, transform;
 }
 .group:hover .archival-image-hover,
 .group\/era:hover .archival-image-hover {
-  filter: grayscale(0.04) contrast(1.07) saturate(0.96) brightness(1.00)
-          sepia(0.02);
+  filter: grayscale(0.12) contrast(0.98) saturate(0.82) brightness(0.90)
+          sepia(0.06);
 }
 
 /* Section reveal — gentle layered opacity & lift for scroll storytelling */
