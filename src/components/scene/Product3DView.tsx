@@ -528,7 +528,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-10 gap-y-8 px-6 md:grid-cols-[1.4fr_1fr] md:px-10"
+            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-12 gap-y-8 px-6 md:grid-cols-[1.65fr_0.9fr] md:px-10"
           >
             <div className="grid content-start gap-5">
               {/* TOP HERO FRAME.
