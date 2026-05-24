@@ -214,50 +214,52 @@ function InnovationsPage() {
       </div>
 
 
-      {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
-      <div className="not-prose mt-12 space-y-20">
-        {grouped.map((group) => {
-          const meta = stageMeta[group.stage];
-          const heroes = group.list.filter((i) => i.featured);
-          const rest = group.list.filter((i) => !i.featured);
-          return (
-            <section key={group.stage} className="relative">
-              <header className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-foreground/[0.08] pt-6">
-                <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
-                  {meta.tone}
-                </span>
-                <h2 className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
-                  {meta.label}
-                </h2>
-                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
-                  {meta.sub}
-                </span>
-                <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
-                  {String(group.list.length).padStart(2, "0")} · Programs
-                </span>
-              </header>
+      {/* Stage-grouped catalogue — cinematic 3D showcase */}
+      <InnovationsCanvasHost>
+        <div className="not-prose mt-12 space-y-20">
+          {grouped.map((group) => {
+            const meta = stageMeta[group.stage];
+            const heroes = group.list.filter((i) => i.featured);
+            const rest = group.list.filter((i) => !i.featured);
+            return (
+              <section key={group.stage} className="relative">
+                <header className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-foreground/[0.08] pt-6">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
+                    {meta.tone}
+                  </span>
+                  <h2 className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
+                    {meta.label}
+                  </h2>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+                    {meta.sub}
+                  </span>
+                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
+                    {String(group.list.length).padStart(2, "0")} · Programs
+                  </span>
+                </header>
 
-              {/* Hero cards — large, with lattice */}
-              {heroes.length > 0 && (
-                <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {heroes.map((it) => (
-                    <HeroCard key={it.title} item={it} />
-                  ))}
-                </div>
-              )}
+                {heroes.length > 0 && (
+                  <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {heroes.map((it) => (
+                      <InnovationCard3D key={it.title} item={it} size="hero" onOpen={setActive} />
+                    ))}
+                  </div>
+                )}
 
-              {/* Supporting cards */}
-              {rest.length > 0 && (
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-                  {rest.map((it) => (
-                    <CompactCard key={it.title} item={it} />
-                  ))}
-                </div>
-              )}
-            </section>
-          );
-        })}
-      </div>
+                {rest.length > 0 && (
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+                    {rest.map((it) => (
+                      <InnovationCard3D key={it.title} item={it} size="compact" onOpen={setActive} />
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      </InnovationsCanvasHost>
+
+      <InnovationModal item={active} onClose={() => setActive(null)} />
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
