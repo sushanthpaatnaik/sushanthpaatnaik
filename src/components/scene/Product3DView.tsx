@@ -265,53 +265,65 @@ export function Product3DModal({
             className="relative grid w-full max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-[1.35fr_0.95fr] md:px-10"
           >
             <div className="grid gap-4">
-              {/* Hero capture — flagship product photograph */}
-              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245)]">
-                <Tilt3DSurface src={item.img} alt={item.title} hero imgClassName="" />
-                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/55">
+              {/* Hero capture — flagship product photograph.
+                  Render the cinematic photo directly (no Tilt stage). One
+                  stable fade-in, then it stays — no looping opacity. */}
+              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+                <motion.img
+                  key={item.img}
+                  src={item.img}
+                  alt={item.title}
+                  draggable={false}
+                  initial={{ opacity: 0, scale: 1.015 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98)" }}
+                />
+                {/* Cinematic vignette + grain layered on top — never touches opacity of subject */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%)",
+                  }}
+                />
+                <FilmGrain opacity={0.05} />
+                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
                   Archive · Studio capture
                 </div>
-                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/40">
+                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
                   ƒ/2.0 · 85mm · cinema
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Material macro */}
+                {/* Application — real-world use-case photograph */}
                 <div className="relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
-                  <div
-                    aria-hidden
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 30% 20%, oklch(0.84 0.02 235 / 0.22), transparent 0 18%), linear-gradient(180deg, oklch(0.1 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
-                    }}
-                  />
-                  <img
+                  <motion.img
+                    key={(item.detailImg ?? item.img) + "-app"}
                     src={item.detailImg ?? item.img}
-                    alt=""
-                    aria-hidden
+                    alt={`${item.title} — application`}
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
                     className="absolute inset-0 h-full w-full object-cover"
-                    style={{
-                      objectPosition: "center 28%",
-                      filter: "contrast(1.06) saturate(0.85) brightness(0.9) blur(0.3px)",
-                      opacity: 0.82,
-                    }}
+                    style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
                   />
-                  {/* Shallow DOF blur overlay at edges */}
                   <div
                     aria-hidden
                     className="absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 50%, transparent 32%, oklch(0.02 0.006 245 / 0.5) 92%)",
+                        "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
                     }}
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_18%,oklch(0.03_0.006_245/0.78)_100%)]" />
-                  <FilmGrain opacity={0.08} />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                  <FilmGrain opacity={0.07} />
                   <div className="absolute bottom-3 left-3 z-10">
-                    <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/48">
-                      Material · Macro detail
+                    <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                      Application · Field
                     </p>
                   </div>
                 </div>
