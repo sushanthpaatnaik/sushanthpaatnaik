@@ -159,7 +159,8 @@ function Index() {
 
     let chapterElements: HTMLElement[] = [];
     let resizeObserver: ResizeObserver | null = null;
-    let rafId = 0;
+    let measureRaf = 0;
+    let syncRaf = 0;
 
     const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -167,6 +168,13 @@ function Index() {
       chapterElements = HOME_CHAPTER_IDS
         .map((id) => document.getElementById(id))
         .filter((node): node is HTMLElement => Boolean(node));
+
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+        resizeObserver.observe(document.documentElement);
+        resizeObserver.observe(document.body);
+        chapterElements.forEach((element) => resizeObserver?.observe(element));
+      }
     };
 
     const updateSceneProgress = (scrollY: number) => {
@@ -206,8 +214,8 @@ function Index() {
     };
 
     const scheduleMeasure = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(measure);
+      cancelAnimationFrame(measureRaf);
+      measureRaf = requestAnimationFrame(measure);
     };
 
     measure();
@@ -222,19 +230,18 @@ function Index() {
 
     if (typeof ResizeObserver !== "undefined") {
       resizeObserver = new ResizeObserver(() => scheduleMeasure());
-      resizeObserver.observe(document.documentElement);
-      resizeObserver.observe(document.body);
-      chapterElements.forEach((element) => resizeObserver?.observe(element));
+      collect();
     }
 
     const syncLoop = () => {
       updateSceneProgress(scrollYRef.current || window.scrollY || window.pageYOffset || 0);
-      rafId = requestAnimationFrame(syncLoop);
+      syncRaf = requestAnimationFrame(syncLoop);
     };
-    rafId = requestAnimationFrame(syncLoop);
+    syncRaf = requestAnimationFrame(syncLoop);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(measureRaf);
+      cancelAnimationFrame(syncRaf);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("orientationchange", onResize);
       window.removeEventListener("load", onLoad);
