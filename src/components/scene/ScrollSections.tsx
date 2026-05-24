@@ -542,21 +542,22 @@ function ClosingInvitation() {
           className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.04) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.03) 300deg, transparent 360deg)",
-            filter: "blur(40px)",
+              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.028) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.022) 300deg, transparent 360deg)",
+            filter: "blur(48px)",
             mixBlendMode: "screen",
           }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 320, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 360, repeat: Infinity, ease: "linear" }}
         />
 
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.55) 55%, oklch(0.014 0.004 250 / 0.92) 100%)",
+              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.42) 55%, oklch(0.014 0.004 250 / 0.86) 100%)",
           }}
         />
+
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>
