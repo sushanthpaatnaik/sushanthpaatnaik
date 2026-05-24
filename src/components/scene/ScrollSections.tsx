@@ -1228,7 +1228,7 @@ function ClosingInvitation() {
 
       {/* ───────── Foreground typography ───────── */}
       <div className="relative z-10 flex w-full justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
-        <div className="pointer-events-auto flex min-h-[calc(var(--viewport-height)-clamp(12rem,18vh,16rem))] w-full max-w-3xl flex-col justify-between gap-12 md:gap-16">
+        <div className="pointer-events-auto flex w-full max-w-3xl flex-col gap-16 md:gap-24">
           <div>
             <MotionReveal>
               <p className="mb-8 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
@@ -1301,7 +1301,7 @@ function ClosingInvitation() {
 
 
 export default function ScrollSections() {
-  const totalChapters = 9;
+  const totalChapters = 8;
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
@@ -1327,10 +1327,7 @@ export default function ScrollSections() {
       {/* 07 — Scale & Validation (proof layer) */}
       <ScaleValidationScene />
 
-      {/* 08 — In His Words (reflective philosophical chapter) */}
-      <InHisWordsScene />
-
-      {/* 09 — Closing invitation */}
+      {/* 08 — Closing invitation */}
       <ClosingInvitation />
     </div>
   );
