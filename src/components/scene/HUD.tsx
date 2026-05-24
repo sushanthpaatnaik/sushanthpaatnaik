@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent } from "framer-motion";
+import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 const chapters = [
   { id: "spark", label: "Origin" },
@@ -12,48 +13,38 @@ const chapters = [
 ];
 
 export default function HUD({
-  scrollProgress,
+  scrollProgress: _scrollProgress,
 }: {
   scrollProgress: React.MutableRefObject<number>;
 }) {
   const [idx, setIdx] = useState(0);
-  const raf = useRef(0);
   const lastIdx = useRef(0);
+  const phase = useChapterPhase(HOME_CHAPTER_IDS);
+
+  useMotionValueEvent(phase, "change", (v) => {
+    const next = Math.min(
+      chapters.length - 1,
+      Math.max(0, Math.round(v)),
+    );
+    if (next !== lastIdx.current) {
+      lastIdx.current = next;
+      setIdx(next);
+    }
+  });
 
   useEffect(() => {
-    let running = true;
-    const loop = () => {
-      if (!running) return;
-      const p = scrollProgress.current;
-      const next = Math.min(
-        chapters.length - 1,
-        Math.max(0, Math.floor(p * chapters.length)),
-      );
-      if (next !== lastIdx.current) {
-        lastIdx.current = next;
-        setIdx(next);
-      }
-      raf.current = requestAnimationFrame(loop);
-    };
-    const start = () => {
-      running = true;
-      raf.current = requestAnimationFrame(loop);
-    };
-    const stop = () => {
-      running = false;
-      cancelAnimationFrame(raf.current);
-    };
-    const onVisibility = () => {
-      if (document.hidden) stop();
-      else start();
-    };
-    start();
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      stop();
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [scrollProgress]);
+    // Initial sync (motion value may already be at a non-zero value on mount
+    // when navigating back to the page mid-scroll).
+    const next = Math.min(
+      chapters.length - 1,
+      Math.max(0, Math.round(phase.get())),
+    );
+    if (next !== lastIdx.current) {
+      lastIdx.current = next;
+      setIdx(next);
+    }
+  }, [phase]);
+
 
 
   return (
