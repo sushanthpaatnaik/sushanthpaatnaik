@@ -623,8 +623,12 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
       />
       <ol className="flex flex-col gap-12 md:gap-14">
         {groups.map((group, gi) => (
-          <li
+          <motion.li
             key={group.year}
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 1.0, delay: Math.min(gi * 0.05, 0.3), ease: [0.19, 1, 0.22, 1] }}
             className="relative grid grid-cols-[72px_1fr] md:grid-cols-[112px_1fr] gap-x-8 md:gap-x-12"
           >
             <div className="relative">
