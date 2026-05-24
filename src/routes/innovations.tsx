@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
+import { InnovationCanvasMount } from "@/components/innovations/InnovationCanvas";
+import { inferKind } from "@/components/innovations/InnovationObject";
+import type { InnovationDetail } from "@/components/innovations/InnovationModal";
 import backdrop from "@/assets/story-03-material.webp";
+
+const InnovationModal = lazy(() => import("@/components/innovations/InnovationModal"));
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
 import imgGraffisol from "@/assets/innovations/graffisol.webp";
