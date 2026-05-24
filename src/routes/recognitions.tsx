@@ -450,8 +450,8 @@ function EraAccordion({
   anchorId,
   children,
 }: {
-  number: string;
-  era: string;
+  number?: string;
+  era?: string;
   title: string;
   description: string;
   defaultOpen?: boolean;
