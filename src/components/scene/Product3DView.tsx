@@ -250,44 +250,44 @@ export function Product3DModal({
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="relative grid w-full max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-[1.4fr_1fr] md:px-10"
           >
-            {/* 3D stage */}
+            {/* Stage — flat frame; only the product inside rotates */}
             <div
               className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)]"
-              style={{ perspective: "1400px" }}
+              style={{ perspective: "1600px" }}
             >
-              <LatticeField intensity={0.06} className="mix-blend-screen" />
+              <LatticeField intensity={0.05} className="mix-blend-screen" />
+
+              {/* Floor shadow — anchors the product in space */}
+              <div
+                aria-hidden
+                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-70 blur-2xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.75), transparent 70%)" }}
+              />
+
+              {/* Back rim glow */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-[18%] rounded-full opacity-50 blur-3xl"
+                style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.35), transparent 65%)" }}
+              />
+
               <div
                 ref={stageRef}
-                className="absolute inset-0 cursor-grab active:cursor-grabbing will-change-transform"
+                className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing will-change-transform"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Multi-layer faux depth — back glow, mid shadow, foreground image */}
-                <div
-                  aria-hidden
-                  className="absolute inset-[12%] rounded-full opacity-60 blur-3xl"
-                  style={{
-                    background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.45), transparent 65%)",
-                    transform: "translateZ(-120px)",
-                  }}
-                />
+                {/* Only the product floats and rotates — no rectangular frame around it */}
                 <img
                   src={item.img}
                   alt={item.title}
                   draggable={false}
-                  className="absolute inset-[6%] h-[88%] w-[88%] rounded-sm object-cover"
+                  className="max-h-[78%] max-w-[78%] object-contain"
                   style={{
-                    transform: "translateZ(0)",
-                    filter: "contrast(1.08) saturate(0.92) brightness(0.95)",
-                    boxShadow: "0 40px 80px -20px oklch(0 0 0 / 0.7), 0 0 60px oklch(0.6 0.12 220 / 0.15)",
+                    filter:
+                      "contrast(1.06) saturate(0.95) brightness(0.98) drop-shadow(0 30px 40px oklch(0 0 0 / 0.55)) drop-shadow(0 0 30px oklch(0.6 0.12 220 / 0.18))",
                   }}
                 />
-                <div
-                  aria-hidden
-                  className="absolute inset-[6%] rounded-sm"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.95 0.02 220 / 0.12) 0%, transparent 35%, transparent 65%, oklch(0 0 0 / 0.35) 100%)",
-                    transform: "translateZ(2px)",
+              </div>
                   }}
                 />
               </div>
