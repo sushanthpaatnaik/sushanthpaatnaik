@@ -6,6 +6,7 @@ import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
 import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
+import OrbitalTelemetry from "@/components/scene/OrbitalTelemetry";
 import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
 import CursorAura from "@/components/scene/CursorAura";
 import { useLenis } from "@/components/scene/useLenis";
@@ -179,6 +180,9 @@ function Index() {
 
       {/* Sitewide ambient atmosphere — near-imperceptible haze + grain for spatial life */}
       {entered && <AmbientAtmosphere />}
+
+      {/* Orbital telemetry — slow rotating halo + scan band, "living systems" feel */}
+      {entered && <OrbitalTelemetry />}
 
       {/* Hidden cinematic interaction — a faint cool aura that trails the cursor */}
       {entered && <CursorAura />}
