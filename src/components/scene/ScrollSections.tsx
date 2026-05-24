@@ -565,31 +565,6 @@ function ClosingInvitation() {
           transition={{ duration: 320, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Volumetric horizon diffusion — soft atmospheric breathing along Earth's edge */}
-        <motion.div
-          aria-hidden
-          className="absolute inset-x-0 top-[64%] h-[26%]"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 100% at 50% 0%, oklch(0.56 0.045 232 / 0.10), oklch(0.36 0.03 232 / 0.05) 45%, transparent 78%)",
-            filter: "blur(28px)",
-            mixBlendMode: "screen",
-          }}
-          animate={{ opacity: [0.62, 0.88, 0.62] }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Edge fade for orbital arcs — softens overlay feeling at screen extremes */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 78% 60% at 50% 60%, transparent 55%, oklch(0.014 0.004 250 / 0.55) 100%)",
-            mixBlendMode: "multiply",
-          }}
-        />
-
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
@@ -600,7 +575,7 @@ function ClosingInvitation() {
 
         {/* Signature lattice — recurring proprietary motif at planetary scale */}
         <div aria-hidden className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2">
-          <SignatureMotif variant="watermark" className="opacity-50" />
+          <SignatureMotif variant="watermark" className="opacity-60" />
         </div>
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
@@ -615,14 +590,7 @@ function ClosingInvitation() {
           </p>
         </MotionReveal>
         <MotionReveal delay={0.12}>
-          <h2
-            className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]"
-            style={{
-              textShadow:
-                "0 1px 0 oklch(0 0 0 / 0.35), 0 0 28px oklch(0.58 0.03 232 / 0.10)",
-              WebkitFontSmoothing: "antialiased",
-            }}
-          >
+          <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]">
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
         </MotionReveal>
@@ -662,7 +630,7 @@ function ClosingInvitation() {
                 filter: "blur(20px)",
               }}
             />
-            <p className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/68">
+            <p className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/55">
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
             </p>
           </div>

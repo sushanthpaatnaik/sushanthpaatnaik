@@ -91,7 +91,7 @@ export default function HUD({
             className="absolute left-[11px] top-[10px] bottom-[10px] w-px"
             style={{
               background:
-                "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.10) 15%, oklch(0.967 0 0 / 0.12) 85%, transparent 100%)",
+                "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.12) 15%, oklch(0.967 0 0 / 0.14) 85%, transparent 100%)",
             }}
           />
           {/* Energy trace — ultra-faint travelling pulse along the spine */}

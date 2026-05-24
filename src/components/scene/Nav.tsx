@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/ventures", label: "Ventures" },
   { to: "/recognitions", label: "Recognitions" },
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "BLOGS" },
+  { to: "/essays", label: "In His Words" },
   { to: "/engage", label: "Engage" },
   { to: "/news", label: "News" },
 ] as const;
