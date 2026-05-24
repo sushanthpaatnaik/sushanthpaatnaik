@@ -337,34 +337,53 @@ function InnovationsPage() {
   );
 }
 
-function HeroCard({ item }: { item: Item }) {
+function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
+  const kind = inferKind(item.domain);
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
-      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
+      onClick={onOpen}
+      className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)] transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:border-accent/30 hover:shadow-[0_30px_80px_-30px_oklch(0.45_0.18_245_/_0.45)]"
     >
-      <img
-        src={item.img}
-        alt={`${item.title} — ${item.body}`}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
-        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+      {/* 3D specimen stage (desktop) — image fallback (mobile / reduced motion) */}
+      <InnovationCanvasMount
+        kind={kind}
+        className="absolute inset-0"
+        intense
+        fallback={
+          <img
+            src={item.img}
+            alt={`${item.title} — ${item.body}`}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover opacity-[0.78]"
+            style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+          />
+        }
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.06} className="mix-blend-screen" />
-      {/* Cinematic gradient */}
+      <LatticeField intensity={0.045} className="mix-blend-screen opacity-70" />
+      {/* Cinematic gradient — preserves legibility over the 3D stage */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.34) 0%, transparent 30%, transparent 45%, oklch(0.02 0.006 245 / 0.82) 82%, oklch(0.014 0.006 245 / 0.97) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.30) 0%, transparent 28%, transparent 42%, oklch(0.02 0.006 245 / 0.78) 80%, oklch(0.014 0.006 245 / 0.96) 100%)",
         }}
       />
-      {/* Corner technical readout */}
+      {/* Soft vignette ring on hover */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[1100ms] ease-out group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 45%, oklch(0.55 0.16 245 / 0.18) 0%, transparent 55%)",
+        }}
+      />
+      {/* Corner technical readouts */}
       <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
         <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/45">
           {item.status}
@@ -374,16 +393,15 @@ function HeroCard({ item }: { item: Item }) {
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
-          Flagship
+          Flagship · Specimen
         </span>
       </div>
-      {/* Patent stamp — bottom-right technical readout sticker */}
       <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
           IP · Filed
         </span>
         <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
-          {item.status}
+          Open · 3D View →
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
