@@ -190,6 +190,8 @@ export interface Product3DModalData {
   body: string;
   img: string;
   detailImg?: string;
+  /** Optional field-deployment video used in place of the application still. */
+  applicationVideo?: string;
   stage: string;
   specs?: { k: string; v: string; note: string }[];
   positioning?: string;
