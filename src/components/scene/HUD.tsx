@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const chapters = [
-  { id: "spark", label: "Spark", n: "01" },
-  { id: "founder", label: "Founder", n: "02" },
-  { id: "carbon-intelligence", label: "Carbon Intelligence", n: "03" },
-  { id: "industrial", label: "Industrial", n: "04" },
-  { id: "recognition", label: "Recognition", n: "05" },
-  { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "future", label: "Future", n: "07" },
+  { id: "spark", label: "Origin" },
+  { id: "founder", label: "Founder" },
+  { id: "carbon-intelligence", label: "Material Intelligence" },
+  { id: "industrial", label: "Industrial Translation" },
+  { id: "recognition", label: "Recognition" },
+  { id: "ecosystem", label: "Ecosystem" },
+  { id: "future", label: "Future Systems" },
 ];
 
 export default function HUD({
