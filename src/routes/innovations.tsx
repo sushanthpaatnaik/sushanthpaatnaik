@@ -102,6 +102,7 @@ const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
+  const [active, setActive] = useState<Item | null>(null);
   const visible = useMemo(
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
