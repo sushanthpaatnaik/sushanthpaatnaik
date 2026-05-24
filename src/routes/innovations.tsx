@@ -175,7 +175,7 @@ function InnovationsPage() {
       metric: it.metric,
       body: it.body,
       img: it.cutout,
-      detailImg: it.img,
+      detailImg: it.application,
       stage: it.stage,
     });
 
