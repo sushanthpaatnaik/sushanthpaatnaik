@@ -35,11 +35,12 @@ interface AnimatedBackgroundProps {
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
-function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.95) {
-  // Wider spread → chapters carry across boundaries instead of disappearing
-  // into black gaps. The smootherstep curve keeps the handoff organic.
+function useSceneOpacity(phase: MotionValue<number>, center: number) {
+  // Strict isolation: a scene only crossfades with its IMMEDIATE neighbour.
+  // Beyond ±1 chapter the layer is exactly 0 — no bleed from distant
+  // chapters, no stacked atmosphere across the page.
   return useTransform(phase, (v) => {
-    const d = Math.abs(v - center) / spread;
+    const d = Math.abs(v - center);
     if (d >= 1) return 0;
     const t = 1 - d;
     return t * t * t * (t * (t * 6 - 15) + 10);
@@ -47,20 +48,16 @@ function useSceneOpacity(phase: MotionValue<number>, center: number, spread = 1.
 }
 
 function useSceneScale(phase: MotionValue<number>, center: number) {
-  return useTransform(phase, (v) => 1.035 - (v - center) * 0.014);
-}
-
-// Subtle atmospheric blur during chapter handoff — sharpest at chapter
-// center, softly defocused while crossfading. Keeps imagery in third place
-// behind typography + atmosphere.
-function useSceneBlur(phase: MotionValue<number>, center: number) {
   return useTransform(phase, (v) => {
     const d = Math.min(Math.abs(v - center), 1);
-    // 0px at center → ~1.9px mid-transition. Reduced from 2.6px to cut
-    // blur stacking and keep imagery legibly behind typography.
-    const eased = d * d * (3 - 2 * d);
-    return `blur(${(eased * 1.9).toFixed(2)}px)`;
+    return 1.035 - d * 0.014;
   });
+}
+
+// Blur removed — it was stacking across overlapping layers and muddying
+// every chapter handoff. Scene sharpness now carries section identity.
+function useSceneBlur(phase: MotionValue<number>, _center: number) {
+  return useTransform(phase, () => "none");
 }
 
 const DEFAULT_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
