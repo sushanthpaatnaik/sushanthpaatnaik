@@ -435,11 +435,8 @@ export function HallOfFameRibbon({
                 alt={i >= items.length ? "" : item.caption}
                 loading="lazy"
                 draggable={false}
-                className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-[1200ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100 pointer-events-none"
-                style={{
-                  objectPosition: item.focus ?? "center 30%",
-                  filter: "grayscale(0.14) contrast(1.05) saturate(0.85) brightness(0.92)",
-                }}
+                className="archival-image-soft archival-image-hover absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-[1.04] group-hover:opacity-100 pointer-events-none"
+                style={{ objectPosition: item.focus ?? "center 30%" }}
               />
               <div
                 aria-hidden
