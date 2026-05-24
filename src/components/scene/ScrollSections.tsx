@@ -515,9 +515,11 @@ function ScaleValidationScene() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
-  const plateScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.02, 1.08]);
-  const plateOpacity = useTransform(scrollYProgress, [0, 0.2, 0.82, 1], [0, 0.5, 0.5, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  const plateScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1.02, 1.06]);
+  // Resolve fully out by 70% of section progress so ClosingInvitation owns
+  // the final viewport entirely (no opacity fight on the 07 → 08 seam).
+  const plateOpacity = useTransform(scrollYProgress, [0, 0.22, 0.62, 0.78], [0, 0.5, 0.5, 0]);
   const latticeRot = useTransform(scrollYProgress, [0, 1], [-2, 2]);
 
   return (
