@@ -97,28 +97,35 @@ function OrbitalRings({
 function PlanetaryArc() {
   return (
     <svg
-      className="absolute inset-x-0 bottom-[-12%] h-[62%] w-full opacity-[0.82]"
+      className="absolute inset-x-0 bottom-[-12%] h-[62%] w-full opacity-[0.7]"
       viewBox="0 0 100 60"
       preserveAspectRatio="xMidYMax slice"
     >
       <defs>
         <radialGradient id="planet-glow" cx="50%" cy="100%" r="82%">
-          <stop offset="0%" stopColor="oklch(0.54 0.05 232 / 0.20)" />
-          <stop offset="48%" stopColor="oklch(0.34 0.04 232 / 0.11)" />
+          <stop offset="0%" stopColor="oklch(0.54 0.05 232 / 0.18)" />
+          <stop offset="48%" stopColor="oklch(0.34 0.04 232 / 0.09)" />
+          <stop offset="100%" stopColor="transparent" />
+        </radialGradient>
+        {/* Thin atmospheric halo hugging the limb — volumetric diffusion */}
+        <radialGradient id="planet-halo" cx="50%" cy="93%" r="60%">
+          <stop offset="0%" stopColor="transparent" />
+          <stop offset="62%" stopColor="oklch(0.72 0.045 232 / 0.10)" />
+          <stop offset="78%" stopColor="oklch(0.62 0.04 232 / 0.05)" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
         <linearGradient id="planet-limb" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="oklch(0.84 0.035 232 / 0.30)" />
-          <stop offset="60%" stopColor="oklch(0.50 0.04 232 / 0.08)" />
+          <stop offset="0%" stopColor="oklch(0.84 0.035 232 / 0.24)" />
+          <stop offset="60%" stopColor="oklch(0.50 0.04 232 / 0.06)" />
           <stop offset="100%" stopColor="transparent" />
         </linearGradient>
         {/* Edge fade so the limb dissolves into atmosphere at screen edges
             instead of reading as a graphic overlay crossing the viewport. */}
         <linearGradient id="planet-limb-fade" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="white" stopOpacity="0" />
-          <stop offset="22%" stopColor="white" stopOpacity="0.75" />
+          <stop offset="18%" stopColor="white" stopOpacity="0.55" />
           <stop offset="50%" stopColor="white" stopOpacity="1" />
-          <stop offset="78%" stopColor="white" stopOpacity="0.75" />
+          <stop offset="82%" stopColor="white" stopOpacity="0.55" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <mask id="planet-limb-mask">
@@ -127,24 +134,27 @@ function PlanetaryArc() {
       </defs>
       {/* Volumetric atmospheric diffusion above the limb */}
       <ellipse cx="50" cy="80" rx="82" ry="48" fill="url(#planet-glow)" />
+      {/* Thin atmospheric halo — soft volumetric breath kissing the horizon */}
+      <ellipse cx="50" cy="56" rx="64" ry="14" fill="url(#planet-halo)" />
       {/* The limb itself — hairline arc, softened and edge-faded */}
       <g mask="url(#planet-limb-mask)">
         <path
           d="M -10 56 Q 50 6 110 56"
           fill="none"
           stroke="url(#planet-limb)"
-          strokeWidth="0.15"
+          strokeWidth="0.12"
         />
         <path
           d="M -10 56 Q 50 10 110 56"
           fill="none"
-          stroke="oklch(0.96 0.01 232 / 0.07)"
-          strokeWidth="0.05"
+          stroke="oklch(0.96 0.01 232 / 0.05)"
+          strokeWidth="0.04"
         />
       </g>
     </svg>
   );
 }
+
 
 function EngineeringGrid({
   cell = 64,
