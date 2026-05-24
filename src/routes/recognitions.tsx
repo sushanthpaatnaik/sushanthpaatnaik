@@ -474,12 +474,14 @@ function EraAccordion({
       <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[oklch(0.05_0.003_245)]/40">
         <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-8 md:gap-x-12">
           <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55 pt-2">
-            {number}
+            {number ?? ""}
           </span>
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55 mb-3">
-              Era · {era}
-            </p>
+            {era && (
+              <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55 mb-3">
+                Era · {era}
+              </p>
+            )}
             <h3 className="font-display text-[26px] md:text-[34px] leading-[1.1] tracking-[-0.03em] text-foreground/95">
               {title}
             </h3>
