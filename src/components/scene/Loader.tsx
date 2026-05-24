@@ -6,20 +6,19 @@ export default function Loader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    // Non-blocking reveal — race progress to 100 within ~300ms so the loader
-    // dissolves quickly and never gates the primary content underneath.
     let p = 0;
     const id = setInterval(() => {
-      p += (100 - p) * 0.32 + 4;
+      // Eased fake progress — reaches 100 in ~500ms
+      p += (100 - p) * 0.22 + 2.5;
       if (p >= 99.5) {
         p = 100;
         setProgress(100);
         clearInterval(id);
-        setTimeout(() => setDone(true), 140);
+        setTimeout(() => setDone(true), 220);
       } else {
         setProgress(p);
       }
-    }, 24);
+    }, 32);
     return () => clearInterval(id);
   }, []);
 
@@ -56,7 +55,7 @@ export default function Loader() {
         <div className="w-[260px] flex flex-col items-center gap-3">
           <div className="w-full h-px bg-foreground/10 overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[oklch(0.72_0.07_75/0.55)] via-[oklch(0.82_0.10_78/0.85)] to-[oklch(0.72_0.07_75/0.55)] transition-[width] duration-150 ease-out"
+              className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-150 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

@@ -124,16 +124,14 @@ type Advisory = {
   scale: number;
   /** Px vertical nudge for optical centering. */
   offsetY?: number;
-  /** Logo is dark/black on transparent → invert for dark-bg visibility. */
-  invert?: boolean;
 };
 
 const advisories: Advisory[] = [
-  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0,  invert: true },
+  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0 },
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1,  invert: true },
+  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1 },
 ];
 
 
@@ -348,11 +346,9 @@ function VenturesPage() {
                     maxHeight: `${Math.round(46 * a.scale)}px`,
                     maxWidth: `${Math.round(74 * a.scale)}%`,
                     transform: `translateY(${a.offsetY || 0}px)`,
-                    filter: a.invert
-                      ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
-                      : "brightness(1.08) contrast(1.06)",
+                    filter: "grayscale(0.18) brightness(0.95) contrast(1.04)",
                   }}
-                  className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
+                  className="h-auto w-auto object-contain opacity-[0.82] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:grayscale-0"
                 />
               </div>
 

@@ -120,7 +120,7 @@ export default function CinematicPageShell({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-              className="text-[10px] uppercase tracking-[0.45em] text-foreground/55"
+              className="text-[10px] uppercase tracking-[0.45em] text-primary/75"
             >
               {eyebrow}
             </motion.p>
@@ -182,9 +182,9 @@ export function EditorialSection({
     <motion.section
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px 0px -80px 0px" }}
+      viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-      className="border-t border-foreground/[0.07] pt-7 md:pt-10 mt-10 md:mt-14 first:mt-0 first:border-t-0 first:pt-0"
+      className="border-t border-foreground/[0.07] pt-10 md:pt-14 mt-16 md:mt-24 first:mt-0 first:border-t-0 first:pt-0"
     >
       {number && (
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
