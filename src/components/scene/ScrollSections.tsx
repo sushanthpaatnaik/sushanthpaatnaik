@@ -21,7 +21,7 @@ import HeroAtmosphere from "./HeroAtmosphere";
 
 const carbonChapter: StoryChapter = {
   id: "carbon-intelligence",
-  eyebrow: "03 — Carbon Intelligence",
+  eyebrow: "Material Intelligence",
   title: "Engineering intelligent matter.",
   body: "Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, manufactured cleanly and at scale, is the most under-priced strategic asset on the table this decade.",
   align: "right",
@@ -29,7 +29,7 @@ const carbonChapter: StoryChapter = {
 
 const industrialChapter: StoryChapter = {
   id: "industrial",
-  eyebrow: "04 — Industrial Future",
+  eyebrow: "Industrial Translation",
   title: "One lattice. Many industries.",
   body: "Solar coatings, batteries that charge in minutes, polymer additives, climate infrastructure — each a downstream of the same material platform.",
   align: "left",
