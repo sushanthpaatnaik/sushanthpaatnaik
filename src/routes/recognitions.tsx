@@ -330,7 +330,7 @@ const eraGlobal: ArchiveItem[] = [
     institution: "TED-India",
     recognition: "Featured Speaker · 2012",
     presenter: "Among the youngest speakers ever featured",
-    venue: "Mysore · India",
+    venue: "Bangalore · India",
   },
   {
     src: honorNasa,
