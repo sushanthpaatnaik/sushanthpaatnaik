@@ -447,9 +447,11 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         cutout={item.cutout}
         ambient={item.img}
         alt={`${item.title} — ${item.body}`}
-        swing={18}
+        swing={4}
+        restAngle={10}
         featured={item.featured}
       />
+
 
       {/* Restrained lattice — scientific texture */}
       <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
