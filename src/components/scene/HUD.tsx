@@ -94,6 +94,23 @@ export default function HUD({
                 "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.12) 15%, oklch(0.967 0 0 / 0.14) 85%, transparent 100%)",
             }}
           />
+          {/* Ultra-slow energy propagation — a faint pulse traveling down
+              the spine that signals the rail is a living instrument.
+              ~14s loop, almost subliminal. */}
+          <motion.div
+            aria-hidden
+            className="absolute left-[10.5px] w-[2px] rounded-full pointer-events-none"
+            style={{
+              top: 0,
+              height: 26,
+              background:
+                "linear-gradient(180deg, transparent 0%, oklch(0.78 0.06 232 / 0.55) 50%, transparent 100%)",
+              filter: "blur(1.2px)",
+              mixBlendMode: "screen",
+            }}
+            animate={{ y: ["8%", "92%"], opacity: [0, 0.85, 0] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          />
         </nav>
       </div>
     </>

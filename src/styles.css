@@ -271,6 +271,32 @@
     mix-blend-mode: multiply;
   }
 
+  /* Signature grade — the canonical, site-wide image treatment.
+     Apply to every photographic plate (founder, recognitions, innovations,
+     archive) so the entire universe shares one tonal language. Combines
+     restrained desaturation, lifted blacks, controlled highlights, and a
+     barely-perceptible cool cast for a curated documentary feel. */
+  .signature-grade {
+    filter:
+      grayscale(0.16)
+      contrast(1.04)
+      saturate(0.82)
+      brightness(0.92)
+      sepia(0.05);
+    transition: filter var(--dur-slow) var(--ease-cinematic),
+                transform var(--dur-slow) var(--ease-cinematic),
+                opacity var(--dur-slow) var(--ease-cinematic);
+  }
+  .group:hover .signature-grade,
+  .signature-grade:hover {
+    filter:
+      grayscale(0.08)
+      contrast(1.02)
+      saturate(0.92)
+      brightness(0.97)
+      sepia(0.02);
+  }
+
 
 
   /* Cinematic dark overlay — read on top of any cinematic image.
