@@ -324,6 +324,14 @@ function InnovationsPage() {
           </div>
         </div>
       </div>
+
+      <Suspense fallback={null}>
+        <InnovationModal
+          open={active !== null}
+          onOpenChange={(v) => !v && setActive(null)}
+          item={active}
+        />
+      </Suspense>
     </CinematicPageShell>
 
   );
