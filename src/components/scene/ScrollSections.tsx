@@ -1092,16 +1092,16 @@ function ClosingInvitation() {
 
         {/* ───── EARTH HORIZON — monumental, pushed low, emerges on scroll ───── */}
         <motion.div
-          ref={planetParallaxRef}
+          ref={planetRef}
           className="absolute left-1/2 -translate-x-1/2 will-change-transform"
           style={{
             bottom: "-78vmin",
             width: "180vmin",
             height: "180vmin",
+            y: earthRise,
             opacity: earthOpacity,
           }}
         >
-          <motion.div ref={planetRef} className="absolute inset-0 rounded-full will-change-transform" style={{ y: earthRise }}>
           {/* Planet body — deep ocean blue with terminator shading */}
           <div
             className="absolute inset-0 rounded-full"
@@ -1162,12 +1162,11 @@ function ClosingInvitation() {
               transition={{ duration: 60, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
-          </motion.div>
         </motion.div>
 
         {/* ───── Orbital arcs — two slow concentric paths above the limb ───── */}
         <motion.div
-          ref={orbitAParallaxRef}
+          ref={orbitARef}
           className="absolute left-1/2 -translate-x-1/2 will-change-transform"
           style={{
             bottom: "-72vmin",
@@ -1177,7 +1176,6 @@ function ClosingInvitation() {
           }}
         >
           <div
-            ref={orbitARef}
             className="absolute inset-0 rounded-full"
             style={{
               border: "0.5px solid oklch(0.65 0.06 232 / 0.18)",
@@ -1186,7 +1184,7 @@ function ClosingInvitation() {
           />
         </motion.div>
         <motion.div
-          ref={orbitBParallaxRef}
+          ref={orbitBRef}
           className="absolute left-1/2 -translate-x-1/2 will-change-transform"
           style={{
             bottom: "-68vmin",
@@ -1196,7 +1194,6 @@ function ClosingInvitation() {
           }}
         >
           <div
-            ref={orbitBRef}
             className="absolute inset-0 rounded-full"
             style={{
               border: "0.5px dashed oklch(0.6 0.05 232 / 0.10)",
