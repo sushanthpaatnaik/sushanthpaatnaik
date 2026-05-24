@@ -911,8 +911,6 @@ function RecognitionsPage() {
 
       <div className="not-prose mt-6 border-b border-foreground/[0.08]">
         <EraAccordion
-          number="I"
-          era="2008 – 2013"
           title="Rashtrapati Bhavan years."
           description="Six citations, three sitting Presidents of India. The earliest plates in the archive — when the prototypes still smelled of school workshop and the country was just beginning to notice."
           plateCount={eraPresidential.length}
