@@ -425,7 +425,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   );
 }
 
-function CompactCard({ item }: { item: Item }) {
+function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 14 }}
