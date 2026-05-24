@@ -1327,10 +1327,7 @@ export default function ScrollSections() {
       {/* 07 — Scale & Validation (proof layer) */}
       <ScaleValidationScene />
 
-      {/* 08 — In His Words (reflective philosophical chapter) */}
-      <InHisWordsScene />
-
-      {/* 09 — Closing invitation */}
+      {/* 08 — Closing invitation */}
       <ClosingInvitation />
     </div>
   );
