@@ -304,33 +304,58 @@ export function Product3DModal({
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Application — real-world use-case photograph */}
-                <div className="relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
-                  <motion.img
-                    key={(item.detailImg ?? item.img) + "-app"}
-                    src={item.detailImg ?? item.img}
-                    alt={`${item.title} — application`}
-                    initial={{ opacity: 0, scale: 1.02 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
-                  />
+                {/* Application — real-world use-case media (image or video) */}
+                <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
+                  {item.applicationVideo ? (
+                    <motion.video
+                      key={item.applicationVideo}
+                      src={item.applicationVideo}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
+                      style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
+                    />
+                  ) : (
+                    <motion.img
+                      key={(item.detailImg ?? item.img) + "-app"}
+                      src={item.detailImg ?? item.img}
+                      alt={`${item.title} — application`}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
+                    />
+                  )}
                   <div
                     aria-hidden
-                    className="absolute inset-0"
+                    className="pointer-events-none absolute inset-0"
                     style={{
                       background:
                         "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
                     }}
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
                   <FilmGrain opacity={0.07} />
                   <div className="absolute bottom-3 left-3 z-10">
                     <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
-                      Application · Field
+                      {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
                     </p>
                   </div>
+                  {item.applicationVideo && (
+                    <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
+                      <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/80">
+                        Live · Loop
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Optical / studio note */}
