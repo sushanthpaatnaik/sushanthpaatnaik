@@ -190,7 +190,21 @@ function InnovationsPage() {
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
   );
-  const openProduct = (it: Item) =>
+  const openProduct = (it: Item) => {
+    const largeFrameTitles = new Set([
+      "Graphacrete",
+      "Graffisol",
+      "Ceraphene",
+      "Ignitron D",
+      "Lubritron",
+    ]);
+    const captions: Record<string, string> = {
+      Graphacrete: "Infrastructure · Concrete deployment",
+      Graffisol: "Solar array · Coating application",
+      Ceraphene: "Automotive surface · Hydrophobic ceramic",
+      "Ignitron D": "Diesel fleet · Combustion systems",
+      Lubritron: "Engine internals · Friction-reduction",
+    };
     setActive({
       title: it.title,
       domain: it.domain,
@@ -204,7 +218,10 @@ function InnovationsPage() {
       specs: it.specs,
       positioning: it.positioning,
       applicationContext: it.applicationContext,
+      largeApplicationFrame: largeFrameTitles.has(it.title),
+      applicationCaption: captions[it.title],
     });
+  };
 
   const grouped = useMemo(() => {
     const stages: Stage[] = ["Commercial", "Pilot", "R&D"];

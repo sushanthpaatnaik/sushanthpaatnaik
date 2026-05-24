@@ -196,6 +196,11 @@ export interface Product3DModalData {
   specs?: { k: string; v: string; note: string }[];
   positioning?: string;
   applicationContext?: string[];
+  /** When true, hide the small product thumbnail next to the title and render
+   *  a wide cinematic Field Application Preview frame inside the info panel. */
+  largeApplicationFrame?: boolean;
+  /** Short caption shown inside the large application frame. */
+  applicationCaption?: string;
 }
 
 export function Product3DModal({
@@ -406,24 +411,88 @@ export function Product3DModal({
                     {item.domain}
                   </p>
                 </div>
-                <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                {!item.largeApplicationFrame && (
+                  <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                    <div
+                      className="h-full w-full"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 42% 26%, oklch(0.82 0.02 235 / 0.18), transparent 30%), linear-gradient(180deg, oklch(0.1 0.008 245), oklch(0.05 0.008 245))",
+                      }}
+                    >
+                      <img
+                        src={item.img}
+                        alt=""
+                        aria-hidden
+                        className="h-full w-full object-contain p-2.5"
+                        style={{ filter: "drop-shadow(0 14px 18px oklch(0 0 0 / 0.62))" }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {item.largeApplicationFrame && (
+                <div className="group relative aspect-[16/9] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.05_0.008_245)]">
+                  {item.applicationVideo ? (
+                    <motion.video
+                      key={item.applicationVideo + "-large"}
+                      src={item.applicationVideo}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      initial={{ opacity: 0, scale: 1.025 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]"
+                      style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.92)" }}
+                    />
+                  ) : (
+                    <motion.img
+                      key={(item.detailImg ?? item.img) + "-large"}
+                      src={item.detailImg ?? item.img}
+                      alt={`${item.title} — field application`}
+                      initial={{ opacity: 0, scale: 1.025 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]"
+                      style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
+                    />
+                  )}
+                  {/* Cinematic vignette + bottom rolloff */}
                   <div
-                    className="h-full w-full"
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(circle at 42% 26%, oklch(0.82 0.02 235 / 0.18), transparent 30%), linear-gradient(180deg, oklch(0.1 0.008 245), oklch(0.05 0.008 245))",
+                        "radial-gradient(ellipse at 50% 46%, transparent 48%, oklch(0.02 0.006 245 / 0.38) 88%, oklch(0.015 0.006 245 / 0.7) 100%)",
                     }}
-                  >
-                    <img
-                      src={item.img}
-                      alt=""
-                      aria-hidden
-                      className="h-full w-full object-contain p-2.5"
-                      style={{ filter: "drop-shadow(0 14px 18px oklch(0 0 0 / 0.62))" }}
-                    />
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_42%,oklch(0.03_0.006_245/0.85)_100%)]" />
+                  {/* Industrial frame brackets */}
+                  <div aria-hidden className="pointer-events-none absolute left-2 top-2 h-3 w-3 border-l border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2 top-2 h-3 w-3 border-r border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute left-2 bottom-2 h-3 w-3 border-l border-b border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2 bottom-2 h-3 w-3 border-r border-b border-foreground/30" />
+                  <FilmGrain opacity={0.06} />
+                  <div className="pointer-events-none absolute left-4 top-3 z-10 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/80" />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.36em] text-foreground/70">
+                      Field Application · Preview
+                    </span>
+                  </div>
+                  <div className="pointer-events-none absolute bottom-3 left-4 right-4 z-10 flex items-end justify-between gap-4">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/80">
+                      {item.applicationCaption ?? `${item.title} · Deployment`}
+                    </p>
+                    <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                      {item.applicationVideo ? "Live · Loop" : "Archive · Field capture"}
+                    </p>
                   </div>
                 </div>
-              </div>
+              )}
 
               <p className="max-w-md text-[14.5px] leading-relaxed text-foreground/80">
                 {item.positioning || item.body}
