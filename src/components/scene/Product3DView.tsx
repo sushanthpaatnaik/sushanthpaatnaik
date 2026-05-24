@@ -496,49 +496,83 @@ export function Product3DModal({
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="relative grid w-full max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-[1.4fr_1fr] md:px-10"
           >
-            {/* Stage — flat frame; only the product inside rotates */}
+            {/* Stage — cinematic inspection chamber */}
             <div
-              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-white"
-              style={{ perspective: "1600px" }}
+              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.10]"
+              style={{
+                perspective: "1800px",
+                background:
+                  "radial-gradient(ellipse 75% 65% at 50% 40%, oklch(0.10 0.014 232 / 1) 0%, oklch(0.05 0.008 232 / 1) 55%, oklch(0.025 0.006 245 / 1) 100%)",
+              }}
             >
-              {/* Floor shadow — anchors the product in space */}
+              {/* Technical inspection rings — concentric, faint */}
               <div
                 aria-hidden
-                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-40 blur-2xl"
-                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.6), transparent 70%)" }}
+                className="pointer-events-none absolute inset-0 flex items-center justify-center"
+              >
+                <div className="absolute h-[78%] w-[78%] rounded-full border border-foreground/[0.05]" />
+                <div className="absolute h-[58%] w-[58%] rounded-full border border-foreground/[0.04]" />
+                <div className="absolute h-[38%] w-[38%] rounded-full border border-accent/[0.08]" />
+              </div>
+
+              {/* Back rim glow */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-[20%] rounded-full blur-3xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0.55 0.10 220 / 0.22), transparent 65%)" }}
               />
 
-              {/* Soft studio vignette */}
+              {/* Atmospheric floor shadow */}
+              <div
+                aria-hidden
+                className="absolute bottom-[6%] left-1/2 h-10 w-[68%] -translate-x-1/2 rounded-[50%] blur-3xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.7), transparent 72%)" }}
+              />
+
+              {/* Tight contact shadow */}
+              <div
+                aria-hidden
+                className="absolute bottom-[10%] left-1/2 h-3 w-[42%] -translate-x-1/2 rounded-[50%] blur-md"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 75%)" }}
+              />
+
+              {/* Vignette */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
-                style={{ background: "radial-gradient(ellipse at 50% 35%, transparent 55%, oklch(0 0 0 / 0.06) 100%)" }}
+                style={{ background: "radial-gradient(ellipse at 50% 38%, transparent 55%, oklch(0 0 0 / 0.55) 100%)" }}
               />
-
 
               <div
                 ref={stageRef}
                 className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing will-change-transform"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Only the product floats and rotates — no rectangular frame around it */}
                 <img
                   src={item.img}
                   alt={item.title}
                   draggable={false}
-                  className="max-h-[78%] max-w-[78%] object-contain"
+                  className="max-h-[80%] max-w-[80%] object-contain"
                   style={{
                     filter:
-                      "contrast(1.06) saturate(0.95) brightness(0.98) drop-shadow(0 30px 40px oklch(0 0 0 / 0.55)) drop-shadow(0 0 30px oklch(0.6 0.12 220 / 0.18))",
+                      "contrast(1.08) saturate(0.96) brightness(1.02) drop-shadow(0 34px 44px oklch(0 0 0 / 0.7)) drop-shadow(0 0 38px oklch(0.6 0.12 220 / 0.22))",
                   }}
                 />
               </div>
 
-              {/* Hint */}
-              <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] uppercase tracking-[0.38em] text-foreground/50">
+              {/* Corner technical readouts */}
+              <div className="pointer-events-none absolute left-4 top-4 font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                CH · 01 · Inspection
+              </div>
+              <div className="pointer-events-none absolute right-4 top-4 font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/70">
+                3D · LIVE
+              </div>
+
+              <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] uppercase tracking-[0.38em] text-foreground/55">
                 Drag · Rotate
               </div>
             </div>
+
 
             {/* Spec panel */}
             <div className="flex flex-col justify-center gap-5">
