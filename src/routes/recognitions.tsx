@@ -756,14 +756,26 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ${onLeft ? "md:mr-8" : "md:ml-8"}`}
+                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ring-1 ring-foreground/[0.05] ${onLeft ? "md:mr-8" : "md:ml-8"}`}
                     >
+                      {m.imageFit === "contain" && (
+                        <img
+                          src={m.image}
+                          alt=""
+                          aria-hidden
+                          className="absolute inset-0 h-full w-full object-cover scale-110"
+                          style={{
+                            objectPosition: m.imageFocus ?? "center",
+                            filter: "blur(32px) brightness(0.4) saturate(0.7)",
+                          }}
+                        />
+                      )}
                       <img
                         src={m.image}
                         alt={m.title}
                         loading={i < 2 ? "eager" : "lazy"}
                         className={`absolute inset-0 h-full w-full opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
-                          m.imageFit === "contain" ? "object-contain p-6 md:p-8" : "object-cover"
+                          m.imageFit === "contain" ? "object-contain p-2 md:p-3" : "object-cover"
                         }`}
                         style={{
                           objectPosition: m.imageFocus ?? "center 30%",
@@ -775,9 +787,7 @@ function RecognitionsPage() {
                         className="absolute inset-0"
                         style={{
                           background:
-                            m.imageFit === "contain"
-                              ? "linear-gradient(180deg, transparent 0%, transparent 70%, oklch(0.02 0.006 245 / 0.55) 100%)"
-                              : "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 45%, oklch(0.02 0.006 245 / 0.45) 88%, oklch(0.014 0.006 245 / 0.78) 100%)",
+                            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 45%, oklch(0.02 0.006 245 / 0.45) 88%, oklch(0.014 0.006 245 / 0.78) 100%)",
                         }}
                       />
                       <div
