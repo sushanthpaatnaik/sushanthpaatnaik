@@ -96,6 +96,15 @@ export const Route = createFileRoute("/recognitions")({
   }),
 });
 
+type RecognitionCategory =
+  | "Presidential"
+  | "Global"
+  | "Innovation"
+  | "Research"
+  | "Industry"
+  | "Diplomacy"
+  | "Institutional";
+
 type Milestone = {
   year: string;
   sortYear: number;
@@ -105,6 +114,7 @@ type Milestone = {
   imageFocus?: string;
   imageFit?: "cover" | "contain";
   institution: string;
+  category: RecognitionCategory;
   major?: boolean;
 };
 
@@ -116,8 +126,8 @@ const milestones: Milestone[] = [
     body: "Recognized by three Presidents of India across six national innovation honours — Dr. A.P.J. Abdul Kalam (2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
     image: honorPresidentialTrio,
     imageFocus: "center center",
-
     institution: "President of India · National Innovation Foundation",
+    category: "Presidential",
     major: true,
   },
   {
@@ -128,6 +138,7 @@ const milestones: Milestone[] = [
     image: honorMitTr35,
     imageFocus: "center 25%",
     institution: "MIT Technology Review · Cambridge",
+    category: "Global",
   },
   {
     year: "2010",
@@ -136,6 +147,7 @@ const milestones: Milestone[] = [
     body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fifteen-year practice in deep-tech.",
     image: honorIntelIris,
     institution: "Intel Foundation · National Science Fair",
+    category: "Innovation",
   },
   {
     year: "2011",
@@ -144,6 +156,7 @@ const milestones: Milestone[] = [
     body: "International recognition at NASA Kennedy Space Center — including a research visit to the Mobile Quarantine Facility at the U.S. Space & Rocket Center, Huntsville — for breakthrough engineering in human–machine interfaces.",
     image: honorNasa,
     institution: "NASA · Kennedy Space Center",
+    category: "Research",
     major: true,
   },
   {
@@ -153,6 +166,7 @@ const milestones: Milestone[] = [
     body: "Invited to TED-India as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
     image: keynoteTed,
     institution: "TED · Bangalore",
+    category: "Global",
     major: true,
   },
   {
@@ -163,8 +177,20 @@ const milestones: Milestone[] = [
     image: honorMitFab,
     imageFocus: "center 35%",
     institution: "MIT · Center for Bits and Atoms",
+    category: "Institutional",
   },
 ];
+
+// Archival authority strip — the small register of numbers shown directly
+// under the section index. Read as a museum plaque, not a marketing stat.
+const authoritySignals: Array<{ value: string; label: string }> = [
+  { value: "27", label: "Honors of Record" },
+  { value: "42", label: "Hall of Fame Moments" },
+  { value: "06", label: "Presidential Recognitions" },
+  { value: "03", label: "Presidents of India" },
+  { value: "∞", label: "Global Innovation Citations" },
+];
+
 
 // Archival ledger — chronologically grouped, with featured milestones
 // marked for cinematic hierarchy (Presidential, MIT TR-35, NASA, TED,
