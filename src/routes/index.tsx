@@ -5,8 +5,6 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import { useLenis } from "@/components/scene/useLenis";
-import { HOME_CHAPTER_IDS } from "@/components/scene/homeChapters";
-import { useMotionValue } from "framer-motion";
 import founderPresence from "@/assets/founder-editorial.webp";
 
 // Heavy cinematic background layers — code-split so the initial JS bundle
@@ -47,17 +45,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const pageScrollProgress = useRef(0);
-  const chapterScrollProgress = useRef(0);
-  const sceneProgress = useMotionValue(0);
-  const scenePhase = useMotionValue(0);
   const scrollYRef = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
-  // Defer heavy background scene mounting until the main thread is idle so
-  // first paint + hero typography are not delayed by Framer/lazy work.
   const [scenesReady, setScenesReady] = useState(false);
-  // Detect low-power / coarse-pointer devices — we keep the cinematic look
-  // but skip the costliest layers (custom cursor aura) on these clients.
   const [isLowPower, setIsLowPower] = useState(false);
 
   const handleScroll = useCallback((p: number, scrollY: number) => {
@@ -154,100 +145,8 @@ function Index() {
     setIsLowPower(coarse || narrow || cores <= 4);
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // (scroll-driven scene progress is now derived internally by AnimatedBackground)
 
-    let chapterElements: HTMLElement[] = [];
-    let resizeObserver: ResizeObserver | null = null;
-    let measureRaf = 0;
-    let syncRaf = 0;
-
-    const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-
-    const collect = () => {
-      chapterElements = HOME_CHAPTER_IDS
-        .map((id) => document.getElementById(id))
-        .filter((node): node is HTMLElement => Boolean(node));
-
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-        resizeObserver.observe(document.documentElement);
-        resizeObserver.observe(document.body);
-        chapterElements.forEach((element) => resizeObserver?.observe(element));
-      }
-    };
-
-    const updateSceneProgress = (scrollY: number) => {
-      if (!chapterElements.length) return;
-
-      const maxScroll = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight,
-      );
-      const starts = chapterElements.map((element) => element.offsetTop);
-      const lastIndex = chapterElements.length - 1;
-
-      let activeIndex = lastIndex;
-      for (let index = 0; index < chapterElements.length; index += 1) {
-        const nextStart = starts[index + 1] ?? Number.POSITIVE_INFINITY;
-        if (scrollY < nextStart) {
-          activeIndex = index;
-          break;
-        }
-      }
-
-      const start = starts[activeIndex] ?? 0;
-      const end = activeIndex < lastIndex ? starts[activeIndex + 1] : maxScroll;
-      const segment = Math.max(1, end - start);
-      const local = activeIndex < lastIndex ? clamp((scrollY - start) / segment, 0, 1) : 0;
-      const phase = clamp(activeIndex + local, 0, lastIndex);
-      const progress = lastIndex > 0 ? phase / lastIndex : 0;
-
-      chapterScrollProgress.current = progress;
-      scenePhase.set(phase);
-      sceneProgress.set(progress);
-    };
-
-    const measure = () => {
-      collect();
-      updateSceneProgress(scrollYRef.current || window.scrollY || window.pageYOffset || 0);
-    };
-
-    const scheduleMeasure = () => {
-      cancelAnimationFrame(measureRaf);
-      measureRaf = requestAnimationFrame(measure);
-    };
-
-    measure();
-    const onResize = () => scheduleMeasure();
-    const onLoad = () => scheduleMeasure();
-    window.addEventListener("resize", onResize, { passive: true });
-    window.addEventListener("orientationchange", onResize);
-    window.addEventListener("load", onLoad);
-
-    const fonts = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts;
-    fonts?.ready.then(scheduleMeasure).catch(() => {});
-
-    if (typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver(() => scheduleMeasure());
-      collect();
-    }
-
-    const syncLoop = () => {
-      updateSceneProgress(scrollYRef.current || window.scrollY || window.pageYOffset || 0);
-      syncRaf = requestAnimationFrame(syncLoop);
-    };
-    syncRaf = requestAnimationFrame(syncLoop);
-
-    return () => {
-      cancelAnimationFrame(measureRaf);
-      cancelAnimationFrame(syncRaf);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("orientationchange", onResize);
-      window.removeEventListener("load", onLoad);
-      resizeObserver?.disconnect();
-    };
-  }, [scenePhase, sceneProgress]);
 
   // Mount heavy background scenes after first paint — uses requestIdleCallback
   // when available so hero typography is interactive immediately.
@@ -306,7 +205,7 @@ function Index() {
         {scenesReady && (
           <>
             <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
-              <AtmosphereLayer progress={sceneProgress} phase={scenePhase} />
+              <AtmosphereLayer />
             </div>
             <GrapheneVolumetric scrollProgress={pageScrollProgress} mouse={mouse} />
             <AmbientAtmosphere />
@@ -325,7 +224,7 @@ function Index() {
 
       {/* Primary content renders immediately — no longer gated on heavy scene load */}
       <Nav />
-      <HUD scrollProgress={chapterScrollProgress} />
+      <HUD scrollProgress={pageScrollProgress} />
       <main id="main">
         <ScrollSections />
       </main>
