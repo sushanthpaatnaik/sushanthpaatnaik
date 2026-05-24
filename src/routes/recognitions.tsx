@@ -152,7 +152,7 @@ const milestones: Milestone[] = [
     title: "TED-India Speaker",
     body: "Invited to TED-India as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
     image: keynoteTed,
-    institution: "TED · Mysore",
+    institution: "TED · Bangalore",
     major: true,
   },
   {
@@ -213,7 +213,7 @@ const ledgerByYear: LedgerYear[] = [
     year: "2012",
     entries: [
       { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
-      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
+      { title: "TED-India Speaker", institution: "TED · Bangalore", featured: true },
       { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest Award", institution: "E-Cell · IIT Kanpur" },
       { title: "Judge · SELL-X Exodia · IIT-Mandi Business Plan Contest", institution: "IIT Mandi" },
       { title: "Innovio-12 · KIIT Business Plan Contest Award", institution: "KIIT University" },
@@ -330,7 +330,7 @@ const eraGlobal: ArchiveItem[] = [
     institution: "TED-India",
     recognition: "Featured Speaker · 2012",
     presenter: "Among the youngest speakers ever featured",
-    venue: "Mysore · India",
+    venue: "Bangalore · India",
   },
   {
     src: honorNasa,
@@ -452,7 +452,7 @@ if (import.meta.env.DEV) {
 // realism and historical scale without expanding the chronological registry.
 const documentaryMosaic: ArchiveItem[] = [
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
-  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Mysore · 2012", category: "Keynote" },
+  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Bangalore · 2012", category: "Keynote" },
   { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
