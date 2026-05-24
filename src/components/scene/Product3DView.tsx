@@ -455,9 +455,11 @@ export function Product3DModal({
                     <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/82">
                       {item.applicationCaption ?? `${item.title} · Deployment`}
                     </p>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
-                      {item.applicationVideo ? "Live · Loop" : "Archive · Field capture"}
-                    </p>
+                    {!item.applicationVideo && (
+                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
+                        Archive · Field capture
+                      </p>
+                    )}
                   </div>
                 </div>
               ) : (
