@@ -53,15 +53,10 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
         src={item.src}
         alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
         loading="lazy"
-        className={`absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] ${
-          isHero ? "opacity-95 group-hover:opacity-100" : "opacity-90 group-hover:opacity-100"
+        className={`archival-image-hover absolute inset-0 h-full w-full object-cover ease-out group-hover:scale-[1.035] ${
+          isHero ? "archival-image opacity-95 group-hover:opacity-100" : "archival-image-soft opacity-90 group-hover:opacity-100"
         }`}
-        style={{
-          objectPosition: item.focus ?? "center 30%",
-          filter: isHero
-            ? "grayscale(0.06) contrast(1.06) saturate(0.94) brightness(0.96)"
-            : "grayscale(0.12) contrast(1.05) saturate(0.88) brightness(0.94)",
-        }}
+        style={{ objectPosition: item.focus ?? "center 30%" }}
       />
       {/* Cinematic dark wash — slightly deeper on hero for caption legibility */}
       <div
