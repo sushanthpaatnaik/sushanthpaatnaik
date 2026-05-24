@@ -4,6 +4,7 @@ import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform
 import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-editorial.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
+import Interstitial from "./Interstitial";
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = cinematic opening sequence into the larger world.
@@ -576,17 +577,32 @@ export default function ScrollSections() {
       {/* 02 — Founder presence */}
       <FounderScene />
 
+      {/* Interlude — material thesis */}
+      <Interstitial line="Ideas entered industry." />
+
       {/* 03 — Innovation philosophy */}
       <StorySection chapter={carbonChapter} index={3} total={totalChapters} />
 
       {/* 04 — Industrial future vision */}
       <StorySection chapter={industrialChapter} index={4} total={totalChapters} />
 
+      {/* Interlude — research evolved */}
+      <Interstitial line="Research evolved into infrastructure." />
+
       {/* 05 — Recognition signal */}
       <RecognitionSignal />
 
+      {/* Interlude — recognition followed */}
+      <Interstitial line="Recognition followed the prototypes." />
+
       {/* 06 — Ecosystem gateway */}
       <EcosystemGateway />
+
+      {/* Breathing pause — one intentional moment of stillness */}
+      <Interstitial
+        pause
+        line="The most important specification on any drawing is the human being it is meant for."
+      />
 
       {/* 07 — Closing invitation */}
       <ClosingInvitation />
