@@ -671,7 +671,7 @@ export default function ScrollSections() {
       {/* Breathing pause — one intentional moment of stillness */}
       <Interstitial
         pause
-        line="The most important specification on any drawing is the human being it is meant for."
+        line="The future is not imagined. It is engineered quietly."
       />
 
       {/* 07 — Closing invitation */}
