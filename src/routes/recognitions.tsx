@@ -213,7 +213,7 @@ const ledgerByYear: LedgerYear[] = [
     year: "2012",
     entries: [
       { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
-      { title: "TED-India Speaker", institution: "TED · Mysore", featured: true },
+      { title: "TED-India Speaker", institution: "TED · Bangalore", featured: true },
       { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest Award", institution: "E-Cell · IIT Kanpur" },
       { title: "Judge · SELL-X Exodia · IIT-Mandi Business Plan Contest", institution: "IIT Mandi" },
       { title: "Innovio-12 · KIIT Business Plan Contest Award", institution: "KIIT University" },
