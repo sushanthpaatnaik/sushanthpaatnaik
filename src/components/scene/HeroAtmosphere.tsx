@@ -62,10 +62,76 @@ export default function HeroAtmosphere() {
         }}
       />
 
-      {/* Graphene blueprint trace removed — the centered hexagon tile
-          produced a visible white snowflake/asterisk artifact behind the
-          hero typography under mix-blend-screen. Atmosphere now relies on
-          gradients, haze, and motes alone. */}
+      {/* Layer 5a — restrained engineering grid, fades hard at the
+          center so it never crosses the hero typography column. */}
+      <div
+        className="absolute inset-0 opacity-[0.55]"
+        style={{
+          backgroundImage:
+            "linear-gradient(oklch(0.72 0.02 232 / 0.05) 1px, transparent 1px), linear-gradient(90deg, oklch(0.72 0.02 232 / 0.05) 1px, transparent 1px)",
+          backgroundSize: "84px 84px",
+          maskImage:
+            "radial-gradient(ellipse 60% 65% at 50% 50%, transparent 0%, transparent 38%, #000 92%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 60% 65% at 50% 50%, transparent 0%, transparent 38%, #000 92%)",
+        }}
+      />
+
+      {/* Layer 5b — planetary curvature limb at the very bottom, a
+          single hairline arc with a thin atmospheric glow above it.
+          Pure SVG, no imagery, completely off-axis from the headline. */}
+      <svg
+        className="absolute inset-x-0 bottom-[-6%] h-[44%] w-full"
+        viewBox="0 0 100 40"
+        preserveAspectRatio="xMidYMax slice"
+      >
+        <defs>
+          <radialGradient id="hero-planet-glow" cx="50%" cy="100%" r="80%">
+            <stop offset="0%" stopColor="oklch(0.55 0.05 232 / 0.14)" />
+            <stop offset="55%" stopColor="oklch(0.30 0.04 232 / 0.06)" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          <linearGradient id="hero-planet-limb" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="oklch(0.82 0.04 232 / 0.30)" />
+            <stop offset="65%" stopColor="oklch(0.50 0.04 232 / 0.08)" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="50" cy="60" rx="80" ry="34" fill="url(#hero-planet-glow)" />
+        <path
+          d="M -8 38 Q 50 4 108 38"
+          fill="none"
+          stroke="url(#hero-planet-limb)"
+          strokeWidth="0.16"
+        />
+      </svg>
+
+      {/* Layer 5c — single orbital ellipse, drawn off the lower-right
+          axis, near-invisible. Hint of infrastructure, no sci-fi cliché. */}
+      <svg
+        className="absolute inset-0 h-full w-full opacity-[0.55]"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <ellipse
+          cx="50"
+          cy="120"
+          rx="92"
+          ry="42"
+          fill="none"
+          stroke="oklch(0.78 0.02 232 / 0.10)"
+          strokeWidth="0.08"
+        />
+        <ellipse
+          cx="50"
+          cy="120"
+          rx="108"
+          ry="50"
+          fill="none"
+          stroke="oklch(0.78 0.02 232 / 0.06)"
+          strokeWidth="0.08"
+        />
+      </svg>
 
       {/* Layer 6 — microscopic material texture (very low-amplitude noise). */}
       <div
