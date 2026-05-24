@@ -652,11 +652,8 @@ export function ArchivePlate({
           src={item.src}
           alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover opacity-95 transition-all duration-[1500ms] ease-out group-hover:scale-[1.025] group-hover:opacity-100"
-          style={{
-            objectPosition: item.focus ?? "center 30%",
-            filter: "grayscale(0.08) contrast(1.07) saturate(0.92) brightness(0.96)",
-          }}
+          className="archival-image archival-image-hover absolute inset-0 h-full w-full object-cover opacity-95 ease-out group-hover:scale-[1.025] group-hover:opacity-100"
+          style={{ objectPosition: item.focus ?? "center 30%" }}
         />
         <div
           aria-hidden
