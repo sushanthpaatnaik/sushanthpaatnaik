@@ -580,7 +580,15 @@ function ClosingInvitation() {
           </p>
         </MotionReveal>
         <MotionReveal delay={0.12}>
-          <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]">
+          <h2
+            className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]"
+            style={{
+              textRendering: "geometricPrecision",
+              WebkitFontSmoothing: "antialiased",
+              textShadow:
+                "0 1px 22px oklch(0.06 0.012 240 / 0.55), 0 0 1px oklch(0.96 0.01 232 / 0.18)",
+            }}
+          >
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
         </MotionReveal>
