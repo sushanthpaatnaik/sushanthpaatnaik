@@ -729,21 +729,19 @@ function RecognitionsPage() {
               return (
                 <li
                   key={m.title}
-                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-2 gap-x-8 md:gap-x-0 py-10 md:py-14"
-
+                  className="relative grid grid-cols-[48px_1fr] md:grid-cols-1 gap-x-8 md:gap-x-0 py-14 md:py-24"
                 >
-                  <div className="md:col-span-2 md:absolute md:left-1/2 md:top-12 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
+                  <div className="md:absolute md:left-1/2 md:top-20 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
                     <span
                       aria-hidden
                       className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[oklch(0.045_0.003_245)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
                     />
-                    <span className="md:hidden absolute left-6 top-14 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
+                    <span className="md:hidden absolute left-6 top-16 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
                     <div className="md:mt-1 md:px-3 md:py-[3px] md:bg-[oklch(0.045_0.003_245)] md:border md:border-foreground/10">
                       <span className="font-mono text-[10px] md:text-[10.5px] uppercase tracking-[0.32em] text-foreground/60">
                         {m.year}
                       </span>
                     </div>
-
                   </div>
 
                   <motion.article
@@ -751,16 +749,16 @@ function RecognitionsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.25 }}
                     transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-                    className={`group relative col-start-2 md:col-start-1 md:col-end-3 md:grid md:grid-cols-2 md:gap-10 lg:gap-12 md:items-center ${
-                      onLeft ? "" : "md:[&>*:first-child]:order-2"
+                    className={`group relative col-start-2 md:col-start-1 md:grid md:grid-cols-12 md:gap-12 lg:gap-20 md:items-center ${
+                      onLeft ? "" : "md:[&>figure]:order-2"
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] ${
+                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.05_0.006_245)] md:col-span-7 ${
                         m.title.includes("Presidential")
-                          ? "aspect-[16/10] md:aspect-[16/10] ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_30px_80px_-30px_oklch(0.62_0.08_55/0.35),inset_0_1px_0_oklch(1_0_0/0.05)]"
-                          : "aspect-[5/4] md:aspect-[5/4]"
-                      } ${onLeft ? "md:mr-8" : "md:ml-8"}`}
+                          ? "aspect-[16/10] ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_40px_100px_-30px_oklch(0.62_0.08_55/0.40),inset_0_1px_0_oklch(1_0_0/0.05)]"
+                          : "aspect-[5/4] ring-1 ring-foreground/10 shadow-[0_30px_80px_-30px_oklch(0_0_0/0.6),inset_0_1px_0_oklch(1_0_0/0.04)]"
+                      }`}
                     >
                       <img
                         src={m.image}
@@ -780,8 +778,8 @@ function RecognitionsPage() {
                         style={{
                           background:
                             m.imageFit === "contain"
-                              ? "linear-gradient(180deg, transparent 0%, transparent 70%, oklch(0.02 0.006 245 / 0.55) 100%)"
-                              : "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 45%, oklch(0.02 0.006 245 / 0.45) 88%, oklch(0.014 0.006 245 / 0.78) 100%)",
+                              ? "linear-gradient(180deg, transparent 0%, transparent 78%, oklch(0.02 0.006 245 / 0.45) 100%)"
+                              : "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.08) 0%, transparent 55%, oklch(0.02 0.006 245 / 0.35) 92%, oklch(0.014 0.006 245 / 0.62) 100%)",
                         }}
                       />
                       <div
@@ -792,22 +790,14 @@ function RecognitionsPage() {
                             "radial-gradient(60% 50% at 50% 100%, oklch(var(--foreground) / 0.06), transparent 70%)",
                         }}
                       />
-                      <figcaption className="absolute inset-x-0 bottom-0 z-10 px-4 py-3 md:px-5 md:py-3.5">
-                        <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70">
-                          {m.major ? "Major recognition" : "Recognition"}
-                        </span>
-                        <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/50 line-clamp-1">
-                          {m.institution}
-                        </span>
-                      </figcaption>
                     </figure>
 
                     <div
-                      className={`relative pt-6 md:pt-0 ${
+                      className={`relative pt-8 md:pt-0 md:col-span-5 ${
                         onLeft ? "md:pl-2" : "md:pr-2"
                       }`}
                     >
-                      <div className="flex items-baseline gap-3 mb-4">
+                      <div className="flex items-baseline gap-3 mb-6">
                         <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/55">
                           Milestone {String(i + 1).padStart(2, "0")}
                         </span>
@@ -817,25 +807,27 @@ function RecognitionsPage() {
                           </span>
                         )}
                       </div>
+                      <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70 mb-3">
+                        {m.institution}
+                      </span>
                       <h3
-                        className={`font-display leading-[1.18] tracking-[-0.025em] text-foreground/95 ${
+                        className={`font-display leading-[1.15] tracking-[-0.025em] text-foreground/95 max-w-[18ch] ${
                           m.major
-                            ? "text-[22px] md:text-[28px] lg:text-[34px]"
-                            : "text-[20px] md:text-[23px]"
+                            ? "text-[24px] md:text-[30px] lg:text-[36px]"
+                            : "text-[20px] md:text-[24px]"
                         }`}
                       >
                         {m.title}
                       </h3>
-                      <p className="mt-5 text-[14px] md:text-[14.5px] leading-[1.75] text-foreground/65 max-w-[52ch]">
+                      <p className="mt-6 text-[14px] md:text-[14.5px] leading-[1.8] text-foreground/65 max-w-[46ch]">
                         {m.body}
                       </p>
                       <div
                         aria-hidden
-                        className="mt-8 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
+                        className="mt-10 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
                       />
                     </div>
                   </motion.article>
-
                 </li>
               );
             })}
