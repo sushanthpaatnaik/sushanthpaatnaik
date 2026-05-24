@@ -55,31 +55,27 @@ export function Tilt3DSurface({
     const el = ref.current;
     if (!el || reduced) return;
 
-    let rx = 0, ry = 0, tx = 0, ty = 0;
-    let cx = 0, cy = 0;
+    let cx = 0, cy = 0, tcx = 0, tcy = 0;
 
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       const nx = (e.clientX - r.left) / r.width - 0.5;
       const ny = (e.clientY - r.top) / r.height - 0.5;
-      tx = -ny * maxTilt;
-      ty = nx * maxTilt;
-      cx = nx * 14;
-      cy = ny * 14;
+      tcx = nx * 18;
+      tcy = ny * 18;
     };
-    const onLeave = () => { tx = 0; ty = 0; cx = 0; cy = 0; };
+    const onLeave = () => { tcx = 0; tcy = 0; };
 
     const loop = () => {
-      rx += (tx - rx) * 0.08;
-      ry += (ty - ry) * 0.08;
-      el.style.transform = `perspective(1200px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      cx += (tcx - cx) * 0.08;
+      cy += (tcy - cy) * 0.08;
       const img = el.querySelector<HTMLElement>("[data-tilt-img]");
-      if (img) img.style.transform = `translate3d(${(-cx).toFixed(1)}px, ${(-cy).toFixed(1)}px, 0) scale(1.06)`;
+      if (img) img.style.transform = `translate3d(${(-cx).toFixed(1)}px, ${(-cy).toFixed(1)}px, 0) scale(1.08)`;
       const sheen = el.querySelector<HTMLElement>("[data-tilt-sheen]");
       if (sheen) {
-        const gx = 50 + ry * 4;
-        const gy = 50 - rx * 4;
-        sheen.style.background = `radial-gradient(circle at ${gx}% ${gy}%, oklch(0.95 0.04 220 / 0.18), transparent 55%)`;
+        const gx = 50 - cx * 1.6;
+        const gy = 50 - cy * 1.6;
+        sheen.style.background = `radial-gradient(circle at ${gx}% ${gy}%, oklch(0.95 0.04 220 / 0.16), transparent 55%)`;
       }
       raf.current = requestAnimationFrame(loop);
     };
@@ -98,8 +94,8 @@ export function Tilt3DSurface({
   return (
     <div
       ref={ref}
-      className={`relative h-full w-full will-change-transform transition-transform duration-[600ms] ease-out ${className}`}
-      style={{ transformStyle: "preserve-3d", ...style }}
+      className={`relative h-full w-full overflow-hidden ${className}`}
+      style={style}
     >
       <img
         data-tilt-img
@@ -107,7 +103,7 @@ export function Tilt3DSurface({
         alt={alt}
         loading="lazy"
         className={`absolute inset-0 h-full w-full object-cover will-change-transform transition-transform duration-[800ms] ease-out ${imgClassName}`}
-        style={{ transform: "scale(1.06)", ...imgStyle }}
+        style={{ transform: "scale(1.08)", ...imgStyle }}
       />
       <div
         data-tilt-sheen
