@@ -25,6 +25,10 @@ interface AnimatedBackgroundProps {
   scenes: BackgroundScene[];
   /** Optional dark overlay opacity stops (length must equal scenes.length). */
   overlayStops?: number[];
+  /** Optional externally measured homepage progress (0 → 1). */
+  progress?: MotionValue<number>;
+  /** Optional externally measured chapter phase (0 → stages-1). */
+  phase?: MotionValue<number>;
   /** Optional children rendered on top of the scenes (e.g. ParticleField). */
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
@@ -125,19 +129,25 @@ function SceneLayer({
 export default function AnimatedBackground({
   scenes,
   overlayStops,
+  progress: progressOverride,
+  phase: phaseOverride,
   children,
 }: AnimatedBackgroundProps) {
   const stages = scenes.length;
   const stops = Array.from({ length: stages }, (_, i) => i / (stages - 1));
 
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, {
+  const sourceProgress = progressOverride ?? scrollYProgress;
+  const progress = useSpring(sourceProgress, {
     stiffness: 14,
     damping: 58,
     mass: 1.45,
   });
 
-  const phase = useTransform(progress, [0, 1], [0, stages - 1]);
+  const derivedPhase = useTransform(progress, [0, 1], [0, stages - 1]);
+  const phase = phaseOverride
+    ? useSpring(phaseOverride, { stiffness: 22, damping: 34, mass: 0.85 })
+    : derivedPhase;
   const parallax = useTransform(progress, [0, 1], [-1, 1]);
 
   // A gentle global dim that breathes with progress — sits BENEATH each
