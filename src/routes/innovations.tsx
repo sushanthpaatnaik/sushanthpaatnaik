@@ -195,6 +195,9 @@ function InnovationsPage() {
       img: it.cutout,
       detailImg: it.application,
       stage: it.stage,
+      specs: it.specs,
+      positioning: it.positioning,
+      applicationContext: it.applicationContext,
     });
 
   const grouped = useMemo(() => {
