@@ -147,7 +147,7 @@ function InnovationsPage() {
       status: it.status,
       metric: it.metric,
       body: it.body,
-      img: it.img,
+      img: it.cutout,
       stage: it.stage,
     });
 
