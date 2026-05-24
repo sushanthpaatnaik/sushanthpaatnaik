@@ -1,16 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { HOME_CHAPTERS } from "./homeChapters";
 
-const chapters = [
-  { id: "spark", label: "Spark", n: "01" },
-  { id: "founder", label: "Founder", n: "02" },
-  { id: "carbon-intelligence", label: "Carbon Intelligence", n: "03" },
-  { id: "industrial", label: "Industrial", n: "04" },
-  { id: "recognition", label: "Recognition", n: "05" },
-  { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "scale-validation", label: "Scale", n: "07" },
-  { id: "future", label: "Future", n: "08" },
-];
+const chapters = HOME_CHAPTERS;
 
 export default function HUD({
   scrollProgress,
