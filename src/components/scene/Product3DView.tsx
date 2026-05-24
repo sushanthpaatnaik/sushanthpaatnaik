@@ -494,7 +494,7 @@ export function Product3DModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          className="fixed inset-0 z-[80] flex items-center justify-center"
+          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
           style={{
             background:
               "radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%)",
@@ -502,7 +502,7 @@ export function Product3DModal({
           }}
           onClick={onClose}
         >
-          <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10">
+          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between px-6 py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-accent/70" />
               <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
