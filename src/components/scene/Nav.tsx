@@ -56,7 +56,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop / wide tablet nav */}
-        <nav className="hidden lg:flex items-center gap-6 text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
+        <nav className="hidden lg:flex items-center gap-7 text-[10px] uppercase tracking-[0.28em] text-foreground/65 pointer-events-auto">
           {navLinks.map((l) => (
             <Link
               key={l.to}
