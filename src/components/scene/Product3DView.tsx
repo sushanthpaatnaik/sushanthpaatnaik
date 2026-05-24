@@ -498,43 +498,37 @@ export function Product3DModal({
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
                 {item.largeApplicationFrame ? (
-                  <div className="relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
-                      key={item.img + "-artifact"}
-                      src={item.img}
-                      alt={`${item.title} — studio artifact`}
+                      key={(item.detailImg ?? item.img) + "-fieldctx"}
+                      src={item.detailImg ?? item.img}
+                      alt={`${item.title} — supporting field context`}
                       draggable={false}
                       initial={{ opacity: 0, scale: 1.02 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                      className="absolute inset-0 h-full w-full object-contain p-5"
-                      style={{
-                        filter:
-                          "drop-shadow(0 18px 22px oklch(0 0 0 / 0.7)) contrast(1.02) saturate(0.96)",
-                      }}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
+                      style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
                     />
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute inset-0 -z-0"
+                      className="pointer-events-none absolute inset-0"
                       style={{
                         background:
-                          "radial-gradient(ellipse at 50% 40%, oklch(0.1 0.012 235 / 0.18), transparent 60%), linear-gradient(180deg, oklch(0.07 0.008 245) 0%, oklch(0.035 0.008 245) 100%)",
+                          "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
                       }}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.02_0.006_245/0.7)_100%)]" />
-                    <FilmGrain opacity={0.05} />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                    <FilmGrain opacity={0.06} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
-                        Studio · Artifact
-                      </p>
-                    </div>
-                    <div className="absolute right-3 top-3 z-10">
-                      <p className="font-mono text-[8px] uppercase tracking-[0.34em] text-foreground/40">
-                        ƒ/2.0 · 85mm
+                        Field · In-situ context
                       </p>
                     </div>
                   </div>
-                ) : (
+                ) : null}
+                {!item.largeApplicationFrame && null}
+                {/* fallback: when not largeApplicationFrame keep legacy app frame below */}
                   <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
                     {item.applicationVideo ? (
                       <motion.video
