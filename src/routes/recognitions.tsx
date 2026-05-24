@@ -412,18 +412,65 @@ const counters = [
   { value: "14+", label: "Years of industrial research" },
 ];
 
-// Hall of Fame ribbon — curated continuous archival reel (9 plates).
+// Hall of Fame ribbon — full 42-plate archival reel migrated from the
+// legacy site. Original order, captions, year labels and recognition
+// context are preserved verbatim.
 const hallOfFame: ArchiveItem[] = [
-  { src: keynoteTed, caption: "TED-India Main Stage", meta: "Mysore · 2012", category: "Keynote" },
-  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Rashtrapati Bhavan · 2008", category: "Award", focus: "center 28%" },
-  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote" },
-  { src: awardPranabDemo, caption: "Presidential Demonstration", meta: "New Delhi · 2013", category: "Award", focus: "center 35%" },
-  { src: honorNasa, caption: "NASA Recognition", meta: "Kennedy Space Center · 2011", category: "Honor" },
-  { src: keynoteBrics, caption: "BRICS Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
-  { src: keynoteIeema, caption: "IEEMA Mainstage", meta: "Mumbai · 2024", category: "Keynote" },
-  { src: awardLeaDiaMirza, caption: "LEA Excellence Award", meta: "Mumbai · 2022", category: "Award" },
-  { src: honorG20, caption: "Startup20 · G20", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
+  { src: honorDriiv, caption: "MoU Signing · DRIIV, PSA, Govt of India", meta: "Delhi Research Implementation & Innovation · New Delhi", category: "Honor" },
+  { src: honorIocl, caption: "With Shri Sujoy Choudhury", meta: "Director (P&BD) · Indian Oil Corporation", category: "Honor" },
+  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "PRESIDENTIAL AWARD · 2009", category: "Award" },
+  { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "PRESIDENTIAL AWARD · 2013", category: "Award", focus: "left top" },
+  { src: honorBricsDiplomat, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor" },
+  { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville, Alabama", category: "Honor" },
+  { src: honorRepublic, caption: "With Mr. Amit Jain, CarDekho", meta: "Founder & CEO · CarDekho Group", category: "Honor" },
+  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Presidential Award · 2010", category: "Award" },
+  { src: keynoteBritish, caption: "British High Commission", meta: "Address · New Delhi", category: "Keynote" },
+  { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
+  { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote" },
+  { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote" },
+  { src: honorGlobal, caption: "Global Forum Delegate", meta: "International Summit · 2023", category: "Honor", focus: "30% center" },
+  { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award" },
+  { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
+  { src: honorGadkari, caption: "With Shri Nitin Gadkari", meta: "Union Minister · Transport Bhawan", category: "Honor", focus: "center 22%" },
+  { src: honorIeema, caption: "IEEMA Finalists", meta: "Buildelec · Intelect · Distribuelec · 2024", category: "Honor", focus: "70% center" },
+  { src: awardIeemaCheque, caption: "IEEMA Award Presentation", meta: "Young Innovator Recognition · 2024", category: "Award" },
+  { src: awardPranabDemo, caption: "Demonstrating to President Pranab Mukherjee", meta: "Presidential Showcase", category: "Award", focus: "center 35%" },
+  { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote" },
+  { src: honorFicci, caption: "FICCI Bharat Summit", meta: "Delegate · 2024", category: "Honor", focus: "center 20%" },
+  { src: keynoteIeema, caption: "IEEMA Mainstage Address", meta: "Buildelec · Mumbai · Jan 2024", category: "Keynote" },
+  { src: honorBeyond, caption: "Beyond Retreat Honour", meta: "Session Chair Recognition · Mar 2025", category: "Honor" },
+  { src: awardBharatiya, caption: "Bharatiya Knowledge Systems Symposium", meta: "Felicitation · School of IT · 2024", category: "Award", focus: "center 60%" },
+  { src: honorItalian, caption: "With H.E. Antonio Bartoli", meta: "Ambassador of Italy to India · New Delhi", category: "Honor" },
+  { src: honorUk, caption: "Trophy Presentation · H.E. Antonio Bartoli", meta: "Ambassador of Italy to India · Embassy of Italy, New Delhi", category: "Honor" },
+  { src: keynoteBeyond, caption: "Beyond Retreat · Uncharted Paths", meta: "Speaker · Ahmedabad · Mar 2025", category: "Keynote" },
+  { src: keynoteGmr, caption: "GMR Innovex Innovation Summit", meta: "Felicitation · GMRIT", category: "Keynote" },
+  { src: keynoteNit, caption: "Innovision · NIT Rourkela", meta: "Marine Matrix Keynote · Nov 2025", category: "Keynote" },
+  { src: awardStpiCert, caption: "STPI Certificate of Merit, National Conclave Winner", meta: "National Conclave · 2022", category: "Award" },
+  { src: keynoteMkm, caption: "Monoatom Labs Address", meta: "MKM Foundation · Mashaal", category: "Keynote" },
+  { src: fellowCert, caption: "Honour Certificate", meta: "Recognition of record", category: "Fellowship" },
+  { src: keynoteDriiv, caption: "Monoatom Labs · DRIIV Showcase", meta: "Graphene Innovation Pavilion", category: "Keynote", focus: "30% center" },
+  { src: honorStpi, caption: "ESC–STPI Startup Initiative Winners", meta: "Building the Next Unicorn · 2022", category: "Honor" },
+  { src: keynoteGmrFel, caption: "GMR Innovex · Stage Felicitation", meta: "GMRIT Innovation Summit", category: "Keynote", focus: "45% center" },
+  { src: keynoteBrics, caption: "BRICS Roundtable Address", meta: "Diplomatic Forum · New Delhi · 2022", category: "Keynote", focus: "70% center" },
+  { src: honorBricsMedal, caption: "BRICS Honour", meta: "International Recognition · 2022", category: "Honor", focus: "center 25%" },
+  { src: honorMop, caption: "Ministry of Power · Bureau of Energy Efficiency", meta: "Government of India · New Delhi · 2023", category: "Honor", focus: "center 30%" },
+  { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 Shikhar · G20 · Gurugram · Jul 2023", category: "Honor", focus: "center 25%" },
+  { src: honorBada, caption: "With Dr. Vivek Bindra", meta: "Bada Business HQ · 2023", category: "Honor", focus: "right 20%" },
+  { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius High Commission", category: "Honor", focus: "center 30%" },
+  { src: honorMonoatomTrophies, caption: "Founder's Desk · Monoatom Labs", meta: "TEDx · Startup Summit · SGSAST Pattros · Trophies on Display", category: "Honor" },
 ];
+
+// Internal integrity check — the migrated Hall of Fame must contain exactly
+// 42 unique images. Logs a warning in development if drift is detected.
+if (import.meta.env.DEV) {
+  const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
+  if (hallOfFame.length !== 42 || uniqueSrcs.size !== 42) {
+    console.warn(
+      `[HallOfFame] Expected 42 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+    );
+  }
+}
+
 
 // Documentary Mosaic — dense cinematic collage drawn from the full archive,
 // intermixing newspaper plates, ministerial moments, presidential citations,
