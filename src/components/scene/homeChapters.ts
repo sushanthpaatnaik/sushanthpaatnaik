@@ -6,7 +6,7 @@ export const HOME_CHAPTERS = [
   { id: "recognition", label: "Recognition", n: "05" },
   { id: "ecosystem", label: "Ecosystem", n: "06" },
   { id: "scale-validation", label: "Scale", n: "07" },
-  { id: "future", label: "Future", n: "09" },
+  { id: "future", label: "Future", n: "08" },
 ] as const;
 
 export const HOME_CHAPTER_IDS = HOME_CHAPTERS.map((chapter) => chapter.id);
