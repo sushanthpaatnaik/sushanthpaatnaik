@@ -707,6 +707,31 @@ const sectionNav = [
 
 function RecognitionsPage() {
   const [expandAll, setExpandAll] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("overview");
+
+  // Scroll-spy — observe each section anchor and surface the currently
+  // dominant id so the sticky archival nav can highlight the active register.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const ids = sectionNav.map((s) => s.id);
+    const targets = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    targets.forEach((t) => observer.observe(t));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <CinematicPageShell
       eyebrow="Recognitions · Twenty-Seven Honors of Record"
@@ -723,21 +748,55 @@ function RecognitionsPage() {
       <nav
         id="overview"
         aria-label="Recognitions sections"
-        className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-14 backdrop-blur-xl bg-[oklch(0.04_0.003_245)]/75 border-y border-foreground/[0.08] scroll-mt-2"
+        className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-10 backdrop-blur-xl bg-[oklch(0.04_0.003_245)]/75 border-y border-foreground/[0.08] scroll-mt-2"
       >
         <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-3.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {sectionNav.map((s) => (
-            <li key={s.id} className="flex-shrink-0">
-              <a
-                href={`#${s.id}`}
-                className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55 hover:text-foreground/95 transition-colors duration-500"
-              >
+          {sectionNav.map((s) => {
+            const isActive = activeSection === s.id;
+            return (
+              <li key={s.id} className="flex-shrink-0">
+                <a
+                  href={`#${s.id}`}
+                  className={`relative font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+                    isActive ? "text-foreground" : "text-foreground/55 hover:text-foreground/95"
+                  }`}
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  {s.label}
+                  <span
+                    aria-hidden
+                    className={`absolute left-0 right-0 -bottom-2 h-px origin-left transition-transform duration-700 ease-out ${
+                      isActive ? "scale-x-100 bg-foreground/60" : "scale-x-0 bg-foreground/0"
+                    }`}
+                  />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
+      {/* Archival intelligence layer — quiet authority signals */}
+      <aside
+        aria-label="Archival authority signals"
+        className="not-prose mb-16 md:mb-20 border-y border-foreground/[0.07] py-6 md:py-8"
+      >
+        <ul className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-6">
+          {authoritySignals.map((s) => (
+            <li
+              key={s.label}
+              className="flex flex-col items-start md:items-center text-left md:text-center"
+            >
+              <span className="font-display text-[26px] md:text-[34px] leading-none tracking-[-0.04em] text-foreground/90">
+                {s.value}
+              </span>
+              <span className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.34em] text-muted-foreground/55">
                 {s.label}
-              </a>
+              </span>
             </li>
           ))}
         </ul>
-      </nav>
+      </aside>
 
       {/* 01 · Hall of Fame — brought up front for immediate visual archive */}
       <div id="hall-of-fame" className="scroll-mt-24">
@@ -749,7 +808,30 @@ function RecognitionsPage() {
             before the chronology begins.
           </p>
         </EditorialSection>
-        <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+        {/* Ambient lighting backdrop — soft cinematic glow behind the reel */}
+        <div className="relative">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-[-2%] -inset-y-10 -z-10 overflow-hidden"
+          >
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 60% 50% at 50% 50%, oklch(0.55 0.05 232 / 0.10) 0%, oklch(0.40 0.04 232 / 0.05) 35%, transparent 70%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 mix-blend-screen"
+              style={{
+                background:
+                  "radial-gradient(ellipse 30% 40% at 15% 50%, oklch(0.55 0.04 232 / 0.05), transparent 60%)," +
+                  "radial-gradient(ellipse 30% 40% at 85% 50%, oklch(0.55 0.04 232 / 0.05), transparent 60%)",
+              }}
+            />
+          </div>
+          <HallOfFameRibbon items={hallOfFame} eyebrow="Hall of Fame · Continuous Reel" />
+        </div>
       </div>
 
       {/* 02 · Featured Recognition — cinematic highlight tier */}
@@ -774,6 +856,7 @@ function RecognitionsPage() {
               "linear-gradient(to bottom, transparent 0%, oklch(var(--foreground) / 0.12) 8%, oklch(var(--foreground) / 0.18) 50%, oklch(var(--foreground) / 0.12) 92%, transparent 100%)",
           }}
         />
+
         <div
           aria-hidden
           className="absolute left-6 md:left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-foreground/40 ring-4 ring-[oklch(0.045_0.003_245)]"
