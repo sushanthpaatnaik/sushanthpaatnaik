@@ -6,19 +6,20 @@ export default function Loader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    // Non-blocking reveal — race progress to 100 within ~300ms so the loader
+    // dissolves quickly and never gates the primary content underneath.
     let p = 0;
     const id = setInterval(() => {
-      // Eased fake progress — reaches 100 in ~500ms
-      p += (100 - p) * 0.22 + 2.5;
+      p += (100 - p) * 0.32 + 4;
       if (p >= 99.5) {
         p = 100;
         setProgress(100);
         clearInterval(id);
-        setTimeout(() => setDone(true), 220);
+        setTimeout(() => setDone(true), 140);
       } else {
         setProgress(p);
       }
-    }, 32);
+    }, 24);
     return () => clearInterval(id);
   }, []);
 
