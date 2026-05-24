@@ -442,7 +442,7 @@ function EcosystemGateway() {
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            06 — Enter the Ecosystem
+            Ecosystem
           </p>
           <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
             Eight thresholds into the work.
