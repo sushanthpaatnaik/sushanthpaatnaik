@@ -370,8 +370,10 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         ambient={item.img}
         alt={`${item.title} — ${item.body}`}
         featured
-        swing={24}
+        swing={5}
+        restAngle={12}
       />
+
       {/* Lattice overlay — restrained scientific texture */}
       <LatticeField intensity={0.05} className="mix-blend-screen opacity-60" />
 
