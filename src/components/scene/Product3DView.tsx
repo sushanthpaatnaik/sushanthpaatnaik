@@ -459,7 +459,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-6xl grid-cols-1 gap-x-10 gap-y-8 px-6 md:grid-cols-[1.25fr_1fr] md:px-10"
+            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-10 gap-y-8 px-6 md:grid-cols-[1.3fr_1fr] md:px-10"
           >
             <div className="grid content-start gap-5">
               {/* TOP HERO FRAME.
@@ -667,7 +667,7 @@ export function Product3DModal({
               </div>
             </div>
 
-            <div className="flex flex-col gap-7">
+            <div className="flex flex-col gap-6">
               <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
                 <div>
                   <div className="flex items-center gap-2">
@@ -705,7 +705,7 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative aspect-[5/6] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
@@ -735,7 +735,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, y: 8, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[5%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    className="absolute inset-0 h-full w-full object-contain px-[4%] py-[3%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{
                       filter:
                         "drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06))",
