@@ -359,6 +359,43 @@ function FutureAtmosphere() {
 
 /* ─────────────────────────── Root layer ─────────────────────────── */
 
+/**
+ * Persistent continuity layer — always at full opacity beneath every
+ * chapter identity. Provides the ambient floor that prevents transitions
+ * from collapsing to pure black between chapters, and adds a soft bottom
+ * atmospheric band so sections never feel visually dead at the fold.
+ */
+function ContinuityFloor() {
+  return (
+    <>
+      {/* Faint cool wash, off-axis */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 50% at 20% 30%, oklch(0.40 0.025 232 / 0.035), transparent 70%), radial-gradient(ellipse 60% 45% at 80% 70%, oklch(0.38 0.025 232 / 0.028), transparent 75%)",
+        }}
+      />
+      {/* Bottom atmospheric band — eliminates lower-screen energy collapse */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[34%]"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent, oklch(0.06 0.012 232 / 0.18) 60%, oklch(0.05 0.010 232 / 0.10) 100%)",
+        }}
+      />
+      {/* Faint horizon line — anchors the lower frame, near-invisible */}
+      <div
+        className="absolute inset-x-0 bottom-[18%] h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, oklch(0.78 0.02 232 / 0.08) 50%, transparent)",
+        }}
+      />
+    </>
+  );
+}
+
 export default function ChapterAtmosphere() {
   const phase = useChapterPhase(HOME_CHAPTER_IDS);
   return (
@@ -367,6 +404,7 @@ export default function ChapterAtmosphere() {
       className="pointer-events-none fixed inset-0 z-[2] overflow-hidden"
       style={{ contain: "strict" }}
     >
+      <ContinuityFloor />
       <ChapterLayer phase={phase} idx={0}>
         <OriginAtmosphere />
       </ChapterLayer>
