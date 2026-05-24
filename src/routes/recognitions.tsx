@@ -939,9 +939,17 @@ function RecognitionsPage() {
                         onLeft ? "md:pl-2" : "md:pr-2"
                       }`}
                     >
-                      <div className="flex items-baseline gap-3 mb-6">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 mb-6">
                         <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/55">
                           Milestone {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {/* Category chip — archival classification */}
+                        <span className="inline-flex items-center gap-1.5 border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70">
+                          <span
+                            aria-hidden
+                            className="h-[3px] w-[3px] rounded-full bg-accent/80"
+                          />
+                          {m.category}
                         </span>
                         {m.major && (
                           <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-foreground/45">
@@ -949,6 +957,7 @@ function RecognitionsPage() {
                           </span>
                         )}
                       </div>
+
                       <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70 mb-3">
                         {m.institution}
                       </span>
