@@ -754,10 +754,10 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.05_0.006_245)] md:col-span-7 ${
+                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.05_0.006_245)] md:col-span-7 aspect-[5/4] ${
                         m.title.includes("Presidential")
-                          ? "aspect-[16/10] ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_40px_100px_-30px_oklch(0.62_0.08_55/0.40),inset_0_1px_0_oklch(1_0_0/0.05)]"
-                          : "aspect-[5/4] ring-1 ring-foreground/10 shadow-[0_30px_80px_-30px_oklch(0_0_0/0.6),inset_0_1px_0_oklch(1_0_0/0.04)]"
+                          ? "ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_40px_100px_-30px_oklch(0.62_0.08_55/0.40),inset_0_1px_0_oklch(1_0_0/0.05)]"
+                          : "ring-1 ring-foreground/10 shadow-[0_30px_80px_-30px_oklch(0_0_0/0.6),inset_0_1px_0_oklch(1_0_0/0.04)]"
                       }`}
                     >
                       <img
