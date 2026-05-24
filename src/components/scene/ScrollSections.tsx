@@ -489,11 +489,9 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center"
+      className="relative min-h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center pt-32 md:pt-40 pb-24 md:pb-32 flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* Architectural system node — restrained, integrated, atmospheric.
-          Replaces the disconnected floating ring with a faint intelligent
-          node that breathes with the scene rather than overlaying it. */}
+      {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -509,7 +507,6 @@ function ClosingInvitation() {
           animate={{ opacity: [0.55, 0.78, 0.55], scale: [1, 1.012, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Atmospheric continuity — extends the scene lower in the frame */}
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
@@ -518,53 +515,51 @@ function ClosingInvitation() {
           }}
         />
       </div>
-      <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center pt-36 md:pt-40 pb-12 render-stable">
-        <div className="max-w-3xl pointer-events-auto">
-          <MotionReveal>
-            <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-              07 — The Future System
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.06}>
-            <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
-              Not a forecast. A working hypothesis — built one industrial system at a time.
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.12}>
-            <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance]">
-              Energy as infrastructure.<br /> Industry at planetary scale.
-            </h2>
-          </MotionReveal>
-          <MotionReveal delay={0.2}>
-            <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
-              The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.28}>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-              <Link to="/contact" className="btn-cinematic">
-                Begin a conversation
-              </Link>
-              <Link to="/engage" className="btn-cinematic-secondary">
-                Engage <span className="text-[10px] opacity-60">→</span>
-              </Link>
-            </div>
-          </MotionReveal>
-          <MotionReveal delay={0.34}>
-            <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
-              <span>Advanced Materials</span>
-              <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
-              <span>Energy Systems</span>
-              <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
-              <span>Planetary Infrastructure</span>
-            </div>
-          </MotionReveal>
-          <MotionReveal delay={0.42}>
-            <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
-              © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
-            </p>
-          </MotionReveal>
-        </div>
+      <div className="relative z-10 max-w-3xl pointer-events-auto">
+        <MotionReveal>
+          <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
+            07 — The Future System
+          </p>
+        </MotionReveal>
+        <MotionReveal delay={0.06}>
+          <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+            Not a forecast. A working hypothesis — built one industrial system at a time.
+          </p>
+        </MotionReveal>
+        <MotionReveal delay={0.12}>
+          <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance]">
+            Energy as infrastructure.<br /> Industry at planetary scale.
+          </h2>
+        </MotionReveal>
+        <MotionReveal delay={0.2}>
+          <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+            The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
+          </p>
+        </MotionReveal>
+        <MotionReveal delay={0.28}>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
+            <Link to="/contact" className="btn-cinematic">
+              Begin a conversation
+            </Link>
+            <Link to="/engage" className="btn-cinematic-secondary">
+              Engage <span className="text-[10px] opacity-60">→</span>
+            </Link>
+          </div>
+        </MotionReveal>
+        <MotionReveal delay={0.34}>
+          <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+            <span>Advanced Materials</span>
+            <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
+            <span>Energy Systems</span>
+            <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
+            <span>Planetary Infrastructure</span>
+          </div>
+        </MotionReveal>
+        <MotionReveal delay={0.42}>
+          <p className="mt-14 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
+            © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
+          </p>
+        </MotionReveal>
       </div>
     </section>
   );
