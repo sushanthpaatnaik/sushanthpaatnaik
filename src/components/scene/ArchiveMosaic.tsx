@@ -1,5 +1,6 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+
 
 export type ArchiveItem = {
   src: string;
@@ -173,9 +174,10 @@ export default function ArchiveMosaic({ items }: { items: ArchiveItem[] }) {
 }
 
 /**
- * Hall of Fame ribbon — a horizontal cinematic strip for media coverage,
- * stage moments, honorary moments and public demonstrations. Designed
- * to read like a single continuous archival reel.
+ * Hall of Fame ribbon — a horizontal cinematic strip designed to read like a
+ * continuous archival film reel. Includes premium discoverability cues:
+ * edge fades, hover arrow controls, an initial discovery nudge, swipe hint,
+ * snap scrolling, and a minimal glowing progress track.
  */
 export function HallOfFameRibbon({
   items,
@@ -184,8 +186,85 @@ export function HallOfFameRibbon({
   items: ArchiveItem[];
   eyebrow?: string;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { amount: 0.25, once: true });
+
+  const [progress, setProgress] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+  const [hovering, setHovering] = useState(false);
+
+  // Track scroll for edge fades + progress track
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const update = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      const x = el.scrollLeft;
+      setProgress(max > 0 ? x / max : 0);
+      setAtStart(x <= 2);
+      setAtEnd(x >= max - 2);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, []);
+
+  // Discovery nudge — once, when the reel enters view
+  useEffect(() => {
+    if (!inView) return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    // Respect reduced motion
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const prevBehavior = el.style.scrollBehavior;
+    el.style.scrollBehavior = "smooth";
+    const t1 = window.setTimeout(() => el.scrollTo({ left: 56, behavior: "smooth" }), 600);
+    const t2 = window.setTimeout(() => el.scrollTo({ left: 0, behavior: "smooth" }), 2100);
+    const t3 = window.setTimeout(() => {
+      el.style.scrollBehavior = prevBehavior;
+      setShowHint(false);
+    }, 3400);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.clearTimeout(t3);
+    };
+  }, [inView]);
+
+  // Dismiss hint as soon as the user actually interacts
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const dismiss = () => setShowHint(false);
+    el.addEventListener("scroll", dismiss, { passive: true, once: true });
+    el.addEventListener("pointerdown", dismiss, { once: true });
+    return () => {
+      el.removeEventListener("scroll", dismiss);
+      el.removeEventListener("pointerdown", dismiss);
+    };
+  }, []);
+
+  const scrollByCards = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    // ~one card + gap
+    const card = el.querySelector<HTMLElement>("[data-hof-card]");
+    const delta = (card?.offsetWidth ?? 320) + 8;
+    el.scrollBy({ left: dir * delta, behavior: "smooth" });
+  };
+
   return (
-    <div className="not-prose mt-10">
+    <div className="not-prose mt-10" ref={containerRef}>
       <div className="mb-4 flex items-center gap-3">
         <span className="h-px flex-1 bg-foreground/[0.08]" />
         <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
@@ -193,54 +272,154 @@ export function HallOfFameRibbon({
         </span>
         <span className="h-px flex-1 bg-foreground/[0.08]" />
       </div>
+
       <div
-        className="flex gap-px overflow-x-auto bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
-                   [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="relative"
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
       >
-        {items.map((item, i) => (
-          <motion.figure
-            key={item.src + i}
-            initial={{ opacity: 0, x: 18 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.8, delay: (i % 8) * 0.04, ease: [0.19, 1, 0.22, 1] }}
-            className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[oklch(0.05_0.006_245)]"
-          >
-            <img
-              src={item.src}
-              alt={item.caption}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-[1200ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
-              style={{
-                objectPosition: item.focus ?? "center 30%",
-                filter: "grayscale(0.14) contrast(1.05) saturate(0.85) brightness(0.92)",
-              }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 86%, oklch(0.014 0.006 245 / 0.96) 100%)",
-              }}
-            />
-            <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5">
-              <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/80">
-                {item.category}
+        {/* Reel */}
+        <div
+          ref={scrollerRef}
+          className="flex gap-px overflow-x-auto bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
+                     snap-x snap-mandatory scroll-smooth
+                     [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
+                     [scroll-padding-left:0px] [scroll-padding-right:48px]
+                     [-webkit-overflow-scrolling:touch]"
+          // Hint to the browser that horizontal pan is the primary gesture
+          style={{ touchAction: "pan-x" }}
+        >
+          {items.map((item, i) => (
+            <motion.figure
+              key={item.src + i}
+              data-hof-card
+              initial={{ opacity: 0, x: 18 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, delay: (i % 8) * 0.04, ease: [0.19, 1, 0.22, 1] }}
+              className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[oklch(0.05_0.006_245)] snap-start"
+            >
+              <img
+                src={item.src}
+                alt={item.caption}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-[1200ms] ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+                style={{
+                  objectPosition: item.focus ?? "center 30%",
+                  filter: "grayscale(0.14) contrast(1.05) saturate(0.85) brightness(0.92)",
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 86%, oklch(0.014 0.006 245 / 0.96) 100%)",
+                }}
+              />
+              <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5">
+                <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/80">
+                  {item.category}
+                </span>
+                <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
+                  {item.caption}
+                </span>
+                <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+                  {item.meta}
+                </span>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+
+        {/* Edge fade — left */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 w-16 md:w-24 transition-opacity duration-500"
+          style={{
+            opacity: atStart ? 0 : 1,
+            background:
+              "linear-gradient(90deg, oklch(0.018 0.006 245 / 0.95) 0%, oklch(0.02 0.006 245 / 0.55) 55%, transparent 100%)",
+          }}
+        />
+        {/* Edge fade — right (also visually clips the next card to hint more content) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-20 md:w-28 transition-opacity duration-500"
+          style={{
+            opacity: atEnd ? 0 : 1,
+            background:
+              "linear-gradient(270deg, oklch(0.018 0.006 245 / 0.95) 0%, oklch(0.02 0.006 245 / 0.55) 55%, transparent 100%)",
+          }}
+        />
+
+        {/* Desktop arrow controls — fade in on hover */}
+        <button
+          type="button"
+          aria-label="Scroll reel left"
+          onClick={() => scrollByCards(-1)}
+          className={`hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[oklch(0.04_0.006_245/0.7)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
+            hovering && !atStart ? "opacity-100" : "opacity-0 pointer-events-none"
+          } hover:bg-[oklch(0.06_0.006_245/0.85)] hover:ring-accent/40`}
+        >
+          <span className="font-mono text-[14px] leading-none">‹</span>
+        </button>
+        <button
+          type="button"
+          aria-label="Scroll reel right"
+          onClick={() => scrollByCards(1)}
+          className={`hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[oklch(0.04_0.006_245/0.7)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
+            hovering && !atEnd ? "opacity-100" : "opacity-0 pointer-events-none"
+          } hover:bg-[oklch(0.06_0.006_245/0.85)] hover:ring-accent/40`}
+        >
+          <span className="font-mono text-[14px] leading-none">›</span>
+        </button>
+
+        {/* Swipe / drag hint — first-load only, until interaction */}
+        <AnimatePresence>
+          {showHint && !atEnd && (
+            <motion.div
+              key="swipe-hint"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              className="pointer-events-none absolute right-4 bottom-4 z-20 flex items-center gap-2 rounded-full bg-[oklch(0.04_0.006_245/0.75)] px-3 py-1.5 ring-1 ring-foreground/15 backdrop-blur-sm"
+            >
+              <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/80">
+                <span className="md:hidden">Swipe</span>
+                <span className="hidden md:inline">Drag to explore</span>
               </span>
-              <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
-                {item.caption}
-              </span>
-              <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
-                {item.meta}
-              </span>
-            </figcaption>
-          </motion.figure>
-        ))}
+              <motion.span
+                aria-hidden
+                className="font-mono text-[12px] leading-none text-accent/90"
+                animate={{ x: [0, 6, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
+              >
+                →
+              </motion.span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Progress track — minimal glowing line beneath the reel */}
+      <div className="relative mt-3 h-px w-full bg-foreground/[0.06] overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0 transition-[width] duration-150 ease-out"
+          style={{
+            width: `${Math.max(8, progress * 100)}%`,
+            background:
+              "linear-gradient(90deg, transparent 0%, oklch(0.72 0.10 60 / 0.85) 50%, transparent 100%)",
+            boxShadow: "0 0 12px oklch(0.72 0.10 60 / 0.55)",
+          }}
+        />
       </div>
     </div>
   );
 }
+
+
 
 /**
  * LegacyTimeline — chronological prestige flow. A horizontal museum-style
