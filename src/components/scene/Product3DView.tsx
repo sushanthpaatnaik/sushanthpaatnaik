@@ -619,7 +619,7 @@ export function Product3DModal({
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
                 {item.largeApplicationFrame ? (
-                  <div className="group relative aspect-[1.3/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
