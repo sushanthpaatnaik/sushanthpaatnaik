@@ -42,6 +42,10 @@ import keynoteNit from "@/assets/hof/keynote-nit-rourkela.webp";
 import keynoteIeema from "@/assets/hof/keynote-ieema-stage.webp";
 import keynoteDriiv from "@/assets/hof/keynote-monoatom-driiv-booth.webp";
 import keynoteBrics from "@/assets/hof/keynote-brics-roundtable.webp";
+import keynoteStage from "@/assets/hof/keynote-stage.webp";
+import keynoteMkm from "@/assets/hof/keynote-mkm-foundation.webp";
+import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.webp";
+
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
 import honorIntelIris from "@/assets/honor-intel-iris.png";
