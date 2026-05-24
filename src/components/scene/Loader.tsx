@@ -55,7 +55,7 @@ export default function Loader() {
         <div className="w-[260px] flex flex-col items-center gap-3">
           <div className="w-full h-px bg-foreground/10 overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-150 ease-out"
+              className="h-full bg-gradient-to-r from-[oklch(0.72_0.07_75/0.55)] via-[oklch(0.82_0.10_78/0.85)] to-[oklch(0.72_0.07_75/0.55)] transition-[width] duration-150 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
