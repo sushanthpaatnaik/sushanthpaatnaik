@@ -373,7 +373,7 @@ function FounderScene() {
 
       <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12 pointer-events-auto">
         <MotionReveal delay={0.12} className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
-          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-foreground/55">
             Founder · Voice
           </p>
           <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem]">
@@ -406,7 +406,7 @@ function RecognitionSignal() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
         <MotionReveal>
-          <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+          <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-foreground/55">
             05 — Recognition Signal
           </p>
         </MotionReveal>
@@ -445,7 +445,7 @@ function EcosystemGateway() {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
-          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-foreground/55">
             06 — Enter the Ecosystem
           </p>
           <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
@@ -608,7 +608,7 @@ function ScaleValidationScene() {
         <MotionReveal>
           <div className="mb-14 md:mb-20 flex items-center gap-4">
             <span className="h-px w-10 bg-foreground/20" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55">
               07 — Scale &amp; Validation
             </span>
           </div>
@@ -887,7 +887,7 @@ function InHisWordsScene() {
         <MotionReveal>
           <div className="mb-16 md:mb-24 flex items-center gap-4">
             <span className="h-px w-10 bg-foreground/20" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/80">
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55">
               08 — In His Words
             </span>
           </div>
