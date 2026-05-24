@@ -633,24 +633,86 @@ export function Product3DModal({
                     {item.domain}
                   </p>
                 </div>
-                <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                {!item.largeApplicationFrame && (
+                  <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                    <div
+                      className="h-full w-full"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 42% 26%, oklch(0.82 0.02 235 / 0.18), transparent 30%), linear-gradient(180deg, oklch(0.1 0.008 245), oklch(0.05 0.008 245))",
+                      }}
+                    >
+                      <img
+                        src={item.img}
+                        alt=""
+                        aria-hidden
+                        className="h-full w-full object-contain p-2.5"
+                        style={{ filter: "drop-shadow(0 14px 18px oklch(0 0 0 / 0.62))" }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {item.largeApplicationFrame && (
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                  {/* Studio cyclorama backdrop */}
                   <div
-                    className="h-full w-full"
+                    aria-hidden
+                    className="absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(circle at 42% 26%, oklch(0.82 0.02 235 / 0.18), transparent 30%), linear-gradient(180deg, oklch(0.1 0.008 245), oklch(0.05 0.008 245))",
+                        "radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%)",
                     }}
-                  >
-                    <img
-                      src={item.img}
-                      alt=""
-                      aria-hidden
-                      className="h-full w-full object-contain p-2.5"
-                      style={{ filter: "drop-shadow(0 14px 18px oklch(0 0 0 / 0.62))" }}
-                    />
+                  />
+                  {/* Soft top diffusion */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-[10%] top-[5%] h-[28%] rounded-[50%] opacity-55 blur-3xl"
+                    style={{ background: "radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%)" }}
+                  />
+                  {/* Ground contact shadow */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute bottom-[12%] left-1/2 h-[6%] w-[58%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
+                    style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%)" }}
+                  />
+                  <motion.img
+                    key={item.img + "-hero-artifact"}
+                    src={item.img}
+                    alt={`${item.title} — engineered artifact`}
+                    draggable={false}
+                    initial={{ opacity: 0, y: 8, scale: 0.985 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
+                    className="absolute inset-0 h-full w-full object-contain p-[10%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    style={{
+                      filter:
+                        "drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06))",
+                    }}
+                  />
+                  {/* Industrial corner brackets */}
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
+                  <FilmGrain opacity={0.05} />
+                  <div className="pointer-events-none absolute left-4 top-3.5 z-10 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/80" />
+                    <span className="font-mono text-[9.5px] uppercase tracking-[0.36em] text-foreground/72">
+                      Engineered Artifact · Studio
+                    </span>
+                  </div>
+                  <div className="pointer-events-none absolute bottom-3.5 left-4 right-4 z-10 flex items-end justify-between gap-4">
+                    <p className="font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/72">
+                      {item.title}
+                    </p>
+                    <p className="font-mono text-[8.5px] uppercase tracking-[0.34em] text-foreground/40">
+                      ƒ/2.0 · 85mm · cinema
+                    </p>
                   </div>
                 </div>
-              </div>
+              )}
 
               <p className="max-w-md text-[14.5px] leading-relaxed text-foreground/80">
                 {item.positioning || item.body}
