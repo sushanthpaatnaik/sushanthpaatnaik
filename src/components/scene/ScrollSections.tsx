@@ -372,7 +372,7 @@ function FounderScene() {
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Founder · Voice
           </p>
-          <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem]">
+          <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem] whitespace-pre-line">
             {"The future is not imagined.\nIt is engineered quietly."}
           </blockquote>
           <div className="mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
