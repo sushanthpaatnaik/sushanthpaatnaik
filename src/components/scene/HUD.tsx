@@ -94,6 +94,19 @@ export default function HUD({
                 "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.12) 15%, oklch(0.967 0 0 / 0.14) 85%, transparent 100%)",
             }}
           />
+          {/* Energy trace — ultra-faint travelling pulse along the spine */}
+          <motion.div
+            aria-hidden
+            className="absolute left-[10.5px] top-[10px] w-[2px] rounded-full"
+            style={{
+              height: 64,
+              background:
+                "linear-gradient(180deg, transparent, oklch(0.74 0.06 232 / 0.45), transparent)",
+              filter: "blur(1px)",
+            }}
+            animate={{ y: [0, 360, 0], opacity: [0, 0.7, 0] }}
+            transition={{ duration: 9.5, repeat: Infinity, ease: "easeInOut" }}
+          />
         </nav>
       </div>
     </>

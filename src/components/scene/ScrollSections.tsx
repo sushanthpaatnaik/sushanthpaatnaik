@@ -5,6 +5,7 @@ import StorySection, { type StoryChapter } from "./StorySection";
 import founderPresence from "@/assets/founder-editorial.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 import Interstitial from "./Interstitial";
+import SignatureMotif from "./SignatureMotif";
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = cinematic opening sequence into the larger world.
@@ -439,6 +440,10 @@ function EcosystemGateway() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
+      {/* Signature watermark — proprietary identity, near-invisible */}
+      <div aria-hidden className="pointer-events-none absolute right-[-6%] top-1/2 -translate-y-1/2 opacity-[0.5]">
+        <SignatureMotif variant="watermark" />
+      </div>
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
@@ -567,6 +572,11 @@ function ClosingInvitation() {
               "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.55) 55%, oklch(0.014 0.004 250 / 0.92) 100%)",
           }}
         />
+
+        {/* Signature lattice — recurring proprietary motif at planetary scale */}
+        <div aria-hidden className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2">
+          <SignatureMotif variant="watermark" className="opacity-60" />
+        </div>
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>

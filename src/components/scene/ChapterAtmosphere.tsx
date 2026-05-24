@@ -368,12 +368,22 @@ function FutureAtmosphere() {
 function ContinuityFloor() {
   return (
     <>
-      {/* Faint cool wash, off-axis */}
-      <div
-        className="absolute inset-0 mix-blend-screen"
+      {/* Faint cool wash, off-axis — breathes ultra-slowly */}
+      <motion.div
+        className="absolute inset-0 mix-blend-screen will-change-[opacity]"
         style={{
           background:
             "radial-gradient(ellipse 70% 50% at 20% 30%, oklch(0.40 0.025 232 / 0.035), transparent 70%), radial-gradient(ellipse 60% 45% at 80% 70%, oklch(0.38 0.025 232 / 0.028), transparent 75%)",
+        }}
+        animate={{ opacity: [0.78, 1, 0.78] }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* Atmospheric scatter — depth fog, almost imperceptible */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 120% 60% at 50% 110%, oklch(0.18 0.012 232 / 0.20), transparent 70%)",
         }}
       />
       {/* Bottom atmospheric band — eliminates lower-screen energy collapse */}
