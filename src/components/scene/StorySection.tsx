@@ -39,14 +39,14 @@ function SectionCopy({
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.32 }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
+        className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-foreground/35 via-foreground/15 to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
         initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: false, amount: 0.32 }}
         transition={{ duration: 1.4, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-        className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6"
+        className="text-[10px] uppercase tracking-[0.5em] text-foreground/55 mb-6"
       >
         {eyebrow}
       </motion.p>
@@ -93,7 +93,7 @@ interface StorySectionProps {
 /** Sticky-pinned narrative panel for one chapter of the scroll story. */
 export default function StorySection({ chapter, index, total }: StorySectionProps) {
   return (
-    <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.24)] px-6 sm:px-8 md:px-20 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
+    <section id={chapter.id} className="story-panel relative min-h-[calc(var(--viewport-height)*1.05)] px-6 sm:px-8 md:px-20 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
       <div className="viewport-stage sticky top-0 flex items-center overflow-x-clip pt-28 md:pt-24 pb-12 render-stable">
         <motion.div
           initial={{ opacity: 0.55, y: 28 }}

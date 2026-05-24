@@ -5,16 +5,16 @@ import spLogo from "@/assets/sp-logo.svg";
 
 const navLinks = [
   { to: "/about", label: "About" },
-  { to: "/numbers", label: "Numbers" },
+  
   { to: "/recognitions", label: "Recognitions" },
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
   { to: "/early-works", label: "Early Works" },
   
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "In His Words" },
-  { to: "/engage", label: "Engage" },
+
   { to: "/news", label: "News" },
+  { to: "/engage", label: "Engage" },
 ] as const;
 
 export default function Nav() {
@@ -47,7 +47,7 @@ export default function Nav() {
             aria-hidden
             width={28}
             height={28}
-            className="h-7 w-7 md:h-8 md:w-8 select-none transition-[opacity,filter] duration-500 opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))]"
+            className="h-7 w-7 md:h-8 md:w-8 select-none transition-[opacity,filter] duration-500 opacity-85 group-hover:opacity-100 [filter:drop-shadow(0_0_10px_oklch(0.55_0.04_232/0.16))]"
             draggable={false}
           />
           <span className="text-[11px] md:text-sm tracking-[0.28em] md:tracking-[0.3em] uppercase font-medium leading-none">
@@ -56,7 +56,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop / wide tablet nav */}
-        <nav className="hidden lg:flex items-center gap-6 text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
+        <nav className="hidden lg:flex items-center gap-7 text-[10px] uppercase tracking-[0.28em] text-foreground/65 pointer-events-auto">
           {navLinks.map((l) => (
             <Link
               key={l.to}
@@ -82,7 +82,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors"
+            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/85 hover:text-foreground hover:border-foreground/35 transition-colors"
           >
             <span className="sr-only">Menu</span>
             <svg
@@ -139,7 +139,7 @@ export default function Nav() {
           <Link
             to="/contact"
             onClick={() => setOpen(false)}
-            className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.02em] text-primary/90 hover:text-primary transition-colors"
+            className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.02em] text-foreground/90 hover:text-foreground transition-colors"
           >
             Contact →
           </Link>
