@@ -202,6 +202,21 @@ function HeroVideo({
   const [muted, setMuted] = useState(true);
   const [hintVisible, setHintVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Keep React state synced with native play/pause events (e.g. fullscreen UI).
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    el.addEventListener("play", onPlay);
+    el.addEventListener("pause", onPause);
+    return () => {
+      el.removeEventListener("play", onPlay);
+      el.removeEventListener("pause", onPause);
+    };
+  }, []);
 
   // Reveal the "Sound Available" hint after a short delay, only while muted.
   useEffect(() => {
