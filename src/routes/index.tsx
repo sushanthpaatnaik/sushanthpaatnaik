@@ -37,7 +37,7 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "/" },
       // Preload the above-the-fold founder portrait used in Hero + Founder scenes
-      { rel: "preload", as: "image", href: founderPresence, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: founderPresence, fetchPriority: "high" },
     ],
   }),
 

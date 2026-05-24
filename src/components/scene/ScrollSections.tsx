@@ -1040,7 +1040,7 @@ function ClosingInvitation() {
     <section
       ref={sectionRef}
       id="future"
-      className="relative isolate flex min-h-[100svh] items-stretch justify-center overflow-visible px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-[clamp(7rem,12vh,10rem)] md:pt-[clamp(8rem,14vh,12rem)] pb-[clamp(8rem,16vh,14rem)] text-center"
+      className="relative isolate flex min-h-[100svh] items-start justify-center overflow-visible px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-[clamp(7rem,12vh,10rem)] md:pt-[clamp(8rem,14vh,12rem)] pb-[clamp(8rem,16vh,14rem)] text-center"
     >
       {/* ───────── Cinematic environment ───────── */}
       <div
@@ -1227,68 +1227,71 @@ function ClosingInvitation() {
       </div>
 
       {/* ───────── Foreground typography ───────── */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
-        <div className="max-w-3xl pointer-events-auto">
-          <MotionReveal>
-            <p className="mb-10 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
-              09 — The Future System
-            </p>
-          </MotionReveal>
-
-          <MotionReveal delay={0.18}>
-            <p className="mx-auto mb-12 md:mb-16 max-w-md font-display italic text-[13.5px] md:text-[14.5px] leading-[1.75] text-foreground/55">
-              Not a forecast. A working hypothesis — built one industrial system at a time.
-            </p>
-          </MotionReveal>
-
-          <MotionReveal delay={0.36}>
-            <h2 className="mb-12 md:mb-16 font-display text-[clamp(1.85rem,7vw,5.4rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.035em] md:tracking-[-0.042em] font-medium text-gradient [text-wrap:balance] pb-1">
-              The next industrial century<br /> will be materially engineered.
-            </h2>
-          </MotionReveal>
-
-          <MotionReveal delay={0.58}>
-            <p className="mx-auto mb-14 md:mb-20 max-w-xl text-[14px] md:text-[15.5px] leading-[1.8] text-foreground/72">
-              Calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
-            </p>
-          </MotionReveal>
-
-          <MotionReveal delay={0.78}>
-            <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-6">
-              <Link to="/contact" className="btn-cinematic">
-                Begin a conversation
-              </Link>
-              <Link to="/engage" className="btn-cinematic-secondary">
-                Engage <span className="text-[10px] opacity-60">→</span>
-              </Link>
-            </div>
-          </MotionReveal>
-
-          <MotionReveal delay={0.94}>
-            <div className="mt-24 md:mt-36 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.52em] text-muted-foreground/55">
-              <span>Advanced Materials</span>
-              <span className="h-[3px] w-[3px] rounded-full bg-foreground/45" />
-              <span>Energy Systems</span>
-              <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
-              <span>Planetary Infrastructure</span>
-            </div>
-          </MotionReveal>
-
-          {/* Signature plate — final closure */}
-          <MotionReveal delay={1.18}>
-            <div className="mt-28 md:mt-40 flex flex-col items-center gap-5">
-              <span className="h-px w-24 bg-gradient-to-r from-transparent via-foreground/25 to-transparent" />
-              <p className="font-mono text-[10px] uppercase tracking-[0.52em] text-foreground/55">
-                Sushanth Paatnaik
+      <div className="relative z-10 flex w-full justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
+        <div className="pointer-events-auto flex min-h-[calc(var(--viewport-height)-clamp(12rem,18vh,16rem))] w-full max-w-3xl flex-col justify-between gap-12 md:gap-16">
+          <div>
+            <MotionReveal>
+              <p className="mb-8 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
+                09 — The Future System
               </p>
-              <p className="font-mono text-[9.5px] uppercase tracking-[0.44em] text-muted-foreground/45">
-                Inventor · Deep-Tech Founder · India
+            </MotionReveal>
+
+            <MotionReveal delay={0.18}>
+              <p className="mx-auto mb-8 md:mb-16 max-w-md font-display italic text-[13.5px] md:text-[14.5px] leading-[1.75] text-foreground/55">
+                Not a forecast. A working hypothesis — built one industrial system at a time.
               </p>
-              <p className="mt-6 text-[10px] font-extralight uppercase tracking-[0.42em] text-muted-foreground/35 blur-[0.3px]">
-                © Sushanth Paatnaik — Engineering systems for the next civilization layer.
+            </MotionReveal>
+
+            <MotionReveal delay={0.36}>
+              <h2 className="mb-8 md:mb-16 font-display text-[clamp(1.85rem,7vw,5.4rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.035em] md:tracking-[-0.042em] font-medium text-gradient [text-wrap:balance] pb-1">
+                The next industrial century<br /> will be materially engineered.
+              </h2>
+            </MotionReveal>
+
+            <MotionReveal delay={0.58}>
+              <p className="mx-auto mb-10 md:mb-20 max-w-xl text-[14px] md:text-[15.5px] leading-[1.8] text-foreground/72">
+                Calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
               </p>
-            </div>
-          </MotionReveal>
+            </MotionReveal>
+
+            <MotionReveal delay={0.78}>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+                <Link to="/contact" className="btn-cinematic">
+                  Begin a conversation
+                </Link>
+                <Link to="/engage" className="btn-cinematic-secondary">
+                  Engage <span className="text-[10px] opacity-60">→</span>
+                </Link>
+              </div>
+            </MotionReveal>
+          </div>
+
+          <div>
+            <MotionReveal delay={0.94}>
+              <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.52em] text-muted-foreground/55">
+                <span>Advanced Materials</span>
+                <span className="h-[3px] w-[3px] rounded-full bg-foreground/45" />
+                <span>Energy Systems</span>
+                <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
+                <span>Planetary Infrastructure</span>
+              </div>
+            </MotionReveal>
+
+            <MotionReveal delay={1.18}>
+              <div className="mt-16 md:mt-24 flex flex-col items-center gap-5">
+                <span className="h-px w-24 bg-gradient-to-r from-transparent via-foreground/25 to-transparent" />
+                <p className="font-mono text-[10px] uppercase tracking-[0.52em] text-foreground/55">
+                  Sushanth Paatnaik
+                </p>
+                <p className="font-mono text-[9.5px] uppercase tracking-[0.44em] text-muted-foreground/45">
+                  Inventor · Deep-Tech Founder · India
+                </p>
+                <p className="mt-4 text-[10px] font-extralight uppercase tracking-[0.42em] text-muted-foreground/35 blur-[0.3px]">
+                  © Sushanth Paatnaik — Engineering systems for the next civilization layer.
+                </p>
+              </div>
+            </MotionReveal>
+          </div>
         </div>
       </div>
     </section>
