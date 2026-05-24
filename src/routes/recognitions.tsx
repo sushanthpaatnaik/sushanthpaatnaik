@@ -65,6 +65,14 @@ import honorG20 from "@/assets/hof/honor-startup20-g20.webp";
 import honorMauritius from "@/assets/hof/honor-mauritius-high-commissioner.webp";
 import honorIocl from "@/assets/hof/honor-sujoy-choudhury-iocl.webp";
 import honorDriiv from "@/assets/hof/honor-driiv-mou.webp";
+import honorBricsDiplomat from "@/assets/hof/honor-brics-diplomat.webp";
+import honorRepublic from "@/assets/hof/honor-republic-day-event.webp";
+import honorGlobal from "@/assets/hof/honor-global-flags.webp";
+import honorBada from "@/assets/hof/honor-bada-business.webp";
+import honorBeyond from "@/assets/hof/honor-beyond-retreat-trophy.webp";
+import honorUk from "@/assets/hof/honor-uk-envoy-trophy.webp";
+import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.webp";
+
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
