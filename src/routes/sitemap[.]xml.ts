@@ -19,7 +19,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/innovations", changefreq: "monthly", priority: "0.9" },
           { path: "/ventures", changefreq: "monthly", priority: "0.9" },
           { path: "/recognitions", changefreq: "monthly", priority: "0.8" },
-          { path: "/early-works", changefreq: "yearly", priority: "0.7" },
+          
           { path: "/essays", changefreq: "monthly", priority: "0.8" },
           { path: "/essays/engineering-with-empathy", changefreq: "yearly", priority: "0.6" },
           { path: "/essays/graphene-and-the-next-century", changefreq: "yearly", priority: "0.6" },

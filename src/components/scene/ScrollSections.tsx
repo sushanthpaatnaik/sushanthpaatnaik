@@ -40,10 +40,9 @@ const gateways = [
   { to: "/innovations", n: "II", label: "Innovations", line: "Graphene, materials, systems." },
   { to: "/ventures", n: "III", label: "Ventures", line: "Five operating companies. One stack." },
   { to: "/recognitions", n: "IV", label: "Recognitions", line: "Six Presidential awards. TED. MIT TR." },
-  { to: "/early-works", n: "V", label: "Early Works", line: "The workshop years." },
-  { to: "/essays", n: "VI", label: "Essays", line: "Notes from the workshop." },
-  { to: "/engage", n: "VII", label: "Engage", line: "Partnerships and advisory." },
-  { to: "/news", n: "VIII", label: "News", line: "Editorial archive." },
+  { to: "/essays", n: "V", label: "Essays", line: "Notes from the workshop." },
+  { to: "/engage", n: "VI", label: "Engage", line: "Partnerships, advisory, and origin archive." },
+  { to: "/news", n: "VII", label: "News", line: "Editorial archive." },
 ] as const;
 
 function HeroSection() {
@@ -445,7 +444,7 @@ function EcosystemGateway() {
             Ecosystem
           </p>
           <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
-            Eight thresholds into the work.
+            Seven thresholds into the work.
           </h2>
           <p className="mt-8 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground/85">
             The homepage is the opening sequence. The ecosystem lives behind these doors — each one its own cinematic world.
