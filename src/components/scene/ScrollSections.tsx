@@ -537,7 +537,7 @@ function ScaleValidationScene() {
             y: prefersReducedMotion ? 0 : bgY,
             scale: prefersReducedMotion ? 1.04 : plateScale,
             opacity: prefersReducedMotion ? 0.42 : plateOpacity,
-            filter: "grayscale(0.4) contrast(1.08) brightness(0.74) saturate(0.85)",
+            filter: "grayscale(0.55) contrast(1.0) brightness(0.62) saturate(0.7)",
             maskImage:
               "radial-gradient(ellipse 82% 78% at 50% 52%, #000 32%, rgba(0,0,0,0.55) 64%, transparent 96%)",
             WebkitMaskImage:
