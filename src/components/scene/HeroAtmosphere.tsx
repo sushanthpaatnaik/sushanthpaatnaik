@@ -62,20 +62,10 @@ export default function HeroAtmosphere() {
         }}
       />
 
-      {/* Layer 5 — hidden graphene blueprint trace (extremely faint SVG). */}
-      <div
-        className="absolute inset-0 opacity-[0.022] mix-blend-screen"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g fill='none' stroke='%2380a8d8' stroke-width='0.35'><polygon points='100,20 160,55 160,125 100,160 40,125 40,55'/><polygon points='100,55 130,72.5 130,107.5 100,125 70,107.5 70,72.5'/><line x1='100' y1='20' x2='100' y2='55'/><line x1='160' y1='55' x2='130' y2='72.5'/><line x1='160' y1='125' x2='130' y2='107.5'/><line x1='100' y1='160' x2='100' y2='125'/><line x1='40' y1='125' x2='70' y2='107.5'/><line x1='40' y1='55' x2='70' y2='72.5'/></g></svg>\")",
-          backgroundSize: "320px 320px",
-          backgroundRepeat: "repeat",
-          maskImage:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.3) 50%, transparent 85%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, #000 10%, rgba(0,0,0,0.3) 50%, transparent 85%)",
-        }}
-      />
+      {/* Graphene blueprint trace removed — the centered hexagon tile
+          produced a visible white snowflake/asterisk artifact behind the
+          hero typography under mix-blend-screen. Atmosphere now relies on
+          gradients, haze, and motes alone. */}
 
       {/* Layer 6 — microscopic material texture (very low-amplitude noise). */}
       <div
