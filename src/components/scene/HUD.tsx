@@ -57,7 +57,7 @@ export default function HUD({
           className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[400px]"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.72) 0%, oklch(0.025 0.006 245 / 0.42) 50%, transparent 100%)",
+              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.68) 0%, oklch(0.025 0.006 245 / 0.38) 50%, transparent 100%)",
             WebkitBackdropFilter: "blur(10px) saturate(120%)",
             backdropFilter: "blur(10px) saturate(120%)",
             maskImage:
@@ -91,7 +91,7 @@ export default function HUD({
             className="absolute left-[11px] top-[10px] bottom-[10px] w-px"
             style={{
               background:
-                "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.12) 15%, oklch(0.967 0 0 / 0.14) 85%, transparent 100%)",
+                "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.11) 15%, oklch(0.967 0 0 / 0.13) 85%, transparent 100%)",
             }}
           />
           {/* Ultra-slow energy propagation — a faint pulse traveling down
