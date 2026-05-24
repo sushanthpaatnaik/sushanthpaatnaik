@@ -4,9 +4,6 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
-import InnovationsCanvasHost from "@/components/innovations/InnovationsCanvas";
-import InnovationCard3D, { type InnovationItem } from "@/components/innovations/InnovationCard3D";
-import InnovationModal from "@/components/innovations/InnovationModal";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -56,7 +53,16 @@ export const Route = createFileRoute("/innovations")({
 });
 
 type Stage = "Commercial" | "Pilot" | "R&D";
-type Item = InnovationItem;
+type Item = {
+  title: string;
+  stage: Stage;
+  metric: string;
+  body: string;
+  img: string;
+  domain: string;
+  status: string;
+  featured?: boolean;
+};
 
 const items: Item[] = [
   { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, featured: true },
@@ -102,7 +108,6 @@ const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
-  const [active, setActive] = useState<Item | null>(null);
   const visible = useMemo(
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
@@ -214,52 +219,50 @@ function InnovationsPage() {
       </div>
 
 
-      {/* Stage-grouped catalogue — cinematic 3D showcase */}
-      <InnovationsCanvasHost>
-        <div className="not-prose mt-12 space-y-20">
-          {grouped.map((group) => {
-            const meta = stageMeta[group.stage];
-            const heroes = group.list.filter((i) => i.featured);
-            const rest = group.list.filter((i) => !i.featured);
-            return (
-              <section key={group.stage} className="relative">
-                <header className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-foreground/[0.08] pt-6">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
-                    {meta.tone}
-                  </span>
-                  <h2 className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
-                    {meta.label}
-                  </h2>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
-                    {meta.sub}
-                  </span>
-                  <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
-                    {String(group.list.length).padStart(2, "0")} · Programs
-                  </span>
-                </header>
+      {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
+      <div className="not-prose mt-12 space-y-20">
+        {grouped.map((group) => {
+          const meta = stageMeta[group.stage];
+          const heroes = group.list.filter((i) => i.featured);
+          const rest = group.list.filter((i) => !i.featured);
+          return (
+            <section key={group.stage} className="relative">
+              <header className="mb-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-foreground/[0.08] pt-6">
+                <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
+                  {meta.tone}
+                </span>
+                <h2 className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
+                  {meta.label}
+                </h2>
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+                  {meta.sub}
+                </span>
+                <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
+                  {String(group.list.length).padStart(2, "0")} · Programs
+                </span>
+              </header>
 
-                {heroes.length > 0 && (
-                  <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {heroes.map((it) => (
-                      <InnovationCard3D key={it.title} item={it} size="hero" onOpen={setActive} />
-                    ))}
-                  </div>
-                )}
+              {/* Hero cards — large, with lattice */}
+              {heroes.length > 0 && (
+                <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {heroes.map((it) => (
+                    <HeroCard key={it.title} item={it} />
+                  ))}
+                </div>
+              )}
 
-                {rest.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-                    {rest.map((it) => (
-                      <InnovationCard3D key={it.title} item={it} size="compact" onOpen={setActive} />
-                    ))}
-                  </div>
-                )}
-              </section>
-            );
-          })}
-        </div>
-      </InnovationsCanvasHost>
-
-      <InnovationModal item={active} onClose={() => setActive(null)} />
+              {/* Supporting cards */}
+              {rest.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+                  {rest.map((it) => (
+                    <CompactCard key={it.title} item={it} />
+                  ))}
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
@@ -306,6 +309,139 @@ function InnovationsPage() {
       </div>
     </CinematicPageShell>
 
+  );
+}
+
+function HeroCard({ item }: { item: Item }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
+      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
+    >
+      <img
+        src={item.img}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
+        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+      />
+      {/* Lattice overlay — restrained scientific texture */}
+      <LatticeField intensity={0.06} className="mix-blend-screen" />
+      {/* Cinematic gradient */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.34) 0%, transparent 30%, transparent 45%, oklch(0.02 0.006 245 / 0.82) 82%, oklch(0.014 0.006 245 / 0.97) 100%)",
+        }}
+      />
+      {/* Corner technical readout */}
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+        <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/45">
+          {item.status}
+        </span>
+        <span className="h-1 w-1 rounded-full bg-accent/70" />
+      </div>
+      <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+        <span className="h-px w-6 bg-accent/70" />
+        <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+          Flagship
+        </span>
+      </div>
+      {/* Patent stamp — bottom-right technical readout sticker */}
+      <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          IP · Filed
+        </span>
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
+          {item.status}
+        </span>
+      </div>
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
+        <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
+          {item.domain}
+        </p>
+        <h3 className="mt-2 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/98 leading-[1.1]">
+          {item.title}
+        </h3>
+        <p className="mt-2.5 max-w-xl text-[13px] md:text-[14px] leading-snug text-foreground/75">
+          {item.body}
+        </p>
+        <div className="mt-3 flex items-center gap-3">
+          <span className="h-px w-5 bg-accent/60" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
+            {item.metric}
+          </span>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function CompactCard({ item }: { item: Item }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+      className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)]"
+    >
+      <img
+        src={item.img}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.76] grayscale-[0.32] contrast-[1.04] brightness-[0.86] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.03]"
+      />
+      {/* Restrained lattice — scientific texture */}
+      <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.96) 100%)",
+        }}
+      />
+      {/* Corner technical readout — status + hairline */}
+      <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+        <span className="h-px w-5 bg-accent/60" />
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+          IP · Filed
+        </span>
+      </div>
+
+      {/* Resting plate — domain · title · metric */}
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4 transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[44px]">
+        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
+          {item.domain}
+        </p>
+        <h3 className="mt-1 font-display text-base md:text-lg tracking-[-0.01em] text-foreground/95 leading-tight">
+          {item.title}
+        </h3>
+        <p className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+          {item.metric}
+        </p>
+      </div>
+
+      {/* Scientific data-plate — slides up on hover, restrained */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 translate-y-full border-t border-accent/25 bg-[oklch(0.04_0.006_245/0.92)] px-3.5 py-3 opacity-0 transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          {item.status}
+        </p>
+        <p className="mt-1.5 text-[11px] leading-snug text-foreground/80 line-clamp-2">
+          {item.body}
+        </p>
+      </div>
+    </motion.article>
   );
 }
 
