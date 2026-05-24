@@ -275,67 +275,38 @@ export function Product3DModal({
             className="relative grid w-full max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-[1.35fr_0.95fr] md:px-10"
           >
             <div className="grid gap-4">
-              {/* Hero capture — flagship product photograph.
-                  Render the cinematic photo directly (no Tilt stage). One
-                  stable fade-in, then it stays — no looping opacity. */}
-              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
-                <motion.img
-                  key={item.img}
-                  src={item.img}
-                  alt={item.title}
-                  draggable={false}
-                  initial={{ opacity: 0, scale: 1.015 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98)" }}
-                />
-                {/* Cinematic vignette + grain layered on top — never touches opacity of subject */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%)",
-                  }}
-                />
-                <FilmGrain opacity={0.05} />
-                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
-                  Archive · Studio capture
-                </div>
-                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
-                  ƒ/2.0 · 85mm · cinema
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                {/* Application — real-world use-case media (image or video) */}
-                <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
+              {/* TOP HERO FRAME.
+                  Default: studio product photograph.
+                  When largeApplicationFrame is on, the field application media
+                  takes over the hero slot and the studio photo moves below. */}
+              {item.largeApplicationFrame ? (
+                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {item.applicationVideo ? (
                     <motion.video
-                      key={item.applicationVideo}
+                      key={item.applicationVideo + "-hero"}
                       src={item.applicationVideo}
                       autoPlay
                       muted
                       loop
                       playsInline
                       preload="auto"
-                      initial={{ opacity: 0, scale: 1.02 }}
+                      initial={{ opacity: 0, scale: 1.025 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                      className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
+                      transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
+                      style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94)" }}
                     />
                   ) : (
                     <motion.img
-                      key={(item.detailImg ?? item.img) + "-app"}
+                      key={(item.detailImg ?? item.img) + "-hero"}
                       src={item.detailImg ?? item.img}
-                      alt={`${item.title} — application`}
-                      initial={{ opacity: 0, scale: 1.02 }}
+                      alt={`${item.title} — field deployment`}
+                      draggable={false}
+                      initial={{ opacity: 0, scale: 1.025 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
+                      transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
+                      style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92)" }}
                     />
                   )}
                   <div
@@ -343,25 +314,157 @@ export function Product3DModal({
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
+                        "radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%)",
                     }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
-                  <FilmGrain opacity={0.07} />
-                  <div className="absolute bottom-3 left-3 z-10">
-                    <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
-                      {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,oklch(0.03_0.006_245/0.88)_100%)]" />
+                  {/* Industrial corner brackets */}
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
+                  <FilmGrain opacity={0.06} />
+                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75">
+                      Field Deployment · Preview
+                    </span>
+                  </div>
+                  <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
+                    <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/82">
+                      {item.applicationCaption ?? `${item.title} · Deployment`}
+                    </p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
+                      {item.applicationVideo ? "Live · Loop" : "Archive · Field capture"}
                     </p>
                   </div>
-                  {item.applicationVideo && (
-                    <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
-                      <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/80">
-                        Live · Loop
-                      </span>
-                    </div>
-                  )}
                 </div>
+              ) : (
+                <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+                  <motion.img
+                    key={item.img}
+                    src={item.img}
+                    alt={item.title}
+                    draggable={false}
+                    initial={{ opacity: 0, scale: 1.015 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98)" }}
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%)",
+                    }}
+                  />
+                  <FilmGrain opacity={0.05} />
+                  <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
+                    Archive · Studio capture
+                  </div>
+                  <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
+                    ƒ/2.0 · 85mm · cinema
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                {/* SECONDARY FRAME.
+                    Default: application media. When the hero is the
+                    application, this slot becomes the studio product artifact. */}
+                {item.largeApplicationFrame ? (
+                  <div className="relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                    <motion.img
+                      key={item.img + "-artifact"}
+                      src={item.img}
+                      alt={`${item.title} — studio artifact`}
+                      draggable={false}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-contain p-5"
+                      style={{
+                        filter:
+                          "drop-shadow(0 18px 22px oklch(0 0 0 / 0.7)) contrast(1.02) saturate(0.96)",
+                      }}
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 -z-0"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 40%, oklch(0.1 0.012 235 / 0.18), transparent 60%), linear-gradient(180deg, oklch(0.07 0.008 245) 0%, oklch(0.035 0.008 245) 100%)",
+                      }}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.02_0.006_245/0.7)_100%)]" />
+                    <FilmGrain opacity={0.05} />
+                    <div className="absolute bottom-3 left-3 z-10">
+                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                        Studio · Artifact
+                      </p>
+                    </div>
+                    <div className="absolute right-3 top-3 z-10">
+                      <p className="font-mono text-[8px] uppercase tracking-[0.34em] text-foreground/40">
+                        ƒ/2.0 · 85mm
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
+                    {item.applicationVideo ? (
+                      <motion.video
+                        key={item.applicationVideo}
+                        src={item.applicationVideo}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="auto"
+                        initial={{ opacity: 0, scale: 1.02 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+                        className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
+                        style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
+                      />
+                    ) : (
+                      <motion.img
+                        key={(item.detailImg ?? item.img) + "-app"}
+                        src={item.detailImg ?? item.img}
+                        alt={`${item.title} — application`}
+                        initial={{ opacity: 0, scale: 1.02 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
+                      />
+                    )}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
+                      }}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                    <FilmGrain opacity={0.07} />
+                    <div className="absolute bottom-3 left-3 z-10">
+                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                        {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
+                      </p>
+                    </div>
+                    {item.applicationVideo && (
+                      <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
+                        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/80">
+                          Live · Loop
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Optical / studio note */}
                 <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] p-4">
@@ -376,18 +479,22 @@ export function Product3DModal({
                   <div className="relative z-10 flex h-full flex-col justify-between gap-4">
                     <div>
                       <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-accent/75">
-                        Capture Note
+                        {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
                       </p>
                       <p className="mt-2 text-[12.5px] leading-relaxed text-foreground/72">
-                        Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact.
+                        {item.largeApplicationFrame
+                          ? "Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments."
+                          : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
                       </p>
                     </div>
                     <div className="border-t border-foreground/[0.08] pt-3">
                       <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
-                        Optical treatment
+                        {item.largeApplicationFrame ? "Capture context" : "Optical treatment"}
                       </p>
                       <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/62">
-                        Cinema lens · shallow DOF · 16mm grain
+                        {item.largeApplicationFrame
+                          ? "Field deployment · in-situ documentation"
+                          : "Cinema lens · shallow DOF · 16mm grain"}
                       </p>
                     </div>
                   </div>
