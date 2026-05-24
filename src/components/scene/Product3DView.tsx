@@ -571,21 +571,16 @@ export function Product3DModal({
                   <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
                   <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
                   <FilmGrain opacity={0.06} />
-                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2">
+                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-70 transition-opacity duration-500 group-hover:opacity-100">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75">
-                      Field Deployment · Preview
+                    <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/70">
+                      Field Deployment
                     </span>
                   </div>
-                  <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
-                    <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/82">
+                  <div className="pointer-events-none absolute bottom-5 left-5 z-10">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
                       {item.applicationCaption ?? `${item.title} · Deployment`}
                     </p>
-                    {!item.applicationVideo && (
-                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
-                        Archive · Field capture
-                      </p>
-                    )}
                   </div>
                 </div>
               ) : (
