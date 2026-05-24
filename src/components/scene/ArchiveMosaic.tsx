@@ -799,13 +799,10 @@ export function PresidentialTriptych({
                 src={item.src}
                 alt={item.presenter ?? item.caption}
                 loading="lazy"
-                className={`absolute inset-0 h-full w-full opacity-92 transition-all duration-[1600ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
+                className={`archival-image archival-image-hover absolute inset-0 h-full w-full opacity-92 ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
                   item.fit === "contain" ? "object-contain" : "object-cover"
                 }`}
-                style={{
-                  objectPosition: item.focus ?? "center 28%",
-                  filter: "grayscale(0.10) contrast(1.08) saturate(0.90) brightness(0.95)",
-                }}
+                style={{ objectPosition: item.focus ?? "center 28%" }}
               />
               <div
                 aria-hidden
