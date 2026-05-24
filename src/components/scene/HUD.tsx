@@ -182,28 +182,16 @@ function ChapterMarker({
         />
       </div>
 
-      {/* Label — chapter number + name */}
+      {/* Label — chapter name only (no numbering) */}
       <motion.div
         className="relative z-10 flex items-baseline gap-2"
         initial={false}
         animate={{
-          opacity: active ? 0.98 : visible ? (hovered ? 0.9 : 0.68) : 0.4,
+          opacity: active ? 0.98 : visible ? (hovered ? 0.9 : 0.62) : 0.36,
           x: active ? 1 : 0,
         }}
         transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
       >
-        {/* Chapter number — always visible, very quiet */}
-        <span
-          className="font-mono text-[9px] uppercase tracking-[0.35em] select-none"
-          style={{
-            color: active
-              ? "oklch(0.78 0.07 232 / 0.98)"
-              : "oklch(0.68 0.0 0 / 0.56)",
-            transition: "color 0.95s cubic-bezier(0.19, 1, 0.22, 1)",
-          }}
-        >
-          {chapter.n}
-        </span>
 
         {/* Chapter label — reveals on active / hover */}
         <motion.span
