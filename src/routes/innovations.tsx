@@ -56,6 +56,32 @@ import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.png";
 import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.png";
 import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.png";
 
+// Application / use-case imagery — shown as the secondary still in the
+// inspection modal. Each one depicts the product's real-world context.
+import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
+import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
+import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
+import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
+import appGraphenodes from "@/assets/innovations/applications/graphenodes.webp";
+import appCoalorix from "@/assets/innovations/applications/coalorix.webp";
+import appAquamax from "@/assets/innovations/applications/aquamax.webp";
+import appIgnitronD from "@/assets/innovations/applications/ignitron-d.webp";
+import appIgnitronP from "@/assets/innovations/applications/ignitron-p.webp";
+import appLubritron from "@/assets/innovations/applications/lubritron.webp";
+import appBitumax from "@/assets/innovations/applications/bitumax.webp";
+import appRustene from "@/assets/innovations/applications/rustene.webp";
+import appPyronex from "@/assets/innovations/applications/pyronex.webp";
+import appGraphyre from "@/assets/innovations/applications/graphyre.webp";
+import appGraphosite from "@/assets/innovations/applications/graphosite.webp";
+import appThermaphene from "@/assets/innovations/applications/thermaphene.webp";
+import appArmophene from "@/assets/innovations/applications/armophene.webp";
+import appGryogen from "@/assets/innovations/applications/gryogen.webp";
+import appHydrocell from "@/assets/innovations/applications/hydrocell.webp";
+import appMariphene from "@/assets/innovations/applications/mariphene.webp";
+import appAerophenter from "@/assets/innovations/applications/aerophenter.webp";
+import appFibrasphene from "@/assets/innovations/applications/fibrasphene.webp";
+import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
+
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
@@ -86,35 +112,36 @@ type Item = {
   body: string;
   img: string;
   cutout: string;
+  application: string;
   domain: string;
   status: string;
   featured?: boolean;
 };
 
 const items: Item[] = [
-  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, featured: true },
-  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, featured: true },
-  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene },
-  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe },
-  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes },
-  { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "+15% economy · −15% emissions", body: "Nano-catalytic diesel additive improving fuel economy and slashing emissions.", img: imgIgnitronD, cutout: cutIgnitronD },
-  { title: "Coalorix", stage: "Pilot", domain: "Thermal Power · Combustion", status: "Plant pilot", metric: "+15% efficiency · −35% emissions", body: "Nano-combustion improver enhancing coal efficiency while cutting emissions.", img: imgCoalorix, cutout: cutCoalorix, featured: true },
-  { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, cutout: cutAquamax, featured: true },
-  { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "+10% economy · −12% emissions", body: "Molecular combustion enhancer for petrol engines.", img: imgIgnitronP, cutout: cutIgnitronP },
-  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "+6% savings · −40% wear", body: "Nano-enabled oil additive lowering wear and saving fuel.", img: imgLubritron, cutout: cutLubritron },
-  { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene, cutout: cutRustene },
-  { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen },
-  { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene },
-  { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter },
-  { title: "Fibrasphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgFibrasphene, cutout: cutFibrasphene },
-  { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene },
-  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, featured: true },
-  { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, featured: true },
-  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax },
-  { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex },
-  { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre },
-  { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite },
-  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene },
+  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, featured: true },
+  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, featured: true },
+  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
+  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
+  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
+  { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "+15% economy · −15% emissions", body: "Nano-catalytic diesel additive improving fuel economy and slashing emissions.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD },
+  { title: "Coalorix", stage: "Pilot", domain: "Thermal Power · Combustion", status: "Plant pilot", metric: "+15% efficiency · −35% emissions", body: "Nano-combustion improver enhancing coal efficiency while cutting emissions.", img: imgCoalorix, cutout: cutCoalorix, application: appCoalorix, featured: true },
+  { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, cutout: cutAquamax, application: appAquamax, featured: true },
+  { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "+10% economy · −12% emissions", body: "Molecular combustion enhancer for petrol engines.", img: imgIgnitronP, cutout: cutIgnitronP, application: appIgnitronP },
+  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "+6% savings · −40% wear", body: "Nano-enabled oil additive lowering wear and saving fuel.", img: imgLubritron, cutout: cutLubritron, application: appLubritron },
+  { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene, cutout: cutRustene, application: appRustene },
+  { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen, application: appGryogen },
+  { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene },
+  { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter },
+  { title: "Fibrasphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgFibrasphene, cutout: cutFibrasphene, application: appFibrasphene },
+  { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
+  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, featured: true },
+  { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, featured: true },
+  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax },
+  { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
+  { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre },
+  { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite },
+  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene },
 ];
 
 const filters = ["All", "Commercial", "Pilot", "R&D"] as const;
@@ -148,7 +175,7 @@ function InnovationsPage() {
       metric: it.metric,
       body: it.body,
       img: it.cutout,
-      detailImg: it.img,
+      detailImg: it.application,
       stage: it.stage,
     });
 
