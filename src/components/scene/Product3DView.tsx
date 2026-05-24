@@ -695,7 +695,7 @@ export function Product3DModal({
                 )}
 
                 {/* Optical / studio note */}
-                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] p-4">
+                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
                   <div
                     aria-hidden
                     className="absolute inset-0"
@@ -704,12 +704,12 @@ export function Product3DModal({
                         "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
                     }}
                   />
-                  <div className="relative z-10 flex h-full flex-col justify-between gap-4">
+                  <div className="relative z-10 flex h-full flex-col justify-between gap-5">
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-accent/75">
+                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-accent/75">
                         {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
                       </p>
-                      <p className="mt-2 text-[12.5px] leading-relaxed text-foreground/72">
+                      <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
                         {item.largeApplicationFrame
                           ? "Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments."
                           : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
