@@ -970,9 +970,6 @@ function ClosingInvitation() {
   const planetRef = useRef<HTMLDivElement>(null);
   const orbitARef = useRef<HTMLDivElement>(null);
   const orbitBRef = useRef<HTMLDivElement>(null);
-  const planetParallaxRef = useRef<HTMLDivElement>(null);
-  const orbitAParallaxRef = useRef<HTMLDivElement>(null);
-  const orbitBParallaxRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
   const bloomRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -1023,17 +1020,8 @@ function ClosingInvitation() {
     const loop = () => {
       cx += (tx - cx) * 0.05;
       cy += (ty - cy) * 0.05;
-      const planet = planetParallaxRef.current;
-      const orbA = orbitAParallaxRef.current;
-      const orbB = orbitBParallaxRef.current;
       const stars = starsRef.current;
       const bloom = bloomRef.current;
-      if (planet)
-        planet.style.transform = `translate3d(${cx * -14}px, ${cy * -10}px, 0)`;
-      if (orbA)
-        orbA.style.transform = `translate3d(${cx * 22}px, ${cy * 14}px, 0)`;
-      if (orbB)
-        orbB.style.transform = `translate3d(${cx * -18}px, ${cy * -12}px, 0)`;
       if (stars)
         stars.style.transform = `translate3d(${cx * 8}px, ${cy * 6}px, 0)`;
       if (bloom && active)
