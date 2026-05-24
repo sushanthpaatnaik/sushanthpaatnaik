@@ -50,13 +50,13 @@ export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
-      { title: "In His Words — Essays by Sushanth Paatnaik" },
+      { title: "BLOGS — Essays by Sushanth Paatnaik" },
       {
         name: "description",
         content:
           "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.",
       },
-      { property: "og:title", content: "In His Words — Essays" },
+      { property: "og:title", content: "BLOGS — Essays" },
       {
         property: "og:description",
         content:
@@ -86,7 +86,7 @@ function EssaysIndex() {
           transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
           className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55"
         >
-          <span className="text-primary/80">In His Words</span>
+          <span className="text-primary/80">BLOGS</span>
           <span className="hidden sm:inline">Volume I · MMXXVI</span>
           <span>Essays {String(essays.length).padStart(2, "0")}</span>
         </motion.div>

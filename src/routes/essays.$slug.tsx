@@ -216,7 +216,7 @@ function EssayPage() {
           className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55"
         >
           <Link to="/essays" className="hover:text-foreground/85 transition-colors">
-            ← In His Words
+            ← BLOGS
           </Link>
           <span className="text-muted-foreground/40">
             № {essay.number} · {essay.date} · {essay.readTime}
