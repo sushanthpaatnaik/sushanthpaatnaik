@@ -452,7 +452,7 @@ if (import.meta.env.DEV) {
 // realism and historical scale without expanding the chronological registry.
 const documentaryMosaic: ArchiveItem[] = [
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
-  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Mysore · 2012", category: "Keynote" },
+  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Bangalore · 2012", category: "Keynote" },
   { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
