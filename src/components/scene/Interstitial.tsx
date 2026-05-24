@@ -15,7 +15,7 @@ export default function Interstitial({
   line,
   pause = false,
 }: {
-  line: string;
+  line: React.ReactNode;
   /**
    * When true, renders the "breathing pause" — taller, quieter, no motif,
    * for the single intentional rest section before the closing chapter.
