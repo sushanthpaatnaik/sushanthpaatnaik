@@ -373,7 +373,7 @@ function FounderScene() {
             Founder · Voice
           </p>
           <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem]">
-            "The most important specification on any drawing I make is the human being it is meant for."
+            "The future is not imagined. It is engineered quietly."
           </blockquote>
           <div className="mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
             <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
@@ -671,7 +671,7 @@ export default function ScrollSections() {
       {/* Breathing pause — one intentional moment of stillness */}
       <Interstitial
         pause
-        line="The most important specification on any drawing is the human being it is meant for."
+        line="The future is not imagined. It is engineered quietly."
       />
 
       {/* 07 — Closing invitation */}
