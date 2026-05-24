@@ -1,15 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState, lazy, Suspense } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
-import { InnovationCanvasMount } from "@/components/innovations/InnovationCanvas";
-import { inferKind } from "@/components/innovations/InnovationObject";
-import type { InnovationDetail } from "@/components/innovations/InnovationModal";
 import backdrop from "@/assets/story-03-material.webp";
-
-const InnovationModal = lazy(() => import("@/components/innovations/InnovationModal"));
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
 import imgGraffisol from "@/assets/innovations/graffisol.webp";
@@ -113,18 +108,6 @@ const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
-  const [active, setActive] = useState<InnovationDetail | null>(null);
-  const openItem = (it: Item) =>
-    setActive({
-      title: it.title,
-      domain: it.domain,
-      stage: it.stage,
-      status: it.status,
-      metric: it.metric,
-      body: it.body,
-      img: it.img,
-      kind: inferKind(it.domain),
-    });
   const visible = useMemo(
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
@@ -259,11 +242,11 @@ function InnovationsPage() {
                 </span>
               </header>
 
-              {/* Hero cards — large, with 3D specimen */}
+              {/* Hero cards — large, with lattice */}
               {heroes.length > 0 && (
                 <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                   {heroes.map((it) => (
-                    <HeroCard key={it.title} item={it} onOpen={() => openItem(it)} />
+                    <HeroCard key={it.title} item={it} />
                   ))}
                 </div>
               )}
@@ -272,7 +255,7 @@ function InnovationsPage() {
               {rest.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
                   {rest.map((it) => (
-                    <CompactCard key={it.title} item={it} onOpen={() => openItem(it)} />
+                    <CompactCard key={it.title} item={it} />
                   ))}
                 </div>
               )}
@@ -324,66 +307,39 @@ function InnovationsPage() {
           </div>
         </div>
       </div>
-
-      <Suspense fallback={null}>
-        <InnovationModal
-          open={active !== null}
-          onOpenChange={(v) => !v && setActive(null)}
-          item={active}
-        />
-      </Suspense>
     </CinematicPageShell>
 
   );
 }
 
-function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
-  const kind = inferKind(item.domain);
+function HeroCard({ item }: { item: Item }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
-      onClick={onOpen}
-      className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)] transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:border-accent/30 hover:shadow-[0_30px_80px_-30px_oklch(0.45_0.18_245_/_0.45)]"
+      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
     >
-      {/* 3D specimen stage (desktop) — image fallback (mobile / reduced motion) */}
-      <InnovationCanvasMount
-        kind={kind}
-        className="absolute inset-0"
-        intense
-        fallback={
-          <img
-            src={item.img}
-            alt={`${item.title} — ${item.body}`}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover opacity-[0.78]"
-            style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
-          />
-        }
+      <img
+        src={item.img}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
+        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.045} className="mix-blend-screen opacity-70" />
-      {/* Cinematic gradient — preserves legibility over the 3D stage */}
+      <LatticeField intensity={0.06} className="mix-blend-screen" />
+      {/* Cinematic gradient */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.30) 0%, transparent 28%, transparent 42%, oklch(0.02 0.006 245 / 0.78) 80%, oklch(0.014 0.006 245 / 0.96) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.34) 0%, transparent 30%, transparent 45%, oklch(0.02 0.006 245 / 0.82) 82%, oklch(0.014 0.006 245 / 0.97) 100%)",
         }}
       />
-      {/* Soft vignette ring on hover */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[1100ms] ease-out group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 45%, oklch(0.55 0.16 245 / 0.18) 0%, transparent 55%)",
-        }}
-      />
-      {/* Corner technical readouts */}
+      {/* Corner technical readout */}
       <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
         <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/45">
           {item.status}
@@ -393,15 +349,16 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
-          Flagship · Specimen
+          Flagship
         </span>
       </div>
+      {/* Patent stamp — bottom-right technical readout sticker */}
       <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
           IP · Filed
         </span>
         <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
-          Open · 3D View →
+          {item.status}
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
@@ -425,15 +382,14 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   );
 }
 
-function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
+function CompactCard({ item }: { item: Item }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-      onClick={onOpen}
-      className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] transition-colors duration-700 hover:border-accent/25"
+      className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)]"
     >
       <img
         src={item.img}
