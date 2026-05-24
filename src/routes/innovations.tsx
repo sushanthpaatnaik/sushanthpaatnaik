@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
+import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -108,10 +109,21 @@ const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
+  const [active, setActive] = useState<Product3DModalData | null>(null);
   const visible = useMemo(
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
   );
+  const openProduct = (it: Item) =>
+    setActive({
+      title: it.title,
+      domain: it.domain,
+      status: it.status,
+      metric: it.metric,
+      body: it.body,
+      img: it.img,
+      stage: it.stage,
+    });
 
   const grouped = useMemo(() => {
     const stages: Stage[] = ["Commercial", "Pilot", "R&D"];
@@ -246,7 +258,7 @@ function InnovationsPage() {
               {heroes.length > 0 && (
                 <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                   {heroes.map((it) => (
-                    <HeroCard key={it.title} item={it} />
+                    <HeroCard key={it.title} item={it} onOpen={() => openProduct(it)} />
                   ))}
                 </div>
               )}
@@ -255,7 +267,7 @@ function InnovationsPage() {
               {rest.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
                   {rest.map((it) => (
-                    <CompactCard key={it.title} item={it} />
+                    <CompactCard key={it.title} item={it} onOpen={() => openProduct(it)} />
                   ))}
                 </div>
               )}
@@ -307,26 +319,32 @@ function InnovationsPage() {
           </div>
         </div>
       </div>
+      <Product3DModal item={active} onClose={() => setActive(null)} />
     </CinematicPageShell>
 
   );
 }
 
-function HeroCard({ item }: { item: Item }) {
+function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
-      className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]"
+      onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+      aria-label={`Open 3D view of ${item.title}`}
+      className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <img
+      <Tilt3DSurface
         src={item.img}
         alt={`${item.title} — ${item.body}`}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.78] transition-all duration-[1400ms] ease-out group-hover:scale-[1.035] group-hover:opacity-95"
-        style={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+        maxTilt={6}
+        imgClassName="opacity-[0.82] transition-opacity duration-[1400ms] ease-out group-hover:opacity-95"
+        imgStyle={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
       />
       {/* Lattice overlay — restrained scientific texture */}
       <LatticeField intensity={0.06} className="mix-blend-screen" />
@@ -382,20 +400,25 @@ function HeroCard({ item }: { item: Item }) {
   );
 }
 
-function CompactCard({ item }: { item: Item }) {
+function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-      className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)]"
+      onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+      aria-label={`Open 3D view of ${item.title}`}
+      className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <img
+      <Tilt3DSurface
         src={item.img}
         alt={`${item.title} — ${item.body}`}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.76] grayscale-[0.32] contrast-[1.04] brightness-[0.86] transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0 group-hover:scale-[1.03]"
+        maxTilt={5}
+        imgClassName="opacity-[0.8] grayscale-[0.28] contrast-[1.04] brightness-[0.88] transition-[opacity,filter] duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0"
       />
       {/* Restrained lattice — scientific texture */}
       <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
