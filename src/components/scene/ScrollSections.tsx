@@ -958,80 +958,312 @@ function InHisWordsScene() {
   );
 }
 
-/* ───────────── Scene 09 — Closing invitation ───────────── */
+/* ───────────── Scene 09 — Closing invitation ─────────────
+ * The final frame: a monumental Earth horizon rises from below, a faint
+ * starfield drifts above, two slow orbital arcs sweep through the void,
+ * and the closing thesis resolves with documentary pacing. The whole
+ * composition responds to the cursor with a near-imperceptible parallax
+ * so the scene feels alive without ever feeling animated.
+ * ─────────────────────────────────────────────────────────────────── */
 function ClosingInvitation() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const planetRef = useRef<HTMLDivElement>(null);
+  const orbitARef = useRef<HTMLDivElement>(null);
+  const orbitBRef = useRef<HTMLDivElement>(null);
+  const starsRef = useRef<HTMLDivElement>(null);
+  const bloomRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+
+  // Section-scoped scroll progress drives a "Earth emerges from darkness" reveal.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end end"],
+  });
+  const earthRise = useSpring(useTransform(scrollYProgress, [0, 1], [80, 0]), {
+    stiffness: 60,
+    damping: 22,
+    mass: 0.9,
+  });
+  const earthOpacity = useTransform(scrollYProgress, [0, 0.55], [0.0, 1.0]);
+  const orbitsOpacity = useTransform(scrollYProgress, [0.1, 0.75], [0.0, 1.0]);
+
+  // Cursor-driven parallax — extremely small offsets, smoothed via rAF.
+  useEffect(() => {
+    if (reduce) return;
+    if (typeof window === "undefined") return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let tx = 0;
+    let ty = 0;
+    let cx = 0;
+    let cy = 0;
+    let raf = 0;
+    let active = false;
+
+    const onMove = (e: PointerEvent) => {
+      const rect = section.getBoundingClientRect();
+      if (
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom ||
+        e.clientX < rect.left ||
+        e.clientX > rect.right
+      )
+        return;
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      tx = nx;
+      ty = ny;
+      active = true;
+    };
+
+    const loop = () => {
+      cx += (tx - cx) * 0.05;
+      cy += (ty - cy) * 0.05;
+      const planet = planetRef.current;
+      const orbA = orbitARef.current;
+      const orbB = orbitBRef.current;
+      const stars = starsRef.current;
+      const bloom = bloomRef.current;
+      if (planet)
+        planet.style.transform = `translate3d(${cx * -14}px, ${cy * -10}px, 0)`;
+      if (orbA)
+        orbA.style.transform = `translate3d(${cx * 22}px, ${cy * 14}px, 0)`;
+      if (orbB)
+        orbB.style.transform = `translate3d(${cx * -18}px, ${cy * -12}px, 0)`;
+      if (stars)
+        stars.style.transform = `translate3d(${cx * 8}px, ${cy * 6}px, 0)`;
+      if (bloom && active)
+        bloom.style.transform = `translate3d(${(cx + 0.5) * 100}%, ${(cy + 0.5) * 100}%, 0) translate(-50%, -50%)`;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, [reduce]);
+
   return (
     <section
+      ref={sectionRef}
       id="future"
-      className="relative flex min-h-[calc(var(--viewport-height)*1.15)] items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-28 md:pt-36 pb-40 md:pb-56 text-center"
+      className="relative flex min-h-[calc(var(--viewport-height)*1.35)] items-end justify-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-40 md:pt-56 pb-44 md:pb-64 text-center"
     >
-      {/* Architectural system node — restrained, integrated, atmospheric. */}
+      {/* ───────── Cinematic environment ───────── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        {/* Soft cinematic dawn — keeps the closing frame from collapsing
-            into pure black. A faint horizon glow rises from the lower third. */}
+        {/* Deep-space top wash — softens transition from prior scene */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[72%]"
+          className="absolute inset-x-0 top-0 h-[28%]"
           style={{
             background:
-              "radial-gradient(ellipse 90% 70% at 50% 100%, oklch(0.22 0.04 232 / 0.32) 0%, oklch(0.10 0.02 232 / 0.18) 38%, transparent 78%)",
+              "linear-gradient(180deg, oklch(0.014 0.004 250 / 0.95) 0%, oklch(0.018 0.005 250 / 0.5) 60%, transparent 100%)",
           }}
         />
+
+        {/* Faint cinematic starfield — drifts on cursor parallax */}
+        <div
+          ref={starsRef}
+          className="absolute inset-0 will-change-transform"
+          style={{
+            backgroundImage:
+              "radial-gradient(1px 1px at 12% 18%, oklch(0.95 0 0 / 0.65) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 27% 7%, oklch(0.9 0 0 / 0.45) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 41% 22%, oklch(0.92 0 0 / 0.5) 50%, transparent 100%)," +
+              "radial-gradient(1.2px 1.2px at 56% 11%, oklch(0.95 0 0 / 0.55) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 69% 6%, oklch(0.88 0 0 / 0.45) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 82% 19%, oklch(0.92 0 0 / 0.5) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 94% 9%, oklch(0.9 0 0 / 0.45) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 8% 34%, oklch(0.92 0 0 / 0.4) 50%, transparent 100%)," +
+              "radial-gradient(1.2px 1.2px at 35% 39%, oklch(0.95 0 0 / 0.5) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 62% 33%, oklch(0.9 0 0 / 0.4) 50%, transparent 100%)," +
+              "radial-gradient(1px 1px at 88% 38%, oklch(0.92 0 0 / 0.45) 50%, transparent 100%)",
+            backgroundSize: "100% 60%",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.7,
+          }}
+        />
+
+        {/* Slow twinkle — extremely subtle luminance breath on the starfield */}
         <motion.div
-          className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, transparent 58%, oklch(0.58 0.03 232 / 0.06) 62%, transparent 66%)",
-            boxShadow:
-              "inset 0 0 120px oklch(0.04 0.008 245 / 0.85)",
+              "radial-gradient(ellipse 70% 30% at 50% 18%, oklch(0.5 0.03 232 / 0.06), transparent 70%)",
           }}
-          animate={{ opacity: [0.55, 0.78, 0.55], scale: [1, 1.012, 1] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          animate={reduce ? undefined : { opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Layered cinematic gradient — softer than flat black, top continuity in */}
-        <div
-          className="absolute inset-x-0 top-0 h-[24%]"
+
+        {/* ───── EARTH HORIZON — monumental, pushed low, emerges on scroll ───── */}
+        <motion.div
+          ref={planetRef}
+          className="absolute left-1/2 -translate-x-1/2 will-change-transform"
           style={{
-            background:
-              "linear-gradient(180deg, oklch(0.014 0.004 250 / 0.92) 0%, oklch(0.018 0.005 250 / 0.55) 55%, transparent 100%)",
+            bottom: "-78vmin",
+            width: "180vmin",
+            height: "180vmin",
+            y: earthRise,
+            opacity: earthOpacity,
           }}
-        />
-        {/* Bottom resolution — never collapses to pure void; carries glow to footer */}
+        >
+          {/* Planet body — deep ocean blue with terminator shading */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 38%, oklch(0.32 0.07 232) 0%, oklch(0.22 0.06 232) 28%, oklch(0.12 0.04 240) 55%, oklch(0.05 0.02 245) 78%, oklch(0.02 0.008 245) 100%)",
+              boxShadow:
+                "inset 0 0 180px oklch(0.02 0.005 245 / 0.85), inset 0 -60px 180px oklch(0 0 0 / 0.9)",
+            }}
+          />
+
+          {/* Day-side highlight — soft luminance crescent on the upper edge */}
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 18%, oklch(0.6 0.05 232 / 0.25) 0%, transparent 24%)",
+              mixBlendMode: "screen",
+            }}
+            animate={reduce ? undefined : { opacity: [0.78, 1, 0.78] }}
+            transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Atmospheric rim — the iconic luminous blue limb */}
+          <div
+            className="absolute -inset-[1.2%] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 50%, transparent 49%, oklch(0.62 0.13 232 / 0.55) 50%, oklch(0.55 0.10 232 / 0.18) 52%, transparent 56%)",
+              filter: "blur(2px)",
+              mixBlendMode: "screen",
+            }}
+          />
+
+          {/* Outer atmospheric bloom — soft blue diffusion */}
+          <motion.div
+            className="absolute -inset-[6%] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 50%, transparent 46%, oklch(0.55 0.11 232 / 0.25) 50%, transparent 62%)",
+              filter: "blur(28px)",
+              mixBlendMode: "screen",
+            }}
+            animate={reduce ? undefined : { opacity: [0.7, 1, 0.7], scale: [1, 1.012, 1] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Slow planetary drift — almost imperceptible */}
+          {!reduce && (
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(ellipse 60% 18% at 50% 22%, oklch(0.7 0.06 232 / 0.05), transparent 70%)",
+                mixBlendMode: "screen",
+              }}
+              animate={{ x: [0, 12, 0], opacity: [0.6, 0.95, 0.6] }}
+              transition={{ duration: 60, repeat: Infinity, ease: "easeInOut" }}
+            />
+          )}
+        </motion.div>
+
+        {/* ───── Orbital arcs — two slow concentric paths above the limb ───── */}
+        <motion.div
+          ref={orbitARef}
+          className="absolute left-1/2 -translate-x-1/2 will-change-transform"
+          style={{
+            bottom: "-72vmin",
+            width: "210vmin",
+            height: "210vmin",
+            opacity: orbitsOpacity,
+          }}
+        >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              border: "0.5px solid oklch(0.65 0.06 232 / 0.18)",
+              boxShadow: "0 0 24px oklch(0.6 0.08 232 / 0.08)",
+            }}
+          />
+        </motion.div>
+        <motion.div
+          ref={orbitBRef}
+          className="absolute left-1/2 -translate-x-1/2 will-change-transform"
+          style={{
+            bottom: "-68vmin",
+            width: "240vmin",
+            height: "240vmin",
+            opacity: orbitsOpacity,
+          }}
+        >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              border: "0.5px dashed oklch(0.6 0.05 232 / 0.10)",
+            }}
+          />
+        </motion.div>
+
+        {/* Cursor-reactive ambient bloom — a soft glow that follows the pointer */}
+        {!reduce && (
+          <div
+            ref={bloomRef}
+            className="absolute left-0 top-0 h-[40vmin] w-[40vmin] rounded-full will-change-transform pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle at center, oklch(0.7 0.1 232 / 0.07), transparent 70%)",
+              filter: "blur(30px)",
+              mixBlendMode: "screen",
+              transition: "opacity 600ms ease",
+            }}
+          />
+        )}
+
+        {/* Foreground vignette — preserves typographic contrast */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[40%]"
+          className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.022 0.006 245 / 0.55) 55%, oklch(0.018 0.006 245 / 0.75) 100%)",
+              "radial-gradient(ellipse 65% 50% at 50% 30%, oklch(0.04 0.006 245 / 0.55) 0%, transparent 60%)",
           }}
         />
       </div>
+
+      {/* ───────── Foreground typography ───────── */}
       <div className="relative z-10 flex w-full flex-col items-center justify-center render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
-            <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
+            <p className="mb-10 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
               09 — The Future System
             </p>
           </MotionReveal>
 
-          <MotionReveal delay={0.06}>
-            <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+          <MotionReveal delay={0.18}>
+            <p className="mx-auto mb-12 md:mb-16 max-w-md font-display italic text-[13.5px] md:text-[14.5px] leading-[1.75] text-foreground/55">
               Not a forecast. A working hypothesis — built one industrial system at a time.
             </p>
           </MotionReveal>
-          <MotionReveal delay={0.12}>
-            <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance] pb-1">
+
+          <MotionReveal delay={0.36}>
+            <h2 className="mb-12 md:mb-16 font-display text-[clamp(1.85rem,7vw,5.4rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.035em] md:tracking-[-0.042em] font-medium text-gradient [text-wrap:balance] pb-1">
               The next industrial century<br /> will be materially engineered.
             </h2>
           </MotionReveal>
-          <MotionReveal delay={0.2}>
-            <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+
+          <MotionReveal delay={0.58}>
+            <p className="mx-auto mb-14 md:mb-20 max-w-xl text-[14px] md:text-[15.5px] leading-[1.8] text-foreground/72">
               Calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
             </p>
           </MotionReveal>
-          <MotionReveal delay={0.28}>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
+
+          <MotionReveal delay={0.78}>
+            <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-6">
               <Link to="/contact" className="btn-cinematic">
                 Begin a conversation
               </Link>
@@ -1040,8 +1272,9 @@ function ClosingInvitation() {
               </Link>
             </div>
           </MotionReveal>
-          <MotionReveal delay={0.34}>
-            <div className="mt-20 md:mt-28 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/55">
+
+          <MotionReveal delay={0.94}>
+            <div className="mt-24 md:mt-36 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.52em] text-muted-foreground/55">
               <span>Advanced Materials</span>
               <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
               <span>Energy Systems</span>
@@ -1050,17 +1283,17 @@ function ClosingInvitation() {
             </div>
           </MotionReveal>
 
-          {/* Signature plate — resolves the cinematic arc with structural closure */}
-          <MotionReveal delay={0.42}>
-            <div className="mt-24 md:mt-32 flex flex-col items-center gap-5">
+          {/* Signature plate — final closure */}
+          <MotionReveal delay={1.18}>
+            <div className="mt-28 md:mt-40 flex flex-col items-center gap-5">
               <span className="h-px w-24 bg-gradient-to-r from-transparent via-foreground/25 to-transparent" />
-              <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/55">
+              <p className="font-mono text-[10px] uppercase tracking-[0.52em] text-foreground/55">
                 Sushanth Paatnaik
               </p>
-              <p className="font-mono text-[9.5px] uppercase tracking-[0.42em] text-muted-foreground/45">
+              <p className="font-mono text-[9.5px] uppercase tracking-[0.44em] text-muted-foreground/45">
                 Inventor · Deep-Tech Founder · India
               </p>
-              <p className="mt-6 text-[10px] font-extralight uppercase tracking-[0.4em] text-muted-foreground/35 blur-[0.3px]">
+              <p className="mt-6 text-[10px] font-extralight uppercase tracking-[0.42em] text-muted-foreground/35 blur-[0.3px]">
                 © Sushanth Paatnaik — Engineering systems for the next civilization layer.
               </p>
             </div>
@@ -1070,6 +1303,7 @@ function ClosingInvitation() {
     </section>
   );
 }
+
 
 
 export default function ScrollSections() {
