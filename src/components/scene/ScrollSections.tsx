@@ -608,10 +608,8 @@ function ClosingInvitation() {
             <span>Planetary Infrastructure</span>
           </div>
         </MotionReveal>
-      </div>
-      <MotionReveal delay={0.42}>
-        <div className="absolute inset-x-0 bottom-6 md:bottom-8 z-10 flex justify-center pointer-events-auto px-5">
-          <div className="relative inline-block">
+        <MotionReveal delay={0.42}>
+          <div className="relative mt-8 md:mt-10 inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span
               aria-hidden
@@ -623,7 +621,7 @@ function ClosingInvitation() {
               }}
             />
             <p
-              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70 text-center"
+              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70"
               style={{
                 textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)",
               }}
@@ -631,9 +629,8 @@ function ClosingInvitation() {
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
             </p>
           </div>
-        </div>
-      </MotionReveal>
-
+        </MotionReveal>
+      </div>
     </section>
   );
 }
