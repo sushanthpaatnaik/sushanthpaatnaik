@@ -55,31 +55,27 @@ export function Tilt3DSurface({
     const el = ref.current;
     if (!el || reduced) return;
 
-    let rx = 0, ry = 0, tx = 0, ty = 0;
-    let cx = 0, cy = 0;
+    let cx = 0, cy = 0, tcx = 0, tcy = 0;
 
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       const nx = (e.clientX - r.left) / r.width - 0.5;
       const ny = (e.clientY - r.top) / r.height - 0.5;
-      tx = -ny * maxTilt;
-      ty = nx * maxTilt;
-      cx = nx * 14;
-      cy = ny * 14;
+      tcx = nx * 18;
+      tcy = ny * 18;
     };
-    const onLeave = () => { tx = 0; ty = 0; cx = 0; cy = 0; };
+    const onLeave = () => { tcx = 0; tcy = 0; };
 
     const loop = () => {
-      rx += (tx - rx) * 0.08;
-      ry += (ty - ry) * 0.08;
-      el.style.transform = `perspective(1200px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      cx += (tcx - cx) * 0.08;
+      cy += (tcy - cy) * 0.08;
       const img = el.querySelector<HTMLElement>("[data-tilt-img]");
-      if (img) img.style.transform = `translate3d(${(-cx).toFixed(1)}px, ${(-cy).toFixed(1)}px, 0) scale(1.06)`;
+      if (img) img.style.transform = `translate3d(${(-cx).toFixed(1)}px, ${(-cy).toFixed(1)}px, 0) scale(1.08)`;
       const sheen = el.querySelector<HTMLElement>("[data-tilt-sheen]");
       if (sheen) {
-        const gx = 50 + ry * 4;
-        const gy = 50 - rx * 4;
-        sheen.style.background = `radial-gradient(circle at ${gx}% ${gy}%, oklch(0.95 0.04 220 / 0.18), transparent 55%)`;
+        const gx = 50 - cx * 1.6;
+        const gy = 50 - cy * 1.6;
+        sheen.style.background = `radial-gradient(circle at ${gx}% ${gy}%, oklch(0.95 0.04 220 / 0.16), transparent 55%)`;
       }
       raf.current = requestAnimationFrame(loop);
     };
@@ -98,8 +94,8 @@ export function Tilt3DSurface({
   return (
     <div
       ref={ref}
-      className={`relative h-full w-full will-change-transform transition-transform duration-[600ms] ease-out ${className}`}
-      style={{ transformStyle: "preserve-3d", ...style }}
+      className={`relative h-full w-full overflow-hidden ${className}`}
+      style={style}
     >
       <img
         data-tilt-img
@@ -107,7 +103,7 @@ export function Tilt3DSurface({
         alt={alt}
         loading="lazy"
         className={`absolute inset-0 h-full w-full object-cover will-change-transform transition-transform duration-[800ms] ease-out ${imgClassName}`}
-        style={{ transform: "scale(1.06)", ...imgStyle }}
+        style={{ transform: "scale(1.08)", ...imgStyle }}
       />
       <div
         data-tilt-sheen
@@ -254,44 +250,41 @@ export function Product3DModal({
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="relative grid w-full max-w-6xl grid-cols-1 gap-8 px-6 md:grid-cols-[1.4fr_1fr] md:px-10"
           >
-            {/* 3D stage */}
+            {/* Stage — flat frame; only the product inside rotates */}
             <div
               className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)]"
-              style={{ perspective: "1400px" }}
+              style={{ perspective: "1600px" }}
             >
-              <LatticeField intensity={0.06} className="mix-blend-screen" />
+              <LatticeField intensity={0.05} className="mix-blend-screen" />
+
+              {/* Floor shadow — anchors the product in space */}
+              <div
+                aria-hidden
+                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-70 blur-2xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.75), transparent 70%)" }}
+              />
+
+              {/* Back rim glow */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-[18%] rounded-full opacity-50 blur-3xl"
+                style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.35), transparent 65%)" }}
+              />
+
               <div
                 ref={stageRef}
-                className="absolute inset-0 cursor-grab active:cursor-grabbing will-change-transform"
+                className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing will-change-transform"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Multi-layer faux depth — back glow, mid shadow, foreground image */}
-                <div
-                  aria-hidden
-                  className="absolute inset-[12%] rounded-full opacity-60 blur-3xl"
-                  style={{
-                    background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.45), transparent 65%)",
-                    transform: "translateZ(-120px)",
-                  }}
-                />
+                {/* Only the product floats and rotates — no rectangular frame around it */}
                 <img
                   src={item.img}
                   alt={item.title}
                   draggable={false}
-                  className="absolute inset-[6%] h-[88%] w-[88%] rounded-sm object-cover"
+                  className="max-h-[78%] max-w-[78%] object-contain"
                   style={{
-                    transform: "translateZ(0)",
-                    filter: "contrast(1.08) saturate(0.92) brightness(0.95)",
-                    boxShadow: "0 40px 80px -20px oklch(0 0 0 / 0.7), 0 0 60px oklch(0.6 0.12 220 / 0.15)",
-                  }}
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-[6%] rounded-sm"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.95 0.02 220 / 0.12) 0%, transparent 35%, transparent 65%, oklch(0 0 0 / 0.35) 100%)",
-                    transform: "translateZ(2px)",
+                    filter:
+                      "contrast(1.06) saturate(0.95) brightness(0.98) drop-shadow(0 30px 40px oklch(0 0 0 / 0.55)) drop-shadow(0 0 30px oklch(0.6 0.12 220 / 0.18))",
                   }}
                 />
               </div>
