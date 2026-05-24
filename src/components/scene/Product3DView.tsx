@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
+import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 
