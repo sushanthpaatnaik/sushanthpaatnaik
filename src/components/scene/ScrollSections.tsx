@@ -1301,7 +1301,7 @@ function ClosingInvitation() {
 
 
 export default function ScrollSections() {
-  const totalChapters = 9;
+  const totalChapters = 8;
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
