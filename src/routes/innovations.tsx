@@ -148,6 +148,7 @@ function InnovationsPage() {
       metric: it.metric,
       body: it.body,
       img: it.cutout,
+      detailImg: it.img,
       stage: it.stage,
     });
 
@@ -368,28 +369,35 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        imgClassName="opacity-[0.96] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
-        imgStyle={{ filter: "drop-shadow(0 26px 38px oklch(0 0 0 / 0.72)) drop-shadow(0 0 24px oklch(0.7 0.03 225 / 0.16))" }}
+        imgClassName="opacity-[0.98] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
+        imgStyle={{ filter: "drop-shadow(0 28px 42px oklch(0 0 0 / 0.74)) drop-shadow(0 16px 28px oklch(0 0 0 / 0.34))" }}
       />
-      <LatticeField intensity={0.04} className="mix-blend-screen opacity-45" />
+      <div
+        aria-hidden
+        className="absolute right-0 top-0 h-full w-[46%] opacity-45"
+        style={{
+          background:
+            "linear-gradient(270deg, oklch(0.86 0.02 235 / 0.08) 0%, transparent 70%)",
+        }}
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.24) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.84) 100%)",
+            "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.16) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.9) 100%)",
         }}
       />
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
-          Flagship
+          Archive entry
         </span>
       </div>
       <div className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
         <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/55">
-          Studio capture
+          Studio still
         </span>
       </div>
       <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
@@ -438,22 +446,21 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        imgClassName="opacity-[0.96] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
-        imgStyle={{ filter: "drop-shadow(0 20px 30px oklch(0 0 0 / 0.68)) drop-shadow(0 0 18px oklch(0.68 0.03 225 / 0.14))" }}
+        imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+        imgStyle={{ filter: "drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34))" }}
       />
-      <LatticeField intensity={0.03} className="mix-blend-screen opacity-45 transition-opacity duration-[1200ms] group-hover:opacity-70" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.2) 0%, transparent 34%, oklch(0.02 0.006 245 / 0.76) 84%, oklch(0.014 0.006 245 / 0.94) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.12) 0%, transparent 34%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.94) 100%)",
         }}
       />
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
         <span className="h-px w-5 bg-accent/60" />
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
-          Studio
+          Still
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
