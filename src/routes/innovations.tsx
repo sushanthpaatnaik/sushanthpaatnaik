@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
-import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
+import { Product3DObject, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -365,15 +365,16 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       aria-label={`Open 3D view of ${item.title}`}
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <Tilt3DSurface
-        src={item.img}
+      <Product3DObject
+        cutout={item.cutout}
+        ambient={item.img}
         alt={`${item.title} — ${item.body}`}
-        maxTilt={6}
-        imgClassName="opacity-[0.82] transition-opacity duration-[1400ms] ease-out group-hover:opacity-95"
-        imgStyle={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+        featured
+        swing={24}
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.06} className="mix-blend-screen" />
+      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60" />
+
       {/* Cinematic gradient */}
       <div
         aria-hidden
@@ -440,12 +441,14 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       aria-label={`Open 3D view of ${item.title}`}
       className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <Tilt3DSurface
-        src={item.img}
+      <Product3DObject
+        cutout={item.cutout}
+        ambient={item.img}
         alt={`${item.title} — ${item.body}`}
-        maxTilt={5}
-        imgClassName="opacity-[0.8] grayscale-[0.28] contrast-[1.04] brightness-[0.88] transition-[opacity,filter] duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-95 group-hover:grayscale-0"
+        swing={18}
+        featured={item.featured}
       />
+
       {/* Restrained lattice — scientific texture */}
       <LatticeField intensity={0.04} className="mix-blend-screen opacity-60 transition-opacity duration-[1200ms] group-hover:opacity-100" />
 

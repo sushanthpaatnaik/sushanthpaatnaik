@@ -115,6 +115,198 @@ export function Tilt3DSurface({
   );
 }
 
+/* ── Product3DObject ────────────────────────────────────────────────────
+ * A cutout PNG presented as a faux-3D object inside a card:
+ *  - slow autonomous Y-axis sway (cinematic, not spinning)
+ *  - cursor influence with inertia (product turns toward cursor)
+ *  - layered ground shadow that shifts with rotation
+ *  - specular highlight overlay swept by the same rotation signal
+ *  - depth back-plate behind the object
+ * No WebGL. Respects prefers-reduced-motion.
+ */
+interface Product3DObjectProps {
+  cutout: string;
+  alt: string;
+  /** Optional ambient/blurred image used as a soft backdrop (e.g. the framed photo). */
+  ambient?: string;
+  className?: string;
+  /** Max sway angle in degrees. Default 22 for a strong but non-flipping feel. */
+  swing?: number;
+  /** Featured products get a stronger presence (larger, deeper shadow). */
+  featured?: boolean;
+}
+
+export function Product3DObject({
+  cutout,
+  alt,
+  ambient,
+  className = "",
+  swing = 22,
+  featured = false,
+}: Product3DObjectProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const obj = el.querySelector<HTMLElement>("[data-p3d-obj]");
+    const shadow = el.querySelector<HTMLElement>("[data-p3d-shadow]");
+    const spec = el.querySelector<HTMLElement>("[data-p3d-spec]");
+    if (!obj || !shadow || !spec) return;
+
+    let raf = 0;
+    let t = Math.random() * 1000;
+    // cursor target (-1..1)
+    let tx = 0, ty = 0;
+    // smoothed cursor
+    let cx = 0, cy = 0;
+    // hover boost
+    let hoverBoost = 0;
+
+    const apply = () => {
+      // Auto sway: slow sine around 0
+      const auto = Math.sin(t * 0.0008) * (swing * 0.55);
+      // Cursor contribution adds up to additional ±swing
+      const ryCursor = cx * swing;
+      const ry = Math.max(-swing - 6, Math.min(swing + 6, auto + ryCursor));
+      const rx = Math.max(-10, Math.min(10, -cy * 8));
+      const lift = -hoverBoost * 4; // subtle rise on hover (px)
+
+      obj.style.transform =
+        `translate3d(0, ${lift.toFixed(2)}px, 0) ` +
+        `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+
+      // Shadow shifts laterally with rotation and stretches when product leans
+      const sx = ry * 0.55; // horizontal shift in px scaled by rotation
+      const sScaleX = 1 - Math.abs(ry) * 0.004;
+      const sOpacity = 0.55 + Math.abs(rx) * 0.01 + hoverBoost * 0.15;
+      shadow.style.transform = `translate(calc(-50% + ${sx.toFixed(2)}px), 0) scaleX(${sScaleX.toFixed(3)})`;
+      shadow.style.opacity = String(Math.min(0.85, sOpacity));
+
+      // Specular highlight sweeps with rotation
+      const gx = 50 + ry * 1.4;
+      const gy = 32 + rx * 1.2;
+      spec.style.background =
+        `radial-gradient(ellipse 55% 70% at ${gx.toFixed(1)}% ${gy.toFixed(1)}%, ` +
+        `oklch(0.96 0.02 220 / ${(0.10 + hoverBoost * 0.06).toFixed(3)}), transparent 65%)`;
+    };
+
+    const loop = () => {
+      t += 16;
+      // ease toward target
+      cx += (tx - cx) * 0.08;
+      cy += (ty - cy) * 0.08;
+      hoverBoost += ((tx || ty ? 1 : 0) - hoverBoost) * 0.06;
+      apply();
+      raf = requestAnimationFrame(loop);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
+      ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2));
+    };
+    const onLeave = () => { tx = 0; ty = 0; };
+
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerleave", onLeave);
+    if (!reduced) raf = requestAnimationFrame(loop);
+    else apply();
+
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
+      cancelAnimationFrame(raf);
+    };
+  }, [swing, reduced, cutout]);
+
+  const objMax = featured ? 86 : 78;
+
+  return (
+    <div
+      ref={ref}
+      className={`absolute inset-0 overflow-hidden ${className}`}
+      style={{ perspective: "1600px", perspectiveOrigin: "50% 42%" }}
+    >
+      {/* Ambient backdrop — heavily blurred framed photo for studio depth */}
+      {ambient && (
+        <img
+          src={ambient}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.22] scale-[1.15]"
+          style={{ filter: "blur(28px) saturate(0.6) brightness(0.55)" }}
+        />
+      )}
+
+      {/* Back-plate radial — anchors the object in studio space */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 50% 42%, oklch(0.18 0.02 232 / 0.55), transparent 70%)",
+        }}
+      />
+
+      {/* Floor shadow — moves with rotation */}
+      <div
+        data-p3d-shadow
+        aria-hidden
+        className="absolute left-1/2 bottom-[8%] h-5 w-[58%] rounded-[50%] blur-2xl will-change-transform"
+        style={{
+          background: featured
+            ? "radial-gradient(ellipse, oklch(0 0 0 / 0.85), transparent 70%)"
+            : "radial-gradient(ellipse, oklch(0 0 0 / 0.72), transparent 70%)",
+          transform: "translate(-50%, 0)",
+          transformOrigin: "center",
+        }}
+      />
+
+      {/* Back rim glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-[22%] rounded-full opacity-40 blur-3xl"
+        style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.22), transparent 65%)" }}
+      />
+
+      {/* The 3D object */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <img
+          data-p3d-obj
+          src={cutout}
+          alt={alt}
+          draggable={false}
+          loading="lazy"
+          className="will-change-transform pointer-events-none select-none"
+          style={{
+            maxHeight: `${objMax}%`,
+            maxWidth: `${objMax}%`,
+            objectFit: "contain",
+            transformStyle: "preserve-3d",
+            transition: "filter 900ms cubic-bezier(0.19,1,0.22,1)",
+            filter: featured
+              ? "contrast(1.08) saturate(0.96) brightness(0.96) drop-shadow(0 22px 30px oklch(0 0 0 / 0.65)) drop-shadow(0 0 26px oklch(0.6 0.12 220 / 0.18))"
+              : "contrast(1.06) saturate(0.92) brightness(0.92) drop-shadow(0 16px 22px oklch(0 0 0 / 0.55)) drop-shadow(0 0 18px oklch(0.6 0.12 220 / 0.12))",
+          }}
+        />
+      </div>
+
+      {/* Specular highlight overlay — sweeps with rotation */}
+      <div
+        data-p3d-spec
+        aria-hidden
+        className="pointer-events-none absolute inset-0 mix-blend-screen"
+      />
+    </div>
+  );
+}
+
 /* ── Modal viewer with drag-to-spin ─────────────────────────────────── */
 
 export interface Product3DModalData {
