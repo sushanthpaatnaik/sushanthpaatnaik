@@ -258,7 +258,7 @@ function InnovationsPage() {
               {heroes.length > 0 && (
                 <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                   {heroes.map((it) => (
-                    <HeroCard key={it.title} item={it} />
+                    <HeroCard key={it.title} item={it} onOpen={() => openProduct(it)} />
                   ))}
                 </div>
               )}
@@ -267,7 +267,7 @@ function InnovationsPage() {
               {rest.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
                   {rest.map((it) => (
-                    <CompactCard key={it.title} item={it} />
+                    <CompactCard key={it.title} item={it} onOpen={() => openProduct(it)} />
                   ))}
                 </div>
               )}
