@@ -1,50 +1,37 @@
-## Migration Audit & Content Transfer Plan
+# Cinematic Refinement Plan
 
-This is a large, multi-phase migration. Before I execute, I want to confirm scope so I don't spend hours pulling content you don't actually need re-pulled.
+This is a large, multi-section creative pass. To ship it well without breaking the existing cinematic system, I'll execute in 4 focused phases. You can approve all, or pick the phases you want first.
 
-### What I'll do
+## Phase 1 — Continuous environment + signature motif (homepage)
+- Add a persistent **ambient continuity layer** (always-on, ultra-low opacity) that lives behind all chapter atmospheres so transitions never "go dark" between sections. Soft volumetric haze + slow drifting orbital ring as the recurring signature motif.
+- Introduce a subtle **orbital lattice glyph** (SVG, ~3% opacity) as the site's recurring identity object — appears in hero, between chapters, and as a faint watermark on Recognitions/Innovations.
+- Strengthen hero: low-opacity infrastructure topology grid (masked away from typography), breathing light gradient (8s ease loop), 6–8 micro-drift particles (not the gaming kind — 1px, <8% opacity).
+- Fix lower-screen energy collapse: add a bottom atmospheric gradient band per chapter so sections never bleed to pure black at the fold.
 
-**Phase A — Audit (read-only)**
-1. Crawl all 12 pages of the old site (`preview--pixel-reimagined-57.lovable.app`) via Firecrawl / fetch_website.
-2. Extract for each page: copy, statistics, founder statements, venture details, innovations, awards, patents, press mentions, testimonials, image URLs, video URLs, outbound links.
-3. Audit current new-site routes (`/`, `/about`, `/recognitions`, `/innovations`, `/ventures`, `/early-works`, `/essays`, `/news`, `/contact`, `/engage`) to map what's already migrated vs. missing.
-4. Produce a gap report (markdown) — what exists, what's missing, what needs rewriting.
+## Phase 2 — Index rail ↔ environment coupling + micro-storytelling
+- Active rail node gets a soft illumination halo that subtly tints the adjacent atmosphere (CSS variable driven by `useChapterPhase`).
+- Add 3–4 **interstitial narrative lines** between major chapters ("Recognition followed the prototypes." / "Research evolved into infrastructure." / "Systems became deployable.") — single-line, centered, tracked-out, fades in/out on scroll.
+- Add one **breathing pause section** between Ecosystem and Future: black frame, single italic founder line, generous vertical space.
 
-**Phase B — Content restructure into 7 cinematic chapters**
-Rewrite the home `ScrollSections` flow to follow:
-```
-01 — Spark           (origin, early inventor)
-02 — Recognition     (6× Presidential awards, press)
-03 — Carbon Intelligence  (graphene, patents, R&D)
-04 — Industrial Applications  (products, deployments)
-05 — Venture Builder (Monoatom, Grafillium, SPI, InThinks, Starunico, Magppie)
-06 — India → World   (global positioning)
-07 — Future          (essays, philosophy)
-```
-Each chapter: short editorial copy on home, deep content lives on dedicated route pages.
+## Phase 3 — Recognitions as archival timeline + unified image grading
+- Restructure Recognitions into a chronological vertical timeline with year anchors, archival spacing rhythm, and era groupings.
+- Add a global **`.archive-grade` CSS utility** (contrast +6%, saturation -15%, subtle vignette, faint film grain overlay) and apply to all archive/recognition imagery for a unified museum-grade look.
 
-**Phase C — Image transfer**
-- Download every meaningful image from old site (recognitions logos, venture/innovation visuals, archival inventor photos, lab/industrial imagery).
-- Re-process via `imagegen--edit_image` where needed to fit the dark cinematic atmospheric language (no bright legacy aesthetic).
-- Store under `src/assets/{chapter}/` and wire as synchronized scroll backdrops per chapter.
+## Phase 4 — Innovations clarity + climax sequence
+- Add metadata chip system to every innovation card: Sector / Application / Tech Category (e.g. "Advanced Materials · Industrial Systems · Infrastructure").
+- Build the **signature cinematic sequence**: an orbital recognition timeline in the Future/Recognition climax — slow-rotating orbital ring with recognition years as nodes lighting in sequence as the user scrolls through.
 
-**Phase D — Detail page upgrades**
-Push migrated copy into the existing detail routes (`/about`, `/recognitions`, `/innovations`, `/ventures`, `/early-works`, `/essays`, `/news`, `/contact`) using `CinematicPageShell` + `EditorialList`/`EditorialSection`. Keep nav concise, each item a real route.
+## Technical notes
+- All new motion respects `prefers-reduced-motion` and the existing `isLowPower` gate in `src/routes/index.tsx`.
+- New atmosphere layers use `contain: strict` + `will-change: opacity` and are driven by the existing `useChapterPhase` motion value — no new scroll listeners.
+- No changes to copy, route structure, or section order beyond adding the interstitial narrative lines and the breathing pause.
+- No new dependencies.
 
-**Phase E — QC**
-- Verify routes build, no broken imports.
-- Browser screenshot every route to check cinematic continuity, no dead-black regions, image fit.
+## Scope I will NOT touch unless you ask
+- Section order, navigation structure, or routes.
+- Copy on existing sections (only adding new interstitial lines).
+- Color tokens in `src/styles.css` (only additive utilities like `.archive-grade`).
 
-### Realistic scope warning
+---
 
-This is genuinely 1–3 hours of agent work and will touch 30–60 files plus generate/transform ~20–40 images. I want to flag two decisions before starting:
-
-1. **Image strategy** — for each old-site image, do you want me to:
-   - (a) Transfer raw + apply a unified dark cinematic overlay in CSS only (fast, ~30 min), or
-   - (b) Re-edit each via AI to match the atmospheric language (slow, ~1–2 hrs, higher quality)?
-
-2. **Content fidelity** — for founder statements, awards, venture descriptions: copy old text verbatim, or rewrite into more editorial/cinematic prose?
-
-3. **Order of execution** — should I deliver in batches (Audit → ship, then Restructure → ship, then Images → ship) so you can review between phases, or do the whole thing in one pass?
-
-Once you answer those three, I'll execute end-to-end without further check-ins.
+**Question for you:** Do you want me to execute all 4 phases in this turn, or start with Phase 1 + 2 (the homepage cinematic continuity work) and then do 3 + 4 in a follow-up? Phase 1+2 is the highest-leverage visible change; 3+4 touches other routes.

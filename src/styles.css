@@ -242,6 +242,37 @@
     transform: scale(1.03);
   }
 
+  /* Archive-grade — unified museum-grade grading for archival imagery.
+     Lifted blacks, controlled highlights, restrained saturation, subtle
+     filmic texture via inner shadow vignette. Applied as a wrapper class
+     or directly to <img>; pairs well with .cinematic-image. */
+  .archive-grade {
+    filter:
+      contrast(1.06)
+      saturate(0.84)
+      brightness(0.93)
+      sepia(0.04);
+    transition: filter var(--dur-slow) var(--ease-cinematic);
+  }
+  .archive-grade-wrap {
+    position: relative;
+    isolation: isolate;
+  }
+  .archive-grade-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 110% 80% at 50% 50%,
+      transparent 55%,
+      oklch(0.02 0.004 232 / 0.42) 100%
+    );
+    mix-blend-mode: multiply;
+  }
+
+
+
   /* Cinematic dark overlay — read on top of any cinematic image.
      Use as an absolute layer or via ::after pseudo. */
   .cinematic-overlay::before,
