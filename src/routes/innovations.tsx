@@ -365,15 +365,16 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       aria-label={`Open 3D view of ${item.title}`}
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <Tilt3DSurface
-        src={item.img}
+      <Product3DObject
+        cutout={item.cutout}
+        ambient={item.img}
         alt={`${item.title} — ${item.body}`}
-        maxTilt={6}
-        imgClassName="opacity-[0.82] transition-opacity duration-[1400ms] ease-out group-hover:opacity-95"
-        imgStyle={{ filter: "grayscale(0.22) contrast(1.05) saturate(0.84) brightness(0.86)" }}
+        featured
+        swing={24}
       />
       {/* Lattice overlay — restrained scientific texture */}
-      <LatticeField intensity={0.06} className="mix-blend-screen" />
+      <LatticeField intensity={0.05} className="mix-blend-screen opacity-60" />
+
       {/* Cinematic gradient */}
       <div
         aria-hidden
