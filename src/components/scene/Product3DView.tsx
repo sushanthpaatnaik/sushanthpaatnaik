@@ -252,24 +252,23 @@ export function Product3DModal({
           >
             {/* Stage — flat frame; only the product inside rotates */}
             <div
-              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)]"
+              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-white"
               style={{ perspective: "1600px" }}
             >
-              <LatticeField intensity={0.05} className="mix-blend-screen" />
-
               {/* Floor shadow — anchors the product in space */}
               <div
                 aria-hidden
-                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-70 blur-2xl"
-                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.75), transparent 70%)" }}
+                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-40 blur-2xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.6), transparent 70%)" }}
               />
 
-              {/* Back rim glow */}
+              {/* Soft studio vignette */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-[18%] rounded-full opacity-50 blur-3xl"
-                style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.35), transparent 65%)" }}
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(ellipse at 50% 35%, transparent 55%, oklch(0 0 0 / 0.06) 100%)" }}
               />
+
 
               <div
                 ref={stageRef}
