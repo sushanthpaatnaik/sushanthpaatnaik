@@ -518,7 +518,7 @@ function ClosingInvitation() {
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>
           <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-            07 — The Future System
+            Future Systems
           </p>
         </MotionReveal>
         <MotionReveal delay={0.06}>
