@@ -18,6 +18,8 @@ export interface BackgroundScene {
   parallax?: number;
   /** Per-chapter scene-image filter override (replaces the default grade). */
   filter?: string;
+  /** Per-chapter object-position for the plate (defaults to center). */
+  objectPosition?: string;
 }
 
 interface AnimatedBackgroundProps {
@@ -98,7 +100,13 @@ function SceneLayer({
         draggable={false}
         fetchPriority={isFirst ? "high" : "low"}
         className="h-full w-full object-cover select-none"
-        style={{ scale, y, filter: scene.filter ?? DEFAULT_FILTER, transform: "translateZ(0)" }}
+        style={{
+          scale,
+          y,
+          filter: scene.filter ?? DEFAULT_FILTER,
+          transform: "translateZ(0)",
+          objectPosition: scene.objectPosition ?? "center",
+        }}
       />
       {/* Per-chapter chroma wash — gives each scene its own emotional color. */}
       {scene.tint && (

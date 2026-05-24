@@ -30,11 +30,15 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneSpark,
     alt: "Origin · blueprint genesis · systems emergence",
-    tint: "radial-gradient(ellipse at 50% 52%, oklch(0.40 0.038 232 / 0.14), oklch(0.05 0.010 232 / 0.10) 72%)",
+    tint: "radial-gradient(ellipse at 50% 72%, oklch(0.40 0.038 232 / 0.12), oklch(0.05 0.010 232 / 0.10) 72%)",
+    // Strong central crush so the plate's bright spark crystal can never
+    // bleed into the typography column behind the hero headline.
     overlay:
-      "radial-gradient(ellipse 74% 66% at 50% 52%, oklch(0.028 0.005 232 / 0.50) 0%, oklch(0.020 0.004 232 / 0.78) 82%)",
+      "radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.018 0.004 232 / 0.94) 0%, oklch(0.020 0.004 232 / 0.82) 38%, oklch(0.022 0.004 232 / 0.62) 72%, oklch(0.022 0.004 232 / 0.72) 100%)",
     parallax: 0.5,
-    filter: "brightness(0.62) contrast(1.06) saturate(0.68)",
+    filter: "brightness(0.46) contrast(1.04) saturate(0.58)",
+    // Push the bright focal crystal well below the typography centerline.
+    objectPosition: "center 88%",
   },
   {
     src: sceneFounder,
