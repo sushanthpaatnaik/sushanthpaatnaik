@@ -526,9 +526,7 @@ export function Product3DModal({
                       </p>
                     </div>
                   </div>
-                ) : null}
-                {!item.largeApplicationFrame && null}
-                {/* fallback: when not largeApplicationFrame keep legacy app frame below */}
+                ) : (
                   <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
                     {item.applicationVideo ? (
                       <motion.video
