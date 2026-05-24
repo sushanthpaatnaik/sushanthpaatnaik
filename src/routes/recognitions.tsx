@@ -575,11 +575,8 @@ function EraAccordion({
                     src={p.src}
                     alt={p.caption}
                     loading="eager"
-                    className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-1000 group-hover/era:opacity-100"
-                    style={{
-                      objectPosition: p.focus ?? "center 30%",
-                      filter: "grayscale(0.12) contrast(1.05) saturate(0.88) brightness(0.95)",
-                    }}
+                    className="archival-image-soft archival-image-hover absolute inset-0 h-full w-full object-cover opacity-90 group-hover/era:opacity-100"
+                    style={{ objectPosition: p.focus ?? "center 30%" }}
                   />
                   <div
                     aria-hidden
