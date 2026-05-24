@@ -210,6 +210,13 @@ function Index() {
         </Suspense>
       )}
 
+      {/* Per-chapter atmospheric identity — image-free, scroll-synced */}
+      {scenesReady && entered && (
+        <Suspense fallback={null}>
+          <ChapterAtmosphere />
+        </Suspense>
+      )}
+
       {/* Cursor aura — desktop, non-low-power only */}
       {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
