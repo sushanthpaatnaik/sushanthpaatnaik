@@ -132,9 +132,9 @@ export default function AnimatedBackground({
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 38,
-    mass: 0.55,
+    stiffness: 14,
+    damping: 58,
+    mass: 1.45,
   });
 
   const phase = useTransform(progress, [0, 1], [0, stages - 1]);
