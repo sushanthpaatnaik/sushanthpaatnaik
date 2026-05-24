@@ -503,7 +503,7 @@ export function Product3DModal({
           onClick={onClose}
         >
           <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between px-6 py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
-            <div className="flex items-center gap-3">
+            <div className="pointer-events-auto flex items-center gap-3">
               <span className="h-px w-8 bg-accent/70" />
               <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
                 Product · Inspection
@@ -514,13 +514,14 @@ export function Product3DModal({
                 e.stopPropagation();
                 onClose();
               }}
-              className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/60 transition-colors hover:text-foreground/95"
+              className="pointer-events-auto font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/60 transition-colors hover:text-foreground/95"
               aria-label="Close product inspection"
             >
               Close · ESC
             </button>
           </div>
 
+          <div className="flex min-h-full w-full items-center justify-center py-24 md:py-28">
           <motion.div
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.98, y: 14 }}
