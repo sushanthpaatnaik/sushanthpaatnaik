@@ -684,7 +684,7 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                 </li>
               ))}
             </ul>
-          </li>
+          </motion.li>
         ))}
       </ol>
     </div>
