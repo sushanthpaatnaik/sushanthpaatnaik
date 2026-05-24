@@ -769,7 +769,7 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative aspect-[6/7] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative mx-auto aspect-[4/5] w-full max-w-[78%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
