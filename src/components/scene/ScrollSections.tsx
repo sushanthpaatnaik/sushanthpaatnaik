@@ -1040,7 +1040,7 @@ function ClosingInvitation() {
     <section
       ref={sectionRef}
       id="future"
-      className="relative isolate flex min-h-[100svh] items-stretch justify-center overflow-visible px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-[clamp(7rem,12vh,10rem)] md:pt-[clamp(8rem,14vh,12rem)] pb-[clamp(8rem,16vh,14rem)] text-center"
+      className="relative isolate flex min-h-[100svh] items-start justify-center overflow-visible px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-[clamp(7rem,12vh,10rem)] md:pt-[clamp(8rem,14vh,12rem)] pb-[clamp(8rem,16vh,14rem)] text-center"
     >
       {/* ───────── Cinematic environment ───────── */}
       <div
@@ -1227,7 +1227,7 @@ function ClosingInvitation() {
       </div>
 
       {/* ───────── Foreground typography ───────── */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
+      <div className="relative z-10 flex w-full flex-col items-center justify-start py-[clamp(1rem,3vh,2.25rem)] render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-10 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
