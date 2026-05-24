@@ -600,11 +600,11 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.34}>
-          <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+          <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/20">
             <span>Advanced Materials</span>
-            <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
+            <span className="h-[3px] w-[3px] rounded-full bg-primary/25" />
             <span>Energy Systems</span>
-            <span className="h-[3px] w-[3px] rounded-full bg-accent/60" />
+            <span className="h-[3px] w-[3px] rounded-full bg-accent/25" />
             <span>Planetary Infrastructure</span>
           </div>
         </MotionReveal>
