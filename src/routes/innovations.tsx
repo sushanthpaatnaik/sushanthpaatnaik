@@ -319,6 +319,7 @@ function InnovationsPage() {
           </div>
         </div>
       </div>
+      <Product3DModal item={active} onClose={() => setActive(null)} />
     </CinematicPageShell>
 
   );
