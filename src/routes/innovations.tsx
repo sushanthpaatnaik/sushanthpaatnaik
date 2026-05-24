@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
-import { Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
-import { ProductCanvas3D } from "@/components/scene/ProductCanvas3D";
+import { Product3DObject, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -366,10 +365,13 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       aria-label={`Open 3D view of ${item.title}`}
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <ProductCanvas3D
-        src={item.cutout}
+      <Product3DObject
+        cutout={item.cutout}
+        ambient={item.img}
         alt={`${item.title} — ${item.body}`}
         featured
+        swing={5}
+        restAngle={12}
       />
 
       {/* Lattice overlay — restrained scientific texture */}
@@ -441,9 +443,12 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       aria-label={`Open 3D view of ${item.title}`}
       className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
-      <ProductCanvas3D
-        src={item.cutout}
+      <Product3DObject
+        cutout={item.cutout}
+        ambient={item.img}
         alt={`${item.title} — ${item.body}`}
+        swing={4}
+        restAngle={10}
         featured={item.featured}
       />
 
