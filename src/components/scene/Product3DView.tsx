@@ -126,24 +126,30 @@ export function Tilt3DSurface({
         }}
       />
 
-      {/* Floor reflection — mirrored, blurred, masked */}
-      <motion.img
-        src={src}
-        alt=""
+      {/* Floor reflection — mirrored, blurred, masked.
+          NOTE: framer-motion's `y`/`scale` writes to transform and would
+          overwrite the flip. Keep flip on a static wrapper; animate INSIDE. */}
+      <div
         aria-hidden
-        loading="lazy"
-        animate={reduced ? undefined : { y: [0, 2.5, 0], scale: [1.012, 1.02, 1.012] }}
-        transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute inset-0 h-full w-full object-contain"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
         style={{
-          padding: reflPad,
           transform: "scaleY(-1) translateY(-78%)",
-          opacity: 0.18,
-          filter: "blur(4px) saturate(0.6) brightness(0.7)",
+          opacity: 0.16,
+          filter: "blur(5px) saturate(0.55) brightness(0.65)",
           maskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
           WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
         }}
-      />
+      >
+        <motion.img
+          src={src}
+          alt=""
+          loading="lazy"
+          animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
+          transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full object-contain"
+          style={{ padding: reflPad }}
+        />
+      </div>
 
       {/* Top edge specular — soft rim light */}
       <div
