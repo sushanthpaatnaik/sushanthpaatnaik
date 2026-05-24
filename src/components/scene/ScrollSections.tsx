@@ -527,7 +527,7 @@ function ClosingInvitation() {
           </p>
         </MotionReveal>
         <MotionReveal delay={0.12}>
-          <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.85rem,7.2vw,5.6rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium text-gradient [text-wrap:balance]">
+          <h2 className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]">
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
         </MotionReveal>
