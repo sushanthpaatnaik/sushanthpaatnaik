@@ -577,11 +577,12 @@ function ClosingInvitation() {
               textRendering: "geometricPrecision",
               WebkitFontSmoothing: "antialiased",
               textShadow:
-                "0 1px 22px oklch(0.06 0.012 240 / 0.55), 0 0 1px oklch(0.96 0.01 232 / 0.18)",
+                "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
             }}
           >
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
+
         </MotionReveal>
         <MotionReveal delay={0.2}>
           <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
