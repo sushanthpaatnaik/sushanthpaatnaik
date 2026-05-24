@@ -77,7 +77,7 @@ export default function Interstitial({
               : "text-[clamp(1rem,1.9vw,1.45rem)] tracking-[-0.005em]"
           }`}
         >
-          {line}
+          <span className="whitespace-pre-line">{line}</span>
         </p>
         {pause && (
           <div className="mt-12 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.5em] text-muted-foreground/35">
