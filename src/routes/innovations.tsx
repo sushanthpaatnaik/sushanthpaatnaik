@@ -31,7 +31,7 @@ import imgAerophenter from "@/assets/innovations/aerophenter.webp";
 import imgFibrasphene from "@/assets/innovations/fibrasphene.webp";
 import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
-// Transparent product cut-outs — used for the 3D product viewer
+// Transparent product cut-outs — identity-preserved studio product staging
 import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.png";
 import cutGraffisol from "@/assets/innovations/cutouts/graffisol.png";
 import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.png";
