@@ -145,9 +145,9 @@ export default function AnimatedBackground({
   // progress is smoothed so the crossfade still breathes instead of snapping.
   const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
   const smoothedExternal = useSpring(phaseSource ?? rawPhase, {
-    stiffness: 28,
-    damping: 38,
-    mass: 0.9,
+    stiffness: 120,
+    damping: 28,
+    mass: 0.5,
   });
   const phase = phaseSource ? smoothedExternal : rawPhase;
   const parallax = useTransform(progress, [0, 1], [-1, 1]);
