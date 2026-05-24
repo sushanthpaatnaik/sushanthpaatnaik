@@ -600,7 +600,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.34}>
-          <div className="mt-14 md:mt-20 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+          <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
             <span>Advanced Materials</span>
             <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
             <span>Energy Systems</span>
@@ -610,7 +610,7 @@ function ClosingInvitation() {
         </MotionReveal>
       </div>
       <MotionReveal delay={0.42}>
-        <div className="absolute inset-x-0 bottom-1 md:bottom-2 z-10 flex justify-center pointer-events-auto px-5 pb-2 md:pb-3">
+        <div className="absolute inset-x-0 bottom-6 md:bottom-8 z-10 flex justify-center pointer-events-auto px-5">
           <div className="relative inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span
@@ -618,14 +618,14 @@ function ClosingInvitation() {
               className="pointer-events-none absolute -inset-x-12 -inset-y-3 -z-10"
               style={{
                 background:
-                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.18), transparent 76%)",
+                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.24), transparent 76%)",
                 filter: "blur(22px)",
               }}
             />
             <p
-              className="text-[10.5px] font-extralight uppercase tracking-[0.48em] text-foreground/50 text-center"
+              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70 text-center"
               style={{
-                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.5)",
+                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)",
               }}
             >
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
