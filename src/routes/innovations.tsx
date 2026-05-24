@@ -369,8 +369,9 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
+        hero
         imgClassName="opacity-[0.98] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
-        imgStyle={{ filter: "drop-shadow(0 28px 42px oklch(0 0 0 / 0.74)) drop-shadow(0 16px 28px oklch(0 0 0 / 0.34))" }}
+        imgStyle={{ filter: "drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08))" }}
       />
       <div
         aria-hidden
