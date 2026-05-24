@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
+import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -202,6 +202,21 @@ function HeroVideo({
   const [muted, setMuted] = useState(true);
   const [hintVisible, setHintVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Keep React state synced with native play/pause events (e.g. fullscreen UI).
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    el.addEventListener("play", onPlay);
+    el.addEventListener("pause", onPause);
+    return () => {
+      el.removeEventListener("play", onPlay);
+      el.removeEventListener("pause", onPause);
+    };
+  }, []);
 
   // Reveal the "Sound Available" hint after a short delay, only while muted.
   useEffect(() => {
@@ -297,6 +312,25 @@ function HeroVideo({
     }
   };
 
+  const togglePlay = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const el = ref.current;
+    if (!el) return;
+    if (el.paused) {
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
+  };
+
+  const replay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const el = ref.current;
+    if (!el) return;
+    el.currentTime = 0;
+    el.play().catch(() => {});
+  };
+
   return (
     <>
       <motion.video
@@ -307,47 +341,81 @@ function HeroVideo({
         loop
         playsInline
         preload="auto"
-        onClick={() => {
-          if (muted) enableSound();
-        }}
+        onClick={() => togglePlay()}
         initial={{ opacity: 0, scale: 1.025 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
         className={`cursor-pointer ${className ?? ""}`}
         style={style}
       />
-      {/* Full View — minimal luxury fullscreen control */}
-      <button
-        type="button"
-        onClick={toggleFullscreen}
-        aria-label={isFullscreen ? "Exit full view" : "Open full view"}
-        className="group/fs absolute right-4 top-4 z-20 flex items-center gap-2 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] px-2.5 py-1.5 opacity-0 backdrop-blur-md transition-all duration-300 hover:border-accent/40 hover:bg-[oklch(0.06_0.01_245/0.85)] group-hover:opacity-100 focus-visible:opacity-100"
-      >
-        {isFullscreen ? (
-          <Minimize2 className="h-3.5 w-3.5 text-accent/90" />
-        ) : (
-          <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" />
-        )}
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
-          {isFullscreen ? "Exit" : "Full View"}
-        </span>
-      </button>
-      {/* Sound toggle — minimal amber/graphite control */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={muted ? "Enable sound" : "Mute sound"}
-        className="group/snd absolute bottom-4 right-4 z-20 flex items-center gap-2 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] px-2.5 py-1.5 backdrop-blur-md transition-all duration-300 hover:border-accent/40 hover:bg-[oklch(0.06_0.01_245/0.85)]"
-      >
-        {muted ? (
-          <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" />
-        ) : (
-          <Volume2 className="h-3.5 w-3.5 text-accent/90" />
-        )}
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
-          {muted ? "Sound On" : "Mute"}
-        </span>
-      </button>
+
+      {/* Cinematic micro-control cluster — bottom right.
+          Order: Play/Pause · Replay · Sound · Full View */}
+      <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] p-1 backdrop-blur-md">
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause" : "Play"}
+          className="group/pp flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+        >
+          {isPlaying ? (
+            <Pause className="h-3.5 w-3.5 text-foreground/75 transition-colors group-hover/pp:text-accent" strokeWidth={1.6} />
+          ) : (
+            <Play className="h-3.5 w-3.5 text-accent/95 transition-colors" strokeWidth={1.6} />
+          )}
+          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
+            {isPlaying ? "Pause" : "Play"}
+          </span>
+        </button>
+
+        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+        <button
+          type="button"
+          onClick={replay}
+          aria-label="Replay from start"
+          className="group/rp flex h-7 items-center justify-center rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+        >
+          <RotateCcw className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/rp:text-accent" strokeWidth={1.6} />
+        </button>
+
+        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={muted ? "Enable sound" : "Mute sound"}
+          className="group/snd flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+        >
+          {muted ? (
+            <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" strokeWidth={1.6} />
+          ) : (
+            <Volume2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
+          )}
+          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
+            {muted ? "Sound" : "Mute"}
+          </span>
+        </button>
+
+        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label={isFullscreen ? "Exit full view" : "Open full view"}
+          className="group/fs flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+        >
+          {isFullscreen ? (
+            <Minimize2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
+          ) : (
+            <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" strokeWidth={1.6} />
+          )}
+          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
+            {isFullscreen ? "Exit" : "Full View"}
+          </span>
+        </button>
+      </div>
+
       {/* Subtle hint that audio is available — fades in after a moment */}
       <AnimatePresence>
         {muted && hintVisible && (
