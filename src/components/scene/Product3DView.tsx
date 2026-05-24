@@ -130,10 +130,12 @@ interface Product3DObjectProps {
   /** Optional ambient/blurred image used as a soft backdrop (e.g. the framed photo). */
   ambient?: string;
   className?: string;
-  /** Max sway angle in degrees. Default 22 for a strong but non-flipping feel. */
+  /** Auto sway amplitude in degrees. Keep small — the rest pose owns presence. */
   swing?: number;
   /** Featured products get a stronger presence (larger, deeper shadow). */
   featured?: boolean;
+  /** Default resting Y rotation in degrees (3/4 view). */
+  restAngle?: number;
 }
 
 export function Product3DObject({
@@ -141,8 +143,9 @@ export function Product3DObject({
   alt,
   ambient,
   className = "",
-  swing = 22,
+  swing = 4,
   featured = false,
+  restAngle = 10,
 }: Product3DObjectProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -152,63 +155,97 @@ export function Product3DObject({
     if (!el) return;
 
     const obj = el.querySelector<HTMLElement>("[data-p3d-obj]");
-    const shadow = el.querySelector<HTMLElement>("[data-p3d-shadow]");
+    const contact = el.querySelector<HTMLElement>("[data-p3d-contact]");
+    const atmos = el.querySelector<HTMLElement>("[data-p3d-atmos]");
+    const rim = el.querySelector<HTMLElement>("[data-p3d-rim]");
     const spec = el.querySelector<HTMLElement>("[data-p3d-spec]");
-    if (!obj || !shadow || !spec) return;
+    const ambientLayer = el.querySelector<HTMLElement>("[data-p3d-ambient]");
+    if (!obj || !contact || !atmos || !rim || !spec) return;
 
     let raf = 0;
     let t = Math.random() * 1000;
-    // cursor target (-1..1)
     let tx = 0, ty = 0;
-    // smoothed cursor
     let cx = 0, cy = 0;
-    // hover boost
     let hoverBoost = 0;
+    let hovering = false;
+
+    // Featured products rotate ~30% slower for cinematic gravitas
+    const autoSpeed = featured ? 0.00055 : 0.00075;
+    const cursorPull = featured ? 6 : 8;
 
     const apply = () => {
-      // Auto sway: slow sine around 0
-      const auto = Math.sin(t * 0.0008) * (swing * 0.55);
-      // Cursor contribution adds up to additional ±swing
-      const ryCursor = cx * swing;
-      const ry = Math.max(-swing - 6, Math.min(swing + 6, auto + ryCursor));
-      const rx = Math.max(-10, Math.min(10, -cy * 8));
-      const lift = -hoverBoost * 4; // subtle rise on hover (px)
+      const autoY = Math.sin(t * autoSpeed) * swing;
+      const autoX = Math.cos(t * autoSpeed * 0.7) * (swing * 0.18);
+      const ry = restAngle + autoY + cx * cursorPull;
+      const rx = autoX - cy * 5;
+      const lift = -hoverBoost * (featured ? 5 : 3);
 
       obj.style.transform =
         `translate3d(0, ${lift.toFixed(2)}px, 0) ` +
         `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
 
-      // Shadow shifts laterally with rotation and stretches when product leans
-      const sx = ry * 0.55; // horizontal shift in px scaled by rotation
-      const sScaleX = 1 - Math.abs(ry) * 0.004;
-      const sOpacity = 0.55 + Math.abs(rx) * 0.01 + hoverBoost * 0.15;
-      shadow.style.transform = `translate(calc(-50% + ${sx.toFixed(2)}px), 0) scaleX(${sScaleX.toFixed(3)})`;
-      shadow.style.opacity = String(Math.min(0.85, sOpacity));
+      // Contact shadow: tight, narrows as object lifts
+      const csx = ry * 0.35;
+      const csScaleX = 1 - Math.abs(ry) * 0.0035 - hoverBoost * 0.08;
+      const csScaleY = 1 - hoverBoost * 0.15;
+      contact.style.transform =
+        `translate(calc(-50% + ${csx.toFixed(2)}px), 0) scale(${csScaleX.toFixed(3)}, ${csScaleY.toFixed(3)})`;
+      contact.style.opacity = String(0.78 - hoverBoost * 0.18);
 
-      // Specular highlight sweeps with rotation
-      const gx = 50 + ry * 1.4;
-      const gy = 32 + rx * 1.2;
+      // Atmospheric shadow: broad, drifts farther with rotation
+      const asx = ry * 0.9;
+      atmos.style.transform = `translate(calc(-50% + ${asx.toFixed(2)}px), 0)`;
+      atmos.style.opacity = String(0.5 + hoverBoost * 0.12);
+
+      // Specular highlight — counter to rotation (light stays fixed)
+      const gx = 50 - ry * 1.8;
+      const gy = 36 + rx * 1.4;
+      const specIntensity = 0.12 + hoverBoost * 0.10;
       spec.style.background =
-        `radial-gradient(ellipse 55% 70% at ${gx.toFixed(1)}% ${gy.toFixed(1)}%, ` +
-        `oklch(0.96 0.02 220 / ${(0.10 + hoverBoost * 0.06).toFixed(3)}), transparent 65%)`;
+        `radial-gradient(ellipse 50% 65% at ${gx.toFixed(1)}% ${gy.toFixed(1)}%, ` +
+        `oklch(0.97 0.02 220 / ${specIntensity.toFixed(3)}), transparent 62%)`;
+
+      // Rim glow — back-lit edge, shifts opposite the rotation
+      const rgx = 50 + ry * 2.2;
+      const rgy = 50 - rx * 1.5;
+      const rimIntensity = 0.18 + hoverBoost * 0.14;
+      rim.style.background =
+        `radial-gradient(ellipse 60% 55% at ${rgx.toFixed(1)}% ${rgy.toFixed(1)}%, ` +
+        `oklch(0.65 0.10 220 / ${rimIntensity.toFixed(3)}), transparent 60%)`;
+
+      // Dynamic drop-shadow — direction follows rotation
+      const dsX = -ry * 0.55;
+      const dsY = 18 + Math.abs(rx) * 0.4;
+      const dsBlur = featured ? 28 : 22;
+      const dsAlpha = featured ? 0.62 : 0.5;
+      obj.style.filter =
+        `contrast(${(1.06 + hoverBoost * 0.04).toFixed(3)}) ` +
+        `saturate(${(0.94 + hoverBoost * 0.04).toFixed(3)}) ` +
+        `brightness(${(0.94 + hoverBoost * 0.06).toFixed(3)}) ` +
+        `drop-shadow(${dsX.toFixed(1)}px ${dsY.toFixed(1)}px ${dsBlur}px oklch(0 0 0 / ${dsAlpha})) ` +
+        `drop-shadow(${(-dsX * 0.4).toFixed(1)}px 0 ${(dsBlur * 0.7).toFixed(0)}px oklch(0.6 0.12 220 / ${(0.14 + hoverBoost * 0.08).toFixed(3)}))`;
+
+      if (ambientLayer) {
+        ambientLayer.style.opacity = String(0.18 + hoverBoost * 0.06);
+      }
     };
 
     const loop = () => {
       t += 16;
-      // ease toward target
-      cx += (tx - cx) * 0.08;
-      cy += (ty - cy) * 0.08;
-      hoverBoost += ((tx || ty ? 1 : 0) - hoverBoost) * 0.06;
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+      hoverBoost += ((hovering ? 1 : 0) - hoverBoost) * 0.05;
       apply();
       raf = requestAnimationFrame(loop);
     };
 
     const onMove = (e: PointerEvent) => {
+      hovering = true;
       const r = el.getBoundingClientRect();
       tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
       ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2));
     };
-    const onLeave = () => { tx = 0; ty = 0; };
+    const onLeave = () => { hovering = false; tx = 0; ty = 0; };
 
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerleave", onLeave);
@@ -220,24 +257,25 @@ export function Product3DObject({
       el.removeEventListener("pointerleave", onLeave);
       cancelAnimationFrame(raf);
     };
-  }, [swing, reduced, cutout]);
+  }, [swing, reduced, cutout, featured, restAngle]);
 
-  const objMax = featured ? 86 : 78;
+  // Featured ≈ +20% scale
+  const objMax = featured ? 92 : 76;
 
   return (
     <div
       ref={ref}
       className={`absolute inset-0 overflow-hidden ${className}`}
-      style={{ perspective: "1600px", perspectiveOrigin: "50% 42%" }}
+      style={{ perspective: "1800px", perspectiveOrigin: "50% 45%" }}
     >
-      {/* Ambient backdrop — heavily blurred framed photo for studio depth */}
       {ambient && (
         <img
+          data-p3d-ambient
           src={ambient}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.22] scale-[1.15]"
-          style={{ filter: "blur(28px) saturate(0.6) brightness(0.55)" }}
+          className="absolute inset-0 h-full w-full object-cover scale-[1.18]"
+          style={{ opacity: 0.18, filter: "blur(34px) saturate(0.55) brightness(0.45)" }}
         />
       )}
 
@@ -247,32 +285,46 @@ export function Product3DObject({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 42%, oklch(0.18 0.02 232 / 0.55), transparent 70%)",
+            "radial-gradient(ellipse 72% 62% at 50% 44%, oklch(0.16 0.018 232 / 0.62), transparent 72%)",
         }}
       />
 
-      {/* Floor shadow — moves with rotation */}
+      {/* Depth haze — subtle fog behind the product */}
       <div
-        data-p3d-shadow
         aria-hidden
-        className="absolute left-1/2 bottom-[8%] h-5 w-[58%] rounded-[50%] blur-2xl will-change-transform"
+        className="pointer-events-none absolute inset-x-[12%] top-[18%] bottom-[22%] rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, oklch(0.22 0.02 232 / 0.32), transparent 70%)" }}
+      />
+
+      {/* Back rim glow — light wraps the silhouette from behind */}
+      <div
+        data-p3d-rim
+        aria-hidden
+        className="pointer-events-none absolute inset-[18%] rounded-full blur-3xl"
+      />
+
+      {/* Atmospheric shadow — broad and soft */}
+      <div
+        data-p3d-atmos
+        aria-hidden
+        className="absolute left-1/2 bottom-[4%] h-9 w-[72%] rounded-[50%] blur-3xl will-change-transform"
         style={{
-          background: featured
-            ? "radial-gradient(ellipse, oklch(0 0 0 / 0.85), transparent 70%)"
-            : "radial-gradient(ellipse, oklch(0 0 0 / 0.72), transparent 70%)",
+          background: "radial-gradient(ellipse, oklch(0 0 0 / 0.55), transparent 72%)",
           transform: "translate(-50%, 0)",
-          transformOrigin: "center",
         }}
       />
 
-      {/* Back rim glow */}
+      {/* Contact shadow — tight, sells ground contact */}
       <div
+        data-p3d-contact
         aria-hidden
-        className="pointer-events-none absolute inset-[22%] rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.22), transparent 65%)" }}
+        className="absolute left-1/2 bottom-[9%] h-3 w-[44%] rounded-[50%] blur-md will-change-transform"
+        style={{
+          background: "radial-gradient(ellipse, oklch(0 0 0 / 0.92), oklch(0 0 0 / 0.35) 55%, transparent 78%)",
+          transform: "translate(-50%, 0)",
+        }}
       />
 
-      {/* The 3D object */}
       <div
         className="absolute inset-0 flex items-center justify-center"
         style={{ transformStyle: "preserve-3d" }}
@@ -289,15 +341,12 @@ export function Product3DObject({
             maxWidth: `${objMax}%`,
             objectFit: "contain",
             transformStyle: "preserve-3d",
-            transition: "filter 900ms cubic-bezier(0.19,1,0.22,1)",
-            filter: featured
-              ? "contrast(1.08) saturate(0.96) brightness(0.96) drop-shadow(0 22px 30px oklch(0 0 0 / 0.65)) drop-shadow(0 0 26px oklch(0.6 0.12 220 / 0.18))"
-              : "contrast(1.06) saturate(0.92) brightness(0.92) drop-shadow(0 16px 22px oklch(0 0 0 / 0.55)) drop-shadow(0 0 18px oklch(0.6 0.12 220 / 0.12))",
+            transformOrigin: "50% 55%",
+            transition: "filter 700ms cubic-bezier(0.19,1,0.22,1)",
           }}
         />
       </div>
 
-      {/* Specular highlight overlay — sweeps with rotation */}
       <div
         data-p3d-spec
         aria-hidden
