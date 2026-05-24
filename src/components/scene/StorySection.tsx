@@ -29,8 +29,8 @@ function SectionCopy({
       : align === "right"
         ? "mr-auto md:ml-auto md:mr-0 text-left md:text-right"
         : "mr-auto text-left";
-  const counterPosition =
-    align === "right" ? "left-10" : align === "left" ? "right-10" : "right-10";
+
+
 
   return (
     <div className={`max-w-2xl pointer-events-auto ${textAlign}`}>
