@@ -139,7 +139,7 @@ export default function Nav() {
           <Link
             to="/contact"
             onClick={() => setOpen(false)}
-            className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.02em] text-primary/90 hover:text-primary transition-colors"
+            className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.02em] text-foreground/90 hover:text-foreground transition-colors"
           >
             Contact →
           </Link>
