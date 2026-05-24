@@ -254,13 +254,15 @@ function MotionReveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.2, once: false });
+  const prefersReducedMotion = useReducedMotion();
+  const inView = useInView(ref, { amount: 0.15, once: true, margin: "0px 0px -10% 0px" });
+  const shouldAnimate = inView || prefersReducedMotion;
   return (
     <motion.div
       ref={ref}
-      initial={false}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-      transition={{ duration: 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 26 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: 1.1, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
