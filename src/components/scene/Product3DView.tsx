@@ -681,7 +681,6 @@ export function Product3DModal({
                 </div>
               )}
             </div>
-            </div>
 
             <div className="flex flex-col gap-6">
               <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
