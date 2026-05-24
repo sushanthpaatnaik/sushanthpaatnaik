@@ -561,3 +561,59 @@ html.lenis, html.lenis body {
 }
 
 
+
+/* ============================================
+ * Museum-grade archival treatments
+ * Unified cinematic image grade + atmospheric lighting layers
+ * Used by /recognitions to give every photographic plate a
+ * consistent documentary patina (subtle warmth, contained
+ * shadow rolloff, normalized contrast).
+ * ============================================ */
+.archival-image {
+  filter: grayscale(0.10) contrast(1.05) saturate(0.90) brightness(0.96)
+          sepia(0.04);
+}
+.archival-image-soft {
+  filter: grayscale(0.14) contrast(1.04) saturate(0.85) brightness(0.93)
+          sepia(0.05);
+}
+.archival-image-hover {
+  transition: filter 1200ms ease-out, transform 1400ms ease-out, opacity 1000ms ease-out;
+}
+.group:hover .archival-image-hover,
+.group\/era:hover .archival-image-hover {
+  filter: grayscale(0.04) contrast(1.07) saturate(0.96) brightness(1.00)
+          sepia(0.02);
+}
+
+/* Section reveal — gentle layered opacity & lift for scroll storytelling */
+@keyframes archival-reveal {
+  0%   { opacity: 0; transform: translateY(18px); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+.archival-reveal {
+  animation: archival-reveal 1.4s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+/* Subtle gold/amber archival highlight — a single sweep for hero plates */
+@keyframes archival-sheen {
+  0%, 100% { opacity: 0; transform: translateX(-30%); }
+  50%      { opacity: 0.18; transform: translateX(30%); }
+}
+.archival-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    oklch(0.78 0.10 70 / 0.10) 50%,
+    transparent 70%);
+  mix-blend-mode: screen;
+  animation: archival-sheen 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archival-reveal { animation: none; opacity: 1; transform: none; filter: none; }
+  .archival-sheen::after { animation: none; opacity: 0; }
+}
