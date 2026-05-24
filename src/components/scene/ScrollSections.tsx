@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, useEffect, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
