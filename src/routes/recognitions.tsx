@@ -152,7 +152,7 @@ const milestones: Milestone[] = [
     title: "TED-India Speaker",
     body: "Invited to TED-India as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
     image: keynoteTed,
-    institution: "TED · Mysore",
+    institution: "TED · Bangalore",
     major: true,
   },
   {
