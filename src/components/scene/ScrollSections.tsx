@@ -1049,7 +1049,7 @@ function ClosingInvitation() {
     <section
       ref={sectionRef}
       id="future"
-      className="relative flex min-h-[calc(var(--viewport-height)*1.35)] items-end justify-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-40 md:pt-56 pb-44 md:pb-64 text-center"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-32 md:pt-44 pb-[clamp(6rem,12vh,12rem)] text-center"
     >
       {/* ───────── Cinematic environment ───────── */}
       <div
