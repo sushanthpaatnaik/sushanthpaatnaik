@@ -119,18 +119,23 @@ function ChapterMarker({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Active backdrop glow — soft documentary spotlight */}
+      {/* Active backdrop glow — soft documentary spotlight, breathes when active */}
       <motion.div
-        className="absolute -inset-x-3 -inset-y-2 rounded-md pointer-events-none"
+        className="absolute -inset-x-4 -inset-y-3 rounded-md pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 70% at 30% 50%, oklch(0.71 0.06 232 / 0.11), transparent 75%)",
+            "radial-gradient(ellipse 70% 80% at 28% 50%, oklch(0.71 0.06 232 / 0.16), transparent 75%)",
+          filter: "blur(2px)",
         }}
         initial={false}
         animate={{
-          opacity: active ? 1 : 0,
+          opacity: active ? [0.85, 1, 0.85] : 0,
         }}
-        transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
+        transition={{
+          opacity: active
+            ? { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0.9, ease: [0.19, 1, 0.22, 1] },
+        }}
       />
 
       {/* Dot indicator with animated active state */}
