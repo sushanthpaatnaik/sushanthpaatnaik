@@ -131,6 +131,7 @@ function SceneLayer({
 export default function AnimatedBackground({
   scenes,
   overlayStops,
+  phaseSource,
   children,
 }: AnimatedBackgroundProps) {
   const stages = scenes.length;
@@ -143,7 +144,15 @@ export default function AnimatedBackground({
     mass: 1.45,
   });
 
-  const phase = useTransform(progress, [0, 1], [0, stages - 1]);
+  // When a section-anchored phase is provided, smooth it the same way scroll
+  // progress is smoothed so the crossfade still breathes instead of snapping.
+  const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
+  const smoothedExternal = useSpring(phaseSource ?? rawPhase, {
+    stiffness: 28,
+    damping: 38,
+    mass: 0.9,
+  });
+  const phase = phaseSource ? smoothedExternal : rawPhase;
   const parallax = useTransform(progress, [0, 1], [-1, 1]);
 
   // A gentle global dim that breathes with progress — sits BENEATH each
