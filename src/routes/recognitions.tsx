@@ -906,13 +906,10 @@ function RecognitionsPage() {
                         src={m.image}
                         alt={m.title}
                         loading={i < 2 ? "eager" : "lazy"}
-                        className={`absolute inset-0 h-full w-full opacity-95 transition-all duration-[1400ms] ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
+                        className={`archival-image archival-image-hover absolute inset-0 h-full w-full opacity-95 ease-out group-hover:scale-[1.03] group-hover:opacity-100 ${
                           m.imageFit === "contain" ? "object-contain p-6 md:p-8" : "object-cover"
                         }`}
-                        style={{
-                          objectPosition: m.imageFocus ?? "center 30%",
-                          filter: "grayscale(0.10) contrast(1.05) saturate(0.92) brightness(0.98)",
-                        }}
+                        style={{ objectPosition: m.imageFocus ?? "center 30%" }}
                       />
                       <div
                         aria-hidden
