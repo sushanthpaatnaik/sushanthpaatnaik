@@ -527,7 +527,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-10 gap-y-8 px-6 md:grid-cols-[1.3fr_1fr] md:px-10"
+            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-10 gap-y-8 px-6 md:grid-cols-[1.4fr_1fr] md:px-10"
           >
             <div className="grid content-start gap-5">
               {/* TOP HERO FRAME.
@@ -571,21 +571,16 @@ export function Product3DModal({
                   <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
                   <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
                   <FilmGrain opacity={0.06} />
-                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2">
+                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-70 transition-opacity duration-500 group-hover:opacity-100">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75">
-                      Field Deployment · Preview
+                    <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/70">
+                      Field Deployment
                     </span>
                   </div>
-                  <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
-                    <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/82">
+                  <div className="pointer-events-none absolute bottom-5 left-5 z-10">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
                       {item.applicationCaption ?? `${item.title} · Deployment`}
                     </p>
-                    {!item.applicationVideo && (
-                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-foreground/45">
-                        Archive · Field capture
-                      </p>
-                    )}
                   </div>
                 </div>
               ) : (
@@ -619,12 +614,12 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-[1.2fr_1fr] gap-5">
+              <div className="grid grid-cols-[1.35fr_1fr] gap-5">
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
                 {item.largeApplicationFrame ? (
-                  <div className="group relative aspect-[1.3/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
@@ -700,7 +695,7 @@ export function Product3DModal({
                 )}
 
                 {/* Optical / studio note */}
-                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] p-4">
+                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
                   <div
                     aria-hidden
                     className="absolute inset-0"
@@ -709,12 +704,12 @@ export function Product3DModal({
                         "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
                     }}
                   />
-                  <div className="relative z-10 flex h-full flex-col justify-between gap-4">
+                  <div className="relative z-10 flex h-full flex-col justify-between gap-5">
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-accent/75">
+                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-accent/75">
                         {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
                       </p>
-                      <p className="mt-2 text-[12.5px] leading-relaxed text-foreground/72">
+                      <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
                         {item.largeApplicationFrame
                           ? "Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments."
                           : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
@@ -773,7 +768,7 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative aspect-[5/6] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative aspect-[6/7] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
@@ -803,7 +798,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, y: 8, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[4%] py-[3%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    className="absolute inset-0 h-full w-full object-contain px-[3%] py-[2.5%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{
                       filter:
                         "drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06))",
