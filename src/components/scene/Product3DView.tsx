@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
-import LatticeField from "./LatticeField";
+
 
 /**
  * Faux-3D product view.
@@ -153,16 +153,21 @@ export function Product3DModal({
     state.rx = 6;
 
     const apply = () => {
+      // Clamp Y so a flat cutout never rotates past edge-on (which would mirror the label).
+      state.ry = Math.max(-32, Math.min(32, state.ry));
       stage.style.transform = `perspective(1400px) rotateX(${state.rx.toFixed(2)}deg) rotateY(${state.ry.toFixed(2)}deg)`;
     };
     const loop = () => {
       if (!state.down) {
         state.ry += state.vy;
-        state.vy *= 0.96;
-        // gentle auto-spin when idle
-        if (Math.abs(state.vy) < 0.02) state.ry += 0.08;
+        state.vy *= 0.94;
+        // gentle auto-sway when idle, bouncing within clamp
+        if (Math.abs(state.vy) < 0.02) {
+          state.ry += Math.sin(Date.now() / 1400) * 0.12;
+        }
         apply();
       }
+
       raf = requestAnimationFrame(loop);
     };
     const onDown = (e: PointerEvent) => {
@@ -252,24 +257,23 @@ export function Product3DModal({
           >
             {/* Stage — flat frame; only the product inside rotates */}
             <div
-              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.006_245)]"
+              className="relative aspect-square w-full select-none touch-none overflow-hidden rounded-sm border border-foreground/[0.08] bg-white"
               style={{ perspective: "1600px" }}
             >
-              <LatticeField intensity={0.05} className="mix-blend-screen" />
-
               {/* Floor shadow — anchors the product in space */}
               <div
                 aria-hidden
-                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-70 blur-2xl"
-                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.75), transparent 70%)" }}
+                className="absolute bottom-[10%] left-1/2 h-6 w-[60%] -translate-x-1/2 rounded-[50%] opacity-40 blur-2xl"
+                style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.6), transparent 70%)" }}
               />
 
-              {/* Back rim glow */}
+              {/* Soft studio vignette */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-[18%] rounded-full opacity-50 blur-3xl"
-                style={{ background: "radial-gradient(circle, oklch(0.6 0.12 220 / 0.35), transparent 65%)" }}
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(ellipse at 50% 35%, transparent 55%, oklch(0 0 0 / 0.06) 100%)" }}
               />
+
 
               <div
                 ref={stageRef}
