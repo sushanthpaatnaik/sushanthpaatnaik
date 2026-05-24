@@ -296,17 +296,6 @@
       brightness(0.97)
       sepia(0.02);
   }
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(
-      ellipse 110% 80% at 50% 50%,
-      transparent 55%,
-      oklch(0.02 0.004 232 / 0.42) 100%
-    );
-    mix-blend-mode: multiply;
-  }
 
 
 
