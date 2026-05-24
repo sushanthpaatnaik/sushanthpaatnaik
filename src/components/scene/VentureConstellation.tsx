@@ -54,7 +54,7 @@ export default function VentureConstellation({
     <section className="viewport-section px-5 sm:px-6 pt-32 pb-20 md:px-20 md:py-24 pointer-events-auto">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-12 md:gap-12">
         <MotionReveal className="self-start md:col-span-4 md:sticky md:top-32 render-stable">
-          <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/80">{eyebrow}</p>
+          <p className="mb-4 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-foreground/55">{eyebrow}</p>
           <h3 className="font-display text-[clamp(2rem,8vw,3.25rem)] leading-[1.05] tracking-[-0.03em] text-gradient md:text-5xl">
             {title}
           </h3>

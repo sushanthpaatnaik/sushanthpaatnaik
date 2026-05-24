@@ -120,7 +120,7 @@ export default function CinematicPageShell({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
-              className="text-[10px] uppercase tracking-[0.45em] text-primary/75"
+              className="text-[10px] uppercase tracking-[0.45em] text-foreground/55"
             >
               {eyebrow}
             </motion.p>
