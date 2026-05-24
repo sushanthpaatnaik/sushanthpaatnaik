@@ -198,7 +198,9 @@ function Index() {
       >
         <Nav />
         <HUD scrollProgress={scrollProgress} />
-        <ScrollSections />
+        <main id="main">
+          <ScrollSections />
+        </main>
       </div>
     </div>
   );
