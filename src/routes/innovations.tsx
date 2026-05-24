@@ -259,11 +259,11 @@ function InnovationsPage() {
                 </span>
               </header>
 
-              {/* Hero cards — large, with lattice */}
+              {/* Hero cards — large, with 3D specimen */}
               {heroes.length > 0 && (
                 <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                   {heroes.map((it) => (
-                    <HeroCard key={it.title} item={it} />
+                    <HeroCard key={it.title} item={it} onOpen={() => openItem(it)} />
                   ))}
                 </div>
               )}
@@ -272,7 +272,7 @@ function InnovationsPage() {
               {rest.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
                   {rest.map((it) => (
-                    <CompactCard key={it.title} item={it} />
+                    <CompactCard key={it.title} item={it} onOpen={() => openItem(it)} />
                   ))}
                 </div>
               )}
