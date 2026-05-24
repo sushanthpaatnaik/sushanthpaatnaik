@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Nav from "./Nav";
 import AmbientAtmosphere from "./AmbientAtmosphere";
 import CursorAura from "./CursorAura";
+import SignatureMotif from "./SignatureMotif";
 
 interface CinematicPageShellProps {
   eyebrow: string;
