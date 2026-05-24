@@ -1,20 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useRef, useCallback, useEffect, useState } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
+import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
+import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
+import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
+import CursorAura from "@/components/scene/CursorAura";
 import { useLenis } from "@/components/scene/useLenis";
-import founderPresence from "@/assets/founder-editorial.webp";
-
-// Heavy cinematic background layers — code-split so the initial JS bundle
-// only ships text/nav/scroll logic. These mount after first paint via
-// requestIdleCallback so the hero copy is interactive immediately.
-const AtmosphereLayer    = lazy(() => import("@/components/scene/AtmosphereLayer"));
-const AmbientAtmosphere  = lazy(() => import("@/components/scene/AmbientAtmosphere"));
-const OrbitalTelemetry   = lazy(() => import("@/components/scene/OrbitalTelemetry"));
-const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumetric"));
-const CursorAura         = lazy(() => import("@/components/scene/CursorAura"));
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -34,26 +28,18 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: "/" },
     ],
-    links: [
-      { rel: "canonical", href: "/" },
-      // Preload the above-the-fold founder portrait used in Hero + Founder scenes
-      { rel: "preload", as: "image", href: founderPresence, fetchPriority: "high" },
-    ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
-
 });
 
 function Index() {
-  const pageScrollProgress = useRef(0);
-  const scrollYRef = useRef(0);
+  const scrollProgress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
-  const [scenesReady, setScenesReady] = useState(false);
-  const [isLowPower, setIsLowPower] = useState(false);
+  const [entered, setEntered] = useState(false);
 
-  const handleScroll = useCallback((p: number, scrollY: number) => {
-    pageScrollProgress.current = p;
-    scrollYRef.current = scrollY;
+  const handleScroll = useCallback((p: number) => {
+    scrollProgress.current = p;
   }, []);
 
   const lenisRef = useLenis(handleScroll);
@@ -136,38 +122,10 @@ function Index() {
     };
   }, [lenisRef]);
 
-  // Detect low-power / mobile clients once.
+  // Reveal main content after loader
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const coarse = window.matchMedia?.("(pointer: coarse)").matches ?? false;
-    const narrow = window.innerWidth < 768;
-    const cores = (navigator as Navigator & { hardwareConcurrency?: number }).hardwareConcurrency ?? 8;
-    setIsLowPower(coarse || narrow || cores <= 4);
-  }, []);
-
-  // (scroll-driven scene progress is now derived internally by AnimatedBackground)
-
-
-  // Mount heavy background scenes after first paint — uses requestIdleCallback
-  // when available so hero typography is interactive immediately.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const idle =
-      (window as Window & {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      }).requestIdleCallback;
-    let handle: number | ReturnType<typeof setTimeout>;
-    if (idle) {
-      handle = idle(() => setScenesReady(true), { timeout: 600 });
-    } else {
-      handle = setTimeout(() => setScenesReady(true), 240);
-    }
-    return () => {
-      const cancel =
-        (window as Window & { cancelIdleCallback?: (h: number) => void }).cancelIdleCallback;
-      if (typeof handle === "number" && cancel) cancel(handle);
-      else clearTimeout(handle as ReturnType<typeof setTimeout>);
-    };
+    const t = setTimeout(() => setEntered(true), 750);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -178,7 +136,6 @@ function Index() {
       targetY = (e.clientY / window.innerHeight) * 2 - 1;
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${e.clientX - 12}px, ${e.clientY - 12}px, 0)`;
-        cursorRef.current.style.opacity = "1";
       }
     };
     let raf = 0;
@@ -188,7 +145,7 @@ function Index() {
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
-    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousemove", onMove);
     return () => {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(raf);
@@ -197,34 +154,30 @@ function Index() {
 
   return (
     <div className="relative bg-background text-foreground noise">
-      {/* Non-blocking cinematic reveal — wipes away on first paint */}
       <Loader />
 
-      {/* Heavy cinematic background — lazy + deferred to idle */}
-      <Suspense fallback={null}>
-        {scenesReady && (
-          <>
-            <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
-              <AtmosphereLayer />
-            </div>
-            <GrapheneVolumetric scrollProgress={pageScrollProgress} mouse={mouse} />
-            <AmbientAtmosphere />
-            <OrbitalTelemetry />
-            {/* CursorAura is a desktop-only luxury — skip on coarse/mobile clients */}
-            {!isLowPower && <CursorAura />}
-          </>
-        )}
-      </Suspense>
+      {/* Sitewide cinematic atmosphere */}
+      <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
+        <AtmosphereLayer />
+      </div>
 
-      {/* Custom cursor — hidden until first pointer movement to avoid stray top-left dot */}
+      {/* Volumetric graphene lattice */}
+      {entered && <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />}
+
+      {/* Sitewide ambient atmosphere */}
+      {entered && <AmbientAtmosphere />}
+
+      {/* Cursor aura */}
+      {entered && <CursorAura />}
+
+      {/* Custom cursor */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block opacity-0 transition-opacity duration-300"
+        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block"
       />
 
-      {/* Primary content renders immediately — no longer gated on heavy scene load */}
       <Nav />
-      <HUD scrollProgress={pageScrollProgress} />
+      <HUD scrollProgress={scrollProgress} />
       <main id="main">
         <ScrollSections />
       </main>
