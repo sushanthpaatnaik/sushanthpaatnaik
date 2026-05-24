@@ -584,7 +584,7 @@ export function Product3DModal({
                   </div>
                 </div>
               ) : (
-                <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+                <div className="relative aspect-[5/6] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
                   <motion.img
                     key={item.img}
                     src={item.img}
