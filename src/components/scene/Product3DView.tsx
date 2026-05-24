@@ -191,6 +191,9 @@ export interface Product3DModalData {
   img: string;
   detailImg?: string;
   stage: string;
+  specs?: { k: string; v: string; note: string }[];
+  positioning?: string;
+  applicationContext?: string[];
 }
 
 export function Product3DModal({
@@ -396,18 +399,56 @@ export function Product3DModal({
               </div>
 
               <p className="max-w-md text-[14.5px] leading-relaxed text-foreground/80">
-                {item.body}
+                {item.positioning || item.body}
               </p>
 
-              <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
-                <div className="bg-background/50 px-4 py-4">
-                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
-                    Performance
-                  </p>
-                  <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
-                    {item.metric}
-                  </p>
+              {item.specs && (
+                <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
+                  {item.specs.map((spec) => (
+                    <div key={spec.k} className="bg-background/50 px-4 py-4">
+                      <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                        {spec.k}
+                      </p>
+                      <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
+                        {spec.v}
+                      </p>
+                      <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.24em] text-foreground/45">
+                        {spec.note}
+                      </p>
+                    </div>
+                  ))}
                 </div>
+              )}
+
+              {item.applicationContext && (
+                <div className="overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-4 py-4">
+                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                    Application Context
+                  </p>
+                  <ul className="mt-2.5 space-y-1.5">
+                    {item.applicationContext.map((ctx) => (
+                      <li key={ctx} className="flex items-center gap-2">
+                        <span className="h-1 w-1 rounded-full bg-accent/60" />
+                        <span className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-foreground/65">
+                          {ctx}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
+                {!item.specs && (
+                  <div className="bg-background/50 px-4 py-4">
+                    <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                      Performance
+                    </p>
+                    <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
+                      {item.metric}
+                    </p>
+                  </div>
+                )}
                 <div className="bg-background/50 px-4 py-4">
                   <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
                     Program Status
