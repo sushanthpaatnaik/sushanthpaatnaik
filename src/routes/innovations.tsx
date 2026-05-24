@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
+import InnovationsCanvasHost from "@/components/innovations/InnovationsCanvas";
+import InnovationCard3D, { type InnovationItem } from "@/components/innovations/InnovationCard3D";
+import InnovationModal from "@/components/innovations/InnovationModal";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -53,16 +56,7 @@ export const Route = createFileRoute("/innovations")({
 });
 
 type Stage = "Commercial" | "Pilot" | "R&D";
-type Item = {
-  title: string;
-  stage: Stage;
-  metric: string;
-  body: string;
-  img: string;
-  domain: string;
-  status: string;
-  featured?: boolean;
-};
+type Item = InnovationItem;
 
 const items: Item[] = [
   { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, featured: true },
