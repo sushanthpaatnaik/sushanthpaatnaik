@@ -153,16 +153,21 @@ export function Product3DModal({
     state.rx = 6;
 
     const apply = () => {
+      // Clamp Y so a flat cutout never rotates past edge-on (which would mirror the label).
+      state.ry = Math.max(-32, Math.min(32, state.ry));
       stage.style.transform = `perspective(1400px) rotateX(${state.rx.toFixed(2)}deg) rotateY(${state.ry.toFixed(2)}deg)`;
     };
     const loop = () => {
       if (!state.down) {
         state.ry += state.vy;
-        state.vy *= 0.96;
-        // gentle auto-spin when idle
-        if (Math.abs(state.vy) < 0.02) state.ry += 0.08;
+        state.vy *= 0.94;
+        // gentle auto-sway when idle, bouncing within clamp
+        if (Math.abs(state.vy) < 0.02) {
+          state.ry += Math.sin(Date.now() / 1400) * 0.12;
+        }
         apply();
       }
+
       raf = requestAnimationFrame(loop);
     };
     const onDown = (e: PointerEvent) => {
