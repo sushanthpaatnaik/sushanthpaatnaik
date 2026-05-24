@@ -201,6 +201,7 @@ function HeroVideo({
   const ref = useRef<HTMLVideoElement | null>(null);
   const [muted, setMuted] = useState(true);
   const [hintVisible, setHintVisible] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Reveal the "Sound Available" hint after a short delay, only while muted.
   useEffect(() => {
@@ -212,6 +213,20 @@ function HeroVideo({
     return () => window.clearTimeout(t);
   }, [muted]);
 
+  // Track native fullscreen changes so the icon stays in sync.
+  useEffect(() => {
+    const onChange = () => {
+      const el = document.fullscreenElement || (document as any).webkitFullscreenElement;
+      setIsFullscreen(el === ref.current);
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    document.addEventListener("webkitfullscreenchange", onChange as EventListener);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      document.removeEventListener("webkitfullscreenchange", onChange as EventListener);
+    };
+  }, []);
+
   const rampVolume = (target: number, durationMs = 650) => {
     const el = ref.current;
     if (!el) return;
@@ -219,7 +234,6 @@ function HeroVideo({
     const t0 = performance.now();
     const step = (now: number) => {
       const k = Math.min(1, (now - t0) / durationMs);
-      // easeOutCubic
       const eased = 1 - Math.pow(1 - k, 3);
       el.volume = start + (target - start) * eased;
       if (k < 1) requestAnimationFrame(step);
@@ -233,7 +247,6 @@ function HeroVideo({
     el.muted = false;
     el.volume = 0;
     setMuted(false);
-    // Re-issue play in case the unmute requires a fresh user-gesture play.
     el.play().catch(() => {});
     rampVolume(1, 700);
   };
@@ -255,6 +268,35 @@ function HeroVideo({
     else disableSound();
   };
 
+  const toggleFullscreen = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const el = ref.current as (HTMLVideoElement & {
+      webkitEnterFullscreen?: () => void;
+      webkitRequestFullscreen?: () => Promise<void>;
+    }) | null;
+    if (!el) return;
+    const doc = document as Document & {
+      webkitFullscreenElement?: Element | null;
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+    const inFs = !!(document.fullscreenElement || doc.webkitFullscreenElement);
+    try {
+      if (inFs) {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (doc.webkitExitFullscreen) await doc.webkitExitFullscreen();
+      } else if (el.requestFullscreen) {
+        await el.requestFullscreen();
+      } else if (el.webkitRequestFullscreen) {
+        await el.webkitRequestFullscreen();
+      } else if (el.webkitEnterFullscreen) {
+        // iOS Safari fallback — native video fullscreen.
+        el.webkitEnterFullscreen();
+      }
+    } catch {
+      // Silent fail — playback continues inline.
+    }
+  };
+
   return (
     <>
       <motion.video
@@ -274,6 +316,22 @@ function HeroVideo({
         className={`cursor-pointer ${className ?? ""}`}
         style={style}
       />
+      {/* Full View — minimal luxury fullscreen control */}
+      <button
+        type="button"
+        onClick={toggleFullscreen}
+        aria-label={isFullscreen ? "Exit full view" : "Open full view"}
+        className="group/fs absolute right-4 top-4 z-20 flex items-center gap-2 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] px-2.5 py-1.5 opacity-0 backdrop-blur-md transition-all duration-300 hover:border-accent/40 hover:bg-[oklch(0.06_0.01_245/0.85)] group-hover:opacity-100 focus-visible:opacity-100"
+      >
+        {isFullscreen ? (
+          <Minimize2 className="h-3.5 w-3.5 text-accent/90" />
+        ) : (
+          <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" />
+        )}
+        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
+          {isFullscreen ? "Exit" : "Full View"}
+        </span>
+      </button>
       {/* Sound toggle — minimal amber/graphite control */}
       <button
         type="button"
