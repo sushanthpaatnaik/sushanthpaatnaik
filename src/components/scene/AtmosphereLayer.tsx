@@ -1,5 +1,6 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
+import { type MotionValue } from "framer-motion";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
 import sceneMaterial from "@/assets/story-03-material.webp";
@@ -105,9 +106,15 @@ const OVERLAY_STOPS = [
   0.23, // 07 Future
 ];
 
-export default function AtmosphereLayer() {
+export default function AtmosphereLayer({
+  progress,
+  phase,
+}: {
+  progress?: MotionValue<number>;
+  phase?: MotionValue<number>;
+}) {
   return (
-    <AnimatedBackground scenes={SCENES} overlayStops={OVERLAY_STOPS}>
+    <AnimatedBackground scenes={SCENES} overlayStops={OVERLAY_STOPS} progress={progress} phase={phase}>
       {({ progress, phase }) => <ParticleField progress={progress} phase={phase} />}
     </AnimatedBackground>
   );
