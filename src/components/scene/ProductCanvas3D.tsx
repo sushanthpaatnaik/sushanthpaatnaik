@@ -1,21 +1,23 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useTexture, ContactShadows, OrbitControls } from "@react-three/drei";
+import {
+  useTexture,
+  ContactShadows,
+  OrbitControls,
+  Environment,
+} from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 /**
- * Real 3D product viewer using Three.js / R3F.
+ * Real 3D bottle product viewer.
  *
- * Renders a subtly curved plane textured with the original cutout PNG. The
- * label remains pixel-perfect (it's a texture), but the surface catches real
- * light, has real depth, and rotates with true geometry — no AI re-render,
- * no label drift.
- *
- * Two modes:
- *   - "card": small, lazy-mounted via IntersectionObserver, gentle autorotate,
- *     responds to pointer with a slight turn.
- *   - "modal": full inspection chamber, drag-to-rotate via OrbitControls,
- *     contact shadow, env-style rim lighting.
+ * Instead of a tilted plane, we reconstruct an actual bottle:
+ *   - LatheGeometry body (real silhouette: base → body → shoulder → neck)
+ *   - Cylinder cap with bevel ring
+ *   - A curved label cylinder (thetaLength ~ 210°) wraps the product
+ *     cutout texture around the front of the bottle as a real sticker.
+ *   - PBR materials + HDR Environment → physically correct reflections
+ *   - OrbitControls drag-to-rotate with damping
  */
 
 function useReducedMotion() {
@@ -31,98 +33,182 @@ function useReducedMotion() {
   return r;
 }
 
-/** Curved label plane — a PlaneGeometry warped into a cylindrical arc. */
-function CurvedLabel({
+/* ---------- Bottle silhouette via LatheGeometry ---------- */
+function useBottleProfile(featured: boolean) {
+  return useMemo(() => {
+    // (x = radius, y = height). Bottom at y=0, top at top of cap.
+    const R = featured ? 0.78 : 0.7; // body radius
+    const neckR = R * 0.42;
+    const capR = R * 0.5;
+    const bodyH = featured ? 2.4 : 2.2;
+    const shoulderH = 0.35;
+    const neckH = 0.32;
+    const capH = 0.42;
+
+    const profile: [number, number][] = [
+      [0.001, 0],
+      [R * 0.55, 0],
+      [R * 0.92, 0.04],
+      [R, 0.12],
+      [R, bodyH],
+      [R * 0.98, bodyH + 0.08],
+      [R * 0.85, bodyH + shoulderH * 0.55],
+      [neckR * 1.15, bodyH + shoulderH],
+      [neckR, bodyH + shoulderH + 0.05],
+      [neckR, bodyH + shoulderH + neckH],
+      [capR, bodyH + shoulderH + neckH + 0.02],
+      [capR, bodyH + shoulderH + neckH + capH - 0.05],
+      [capR * 0.92, bodyH + shoulderH + neckH + capH],
+      [0.001, bodyH + shoulderH + neckH + capH],
+    ];
+    const points = profile.map(([x, y]) => new THREE.Vector2(x, y));
+    const totalH = bodyH + shoulderH + neckH + capH;
+    return {
+      points,
+      R,
+      bodyH,
+      capStartY: bodyH + shoulderH + neckH,
+      totalH,
+    };
+  }, [featured]);
+}
+
+/* ---------- The bottle ---------- */
+function Bottle({
   src,
   autoSpeed = 0.18,
   cursorPull = 0,
   restY = 0.32,
   featured = false,
+  interactive = false,
 }: {
   src: string;
   autoSpeed?: number;
   cursorPull?: number;
   restY?: number;
   featured?: boolean;
+  interactive?: boolean;
 }) {
-  const texture = useTexture(src);
+  const label = useTexture(src);
   useEffect(() => {
-    texture.anisotropy = 16;
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.needsUpdate = true;
-  }, [texture]);
+    label.anisotropy = 16;
+    label.colorSpace = THREE.SRGBColorSpace;
+    label.wrapS = THREE.ClampToEdgeWrapping;
+    label.wrapT = THREE.ClampToEdgeWrapping;
+    label.needsUpdate = true;
+  }, [label]);
+
+  const { points, R, bodyH, totalH } = useBottleProfile(featured);
+
+  const bodyGeo = useMemo(
+    () => new THREE.LatheGeometry(points, 96),
+    [points],
+  );
+
+  // Label arc: a partial open cylinder wrapping the front ~210° of the body
+  const labelArc = Math.PI * 1.17; // ~210°
+  const labelHeight = bodyH * 0.78;
+  const labelY = bodyH * 0.45;
+  const labelGeo = useMemo(() => {
+    const g = new THREE.CylinderGeometry(
+      R * 1.005,
+      R * 1.005,
+      labelHeight,
+      96,
+      1,
+      true,
+      -labelArc / 2,
+      labelArc,
+    );
+    return g;
+  }, [R, labelHeight, labelArc]);
+
+  // Alpha mask: fade label edges so the wrap looks like a real sticker
+  // (no harsh seam where the print stops). Built once per session.
+  const alphaMap = useMemo(() => {
+    const w = 256;
+    const h = 64;
+    const c = document.createElement("canvas");
+    c.width = w;
+    c.height = h;
+    const ctx = c.getContext("2d")!;
+    const grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, "#000");
+    grad.addColorStop(0.08, "#fff");
+    grad.addColorStop(0.92, "#fff");
+    grad.addColorStop(1, "#000");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    const t = new THREE.CanvasTexture(c);
+    t.needsUpdate = true;
+    return t;
+  }, []);
 
   const group = useRef<THREE.Group>(null);
   const t = useRef(Math.random() * 10);
-
-  const geometry = useMemo(() => {
-    // Aspect approximates bottle silhouette (1 : 1.4 w:h).
-    const w = featured ? 2.05 : 1.85;
-    const h = featured ? 2.85 : 2.6;
-    const geo = new THREE.PlaneGeometry(w, h, 64, 4);
-    const pos = geo.attributes.position as THREE.BufferAttribute;
-    const curve = 0.42;
-    const halfW = w / 2;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i);
-      // Cosine arc: deepest at center, flat at edges (cylinder front face).
-      const z = -curve * (1 - Math.cos((x / halfW) * (Math.PI / 2)));
-      pos.setZ(i, z);
-    }
-    pos.needsUpdate = true;
-    geo.computeVertexNormals();
-    return geo;
-  }, [featured]);
-
   useFrame((_, dt) => {
     const g = group.current;
-    if (!g) return;
+    if (!g || interactive) return;
     t.current += dt;
-    const sway = Math.sin(t.current * autoSpeed) * 0.55; // ±31°
+    const sway = Math.sin(t.current * autoSpeed) * 0.55;
     const target = restY + sway + cursorPull;
     g.rotation.y += (target - g.rotation.y) * 0.06;
   });
 
+  // Center the bottle vertically on origin
+  const yOffset = -totalH / 2;
+
   return (
-    <group ref={group} rotation={[0, restY, 0]}>
-      <mesh geometry={geometry} castShadow>
-        <meshStandardMaterial
-          map={texture}
-          transparent
-          alphaTest={0.04}
-          metalness={0.18}
-          roughness={0.62}
+    <group ref={group} rotation={[0, interactive ? 0 : restY, 0]} position={[0, yOffset, 0]}>
+      {/* Bottle body — dark graphite PBR plastic */}
+      <mesh geometry={bodyGeo} castShadow receiveShadow>
+        <meshPhysicalMaterial
+          color="#1a1d22"
+          metalness={0.35}
+          roughness={0.42}
+          clearcoat={0.55}
+          clearcoatRoughness={0.28}
+          envMapIntensity={1.1}
           side={THREE.DoubleSide}
-          envMapIntensity={0.6}
+        />
+      </mesh>
+
+      {/* Label sticker — wraps around the front */}
+      <mesh geometry={labelGeo} position={[0, labelY, 0]} rotation={[0, Math.PI, 0]}>
+        <meshPhysicalMaterial
+          map={label}
+          alphaMap={alphaMap}
+          transparent
+          metalness={0.12}
+          roughness={0.55}
+          clearcoat={0.35}
+          clearcoatRoughness={0.42}
+          envMapIntensity={0.75}
+          side={THREE.DoubleSide}
+          depthWrite={false}
         />
       </mesh>
     </group>
   );
 }
 
-/** Cinematic studio lighting rig — dark graphite, titanium rim. */
+/* ---------- Lighting rig ---------- */
 function StudioLights({ featured = false }: { featured?: boolean }) {
   return (
     <>
-      <ambientLight intensity={0.32} color="#a8b6c8" />
-      {/* Key light — cool, upper-left */}
+      <ambientLight intensity={0.18} color="#8da4bf" />
       <directionalLight
         position={[-3.2, 3.4, 4]}
-        intensity={featured ? 1.4 : 1.15}
+        intensity={featured ? 1.3 : 1.05}
         color="#dceaff"
+        castShadow
       />
-      {/* Rim light — warm titanium, behind-right */}
       <directionalLight
-        position={[3.5, 1.2, -3]}
-        intensity={featured ? 1.1 : 0.85}
-        color="#ffd9a8"
+        position={[3.5, 1.2, -2.5]}
+        intensity={featured ? 1.0 : 0.8}
+        color="#ffd4a0"
       />
-      {/* Fill — soft, low */}
-      <directionalLight
-        position={[0, -2.5, 2.5]}
-        intensity={0.35}
-        color="#7fa0c8"
-      />
+      <pointLight position={[0, -2, 3]} intensity={0.4} color="#5fa0d0" />
     </>
   );
 }
@@ -169,7 +255,6 @@ export function ProductCanvas3D({ src, alt, featured = false, className = "" }: 
       onPointerLeave={onLeave}
       aria-label={alt}
     >
-      {/* Backplate atmosphere — studio depth */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -178,39 +263,31 @@ export function ProductCanvas3D({ src, alt, featured = false, className = "" }: 
             "radial-gradient(ellipse 75% 65% at 50% 45%, oklch(0.16 0.018 232 / 0.55), transparent 75%)",
         }}
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-[15%] rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(ellipse, oklch(0.55 0.10 220 / 0.18), transparent 65%)",
-        }}
-      />
-
       {inView && (
         <Canvas
           dpr={[1, 2]}
-          camera={{ position: [0, 0, 5.2], fov: 28 }}
+          camera={{ position: [0, 0.2, 5.6], fov: 26 }}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           frameloop={reduced ? "demand" : "always"}
+          shadows
           style={{ background: "transparent" }}
         >
           <Suspense fallback={null}>
             <StudioLights featured={featured} />
-            <CurvedLabel
+            <Environment preset="warehouse" environmentIntensity={0.45} />
+            <Bottle
               src={src}
               autoSpeed={reduced ? 0 : featured ? 0.16 : 0.22}
               cursorPull={pull}
               restY={0.28}
               featured={featured}
             />
-            {/* Ground contact shadow — sells presence */}
             <ContactShadows
-              position={[0, featured ? -1.55 : -1.4, 0]}
-              opacity={0.55}
-              scale={4}
-              blur={2.6}
-              far={2}
+              position={[0, featured ? -1.7 : -1.55, 0]}
+              opacity={0.6}
+              scale={5}
+              blur={2.8}
+              far={2.5}
               color="#000000"
             />
           </Suspense>
@@ -233,26 +310,22 @@ export function ProductCanvas3DModal({
   return (
     <Canvas
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 5], fov: 30 }}
+      camera={{ position: [0, 0.2, 5.2], fov: 28 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      shadows
       style={{ background: "transparent" }}
       aria-label={alt}
     >
       <Suspense fallback={null}>
         <StudioLights featured={featured} />
-        <CurvedLabel
-          src={src}
-          autoSpeed={0}
-          cursorPull={0}
-          restY={0}
-          featured={featured}
-        />
+        <Environment preset="warehouse" environmentIntensity={0.55} />
+        <Bottle src={src} restY={0} featured={featured} interactive />
         <ContactShadows
-          position={[0, -1.6, 0]}
+          position={[0, -1.75, 0]}
           opacity={0.7}
-          scale={5}
-          blur={2.8}
-          far={2.5}
+          scale={6}
+          blur={3}
+          far={3}
           color="#000000"
         />
         <OrbitControls
@@ -260,7 +333,7 @@ export function ProductCanvas3DModal({
           enableZoom={false}
           minPolarAngle={Math.PI / 2.6}
           maxPolarAngle={Math.PI / 1.7}
-          rotateSpeed={0.6}
+          rotateSpeed={0.7}
           dampingFactor={0.08}
           enableDamping
         />
