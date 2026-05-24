@@ -1228,7 +1228,7 @@ function ClosingInvitation() {
 
       {/* ───────── Foreground typography ───────── */}
       <div className="relative z-10 flex w-full justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
-        <div className="pointer-events-auto flex min-h-[calc(var(--viewport-height)-clamp(12rem,18vh,16rem))] w-full max-w-3xl flex-col justify-between gap-12 md:gap-16">
+        <div className="pointer-events-auto flex w-full max-w-3xl flex-col gap-16 md:gap-24">
           <div>
             <MotionReveal>
               <p className="mb-8 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
