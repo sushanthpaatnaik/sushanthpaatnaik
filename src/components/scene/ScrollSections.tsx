@@ -1020,17 +1020,8 @@ function ClosingInvitation() {
     const loop = () => {
       cx += (tx - cx) * 0.05;
       cy += (ty - cy) * 0.05;
-      const planet = planetRef.current;
-      const orbA = orbitARef.current;
-      const orbB = orbitBRef.current;
       const stars = starsRef.current;
       const bloom = bloomRef.current;
-      if (planet)
-        planet.style.transform = `translate3d(${cx * -14}px, ${cy * -10}px, 0)`;
-      if (orbA)
-        orbA.style.transform = `translate3d(${cx * 22}px, ${cy * 14}px, 0)`;
-      if (orbB)
-        orbB.style.transform = `translate3d(${cx * -18}px, ${cy * -12}px, 0)`;
       if (stars)
         stars.style.transform = `translate3d(${cx * 8}px, ${cy * 6}px, 0)`;
       if (bloom && active)
@@ -1049,7 +1040,7 @@ function ClosingInvitation() {
     <section
       ref={sectionRef}
       id="future"
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-32 md:pt-44 pb-[clamp(6rem,12vh,12rem)] text-center"
+      className="relative isolate flex min-h-[100svh] items-stretch justify-center overflow-visible px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-[clamp(7rem,12vh,10rem)] md:pt-[clamp(8rem,14vh,12rem)] pb-[clamp(8rem,16vh,14rem)] text-center"
     >
       {/* ───────── Cinematic environment ───────── */}
       <div
@@ -1236,7 +1227,7 @@ function ClosingInvitation() {
       </div>
 
       {/* ───────── Foreground typography ───────── */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center render-stable">
+      <div className="relative z-10 flex w-full flex-col items-center justify-center py-[clamp(1rem,3vh,2.25rem)] render-stable">
         <div className="max-w-3xl pointer-events-auto">
           <MotionReveal>
             <p className="mb-10 md:mb-14 text-[10px] uppercase tracking-[0.46em] md:tracking-[0.55em] text-muted-foreground/80">
