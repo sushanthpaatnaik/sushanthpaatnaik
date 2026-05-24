@@ -194,6 +194,7 @@ function InnovationsPage() {
       body: it.body,
       img: it.cutout,
       detailImg: it.application,
+      applicationVideo: it.title === "Graphacrete" ? "/videos/graphacrete.mp4" : undefined,
       stage: it.stage,
       specs: it.specs,
       positioning: it.positioning,
