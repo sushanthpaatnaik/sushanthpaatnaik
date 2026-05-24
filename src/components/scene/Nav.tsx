@@ -5,12 +5,10 @@ import spLogo from "@/assets/sp-logo.svg";
 
 const navLinks = [
   { to: "/about", label: "About" },
-  { to: "/numbers", label: "Numbers" },
-  { to: "/recognitions", label: "Recognitions" },
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
+  { to: "/recognitions", label: "Recognitions" },
   { to: "/early-works", label: "Early Works" },
-  
   { to: "/voices", label: "Voices" },
   { to: "/essays", label: "In His Words" },
   { to: "/engage", label: "Engage" },
