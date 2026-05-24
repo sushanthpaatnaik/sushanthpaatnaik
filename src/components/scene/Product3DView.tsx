@@ -191,6 +191,9 @@ export interface Product3DModalData {
   img: string;
   detailImg?: string;
   stage: string;
+  specs?: { k: string; v: string; note: string }[];
+  positioning?: string;
+  applicationContext?: string[];
 }
 
 export function Product3DModal({
