@@ -2,6 +2,7 @@ import { useRef, useEffect, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
+import { HOME_CHAPTER_COUNT } from "./homeChapters";
 import founderPresence from "@/assets/founder-editorial.webp";
 import inHisWordsBackdrop from "@/assets/scene-in-his-words-portrait.png";
 import scaleValidationBackdrop from "@/assets/scene-scale-validation.webp";
@@ -977,7 +978,7 @@ function ClosingInvitation() {
   // Section-scoped scroll progress drives a "Earth emerges from darkness" reveal.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end end"],
+    offset: ["start end", "end start"],
   });
   const earthRise = useSpring(useTransform(scrollYProgress, [0, 1], [80, 0]), {
     stiffness: 60,
@@ -1301,7 +1302,7 @@ function ClosingInvitation() {
 
 
 export default function ScrollSections() {
-  const totalChapters = 8;
+  const totalChapters = HOME_CHAPTER_COUNT;
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
@@ -1313,10 +1314,10 @@ export default function ScrollSections() {
       <FounderScene />
 
       {/* 03 — Innovation philosophy */}
-      <StorySection chapter={carbonChapter} index={3} total={totalChapters} />
+      <StorySection chapter={carbonChapter} index={2} total={totalChapters} />
 
       {/* 04 — Industrial future vision */}
-      <StorySection chapter={industrialChapter} index={4} total={totalChapters} />
+      <StorySection chapter={industrialChapter} index={3} total={totalChapters} />
 
       {/* 05 — Recognition signal */}
       <RecognitionSignal />

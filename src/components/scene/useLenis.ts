@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
-export function useLenis(onScroll?: (progress: number) => void) {
+export function useLenis(onScroll?: (progress: number, scrollY: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -18,8 +18,8 @@ export function useLenis(onScroll?: (progress: number) => void) {
 
     lenisRef.current = lenis;
 
-    lenis.on("scroll", ({ progress }: { progress: number }) => {
-      onScroll?.(progress);
+    lenis.on("scroll", ({ progress, scroll }: { progress: number; scroll: number }) => {
+      onScroll?.(progress, scroll);
     });
 
     let rafId = 0;
