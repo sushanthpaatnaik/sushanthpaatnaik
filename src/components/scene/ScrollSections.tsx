@@ -489,7 +489,7 @@ function ClosingInvitation() {
   return (
     <section
       id="future"
-      className="relative min-h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center pt-40 md:pt-52 pb-24 md:pb-32 flex flex-col items-center justify-center overflow-hidden"
+      className="relative h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center py-20 md:py-24 flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
