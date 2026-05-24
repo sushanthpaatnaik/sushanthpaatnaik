@@ -5,6 +5,7 @@ import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import { useLenis } from "@/components/scene/useLenis";
+import founderPresence from "@/assets/founder-editorial.webp";
 
 // Heavy cinematic background layers — code-split so the initial JS bundle
 // only ships text/nav/scroll logic. These mount after first paint via
