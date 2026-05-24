@@ -254,13 +254,15 @@ function MotionReveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.2, once: false });
+  const prefersReducedMotion = useReducedMotion();
+  const inView = useInView(ref, { amount: 0.15, once: true, margin: "0px 0px -10% 0px" });
+  const shouldAnimate = inView || prefersReducedMotion;
   return (
     <motion.div
       ref={ref}
-      initial={false}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-      transition={{ duration: 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 26 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: 1.1, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
@@ -513,16 +515,18 @@ function ScaleValidationScene() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
-  const plateScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.02, 1.08]);
-  const plateOpacity = useTransform(scrollYProgress, [0, 0.2, 0.82, 1], [0, 0.5, 0.5, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  const plateScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1.02, 1.06]);
+  // Resolve fully out by 70% of section progress so ClosingInvitation owns
+  // the final viewport entirely (no opacity fight on the 07 → 08 seam).
+  const plateOpacity = useTransform(scrollYProgress, [0, 0.22, 0.62, 0.78], [0, 0.5, 0.5, 0]);
   const latticeRot = useTransform(scrollYProgress, [0, 1], [-2, 2]);
 
   return (
     <section
       ref={sectionRef}
       id="scale-validation"
-      className="relative min-h-[calc(var(--viewport-height)*1.2)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
+      className="relative min-h-[calc(var(--viewport-height)*1.0)] px-5 sm:px-6 lg:pl-32 xl:pl-36 py-24 md:py-32 overflow-hidden"
     >
       {/* ─── Atmospheric backdrop — industrial blueprint mood ─────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">

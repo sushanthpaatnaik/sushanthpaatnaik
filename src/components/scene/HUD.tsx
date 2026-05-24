@@ -9,19 +9,33 @@ export default function HUD({
 }: {
   scrollProgress: React.MutableRefObject<number>;
 }) {
-  const [p, setP] = useState(0);
+  const [idx, setIdx] = useState(0);
   const raf = useRef(0);
+  const lastIdx = useRef(-1);
 
   useEffect(() => {
     const loop = () => {
-      setP(scrollProgress.current);
+      const next = Math.min(
+        chapters.length - 1,
+        Math.floor(scrollProgress.current * chapters.length),
+      );
+      if (next !== lastIdx.current) {
+        lastIdx.current = next;
+        setIdx(next);
+      }
       raf.current = requestAnimationFrame(loop);
     };
     raf.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf.current);
+    const onVis = () => {
+      cancelAnimationFrame(raf.current);
+      if (!document.hidden) raf.current = requestAnimationFrame(loop);
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, [scrollProgress]);
-
-  const idx = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
 
   return (
     <>
