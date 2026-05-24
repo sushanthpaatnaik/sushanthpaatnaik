@@ -616,14 +616,14 @@ function ClosingInvitation() {
               className="pointer-events-none absolute -inset-x-12 -inset-y-3 -z-10"
               style={{
                 background:
-                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.24), transparent 76%)",
+                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.10), transparent 76%)",
                 filter: "blur(22px)",
               }}
             />
             <p
-              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70"
+              className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/30"
               style={{
-                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)",
+                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.5)",
               }}
             >
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
