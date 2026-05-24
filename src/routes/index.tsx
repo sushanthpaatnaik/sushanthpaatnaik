@@ -187,10 +187,10 @@ function Index() {
       {/* Hidden cinematic interaction — a faint cool aura that trails the cursor */}
       {entered && <CursorAura />}
 
-      {/* Custom cursor */}
+      {/* Custom cursor — hidden until first pointer movement to avoid stray top-left dot */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block"
+        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block opacity-0 transition-opacity duration-300"
       />
 
       <div
