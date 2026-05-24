@@ -6,6 +6,7 @@ import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import AtmosphereLayer from "@/components/scene/AtmosphereLayer";
 import AmbientAtmosphere from "@/components/scene/AmbientAtmosphere";
+import OrbitalTelemetry from "@/components/scene/OrbitalTelemetry";
 import GrapheneVolumetric from "@/components/scene/GrapheneVolumetric";
 import CursorAura from "@/components/scene/CursorAura";
 import { useLenis } from "@/components/scene/useLenis";
