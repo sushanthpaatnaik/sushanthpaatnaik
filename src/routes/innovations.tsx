@@ -432,7 +432,8 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-      className="group relative aspect-[4/3] overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)]"
+      onClick={onOpen}
+      className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] transition-colors duration-700 hover:border-accent/25"
     >
       <img
         src={item.img}
