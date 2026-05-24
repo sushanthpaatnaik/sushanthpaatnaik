@@ -609,7 +609,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.42}>
-          <div className="relative mt-14 inline-block">
+          <div className="relative mt-8 md:mt-10 inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span
               aria-hidden
