@@ -146,6 +146,7 @@ function Index() {
       targetY = (e.clientY / window.innerHeight) * 2 - 1;
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${e.clientX - 12}px, ${e.clientY - 12}px, 0)`;
+        cursorRef.current.style.opacity = "1";
       }
     };
     let raf = 0;
