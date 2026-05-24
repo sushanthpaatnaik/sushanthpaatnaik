@@ -756,7 +756,11 @@ function RecognitionsPage() {
                     }`}
                   >
                     <figure
-                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ${onLeft ? "md:mr-8" : "md:ml-8"}`}
+                      className={`relative overflow-hidden bg-[oklch(0.05_0.006_245)] aspect-[5/4] md:aspect-[5/4] ${onLeft ? "md:mr-8" : "md:ml-8"} ${
+                        m.title.includes("Presidential")
+                          ? "ring-1 ring-foreground/15 shadow-[0_0_0_1px_oklch(0.62_0.08_55/0.18),0_30px_80px_-30px_oklch(0.62_0.08_55/0.35),inset_0_1px_0_oklch(1_0_0/0.05)] backdrop-blur-[2px]"
+                          : ""
+                      }`}
                     >
                       <img
                         src={m.image}
