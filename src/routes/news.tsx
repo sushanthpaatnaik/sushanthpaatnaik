@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { CSSProperties } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
@@ -46,8 +47,6 @@ import wikipediaLogo from "@/assets/outlets/wikipedia.svg";
 import thePrintLogo from "@/assets/outlets/theprint.webp";
 import newIndianExpressLogo from "@/assets/outlets/new-indian-express.webp";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
-import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
-import ioclLogo from "@/assets/outlets/iocl.webp";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
@@ -328,59 +327,33 @@ function outletHref(name: string): string | undefined {
   return all.find((p) => norm(p.outlet).startsWith(target.split("·")[0]))?.href;
 }
 
-const outlets = [
-  { name: "India Today", logo: indiaTodayLogo },
-  { name: "The Times of India", logo: toiLogo },
-  { name: "Business Standard", logo: businessStandardLogo },
-  { name: "Deccan Chronicle", logo: deccanLogo },
-  { name: "The Telegraph", logo: telegraphLogo },
-  { name: "The Global Indian", logo: globalIndianLogo },
-  { name: "MIT Technology Review", logo: mitTrLogo },
-  { name: "TED India", logo: tedLogo },
-  { name: "NIF India", logo: nifLogo },
-  { name: "Governance Now", logo: governanceNowLogo },
-  { name: "Rediff · PTI", logo: rediffLogo },
-  { name: "ProductNation", logo: productNationLogo },
-  { name: "YourStory", logo: yourStoryLogo },
-  { name: "WeRIndia · Fusion", logo: werIndiaLogo },
-  { name: "Wikipedia", logo: wikipediaLogo },
-  { name: "ThePrint", logo: thePrintLogo },
-  { name: "The New Indian Express", logo: newIndianExpressLogo },
-  { name: "INK Talks", logo: inkTalksLogo },
+// `lighten` flags publications whose marks are inherently dark/grayscale —
+// they get inverted+desaturated so they read as soft silver on the dark wall.
+// `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
+const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number }[] = [
+  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.10 },
+  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.14 },
+  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.20 },
+  { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 1.00, tone: "lift" },
+  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.18 },
+  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.24 },
+  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
+  { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
+  { name: "NIF India",              logo: nifLogo,               scale: 1.46, tone: "lift" },
+  { name: "Governance Now",         logo: governanceNowLogo,     scale: 1.34 },
+  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.14 },
+  { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
+  { name: "YourStory",              logo: yourStoryLogo,         scale: 1.08, tone: "lift" },
+  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.12, tone: "lift" },
+  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.14 },
+  { name: "ThePrint",               logo: thePrintLogo,          scale: 1.04, tone: "lift" },
+  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.18 },
+  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.06, transparentBg: true },
 ];
 
-const testimonials = [
-  {
-    quote: "Sushant is an amazing innovator and always innovates with high social impact.",
-    author: "Anil K. Gupta",
-    role: "Professor, IIM-Ahmedabad · VC, NIF India",
-    logo: nifLogo,
-  },
-  {
-    quote: "The best AI live demo ever seen so far. This demo really made my day.",
-    author: "P. R. Ramesh",
-    role: "Chairman, Deloitte India",
-    logo: deloitteLogo,
-  },
-  {
-    quote: "Very effective and innovative solution for underground pipelines.",
-    author: "Mr. Joseph",
-    role: "IOCL Eastern Zone, India",
-    logo: ioclLogo,
-  },
-  {
-    quote: "A very inspiring entrepreneur and great social-revolutionary products.",
-    author: "Shradha Sharma",
-    role: "Founder & CEO, YourStory",
-    logo: yourStoryLogo,
-  },
-  {
-    quote: "A life-changing innovation 'Enabler' for the disabled — highly appreciable.",
-    author: "Mr. Srinivas",
-    role: "Senior Journalist, MIT TR Magazine",
-    logo: mitTrLogo,
-  },
-];
+// Testimonials and institutional voices now live exclusively on the dedicated
+// /voices page. News stays a pure press / coverage archive.
+
 
 /* ---------- Editorial primitives ---------- */
 
@@ -401,13 +374,13 @@ function MediaPlate({
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-65 grayscale contrast-[1.12] brightness-[0.88] transition-all duration-[1400ms] group-hover:opacity-95 group-hover:grayscale-[0.4] group-hover:scale-[1.02]"
+        className="absolute inset-0 h-full w-full object-cover opacity-80 grayscale-[0.55] contrast-[1.08] brightness-[0.95] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:grayscale-[0.2] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
       {/* Newspaper halftone texture */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay"
         style={{
           backgroundImage:
             "radial-gradient(oklch(0 0 0) 0.6px, transparent 0.8px)",
@@ -417,18 +390,18 @@ function MediaPlate({
       {/* Paper grain */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light"
+        className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light"
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, oklch(1 0 0) 0 1px, transparent 1px 3px)",
         }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent" />
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-55"
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-35"
         style={{
           background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 42%, oklch(0.02 0 0 / 0.82) 100%)",
+            "radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%)",
         }}
       />
       {/* Archival corner registration marks */}
@@ -447,7 +420,7 @@ function LeadFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose mt-10 group"
+      className="not-prose mt-6 group"
     >
       {/* Dateline strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
@@ -462,14 +435,14 @@ function LeadFeature({ item }: { item: PressItem }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-8 block"
+        className="mt-5 block"
       >
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
           <MediaPlate
             src={item.image}
             alt={`${item.title} — ${item.outlet}`}
             objectPosition={item.objectPosition}
-            className="aspect-[4/5] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5]"
+            className="aspect-[4/5] max-h-[540px] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5] md:max-h-[32rem]"
           />
 
           {/* Editorial reading panel — slight surface plate so copy
@@ -515,7 +488,7 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.15, ease: [0.19, 1, 0.22, 1] }}
-      className="group not-prose mt-16 block"
+      className="group not-prose mt-7 block"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
         <span className="text-accent/70">Latest Dispatch</span>
@@ -524,12 +497,12 @@ function SecondaryFeature({ item }: { item: PressItem }) {
         </span>
         <span className="text-primary/70">{item.outlet}</span>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+      <div className="mt-5 grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
         <MediaPlate
           src={item.image}
           alt={`${item.title} — ${item.outlet}`}
           objectPosition={item.objectPosition}
-          className="aspect-[16/10] border border-foreground/[0.08] md:col-span-6"
+          className="aspect-[16/10] max-h-[380px] border border-foreground/[0.08] md:col-span-6 md:max-h-[22rem]"
         />
         <div className="md:col-span-6">
           <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-primary/65">
@@ -555,8 +528,8 @@ function IntelligenceStrip() {
     <StatsStrip
       items={[
         { v: "18", l: "Publications of record" },
-        { v: "15", l: "Years of coverage" },
-        { v: "16", l: "Archived dispatches" },
+        { v: "16", l: "Years of coverage" },
+        { v: "18", l: "Archived dispatches" },
         { v: "EN · ଓଡ଼ିଆ", l: "Languages in archive" },
       ]}
     />
@@ -655,39 +628,37 @@ function NewsPage() {
       }
       lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
-      overlay={0.84}
+      overlay={0.68}
     >
       {/* Intelligence strip */}
       <IntelligenceStrip />
 
       {/* Newspaper nameplate */}
-      <div className="mt-12 border-y border-foreground/20 py-5">
+      <div className="mt-8 border-y border-foreground/20 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
           <span className="text-primary/80">Press of Record</span>
           <span className="hidden sm:inline text-muted-foreground/40">
             Volume XV · MMXXVI
           </span>
-          <span>Folio 01 — 16</span>
+          <span>Folio 01 — 18</span>
         </div>
-        <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
+        <div className="mt-2.5 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
           <span>Bhubaneswar · Delhi · Boston</span>
           <span className="hidden md:inline">Curated, not complete</span>
           <span>English · ଓଡ଼ିଆ</span>
         </div>
       </div>
 
-      {/* Lead + secondary features */}
-      <LeadFeature item={featured} />
-      <SecondaryFeature item={secondary} />
-
-      {/* Category index — editorial dossier table of contents */}
-      <EditorialSection number="07 · Desks" heading="Five editorial desks.">
-        <p>
-          The archive grouped by editorial desk — features and interviews,
-          deep-tech reporting, recognitions of record, venture press, and the
-          stage record.
-        </p>
-        <nav className="not-prose mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
+      {/* Desks navigation — placed up-front so readers can jump straight
+          to the desk they care about before the flagship feature lands. */}
+      <div className="mt-7">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+          <span className="text-accent/80">06 · Desks</span>
+          <span className="hidden md:inline text-muted-foreground/40">
+            Five desks · eighteen dispatches
+          </span>
+        </div>
+        <nav className="not-prose mt-4 grid grid-cols-1 gap-px overflow-hidden rounded-sm hairline sm:grid-cols-2 md:grid-cols-5" style={{ background: "var(--surface-hairline)" }}>
           {CATEGORIES.map((c) => {
             const count = [featured, secondary, ...coverage].filter(
               (i) => i.category === c.id,
@@ -712,21 +683,37 @@ function NewsPage() {
             );
           })}
         </nav>
-      </EditorialSection>
+      </div>
 
-      {/* Archive — grouped by editorial desk, with year markers */}
-      <EditorialSection number="08 · Archive" heading="Eighteen dispatches of record.">
+      {/* Flagship feature lands directly below the desks — no dead air. */}
+      <LeadFeature item={featured} />
+      <SecondaryFeature item={secondary} />
+
+      {/* The archive proper */}
+      <EditorialSection number="07 · The Archive" heading="Filed chronologically. Read selectively.">
         <p>
-          Filed under five desks — from teenage assistive tech in{" "}
-          <em>The Telegraph</em> and NIF, to global recognition in MIT TR and
-          Wikipedia, to deep-tech reporting on Capattery, GraphIN and the
-          battery breakthrough.
+          The full register — features and interviews, deep-tech reporting,
+          recognitions of record, venture press, and the stage record. From
+          teenage assistive tech in <em>The Telegraph</em> and NIF, to global
+          recognition in MIT TR and Wikipedia, to deep-tech reporting on
+          Capattery, GraphIN and the battery breakthrough.
         </p>
+
+        {/* Hairline bridge — visually anchors the archive directly under the section opener */}
+        <div className="not-prose mt-5 flex items-center gap-3 border-t border-foreground/[0.12] pt-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
+            ▸ Dispatches
+          </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 hidden md:inline">
+            Filed chronologically · most recent first
+          </span>
+        </div>
 
         {(() => {
           const all = [featured, secondary, ...coverage];
           return (
-            <div className="not-prose mt-12 flex flex-col gap-14 md:gap-16">
+            <div className="not-prose mt-3 flex flex-col gap-7 md:gap-9">
               {CATEGORIES.map((c) => {
                 const items = all
                   .filter((i) => i.category === c.id)
@@ -736,23 +723,23 @@ function NewsPage() {
                 return (
                   <section key={c.id} id={anchor} className="scroll-mt-28">
                     <div className="grid grid-cols-[3.5rem_1fr] gap-5 md:grid-cols-[7rem_1fr] md:gap-10">
-                      <div className="pt-1">
+                      <div className="pt-0">
                         <p className="font-display text-3xl md:text-[2.4rem] font-extralight tracking-[-0.025em] text-foreground/40">
                           {c.code}
                         </p>
-                        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                        <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
                           {String(items.length).padStart(2, "0")} Entr
                           {items.length === 1 ? "y" : "ies"}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-display text-[clamp(1.25rem,2.2vw,1.6rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
+                        <h3 className="font-display text-[clamp(1.15rem,2vw,1.45rem)] leading-[1.15] tracking-[-0.02em] text-foreground/95">
                           {c.id}
                         </h3>
-                        <p className="mt-2 max-w-2xl text-[14px] leading-[1.65] text-foreground/65">
+                        <p className="mt-1.5 max-w-2xl text-[13.5px] leading-[1.6] text-foreground/65">
                           {c.blurb}
                         </p>
-                        <ol className="mt-6 flex flex-col">
+                        <ol className="mt-3 flex flex-col">
                           {items.map((item, i) => (
                             <ArchiveEntry
                               key={item.href}
@@ -772,26 +759,75 @@ function NewsPage() {
         })()}
       </EditorialSection>
 
+
       {/* Mastheads register */}
       <EditorialSection number="09 · Mastheads" heading="Eighteen publications of record.">
         <p>
           The mastheads carrying the work — Indian and international, popular
           press and scientific institutions.
         </p>
-        <div className="not-prose mt-10 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]/70">
-          <div className="grid grid-cols-2 gap-px bg-foreground/[0.06] sm:grid-cols-3 md:grid-cols-6">
+        <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[oklch(0.046_0.003_245)]">
+          {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{
+              background:
+                "radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1] opacity-[0.045] mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+              backgroundSize: "180px 180px",
+            }}
+          />
+          <div className="relative z-[2] grid grid-cols-2 gap-px bg-foreground/[0.018] sm:grid-cols-3 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
+              const scale = o.scale ?? 1;
+              // Optical baseline ~ 40px at scale 1.0; clamped 28-62px for fuller, more intentional wall.
+              const optical = Math.round(Math.min(62, Math.max(28, 40 * scale)));
+              const imgStyle: CSSProperties = { maxHeight: `${optical}px` };
+              if (o.transparentBg) {
+                imgStyle.mixBlendMode = "screen";
+              }
+              if (o.nudgeY) {
+                imgStyle.transform = `translateY(${o.nudgeY}px)`;
+              }
+              // Tone modifier: "muted" damps an overpowering brand mark; "lift" boosts a faint one.
+              const colorTone =
+                o.tone === "muted"
+                  ? "opacity-[0.74] saturate-[0.58] brightness-[0.94] contrast-[1.0] group-hover:opacity-[0.88] group-hover:saturate-[0.72] group-hover:brightness-[1.0]"
+                  : o.tone === "lift"
+                  ? "opacity-[0.98] saturate-[0.86] brightness-[1.08] contrast-[1.06] group-hover:opacity-100 group-hover:saturate-[1.0] group-hover:brightness-[1.14]"
+                  : "opacity-[0.92] saturate-[0.78] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:saturate-[0.92] group-hover:brightness-[1.08]";
+              const lightenTone =
+                o.tone === "lift"
+                  ? "invert opacity-[0.96] brightness-[1.14] contrast-[1.08] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.22]"
+                  : "invert opacity-[0.86] brightness-[1.06] contrast-[1.04] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.14]";
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[140px] object-contain opacity-60 saturate-[0.5] brightness-[1.05] mix-blend-screen transition-all duration-700 group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-[1.04]"
+                  style={imgStyle}
+                  className={`w-auto max-w-[84%] object-contain transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
+                    o.transparentBg
+                      ? // Ink-on-light plate: invert so light bg becomes dark, then blend out via screen.
+                        "invert opacity-[0.86] brightness-[1.12] contrast-[1.1] saturate-0 group-hover:opacity-[0.98]"
+                      : o.lighten
+                      ? lightenTone
+                      : colorTone
+                  }`}
                 />
               );
               const baseCls =
-                "group flex h-20 items-center justify-center bg-[oklch(0.05_0.006_245)] px-4 transition-colors duration-500";
+                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-6 transition-all duration-[900ms] ease-out hover:bg-[oklch(0.072_0.003_245)] hover:shadow-[inset_0_0_80px_oklch(1_0_0_/_0.05),0_0_42px_-12px_oklch(0.7_0.08_232_/_0.18)]";
+
               return href ? (
                 <a
                   key={o.name}
@@ -799,7 +835,7 @@ function NewsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`${o.name} — read coverage ↗`}
-                  className={`${baseCls} hover:bg-[oklch(0.07_0.008_245)]`}
+                  className={baseCls}
                 >
                   {inner}
                 </a>
@@ -813,53 +849,23 @@ function NewsPage() {
         </div>
       </EditorialSection>
 
-      {/* Voices — broadsheet pull-quotes */}
-      <EditorialSection number="10 · Voices" heading="On the work, in their words.">
-        <p>
-          A short reel of voices from institutions that have seen the work
-          firsthand — from NIF and MIT TR to Deloitte, IOCL and YourStory.
-        </p>
-        <ul className="not-prose mt-12 flex flex-col">
-          {testimonials.map((t, i) => (
-            <motion.li
-              key={t.author}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.05, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-              className="grid grid-cols-1 gap-6 border-t border-foreground/[0.08] py-10 md:grid-cols-[160px_1fr] md:gap-12 md:py-12"
-            >
-              <div className="flex h-10 items-center md:h-12">
-                <img
-                  src={t.logo}
-                  alt={`${t.role} logo`}
-                  loading="lazy"
-                  className="max-h-9 w-auto max-w-[150px] object-contain opacity-65 mix-blend-screen"
-                />
-              </div>
-              <div>
-                <blockquote className="font-display italic text-xl md:text-2xl leading-[1.4] tracking-[-0.005em] text-foreground/90">
-                  “{t.quote}”
-                </blockquote>
-                <div className="mt-6 flex items-baseline gap-3">
-                  <span className="h-px w-6 bg-accent/50" />
-                  <p className="font-display text-[14px] text-foreground/90">{t.author}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55">
-                    {t.role}
-                  </p>
-                </div>
-              </div>
-            </motion.li>
-          ))}
-          <li className="border-t border-foreground/[0.08]" />
-        </ul>
-      </EditorialSection>
-
-      <EditorialSection number="11 · Posture" heading="Curated, not complete.">
+      {/* 10 · Posture — single closing statement.
+          Institutional testimonials and on-record quotes have been moved to the
+          dedicated /voices page so News stays a pure press/coverage archive. */}
+      <EditorialSection number="10 · Posture" heading="Curated, not complete.">
         <p>
           The archive is selective. Press is useful when it accelerates the
           work and quiet when it does not. New coverage is added here as it
           stabilises.
+        </p>
+        <p className="not-prose mt-10">
+          <Link
+            to="/voices"
+            className="group inline-flex items-center gap-3 border-b border-foreground/20 pb-1 font-mono text-[11px] uppercase tracking-[0.38em] text-foreground/75 transition-colors duration-500 hover:border-foreground/60 hover:text-foreground"
+          >
+            <span>Institutional voices · on-record</span>
+            <span className="text-foreground/45 transition-transform duration-500 group-hover:translate-x-1">→</span>
+          </Link>
         </p>
       </EditorialSection>
     </CinematicPageShell>

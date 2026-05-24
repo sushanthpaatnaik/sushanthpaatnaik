@@ -99,7 +99,7 @@ export function MastheadRule({ slots }: { slots: ReactNode[] }) {
       className="flex flex-wrap items-baseline justify-between gap-3 hairline-t hairline-b py-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55"
     >
       {slots.map((s, i) => (
-        <span key={i} className={i === 0 ? "text-primary/80" : ""}>
+        <span key={i} className={i === 0 ? "text-foreground/80" : ""}>
           {s}
         </span>
       ))}

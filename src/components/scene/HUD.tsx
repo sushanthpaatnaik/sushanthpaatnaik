@@ -1,34 +1,41 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { HOME_CHAPTERS } from "./homeChapters";
 
-const chapters = [
-  { id: "spark", label: "Spark", n: "01" },
-  { id: "founder", label: "Founder", n: "02" },
-  { id: "carbon-intelligence", label: "Carbon Intelligence", n: "03" },
-  { id: "industrial", label: "Industrial", n: "04" },
-  { id: "recognition", label: "Recognition", n: "05" },
-  { id: "ecosystem", label: "Ecosystem", n: "06" },
-  { id: "future", label: "Future", n: "07" },
-];
+const chapters = HOME_CHAPTERS;
 
 export default function HUD({
   scrollProgress,
 }: {
   scrollProgress: React.MutableRefObject<number>;
 }) {
-  const [p, setP] = useState(0);
+  const [idx, setIdx] = useState(0);
   const raf = useRef(0);
+  const lastIdx = useRef(-1);
 
   useEffect(() => {
     const loop = () => {
-      setP(scrollProgress.current);
+      const next = Math.min(
+        chapters.length - 1,
+        Math.floor(scrollProgress.current * chapters.length),
+      );
+      if (next !== lastIdx.current) {
+        lastIdx.current = next;
+        setIdx(next);
+      }
       raf.current = requestAnimationFrame(loop);
     };
     raf.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf.current);
+    const onVis = () => {
+      cancelAnimationFrame(raf.current);
+      if (!document.hidden) raf.current = requestAnimationFrame(loop);
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, [scrollProgress]);
-
-  const idx = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
 
   return (
     <>
@@ -118,9 +125,9 @@ function ChapterMarker({
 
       {/* Dot indicator with animated active state */}
       <div className="relative z-10 flex items-center justify-center w-[23px] h-[23px]">
-        {/* Glow ring (active only) */}
+        {/* Glow ring (active only) — with cinematic slow pulse */}
         <motion.div
-          className="absolute inset-1 rounded-full"
+          className={`absolute inset-1 rounded-full ${active ? "hud-node-pulse" : ""}`}
           style={{
             background: "oklch(0.74 0.06 232 / 0.18)",
             boxShadow: "0 0 10px oklch(0.74 0.06 232 / 0.22), 0 0 22px oklch(0.74 0.06 232 / 0.09)",
@@ -132,6 +139,7 @@ function ChapterMarker({
           }}
           transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
         />
+
 
         {/* Core dot */}
         <motion.div

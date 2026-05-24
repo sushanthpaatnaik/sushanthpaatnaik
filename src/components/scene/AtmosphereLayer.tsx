@@ -8,6 +8,7 @@ import sceneVentures from "@/assets/story-05-ventures.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
 import sceneRecognition from "@/assets/story-02-recognition.webp";
+import sceneScaleValidation from "@/assets/scene-scale-validation.webp";
 
 /**
  * Homepage scroll-synchronized cinematic background.
@@ -25,7 +26,8 @@ import sceneRecognition from "@/assets/story-02-recognition.webp";
  *   04 Industrial   — steel-blue + restrained copper, machine-room
  *   05 Recognition  — archival sepia + ink, paper-and-ink memory
  *   06 Ecosystem    — twilight indigo, constellation depth
- *   07 Future       — Earth at night, India-origin glow scaling to global network
+ *   07 Scale        — blueprint validation, planetary infrastructure proof
+ *   08 Future       — Earth at night, India-origin glow scaling to global network
  */
 const SCENES: BackgroundScene[] = [
   {
@@ -83,8 +85,17 @@ const SCENES: BackgroundScene[] = [
     filter: "brightness(0.82) contrast(1.06) saturate(0.84)",
   },
   {
+    src: sceneScaleValidation,
+    alt: "07 — Scale and validation · blueprint proof, infrastructure, evidence",
+    tint: "radial-gradient(ellipse 76% 64% at 50% 48%, oklch(0.34 0.034 232 / 0.14), oklch(0.05 0.010 245 / 0.18) 78%)",
+    overlay:
+      "linear-gradient(180deg, oklch(0.018 0.006 245 / 0.50) 0%, oklch(0.030 0.012 232 / 0.22) 45%, oklch(0.018 0.006 245 / 0.62) 100%)",
+    parallax: 0.78,
+    filter: "brightness(0.70) contrast(1.08) saturate(0.70) hue-rotate(-6deg)",
+  },
+  {
     src: sceneFuture,
-    alt: "07 — Future · planetary-scale industrial intelligence, energy grids",
+    alt: "08 — Future · planetary-scale industrial intelligence, energy grids",
     tint: "radial-gradient(ellipse 72% 60% at 60% 52%, oklch(0.36 0.042 232 / 0.10), oklch(0.04 0.010 245 / 0.26) 72%)",
     overlay:
       "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
@@ -102,7 +113,8 @@ const OVERLAY_STOPS = [
   0.19, // 04 Industrial
   0.23, // 05 Recognition
   0.20, // 06 Ecosystem
-  0.23, // 07 Future
+  0.22, // 07 Scale
+  0.23, // 08 Future
 ];
 
 export default function AtmosphereLayer() {
