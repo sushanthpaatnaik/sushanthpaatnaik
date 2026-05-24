@@ -1,5 +1,6 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+
 
 export type ArchiveItem = {
   src: string;
