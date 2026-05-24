@@ -519,15 +519,15 @@
      planetary scene. Ultra-subtle ambient edge glow, soft environmental
      reflection, slower cinematic easing. No neon, no flash. */
   .btn-cinematic-atmospheric {
-    border-color: oklch(0.62 0.025 232 / 0.29);
+    border-color: oklch(0.62 0.025 232 / 0.24);
     background:
-      linear-gradient(180deg, oklch(1 0 0 / 0.045) 0%, oklch(1 0 0 / 0.018) 100%),
-      oklch(0.12 0.008 240 / 0.34);
+      linear-gradient(180deg, oklch(1 0 0 / 0.038) 0%, oklch(1 0 0 / 0.015) 100%),
+      oklch(0.12 0.008 240 / 0.30);
     box-shadow:
-      0 1px 0 oklch(1 0 0 / 0.055) inset,
-      0 0 0 1px oklch(0.58 0.03 232 / 0.055),
-      0 0 22px -6px oklch(0.58 0.04 232 / 0.16),
-      0 22px 50px -28px oklch(0 0 0 / 0.75);
+      0 1px 0 oklch(1 0 0 / 0.045) inset,
+      0 0 0 1px oklch(0.58 0.03 232 / 0.04),
+      0 0 16px -8px oklch(0.58 0.04 232 / 0.10),
+      0 18px 42px -28px oklch(0 0 0 / 0.70);
     transition:
       transform 1.3s cubic-bezier(0.19, 1, 0.22, 1),
       background 1.3s cubic-bezier(0.19, 1, 0.22, 1),
@@ -538,17 +538,18 @@
   }
 
   .btn-cinematic-atmospheric:hover {
-    border-color: oklch(0.7 0.03 232 / 0.42);
+    border-color: oklch(0.7 0.03 232 / 0.36);
     background:
-      linear-gradient(180deg, oklch(1 0 0 / 0.072) 0%, oklch(1 0 0 / 0.026) 100%),
-      oklch(0.14 0.01 240 / 0.40);
-    transform: translateY(-1px) scale(1.008);
+      linear-gradient(180deg, oklch(1 0 0 / 0.058) 0%, oklch(1 0 0 / 0.022) 100%),
+      oklch(0.14 0.01 240 / 0.36);
+    transform: translateY(-1px) scale(1.006);
     box-shadow:
-      0 1px 0 oklch(1 0 0 / 0.08) inset,
-      0 0 0 1px oklch(0.6 0.04 232 / 0.11),
-      0 0 34px -4px oklch(0.6 0.05 232 / 0.25),
-      0 28px 60px -28px oklch(0 0 0 / 0.8);
+      0 1px 0 oklch(1 0 0 / 0.065) inset,
+      0 0 0 1px oklch(0.6 0.04 232 / 0.08),
+      0 0 24px -6px oklch(0.6 0.05 232 / 0.16),
+      0 24px 52px -28px oklch(0 0 0 / 0.74);
   }
+
 }
 
 /* Accessibility — respect reduced motion */
