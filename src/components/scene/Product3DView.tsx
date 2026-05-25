@@ -456,6 +456,11 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
+  /** Optional detachable / counterpart module image rendered in the
+   *  bottom-right inspection slot (replaces the capture-note text panel). */
+  counterpartImg?: string;
+  /** Optional caption for the counterpart image. */
+  counterpartCaption?: string;
 }
 
 export function Product3DModal({
@@ -615,7 +620,7 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-[1.35fr_1fr] gap-5">
+              <div className={`grid gap-5 ${item.counterpartImg ? "grid-cols-[1fr_1.18fr]" : "grid-cols-[1.35fr_1fr]"}`}>
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
@@ -695,7 +700,38 @@ export function Product3DModal({
                   </div>
                 )}
 
-                {/* Optical / studio note */}
+                {item.counterpartImg ? (
+                  <div className="group relative aspect-[1/1.05] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.05_0.008_245)]">
+                    <div
+                      aria-hidden
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 28%, oklch(0.82 0.02 235 / 0.14), transparent 55%), radial-gradient(circle at 50% 112%, oklch(0 0 0 / 0.85), transparent 60%), linear-gradient(180deg, oklch(0.085 0.008 245) 0%, oklch(0.05 0.008 245) 55%, oklch(0.025 0.006 245) 100%)",
+                      }}
+                    />
+                    <motion.img
+                      key={item.counterpartImg + "-counterpart"}
+                      src={item.counterpartImg}
+                      alt={`${item.title} — detachable counterpart module`}
+                      draggable={false}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.9, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
+                      className="absolute inset-0 h-full w-full object-contain p-5 transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
+                      style={{ filter: "drop-shadow(0 20px 28px oklch(0 0 0 / 0.6))" }}
+                    />
+                    <FilmGrain opacity={0.05} />
+                    <div className="pointer-events-none absolute bottom-3 left-3 z-10">
+                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                        {item.counterpartCaption ?? "Counterpart · Detachable module"}
+                      </p>
+                    </div>
+                    <div className="pointer-events-none absolute right-3 top-3 z-10 font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                      Module · 02
+                    </div>
+                  </div>
+                ) : (
                 <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
                   <div
                     aria-hidden
@@ -728,6 +764,7 @@ export function Product3DModal({
                     </div>
                   </div>
                 </div>
+                )}
               </div>
             </div>
 
