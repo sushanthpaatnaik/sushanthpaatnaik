@@ -308,7 +308,7 @@ function InnovationsPage() {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`group relative flex-1 px-4 py-4 text-left transition-colors duration-500 ${
+                className={`group relative sm:flex-1 px-4 py-4 text-left transition-colors duration-500 border-foreground/[0.08] [&:nth-child(n+3)]:border-t sm:[&:nth-child(n+3)]:border-t-0 [&:nth-child(even)]:border-l sm:[&:nth-child(even)]:border-l-0 ${
                   isActive ? "bg-foreground/[0.04]" : "hover:bg-foreground/[0.02]"
                 }`}
               >
