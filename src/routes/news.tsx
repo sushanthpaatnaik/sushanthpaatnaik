@@ -785,11 +785,11 @@ function NewsPage() {
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-[1] opacity-[0.045] mix-blend-overlay"
+              className="pointer-events-none absolute inset-0 z-[1] opacity-[0.07] mix-blend-overlay"
               style={{
                 backgroundImage:
-                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-                backgroundSize: "180px 180px",
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                backgroundSize: "220px 220px",
               }}
             />
             <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
@@ -808,31 +808,32 @@ function NewsPage() {
                 if (isGi) transforms.push("scale(0.82)");
                 if (transforms.length) imgStyle.transform = transforms.join(" ");
 
+                // Matte print finish — softer whites, restrained contrast, low saturation.
                 const colorTone =
                   o.tone === "muted"
-                    ? "opacity-100 saturate-[0.85] brightness-[1.28] contrast-[1.14] group-hover:brightness-[1.36]"
-                    : "opacity-100 saturate-[0.95] brightness-[1.30] contrast-[1.16] group-hover:brightness-[1.40]";
+                    ? "opacity-[0.88] saturate-[0.78] brightness-[0.95] contrast-[1.04] group-hover:opacity-100 group-hover:brightness-[1.0]"
+                    : "opacity-[0.9] saturate-[0.85] brightness-[0.96] contrast-[1.05] group-hover:opacity-100 group-hover:brightness-[1.02]";
                 const lightenTone =
-                  "[filter:invert(1)_brightness(1.35)_contrast(1.18)_saturate(0)] opacity-100 group-hover:[filter:invert(1)_brightness(1.5)_contrast(1.2)_saturate(0)]";
+                  "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(0.98)_contrast(1.06)_saturate(0)]";
                 const inner = (
                   <img
                     src={o.logo}
                     alt={`${o.name} logo`}
                     loading="lazy"
                     style={imgStyle}
-                    className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
+                    className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
                       o.transparentBg
-                        ? "[filter:invert(1)_brightness(1.3)_contrast(1.15)_saturate(0)] opacity-100"
+                        ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100"
                         : o.lighten
                         ? lightenTone
                         : colorTone
                     }`}
                   />
                 );
-                // Equal-height cells, perfectly centered, matte-glass surface,
-                // ultra-soft ambient inner glow, refined hover lift.
+                // Matte anodized panel — soft inner gradient, restrained border,
+                // understated hover with subtle amber edge.
                 const baseCls =
-                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.025),inset_0_0_50px_oklch(1_0_0_/_0.022),0_1px_2px_oklch(0_0_0_/_0.4)] transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.4)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_10px_30px_-12px_oklch(0.62_0.10_55_/_0.32),inset_0_0_70px_oklch(1_0_0_/_0.05)]";
+                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] px-5 py-5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
 
                 return href ? (
                   <a
