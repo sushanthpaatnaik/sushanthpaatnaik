@@ -456,6 +456,11 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
+  /** Optional detachable / counterpart module image rendered in the
+   *  bottom-right inspection slot (replaces the capture-note text panel). */
+  counterpartImg?: string;
+  /** Optional caption for the counterpart image. */
+  counterpartCaption?: string;
 }
 
 export function Product3DModal({
