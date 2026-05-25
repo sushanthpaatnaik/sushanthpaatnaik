@@ -576,6 +576,45 @@ export function Product3DModal({
                 </div>
               </div>
 
+              {item.detailImg && (
+                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <motion.img
+                    key={item.detailImg + "-aqua-app"}
+                    src={item.detailImg}
+                    alt={`${item.title} — field deployment`}
+                    draggable={false}
+                    initial={{ opacity: 0, scale: 1.025 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, delay: 0.08, ease: [0.19, 1, 0.22, 1] }}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
+                    style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92)" }}
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%)",
+                    }}
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,oklch(0.03_0.006_245/0.88)_100%)]" />
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
+                  <FilmGrain opacity={0.06} />
+                  <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-80">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
+                    <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/72">
+                      Field Deployment
+                    </span>
+                  </div>
+                  <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
+                    {item.title} · Cooling tower recovery
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
                 <div>
                   <div className="flex items-center gap-2">
