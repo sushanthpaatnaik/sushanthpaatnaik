@@ -14,6 +14,7 @@ import imgHdgpe from "@/assets/innovations/hdgpe.webp";
 import imgGraphenodes from "@/assets/innovations/graphenodes.webp";
 import imgCoalorix from "@/assets/innovations/coalorix.webp";
 import imgAquamax from "@/assets/innovations/aquamax.webp";
+import counterpartAquamax from "@/assets/innovations/counterparts/aquamax.webp";
 import imgIgnitronD from "@/assets/innovations/ignitron-d.webp";
 import imgIgnitronP from "@/assets/innovations/ignitron-p.webp";
 import imgLubritron from "@/assets/innovations/lubritron.webp";
@@ -224,6 +225,8 @@ function InnovationsPage() {
       applicationContext: it.applicationContext,
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
+      counterpartImg: it.title === "Aquamax" ? counterpartAquamax : undefined,
+      counterpartCaption: it.title === "Aquamax" ? "Detachable atmospheric intake · Chimney hood" : undefined,
     });
   };
 
