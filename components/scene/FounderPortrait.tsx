@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { StaticImageData } from "next/image";
 import editorial from "@/assets/founder-editorial.webp";
 import lab from "@/assets/founder-lab-portrait.webp";
 
@@ -15,17 +16,10 @@ interface FounderPortraitProps {
   plate?: boolean;
 }
 
-/**
- * Founder portrait figure — cinematic-editorial framing.
- *
- *   editorial    → grey blazer outdoor portrait, regraded into a darker,
- *                  premium editorial atmosphere. Face clearly readable.
- *   documentary  → lab instrumentation portrait. Equipment visible,
- *                  authentic engineering context, restrained grading.
- *
- * Used sparingly across the site to break the mystery-silhouette rhythm
- * with moments of direct human connection.
- */
+function resolveSrc(src: string | StaticImageData): string {
+  return typeof src === "string" ? src : src.src;
+}
+
 export default function FounderPortrait({
   variant = "editorial",
   caption,
@@ -34,7 +28,7 @@ export default function FounderPortrait({
   narrative,
   plate,
 }: FounderPortraitProps) {
-  const src = variant === "documentary" ? lab : editorial;
+  const src = resolveSrc(variant === "documentary" ? lab : editorial);
   const isDoc = variant === "documentary";
 
   return (
@@ -45,9 +39,6 @@ export default function FounderPortrait({
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
       className="not-prose relative mx-auto my-28 md:my-40 max-w-[460px] md:max-w-[520px]"
     >
-      {/* Cinematic edge diffusion — dissolves the plate into the room.
-          Softened texture so the portrait integrates with the page atmosphere
-          rather than reading as a discrete object. */}
       <div
         aria-hidden
         className="pointer-events-none absolute -inset-x-20 -inset-y-24 md:-inset-x-32 md:-inset-y-36"
@@ -68,7 +59,6 @@ export default function FounderPortrait({
       />
 
       <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[oklch(0.04_0_0)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
-        {/* Founder plate — strengthened editorial identity */}
         {plate && (
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/[0.06] px-6 py-4 md:px-8 md:py-5">
             <div className="flex items-center gap-4 md:gap-5">
@@ -89,9 +79,6 @@ export default function FounderPortrait({
           </div>
         )}
 
-        {/* Portrait — full image visible, cinematic letterboxing rather
-            than aggressive crop. Aspect ratios sized so the entire subject
-            and environmental context fit naturally on every breakpoint. */}
         <div
           className={
             isDoc
@@ -115,7 +102,6 @@ export default function FounderPortrait({
             }
           />
 
-          {/* Cinematic grading overlays */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-multiply"
@@ -149,7 +135,6 @@ export default function FounderPortrait({
                 "radial-gradient(ellipse 30% 36% at 16% 80%, oklch(0.52 0.04 232 / 0.06), transparent 68%)",
             }}
           />
-          {/* Inner edge dissolve — image bleeds into the plate */}
           <div
             aria-hidden
             className="absolute inset-0"
@@ -158,7 +143,6 @@ export default function FounderPortrait({
                 "radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%)",
             }}
           />
-          {/* Soft cinematic vignette — deepens edges, preserves center */}
           {isDoc && (
             <div
               aria-hidden
@@ -179,7 +163,6 @@ export default function FounderPortrait({
           />
         </div>
 
-        {/* Editorial caption strip */}
         {(caption || meta || eyebrow || narrative?.length) && (
           <figcaption className="border-t border-foreground/[0.06] px-6 py-7 md:px-8 md:py-8">
             {(eyebrow || narrative?.length) && (
