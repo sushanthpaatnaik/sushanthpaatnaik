@@ -506,7 +506,7 @@ export function Product3DModal({
           }}
           onClick={onClose}
         >
-          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between px-6 py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
+          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
             <div className="pointer-events-auto flex items-center gap-3">
               <span className="h-px w-8 bg-accent/70" />
               <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
