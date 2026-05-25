@@ -457,6 +457,9 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
+  /** Aquamax-only: render the interactive chimney hood / HV-LC recovery
+   *  simulation as the right-side panel of the inspection view. */
+  aquamaxSimulation?: boolean;
 }
 
 export function Product3DModal({
