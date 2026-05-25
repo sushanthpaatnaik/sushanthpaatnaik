@@ -216,7 +216,7 @@ function InnovationsPage() {
       applicationVideo: ({
         Graphacrete: "/videos/graphacrete.mp4",
         Graffisol: "/videos/graffisol.mp4",
-        Ceraphene: "https://drive.google.com/file/d/1zn4xfKW2fVwhYC0lsqOEqrclcQ5vro_p/view?usp=drive_link",
+        Ceraphene: "/videos/ceraphene.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
