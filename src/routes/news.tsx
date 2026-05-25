@@ -785,12 +785,12 @@ function NewsPage() {
               backgroundSize: "180px 180px",
             }}
           />
-          <div className="relative z-[2] grid grid-cols-2 gap-px bg-foreground/[0.018] sm:grid-cols-3 lg:grid-cols-6">
+          <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 40px at scale 1.0; clamped 28-62px for fuller, more intentional wall.
-              const optical = Math.round(Math.min(62, Math.max(28, 40 * scale)));
+              // Optical baseline ~ 44px at scale 1.0; clamped 32-64px.
+              const optical = Math.round(Math.min(64, Math.max(32, 44 * scale)));
               const imgStyle: CSSProperties = { maxHeight: `${optical}px` };
               if (o.transparentBg) {
                 imgStyle.mixBlendMode = "screen";
@@ -798,27 +798,23 @@ function NewsPage() {
               if (o.nudgeY) {
                 imgStyle.transform = `translateY(${o.nudgeY}px)`;
               }
-              // Tone modifier: "muted" damps an overpowering brand mark; "lift" boosts a faint one.
+              // Normalised brightness — every logo lands in a similar luminance band.
               const colorTone =
                 o.tone === "muted"
-                  ? "opacity-[0.74] saturate-[0.58] brightness-[0.94] contrast-[1.0] group-hover:opacity-[0.88] group-hover:saturate-[0.72] group-hover:brightness-[1.0]"
-                  : o.tone === "lift"
-                  ? "opacity-[0.98] saturate-[0.86] brightness-[1.08] contrast-[1.06] group-hover:opacity-100 group-hover:saturate-[1.0] group-hover:brightness-[1.14]"
-                  : "opacity-[0.92] saturate-[0.78] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:saturate-[0.92] group-hover:brightness-[1.08]";
+                  ? "opacity-[0.86] saturate-[0.7] brightness-[1.0] contrast-[1.02] group-hover:opacity-100 group-hover:brightness-[1.08]"
+                  : "opacity-[0.96] saturate-[0.88] brightness-[1.08] contrast-[1.04] group-hover:opacity-100 group-hover:brightness-[1.18]";
+              // Dark-mark logos: invert to white variant with consistent luminance.
               const lightenTone =
-                o.tone === "lift"
-                  ? "invert opacity-[0.96] brightness-[1.14] contrast-[1.08] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.22]"
-                  : "invert opacity-[0.86] brightness-[1.06] contrast-[1.04] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.14]";
+                "invert opacity-[0.94] brightness-[1.12] contrast-[1.06] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.22]";
               const inner = (
                 <img
                   src={o.logo}
                   alt={`${o.name} logo`}
                   loading="lazy"
                   style={imgStyle}
-                  className={`w-auto max-w-[84%] object-contain transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
+                  className={`w-auto max-w-[82%] object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05] ${
                     o.transparentBg
-                      ? // Ink-on-light plate: invert so light bg becomes dark, then blend out via screen.
-                        "invert opacity-[0.86] brightness-[1.12] contrast-[1.1] saturate-0 group-hover:opacity-[0.98]"
+                      ? "invert opacity-[0.9] brightness-[1.14] contrast-[1.1] saturate-0 group-hover:opacity-100"
                       : o.lighten
                       ? lightenTone
                       : colorTone
@@ -826,7 +822,7 @@ function NewsPage() {
                 />
               );
               const baseCls =
-                "group relative flex h-28 md:h-32 items-center justify-center bg-[oklch(0.05_0.003_245)] px-6 py-6 transition-all duration-[900ms] ease-out hover:bg-[oklch(0.072_0.003_245)] hover:shadow-[inset_0_0_80px_oklch(1_0_0_/_0.05),0_0_42px_-12px_oklch(0.7_0.08_232_/_0.18)]";
+                "group relative flex h-24 sm:h-28 md:h-32 items-center justify-center rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 transition-all duration-500 ease-out hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.45)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_8px_28px_-10px_oklch(0.62_0.10_55_/_0.28),inset_0_0_60px_oklch(1_0_0_/_0.04)]";
 
               return href ? (
                 <a
