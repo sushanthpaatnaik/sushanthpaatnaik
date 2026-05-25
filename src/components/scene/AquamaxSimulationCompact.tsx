@@ -144,7 +144,7 @@ export default function AquamaxSimulationCompact() {
       </div>
 
       {/* Phase tabs */}
-      <div className="grid grid-cols-4 divide-x divide-foreground/[0.06] border-b border-foreground/[0.06]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 divide-foreground/[0.06] border-b border-foreground/[0.06] [&>*:not(:first-child)]:border-l [&>*]:border-foreground/[0.06] sm:[&>*:nth-child(3)]:border-l-0 [&>*:nth-child(3)]:border-t [&>*:nth-child(4)]:border-t sm:[&>*:nth-child(4)]:border-t-0">
         {phases.map((p, i) => {
           const active = i === phaseIdx;
           return (
