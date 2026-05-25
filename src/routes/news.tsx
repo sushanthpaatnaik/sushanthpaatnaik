@@ -330,25 +330,28 @@ function outletHref(name: string): string | undefined {
 // `lighten` flags publications whose marks are inherently dark/grayscale —
 // they get inverted+desaturated so they read as soft silver on the dark wall.
 // `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
-const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number }[] = [
-  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.10 },
-  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.14 },
-  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.20 },
+// `scale` optically normalises visual weight only — clamped tightly (0.95–1.10)
+// so every mark lands in the same optical safe-zone regardless of intrinsic ratio.
+// `boost` adds a soft white halo + brightness lift for thin / low-opacity marks.
+const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number; boost?: boolean }[] = [
+  { name: "India Today",            logo: indiaTodayLogo,        scale: 1.05 },
+  { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.08 },
+  { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.10 },
   { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 1.00, tone: "lift" },
-  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.18 },
-  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.24 },
-  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
-  { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
-  { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.46, tone: "lift" },
-  { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.34 },
-  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.14 },
-  { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
-  { name: "YourStory",              logo: yourStoryLogo,         scale: 1.08, tone: "lift" },
-  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.12, tone: "lift" },
-  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.14 },
-  { name: "ThePrint",               logo: thePrintLogo,          scale: 1.04, tone: "lift" },
-  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.18 },
-  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.06, transparentBg: true },
+  { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.08 },
+  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.02 },
+  { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.05 },
+  { name: "TED India",              logo: tedLogo,               scale: 0.92, tone: "muted" },
+  { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.10, tone: "lift", boost: true },
+  { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.05, boost: true },
+  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.05, boost: true },
+  { name: "ProductNation",          logo: productNationLogo,     scale: 1.05 },
+  { name: "YourStory",              logo: yourStoryLogo,         scale: 1.02, tone: "lift" },
+  { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.05, tone: "lift" },
+  { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.05 },
+  { name: "ThePrint",               logo: thePrintLogo,          scale: 1.00, tone: "lift" },
+  { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.08, boost: true },
+  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.02, transparentBg: true },
 ];
 
 // Testimonials and institutional voices now live exclusively on the dedicated
