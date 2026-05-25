@@ -224,6 +224,7 @@ function InnovationsPage() {
       applicationContext: it.applicationContext,
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
+      aquamaxSimulation: it.title === "Aquamax",
     });
   };
 
