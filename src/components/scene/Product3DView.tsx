@@ -993,6 +993,7 @@ export function Product3DModal({
               </div>
             </div>
           </motion.div>
+          )}
           </div>
         </motion.div>
       )}
