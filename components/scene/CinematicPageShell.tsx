@@ -11,7 +11,7 @@ interface CinematicPageShellProps {
   eyebrow: string;
   title: ReactNode;
   lead?: string;
-  backdrop: string;
+  backdrop?: string;
   /** 0..1 — base darkening over the backdrop. Default 0.78 for reading-heavy pages. */
   overlay?: number;
   children: ReactNode;
@@ -36,34 +36,38 @@ export default function CinematicPageShell({
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${backdrop})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(4px) saturate(0.38) brightness(0.46) contrast(1.05)",
-            transform: "scale(1.10)",
-          }}
-        />
-        {/* Edge-haze mask — heavier blur on the image perimeter so the
-            archival plate dissolves into atmosphere rather than sitting
-            cleanly framed behind the typography. */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${backdrop})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(28px) saturate(0.32) brightness(0.42)",
-            transform: "scale(1.16)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
-            maskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
-            opacity: 0.85,
-          }}
-        />
+        {backdrop && (
+          <>
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${backdrop})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "blur(4px) saturate(0.38) brightness(0.46) contrast(1.05)",
+                transform: "scale(1.10)",
+              }}
+            />
+            {/* Edge-haze mask — heavier blur on the image perimeter so the
+                archival plate dissolves into atmosphere rather than sitting
+                cleanly framed behind the typography. */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${backdrop})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "blur(28px) saturate(0.32) brightness(0.42)",
+                transform: "scale(1.16)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
+                maskImage:
+                  "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
+                opacity: 0.85,
+              }}
+            />
+          </>
+        )}
         {/* Graphite/blue-black wash */}
         <div
           className="absolute inset-0"
@@ -164,10 +168,10 @@ export default function CinematicPageShell({
           <div className="mx-auto max-w-4xl flex flex-wrap items-center justify-between gap-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
             <span>Sushanth Paatnaik · India → World</span>
             <a
-              href="mailto:info@sushanthpaatnaik.com"
+              href="mailto:me@sushanthpaatnaik.com"
               className="hover:text-foreground/80 transition-colors"
             >
-              info@sushanthpaatnaik.com
+              me@sushanthpaatnaik.com
             </a>
           </div>
         </footer>
