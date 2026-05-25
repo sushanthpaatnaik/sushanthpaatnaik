@@ -65,16 +65,15 @@ export function Tilt3DSurface({
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`} style={style}>
       {/* Atmospheric studio gradient — deep graphite cyc */}
-      <motion.div
+      <div
         aria-hidden
         className="absolute inset-0"
-        animate={reduced ? undefined : { opacity: [0.95, 1, 0.96] }}
-        transition={reduced ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
             "radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%)",
         }}
       />
+
 
       {/* Volumetric key light haze — soft top diffusion */}
       <div
