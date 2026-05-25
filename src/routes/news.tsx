@@ -341,7 +341,7 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
   { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.46, tone: "lift" },
   { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.34 },
-  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.14 },
+  { name: "Rediff · PTI",           logo: rediffLogo,            lighten: true, scale: 1.14 },
   { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
   { name: "YourStory",              logo: yourStoryLogo,         scale: 1.08, tone: "lift" },
   { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.12, tone: "lift" },
@@ -788,15 +788,12 @@ function NewsPage() {
           <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
             {outlets.map((o) => {
               const href = outletHref(o.name);
-              // Uniform optical sizing — ignore per-logo scale to keep heights consistent.
-              // Tight band: 36–44px, with very small nudges only for extreme outliers.
-              const scale = o.scale ?? 1;
-              const optical = Math.round(
-                Math.min(44, Math.max(36, 40 * (0.92 + (scale - 1) * 0.18))),
-              );
+              // Strictly uniform optical sizing — every logo lives in the same safe-zone.
+              // Per-logo `scale` is intentionally ignored so TED / GI / MIT / INDIA TODAY
+              // can never appear oversized relative to single-line marks.
               const imgStyle: CSSProperties = {
-                maxHeight: `${optical}px`,
-                maxWidth: "68%",
+                maxHeight: "40px",
+                maxWidth: "70%",
               };
               if (o.transparentBg) {
                 imgStyle.mixBlendMode = "screen";
@@ -804,14 +801,14 @@ function NewsPage() {
               if (o.nudgeY) {
                 imgStyle.transform = `translateY(${o.nudgeY}px)`;
               }
-              // Colored logos — gentle lift for dark-bg readability.
+              // Colored logos — stronger lift so dim/dark-on-dark stays readable.
               const colorTone =
                 o.tone === "muted"
-                  ? "opacity-[0.92] saturate-[0.78] brightness-[1.15] contrast-[1.10] group-hover:opacity-100 group-hover:brightness-[1.22]"
-                  : "opacity-[0.98] saturate-[0.92] brightness-[1.18] contrast-[1.12] group-hover:opacity-100 group-hover:brightness-[1.28]";
-              // Dark-mark logos — invert to white variant, normalized luminance.
+                  ? "opacity-100 saturate-[0.85] brightness-[1.28] contrast-[1.14] group-hover:brightness-[1.36]"
+                  : "opacity-100 saturate-[0.95] brightness-[1.30] contrast-[1.16] group-hover:brightness-[1.40]";
+              // Dark-mark logos — full invert to white, with extra punch to guarantee visibility.
               const lightenTone =
-                "invert opacity-[0.95] brightness-[1.18] contrast-[1.10] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.28]";
+                "[filter:invert(1)_brightness(1.35)_contrast(1.18)_saturate(0)] opacity-100 group-hover:[filter:invert(1)_brightness(1.5)_contrast(1.2)_saturate(0)]";
               const inner = (
                 <img
                   src={o.logo}
@@ -820,7 +817,7 @@ function NewsPage() {
                   style={imgStyle}
                   className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
                     o.transparentBg
-                      ? "invert opacity-[0.92] brightness-[1.18] contrast-[1.10] saturate-0 group-hover:opacity-100"
+                      ? "[filter:invert(1)_brightness(1.3)_contrast(1.15)_saturate(0)] opacity-100"
                       : o.lighten
                       ? lightenTone
                       : colorTone
@@ -828,7 +825,7 @@ function NewsPage() {
                 />
               );
               const baseCls =
-                "group relative flex h-24 sm:h-28 md:h-28 items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 shadow-[inset_0_0_40px_oklch(1_0_0_/_0.025)] transition-all duration-500 ease-out hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.45)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_8px_28px_-10px_oklch(0.62_0.10_55_/_0.28),inset_0_0_60px_oklch(1_0_0_/_0.05)]";
+                "group relative flex h-24 sm:h-28 items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 shadow-[inset_0_0_40px_oklch(1_0_0_/_0.03)] transition-all duration-500 ease-out hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.45)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_8px_28px_-10px_oklch(0.62_0.10_55_/_0.28),inset_0_0_60px_oklch(1_0_0_/_0.05)]";
 
               return href ? (
                 <a
@@ -848,6 +845,7 @@ function NewsPage() {
               );
             })}
           </div>
+
 
         </div>
       </EditorialSection>
