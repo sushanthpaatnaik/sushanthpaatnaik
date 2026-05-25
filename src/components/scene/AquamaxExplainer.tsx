@@ -61,9 +61,7 @@ export default function AquamaxExplainer() {
   );
 
   const [phaseIdx, setPhaseIdx] = useState(0);
-  if (typeof window !== "undefined") {
-    activePhase.on("change", (v) => setPhaseIdx(v));
-  }
+  useMotionValueEvent(activePhase, "change", (v) => setPhaseIdx(v));
 
   const sm = sizeMeta[size];
 
