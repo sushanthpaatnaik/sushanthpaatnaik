@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
-import AquamaxExplainer from "@/components/scene/AquamaxExplainer";
+import AquamaxSimulationCompact from "@/components/scene/AquamaxSimulationCompact";
 
 interface TiltImageProps {
   src: string;
@@ -656,11 +656,9 @@ export function Product3DModal({
               </div>
             </div>
 
-            {/* RIGHT — Interactive chimney hood / HV-LC simulation panel */}
+            {/* RIGHT — Compact chimney hood / HV-LC simulation panel */}
             <div className="relative">
-              <div className="-mt-6">
-                <AquamaxExplainer />
-              </div>
+              <AquamaxSimulationCompact />
             </div>
           </motion.div>
           ) : (
