@@ -623,7 +623,7 @@ export function Product3DModal({
                       {item.stage}
                     </span>
                   </div>
-                  <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
+                  <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
                     {item.title}
                   </h2>
                   <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
