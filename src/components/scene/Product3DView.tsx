@@ -594,7 +594,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, scale: 1.015 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain p-[6%]"
+                    className="absolute inset-0 h-full w-full object-cover"
                     style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98)" }}
                   />
                   <div
