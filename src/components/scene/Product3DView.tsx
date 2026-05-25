@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
+import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import AquamaxSimulationCompact from "@/components/scene/AquamaxSimulationCompact";
@@ -200,6 +200,9 @@ function HeroVideo({
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLVideoElement | null>(null);
+  const mountedRef = useRef(true);
+  const rampRafRef = useRef<number | null>(null);
+  const muteTimeoutRef = useRef<number | null>(null);
   const [muted, setMuted] = useState(true);
   const [hintVisible, setHintVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -243,18 +246,41 @@ function HeroVideo({
     };
   }, []);
 
+  // Hard cleanup on unmount — pause playback, mute, and cancel any pending
+  // volume-ramp RAF / mute timeout so audio cannot bleed past modal close.
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      if (rampRafRef.current !== null) cancelAnimationFrame(rampRafRef.current);
+      if (muteTimeoutRef.current !== null) window.clearTimeout(muteTimeoutRef.current);
+      const el = ref.current;
+      if (el) {
+        try {
+          el.pause();
+          el.muted = true;
+          el.volume = 0;
+        } catch {
+          /* noop */
+        }
+      }
+    };
+  }, []);
+
   const rampVolume = (target: number, durationMs = 650) => {
     const el = ref.current;
     if (!el) return;
+    if (rampRafRef.current !== null) cancelAnimationFrame(rampRafRef.current);
     const start = el.volume;
     const t0 = performance.now();
     const step = (now: number) => {
+      if (!mountedRef.current || !ref.current) return;
       const k = Math.min(1, (now - t0) / durationMs);
       const eased = 1 - Math.pow(1 - k, 3);
-      el.volume = start + (target - start) * eased;
-      if (k < 1) requestAnimationFrame(step);
+      ref.current.volume = start + (target - start) * eased;
+      if (k < 1) rampRafRef.current = requestAnimationFrame(step);
+      else rampRafRef.current = null;
     };
-    requestAnimationFrame(step);
+    rampRafRef.current = requestAnimationFrame(step);
   };
 
   const enableSound = () => {
@@ -271,8 +297,10 @@ function HeroVideo({
     const el = ref.current;
     if (!el) return;
     rampVolume(0, 350);
-    window.setTimeout(() => {
-      if (!ref.current) return;
+    if (muteTimeoutRef.current !== null) window.clearTimeout(muteTimeoutRef.current);
+    muteTimeoutRef.current = window.setTimeout(() => {
+      muteTimeoutRef.current = null;
+      if (!mountedRef.current || !ref.current) return;
       ref.current.muted = true;
       setMuted(true);
     }, 360);
@@ -518,10 +546,12 @@ export function Product3DModal({
                 e.stopPropagation();
                 onClose();
               }}
-              className="pointer-events-auto font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/60 transition-colors hover:text-foreground/95"
+              className="pointer-events-auto flex items-center gap-2 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75 backdrop-blur-md transition-colors hover:border-accent/40 hover:text-foreground"
               aria-label="Close product inspection"
             >
-              Close · ESC
+              <X className="h-3.5 w-3.5" strokeWidth={1.6} />
+              <span className="hidden sm:inline">Close · ESC</span>
+              <span className="sm:hidden">Close</span>
             </button>
           </div>
 
