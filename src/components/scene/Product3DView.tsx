@@ -200,6 +200,9 @@ function HeroVideo({
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLVideoElement | null>(null);
+  const mountedRef = useRef(true);
+  const rampRafRef = useRef<number | null>(null);
+  const muteTimeoutRef = useRef<number | null>(null);
   const [muted, setMuted] = useState(true);
   const [hintVisible, setHintVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -243,18 +246,41 @@ function HeroVideo({
     };
   }, []);
 
+  // Hard cleanup on unmount — pause playback, mute, and cancel any pending
+  // volume-ramp RAF / mute timeout so audio cannot bleed past modal close.
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      if (rampRafRef.current !== null) cancelAnimationFrame(rampRafRef.current);
+      if (muteTimeoutRef.current !== null) window.clearTimeout(muteTimeoutRef.current);
+      const el = ref.current;
+      if (el) {
+        try {
+          el.pause();
+          el.muted = true;
+          el.volume = 0;
+        } catch {
+          /* noop */
+        }
+      }
+    };
+  }, []);
+
   const rampVolume = (target: number, durationMs = 650) => {
     const el = ref.current;
     if (!el) return;
+    if (rampRafRef.current !== null) cancelAnimationFrame(rampRafRef.current);
     const start = el.volume;
     const t0 = performance.now();
     const step = (now: number) => {
+      if (!mountedRef.current || !ref.current) return;
       const k = Math.min(1, (now - t0) / durationMs);
       const eased = 1 - Math.pow(1 - k, 3);
-      el.volume = start + (target - start) * eased;
-      if (k < 1) requestAnimationFrame(step);
+      ref.current.volume = start + (target - start) * eased;
+      if (k < 1) rampRafRef.current = requestAnimationFrame(step);
+      else rampRafRef.current = null;
     };
-    requestAnimationFrame(step);
+    rampRafRef.current = requestAnimationFrame(step);
   };
 
   const enableSound = () => {
@@ -271,8 +297,10 @@ function HeroVideo({
     const el = ref.current;
     if (!el) return;
     rampVolume(0, 350);
-    window.setTimeout(() => {
-      if (!ref.current) return;
+    if (muteTimeoutRef.current !== null) window.clearTimeout(muteTimeoutRef.current);
+    muteTimeoutRef.current = window.setTimeout(() => {
+      muteTimeoutRef.current = null;
+      if (!mountedRef.current || !ref.current) return;
       ref.current.muted = true;
       setMuted(true);
     }, 360);
