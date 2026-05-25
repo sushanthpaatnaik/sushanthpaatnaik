@@ -506,7 +506,7 @@ export function Product3DModal({
           }}
           onClick={onClose}
         >
-          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between px-6 py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
+          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
             <div className="pointer-events-auto flex items-center gap-3">
               <span className="h-px w-8 bg-accent/70" />
               <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
@@ -533,7 +533,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
+            className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
           >
             {/* LEFT — Aquamax product studio hero */}
             <div className="grid content-start gap-5">
@@ -623,7 +623,7 @@ export function Product3DModal({
                       {item.stage}
                     </span>
                   </div>
-                  <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
+                  <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
                     {item.title}
                   </h2>
                   <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
@@ -668,7 +668,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-12 gap-y-8 px-6 md:grid-cols-[1.65fr_0.9fr] md:px-10"
+            className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-12 gap-y-8 px-4 sm:px-6 lg:grid-cols-[1.65fr_0.9fr] md:px-10"
           >
             <div className="grid content-start gap-5">
               {/* TOP HERO FRAME.
@@ -755,7 +755,7 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-[1.35fr_1fr] gap-5">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1.35fr_1fr]">
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
@@ -880,7 +880,7 @@ export function Product3DModal({
                       {item.stage}
                     </span>
                   </div>
-                  <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
+                  <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
                     {item.title}
                   </h2>
                   <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
@@ -888,7 +888,7 @@ export function Product3DModal({
                   </p>
                 </div>
                 {!item.largeApplicationFrame && (
-                  <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                  <div className="hidden sm:block aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
                     <div
                       className="h-full w-full"
                       style={{

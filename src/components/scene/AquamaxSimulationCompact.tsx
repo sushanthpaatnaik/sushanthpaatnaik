@@ -144,7 +144,7 @@ export default function AquamaxSimulationCompact() {
       </div>
 
       {/* Phase tabs */}
-      <div className="grid grid-cols-4 divide-x divide-foreground/[0.06] border-b border-foreground/[0.06]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-foreground/[0.06]">
         {phases.map((p, i) => {
           const active = i === phaseIdx;
           return (
@@ -153,7 +153,7 @@ export default function AquamaxSimulationCompact() {
               type="button"
               onClick={() => setPhaseIdx(i)}
               aria-pressed={active}
-              className={`group relative px-3 py-2.5 text-left transition-colors ${active ? "bg-[oklch(0.06_0.01_245)]" : "hover:bg-foreground/[0.025]"}`}
+              className={`group relative border-foreground/[0.06] px-3 py-2.5 text-left transition-colors [&:not(:first-child)]:border-l ${active ? "bg-[oklch(0.06_0.01_245)]" : "hover:bg-foreground/[0.025]"}`}
             >
               <span
                 aria-hidden

@@ -144,12 +144,12 @@ function HeroSection() {
               Inventor and deep-tech founder.<br className="hidden md:inline" />
               <span className="text-foreground/55">Building from India — for the world.</span>
             </p>
-            <div className="mt-10 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.45em] text-muted-foreground/50">
-              <span className="h-px w-8 bg-foreground/12" />
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[9px] sm:text-[9.5px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-muted-foreground/50">
+              <span className="hidden sm:block h-px w-8 bg-foreground/12" />
               <span>Six-time Presidential awardee</span>
               <span className="h-px w-1 bg-foreground/20" />
               <span>TED · MIT TR-35</span>
-              <span className="h-px w-8 bg-foreground/12" />
+              <span className="hidden sm:block h-px w-8 bg-foreground/12" />
             </div>
           </motion.div>
         </div>
