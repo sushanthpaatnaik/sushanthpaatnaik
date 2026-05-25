@@ -888,7 +888,7 @@ export function Product3DModal({
                   </p>
                 </div>
                 {!item.largeApplicationFrame && (
-                  <div className="aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
+                  <div className="hidden sm:block aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
                     <div
                       className="h-full w-full"
                       style={{
