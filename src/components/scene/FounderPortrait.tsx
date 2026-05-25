@@ -87,12 +87,14 @@ export default function FounderPortrait({
           </div>
         )}
 
-        {/* Portrait — reduced height (~15% shorter), more breathing room */}
+        {/* Portrait — full image visible, cinematic letterboxing rather
+            than aggressive crop. Aspect ratios sized so the entire subject
+            and environmental context fit naturally on every breakpoint. */}
         <div
           className={
             isDoc
-              ? "relative aspect-[4/4.3] md:aspect-[16/8.5] w-full overflow-hidden"
-              : "relative aspect-[5/6] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
+              ? "relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-[oklch(0.035_0_0)]"
+              : "relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
           }
         >
           <img
@@ -105,7 +107,7 @@ export default function FounderPortrait({
             loading="lazy"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-center [filter:contrast(1.03)_saturate(0.74)_brightness(0.86)_blur(0.3px)]"
+                ? "absolute inset-0 h-full w-full object-contain object-center [filter:contrast(1.03)_saturate(0.74)_brightness(0.86)]"
                 : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
             }
           />
