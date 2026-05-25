@@ -300,7 +300,7 @@ function InnovationsPage() {
             TRL · I — III
           </span>
         </div>
-        <div className="flex divide-x divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+        <div className="grid grid-cols-2 sm:flex sm:divide-x sm:divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
           {filters.map((f) => {
             const isActive = f === filter;
             const count = f === "All" ? items.length : items.filter((i) => i.stage === f).length;
