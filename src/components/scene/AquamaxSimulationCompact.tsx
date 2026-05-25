@@ -232,4 +232,170 @@ function CompactScene({ detached, size, active }: { detached: boolean; size: Siz
         </linearGradient>
         <radialGradient id="aqc-hoodInner" cx="0.5" cy="0.2" r="0.8">
           <stop offset="0%" stopColor="oklch(0.62 0.08 45)" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="oklch(0.2 0.02 45)" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Ground line */}
+      <line x1="0" y1={chimneyBottomY} x2="400" y2={chimneyBottomY} stroke="oklch(0.25 0.008 235)" strokeWidth="0.5" />
+
+      {/* Chimney */}
+      <rect
+        x={chimneyX - chimneyHalf}
+        y={chimneyTopY}
+        width={sm.chimneyW}
+        height={chimneyBottomY - chimneyTopY}
+        fill="oklch(0.16 0.006 235)"
+        stroke="oklch(0.28 0.008 235)"
+        strokeWidth="0.6"
+      />
+      {[110, 160, 210, 260].map((y) => (
+        <line
+          key={y}
+          x1={chimneyX - chimneyHalf}
+          y1={y}
+          x2={chimneyX + chimneyHalf}
+          y2={y}
+          stroke="oklch(0.24 0.008 235)"
+          strokeWidth="0.5"
+        />
+      ))}
+      <ellipse
+        cx={chimneyX}
+        cy={chimneyTopY}
+        rx={chimneyHalf}
+        ry={6}
+        fill="oklch(0.08 0.005 235)"
+        stroke="oklch(0.32 0.008 235)"
+        strokeWidth="0.6"
+      />
+
+      {/* Plume when detached */}
+      <AnimatePresence>
+        {detached && (
+          <motion.g
+            key="plume"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          >
+            <motion.ellipse
+              cx={chimneyX}
+              cy={chimneyTopY - 24}
+              rx={chimneyHalf - 4}
+              ry={30}
+              fill="url(#aqc-vapor)"
+              animate={{ ry: [28, 34, 28], opacity: [0.7, 0.95, 0.7] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.ellipse
+              cx={chimneyX - 6}
+              cy={chimneyTopY - 44}
+              rx={chimneyHalf + 4}
+              ry={22}
+              fill="url(#aqc-vapor)"
+              animate={{ cy: [chimneyTopY - 44, chimneyTopY - 56, chimneyTopY - 44], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.g>
+        )}
+      </AnimatePresence>
+
+      {/* Hood */}
+      <motion.g animate={{ y: hoodOffsetY }} transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}>
+        <path
+          d={`M ${chimneyX - collarHalf} ${hoodAttachedY} L ${chimneyX - collarHalf - 8} ${hoodAttachedY - 22} L ${chimneyX - collarHalf - 26} ${hoodAttachedY - 44} L ${chimneyX + collarHalf + 26} ${hoodAttachedY - 44} L ${chimneyX + collarHalf + 8} ${hoodAttachedY - 22} L ${chimneyX + collarHalf} ${hoodAttachedY} Z`}
+          fill="url(#aqc-cabinet)"
+          stroke="oklch(0.36 0.01 235)"
+          strokeWidth="0.7"
+        />
+        <ellipse cx={chimneyX} cy={hoodAttachedY - 42} rx={collarHalf + 18} ry={3.5} fill="oklch(0.05 0.005 235)" stroke="oklch(0.4 0.01 235)" strokeWidth="0.5" />
+        <ellipse cx={chimneyX} cy={hoodAttachedY - 22} rx={collarHalf + 8} ry={4} fill="url(#aqc-hoodInner)" />
+        <rect x={chimneyX + collarHalf + 4} y={hoodAttachedY - 38} width="22" height="10" fill="url(#aqc-steel)" stroke="oklch(0.36 0.01 235)" strokeWidth="0.5" />
+        <rect
+          x={chimneyX - collarHalf - 3}
+          y={hoodAttachedY - 2}
+          width={collarHalf * 2 + 6}
+          height={6}
+          fill="oklch(0.36 0.012 235)"
+          stroke="oklch(0.5 0.012 235)"
+          strokeWidth="0.5"
+        />
+        {Array.from({ length: 8 }).map((_, i) => {
+          const x = chimneyX - collarHalf + (i + 0.5) * ((collarHalf * 2) / 8);
+          return <circle key={i} cx={x} cy={hoodAttachedY + 1} r="1.1" fill="oklch(0.62 0.1 45)" />;
+        })}
+      </motion.g>
+
+      {/* Conduit — pulses when phase 02 active */}
+      {(() => {
+        const startX = chimneyX + collarHalf + 26;
+        const startY = hoodAttachedY - 33 + hoodOffsetY;
+        const endX = 300;
+        const endY = 200;
+        const path = `M ${startX} ${startY} C ${startX + 50} ${startY}, ${endX - 60} ${endY - 30}, ${endX} ${endY}`;
+        return (
+          <g>
+            <path d={path} stroke="oklch(0.4 0.012 235)" strokeWidth="10" fill="none" strokeLinecap="round" opacity={0.85} />
+            <path d={path} stroke="oklch(0.12 0.005 235)" strokeWidth="0.6" fill="none" />
+            <motion.path
+              d={path}
+              stroke="oklch(0.78 0.1 45)"
+              strokeWidth="1.4"
+              fill="none"
+              strokeDasharray="5 8"
+              animate={{ strokeDashoffset: [13, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
+              opacity={active >= 1 ? 0.9 : 0.25}
+            />
+          </g>
+        );
+      })()}
+
+      {/* Recovery cabinet */}
+      <g opacity={active >= 2 ? 1 : 0.55}>
+        <rect x={290} y={195} width={92} height={75} fill="url(#aqc-cabinet)" stroke="oklch(0.36 0.01 235)" strokeWidth="0.7" />
+        <g stroke="oklch(0.55 0.12 45)" strokeWidth="0.9" fill="none">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <path key={i} d={`M ${300} ${220 + i * 7} Q ${336} ${214 + i * 7}, ${372} ${220 + i * 7}`} />
+          ))}
+        </g>
+        <circle cx={302} cy={208} r="2.4" fill="oklch(0.08 0.005 235)" stroke="oklch(0.5 0.01 235)" strokeWidth="0.5" />
+        <circle cx={312} cy={208} r="2.4" fill="oklch(0.08 0.005 235)" stroke="oklch(0.5 0.01 235)" strokeWidth="0.5" />
+        <rect x={290} y={262} width={92} height={4} fill="oklch(0.06 0.005 235)" />
+        <text x={295} y={265.4} fill="oklch(0.62 0.08 45)" fontSize="3" fontFamily="ui-monospace, monospace" letterSpacing="0.4">
+          AQUAMAX · HV-LC
+        </text>
+      </g>
+
+      {/* Reclaim loop */}
+      <g opacity={active >= 3 ? 0.85 : 0.15}>
+        <motion.path
+          d={`M 347 276 L 347 286 L 60 286 L 60 272`}
+          stroke="oklch(0.62 0.08 195)"
+          strokeWidth="1"
+          fill="none"
+          strokeDasharray="3 6"
+          animate={{ strokeDashoffset: [9, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
+        />
+        <text x={140} y={283} fill="oklch(0.62 0.08 195)" fontSize="3.4" fontFamily="ui-monospace, monospace" letterSpacing="0.5">
+          RECYCLED · CONDENSATE → PROCESS WATER
+        </text>
+      </g>
+
+      {/* Labels */}
+      <g fill="oklch(0.62 0.005 235)" fontFamily="ui-monospace, monospace" fontSize="3.4" letterSpacing="0.4">
+        <text x={chimneyX - chimneyHalf - 38} y={chimneyTopY + 10}>INTAKE HOOD</text>
+        <text x={215} y={170}>CORRUGATED 316L</text>
+        <text x={296} y={188}>HV · LOW-CURRENT UNIT</text>
+        <text x={chimneyX - 12} y={chimneyBottomY - 6} fill="oklch(0.5 0.005 235)">
+          STACK · {sm.label}
+        </text>
+      </g>
+    </svg>
+  );
+}
+
           
