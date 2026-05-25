@@ -491,9 +491,6 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
           {item.title}
         </h3>
-        <p className="mt-2.5 max-w-xl text-[13px] leading-snug text-foreground/75 md:text-[14px]">
-          {item.body}
-        </p>
         <div className="mt-3 flex items-center gap-3">
           <span className="h-px w-5 bg-accent/60" />
           <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
