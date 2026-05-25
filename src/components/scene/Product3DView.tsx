@@ -141,15 +141,14 @@ export function Tilt3DSurface({
           WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
         }}
       >
-        <motion.img
+        <img
           src={src}
           alt=""
           loading="lazy"
-          animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
-          transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
           className="absolute inset-0 h-full w-full object-contain"
           style={{ padding: reflPad }}
         />
+
       </div>
 
       {/* Top edge specular — soft rim light */}
