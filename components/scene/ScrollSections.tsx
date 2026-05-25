@@ -4,23 +4,11 @@ import { useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import StorySection, { type StoryChapter } from "./StorySection";
-import founderPresence from "@/assets/founder-editorial.webp";
+import founderPresenceImg from "@/assets/founder-editorial.webp";
 import HeroAtmosphere from "./HeroAtmosphere";
 import Interstitial from "./Interstitial";
 
-/* ──────────────────────────────────────────────────────────────────
-   Homepage = cinematic opening sequence into the larger world.
-   Seven scenes. No archives. No tables. No long-form content.
-   Each detailed surface lives on its own dedicated route.
-
-   01 — Opening thesis      (HeroSection)
-   02 — Founder presence    (quote + dissolved portrait)
-   03 — Innovation          (StorySection · carbon intelligence)
-   04 — Industrial future   (StorySection · industrial applications)
-   05 — Recognition signal  (single line + link to /recognitions)
-   06 — Ecosystem gateway   (constellation of routes)
-   07 — Closing invitation  (Future CTA)
-   ────────────────────────────────────────────────────────────────── */
+const founderPresenceSrc = typeof founderPresenceImg === "string" ? founderPresenceImg : founderPresenceImg.src;
 
 const carbonChapter: StoryChapter = {
   id: "carbon-intelligence",
@@ -57,9 +45,6 @@ function HeroSection() {
       <div className="viewport-stage sticky top-0 flex flex-col items-center justify-center overflow-clip text-center pt-32 md:pt-28 pb-16 render-stable">
         <HeroAtmosphere />
 
-        {/* Restrained volumetric key — a single cool beam, very low opacity,
-            drifting almost imperceptibly. Adds cinematic depth without
-            gradient noise or glow. */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1] mix-blend-screen"
@@ -84,7 +69,6 @@ function HeroSection() {
           }}
         />
 
-        {/* Atmospheric vignette — deep ink falloff on all edges */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
@@ -103,7 +87,6 @@ function HeroSection() {
         />
 
         <div className="relative z-10 max-w-4xl pointer-events-auto">
-          {/* Eyebrow — archival corner mark */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -135,7 +118,6 @@ function HeroSection() {
             ))}
           </motion.h1>
 
-          {/* Subtitle hierarchy — primary line, then a quieted credential register */}
           <motion.div
             initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -162,11 +144,9 @@ function HeroSection() {
   );
 }
 
-/* ───────────── Scroll cue — cinematic, restrained, accessible ───────────── */
 function ScrollCue() {
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
-  // Fade out within the first ~40% of the hero viewport.
   const opacity = useTransform(scrollY, [0, 220, 420], [1, 0.45, 0]);
   const pointerEvents = useTransform(scrollY, (v) => (v > 380 ? "none" : "auto"));
 
@@ -223,7 +203,6 @@ function ScrollCue() {
   );
 }
 
-
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 32, mass: 0.5 });
@@ -265,63 +244,37 @@ function MotionReveal({
   );
 }
 
-/* ───────────── Scene 02 — Founder presence (mystery atmospheric layer) ─────────────
- * The portrait is NOT a plate, card, or rectangular image. It dissolves
- * into the industrial darkness as an environmental presence — faintly
- * legible, edge-lit, masked to a soft elliptical halo, heavily vignetted
- * and blurred at the margins. The Voice quote sits on top as the only
- * resolved foreground element.
- * ─────────────────────────────────────────────────────────────────────── */
 function FounderScene() {
   return (
     <section
       id="founder"
       className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44"
     >
-      {/* Founder presence — dissolved into industrial darkness. Silhouette,
-          glasses, and jawline barely legible; edge-lit by a cool key from
-          the upper-left and a faint copper rim from the right. */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Graphite-black base atmosphere */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_30%_48%,oklch(0.07_0_0)_0%,oklch(0.035_0_0)_55%,oklch(0.015_0_0)_100%)]" />
 
-        {/* The portrait — concealed but cinematically intelligent: eyes,
-            glasses, facial contour and blazer edge selectively legible.
-            Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
           className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
-          style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
+          style={{ backgroundImage: `url(${founderPresenceSrc})`, backgroundPosition: "center 28%" }}
         />
 
-        {/* Softened lower torso — reduces clothing fold visibility, preserves face */}
         <div
           aria-hidden
           className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
-          style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 78%" }}
+          style={{ backgroundImage: `url(${founderPresenceSrc})`, backgroundPosition: "center 78%" }}
         />
 
-        {/* Subtle cool blue-grey rim — jawline / shoulders / glasses edges */}
         <div className="absolute inset-1 mix-blend-screen bg-[radial-gradient(ellipse_6%_5%_at_25%_31%,oklch(0.80_0.015_232/0.12),transparent_78%)]" />
         <div className="absolute inset-1 mix-blend-soft-light bg-[radial-gradient(ellipse_18%_24%_at_28%_36%,oklch(0.70_0.015_232/0.15),transparent_75%)]" />
         <div className="absolute inset-0 mix-blend-screen bg-[radial-gradient(ellipse_20%_22%_at_21%_59%,oklch(0.58_0.015_232/0.09),transparent_78%)]" />
         <div className="absolute inset-0 mix-blend-soft-light bg-[radial-gradient(ellipse_10%_14%_at_30%_22%,oklch(0.76_0.02_232/0.066),transparent_82%)]" />
-
-        {/* Atmospheric haze — softens shoulders and body into the black */}
         <div className="absolute inset-y-[8%] left-[-2%] w-[52%] mix-blend-multiply bg-[radial-gradient(ellipse_70%_60%_at_38%_60%,transparent_30%,oklch(0.02_0_0/0.46)_72%,oklch(0.015_0_0)_100%)]" />
-
-        {/* Center atmospheric depth — graphite haze + restrained warm/cool bloom */}
         <div className="absolute inset-y-[14%] left-[34%] w-[40%] mix-blend-screen bg-[radial-gradient(ellipse_70%_62%_at_50%_50%,oklch(0.38_0.018_232/0.14),transparent_78%)] blur-3xl" />
         <div className="absolute inset-y-[22%] left-[42%] w-[26%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,oklch(0.58_0.04_232/0.12),transparent_75%)] blur-2xl" />
         <div className="absolute inset-y-[30%] left-[46%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_55%_50%_at_55%_55%,oklch(0.52_0.06_55/0.07),transparent_78%)] blur-3xl" />
-
-        {/* Right-side lift — restores a faint structural presence on the
-            right (atmospheric, not portrait) so the frame stops feeling
-            left-heavy. Very low opacity, soft-light blend. */}
         <div className="absolute inset-y-[18%] right-[6%] w-[34%] mix-blend-soft-light bg-[radial-gradient(ellipse_60%_55%_at_60%_50%,oklch(0.50_0.02_232/0.12),transparent_78%)] blur-3xl" />
         <div className="absolute inset-y-[28%] right-[10%] w-[22%] mix-blend-screen bg-[radial-gradient(ellipse_50%_45%_at_55%_50%,oklch(0.58_0.03_232/0.06),transparent_80%)] blur-2xl" />
-
-        {/* Faint molecular texture across the center void */}
         <div
           aria-hidden
           className="absolute inset-y-[10%] left-[32%] w-[44%] opacity-[0.07] mix-blend-overlay"
@@ -332,17 +285,12 @@ function FounderScene() {
             filter: "blur(0.4px)",
           }}
         />
-
-
-        {/* Cinematic falloff — smoothed, less left-weighted */}
         <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0)_88%)]" />
         <div className="absolute inset-y-0 right-0 w-[58%] bg-[linear-gradient(270deg,oklch(0.018_0_0)_14%,oklch(0.025_0_0/0.42)_54%,transparent_96%)]" />
         <div className="absolute inset-y-0 left-0 w-[8%] bg-[linear-gradient(90deg,oklch(0.018_0_0)_6%,transparent)]" />
         <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.018_0_0)_8%,transparent)]" />
       </div>
 
-      {/* Faint lattice particles — extremely low opacity, drifting motes
-          between portrait and quote, reinforcing the material atmosphere. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
         {[
           { x: "32%", y: "28%", d: 32, delay: 0 },
@@ -394,7 +342,6 @@ function FounderScene() {
   );
 }
 
-/* ───────────── Scene 05 — Recognition signal ───────────── */
 function RecognitionSignal() {
   return (
     <section
@@ -404,9 +351,7 @@ function RecognitionSignal() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
         <MotionReveal>
-          <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            Recognition
-          </p>
+          <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">Recognition</p>
         </MotionReveal>
         <MotionReveal delay={0.08}>
           <h2 className="font-display text-[clamp(2rem,7vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-gradient">
@@ -432,7 +377,6 @@ function RecognitionSignal() {
   );
 }
 
-/* ───────────── Scene 06 — Ecosystem gateway ───────────── */
 function EcosystemGateway() {
   return (
     <section
@@ -443,9 +387,7 @@ function EcosystemGateway() {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
-          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            Ecosystem
-          </p>
+          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">Ecosystem</p>
           <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
             Seven thresholds into the work.
           </h2>
@@ -453,7 +395,6 @@ function EcosystemGateway() {
             The homepage is the opening sequence. The ecosystem lives behind these doors — each one its own cinematic world.
           </p>
         </MotionReveal>
-
         <ul className="mt-16 md:mt-24 grid gap-x-10 gap-y-2 sm:grid-cols-2">
           {gateways.map((g, i) => (
             <MotionReveal key={g.href} delay={i * 0.04}>
@@ -469,9 +410,7 @@ function EcosystemGateway() {
                     <h3 className="font-display text-xl md:text-2xl tracking-[-0.015em] text-foreground/90 transition-colors duration-500 group-hover:text-gradient">
                       {g.label}
                     </h3>
-                    <p className="mt-1.5 text-[13px] text-muted-foreground/70">
-                      {g.line}
-                    </p>
+                    <p className="mt-1.5 text-[13px] text-muted-foreground/70">{g.line}</p>
                   </div>
                   <span className="text-foreground/40 transition-all duration-500 group-hover:text-foreground/80 group-hover:translate-x-1">
                     →
@@ -486,19 +425,13 @@ function EcosystemGateway() {
   );
 }
 
-/* ───────────── Scene 07 — Closing invitation ───────────── */
 function ClosingInvitation() {
   return (
     <section
       id="future"
       className="relative h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center py-20 md:py-24 flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* Architectural system node — restrained, integrated, atmospheric. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        {/* Living orbital pulse — a thin luminous ring, no inset darkness */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
@@ -508,8 +441,6 @@ function ClosingInvitation() {
           animate={{ opacity: [0.5, 0.72, 0.5], scale: [1, 1.012, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
-
-        {/* Volumetric atmospheric diffusion — soft luminous haze, additive only */}
         <motion.div
           className="absolute left-1/2 top-[56%] -translate-x-1/2 -translate-y-1/2 w-[120%] h-[44%]"
           style={{
@@ -521,25 +452,14 @@ function ClosingInvitation() {
           animate={{ opacity: [0.45, 0.62, 0.45] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         />
-
-
-        {/* Distant satellite — single faint drifting node */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[1.5px] w-[1.5px] rounded-full bg-foreground/40"
-          style={{
-            boxShadow: "0 0 6px oklch(0.78 0.04 232 / 0.5)",
-            transformOrigin: "0 0",
-          }}
+          style={{ boxShadow: "0 0 6px oklch(0.78 0.04 232 / 0.5)", transformOrigin: "0 0" }}
           animate={{ rotate: 360 }}
           transition={{ duration: 240, repeat: Infinity, ease: "linear" }}
         >
-          <span
-            className="absolute block rounded-full bg-foreground/60"
-            style={{ width: 1.5, height: 1.5, left: "32vh", top: 0 }}
-          />
+          <span className="absolute block rounded-full bg-foreground/60" style={{ width: 1.5, height: 1.5, left: "32vh", top: 0 }} />
         </motion.div>
-
-        {/* Planetary shimmer — microscopic environmental motion */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
@@ -551,7 +471,6 @@ function ClosingInvitation() {
           animate={{ rotate: 360 }}
           transition={{ duration: 360, repeat: Infinity, ease: "linear" }}
         />
-
         <div
           className="absolute inset-x-0 bottom-0 h-[58%]"
           style={{
@@ -559,13 +478,10 @@ function ClosingInvitation() {
               "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.42) 55%, oklch(0.014 0.004 250 / 0.86) 100%)",
           }}
         />
-
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal>
-          <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-            Future Systems
-          </p>
+          <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">Future Systems</p>
         </MotionReveal>
         <MotionReveal delay={0.06}>
           <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
@@ -578,13 +494,11 @@ function ClosingInvitation() {
             style={{
               textRendering: "geometricPrecision",
               WebkitFontSmoothing: "antialiased",
-              textShadow:
-                "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
+              textShadow: "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
             }}
           >
             Energy as infrastructure.<br /> Industry at planetary scale.
           </h2>
-
         </MotionReveal>
         <MotionReveal delay={0.2}>
           <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
@@ -593,12 +507,8 @@ function ClosingInvitation() {
         </MotionReveal>
         <MotionReveal delay={0.28}>
           <div className="closing-cta-row flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-            <Link href="/contact" className="btn-cinematic btn-cinematic-atmospheric">
-              Begin a conversation
-            </Link>
-            <Link href="/engage" className="btn-cinematic-secondary">
-              Engage <span className="text-[10px] opacity-60">→</span>
-            </Link>
+            <Link href="/contact" className="btn-cinematic btn-cinematic-atmospheric">Begin a conversation</Link>
+            <Link href="/engage" className="btn-cinematic-secondary">Engage <span className="text-[10px] opacity-60">→</span></Link>
           </div>
         </MotionReveal>
         <MotionReveal delay={0.34}>
@@ -612,21 +522,17 @@ function ClosingInvitation() {
         </MotionReveal>
         <MotionReveal delay={0.42}>
           <div className="relative mt-8 md:mt-10 lg:mt-12 inline-block">
-            {/* Faint atmospheric backlight behind the archival signature */}
             <span
               aria-hidden
               className="pointer-events-none absolute -inset-x-12 -inset-y-3 -z-10"
               style={{
-                background:
-                  "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.24), transparent 76%)",
+                background: "radial-gradient(ellipse 70% 100% at 50% 50%, oklch(0.46 0.018 232 / 0.24), transparent 76%)",
                 filter: "blur(22px)",
               }}
             />
             <p
               className="text-[10.5px] font-extralight uppercase tracking-[0.4em] text-foreground/70"
-              style={{
-                textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)",
-              }}
+              style={{ textShadow: "0 1px 14px oklch(0.04 0.008 240 / 0.7)" }}
             >
               © Sushanth Paatnaik — Building systems for industrial futures and material intelligence.
             </p>
@@ -642,41 +548,16 @@ export default function ScrollSections() {
   return (
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar />
-
-      {/* 01 — Opening thesis */}
       <HeroSection />
-
-      {/* 02 — Founder presence */}
       <FounderScene />
-
-      {/* Interlude — material thesis */}
       <Interstitial line="Ideas entered industry." />
-
-      {/* 03 — Innovation philosophy */}
       <StorySection chapter={carbonChapter} index={3} total={totalChapters} />
-
-      {/* 04 — Industrial future vision */}
       <StorySection chapter={industrialChapter} index={4} total={totalChapters} />
-
-      {/* Interlude — research evolved */}
       <Interstitial line="Research evolved into infrastructure." />
-
-      {/* 05 — Recognition signal */}
       <RecognitionSignal />
-
-      {/* Interlude — recognition followed */}
       <Interstitial line="Recognition followed the prototypes." />
-
-      {/* 06 — Ecosystem gateway */}
       <EcosystemGateway />
-
-      {/* Breathing pause — one intentional moment of stillness */}
-      <Interstitial
-        pause
-        line={"The future is not imagined.\nIt is engineered quietly."}
-      />
-
-      {/* 07 — Closing invitation */}
+      <Interstitial pause line={"The future is not imagined.\nIt is engineered quietly."} />
       <ClosingInvitation />
     </div>
   );
