@@ -533,7 +533,7 @@ export function Product3DModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.985, y: 8 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
+            className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
           >
             {/* LEFT — Aquamax product studio hero */}
             <div className="grid content-start gap-5">
