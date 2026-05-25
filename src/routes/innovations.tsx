@@ -377,8 +377,6 @@ function InnovationsPage() {
           );
         })}
       </div>
-      {/* Aquamax — interactive deployment explainer */}
-      <AquamaxExplainer />
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
