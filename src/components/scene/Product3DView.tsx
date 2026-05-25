@@ -65,15 +65,16 @@ export function Tilt3DSurface({
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`} style={style}>
       {/* Atmospheric studio gradient — deep graphite cyc */}
-      <div
+      <motion.div
         aria-hidden
         className="absolute inset-0"
+        animate={reduced ? undefined : { opacity: [0.95, 1, 0.96] }}
+        transition={reduced ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
             "radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%)",
         }}
       />
-
 
       {/* Volumetric key light haze — soft top diffusion */}
       <div
@@ -112,20 +113,19 @@ export function Tilt3DSurface({
       />
 
       {/* Subject — main product */}
-      <img
+      <motion.img
         src={src}
         alt={alt}
         loading="lazy"
+        animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
+        transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
         className={`absolute inset-0 h-full w-full object-contain ${pad} ${imgClassName}`}
         style={{
           filter:
             "drop-shadow(0 32px 42px oklch(0 0 0 / 0.78)) drop-shadow(0 16px 24px oklch(0 0 0 / 0.4)) drop-shadow(0 0 22px oklch(0.85 0.02 235 / 0.06))",
-          transform: "translateZ(0)",
-          willChange: "transform",
           ...imgStyle,
         }}
       />
-
 
       {/* Floor reflection — mirrored, blurred, masked.
           NOTE: framer-motion's `y`/`scale` writes to transform and would
@@ -141,14 +141,15 @@ export function Tilt3DSurface({
           WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
         }}
       >
-        <img
+        <motion.img
           src={src}
           alt=""
           loading="lazy"
+          animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
+          transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
           className="absolute inset-0 h-full w-full object-contain"
           style={{ padding: reflPad }}
         />
-
       </div>
 
       {/* Top edge specular — soft rim light */}
