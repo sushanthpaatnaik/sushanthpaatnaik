@@ -341,7 +341,7 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
   { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.46, tone: "lift" },
   { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.34 },
-  { name: "Rediff · PTI",           logo: rediffLogo,            scale: 1.14 },
+  { name: "Rediff · PTI",           logo: rediffLogo,            lighten: true, scale: 1.14 },
   { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
   { name: "YourStory",              logo: yourStoryLogo,         scale: 1.08, tone: "lift" },
   { name: "WeRIndia · Fusion",      logo: werIndiaLogo,          scale: 1.12, tone: "lift" },
