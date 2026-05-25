@@ -5,7 +5,6 @@ import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
 import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
-import AquamaxExplainer from "@/components/scene/AquamaxExplainer";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
