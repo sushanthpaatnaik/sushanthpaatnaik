@@ -336,7 +336,7 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.20 },
   { name: "Deccan Chronicle",       logo: deccanLogo,            lighten: true, scale: 1.00, tone: "lift" },
   { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.18 },
-  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.24 },
+  { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 1.10 },
   { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
   { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
   { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.46, tone: "lift" },
