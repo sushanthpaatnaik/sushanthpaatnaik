@@ -788,13 +788,10 @@ function NewsPage() {
               backgroundSize: "180px 180px",
             }}
           />
-          <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
+          <div className="relative z-[2] grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 sm:gap-5 sm:p-6 lg:grid-cols-6 lg:gap-6 lg:p-7">
             {outlets.map((o) => {
-              const href = outletHref(o.name);
               const scale = o.scale ?? 1;
-              // Optical baseline ~ 44px at scale 1.0; clamped 32-64px.
-              const optical = Math.round(Math.min(64, Math.max(32, 44 * scale)));
-              const imgStyle: CSSProperties = { maxHeight: `${optical}px` };
+              const imgStyle: CSSProperties = {};
               if (o.transparentBg) {
                 imgStyle.mixBlendMode = "screen";
               }
@@ -802,30 +799,44 @@ function NewsPage() {
                 imgStyle.transform = `translateY(${o.nudgeY}px)`;
               }
               // Normalised brightness — every logo lands in a similar luminance band.
+              const boostFilter = o.boost ? " brightness-[1.22] contrast-[1.12]" : "";
               const colorTone =
                 o.tone === "muted"
-                  ? "opacity-[0.86] saturate-[0.7] brightness-[1.0] contrast-[1.02] group-hover:opacity-100 group-hover:brightness-[1.08]"
-                  : "opacity-[0.96] saturate-[0.88] brightness-[1.08] contrast-[1.04] group-hover:opacity-100 group-hover:brightness-[1.18]";
+                  ? "opacity-[0.88] saturate-[0.7] brightness-[1.02] contrast-[1.02] group-hover:opacity-100 group-hover:brightness-[1.1]"
+                  : "opacity-[0.97] saturate-[0.9] brightness-[1.1] contrast-[1.05] group-hover:opacity-100 group-hover:brightness-[1.2]";
               // Dark-mark logos: invert to white variant with consistent luminance.
               const lightenTone =
-                "invert opacity-[0.94] brightness-[1.12] contrast-[1.06] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.22]";
+                "invert opacity-[0.95] brightness-[1.14] contrast-[1.08] saturate-0 group-hover:opacity-100 group-hover:brightness-[1.24]";
               const inner = (
-                <img
-                  src={o.logo}
-                  alt={`${o.name} logo`}
-                  loading="lazy"
-                  style={imgStyle}
-                  className={`w-auto max-w-[82%] object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05] ${
-                    o.transparentBg
-                      ? "invert opacity-[0.9] brightness-[1.14] contrast-[1.1] saturate-0 group-hover:opacity-100"
-                      : o.lighten
-                      ? lightenTone
-                      : colorTone
-                  }`}
-                />
+                <>
+                  {o.boost && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 z-0 opacity-70 transition-opacity duration-[450ms] group-hover:opacity-95"
+                      style={{
+                        background:
+                          "radial-gradient(58% 52% at 50% 50%, oklch(1 0 0 / 0.07) 0%, oklch(1 0 0 / 0.03) 45%, transparent 75%)",
+                      }}
+                    />
+                  )}
+                  <img
+                    src={o.logo}
+                    alt={`${o.name} logo`}
+                    loading="lazy"
+                    style={{ ...imgStyle, maxWidth: `${Math.round(68 * scale)}%`, maxHeight: `${Math.round(42 * scale)}%` }}
+                    className={`relative z-[1] h-auto w-auto object-contain transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]${boostFilter} ${
+                      o.transparentBg
+                        ? "invert opacity-[0.92] brightness-[1.16] contrast-[1.1] saturate-0 group-hover:opacity-100"
+                        : o.lighten
+                        ? lightenTone
+                        : colorTone
+                    }`}
+                  />
+                </>
               );
               const baseCls =
-                "group relative flex h-24 sm:h-28 md:h-32 items-center justify-center rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 transition-all duration-500 ease-out hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.45)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_8px_28px_-10px_oklch(0.62_0.10_55_/_0.28),inset_0_0_60px_oklch(1_0_0_/_0.04)]";
+                "group relative flex aspect-[5/3] sm:aspect-[5/3] w-full items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-6 py-6 transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[4px] hover:border-[oklch(0.62_0.10_55_/_0.5)] hover:bg-[oklch(0.105_0.005_250)] hover:shadow-[0_14px_36px_-12px_oklch(0.62_0.10_55_/_0.32),0_2px_10px_-2px_oklch(0_0_0_/_0.5),inset_0_0_72px_oklch(1_0_0_/_0.045)]";
+              const href = outletHref(o.name);
 
               return href ? (
                 <a
