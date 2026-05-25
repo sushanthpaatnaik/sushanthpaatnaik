@@ -755,7 +755,7 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-[1.35fr_1fr] gap-5">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1.35fr_1fr]">
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
                     application, this slot becomes the studio product artifact. */}
