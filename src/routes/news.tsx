@@ -760,95 +760,101 @@ function NewsPage() {
       </EditorialSection>
 
 
-      {/* Mastheads register */}
-      <EditorialSection number="09 · Mastheads" heading="Eighteen publications of record.">
-        <p>
-          The mastheads carrying the work — Indian and international, popular
-          press and scientific institutions.
+      {/* Mastheads register — manually composed to guarantee no overlay clips the heading. */}
+      <section className="relative z-[2] mt-16 md:mt-20 border-t border-foreground/[0.07] pt-12 md:pt-16">
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
+          09 · Mastheads
         </p>
-        <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[oklch(0.046_0.003_245)]">
-          {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-[1]"
-            style={{
-              background:
-                "radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%)",
-            }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-[1] opacity-[0.045] mix-blend-overlay"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-              backgroundSize: "180px 180px",
-            }}
-          />
-          <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
-            {outlets.map((o) => {
-              const href = outletHref(o.name);
-              // Strictly uniform optical sizing — every logo lives in the same safe-zone.
-              // Per-logo `scale` is intentionally ignored so TED / GI / MIT / INDIA TODAY
-              // can never appear oversized relative to single-line marks.
-              const imgStyle: CSSProperties = {
-                maxHeight: "40px",
-                maxWidth: "70%",
-              };
-              if (o.transparentBg) {
-                imgStyle.mixBlendMode = "screen";
-              }
-              if (o.nudgeY) {
-                imgStyle.transform = `translateY(${o.nudgeY}px)`;
-              }
-              // Colored logos — stronger lift so dim/dark-on-dark stays readable.
-              const colorTone =
-                o.tone === "muted"
-                  ? "opacity-100 saturate-[0.85] brightness-[1.28] contrast-[1.14] group-hover:brightness-[1.36]"
-                  : "opacity-100 saturate-[0.95] brightness-[1.30] contrast-[1.16] group-hover:brightness-[1.40]";
-              // Dark-mark logos — full invert to white, with extra punch to guarantee visibility.
-              const lightenTone =
-                "[filter:invert(1)_brightness(1.35)_contrast(1.18)_saturate(0)] opacity-100 group-hover:[filter:invert(1)_brightness(1.5)_contrast(1.2)_saturate(0)]";
-              const inner = (
-                <img
-                  src={o.logo}
-                  alt={`${o.name} logo`}
-                  loading="lazy"
-                  style={imgStyle}
-                  className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
-                    o.transparentBg
-                      ? "[filter:invert(1)_brightness(1.3)_contrast(1.15)_saturate(0)] opacity-100"
-                      : o.lighten
-                      ? lightenTone
-                      : colorTone
-                  }`}
-                />
-              );
-              const baseCls =
-                "group relative flex h-24 sm:h-28 items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 shadow-[inset_0_0_40px_oklch(1_0_0_/_0.03)] transition-all duration-500 ease-out hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.45)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_8px_28px_-10px_oklch(0.62_0.10_55_/_0.28),inset_0_0_60px_oklch(1_0_0_/_0.05)]";
+        <h2 className="mt-4 font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground opacity-100">
+          Eighteen publications of record.
+        </h2>
+        <div className="mt-6 space-y-5 text-[15px] md:text-base leading-relaxed text-foreground/75">
+          <p>
+            The mastheads carrying the work — Indian and international, popular
+            press and scientific institutions.
+          </p>
+          <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[oklch(0.046_0.003_245)]">
+            {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-[1]"
+              style={{
+                background:
+                  "radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%)",
+              }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-[1] opacity-[0.045] mix-blend-overlay"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                backgroundSize: "180px 180px",
+              }}
+            />
+            <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
+              {outlets.map((o) => {
+                const href = outletHref(o.name);
+                const isGi = o.name === "The Global Indian";
+                const imgStyle: CSSProperties = {
+                  maxHeight: "40px",
+                  maxWidth: "70%",
+                };
+                if (o.transparentBg) {
+                  imgStyle.mixBlendMode = "screen";
+                }
+                const transforms: string[] = [];
+                if (o.nudgeY) transforms.push(`translateY(${o.nudgeY}px)`);
+                if (isGi) transforms.push("scale(0.82)");
+                if (transforms.length) imgStyle.transform = transforms.join(" ");
 
-              return href ? (
-                <a
-                  key={o.name}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={`${o.name} — read coverage ↗`}
-                  className={baseCls}
-                >
-                  {inner}
-                </a>
-              ) : (
-                <div key={o.name} className={baseCls} title={o.name}>
-                  {inner}
-                </div>
-              );
-            })}
+                const colorTone =
+                  o.tone === "muted"
+                    ? "opacity-100 saturate-[0.85] brightness-[1.28] contrast-[1.14] group-hover:brightness-[1.36]"
+                    : "opacity-100 saturate-[0.95] brightness-[1.30] contrast-[1.16] group-hover:brightness-[1.40]";
+                const lightenTone =
+                  "[filter:invert(1)_brightness(1.35)_contrast(1.18)_saturate(0)] opacity-100 group-hover:[filter:invert(1)_brightness(1.5)_contrast(1.2)_saturate(0)]";
+                const inner = (
+                  <img
+                    src={o.logo}
+                    alt={`${o.name} logo`}
+                    loading="lazy"
+                    style={imgStyle}
+                    className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04] ${
+                      o.transparentBg
+                        ? "[filter:invert(1)_brightness(1.3)_contrast(1.15)_saturate(0)] opacity-100"
+                        : o.lighten
+                        ? lightenTone
+                        : colorTone
+                    }`}
+                  />
+                );
+                // Equal-height cells, perfectly centered, matte-glass surface,
+                // ultra-soft ambient inner glow, refined hover lift.
+                const baseCls =
+                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.085_0.004_250)] px-5 py-5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.025),inset_0_0_50px_oklch(1_0_0_/_0.022),0_1px_2px_oklch(0_0_0_/_0.4)] transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[2px] hover:border-[oklch(0.62_0.10_55_/_0.4)] hover:bg-[oklch(0.10_0.005_250)] hover:shadow-[0_10px_30px_-12px_oklch(0.62_0.10_55_/_0.32),inset_0_0_70px_oklch(1_0_0_/_0.05)]";
+
+                return href ? (
+                  <a
+                    key={o.name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`${o.name} — read coverage ↗`}
+                    className={baseCls}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={o.name} className={baseCls} title={o.name}>
+                    {inner}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-
-
         </div>
-      </EditorialSection>
+      </section>
 
       {/* 10 · Posture — single closing statement.
           Institutional testimonials and on-record quotes have been moved to the
