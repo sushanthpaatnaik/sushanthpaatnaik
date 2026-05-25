@@ -656,11 +656,9 @@ export function Product3DModal({
               </div>
             </div>
 
-            {/* RIGHT — Interactive chimney hood / HV-LC simulation panel */}
+            {/* RIGHT — Compact chimney hood / HV-LC simulation panel */}
             <div className="relative">
-              <div className="-mt-6">
-                <AquamaxExplainer />
-              </div>
+              <AquamaxSimulationCompact />
             </div>
           </motion.div>
           ) : (
