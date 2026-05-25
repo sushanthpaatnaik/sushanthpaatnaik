@@ -546,10 +546,12 @@ export function Product3DModal({
                 e.stopPropagation();
                 onClose();
               }}
-              className="pointer-events-auto font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/60 transition-colors hover:text-foreground/95"
+              className="pointer-events-auto flex items-center gap-2 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75 backdrop-blur-md transition-colors hover:border-accent/40 hover:text-foreground"
               aria-label="Close product inspection"
             >
-              Close · ESC
+              <X className="h-3.5 w-3.5" strokeWidth={1.6} />
+              <span className="hidden sm:inline">Close · ESC</span>
+              <span className="sm:hidden">Close</span>
             </button>
           </div>
 
