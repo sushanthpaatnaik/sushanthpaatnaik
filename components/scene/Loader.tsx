@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import monogram from "@/assets/sp-monogram.svg";
+import monogramRaw from "@/assets/sp-monogram.svg";
+
+const monogram: string = typeof monogramRaw === "string" ? monogramRaw : (monogramRaw as { src: string }).src;
 
 export default function Loader() {
   const [progress, setProgress] = useState(0);
@@ -10,7 +12,6 @@ export default function Loader() {
   useEffect(() => {
     let p = 0;
     const id = setInterval(() => {
-      // Eased fake progress — reaches 100 in ~500ms
       p += (100 - p) * 0.22 + 2.5;
       if (p >= 99.5) {
         p = 100;
@@ -30,7 +31,6 @@ export default function Loader() {
         done ? "opacity-0 pointer-events-none [clip-path:inset(50%_0%_50%_0%)]" : "[clip-path:inset(0%_0%_0%_0%)]"
       }`}
     >
-      {/* center mark */}
       <div className="flex flex-col items-center gap-10">
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center">
@@ -68,7 +68,6 @@ export default function Loader() {
         </div>
       </div>
 
-      {/* corner brackets */}
       <Brackets />
     </div>
   );
