@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import AquamaxExplainer from "@/components/scene/AquamaxExplainer";
 
 interface TiltImageProps {
   src: string;
@@ -456,6 +457,9 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
+  /** Aquamax-only: render the interactive chimney hood / HV-LC recovery
+   *  simulation as the right-side panel of the inspection view. */
+  aquamaxSimulation?: boolean;
 }
 
 export function Product3DModal({
@@ -522,6 +526,105 @@ export function Product3DModal({
           </div>
 
           <div className="flex min-h-full w-full items-center justify-center py-24 md:py-28">
+          {item.aquamaxSimulation ? (
+          <motion.div
+            onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.98, y: 14 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.985, y: 8 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+            className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
+          >
+            {/* LEFT — Aquamax product studio hero */}
+            <div className="grid content-start gap-5">
+              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+                <motion.img
+                  key={item.img + "-aqua-hero"}
+                  src={item.img}
+                  alt={`${item.title} — HV-LC recovery system`}
+                  draggable={false}
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+                  className="absolute inset-0 h-full w-full object-contain px-[5%] py-[7%]"
+                  style={{ filter: "contrast(1.04) saturate(0.94) brightness(0.97)" }}
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 42%, transparent 50%, oklch(0.02 0.006 245 / 0.36) 84%, oklch(0.015 0.006 245 / 0.72) 100%)",
+                  }}
+                />
+                <FilmGrain opacity={0.05} />
+                <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
+                <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
+                <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
+                <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
+                <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
+                  <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/72">
+                    HV-LC Recovery System · Archive
+                  </span>
+                </div>
+                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
+                  Aquamax · Studio capture
+                </div>
+                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
+                  ƒ/2.0 · 85mm · cinema
+                </div>
+              </div>
+
+              <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="h-px w-6 bg-accent/70" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
+                      {item.stage}
+                    </span>
+                  </div>
+                  <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
+                    {item.title}
+                  </h2>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
+                    {item.domain}
+                  </p>
+                </div>
+              </div>
+
+              <p className="max-w-md text-[14.5px] leading-relaxed text-foreground/80">
+                {item.positioning || item.body}
+              </p>
+
+              <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
+                <div className="bg-background/50 px-4 py-4">
+                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                    Performance
+                  </p>
+                  <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
+                    {item.metric}
+                  </p>
+                </div>
+                <div className="bg-background/50 px-4 py-4">
+                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                    Program Status
+                  </p>
+                  <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/75">
+                    {item.status}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT — Interactive chimney hood / HV-LC simulation panel */}
+            <div className="relative">
+              <div className="-mt-6">
+                <AquamaxExplainer />
+              </div>
+            </div>
+          </motion.div>
+          ) : (
           <motion.div
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.98, y: 14 }}
@@ -890,6 +993,7 @@ export function Product3DModal({
               </div>
             </div>
           </motion.div>
+          )}
           </div>
         </motion.div>
       )}
