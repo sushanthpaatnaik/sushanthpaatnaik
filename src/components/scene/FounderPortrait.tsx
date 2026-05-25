@@ -93,8 +93,8 @@ export default function FounderPortrait({
         <div
           className={
             isDoc
-              ? "relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-[oklch(0.035_0_0)]"
-              : "relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
+              ? "group relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-[oklch(0.035_0_0)]"
+              : "group relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
           }
         >
           <img
@@ -107,8 +107,8 @@ export default function FounderPortrait({
             loading="lazy"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-contain object-center [filter:contrast(1.03)_saturate(0.74)_brightness(0.86)]"
-                : "absolute inset-0 h-full w-full object-contain object-[center_top] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
+                ? "absolute inset-0 h-full w-full object-cover object-center transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:contrast(1.03)_saturate(0.74)_brightness(0.86)]"
+                : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
             }
           />
 
