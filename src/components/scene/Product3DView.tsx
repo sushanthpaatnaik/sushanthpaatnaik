@@ -112,19 +112,20 @@ export function Tilt3DSurface({
       />
 
       {/* Subject — main product */}
-      <motion.img
+      <img
         src={src}
         alt={alt}
         loading="lazy"
-        animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
-        transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
         className={`absolute inset-0 h-full w-full object-contain ${pad} ${imgClassName}`}
         style={{
           filter:
             "drop-shadow(0 32px 42px oklch(0 0 0 / 0.78)) drop-shadow(0 16px 24px oklch(0 0 0 / 0.4)) drop-shadow(0 0 22px oklch(0.85 0.02 235 / 0.06))",
+          transform: "translateZ(0)",
+          willChange: "transform",
           ...imgStyle,
         }}
       />
+
 
       {/* Floor reflection — mirrored, blurred, masked.
           NOTE: framer-motion's `y`/`scale` writes to transform and would
