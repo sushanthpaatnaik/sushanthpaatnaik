@@ -795,26 +795,30 @@ function NewsPage() {
             <div className="relative z-[2] grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-6">
               {outlets.map((o) => {
                 const href = outletHref(o.name);
-                const isGi = o.name === "The Global Indian";
+                const scale = o.scale ?? 1;
+                // Base optical band sized to fill the card (h-28 = 112px → ~58px),
+                // then modulated by per-logo scale so thin/wide marks read large
+                // and dense marks (TED, GI) stay tasteful.
+                const baseH = 58;
+                const baseW = 84;
+                const maxH = Math.max(40, Math.min(72, baseH * scale));
+                const maxW = Math.max(70, Math.min(92, baseW * (0.95 + (scale - 1) * 0.35)));
                 const imgStyle: CSSProperties = {
-                  maxHeight: "40px",
-                  maxWidth: "70%",
+                  maxHeight: `${maxH}px`,
+                  maxWidth: `${maxW}%`,
                 };
                 if (o.transparentBg) {
                   imgStyle.mixBlendMode = "screen";
                 }
-                const transforms: string[] = [];
-                if (o.nudgeY) transforms.push(`translateY(${o.nudgeY}px)`);
-                if (isGi) transforms.push("scale(0.82)");
-                if (transforms.length) imgStyle.transform = transforms.join(" ");
+                if (o.nudgeY) imgStyle.transform = `translateY(${o.nudgeY}px)`;
 
-                // Matte print finish — softer whites, restrained contrast, low saturation.
+                // Matte print finish — slightly clearer than prior pass, still no gloss.
                 const colorTone =
                   o.tone === "muted"
-                    ? "opacity-[0.88] saturate-[0.78] brightness-[0.95] contrast-[1.04] group-hover:opacity-100 group-hover:brightness-[1.0]"
-                    : "opacity-[0.9] saturate-[0.85] brightness-[0.96] contrast-[1.05] group-hover:opacity-100 group-hover:brightness-[1.02]";
+                    ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04]"
+                    : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06]";
                 const lightenTone =
-                  "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(0.98)_contrast(1.06)_saturate(0)]";
+                  "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)]";
                 const inner = (
                   <img
                     src={o.logo}
@@ -833,7 +837,7 @@ function NewsPage() {
                 // Matte anodized panel — soft inner gradient, restrained border,
                 // understated hover with subtle amber edge.
                 const baseCls =
-                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] px-5 py-5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
+                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] px-3 py-3 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
 
                 return href ? (
                   <a
