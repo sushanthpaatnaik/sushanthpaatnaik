@@ -909,7 +909,7 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative mx-auto aspect-[4/5] w-full max-w-[78%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
@@ -928,7 +928,7 @@ export function Product3DModal({
                   {/* Ground contact shadow */}
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute bottom-[12%] left-1/2 h-[6%] w-[58%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
+                    className="pointer-events-none absolute bottom-[10%] left-1/2 h-[6%] w-[64%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
                     style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%)" }}
                   />
                   <motion.img
@@ -939,7 +939,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, y: 8, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[4%] py-[8%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    className="absolute inset-0 h-full w-full object-contain px-[3%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{
                       filter:
                         "drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06))",
