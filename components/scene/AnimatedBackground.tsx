@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
+import type { StaticImageData } from "next/image";
 import {
   motion,
   useScroll,
@@ -10,7 +11,7 @@ import {
 } from "framer-motion";
 
 export interface BackgroundScene {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   /** Per-chapter chroma wash applied over the plate (mix-blend: soft-light). */
   tint?: string;
@@ -22,6 +23,10 @@ export interface BackgroundScene {
   filter?: string;
   /** Per-chapter object-position for the plate (defaults to center). */
   objectPosition?: string;
+}
+
+function resolveSrc(src: string | StaticImageData): string {
+  return typeof src === "string" ? src : src.src;
 }
 
 interface AnimatedBackgroundProps {
@@ -40,9 +45,6 @@ interface AnimatedBackgroundProps {
 }
 
 function useSceneOpacity(phase: MotionValue<number>, center: number) {
-  // Strict isolation: a scene only crossfades with its IMMEDIATE neighbour.
-  // Beyond ±1 chapter the layer is exactly 0 — no bleed from distant
-  // chapters, no stacked atmosphere across the page.
   return useTransform(phase, (v) => {
     const d = Math.abs(v - center);
     if (d >= 1) return 0;
@@ -58,8 +60,6 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
   });
 }
 
-// Blur removed — it was stacking across overlapping layers and muddying
-// every chapter handoff. Scene sharpness now carries section identity.
 function useSceneBlur(phase: MotionValue<number>, _center: number) {
   return useTransform(phase, () => "none");
 }
@@ -89,11 +89,12 @@ function SceneLayer({
     parallax,
     (p) => p * (index % 2 === 0 ? 1 : -1) * 24 * parallaxStrength,
   );
+  const imgSrc = resolveSrc(scene.src);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity, filter: blur }}>
       <motion.img
-        src={scene.src}
+        src={imgSrc}
         alt={scene.alt}
         width={1920}
         height={1080}
@@ -110,7 +111,6 @@ function SceneLayer({
           objectPosition: scene.objectPosition ?? "center",
         }}
       />
-      {/* Per-chapter chroma wash — gives each scene its own emotional color. */}
       {scene.tint && (
         <div
           aria-hidden
@@ -118,9 +118,6 @@ function SceneLayer({
           style={{ background: scene.tint }}
         />
       )}
-      {/* Per-chapter cinematic overlay — replaces a single shared overlay so
-          each chapter has its own mood (top-down dusk, radial vault, side-lit
-          archive, etc.). */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
@@ -130,11 +127,6 @@ function SceneLayer({
   );
 }
 
-/**
- * Cinematic scroll-synchronized background. Each scene carries its own
- * chroma tint, overlay gradient, parallax depth and (optionally) grade —
- * the chapters evolve rather than cross-fading between near-identical plates.
- */
 export default function AnimatedBackground({
   scenes,
   overlayStops,
@@ -151,8 +143,6 @@ export default function AnimatedBackground({
     mass: 1.45,
   });
 
-  // When a section-anchored phase is provided, smooth it the same way scroll
-  // progress is smoothed so the crossfade still breathes instead of snapping.
   const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
   const smoothedExternal = useSpring(phaseSource ?? rawPhase, {
     stiffness: 120,
@@ -162,8 +152,6 @@ export default function AnimatedBackground({
   const phase = phaseSource ? smoothedExternal : rawPhase;
   const parallax = useTransform(progress, [0, 1], [-1, 1]);
 
-  // A gentle global dim that breathes with progress — sits BENEATH each
-  // chapter's own overlay so legibility stays guaranteed during long reads.
   const globalDim = useTransform(
     progress,
     stops,
@@ -174,7 +162,7 @@ export default function AnimatedBackground({
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden bg-background">
       {scenes.map((scene, index) => (
         <SceneLayer
-          key={scene.src}
+          key={resolveSrc(scene.src)}
           scene={scene}
           phase={phase}
           index={index}
@@ -183,7 +171,6 @@ export default function AnimatedBackground({
         />
       ))}
 
-      {/* Soft global dim — additive, light touch only. */}
       <motion.div
         className="absolute inset-0"
         style={{
@@ -192,8 +179,6 @@ export default function AnimatedBackground({
         }}
       />
 
-      {/* Vignette — softened from 0.86 → 0.72 alpha so the focal pull
-          remains cinematic without crushing the plate edges into mud. */}
       <div
         className="absolute inset-0"
         style={{
@@ -202,8 +187,6 @@ export default function AnimatedBackground({
         }}
       />
 
-      {/* Edge fades — lighter so chapter imagery remains legible across
-          section seams without overpowering the plate. */}
       <div
         className="absolute inset-x-0 top-0 h-28"
         style={{
@@ -219,7 +202,7 @@ export default function AnimatedBackground({
         }}
       />
 
-      {children?.({ progress, phase })}
+      {children?.(({ progress, phase }))}
     </div>
   );
 }
