@@ -629,11 +629,11 @@ export default function EarthGlobe({
     scene.add(moonMesh);
 
     // Orbital constants — Moon revolves around Earth's centre
-    const MOON_R      = 13;    // orbit radius (scene units)
-    const MOON_PERIOD = 80;    // seconds per full revolution
-    const MOON_TILT   = 0.28;  // orbit-plane tilt ~16° (adds Z-depth variation)
-    const MOON_START  = 2.1;   // initial angle ≈ upper-left (matches previous static pos)
-    const MOON_Z_OFF  = -25;   // base Z offset from Earth centre (keeps Moon in deep space)
+    const MOON_R      = 14;    // orbit radius (scene units)
+    const MOON_PERIOD = 12;    // seconds per full revolution — visible in a 5-10s glance
+    const MOON_TILT   = 0.38;  // orbit-plane tilt ~22° — more 3-D depth for visible arc
+    const MOON_START  = 2.1;   // initial angle ≈ upper-left
+    const MOON_Z_OFF  = -22;   // slightly closer so the Moon reads larger on screen
     // Share sun direction with Moon
     const moonUpdateSun = () => {
       const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
