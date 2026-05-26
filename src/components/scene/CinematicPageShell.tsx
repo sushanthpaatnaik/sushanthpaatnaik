@@ -31,9 +31,9 @@ export default function CinematicPageShell({
   children,
 }: CinematicPageShellProps) {
   return (
-    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-hidden">
+    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0" style={{ contain: "strict" }}>
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
         <div
           className="absolute inset-0"
           style={{

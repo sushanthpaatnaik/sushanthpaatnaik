@@ -603,8 +603,10 @@
   }
 }
 
-/* Belt-and-suspenders: prevent any descendant from causing horizontal scroll. */
-html, body { overflow-x: hidden; max-width: 100%; }
+/* Belt-and-suspenders: prevent any descendant from causing horizontal scroll.
+   clip (not hidden) avoids creating a scroll container — preserves natural
+   viewport scroll chain on html+body. */
+html, body { overflow-x: clip; max-width: 100%; }
 
 /* ── Cinematic preloader ────────────────────────────────────────────────── */
 @keyframes sp-scanlines-drift {
