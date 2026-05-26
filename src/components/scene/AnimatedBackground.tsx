@@ -111,6 +111,16 @@ const DEFAULT_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
 const DEFAULT_OVERLAY =
   "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.65) 0%, oklch(0.03 0.006 260 / 0.38) 50%, oklch(0.03 0.006 260 / 0.72) 100%)";
 
+// Per-layer CSS animation class selectors — cycling through scene index.
+// Negative animation-delay (set inline) means "already N seconds into the cycle"
+// so layers across scenes never breathe in lock-step.
+const breatheClass = (i: number) =>
+  i % 2 === 0 ? "sp-living-breathe-a" : "sp-living-breathe-b";
+const hazeClass = (i: number) =>
+  i % 2 === 0 ? "sp-living-haze-a" : "sp-living-haze-b";
+const glowClass = (i: number) =>
+  (["sp-living-glow-a", "sp-living-glow-b", "sp-living-glow-c"] as const)[i % 3];
+
 function SceneLayer({
   scene,
   phase,
@@ -150,28 +160,78 @@ function SceneLayer({
     ([sy, my]: number[]) => sy + my,
   );
 
+  // Stagger each layer so adjacent scenes never animate in lock-step.
+  const breatheDelay = `${-(index * 4.2).toFixed(1)}s`;
+  const hazeDelay    = `${-(index * 3.1).toFixed(1)}s`;
+  const glowDelay    = `${-(index * 5.8).toFixed(1)}s`;
+
   return (
-    <motion.div className="absolute inset-0" style={{ opacity, filter: blur }}>
-      <motion.img
-        src={scene.src}
-        alt={scene.alt}
-        width={1920}
-        height={1080}
-        loading={isFirst ? "eager" : "lazy"}
-        decoding="async"
-        draggable={false}
-        fetchPriority={isFirst ? "high" : "low"}
-        className="h-full w-full object-cover select-none"
+    // overflow-hidden clips the -4%/-6% inset layers during breathing scale.
+    <motion.div className="absolute inset-0 overflow-hidden" style={{ opacity, filter: blur }}>
+
+      {/* ── Layer 1: Breathing wrapper (CSS) / scroll+cursor (FM) ───────── */}
+      {/* Extends -4% outside parent so scale never reveals a hard edge.     */}
+      <div
+        className={breatheClass(index)}
+        style={{ position: "absolute", inset: "-4%", animationDelay: breatheDelay }}
+      >
+        <motion.img
+          src={scene.src}
+          alt={scene.alt}
+          width={1920}
+          height={1080}
+          loading={isFirst ? "eager" : "lazy"}
+          decoding="async"
+          draggable={false}
+          fetchPriority={isFirst ? "high" : "low"}
+          className="h-full w-full object-cover select-none"
+          style={{
+            scale,
+            x: mouseX,
+            y: combinedY,
+            filter: scene.filter ?? DEFAULT_FILTER,
+            objectPosition: scene.objectPosition ?? "center",
+          }}
+        />
+      </div>
+
+      {/* ── Layer 2: Soft-focus edge haze ───────────────────────────────── */}
+      {/* Same image at very low opacity, masked to perimeter, drifts        */}
+      {/* counter to the base layer — adds illusion of depth behind focus.   */}
+      <div
+        aria-hidden
+        className={hazeClass(index)}
         style={{
-          scale,
-          x: mouseX,
-          y: combinedY,
-          filter: scene.filter ?? DEFAULT_FILTER,
-          transform: "translateZ(0)",
-          objectPosition: scene.objectPosition ?? "center",
+          position: "absolute",
+          inset: "-6%",
+          backgroundImage: `url(${scene.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: scene.objectPosition ?? "center",
+          opacity: 0.07,
+          WebkitMaskImage:
+            "radial-gradient(ellipse 78% 68% at 50% 50%, transparent 32%, #000 78%)",
+          maskImage:
+            "radial-gradient(ellipse 78% 68% at 50% 50%, transparent 32%, #000 78%)",
+          animationDelay: hazeDelay,
         }}
       />
-      {/* Per-chapter chroma wash — gives each scene its own emotional color. */}
+
+      {/* ── Layer 3: Ambient glow sweep ─────────────────────────────────── */}
+      {/* Warm copper studio light drifts diagonally at ultra-low opacity.   */}
+      {/* mix-blend-screen keeps it additive — never darkens the plate.      */}
+      <div
+        aria-hidden
+        className={`${glowClass(index)} mix-blend-screen`}
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(55% 45% at 50% 50%, oklch(0.62 0.09 50 / 0.10), transparent 70%)",
+          animationDelay: glowDelay,
+        }}
+      />
+
+      {/* ── Layer 4: Per-chapter chroma tint ────────────────────────────── */}
       {scene.tint && (
         <div
           aria-hidden
@@ -179,9 +239,8 @@ function SceneLayer({
           style={{ background: scene.tint }}
         />
       )}
-      {/* Per-chapter cinematic overlay — replaces a single shared overlay so
-          each chapter has its own mood (top-down dusk, radial vault, side-lit
-          archive, etc.). */}
+
+      {/* ── Layer 5: Per-chapter cinematic overlay ──────────────────────── */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
