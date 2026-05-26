@@ -102,9 +102,10 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
       const n2 = noise.simplex3D(nx*3.5, ny*3.5, nz*3.5)*0.25;
       const band = Math.exp(-Math.pow(lat - 0.12, 2) / 0.1);
       const gas  = Math.max(0, (n1 + n2) * band);
-      img.data[idx]   = Math.floor(gas * 22);
-      img.data[idx+1] = Math.floor(gas * 10);
-      img.data[idx+2] = Math.floor(gas * 40);
+      // Near-black charcoal — no visible purple/blue tint
+      img.data[idx]   = Math.floor(gas * 6);
+      img.data[idx+1] = Math.floor(gas * 7);
+      img.data[idx+2] = Math.floor(gas * 10);
       img.data[idx+3] = 255;
     }
   }
@@ -112,7 +113,7 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
   for (let i = 0; i < 6; i++) {
     const cx = Math.random()*W, cy = 150+Math.random()*212, r = 100+Math.random()*160;
     const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-    gr.addColorStop(0, Math.random()>0.5 ? "rgba(124,58,237,0.08)" : "rgba(14,165,233,0.05)");
+    gr.addColorStop(0, Math.random()>0.5 ? "rgba(8,10,14,0.04)" : "rgba(10,18,28,0.05)");
     gr.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = gr;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
@@ -277,7 +278,7 @@ const STAR_FRAG = /* glsl */`
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.1, d) * vOpacity;
-    gl_FragColor = vec4(1.0, 0.98, 0.95, a * 0.9);
+    gl_FragColor = vec4(1.0, 0.98, 0.95, a * 0.35);
   }
 `;
 const EARTH_VERT = /* glsl */`
@@ -331,10 +332,10 @@ const EARTH_FRAG = /* glsl */`
     vec3 dayL   = (day * max(ndl+0.04, 0.0)) * mix(1.0, 0.5, cloud*dayW);
     float term  = smoothstep(0.18, 0.0, abs(ndl));
     vec3 sunset = vec3(1.0,0.35,0.06) * term * 0.45 * (1.0-spec);
-    vec3 nightL = night * (1.0-dayW) * 3.6;
+    vec3 nightL = night * (1.0-dayW) * 1.8;
     vec3 surface = mix(nightL, dayL+glint+sunset, dayW);
     float limb  = pow(1.0 - max(dot(normalize(vNormal), view), 0.0), 4.5);
-    surface += vec3(0.08,0.46,0.95) * limb * 1.65 * atmosphereIntensity;
+    surface += vec3(0.05,0.26,0.60) * limb * 0.75 * atmosphereIntensity;
     gl_FragColor = vec4(surface, 1.0);
   }
 `;
@@ -424,17 +425,17 @@ export default function EarthGlobe({
     renderer.setPixelRatio(dpr);
     renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.toneMapping         = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 0.72;
     renderer.outputColorSpace    = THREE.SRGBColorSpace;
 
     // ── Scene & Camera ───────────────────────────────────────────────────
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 15.5);
+    camera.position.set(0, 0, 18.0);
 
     // ── Planet group — offset down to form curved horizon ────────────────
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(0, -10.2, -1.0);
+    planetGroup.position.set(0, -13.0, -1.0);
     scene.add(planetGroup);
 
     // ── Noise (shared by all procedural generators) ──────────────────────
@@ -444,7 +445,7 @@ export default function EarthGlobe({
     const spaceTex = buildSpaceBg(noise);
     const spaceGeo = new THREE.SphereGeometry(180, 32, 32);
     const spaceMat = new THREE.MeshBasicMaterial({
-      map: spaceTex, side: THREE.BackSide, transparent: true, opacity: 0.92,
+      map: spaceTex, side: THREE.BackSide, transparent: true, opacity: 0.50,
     });
     scene.add(new THREE.Mesh(spaceGeo, spaceMat));
 
@@ -462,7 +463,7 @@ export default function EarthGlobe({
     const haloMat = new THREE.ShaderMaterial({
       uniforms: {
         vSunDir:             { value: new THREE.Vector3() },
-        atmosphereIntensity: { value: 0.85 },
+        atmosphereIntensity: { value: 0.36 },
       },
       vertexShader:   HALO_VERT,
       fragmentShader: HALO_FRAG,
@@ -522,8 +523,8 @@ export default function EarthGlobe({
           tDiffuse:  { value: t.day },  tSpecular: { value: t.specular },
           tNight:    { value: t.night }, tNormal:   { value: t.bump },
           vSunDir:             { value: new THREE.Vector3() },
-          atmosphereIntensity: { value: 0.85 },
-          specularIntensity:   { value: 0.80 },
+          atmosphereIntensity: { value: 0.36 },
+          specularIntensity:   { value: 0.48 },
           bumpStrength:        { value: 0.75 },
         },
         vertexShader:   EARTH_VERT,
@@ -538,7 +539,7 @@ export default function EarthGlobe({
         uniforms: {
           tClouds:      { value: cloudTex },
           vSunDir:      { value: new THREE.Vector3() },
-          cloudOpacity: { value: 0.65 },
+          cloudOpacity: { value: 0.28 },
         },
         vertexShader:   CLOUD_VERT,
         fragmentShader: CLOUD_FRAG,
@@ -649,6 +650,37 @@ export default function EarthGlobe({
           width: "100%",
           height: "100%",
           display: "block",
+        }}
+      />
+
+      {/* Cinematic dark overlay — dims the WebGL scene to luxury background level */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0.52)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Edge vignette — keeps center readable, crushes corners to black */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 72% 64% at 50% 62%, transparent 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.82) 80%, rgba(0,0,0,0.96) 100%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Top-sky crush — keeps headline area dark even when globe arc is bright */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.28) 32%, transparent 55%)",
+          pointerEvents: "none",
         }}
       />
     </motion.div>
