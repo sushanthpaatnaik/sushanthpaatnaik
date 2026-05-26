@@ -18,14 +18,18 @@ const CDN = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// FM chapter opacity (smooth-step curve, same as all other scene layers)
-// ─────────────────────────────────────────────────────────────────────────────
+// FM chapter opacity — fade-in begins at phase 4.8 (partway through Ecosystem)
+// so the space scene is already partially visible before Future Systems fully
+// enters the viewport. This prevents the "planet appearing suddenly" feel.
 function useEarthOpacity(phase: MotionValue<number>) {
   return useTransform(phase, (v) => {
-    const d = Math.abs(v - EARTH_CHAPTER);
-    if (d >= 1) return 0;
-    const t = 1 - d;
-    return t * t * t * (t * (t * 6 - 15) + 10);
+    if (v < 4.8 || v > 7) return 0;
+    if (v <= 6) {
+      const t = Math.max(0, Math.min(1, (v - 4.8) / 1.2));
+      return t * t * (3 - 2 * t); // smoothstep
+    }
+    const t = Math.max(0, Math.min(1, 7 - v));
+    return t * t * (3 - 2 * t);
   });
 }
 
@@ -787,7 +791,7 @@ export default function EarthGlobe({
   return (
     <motion.div
       aria-hidden
-      style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none" }}
+      style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none", willChange: "opacity" }}
     >
       {/* Canvas — blur(0.35px) softens the sharp WebGL render into a cinematic feel */}
       <canvas

@@ -440,6 +440,8 @@ function EcosystemGateway() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
+      {/* Bottom vignette — fades the section smoothly into the space transition below */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(to_bottom,transparent,oklch(0.02_0.008_232/0.72))]" />
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
@@ -498,15 +500,16 @@ function ClosingInvitation() {
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
 
-        {/* Volumetric atmospheric diffusion — opacity-only, willChange promoted */}
+        {/* Volumetric atmospheric diffusion — GPU-promoted, opacity-only animation */}
         <motion.div
           className="absolute left-1/2 top-[56%] -translate-x-1/2 -translate-y-1/2 w-[120%] h-[44%]"
           style={{
             background:
               "radial-gradient(ellipse 60% 55% at 50% 50%, oklch(0.50 0.022 232 / 0.10), transparent 72%)",
-            filter: "blur(56px)",
+            filter: "blur(40px)",
             mixBlendMode: "screen",
             willChange: "opacity",
+            contain: "paint layout",
           }}
           animate={{ opacity: [0.45, 0.62, 0.45] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
@@ -514,14 +517,15 @@ function ClosingInvitation() {
 
 
 
-        {/* Planetary shimmer — static blur, no rotation (rotation + blur = expensive repaint) */}
+        {/* Planetary shimmer — static, GPU-isolated */}
         <div
           className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
               "radial-gradient(ellipse at 30% 40%, oklch(0.62 0.04 232 / 0.022), transparent 60%), radial-gradient(ellipse at 70% 60%, oklch(0.62 0.04 232 / 0.018), transparent 60%)",
-            filter: "blur(48px)",
+            filter: "blur(36px)",
             mixBlendMode: "screen",
+            contain: "paint layout",
           }}
         />
 
@@ -535,17 +539,17 @@ function ClosingInvitation() {
 
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
-        <MotionReveal>
+        <MotionReveal delay={0.35}>
           <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
             Future Systems
           </p>
         </MotionReveal>
-        <MotionReveal delay={0.06}>
+        <MotionReveal delay={0.44}>
           <p className="mx-auto mb-8 md:mb-10 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
             Not a forecast. A working hypothesis — built one industrial system at a time.
           </p>
         </MotionReveal>
-        <MotionReveal delay={0.12}>
+        <MotionReveal delay={0.54}>
           <h2
             className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]"
             style={{
@@ -559,12 +563,12 @@ function ClosingInvitation() {
           </h2>
 
         </MotionReveal>
-        <MotionReveal delay={0.2}>
+        <MotionReveal delay={0.66}>
           <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
             The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
           </p>
         </MotionReveal>
-        <MotionReveal delay={0.28}>
+        <MotionReveal delay={0.78}>
           <div className="closing-cta-row flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
             <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
               Begin a conversation
@@ -574,7 +578,7 @@ function ClosingInvitation() {
             </Link>
           </div>
         </MotionReveal>
-        <MotionReveal delay={0.34}>
+        <MotionReveal delay={0.88}>
           <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
             <span>Advanced Materials</span>
             <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
@@ -583,7 +587,7 @@ function ClosingInvitation() {
             <span>Planetary Infrastructure</span>
           </div>
         </MotionReveal>
-        <MotionReveal delay={0.42}>
+        <MotionReveal delay={1.0}>
           <div className="relative mt-8 md:mt-10 lg:mt-12 inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span

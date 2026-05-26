@@ -84,7 +84,7 @@ const SCENES: BackgroundScene[] = [
     tint: "radial-gradient(ellipse 70% 60% at 56% 46%, oklch(0.40 0.048 240 / 0.16), oklch(0.07 0.016 232 / 0.18) 72%)",
     overlay:
       "radial-gradient(ellipse 82% 72% at 50% 46%, oklch(0.030 0.006 232 / 0.40) 0%, oklch(0.022 0.004 232 / 0.68) 90%)",
-    parallax: 0.85,
+    parallax: 0.45, // reduced from 0.85 — heavy parallax during Ecosystem→Future was the main cause of jarring shift
     filter: "brightness(0.82) contrast(1.06) saturate(0.84)",
   },
   {

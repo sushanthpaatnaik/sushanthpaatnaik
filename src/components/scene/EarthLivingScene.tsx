@@ -14,10 +14,13 @@ const EARTH_CHAPTER = 6;
 
 function useEarthOpacity(phase: MotionValue<number>) {
   return useTransform(phase, (v) => {
-    const d = Math.abs(v - EARTH_CHAPTER);
-    if (d >= 1) return 0;
-    const t = 1 - d;
-    return t * t * t * (t * (t * 6 - 15) + 10);
+    if (v < 4.8 || v > 7) return 0;
+    if (v <= 6) {
+      const t = Math.max(0, Math.min(1, (v - 4.8) / 1.2));
+      return t * t * (3 - 2 * t);
+    }
+    const t = Math.max(0, Math.min(1, 7 - v));
+    return t * t * (3 - 2 * t);
   });
 }
 

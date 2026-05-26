@@ -23,14 +23,11 @@ import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
  * scene and atmospheric identity all move as one synchronised system.
  */
 
-function chapterOpacity(phase: MotionValue<number>, idx: number) {
-  // Triangular window around `idx`; 0 outside [idx-1, idx+1].
-  const span = 0.85;
+function chapterOpacity(phase: MotionValue<number>, idx: number, span = 0.85) {
   return useTransform(phase, (p) => {
     const d = Math.abs(p - idx);
     if (d >= span) return 0;
     const t = 1 - d / span;
-    // smootherstep
     return t * t * (3 - 2 * t);
   });
 }
@@ -38,13 +35,15 @@ function chapterOpacity(phase: MotionValue<number>, idx: number) {
 function ChapterLayer({
   phase,
   idx,
+  span = 0.85,
   children,
 }: {
   phase: MotionValue<number>;
   idx: number;
+  span?: number;
   children: React.ReactNode;
 }) {
-  const opacity = chapterOpacity(phase, idx);
+  const opacity = chapterOpacity(phase, idx, span);
   return (
     <motion.div
       aria-hidden
@@ -445,7 +444,7 @@ export default function ChapterAtmosphere() {
       <ChapterLayer phase={phase} idx={5}>
         <EcosystemAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={6}>
+      <ChapterLayer phase={phase} idx={6} span={1.3}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>
