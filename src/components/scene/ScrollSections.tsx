@@ -513,21 +513,6 @@ function ClosingInvitation() {
         />
 
 
-        {/* Distant satellite — single faint drifting node */}
-        <motion.div
-          className="absolute left-1/2 top-1/2 h-[1.5px] w-[1.5px] rounded-full bg-foreground/40"
-          style={{
-            boxShadow: "0 0 6px oklch(0.78 0.04 232 / 0.5)",
-            transformOrigin: "0 0",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 240, repeat: Infinity, ease: "linear" }}
-        >
-          <span
-            className="absolute block rounded-full bg-foreground/60"
-            style={{ width: 1.5, height: 1.5, left: "32vh", top: 0 }}
-          />
-        </motion.div>
 
         {/* Planetary shimmer — static blur, no rotation (rotation + blur = expensive repaint) */}
         <div

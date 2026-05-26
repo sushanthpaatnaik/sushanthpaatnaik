@@ -332,7 +332,7 @@ const EARTH_FRAG = /* glsl */`
     vec3 dayL   = (day * max(ndl+0.04, 0.0)) * mix(1.0, 0.5, cloud*dayW);
     float term  = smoothstep(0.18, 0.0, abs(ndl));
     vec3 sunset = vec3(1.0,0.35,0.06) * term * 0.45 * (1.0-spec);
-    vec3 nightL = night * (1.0-dayW) * 1.45;
+    vec3 nightL = night * (1.0-dayW) * 1.58;
     vec3 surface = mix(nightL, dayL+glint+sunset, dayW);
     float limb  = pow(1.0 - max(dot(normalize(vNormal), view), 0.0), 4.5);
     surface += vec3(0.05,0.26,0.60) * limb * 0.75 * atmosphereIntensity;
@@ -463,7 +463,7 @@ export default function EarthGlobe({
     const haloMat = new THREE.ShaderMaterial({
       uniforms: {
         vSunDir:             { value: new THREE.Vector3() },
-        atmosphereIntensity: { value: 0.38 },
+        atmosphereIntensity: { value: 0.42 },
       },
       vertexShader:   HALO_VERT,
       fragmentShader: HALO_FRAG,
@@ -523,7 +523,7 @@ export default function EarthGlobe({
           tDiffuse:  { value: t.day },  tSpecular: { value: t.specular },
           tNight:    { value: t.night }, tNormal:   { value: t.bump },
           vSunDir:             { value: new THREE.Vector3() },
-          atmosphereIntensity: { value: 0.38 },
+          atmosphereIntensity: { value: 0.42 },
           specularIntensity:   { value: 0.48 },
           bumpStrength:        { value: 0.75 },
         },
