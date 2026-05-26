@@ -12,6 +12,13 @@ interface CinematicPageShellProps {
   backdrop: string;
   /** 0..1 — base darkening over the backdrop. Default 0.78 for reading-heavy pages. */
   overlay?: number;
+  /**
+   * Tailwind class(es) controlling the bottom padding of the content wrapper.
+   * Defaults to "pb-32 md:pb-40" for pages ending with EditorialSection.
+   * Pass "pb-0" for pages whose last section manages its own vertical close
+   * (e.g. cinematic full-bleed sections with their own padding rhythm).
+   */
+  contentPb?: string;
   children: ReactNode;
 }
 
@@ -28,6 +35,7 @@ export default function CinematicPageShell({
   lead,
   backdrop,
   overlay = 0.78,
+  contentPb = "pb-32 md:pb-40",
   children,
 }: CinematicPageShellProps) {
   return (
@@ -154,7 +162,7 @@ export default function CinematicPageShell({
         </section>
 
         {/* Page content */}
-        <div className="px-5 sm:px-6 pb-32 md:pb-40">
+        <div className={`px-5 sm:px-6 ${contentPb}`}>
           <div className="mx-auto max-w-4xl">{children}</div>
         </div>
 

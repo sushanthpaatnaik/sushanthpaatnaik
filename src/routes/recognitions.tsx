@@ -748,6 +748,7 @@ function RecognitionsPage() {
       lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley — a photographic record of two decades on stage, in the lab, and in conversation with institutions."
       backdrop={backdrop}
       overlay={0.74}
+      contentPb="pb-0"
     >
       {/* In-page section index — sticky archival navigation */}
       <nav
@@ -1351,7 +1352,7 @@ function RecognitionsPage() {
         </div>
 
         {/* Content — asymmetric breathing: generous top, compact bottom */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 pt-20 md:pt-28 pb-10 md:pb-14">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 pt-20 md:pt-28 pb-16 md:pb-20">
           {/* Eyebrow — forward signal */}
           <motion.p
             initial={{ opacity: 0, y: 14 }}
