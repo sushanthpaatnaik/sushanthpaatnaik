@@ -89,7 +89,7 @@ function SceneLayer({
   );
 
   return (
-    <motion.div className="absolute inset-0" style={{ opacity, filter: blur }}>
+    <motion.div className="absolute inset-0" style={{ opacity, filter: blur, willChange: "opacity" }}>
       <motion.img
         src={scene.src}
         alt={scene.alt}
@@ -105,6 +105,7 @@ function SceneLayer({
           y,
           filter: scene.filter ?? DEFAULT_FILTER,
           transform: "translateZ(0)",
+          willChange: "transform",
           objectPosition: scene.objectPosition ?? "center",
         }}
       />
