@@ -90,12 +90,11 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneFuture,
     alt: "Future systems · planetary-scale industrial intelligence",
-    // Very dark — serves as deep-space backdrop for the EarthGlobe above.
     tint: undefined,
     overlay:
-      "linear-gradient(180deg, oklch(0.008 0.002 250 / 0.94) 0%, oklch(0.006 0.001 250 / 0.96) 100%)",
+      "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
     parallax: 0.3,
-    filter: "brightness(0.28) contrast(1.05) saturate(0.50) hue-rotate(-4deg)",
+    filter: "brightness(0.76) contrast(1.08) saturate(0.82) hue-rotate(-4deg)",
   },
 ];
 
