@@ -1246,16 +1246,6 @@ function RecognitionsPage() {
             </p>
           </motion.div>
 
-          {/* Final decompression — signature line */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{ duration: 1.6, delay: 1.9, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-20 md:mt-24 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/30"
-          >
-            Sushanth Paatnaik · Monoatom Labs
-          </motion.p>
 
           {/* Refined CTA — matte black luxury */}
           <motion.div
@@ -1425,16 +1415,6 @@ function RecognitionsPage() {
             </Link>
           </motion.div>
 
-          {/* Terminal signature — the quietest possible close */}
-          <motion.p
-            initial={{ opacity: 1 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.9 }}
-            transition={{ duration: 2.0, delay: 1.4, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-7 md:mt-8 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
-          >
-            Monoatom Labs · 2025
-          </motion.p>
         </div>
       </section>
     </CinematicPageShell>
