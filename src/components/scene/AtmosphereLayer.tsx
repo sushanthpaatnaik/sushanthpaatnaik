@@ -97,7 +97,7 @@ const SCENES: BackgroundScene[] = [
     overlay:
       "linear-gradient(180deg, oklch(0.010 0.002 250 / 0.96) 0%, oklch(0.008 0.002 250 / 0.98) 100%)",
     parallax: 0.2,
-    filter: "brightness(0.12) contrast(1.02) saturate(0.30)",
+    filter: "brightness(0.22) contrast(1.03) saturate(0.25)",
   },
 ];
 

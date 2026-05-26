@@ -489,10 +489,15 @@ function EcosystemGateway() {
 
 /* ───────────── Scene 07 — Closing invitation ───────────── */
 function ClosingInvitation() {
+  const prefersReducedMotion = useReducedMotion();
   return (
-    <section
+    <motion.section
       id="future"
-      className="relative h-[var(--viewport-height)] px-5 sm:px-6 lg:pl-32 xl:pl-36 text-center py-20 md:py-24 flex flex-col items-center justify-center overflow-hidden"
+      className="relative h-[var(--viewport-height)] min-h-[540px] px-5 sm:px-6 text-center py-16 md:py-20 flex flex-col items-center justify-center overflow-hidden"
+      initial={{ opacity: prefersReducedMotion ? 1 : 0.88 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 1.8, ease: [0.19, 1, 0.22, 1] }}
     >
       {/* Architectural system node — restrained, integrated, atmospheric. */}
       <div
@@ -537,6 +542,19 @@ function ClosingInvitation() {
           }}
         />
 
+        {/* Atmospheric horizon glow — traces planetary limb, no blue saturation */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0"
+          style={{
+            bottom: "19%",
+            height: "72px",
+            background:
+              "radial-gradient(ellipse 65% 100% at 50% 100%, oklch(0.50 0.038 232 / 0.22), transparent 80%)",
+            filter: "blur(18px)",
+          }}
+        />
+
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal delay={0.35}>
@@ -551,7 +569,7 @@ function ClosingInvitation() {
         </MotionReveal>
         <MotionReveal delay={0.54}>
           <h2
-            className="mb-8 md:mb-10 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]"
+            className="mb-5 md:mb-7 font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] md:leading-[1.02] tracking-[-0.03em] md:tracking-[-0.035em] font-medium text-gradient [text-wrap:balance]"
             style={{
               textRendering: "geometricPrecision",
               WebkitFontSmoothing: "antialiased",
@@ -564,7 +582,7 @@ function ClosingInvitation() {
 
         </MotionReveal>
         <MotionReveal delay={0.66}>
-          <p className="mx-auto mb-10 md:mb-12 max-w-2xl text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+          <p className="mx-auto mb-8 md:mb-10 max-w-[540px] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
             The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
           </p>
         </MotionReveal>
@@ -610,7 +628,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

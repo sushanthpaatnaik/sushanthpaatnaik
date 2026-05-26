@@ -54,10 +54,10 @@ export default function HUD({
         {/* Translucent backing panel — dissolves into darkness at edges */}
         <div
           aria-hidden
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[min(400px,60vh)]"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-[68px] h-[min(400px,60vh)]"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.68) 0%, oklch(0.025 0.006 245 / 0.38) 50%, transparent 100%)",
+              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.60) 0%, oklch(0.025 0.006 245 / 0.28) 55%, transparent 100%)",
             WebkitBackdropFilter: "blur(10px) saturate(120%)",
             backdropFilter: "blur(10px) saturate(120%)",
             maskImage:
@@ -68,7 +68,7 @@ export default function HUD({
         />
 
         {/* Chapter ladder */}
-        <nav className="relative z-10 flex flex-col items-start gap-5 pl-7">
+        <nav className="relative z-10 flex flex-col items-start gap-[18px] pl-5">
           {chapters.map((chapter, i) => {
             const active = i === idx;
             const distance = Math.abs(i - idx);
@@ -88,18 +88,15 @@ export default function HUD({
           {/* Vertical spine connecting markers */}
           <div
             aria-hidden
-            className="absolute left-[11px] top-[10px] bottom-[10px] w-px"
+            className="absolute left-[9px] top-[10px] bottom-[10px] w-px"
             style={{
               background:
                 "linear-gradient(180deg, transparent 0%, oklch(0.967 0 0 / 0.11) 15%, oklch(0.967 0 0 / 0.13) 85%, transparent 100%)",
             }}
           />
-          {/* Ultra-slow energy propagation — a faint pulse traveling down
-              the spine that signals the rail is a living instrument.
-              ~14s loop, almost subliminal. */}
           <motion.div
             aria-hidden
-            className="absolute left-[10.5px] w-[2px] rounded-full pointer-events-none"
+            className="absolute left-[8.5px] w-[2px] rounded-full pointer-events-none"
             style={{
               top: 0,
               height: 26,
