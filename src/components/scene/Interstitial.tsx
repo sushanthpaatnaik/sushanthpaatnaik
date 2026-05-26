@@ -23,7 +23,7 @@ export default function Interstitial({
   pause?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.45, once: false });
+  const inView = useInView(ref, { amount: 0.45, once: true });
   const reduce = useReducedMotion();
 
   return (
@@ -52,12 +52,8 @@ export default function Interstitial({
 
       <motion.div
         ref={ref}
-        initial={false}
-        animate={
-          inView
-            ? { opacity: 1, y: 0, filter: "blur(0px)" }
-            : { opacity: 0, y: 14, filter: reduce ? "blur(0px)" : "blur(4px)" }
-        }
+        initial={{ opacity: 0, y: 14, filter: reduce ? "blur(0px)" : "blur(4px)" }}
+        animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
         transition={{ duration: 1.6, ease: [0.19, 1, 0.22, 1] }}
         className="relative z-10 mx-auto max-w-2xl text-center pointer-events-auto"
       >

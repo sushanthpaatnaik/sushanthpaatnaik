@@ -69,21 +69,15 @@ function Index() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const root = document.documentElement;
-    const setViewportVars = () => {
-      root.style.setProperty("--viewport-height", `${window.innerHeight}px`);
-      root.style.setProperty("--viewport-width", `${window.innerWidth}px`);
-      lenisRef.current?.resize();
-    };
-
-    setViewportVars();
-    window.addEventListener("resize", setViewportVars, { passive: true });
-    window.addEventListener("orientationchange", setViewportVars);
-
+    // --viewport-height is set via CSS (100dvh / 100svh) to avoid layout
+    // shifts caused by JS style updates when mobile browser chrome shows/hides.
+    // Only resize Lenis here so scroll math stays accurate after orientation change.
+    const onResize = () => { lenisRef.current?.resize(); };
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("orientationchange", onResize);
     return () => {
-      window.removeEventListener("resize", setViewportVars);
-      window.removeEventListener("orientationchange", setViewportVars);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
     };
   }, [lenisRef]);
 
