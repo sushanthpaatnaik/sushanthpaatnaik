@@ -1,6 +1,7 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import {
   motion,
+  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
@@ -62,6 +63,50 @@ function useSceneBlur(phase: MotionValue<number>, _center: number) {
   return useTransform(phase, () => "none");
 }
 
+/**
+ * Tracks normalized cursor position (-1…1) via rAF, smoothed with springs.
+ * Returns zero-motion values on touch/coarse devices and when reduced-motion
+ * is active — callers don't need to guard separately.
+ */
+function useCursorParallax() {
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const x = useSpring(rawX, { stiffness: 28, damping: 16, mass: 0.9 });
+  const y = useSpring(rawY, { stiffness: 28, damping: 16, mass: 0.9 });
+
+  useEffect(() => {
+    const fine = window.matchMedia("(pointer: fine)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!fine.matches || reduce.matches) return;
+
+    let rafId = 0;
+    let pending = false;
+    let nx = 0;
+    let ny = 0;
+
+    const onMove = (e: PointerEvent) => {
+      nx = (e.clientX / window.innerWidth) * 2 - 1;
+      ny = (e.clientY / window.innerHeight) * 2 - 1;
+      if (!pending) {
+        pending = true;
+        rafId = requestAnimationFrame(() => {
+          rawX.set(nx);
+          rawY.set(ny);
+          pending = false;
+        });
+      }
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, [rawX, rawY]);
+
+  return { x, y };
+}
+
 const DEFAULT_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
 const DEFAULT_OVERLAY =
   "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.65) 0%, oklch(0.03 0.006 260 / 0.38) 50%, oklch(0.03 0.006 260 / 0.72) 100%)";
@@ -72,20 +117,37 @@ function SceneLayer({
   index,
   parallax,
   isFirst,
+  cursorX,
+  cursorY,
 }: {
   scene: BackgroundScene;
   phase: MotionValue<number>;
   index: number;
   parallax: MotionValue<number>;
   isFirst: boolean;
+  cursorX: MotionValue<number>;
+  cursorY: MotionValue<number>;
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
   const blur = useSceneBlur(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
-  const y = useTransform(
+
+  // Scroll-driven vertical drift — alternating direction adds depth.
+  const scrollY = useTransform(
     parallax,
     (p) => p * (index % 2 === 0 ? 1 : -1) * 24 * parallaxStrength,
+  );
+
+  // Cursor-driven lateral shift — deeper layers (higher parallaxStrength) move more.
+  // Max amplitude: ±9px horizontal, ±6px vertical at parallaxStrength=1.
+  const mouseX = useTransform(cursorX, (v) => v * 9 * parallaxStrength);
+  const mouseY = useTransform(cursorY, (v) => v * 6 * parallaxStrength);
+
+  // Merge scroll and cursor contributions on the Y axis.
+  const combinedY = useTransform(
+    [scrollY, mouseY] as MotionValue<number>[],
+    ([sy, my]: number[]) => sy + my,
   );
 
   return (
@@ -102,7 +164,8 @@ function SceneLayer({
         className="h-full w-full object-cover select-none"
         style={{
           scale,
-          y,
+          x: mouseX,
+          y: combinedY,
           filter: scene.filter ?? DEFAULT_FILTER,
           transform: "translateZ(0)",
           objectPosition: scene.objectPosition ?? "center",
@@ -149,6 +212,8 @@ export default function AnimatedBackground({
     mass: 1.45,
   });
 
+  const { x: cursorX, y: cursorY } = useCursorParallax();
+
   // When a section-anchored phase is provided, smooth it the same way scroll
   // progress is smoothed so the crossfade still breathes instead of snapping.
   const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
@@ -178,6 +243,8 @@ export default function AnimatedBackground({
           index={index}
           parallax={parallax}
           isFirst={index === 0}
+          cursorX={cursorX}
+          cursorY={cursorY}
         />
       ))}
 
