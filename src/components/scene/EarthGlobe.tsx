@@ -386,6 +386,69 @@ const CLOUD_FRAG = /* glsl */`
   }
 `;
 
+const MOON_VERT = /* glsl */`
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  void main() {
+    vUv = uv;
+    vNormal = normalize(normalMatrix * normal);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const MOON_FRAG = /* glsl */`
+  uniform sampler2D tMoon;
+  uniform vec3 vSunDir;
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  void main() {
+    vec3 n = normalize(vNormal);
+    float ndl = dot(n, normalize(vSunDir));
+    // Tiny ambient fill so the night side isn't absolute black
+    // Higher ambient floor so the Moon reads through the CSS dim overlays
+    float light = max(ndl + 0.22, 0.0);
+    vec3 surface = texture2D(tMoon, vUv).rgb * light;
+    gl_FragColor = vec4(surface, 1.0);
+  }
+`;
+
+// Procedural grey Moon — crater diffuse texture, no external CDN needed
+function buildMoonTexture(): THREE.CanvasTexture {
+  const W = 512, H = 256;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d")!;
+  // Light lunar grey — bright enough to read through the CSS overlay stack
+  ctx.fillStyle = "#b4b4c2";
+  ctx.fillRect(0, 0, W, H);
+  // Mare (dark basalt plains)
+  for (let i = 0; i < 8; i++) {
+    const hx = Math.random() * W, hy = Math.random() * H, hr = 30 + Math.random() * 80;
+    const hg = ctx.createRadialGradient(hx, hy, 0, hx, hy, hr);
+    hg.addColorStop(0, "rgba(62,62,74,0.55)");
+    hg.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(hx, hy, hr, 0, Math.PI*2); ctx.fill();
+  }
+  // Impact craters — dark floor, lighter ejecta rim
+  for (let i = 0; i < 50; i++) {
+    const cx = Math.random() * W, cy = Math.random() * H;
+    const r  = 3 + Math.random() * 22;
+    const cg = ctx.createRadialGradient(cx, cy, r * 0.25, cx, cy, r);
+    cg.addColorStop(0,    "rgba(40,40,50,0.90)");  // dark crater floor
+    cg.addColorStop(0.72, "rgba(80,80,92,0.65)");
+    cg.addColorStop(0.88, "rgba(200,200,210,0.45)"); // bright ejecta rim
+    cg.addColorStop(1,    "rgba(0,0,0,0)");
+    ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+  }
+  // Subtle surface grain
+  const img = ctx.getImageData(0, 0, W, H);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const g = (Math.random() - 0.5) * 10;
+    img.data[i] = Math.max(0, Math.min(255, img.data[i] + g));
+    img.data[i+1] = img.data[i]; img.data[i+2] = Math.max(0, Math.min(255, img.data[i] + 8));
+  }
+  ctx.putImageData(img, 0, 0);
+  return new THREE.CanvasTexture(cv);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
@@ -545,6 +608,29 @@ export default function EarthGlobe({
     });
     scene.add(new THREE.Points(starGeo, starMat));
 
+    // ── Distant Moon — secondary planetary body, upper-left of viewport ──
+    // World position (-7, 10, -38): appears ~31% from left, ~33% from top
+    // at camera z=18, FOV 36°. Radius 1.4 ≈ 15% of screen height.
+    const moonTex = buildMoonTexture();
+    const moonGeo = new THREE.SphereGeometry(1.4, 48, 48);
+    const moonMat = new THREE.ShaderMaterial({
+      uniforms: {
+        tMoon:   { value: moonTex },
+        vSunDir: { value: new THREE.Vector3() },
+      },
+      vertexShader:   MOON_VERT,
+      fragmentShader: MOON_FRAG,
+    });
+    const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+    moonMesh.position.set(-7, 10, -38);
+    scene.add(moonMesh);
+    // Share sun direction with Moon
+    const moonUpdateSun = () => {
+      const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
+      moonMat.uniforms.vSunDir.value.set(Math.cos(rad), 0.18, Math.sin(rad)).normalize();
+    };
+    moonUpdateSun();
+
     // ── Earth + cloud meshes (built after textures load) ─────────────────
     let earthMesh: THREE.Mesh | null = null;
     let cloudMesh: THREE.Mesh | null = null;
@@ -639,6 +725,7 @@ export default function EarthGlobe({
       rotY += SPIN_PER_FRAME;
       planetGroup.rotation.y = rotY;
       if (cloudMesh) cloudMesh.rotation.y += 0.00018; // clouds drift faster than surface
+      moonMesh.rotation.y += 0.00008; // very slow — near-tidally-locked drift
       starMat.uniforms.uTime.value = (performance.now() - t0) * 0.001;
       renderer.render(scene, camera);
     }
@@ -667,6 +754,7 @@ export default function EarthGlobe({
       sunTex.dispose();   sunMat.dispose();   sunGeo.dispose();
       haloMat.dispose();  haloGeo.dispose();
       starGeo.dispose();  starMat.dispose();
+      moonTex.dispose();  moonMat.dispose();  moonGeo.dispose();
       if (earthMesh) earthMesh.geometry.dispose();
       if (earthMat) {
         (["tDiffuse","tSpecular","tNight","tNormal"] as const)

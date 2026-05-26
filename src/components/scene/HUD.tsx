@@ -54,7 +54,7 @@ export default function HUD({
         {/* Translucent backing panel — dissolves into darkness at edges */}
         <div
           aria-hidden
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[400px]"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-[min(400px,60vh)]"
           style={{
             background:
               "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.68) 0%, oklch(0.025 0.006 245 / 0.38) 50%, transparent 100%)",
