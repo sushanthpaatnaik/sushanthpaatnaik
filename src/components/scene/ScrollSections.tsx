@@ -46,7 +46,7 @@ const gateways = [
   { to: "/news", n: "VII", label: "News", line: "Editorial archive." },
 ] as const;
 
-function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof useScroll>["scrollY"]; scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
+function HeroSection() {
   return (
     <section
       id="spark"
@@ -154,15 +154,16 @@ function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof 
           </motion.div>
         </div>
 
-        <ScrollCue scrollY={scrollY} />
+        <ScrollCue />
       </div>
     </section>
   );
 }
 
 /* ───────────── Scroll cue — cinematic, restrained, accessible ───────────── */
-function ScrollCue({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] }) {
+function ScrollCue() {
   const prefersReducedMotion = useReducedMotion();
+  const { scrollY } = useScroll();
   // Fade out within the first ~40% of the hero viewport.
   const opacity = useTransform(scrollY, [0, 220, 420], [1, 0.45, 0]);
   const pointerEvents = useTransform(scrollY, (v) => (v > 380 ? "none" : "auto"));
@@ -221,7 +222,8 @@ function ScrollCue({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY
 }
 
 
-function ScrollProgressBar({ scrollYProgress }: { scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
+function ScrollProgressBar() {
+  const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 32, mass: 0.5 });
   return (
     <div className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]">
@@ -247,14 +249,13 @@ function MotionReveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const inView = useInView(ref, { amount: 0.2, once: true });
+  const inView = useInView(ref, { amount: 0.2, once: false });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 26 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: prefersReducedMotion ? 0.01 : 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={false}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
+      transition={{ duration: 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
@@ -636,13 +637,12 @@ function ClosingInvitation() {
 
 export default function ScrollSections() {
   const totalChapters = 7;
-  const { scrollY, scrollYProgress } = useScroll();
   return (
     <div className="relative z-10 pointer-events-none">
-      <ScrollProgressBar scrollYProgress={scrollYProgress} />
+      <ScrollProgressBar />
 
       {/* 01 — Opening thesis */}
-      <HeroSection scrollY={scrollY} scrollYProgress={scrollYProgress} />
+      <HeroSection />
 
       {/* 02 — Founder presence */}
       <FounderScene />

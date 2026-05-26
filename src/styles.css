@@ -195,7 +195,6 @@
   .viewport-stage {
     height: var(--viewport-height);
     min-height: var(--viewport-height);
-    contain: layout style;
   }
   .viewport-section {
     min-height: var(--viewport-height);

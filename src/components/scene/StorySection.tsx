@@ -37,14 +37,14 @@ function SectionCopy({
       <motion.div
         initial={{ opacity: 0, scaleX: 0.2, filter: "blur(6px)" }}
         whileInView={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
-        viewport={{ once: true, amount: 0.32 }}
+        viewport={{ once: false, amount: 0.32 }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
         className={`h-px w-20 md:w-24 mb-7 md:mb-8 origin-left bg-gradient-to-r from-primary via-accent to-transparent ${align === "right" ? "md:ml-auto md:origin-right md:bg-gradient-to-l" : ""} ${align === "center" ? "mx-auto" : ""}`}
       />
       <motion.p
         initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true, amount: 0.32 }}
+        viewport={{ once: false, amount: 0.32 }}
         transition={{ duration: 1.4, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6"
       >
@@ -53,7 +53,7 @@ function SectionCopy({
       <motion.h2
         initial={{ opacity: 0, y: 44, filter: "blur(12px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true, amount: 0.32 }}
+        viewport={{ once: false, amount: 0.32 }}
         transition={{ duration: 1.7, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
         className="font-display text-[clamp(1.9rem,6.2vw,4.4rem)] leading-[1.04] md:leading-[1.02] tracking-[-0.025em] md:tracking-[-0.032em] font-medium text-gradient mb-7 md:mb-8 [text-wrap:balance] break-words hyphens-auto"
         style={{ overflowWrap: "break-word" }}
@@ -63,7 +63,7 @@ function SectionCopy({
       <motion.p
         initial={{ opacity: 0, y: 36, filter: "blur(10px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true, amount: 0.28 }}
+        viewport={{ once: false, amount: 0.28 }}
         transition={{ duration: 1.5, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
         className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md"
       >
@@ -88,7 +88,7 @@ export default function StorySection({ chapter, index, total }: StorySectionProp
         <motion.div
           initial={{ opacity: 0.55, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: false, amount: 0.25 }}
           transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 w-full render-stable"
         >
