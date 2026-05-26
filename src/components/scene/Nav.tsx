@@ -2,14 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import spLogo from "@/assets/sp-logo.svg";
 
-
 const navLinks = [
   { to: "/about", label: "About" },
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
   { to: "/recognitions", label: "Recognitions" },
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "BLOGS" },
+  { to: "/essays", label: "Essays" },
   { to: "/news", label: "News" },
   { to: "/engage", label: "Engage" },
 ] as const;
@@ -19,9 +18,7 @@ export default function Nav() {
 
   return (
     <>
-      {/* Cinematic backdrop fade — prevents content bleed-through under the
-          fixed nav on mobile/tablet without breaking the transparent
-          editorial feel on desktop. */}
+      {/* Cinematic backdrop fade */}
       <div
         aria-hidden
         className="pointer-events-none fixed top-0 left-0 right-0 z-40 h-24 md:h-28"
@@ -30,10 +27,8 @@ export default function Nav() {
             "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%)",
           WebkitBackdropFilter: "blur(8px)",
           backdropFilter: "blur(8px)",
-          maskImage:
-            "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
+          maskImage: "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
         }}
       />
       <header className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5 md:py-6 flex items-center justify-between pointer-events-none">
@@ -52,7 +47,6 @@ export default function Nav() {
           </span>
         </Link>
 
-        {/* Desktop / wide tablet nav */}
         <nav className="hidden lg:flex items-center gap-x-5 xl:gap-x-6 text-[10px] uppercase tracking-[0.26em] xl:tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
           {navLinks.map((l) => (
             <Link
@@ -73,22 +67,16 @@ export default function Nav() {
           >
             Contact
           </Link>
-          {/* Mobile / tablet trigger */}
+          {/* Mobile trigger — 44px minimum touch target per WCAG */}
           <button
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors"
+            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
           >
             <span className="sr-only">Menu</span>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden
-            >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
               {open ? (
                 <>
                   <path d="M2 2 L12 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
@@ -105,9 +93,9 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* Mobile / tablet cinematic overlay menu */}
+      {/* Mobile overlay — opacity-only transition, no backdrop-filter animation */}
       <div
-        className={`fixed inset-0 z-[45] lg:hidden transition-[opacity,backdrop-filter] duration-500 ${
+        className={`fixed inset-0 z-[45] lg:hidden transition-opacity duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -120,7 +108,7 @@ export default function Nav() {
       >
         <nav
           onClick={(e) => e.stopPropagation()}
-          className="flex h-full w-full flex-col items-start justify-center gap-5 px-8 sm:px-12 pt-28 pb-12"
+          className="flex h-full w-full flex-col items-start justify-center gap-4 sm:gap-5 px-8 sm:px-12 pt-24 pb-10 overflow-y-auto"
         >
           {navLinks.map((l, i) => (
             <Link

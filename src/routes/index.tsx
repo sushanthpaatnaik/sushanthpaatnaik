@@ -69,21 +69,15 @@ function Index() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const root = document.documentElement;
-    const setViewportVars = () => {
-      root.style.setProperty("--viewport-height", `${window.innerHeight}px`);
-      root.style.setProperty("--viewport-width", `${window.innerWidth}px`);
-      lenisRef.current?.resize();
-    };
-
-    setViewportVars();
-    window.addEventListener("resize", setViewportVars, { passive: true });
-    window.addEventListener("orientationchange", setViewportVars);
-
+    // --viewport-height is driven by CSS (100dvh / 100svh fallback) so the
+    // browser handles it natively without JS layout recalculation on each
+    // mobile chrome show/hide event.  Only Lenis needs to know about resizes.
+    const onResize = () => { lenisRef.current?.resize(); };
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("orientationchange", onResize);
     return () => {
-      window.removeEventListener("resize", setViewportVars);
-      window.removeEventListener("orientationchange", setViewportVars);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
     };
   }, [lenisRef]);
 

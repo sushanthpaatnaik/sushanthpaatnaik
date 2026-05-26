@@ -46,7 +46,7 @@ const gateways = [
   { to: "/news", n: "VII", label: "News", line: "Editorial archive." },
 ] as const;
 
-function HeroSection() {
+function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof useScroll>["scrollY"]; scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
   return (
     <section
       id="spark"
@@ -58,27 +58,28 @@ function HeroSection() {
         {/* Restrained volumetric key — a single cool beam, very low opacity,
             drifting almost imperceptibly. Adds cinematic depth without
             gradient noise or glow. */}
+        {/* Restrained volumetric key — opacity-only to stay GPU-composited */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1] mix-blend-screen"
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0.55, 0.78, 0.55] }}
+          animate={{ opacity: [0.45, 0.65, 0.45] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
-              "radial-gradient(ellipse 42% 58% at 50% 38%, oklch(0.62 0.04 232 / 0.10), transparent 70%)",
-            filter: "blur(2px)",
+              "radial-gradient(ellipse 42% 58% at 50% 38%, oklch(0.62 0.04 232 / 0.12), transparent 70%)",
+            willChange: "opacity",
           }}
         />
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1] mix-blend-screen"
-          animate={{ x: [-12, 14, -12], opacity: [0.35, 0.55, 0.35] }}
+          animate={{ opacity: [0.28, 0.48, 0.28] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
               "radial-gradient(ellipse 18% 70% at 50% 50%, oklch(0.72 0.05 232 / 0.07), transparent 75%)",
-            filter: "blur(8px)",
+            willChange: "opacity",
           }}
         />
 
@@ -154,16 +155,15 @@ function HeroSection() {
           </motion.div>
         </div>
 
-        <ScrollCue />
+        <ScrollCue scrollY={scrollY} />
       </div>
     </section>
   );
 }
 
 /* ───────────── Scroll cue — cinematic, restrained, accessible ───────────── */
-function ScrollCue() {
+function ScrollCue({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] }) {
   const prefersReducedMotion = useReducedMotion();
-  const { scrollY } = useScroll();
   // Fade out within the first ~40% of the hero viewport.
   const opacity = useTransform(scrollY, [0, 220, 420], [1, 0.45, 0]);
   const pointerEvents = useTransform(scrollY, (v) => (v > 380 ? "none" : "auto"));
@@ -222,15 +222,15 @@ function ScrollCue() {
 }
 
 
-function ScrollProgressBar() {
-  const { scrollYProgress } = useScroll();
+function ScrollProgressBar({ scrollYProgress }: { scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
   const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 32, mass: 0.5 });
   return (
-    <div className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]">
+    <div className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]" style={{ willChange: "transform" }}>
       <motion.div
         className="h-full origin-left"
         style={{
           scaleX,
+          willChange: "transform",
           background:
             "linear-gradient(90deg, transparent, oklch(0.78 0.02 232 / 0.55) 35%, oklch(0.86 0.02 232 / 0.72) 65%, transparent)",
         }}
@@ -249,13 +249,14 @@ function MotionReveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.2, once: false });
+  const prefersReducedMotion = useReducedMotion();
+  const inView = useInView(ref, { amount: 0.2, once: true });
   return (
     <motion.div
       ref={ref}
-      initial={false}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-      transition={{ duration: 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 26 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: prefersReducedMotion ? 0.01 : 1.3, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
@@ -288,14 +289,14 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-0 w-[68%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
         {/* Softened lower torso — reduces clothing fold visibility, preserves face */}
         <div
           aria-hidden
-          className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
+          className="absolute left-0 bottom-0 w-[68%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 78%" }}
         />
 
@@ -496,18 +497,19 @@ function ClosingInvitation() {
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        {/* Living orbital pulse — a thin luminous ring, no inset darkness */}
+        {/* Living orbital pulse — opacity-only; scale replaced with opacity breathe */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
               "radial-gradient(circle at 50% 50%, transparent 58%, oklch(0.62 0.035 232 / 0.07) 62%, transparent 66%)",
+            willChange: "opacity",
           }}
-          animate={{ opacity: [0.5, 0.72, 0.5], scale: [1, 1.012, 1] }}
+          animate={{ opacity: [0.42, 0.68, 0.42] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Volumetric atmospheric diffusion — soft luminous haze, additive only */}
+        {/* Volumetric atmospheric diffusion — opacity-only, willChange promoted */}
         <motion.div
           className="absolute left-1/2 top-[56%] -translate-x-1/2 -translate-y-1/2 w-[120%] h-[44%]"
           style={{
@@ -515,6 +517,7 @@ function ClosingInvitation() {
               "radial-gradient(ellipse 60% 55% at 50% 50%, oklch(0.50 0.022 232 / 0.10), transparent 72%)",
             filter: "blur(56px)",
             mixBlendMode: "screen",
+            willChange: "opacity",
           }}
           animate={{ opacity: [0.45, 0.62, 0.45] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
@@ -537,17 +540,15 @@ function ClosingInvitation() {
           />
         </motion.div>
 
-        {/* Planetary shimmer — microscopic environmental motion */}
-        <motion.div
+        {/* Planetary shimmer — static blur, no rotation (rotation + blur = expensive repaint) */}
+        <div
           className="absolute left-1/2 top-1/2 h-[72vh] w-[72vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, oklch(0.62 0.04 232 / 0.028) 60deg, transparent 120deg, transparent 240deg, oklch(0.62 0.04 232 / 0.022) 300deg, transparent 360deg)",
+              "radial-gradient(ellipse at 30% 40%, oklch(0.62 0.04 232 / 0.022), transparent 60%), radial-gradient(ellipse at 70% 60%, oklch(0.62 0.04 232 / 0.018), transparent 60%)",
             filter: "blur(48px)",
             mixBlendMode: "screen",
           }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 360, repeat: Infinity, ease: "linear" }}
         />
 
         <div
@@ -637,12 +638,13 @@ function ClosingInvitation() {
 
 export default function ScrollSections() {
   const totalChapters = 7;
+  const { scrollY, scrollYProgress } = useScroll();
   return (
     <div className="relative z-10 pointer-events-none">
-      <ScrollProgressBar />
+      <ScrollProgressBar scrollYProgress={scrollYProgress} />
 
       {/* 01 — Opening thesis */}
-      <HeroSection />
+      <HeroSection scrollY={scrollY} scrollYProgress={scrollYProgress} />
 
       {/* 02 — Founder presence */}
       <FounderScene />

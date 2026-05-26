@@ -2,28 +2,15 @@ import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import SignatureMotif from "./SignatureMotif";
 
-/**
- * Interstitial
- * ------------
- * A cinematic micro-storytelling beat that lives between major chapters.
- * One italic line, generous space, the signature orbital motif as a faint
- * watermark. Fades in/out as it enters and leaves the viewport. Never
- * carries CTAs, never breaks the scroll rhythm — it is pure narrative
- * punctuation, the cinematic equivalent of a slow dissolve.
- */
 export default function Interstitial({
   line,
   pause = false,
 }: {
   line: React.ReactNode;
-  /**
-   * When true, renders the "breathing pause" — taller, quieter, no motif,
-   * for the single intentional rest section before the closing chapter.
-   */
   pause?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.45, once: false });
+  const inView = useInView(ref, { amount: 0.45, once: true });
   const reduce = useReducedMotion();
 
   return (
@@ -33,14 +20,12 @@ export default function Interstitial({
         pause ? "min-h-[68vh] py-32 md:py-44" : "min-h-[44vh] py-24 md:py-32"
       }`}
     >
-      {/* Faint signature watermark — only on standard interstitials. */}
       {!pause && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <SignatureMotif variant="watermark" />
         </div>
       )}
 
-      {/* Soft central glow so the line lifts off the dark plate. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -52,13 +37,9 @@ export default function Interstitial({
 
       <motion.div
         ref={ref}
-        initial={false}
-        animate={
-          inView
-            ? { opacity: 1, y: 0, filter: "blur(0px)" }
-            : { opacity: 0, y: 14, filter: reduce ? "blur(0px)" : "blur(4px)" }
-        }
-        transition={{ duration: 1.6, ease: [0.19, 1, 0.22, 1] }}
+        initial={{ opacity: 0, y: reduce ? 0 : 14 }}
+        animate={inView ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
         className="relative z-10 mx-auto max-w-2xl text-center pointer-events-auto"
       >
         {!pause && (
