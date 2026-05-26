@@ -409,7 +409,7 @@ const MOON_FRAG = /* glsl */`
     float ndl = dot(n, normalize(vSunDir));
     // Tiny ambient fill so the night side isn't absolute black
     // Higher ambient floor so the Moon reads through the CSS dim overlays
-    float light = max(ndl + 0.22, 0.0);
+    float light = max(ndl + 0.35, 0.0);
     vec3 surface = texture2D(tMoon, vUv).rgb * light;
     gl_FragColor = vec4(surface, 1.0);
   }
@@ -629,11 +629,10 @@ export default function EarthGlobe({
     scene.add(moonMesh);
 
     // Orbital constants — Moon revolves around Earth's centre
-    const MOON_R      = 14;    // orbit radius (scene units)
+    const MOON_R      = 7;     // orbit radius — keeps Moon within viewport at all times
     const MOON_PERIOD = 12;    // seconds per full revolution — visible in a 5-10s glance
-    const MOON_TILT   = 0.38;  // orbit-plane tilt ~22° — more 3-D depth for visible arc
-    const MOON_START  = 2.1;   // initial angle ≈ upper-left
-    const MOON_Z_OFF  = -22;   // slightly closer so the Moon reads larger on screen
+    const MOON_TILT   = 0.38;  // orbit-plane tilt ~22° — gives 3-D depth to the arc
+    const MOON_START  = 2.1;   // initial angle ≈ upper-left (Moon starts in front, visible)
     // Share sun direction with Moon
     const moonUpdateSun = () => {
       const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
@@ -744,7 +743,7 @@ export default function EarthGlobe({
       moonMesh.position.set(
         ex + MOON_R * Math.cos(moonAngle),
         ey + MOON_R * Math.sin(moonAngle) * Math.cos(MOON_TILT),
-        ez + MOON_Z_OFF + MOON_R * Math.sin(moonAngle) * Math.sin(MOON_TILT),
+        ez + MOON_R * Math.sin(moonAngle) * Math.sin(MOON_TILT),
       );
       moonMesh.lookAt(ex, ey, ez); // tidal lock — same hemisphere always faces Earth
       starMat.uniforms.uTime.value = elapsed;
