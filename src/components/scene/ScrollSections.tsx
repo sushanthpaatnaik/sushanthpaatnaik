@@ -493,7 +493,7 @@ function ClosingInvitation() {
   return (
     <motion.section
       id="future"
-      className="relative h-[var(--viewport-height)] min-h-[540px] px-5 sm:px-6 text-center py-16 md:py-20 flex flex-col items-center justify-center overflow-hidden"
+      className="relative h-[var(--viewport-height)] min-h-[540px] px-5 sm:px-6 text-center pt-24 pb-8 md:pt-28 md:pb-10 flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: prefersReducedMotion ? 1 : 0.88 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.05 }}
@@ -558,7 +558,7 @@ function ClosingInvitation() {
       </div>
       <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal delay={0.35}>
-          <p className="mb-7 md:mb-9 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
+          <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
             Future Systems
           </p>
         </MotionReveal>
@@ -597,7 +597,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={0.88}>
-          <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
+          <div className="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:gap-9 font-mono text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-muted-foreground/45">
             <span>Advanced Materials</span>
             <span className="h-[3px] w-[3px] rounded-full bg-primary/60" />
             <span>Energy Systems</span>
@@ -606,7 +606,7 @@ function ClosingInvitation() {
           </div>
         </MotionReveal>
         <MotionReveal delay={1.0}>
-          <div className="relative mt-8 md:mt-10 lg:mt-12 inline-block">
+          <div className="relative mt-4 md:mt-6 inline-block">
             {/* Faint atmospheric backlight behind the archival signature */}
             <span
               aria-hidden

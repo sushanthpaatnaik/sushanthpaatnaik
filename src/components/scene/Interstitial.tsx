@@ -17,7 +17,7 @@ export default function Interstitial({
     <section
       aria-hidden={false}
       className={`relative flex items-center justify-center overflow-hidden px-6 ${
-        pause ? "min-h-[68vh] py-32 md:py-44" : "min-h-[44vh] py-24 md:py-32"
+        pause ? "min-h-[var(--viewport-height)] py-32 md:py-44" : "min-h-[44vh] py-24 md:py-32"
       }`}
     >
       {!pause && (
