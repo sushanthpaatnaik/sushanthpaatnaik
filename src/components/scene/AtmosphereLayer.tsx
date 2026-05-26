@@ -90,11 +90,14 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneFuture,
     alt: "Future systems · planetary-scale industrial intelligence",
+    // Near-black — acts as deep-space fallback while the WebGL canvas fades in.
+    // The WebGL scene renders its own cosmic background so this plate is only
+    // visible during the chapter transition (opacity < 1).
     tint: undefined,
     overlay:
-      "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
-    parallax: 0.3,
-    filter: "brightness(0.76) contrast(1.08) saturate(0.82) hue-rotate(-4deg)",
+      "linear-gradient(180deg, oklch(0.010 0.002 250 / 0.96) 0%, oklch(0.008 0.002 250 / 0.98) 100%)",
+    parallax: 0.2,
+    filter: "brightness(0.12) contrast(1.02) saturate(0.30)",
   },
 ];
 
