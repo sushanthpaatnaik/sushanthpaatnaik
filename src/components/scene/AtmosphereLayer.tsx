@@ -2,9 +2,11 @@ import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
 import EarthGlobe from "./EarthGlobe";
 import EarthLivingScene from "./EarthLivingScene";
+import RecognitionAmbient from "./RecognitionAmbient";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
+import sceneVentures from "@/assets/story-05-ventures.webp";
 import sceneMaterial from "@/assets/story-03-material.webp";
 import sceneIndustrial from "@/assets/story-04-industrial.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
@@ -70,19 +72,43 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneRecognition,
-    alt: "Recognition · awards and honours product photoshoot",
-    tint: "linear-gradient(180deg, oklch(0.42 0.030 55 / 0.08), oklch(0.10 0.018 40 / 0.18))",
-    overlay:
-      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.030 0.008 40 / 0.38) 0%, oklch(0.022 0.005 260 / 0.68) 85%)",
-    parallax: 0.4,
-    filter: "brightness(0.72) contrast(1.05) saturate(0.80)",
-    objectPosition: "center 60%",
+    alt: "Recognition · awards and honours — institutional archive",
+    // Soft-light tint: warm museum gold concentrated over the trophy midline.
+    // mix-blend-mode:soft-light amplifies warm highlights on reflective trophy surfaces
+    // while leaving the already-dark surround untouched.
+    tint: "radial-gradient(ellipse 55% 44% at 50% 60%, oklch(0.60 0.028 52 / 0.13) 0%, oklch(0.28 0.012 44 / 0.04) 58%, transparent 80%)",
+    // Two-gradient overlay stack:
+    //   [1] Aperture vignette — deep elliptical falloff opens toward trophy line
+    //   [2] Column lighting — dark ceiling + dark floor, open center window
+    overlay: [
+      "radial-gradient(ellipse 52% 44% at 50% 60%, oklch(0.022 0.005 52 / 0.18) 0%, oklch(0.012 0.002 260 / 0.82) 92%)",
+      "linear-gradient(180deg, oklch(0.006 0.002 260 / 0.80) 0%, oklch(0.015 0.003 260 / 0.26) 30%, transparent 50%, oklch(0.015 0.003 260 / 0.36) 78%, oklch(0.006 0.002 260 / 0.78) 100%)",
+    ].join(", "),
+    parallax: 0.30,
+    // Higher contrast sharpens trophy detail; reduced saturation + faint sepia
+    // push toward archival institutional tone rather than commercial photoshoot.
+    filter: "brightness(0.58) contrast(1.18) saturate(0.60) sepia(0.07)",
+    objectPosition: "center 58%",
   },
   {
-    alt: "Ecosystem · seven thresholds into the work",
-    overlay:
-      "radial-gradient(ellipse 70% 60% at 50% 40%, oklch(0.055 0.010 232 / 0.55) 0%, oklch(0.018 0.004 232 / 0.90) 80%)",
-    parallax: 0,
+    src: sceneVentures,
+    alt: "Ecosystem · distributed industrial systems · coordinated infrastructure",
+    // Minimal cool tint — barely perceptible, pushes the image toward the same
+    // blue-black space palette as surrounding chapters.
+    tint: "radial-gradient(ellipse 58% 50% at 50% 44%, oklch(0.20 0.014 232 / 0.07), transparent 68%)",
+    // Two-gradient overlay stack:
+    //   [1] Dense central radial — pushes network into deep background
+    //   [2] Top/bottom crush — matches the column lighting grammar used in Recognition
+    overlay: [
+      "radial-gradient(ellipse 70% 62% at 50% 44%, oklch(0.020 0.004 232 / 0.52) 0%, oklch(0.010 0.002 232 / 0.90) 94%)",
+      "linear-gradient(180deg, oklch(0.008 0.002 232 / 0.68) 0%, transparent 26%, transparent 74%, oklch(0.008 0.002 232 / 0.58) 100%)",
+    ].join(", "),
+    parallax: 0.22,
+    // blur(2px) dissolves hard geometric triangulation lines and sharp node edges —
+    // transforms the explicit network diagram into ambient spatial depth texture.
+    // contrast(0.80) flattens the high-contrast polygon mesh.
+    // saturate(0.36) removes the overt blue-glow from node spheres.
+    filter: "brightness(0.54) contrast(0.80) saturate(0.36) blur(2px)",
   },
   {
     src: sceneFuture,
@@ -104,8 +130,8 @@ const OVERLAY_STOPS = [
   0.20, // Founder
   0.16, // Material
   0.19, // Industrial
-  0.23, // Recognition
-  0.20, // Ecosystem
+  0.16, // Recognition — reduced: per-scene filter is darker; less global dim needed
+  0.14, // Ecosystem  — reduced: heavy blur+darken filter; avoid double-dimming
   0.23, // Future
 ];
 
@@ -119,6 +145,7 @@ export default function AtmosphereLayer() {
     >
       {({ progress, phase }) => (
         <>
+          <RecognitionAmbient phase={phase} />
           <ParticleField progress={progress} phase={phase} />
           <EarthGlobe phase={phase} src={sceneFuture} />
         </>
