@@ -279,9 +279,9 @@ const STAR_VERT = /* glsl */`
     // Two-harmonic twinkle — organic flicker (phi-ratio second harmonic avoids periodicity)
     float t = uTime * aSpeed;
     float tw = sin(t + aPhase) * (0.62 + 0.38 * sin(t * 0.618 + aPhase * 1.41));
-    vOpacity = 0.68 + 0.32 * tw;
+    vOpacity = 0.82 + 0.18 * tw;
     vColor = aColor;
-    gl_PointSize = aSize * (350.0 / -mvPos.z);
+    gl_PointSize = aSize * (600.0 / -mvPos.z);
   }
 `;
 const STAR_FRAG = /* glsl */`
@@ -293,7 +293,7 @@ const STAR_FRAG = /* glsl */`
     float core  = smoothstep(0.5, 0.04, d);
     float bloom = smoothstep(0.5, 0.0,  d) * 0.14;
     float a = (core + bloom) * vOpacity;
-    gl_FragColor = vec4(vColor, a * 0.28);
+    gl_FragColor = vec4(vColor, a * 0.85);
   }
 `;
 const EARTH_VERT = /* glsl */`
@@ -556,7 +556,7 @@ export default function EarthGlobe({
     // bg 60%: r=120-175, tiny/faint, slow twinkle (deep field)
     // mid 30%: r=78-115, medium, moderate twinkle
     // near 10%: r=52-72, slightly larger, faster twinkle + soft bloom
-    const starCount = isMobile ? 400 : 800;
+    const starCount = isMobile ? 700 : 1400;
     const bgEnd  = Math.floor(starCount * 0.60);
     const midEnd = Math.floor(starCount * 0.90);
     const starGeo = new THREE.BufferGeometry();
@@ -781,7 +781,7 @@ export default function EarthGlobe({
           width: "100%",
           height: "100%",
           display: "block",
-          filter: "blur(0.35px) saturate(0.88)",
+          filter: "saturate(0.92)",
         }}
       />
 
@@ -848,7 +848,7 @@ export default function EarthGlobe({
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.28) 32%, transparent 55%)",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.12) 32%, transparent 55%)",
           pointerEvents: "none",
         }}
       />
