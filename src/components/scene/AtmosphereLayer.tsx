@@ -5,6 +5,7 @@ import EarthLivingScene from "./EarthLivingScene";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
+import sceneVentures from "@/assets/story-05-ventures.webp";
 import sceneMaterial from "@/assets/story-03-material.webp";
 import sceneIndustrial from "@/assets/story-04-industrial.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
@@ -79,11 +80,13 @@ const SCENES: BackgroundScene[] = [
     objectPosition: "center 60%",
   },
   {
-    // No background plate — pure deep-space darkness for the Ecosystem section.
-    alt: "Ecosystem · seven thresholds into the work",
+    src: sceneVentures,
+    alt: "Ecosystem · interconnected industrial ventures · India → World",
+    tint: "radial-gradient(ellipse 70% 60% at 56% 46%, oklch(0.40 0.048 240 / 0.16), oklch(0.07 0.016 232 / 0.18) 72%)",
     overlay:
-      "radial-gradient(ellipse 70% 60% at 50% 40%, oklch(0.055 0.010 232 / 0.55) 0%, oklch(0.018 0.004 232 / 0.90) 80%)",
-    parallax: 0,
+      "radial-gradient(ellipse 82% 72% at 50% 46%, oklch(0.030 0.006 232 / 0.40) 0%, oklch(0.022 0.004 232 / 0.68) 90%)",
+    parallax: 0.45,
+    filter: "brightness(0.82) contrast(1.06) saturate(0.84)",
   },
   {
     src: sceneFuture,
