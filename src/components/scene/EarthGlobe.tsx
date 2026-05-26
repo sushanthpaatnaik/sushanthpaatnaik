@@ -112,9 +112,9 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
       const band2 = Math.exp(-Math.pow(lat + 0.30, 2) / 0.14) * 0.5;
       const gas2  = Math.max(0, n3 * band2);
       // Near-black charcoal — no visible purple/blue tint
-      img.data[idx]   = Math.floor(gas * 6 + gas2 * 4);
-      img.data[idx+1] = Math.floor(gas * 7 + gas2 * 5);
-      img.data[idx+2] = Math.floor(gas * 10 + gas2 * 7);
+      img.data[idx]   = Math.floor(gas * 18 + gas2 * 12);
+      img.data[idx+1] = Math.floor(gas * 22 + gas2 * 16);
+      img.data[idx+2] = Math.floor(gas * 36 + gas2 * 24);
       img.data[idx+3] = 255;
     }
   }
@@ -123,7 +123,7 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
   for (let i = 0; i < 9; i++) {
     const cx = Math.random()*W, cy = Math.random()*H, r = 80+Math.random()*200;
     const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-    gr.addColorStop(0, Math.random()>0.5 ? "rgba(8,10,14,0.04)" : "rgba(10,18,28,0.05)");
+    gr.addColorStop(0, Math.random()>0.5 ? "rgba(10,16,34,0.15)" : "rgba(8,18,42,0.18)");
     gr.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = gr;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
@@ -393,10 +393,13 @@ const CLOUD_FRAG = /* glsl */`
 const MOON_VERT = /* glsl */`
   varying vec2 vUv;
   varying vec3 vNormal;
+  varying vec3 vViewDir;
   void main() {
     vUv = uv;
     vNormal = normalize(normalMatrix * normal);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+    vViewDir = normalize(-mvPos.xyz);
+    gl_Position = projectionMatrix * mvPos;
   }
 `;
 const MOON_FRAG = /* glsl */`
@@ -404,14 +407,21 @@ const MOON_FRAG = /* glsl */`
   uniform vec3 vSunDir;
   varying vec2 vUv;
   varying vec3 vNormal;
+  varying vec3 vViewDir;
   void main() {
     vec3 n = normalize(vNormal);
+    vec3 v = normalize(vViewDir);
     float ndl = dot(n, normalize(vSunDir));
-    // Tiny ambient fill so the night side isn't absolute black
-    // Higher ambient floor so the Moon reads through the CSS dim overlays
-    float light = max(ndl + 0.35, 0.0);
+    // Lambertian diffuse with raised ambient floor
+    float light = max(ndl + 0.30, 0.0);
+    // Cool rim — Fresnel-based edge illumination, blue-white at limb
+    float rim = pow(1.0 - abs(dot(n, v)), 3.2);
+    vec3 rimColor = vec3(0.60, 0.75, 1.0) * rim * 0.30;
+    // Earthshine — warm blue reflected fill from Earth (approximated as -Y world)
+    float earthshine = max(-dot(n, vec3(0.0, 1.0, 0.0)), 0.0) * (1.0 - max(ndl, 0.0));
+    vec3 earthLight = vec3(0.18, 0.30, 0.62) * earthshine * 0.16;
     vec3 surface = texture2D(tMoon, vUv).rgb * light;
-    gl_FragColor = vec4(surface, 1.0);
+    gl_FragColor = vec4(surface + rimColor + earthLight, 1.0);
   }
 `;
 
@@ -612,11 +622,47 @@ export default function EarthGlobe({
     });
     scene.add(new THREE.Points(starGeo, starMat));
 
+    // ── Cosmic dust — ultra-fine particles at deep radii for volumetric depth ──
+    const DUST_COUNT = isMobile ? 140 : 280;
+    const dustGeo = new THREE.BufferGeometry();
+    const dustPos = new Float32Array(DUST_COUNT * 3);
+    const dustSizes = new Float32Array(DUST_COUNT);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.acos(2 * Math.random() - 1);
+      const r     = 82 + Math.random() * 62;
+      dustPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+      dustPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      dustPos[i*3+2] = r * Math.cos(phi);
+      dustSizes[i] = 0.3 + Math.random() * 0.5;
+    }
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+    dustGeo.setAttribute("aSize",    new THREE.BufferAttribute(dustSizes, 1));
+    dustGeo.setAttribute("aPhase",   new THREE.BufferAttribute(new Float32Array(DUST_COUNT).fill(0), 1));
+    dustGeo.setAttribute("aSpeed",   new THREE.BufferAttribute(new Float32Array(DUST_COUNT).fill(0.08), 1));
+    const dustColors = new Float32Array(DUST_COUNT * 3);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      dustColors[i*3] = 0.72 + Math.random()*0.12;
+      dustColors[i*3+1] = 0.78 + Math.random()*0.12;
+      dustColors[i*3+2] = 1.00;
+    }
+    dustGeo.setAttribute("aColor", new THREE.BufferAttribute(dustColors, 3));
+    const dustMat = new THREE.ShaderMaterial({
+      uniforms:       { uTime: { value: 0 } },
+      vertexShader:   STAR_VERT,
+      fragmentShader: STAR_FRAG,
+      transparent: true,
+      blending:    THREE.AdditiveBlending,
+      depthWrite:  false,
+      opacity:     0.09,
+    });
+    scene.add(new THREE.Points(dustGeo, dustMat));
+
     // ── Distant Moon — secondary planetary body, upper-left of viewport ──
     // World position (-7, 10, -38): appears ~31% from left, ~33% from top
     // at camera z=18, FOV 36°. Radius 1.4 ≈ 15% of screen height.
     const moonTex = buildMoonTexture();
-    const moonGeo = new THREE.SphereGeometry(1.4, 48, 48);
+    const moonGeo = new THREE.SphereGeometry(2.2, 48, 48);
     const moonMat = new THREE.ShaderMaterial({
       uniforms: {
         tMoon:   { value: moonTex },
@@ -629,10 +675,10 @@ export default function EarthGlobe({
     scene.add(moonMesh);
 
     // Orbital constants — Moon revolves around Earth's centre
-    const MOON_R      = 7;     // orbit radius — keeps Moon within viewport at all times
-    const MOON_PERIOD = 12;    // seconds per full revolution — visible in a 5-10s glance
-    const MOON_TILT   = 0.38;  // orbit-plane tilt ~22° — gives 3-D depth to the arc
-    const MOON_START  = 2.1;   // initial angle ≈ upper-left (Moon starts in front, visible)
+    const MOON_R      = 14;           // orbit radius — safely outside halo (r=12.85)
+    const MOON_PERIOD = 22;           // seconds per revolution — cinematic sweep pace
+    const MOON_TILT   = 0.28;         // orbit-plane tilt — keeps arc in upper visible quadrant
+    const MOON_START  = Math.PI / 2;  // starts at top of orbit, immediately visible on arrival
     // Share sun direction with Moon
     const moonUpdateSun = () => {
       const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
@@ -747,6 +793,7 @@ export default function EarthGlobe({
       );
       moonMesh.lookAt(ex, ey, ez); // tidal lock — same hemisphere always faces Earth
       starMat.uniforms.uTime.value = elapsed;
+      dustMat.uniforms.uTime.value = elapsed;
       renderer.render(scene, camera);
     }
 
@@ -774,6 +821,7 @@ export default function EarthGlobe({
       sunTex.dispose();   sunMat.dispose();   sunGeo.dispose();
       haloMat.dispose();  haloGeo.dispose();
       starGeo.dispose();  starMat.dispose();
+      dustGeo.dispose();  dustMat.dispose();
       moonTex.dispose();  moonMat.dispose();  moonGeo.dispose();
       if (earthMesh) earthMesh.geometry.dispose();
       if (earthMat) {
