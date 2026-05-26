@@ -8,7 +8,7 @@ const navLinks = [
   { to: "/ventures", label: "Ventures" },
   { to: "/recognitions", label: "Recognitions" },
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "Essays" },
+  { to: "/essays", label: "Blogs" },
   { to: "/news", label: "News" },
   { to: "/engage", label: "Engage" },
 ] as const;
