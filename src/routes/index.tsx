@@ -42,7 +42,6 @@ export const Route = createFileRoute("/")({
 function Index() {
   const scrollProgress = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
-  const cursorRef = useRef<HTMLDivElement>(null);
   const [entered, setEntered] = useState(false);
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
@@ -163,9 +162,6 @@ function Index() {
     const onMove = (e: MouseEvent) => {
       targetX = (e.clientX / window.innerWidth) * 2 - 1;
       targetY = (e.clientY / window.innerHeight) * 2 - 1;
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX - 12}px, ${e.clientY - 12}px, 0)`;
-      }
     };
     let raf = 0;
     const loop = () => {
@@ -222,11 +218,6 @@ function Index() {
         </Suspense>
       )}
 
-      {/* Custom cursor */}
-      <div
-        ref={cursorRef}
-        className="pointer-events-none fixed top-0 left-0 z-[60] w-6 h-6 rounded-full border border-foreground/40 mix-blend-difference hidden md:block"
-      />
 
       <Nav />
       <HUD scrollProgress={scrollProgress} />

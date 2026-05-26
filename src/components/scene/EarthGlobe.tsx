@@ -100,18 +100,24 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
       const nx = Math.cos(lat)*Math.cos(lon), ny = Math.cos(lat)*Math.sin(lon), nz = Math.sin(lat);
       const n1 = noise.simplex3D(nx*1.5, ny*1.5, nz*1.5)*0.5+0.5;
       const n2 = noise.simplex3D(nx*3.5, ny*3.5, nz*3.5)*0.25;
-      const band = Math.exp(-Math.pow(lat - 0.12, 2) / 0.1);
-      const gas  = Math.max(0, (n1 + n2) * band);
+      // Primary equatorial dust band
+      const band  = Math.exp(-Math.pow(lat - 0.12, 2) / 0.10);
+      const gas   = Math.max(0, (n1 + n2) * band);
+      // Second offset lane — different latitude + rotated, adds subtle depth layering
+      const n3   = noise.simplex3D(nx*2.2+1.1, ny*2.2+0.8, nz*2.2)*0.5+0.5;
+      const band2 = Math.exp(-Math.pow(lat + 0.30, 2) / 0.14) * 0.5;
+      const gas2  = Math.max(0, n3 * band2);
       // Near-black charcoal — no visible purple/blue tint
-      img.data[idx]   = Math.floor(gas * 6);
-      img.data[idx+1] = Math.floor(gas * 7);
-      img.data[idx+2] = Math.floor(gas * 10);
+      img.data[idx]   = Math.floor(gas * 6 + gas2 * 4);
+      img.data[idx+1] = Math.floor(gas * 7 + gas2 * 5);
+      img.data[idx+2] = Math.floor(gas * 10 + gas2 * 7);
       img.data[idx+3] = 255;
     }
   }
   ctx.putImageData(img, 0, 0);
-  for (let i = 0; i < 6; i++) {
-    const cx = Math.random()*W, cy = 150+Math.random()*212, r = 100+Math.random()*160;
+  // Depth haze blobs — scattered across full height for spatial layering
+  for (let i = 0; i < 9; i++) {
+    const cx = Math.random()*W, cy = Math.random()*H, r = 80+Math.random()*200;
     const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
     gr.addColorStop(0, Math.random()>0.5 ? "rgba(8,10,14,0.04)" : "rgba(10,18,28,0.05)");
     gr.addColorStop(1, "rgba(0,0,0,0)");
@@ -262,23 +268,32 @@ const HALO_FRAG = /* glsl */`
 const STAR_VERT = /* glsl */`
   attribute float aSize;
   attribute float aPhase;
+  attribute float aSpeed;
+  attribute vec3  aColor;
   uniform float uTime;
   varying float vOpacity;
+  varying vec3  vColor;
   void main() {
     vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mvPos;
-    float twinkle = 0.35 + 0.65 * sin(uTime * 1.8 + aPhase);
-    vOpacity = twinkle;
+    // Two-harmonic twinkle — organic flicker (phi-ratio second harmonic avoids periodicity)
+    float t = uTime * aSpeed;
+    float tw = sin(t + aPhase) * (0.62 + 0.38 * sin(t * 0.618 + aPhase * 1.41));
+    vOpacity = 0.68 + 0.32 * tw;
+    vColor = aColor;
     gl_PointSize = aSize * (350.0 / -mvPos.z);
   }
 `;
 const STAR_FRAG = /* glsl */`
   varying float vOpacity;
+  varying vec3  vColor;
   void main() {
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
-    float a = smoothstep(0.5, 0.1, d) * vOpacity;
-    gl_FragColor = vec4(1.0, 0.98, 0.95, a * 0.35);
+    float core  = smoothstep(0.5, 0.04, d);
+    float bloom = smoothstep(0.5, 0.0,  d) * 0.14;
+    float a = (core + bloom) * vOpacity;
+    gl_FragColor = vec4(vColor, a * 0.28);
   }
 `;
 const EARTH_VERT = /* glsl */`
@@ -332,7 +347,7 @@ const EARTH_FRAG = /* glsl */`
     vec3 dayL   = (day * max(ndl+0.04, 0.0)) * mix(1.0, 0.5, cloud*dayW);
     float term  = smoothstep(0.18, 0.0, abs(ndl));
     vec3 sunset = vec3(1.0,0.35,0.06) * term * 0.45 * (1.0-spec);
-    vec3 nightL = night * (1.0-dayW) * 1.58;
+    vec3 nightL = night * (1.0-dayW) * 1.68;
     vec3 surface = mix(nightL, dayL+glint+sunset, dayW);
     float limb  = pow(1.0 - max(dot(normalize(vNormal), view), 0.0), 4.5);
     surface += vec3(0.05,0.26,0.60) * limb * 0.75 * atmosphereIntensity;
@@ -435,7 +450,7 @@ export default function EarthGlobe({
 
     // ── Planet group — offset down to form curved horizon ────────────────
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(0, -10.8, -1.0);
+    planetGroup.position.set(0, -9.9, -1.0);
     scene.add(planetGroup);
 
     // ── Noise (shared by all procedural generators) ──────────────────────
@@ -463,7 +478,7 @@ export default function EarthGlobe({
     const haloMat = new THREE.ShaderMaterial({
       uniforms: {
         vSunDir:             { value: new THREE.Vector3() },
-        atmosphereIntensity: { value: 0.42 },
+        atmosphereIntensity: { value: 0.44 },
       },
       vertexShader:   HALO_VERT,
       fragmentShader: HALO_FRAG,
@@ -474,25 +489,52 @@ export default function EarthGlobe({
     const haloGeo = new THREE.SphereGeometry(12.85, 64, 64);
     planetGroup.add(new THREE.Mesh(haloGeo, haloMat));
 
-    // ── Star field ───────────────────────────────────────────────────────
+    // ── Star field — three depth layers ─────────────────────────────────
+    // bg 60%: r=120-175, tiny/faint, slow twinkle (deep field)
+    // mid 30%: r=78-115, medium, moderate twinkle
+    // near 10%: r=52-72, slightly larger, faster twinkle + soft bloom
     const starCount = isMobile ? 400 : 800;
+    const bgEnd  = Math.floor(starCount * 0.60);
+    const midEnd = Math.floor(starCount * 0.90);
     const starGeo = new THREE.BufferGeometry();
-    const pos = new Float32Array(starCount * 3);
-    const sizes = new Float32Array(starCount);
+    const pos    = new Float32Array(starCount * 3);
+    const sizes  = new Float32Array(starCount);
     const phases = new Float32Array(starCount);
+    const speeds = new Float32Array(starCount);
+    const colors = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount; i++) {
-      const r = 60 + Math.random()*80;
-      const theta = Math.random()*Math.PI*2;
-      const phi = Math.acos(2*Math.random()-1);
-      pos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
-      pos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
-      pos[i*3+2] = r*Math.cos(phi);
-      sizes[i]   = 1 + Math.random()*3.5;
-      phases[i]  = Math.random()*Math.PI*2;
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.acos(2 * Math.random() - 1);
+      const snx = Math.sin(phi)*Math.cos(theta), sny = Math.sin(phi)*Math.sin(theta), snz = Math.cos(phi);
+      // Noise-based density variation — subtle clusters and voids
+      const density = noise.simplex3D(snx*0.85, sny*0.85, snz*0.85) * 0.5 + 0.5;
+      let r: number, sBase: number, spBase: number, spRange: number;
+      if (i < bgEnd) {
+        r = 120 + Math.random()*55; sBase = 0.5 + Math.random()*0.9; spBase = 0.25; spRange = 0.30;
+      } else if (i < midEnd) {
+        r = 78  + Math.random()*37; sBase = 1.0 + Math.random()*1.2; spBase = 0.65; spRange = 0.45;
+      } else {
+        r = 52  + Math.random()*20; sBase = 1.8 + Math.random()*1.4; spBase = 1.20; spRange = 0.60;
+      }
+      pos[i*3] = r*snx; pos[i*3+1] = r*sny; pos[i*3+2] = r*snz;
+      sizes[i]  = sBase * (0.6 + density * 0.8);
+      phases[i] = Math.random() * Math.PI * 2;
+      speeds[i] = spBase + Math.random() * spRange;
+      // Physically-inspired color: ~60% warm-white (G/F), ~22% blue-white (A/B), ~18% orange (K)
+      const cr = Math.random();
+      if (cr < 0.60) {
+        colors[i*3]=1.00; colors[i*3+1]=0.96+Math.random()*0.02; colors[i*3+2]=0.90+Math.random()*0.06;
+      } else if (cr < 0.82) {
+        colors[i*3]=0.88+Math.random()*0.08; colors[i*3+1]=0.92+Math.random()*0.04; colors[i*3+2]=1.00;
+      } else {
+        colors[i*3]=1.00; colors[i*3+1]=0.78+Math.random()*0.14; colors[i*3+2]=0.62+Math.random()*0.14;
+      }
     }
     starGeo.setAttribute("position", new THREE.BufferAttribute(pos,    3));
     starGeo.setAttribute("aSize",    new THREE.BufferAttribute(sizes,  1));
     starGeo.setAttribute("aPhase",   new THREE.BufferAttribute(phases, 1));
+    starGeo.setAttribute("aSpeed",   new THREE.BufferAttribute(speeds, 1));
+    starGeo.setAttribute("aColor",   new THREE.BufferAttribute(colors, 3));
     const starMat = new THREE.ShaderMaterial({
       uniforms:       { uTime: { value: 0 } },
       vertexShader:   STAR_VERT,
@@ -523,7 +565,7 @@ export default function EarthGlobe({
           tDiffuse:  { value: t.day },  tSpecular: { value: t.specular },
           tNight:    { value: t.night }, tNormal:   { value: t.bump },
           vSunDir:             { value: new THREE.Vector3() },
-          atmosphereIntensity: { value: 0.42 },
+          atmosphereIntensity: { value: 0.44 },
           specularIntensity:   { value: 0.48 },
           bumpStrength:        { value: 0.75 },
         },
@@ -719,6 +761,21 @@ export default function EarthGlobe({
           position: "absolute",
           inset: 0,
           background: "linear-gradient(to bottom, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.28) 32%, transparent 55%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Macro-scale space haze — low-frequency noise gives subconscious depth variation */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.032' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23h)' opacity='0.028'/%3E%3C/svg%3E\")",
+          backgroundSize: "512px 512px",
+          backgroundRepeat: "repeat",
+          mixBlendMode: "screen",
           pointerEvents: "none",
         }}
       />
