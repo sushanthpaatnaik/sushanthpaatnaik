@@ -27,7 +27,15 @@ export default function Loader() {
       className={`fixed inset-0 z-[100] bg-background flex items-center justify-center transition-all duration-1000 ${
         done ? "opacity-0 pointer-events-none [clip-path:inset(50%_0%_50%_0%)]" : "[clip-path:inset(0%_0%_0%_0%)]"
       }`}
+      style={
+        done
+          ? undefined
+          : {
+              animation: "loaderAutoDismiss 0.9s ease 1.2s forwards",
+            }
+      }
     >
+      <style>{`@keyframes loaderAutoDismiss { 0% { opacity: 1; clip-path: inset(0% 0% 0% 0%); visibility: visible; } 100% { opacity: 0; clip-path: inset(50% 0% 50% 0%); visibility: hidden; } }`}</style>
       {/* center mark */}
       <div className="flex flex-col items-center gap-10">
         <div className="flex items-center gap-3">
