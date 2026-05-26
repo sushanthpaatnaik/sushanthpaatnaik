@@ -622,8 +622,14 @@ export default function EarthGlobe({
       fragmentShader: MOON_FRAG,
     });
     const moonMesh = new THREE.Mesh(moonGeo, moonMat);
-    moonMesh.position.set(-7, 10, -38);
     scene.add(moonMesh);
+
+    // Orbital constants — Moon revolves around Earth's centre
+    const MOON_R      = 13;    // orbit radius (scene units)
+    const MOON_PERIOD = 80;    // seconds per full revolution
+    const MOON_TILT   = 0.28;  // orbit-plane tilt ~16° (adds Z-depth variation)
+    const MOON_START  = 2.1;   // initial angle ≈ upper-left (matches previous static pos)
+    const MOON_Z_OFF  = -25;   // base Z offset from Earth centre (keeps Moon in deep space)
     // Share sun direction with Moon
     const moonUpdateSun = () => {
       const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
@@ -725,8 +731,19 @@ export default function EarthGlobe({
       rotY += SPIN_PER_FRAME;
       planetGroup.rotation.y = rotY;
       if (cloudMesh) cloudMesh.rotation.y += 0.00018; // clouds drift faster than surface
-      moonMesh.rotation.y += 0.00008; // very slow — near-tidally-locked drift
-      starMat.uniforms.uTime.value = (performance.now() - t0) * 0.001;
+      // Moon orbit — revolves around Earth centre, tidally locked (near face always toward Earth)
+      const elapsed = (performance.now() - t0) * 0.001;
+      const moonAngle = elapsed * (Math.PI * 2) / MOON_PERIOD + MOON_START;
+      const ex = planetGroup.position.x;
+      const ey = planetGroup.position.y;
+      const ez = planetGroup.position.z;
+      moonMesh.position.set(
+        ex + MOON_R * Math.cos(moonAngle),
+        ey + MOON_R * Math.sin(moonAngle) * Math.cos(MOON_TILT),
+        ez + MOON_Z_OFF + MOON_R * Math.sin(moonAngle) * Math.sin(MOON_TILT),
+      );
+      moonMesh.lookAt(ex, ey, ez); // tidal lock — same hemisphere always faces Earth
+      starMat.uniforms.uTime.value = elapsed;
       renderer.render(scene, camera);
     }
 
