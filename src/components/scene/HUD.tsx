@@ -22,11 +22,18 @@ export default function HUD({
   const phase = useChapterPhase(HOME_CHAPTER_IDS);
 
   useMotionValueEvent(phase, "change", (v) => {
-    const next = Math.min(
-      chapters.length - 1,
-      Math.max(0, Math.round(v)),
-    );
-    if (next !== lastIdx.current) {
+    const cur = lastIdx.current;
+    // Use a 0.82 threshold (not 0.50) so the chapter label only advances once
+    // the next section is actually entering the viewport. This prevents the HUD
+    // from switching to "Future Systems" during the long pause interstitial where
+    // the Future section center becomes geometrically closer before it is visible.
+    const ADVANCE = 0.82;
+    let next = cur;
+    if (v >= cur + ADVANCE && cur < chapters.length - 1) next = cur + 1;
+    else if (v <= cur - ADVANCE && cur > 0) next = cur - 1;
+    // Large jump (anchor nav / restoring scroll): fall back to nearest round
+    if (Math.abs(Math.round(v) - cur) > 1) next = Math.min(chapters.length - 1, Math.max(0, Math.round(v)));
+    if (next !== cur) {
       lastIdx.current = next;
       setIdx(next);
     }
