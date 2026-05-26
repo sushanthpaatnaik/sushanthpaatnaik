@@ -9,7 +9,7 @@ import sceneMaterial from "@/assets/story-03-material.webp";
 import sceneIndustrial from "@/assets/story-04-industrial.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
-import sceneRecognition from "@/assets/story-02-recognition.webp";
+import sceneRecognition from "@/assets/honor-index-rail.webp";
 
 /**
  * Homepage scroll-synchronized cinematic background.
@@ -23,7 +23,7 @@ import sceneRecognition from "@/assets/story-02-recognition.webp";
  *   Founder             → founder
  *   Material            → material
  *   Industrial          → industrial
- *   Recognition         → recognition (archival)
+ *   Recognition         → honors / awards photoshoot
  *   Ecosystem           → ventures
  *   Future Systems      → future
  */
@@ -70,12 +70,13 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneRecognition,
-    alt: "Recognition · archival ink, blueprints, public memory",
-    tint: "linear-gradient(180deg, oklch(0.46 0.045 60 / 0.10), oklch(0.13 0.022 40 / 0.22))",
+    alt: "Recognition · awards and honours product photoshoot",
+    tint: "linear-gradient(180deg, oklch(0.42 0.030 55 / 0.08), oklch(0.10 0.018 40 / 0.18))",
     overlay:
-      "radial-gradient(ellipse 76% 66% at 50% 50%, oklch(0.035 0.010 40 / 0.42) 0%, oklch(0.025 0.006 260 / 0.70) 82%)",
-    parallax: 0.5,
-    filter: "brightness(0.74) contrast(1.06) saturate(0.62) sepia(0.18)",
+      "radial-gradient(ellipse 80% 70% at 50% 45%, oklch(0.030 0.008 40 / 0.38) 0%, oklch(0.022 0.005 260 / 0.68) 85%)",
+    parallax: 0.4,
+    filter: "brightness(0.72) contrast(1.05) saturate(0.80)",
+    objectPosition: "center 60%",
   },
   {
     // No background plate — pure deep-space darkness for the Ecosystem section.
