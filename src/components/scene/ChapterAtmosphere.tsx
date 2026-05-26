@@ -368,8 +368,6 @@ function EcosystemAtmosphere() {
 function FutureAtmosphere() {
   return (
     <>
-      <PlanetaryArc />
-      <OrbitalRings />
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
