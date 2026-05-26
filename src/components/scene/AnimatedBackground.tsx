@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 
 export interface BackgroundScene {
-  src: string;
+  src?: string;
   alt: string;
   /** Per-chapter chroma wash applied over the plate (mix-blend: soft-light). */
   tint?: string;
@@ -123,24 +123,26 @@ function SceneLayer({
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
-      <motion.img
-        src={scene.src}
-        alt={scene.alt}
-        width={1920}
-        height={1080}
-        loading={isFirst ? "eager" : "lazy"}
-        decoding="async"
-        draggable={false}
-        fetchPriority={isFirst ? "high" : "low"}
-        className="h-full w-full object-cover select-none"
-        style={{
-          scale,
-          x: mouseX,
-          y: combinedY,
-          filter: scene.filter ?? DEFAULT_FILTER,
-          objectPosition: scene.objectPosition ?? "center",
-        }}
-      />
+      {scene.src && (
+        <motion.img
+          src={scene.src}
+          alt={scene.alt}
+          width={1920}
+          height={1080}
+          loading={isFirst ? "eager" : "lazy"}
+          decoding="async"
+          draggable={false}
+          fetchPriority={isFirst ? "high" : "low"}
+          className="h-full w-full object-cover select-none"
+          style={{
+            scale,
+            x: mouseX,
+            y: combinedY,
+            filter: scene.filter ?? DEFAULT_FILTER,
+            objectPosition: scene.objectPosition ?? "center",
+          }}
+        />
+      )}
       {scene.tint && (
         <div
           aria-hidden
