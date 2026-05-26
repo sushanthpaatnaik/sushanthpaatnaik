@@ -98,9 +98,13 @@ export const Route = createFileRoute("/innovations")({
         content:
           "From Graphacrete and Graffisol to Voltaphene and Armophene — 23 graphene innovations across commercial, pilot, and R&D stages.",
       },
-      { property: "og:url", content: "/innovations" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/innovations" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/innovations" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/innovations" }],
   }),
 });
 

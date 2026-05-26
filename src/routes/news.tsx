@@ -64,9 +64,13 @@ export const Route = createFileRoute("/news")({
         content:
           "Selected dispatches from the press, the wires, and the conference circuit.",
       },
-      { property: "og:url", content: "/news" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/news" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/news" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/news" }],
   }),
 });
 

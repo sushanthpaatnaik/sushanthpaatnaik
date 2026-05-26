@@ -23,9 +23,13 @@ export const Route = createFileRoute("/contact")({
         content:
           "A founder-access interface. Direct, restrained, and personally triaged.",
       },
-      { property: "og:url", content: "/contact" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/contact" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/contact" }],
   }),
 });
 

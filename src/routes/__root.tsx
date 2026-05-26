@@ -95,9 +95,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Graphene, nano-materials, AI, and industrial commercialization — built in India, designed for the world.",
       },
-      { name: "description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
-      { property: "og:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
-      { name: "twitter:description", content: "Inventor and deep-tech founder building industrial futures across graphene, climate systems, advanced materials, AI, and venture ecosystems." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
@@ -114,13 +111,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Sushanth Paatnaik",
+          url: "https://sushanthpaatnaik.com",
           jobTitle: "Inventor · Deep-Tech Founder",
           description:
             "Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital. CIO at Magppie.",
+          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp",
           birthPlace: "Bhubaneswar, Odisha, India",
           alumniOf: [
             { "@type": "CollegeOrUniversity", name: "IISER Bhopal" },
             { "@type": "CollegeOrUniversity", name: "OCT, Bhopal" },
+          ],
+          sameAs: [
+            "https://www.linkedin.com/in/sushanthpaatnaik/",
+            "https://x.com/sushantinthinks",
+            "https://www.youtube.com/@Susantinventions",
+            "https://www.instagram.com/sushanthpaatnaik/",
+            "https://en.wikipedia.org/wiki/Sushanth_Paatnaik",
           ],
           knowsAbout: [
             "Graphene",

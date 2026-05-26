@@ -25,9 +25,13 @@ export const Route = createFileRoute("/engage")({
         content:
           "Selective collaboration across industry, research, ventures, speaking, and global partnerships. Invitation-based, mandate-led.",
       },
-      { property: "og:url", content: "/engage" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/engage" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/engage" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/engage" }],
   }),
 });
 

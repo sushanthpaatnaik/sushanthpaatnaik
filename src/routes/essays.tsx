@@ -50,22 +50,25 @@ export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
-      { title: "BLOGS — Essays by Sushanth Paatnaik" },
+      { title: "Essays — Sushanth Paatnaik · Deep-Tech & Invention" },
       {
         name: "description",
         content:
           "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.",
       },
-      { property: "og:title", content: "BLOGS — Essays" },
+      { property: "og:title", content: "Essays — Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
           "Editorial notes on deep-tech, graphene, and the discipline of invention — from inventor and founder Sushanth Paatnaik.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/essays" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/essays" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/essays" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/essays" }],
   }),
 });
 

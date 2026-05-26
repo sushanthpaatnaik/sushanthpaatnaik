@@ -30,9 +30,13 @@ export const Route = createFileRoute("/voices")({
         content:
           "How institutions, stages, and the press have framed two decades of invention and industrial work.",
       },
-      { property: "og:url", content: "/voices" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://sushanthpaatnaik.com/voices" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
-    links: [{ rel: "canonical", href: "/voices" }],
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/voices" }],
   }),
 });
 
