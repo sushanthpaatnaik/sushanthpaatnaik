@@ -124,35 +124,6 @@ export default function EarthLivingScene({
         </>
       )}
 
-      {/* ── 4: Orbital arc grid (desktop only) ───────────────────────────
-          Three ellipses at different inclinations — planetary-scale
-          infrastructure. 0.28° rotation over 80 s: subliminal but present. */}
-      {!isMobile && (
-        <motion.svg
-          viewBox="0 0 200 100"
-          preserveAspectRatio="none"
-          animate={{ opacity: [0.0, 0.10], rotate: [0, 0.28] }}
-          transition={loop(80)}
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            overflow: "visible",
-            transformOrigin: "50% 50%",
-          }}
-        >
-          <ellipse cx="100" cy="50" rx="90" ry="30"
-            fill="none" stroke="oklch(0.82 0.04 232)" strokeWidth="0.35" opacity="0.80" />
-          <ellipse cx="100" cy="50" rx="74" ry="46"
-            fill="none" stroke="oklch(0.80 0.03 232)" strokeWidth="0.22" opacity="0.60"
-            transform="rotate(22, 100, 50)" />
-          <ellipse cx="100" cy="50" rx="58" ry="26"
-            fill="none" stroke="oklch(0.74 0.05 52)" strokeWidth="0.18" opacity="0.48"
-            transform="rotate(-16, 100, 50)" />
-        </motion.svg>
-      )}
 
       {/* ── 5: Aurora corona ──────────────────────────────────────────────
           Diffuse deep-space atmosphere ring. Pulses gently, slightly faster
