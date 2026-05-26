@@ -1352,7 +1352,7 @@ function RecognitionsPage() {
         </div>
 
         {/* Content — asymmetric breathing: generous top, compact bottom */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 pt-20 md:pt-28 pb-16 md:pb-20">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 pt-20 md:pt-28 pb-6 md:pb-8">
           {/* Eyebrow — forward signal */}
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -1431,7 +1431,7 @@ function RecognitionsPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.9 }}
             transition={{ duration: 2.0, delay: 1.4, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-10 md:mt-12 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
+            className="mt-7 md:mt-8 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
           >
             Monoatom Labs · 2025
           </motion.p>
