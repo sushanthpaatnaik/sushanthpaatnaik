@@ -404,7 +404,8 @@ const MOON_VERT = /* glsl */`
 `;
 const MOON_FRAG = /* glsl */`
   uniform sampler2D tMoon;
-  uniform vec3 vSunDir;
+  uniform vec3  vSunDir;
+  uniform float uOpacity;
   varying vec2 vUv;
   varying vec3 vNormal;
   varying vec3 vViewDir;
@@ -412,16 +413,15 @@ const MOON_FRAG = /* glsl */`
     vec3 n = normalize(vNormal);
     vec3 v = normalize(vViewDir);
     float ndl = dot(n, normalize(vSunDir));
-    // Lambertian diffuse with raised ambient floor
-    float light = max(ndl + 0.30, 0.0);
-    // Cool rim — Fresnel-based edge illumination, blue-white at limb
-    float rim = pow(1.0 - abs(dot(n, v)), 3.2);
-    vec3 rimColor = vec3(0.60, 0.75, 1.0) * rim * 0.30;
-    // Earthshine — warm blue reflected fill from Earth (approximated as -Y world)
+    float light = max(ndl + 0.28, 0.0);
+    // Restrained rim — cool blue-white, barely perceptible
+    float rim = pow(1.0 - abs(dot(n, v)), 3.5);
+    vec3 rimColor = vec3(0.58, 0.72, 1.0) * rim * 0.12;
+    // Earthshine — faint warm fill from Earth below, secondary only
     float earthshine = max(-dot(n, vec3(0.0, 1.0, 0.0)), 0.0) * (1.0 - max(ndl, 0.0));
-    vec3 earthLight = vec3(0.18, 0.30, 0.62) * earthshine * 0.16;
+    vec3 earthLight = vec3(0.16, 0.28, 0.58) * earthshine * 0.08;
     vec3 surface = texture2D(tMoon, vUv).rgb * light;
-    gl_FragColor = vec4(surface + rimColor + earthLight, 1.0);
+    gl_FragColor = vec4(surface + rimColor + earthLight, uOpacity);
   }
 `;
 
@@ -658,27 +658,43 @@ export default function EarthGlobe({
     });
     scene.add(new THREE.Points(dustGeo, dustMat));
 
-    // ── Distant Moon — secondary planetary body, upper-left of viewport ──
-    // World position (-7, 10, -38): appears ~31% from left, ~33% from top
-    // at camera z=18, FOV 36°. Radius 1.4 ≈ 15% of screen height.
+    // ── Distant Moon — subtle orbital environmental element, upper-right depth ──
+    // Target: 6-10% viewport width on desktop, farther from camera than Earth centre.
+    // moonRadius ≈ 0.90 at distance ~22 units ≈ 7% of viewport width (16:9 desktop).
     const moonTex = buildMoonTexture();
-    const moonGeo = new THREE.SphereGeometry(2.2, 48, 48);
+    const moonRadius = isMobile ? 0.60 : 0.90;
+    const moonGeo = new THREE.SphereGeometry(moonRadius, 48, 48);
     const moonMat = new THREE.ShaderMaterial({
       uniforms: {
-        tMoon:   { value: moonTex },
-        vSunDir: { value: new THREE.Vector3() },
+        tMoon:    { value: moonTex },
+        vSunDir:  { value: new THREE.Vector3() },
+        uOpacity: { value: 0.78 },
       },
       vertexShader:   MOON_VERT,
       fragmentShader: MOON_FRAG,
+      transparent: true,
+      depthWrite:  false,
     });
     const moonMesh = new THREE.Mesh(moonGeo, moonMat);
     scene.add(moonMesh);
 
-    // Orbital constants — Moon revolves around Earth's centre
-    const MOON_R      = 14;           // orbit radius — safely outside halo (r=12.85)
-    const MOON_PERIOD = 22;           // seconds per revolution — cinematic sweep pace
-    const MOON_TILT   = 0.28;         // orbit-plane tilt — keeps arc in upper visible quadrant
-    const MOON_START  = Math.PI / 2;  // starts at top of orbit, immediately visible on arrival
+    // Atmospheric haze corona — additive soft-edge diffusion, no sharp boundary
+    const moonHazeGeo = new THREE.SphereGeometry(moonRadius * 2.6, 16, 16);
+    const moonHazeMat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0.46, 0.54, 0.80),
+      transparent: true, opacity: 0.020,
+      blending: THREE.AdditiveBlending, depthWrite: false,
+    });
+    const moonHazeMesh = new THREE.Mesh(moonHazeGeo, moonHazeMat);
+    moonMesh.add(moonHazeMesh);
+
+    // Orbital constants — Moon as secondary depth element, upper-right quadrant
+    // MOON_TILT negative → orbit plane tilts Moon deeper in scene (farther from camera)
+    // MOON_START π/3 → Moon appears at upper-right on arrival at Future Systems
+    const MOON_R      = 15.5;           // orbit radius — outside halo (r=12.85), reads as deep space
+    const MOON_PERIOD = 28;             // seconds — cinematic drift, almost subconscious
+    const MOON_TILT   = -0.22;          // negative tilt → Moon recedes into scene depth
+    const MOON_START  = Math.PI / 3;    // 60° → upper-right start position
     // Share sun direction with Moon
     const moonUpdateSun = () => {
       const rad = (SUN_ANGLE_DEG * Math.PI) / 180;
@@ -823,6 +839,7 @@ export default function EarthGlobe({
       starGeo.dispose();  starMat.dispose();
       dustGeo.dispose();  dustMat.dispose();
       moonTex.dispose();  moonMat.dispose();  moonGeo.dispose();
+      moonHazeGeo.dispose(); moonHazeMat.dispose();
       if (earthMesh) earthMesh.geometry.dispose();
       if (earthMat) {
         (["tDiffuse","tSpecular","tNight","tNormal"] as const)
