@@ -1,5 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import {
+  animate,
   motion,
   useMotionValue,
   useScroll,
@@ -21,6 +22,27 @@ export interface BackgroundScene {
   filter?: string;
   /** Per-chapter object-position for the plate (defaults to center). */
   objectPosition?: string;
+  /**
+   * Optional living-rotation config — drives a slow autonomous X/Y drift on
+   * the base image to simulate planetary rotation.  All motion is FM/WAAPI;
+   * no CSS keyframes are used so there is zero compositor-blink risk.
+   *
+   * scaleFactor must satisfy: scaleFactor ≥ (viewportW + 2×driftX) / viewportW
+   * e.g. for driftX=220 on 1440px: scaleFactor ≥ (1440+440)/1440 ≈ 1.31.
+   */
+  living?: {
+    /** Horizontal surface drift in px — simulates axial rotation. */
+    driftX: number;
+    /** Vertical orbital drift in px — simulates slight inclination shift. */
+    driftY: number;
+    /** Full cycle duration in seconds (mirror: goes there and back). */
+    duration: number;
+    /**
+     * Scale multiplier on top of the phase-based scale — must be large enough
+     * to hide the image edge at maximum drift.
+     */
+    scaleFactor: number;
+  };
 }
 
 interface AnimatedBackgroundProps {
@@ -123,19 +145,61 @@ function SceneLayer({
   cursorY: MotionValue<number>;
 }) {
   const opacity = useSceneOpacity(phase, index);
-  const scale = useSceneScale(phase, index);
+  const scale   = useSceneScale(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
 
+  // ── Scroll + cursor parallax ──────────────────────────────────────────────
   const scrollY = useTransform(
     parallax,
     (p) => p * (index % 2 === 0 ? 1 : -1) * 24 * parallaxStrength,
   );
   const mouseX = useTransform(cursorX, (v) => v * 9 * parallaxStrength);
   const mouseY = useTransform(cursorY, (v) => v * 6 * parallaxStrength);
-  const combinedY = useTransform(
-    [scrollY, mouseY] as MotionValue<number>[],
-    ([sy, my]: number[]) => sy + my,
+
+  // ── Living rotation drift (Earth scene only) ──────────────────────────────
+  // Uses FM's imperative animate() to drive standalone MotionValues so the
+  // drift composes cleanly with cursor/scroll without any CSS keyframes.
+  const liveDriftX = useMotionValue(0);
+  const liveDriftY = useMotionValue(0);
+
+  useEffect(() => {
+    if (!scene.living) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const { driftX, driftY, duration } = scene.living;
+
+    const ctrlX = animate(liveDriftX, [0, -driftX, 0], {
+      duration,
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+    });
+    // Y drift runs on a different sub-period so it drifts out of phase with X
+    const ctrlY = animate(liveDriftY, [0, -driftY, 0], {
+      duration: duration * 0.68,
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut",
+    });
+
+    return () => { ctrlX.stop(); ctrlY.stop(); };
+  // scene.living is a module-level constant object — stable reference, safe dep
+  }, [liveDriftX, liveDriftY, scene.living]);
+
+  // Compose: cursor + living drift on X; scroll + cursor + living drift on Y
+  const totalX = useTransform(
+    [mouseX, liveDriftX] as MotionValue<number>[],
+    ([mx, lx]: number[]) => mx + lx,
   );
+  const totalY = useTransform(
+    [scrollY, mouseY, liveDriftY] as MotionValue<number>[],
+    ([sy, my, ly]: number[]) => sy + my + ly,
+  );
+
+  // Apply scaleFactor for living scenes — must be large enough that the image
+  // edge stays invisible at maximum drift (scaleFactor ≥ 1 + 2×driftX / vw).
+  const livingScaleFactor = scene.living?.scaleFactor ?? 1;
+  const totalScale = useTransform(scale, (s) => s * livingScaleFactor);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
@@ -150,9 +214,9 @@ function SceneLayer({
         fetchPriority={isFirst ? "high" : "low"}
         className="h-full w-full object-cover select-none"
         style={{
-          scale,
-          x: mouseX,
-          y: combinedY,
+          scale: totalScale,
+          x: totalX,
+          y: totalY,
           filter: scene.filter ?? DEFAULT_FILTER,
           objectPosition: scene.objectPosition ?? "center",
         }}

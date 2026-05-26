@@ -8,14 +8,10 @@ import {
 
 /**
  * Earth chapter index in AtmosphereLayer's SCENES array.
- * Scene 6 = "Future Systems" (story-07-future.webp — the Earth plate).
+ * Scene 6 = "Future Systems" — the Earth plate.
  */
 const EARTH_CHAPTER = 6;
 
-/**
- * Mirror the same smooth-step opacity curve used by SceneLayer, so this
- * overlay fades in/out in perfect lock-step with the underlying Earth image.
- */
 function useEarthOpacity(phase: MotionValue<number>) {
   return useTransform(phase, (v) => {
     const d = Math.abs(v - EARTH_CHAPTER);
@@ -25,12 +21,7 @@ function useEarthOpacity(phase: MotionValue<number>) {
   });
 }
 
-/**
- * Convenience helper for looping mirror transitions.
- * "mirror" = CSS alternate — value goes A→B→A→B without a reset jump.
- * All animations are FM/WAAPI-managed; no CSS keyframes are used so
- * there is zero risk of the CSS-vs-WAAPI compositor blink.
- */
+/** FM mirror-loop helper — never uses CSS keyframes. */
 function loop(duration: number, delay = 0) {
   return {
     duration,
@@ -42,18 +33,18 @@ function loop(duration: number, delay = 0) {
 }
 
 /**
- * Living Earth overlay for the "Future Systems" homepage chapter.
+ * Atmospheric overlay stack for the Earth chapter.
  *
- * Rendered as a child of AnimatedBackground (above the scene vignette) so it
- * stays inside the outer overflow-hidden boundary without creating its own
- * stacking context issues. Uses only FM-managed animations — no CSS keyframes.
+ * The base image rotation is driven in SceneLayer via the `living` config.
+ * This component adds the atmospheric FEEL on top:
+ *   1  Planet limb haze   — blue-cool arc breathing at the planet edge
+ *   2  Terminator warmth  — amber city-light glow drifting with the surface
+ *   3  Cloud/fog band     — pale cool layer, slower drift than the surface
+ *   4  Orbital arc grid   — three SVG ellipses, ultra-slow rotation
+ *   5  Aurora corona      — outer deep-space glow, gentle pulse
  *
- * Layer stack (bottom → top):
- *   1  Atmospheric limb haze — blue-cool arc at the planet edge, slow breathe
- *   2  City light warmth — amber terminator glow, lateral drift
- *   3  Cloud/fog layer — pale cool band drifting across the upper atmosphere
- *   4  Orbital arc SVG — faint elliptical grid, ultra-slow rotation
- *   5  Outer aurora ring — diffuse deep-space edge glow, gentle pulse
+ * All motion: FM animate with repeat:Infinity — zero CSS keyframes,
+ * zero compositor-blink risk.
  */
 export default function EarthLivingScene({
   phase,
@@ -68,7 +59,6 @@ export default function EarthLivingScene({
     setIsMobile(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
-  // All hooks called above — safe to bail early.
   if (reduceMotion) return null;
 
   return (
@@ -77,59 +67,71 @@ export default function EarthLivingScene({
       className="pointer-events-none"
       style={{ position: "absolute", inset: 0, opacity }}
     >
-      {/* ── 1: Atmospheric limb haze ──────────────────────────────────────
-          A cool blue-violet arc tracing the planet limb. Slowly breathes
-          in scale so it feels like the atmosphere itself is expanding. */}
+      {/* ── 1: Planet limb haze ───────────────────────────────────────────
+          Cool blue-violet arc tracing the atmosphere edge. Slow breathing
+          scale makes the atmosphere feel like it genuinely expands/contracts. */}
       <motion.div
-        animate={{ opacity: [0.10, 0.26], scale: [1.00, 1.024] }}
+        animate={{ opacity: [0.12, 0.30], scale: [1.00, 1.026] }}
         transition={loop(42)}
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 74% 68% at 62% 52%, transparent 38%, oklch(0.55 0.09 232 / 0.22) 64%, transparent 82%)",
+            "radial-gradient(ellipse 74% 68% at 62% 52%, transparent 36%, oklch(0.55 0.09 232 / 0.26) 62%, transparent 80%)",
         }}
       />
 
-      {/* ── 2: City light warmth ──────────────────────────────────────────
-          Warm amber glow from the lit side of the planet. Drifts subtly
-          left-to-right to suggest the Earth's slow rotation. */}
+      {/* ── 2: Terminator warmth ──────────────────────────────────────────
+          Warm amber glow from the illuminated side. Drifts in the same
+          direction as the surface rotation to feel physically correct —
+          22s (faster than 90s surface) so it has independent character. */}
       <motion.div
-        animate={{ opacity: [0.07, 0.17], x: [0, 26] }}
+        animate={{ opacity: [0.08, 0.20], x: [0, 32] }}
         transition={loop(22)}
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 60% 48% at 55% 62%, oklch(0.68 0.14 52 / 0.13), transparent 62%)",
+            "radial-gradient(ellipse 62% 50% at 54% 62%, oklch(0.70 0.15 52 / 0.15), transparent 60%)",
         }}
       />
 
       {/* ── 3: Cloud/fog band (desktop only) ─────────────────────────────
-          A pale cool layer drifting slowly across the upper atmosphere.
-          Skipped on coarse-pointer (touch) devices to reduce GPU load. */}
+          Lighter than the surface drift. Two layers at slightly different
+          speeds so they appear to be at different altitudes. */}
       {!isMobile && (
-        <motion.div
-          animate={{ x: [0, 52], opacity: [0.08, 0.20] }}
-          transition={loop(58)}
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse 90% 52% at 50% 38%, oklch(0.84 0.02 228 / 0.07) 22%, transparent 58%)",
-          }}
-        />
+        <>
+          <motion.div
+            animate={{ x: [0, 48], opacity: [0.06, 0.16] }}
+            transition={loop(54)}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(ellipse 88% 50% at 50% 36%, oklch(0.86 0.02 228 / 0.07) 20%, transparent 56%)",
+            }}
+          />
+          <motion.div
+            animate={{ x: [0, -28], opacity: [0.04, 0.12] }}
+            transition={loop(38)}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(ellipse 70% 42% at 58% 68%, oklch(0.80 0.02 230 / 0.06) 18%, transparent 52%)",
+            }}
+          />
+        </>
       )}
 
       {/* ── 4: Orbital arc grid (desktop only) ───────────────────────────
-          Three faint ellipses at different inclinations — suggests
-          infrastructure at planetary scale. Ultra-slow rotation (0.25 deg
-          over 80 s) keeps it subliminal. Skipped on mobile. */}
+          Three ellipses at different inclinations — planetary-scale
+          infrastructure. 0.28° rotation over 80 s: subliminal but present. */}
       {!isMobile && (
         <motion.svg
           viewBox="0 0 200 100"
           preserveAspectRatio="none"
-          animate={{ opacity: [0.0, 0.09], rotate: [0, 0.25] }}
+          animate={{ opacity: [0.0, 0.10], rotate: [0, 0.28] }}
           transition={loop(80)}
           aria-hidden
           style={{
@@ -141,46 +143,28 @@ export default function EarthLivingScene({
             transformOrigin: "50% 50%",
           }}
         >
-          {/* Equatorial orbit */}
-          <ellipse
-            cx="100" cy="50" rx="90" ry="31"
-            fill="none"
-            stroke="oklch(0.80 0.04 232)"
-            strokeWidth="0.35"
-            opacity="0.78"
-          />
-          {/* Mid-inclination orbit */}
-          <ellipse
-            cx="100" cy="50" rx="74" ry="46"
-            fill="none"
-            stroke="oklch(0.78 0.03 232)"
-            strokeWidth="0.22"
-            opacity="0.58"
-            transform="rotate(22, 100, 50)"
-          />
-          {/* Polar-ish orbit with warm tint */}
-          <ellipse
-            cx="100" cy="50" rx="58" ry="26"
-            fill="none"
-            stroke="oklch(0.72 0.05 52)"
-            strokeWidth="0.18"
-            opacity="0.46"
-            transform="rotate(-16, 100, 50)"
-          />
+          <ellipse cx="100" cy="50" rx="90" ry="30"
+            fill="none" stroke="oklch(0.82 0.04 232)" strokeWidth="0.35" opacity="0.80" />
+          <ellipse cx="100" cy="50" rx="74" ry="46"
+            fill="none" stroke="oklch(0.80 0.03 232)" strokeWidth="0.22" opacity="0.60"
+            transform="rotate(22, 100, 50)" />
+          <ellipse cx="100" cy="50" rx="58" ry="26"
+            fill="none" stroke="oklch(0.74 0.05 52)" strokeWidth="0.18" opacity="0.48"
+            transform="rotate(-16, 100, 50)" />
         </motion.svg>
       )}
 
-      {/* ── 5: Outer aurora ring ──────────────────────────────────────────
-          A diffuse halo just outside the visible planet disk — evokes the
-          deep-space atmosphere edge seen from orbit. Pulses gently. */}
+      {/* ── 5: Aurora corona ──────────────────────────────────────────────
+          Diffuse deep-space atmosphere ring. Pulses gently, slightly faster
+          than the limb haze so both breathe at different rates. */}
       <motion.div
-        animate={{ opacity: [0.08, 0.22], scale: [1.00, 1.020] }}
-        transition={loop(34)}
+        animate={{ opacity: [0.10, 0.26], scale: [1.00, 1.022] }}
+        transition={loop(28)}
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 96% 86% at 50% 52%, transparent 54%, oklch(0.52 0.08 232 / 0.18) 70%, transparent 88%)",
+            "radial-gradient(ellipse 96% 86% at 50% 52%, transparent 52%, oklch(0.52 0.08 232 / 0.20) 68%, transparent 86%)",
         }}
       />
     </motion.div>

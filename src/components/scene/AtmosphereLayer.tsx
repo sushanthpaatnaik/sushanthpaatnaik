@@ -94,6 +94,16 @@ const SCENES: BackgroundScene[] = [
       "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
     parallax: 0.7,
     filter: "brightness(0.76) contrast(1.08) saturate(0.82) hue-rotate(-4deg)",
+    // Living rotation — slowly shifts the Earth surface to simulate axial spin.
+    // driftX 220px over 90s: at 1440px viewport the surface moves ~22% of its
+    // width per half-cycle, clearly perceptible as rotation without feeling fast.
+    // scaleFactor 1.44 provides ±330px edge headroom — well beyond driftX.
+    living: {
+      driftX: 220,
+      driftY: 18,
+      duration: 90,
+      scaleFactor: 1.44,
+    },
   },
 ];
 
