@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/ventures", label: "Ventures" },
   { to: "/recognitions", label: "Recognitions" },
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "Essays" },
+  { to: "/essays", label: "BLOGS" },
   { to: "/news", label: "News" },
   { to: "/engage", label: "Engage" },
 ] as const;
@@ -79,7 +79,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+            className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors"
           >
             <span className="sr-only">Menu</span>
             <svg
@@ -120,7 +120,7 @@ export default function Nav() {
       >
         <nav
           onClick={(e) => e.stopPropagation()}
-          className="flex h-full w-full flex-col items-start justify-center gap-4 sm:gap-5 px-8 sm:px-12 pt-24 pb-10 overflow-y-auto"
+          className="flex h-full w-full flex-col items-start justify-center gap-5 px-8 sm:px-12 pt-28 pb-12"
         >
           {navLinks.map((l, i) => (
             <Link

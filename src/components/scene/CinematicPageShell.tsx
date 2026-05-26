@@ -31,9 +31,9 @@ export default function CinematicPageShell({
   children,
 }: CinematicPageShellProps) {
   return (
-    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-hidden">
+    <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0" style={{ contain: "strict" }}>
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
         <div
           className="absolute inset-0"
           style={{
@@ -41,8 +41,7 @@ export default function CinematicPageShell({
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(4px) saturate(0.38) brightness(0.46) contrast(1.05)",
-            transform: "scale(1.10) translateZ(0)",
-            willChange: "transform",
+            transform: "scale(1.10)",
           }}
         />
         {/* Edge-haze mask — heavier blur on the image perimeter so the

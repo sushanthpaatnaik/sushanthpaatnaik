@@ -288,14 +288,14 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-0 w-[68%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-[-3%] w-[72%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
         {/* Softened lower torso — reduces clothing fold visibility, preserves face */}
         <div
           aria-hidden
-          className="absolute left-0 bottom-0 w-[68%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
+          className="absolute left-[-3%] bottom-0 w-[72%] md:w-[54%] lg:w-[46%] h-[55%] [mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] [-webkit-mask-image:linear-gradient(180deg,transparent_0%,#000_55%)] bg-center bg-no-repeat bg-cover opacity-[0.28] md:opacity-[0.30] [filter:grayscale(1)_contrast(0.90)_brightness(0.56)_saturate(0)_blur(3.2px)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 78%" }}
         />
 
@@ -452,7 +452,7 @@ function EcosystemGateway() {
           </p>
         </MotionReveal>
 
-        <ul className="mt-16 md:mt-24 grid gap-x-6 sm:gap-x-10 gap-y-2 sm:grid-cols-2">
+        <ul className="mt-16 md:mt-24 grid gap-x-10 gap-y-2 sm:grid-cols-2">
           {gateways.map((g, i) => (
             <MotionReveal key={g.to} delay={i * 0.04}>
               <Link

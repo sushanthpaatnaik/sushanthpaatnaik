@@ -130,14 +130,6 @@
   }
   body {
     overflow-x: hidden;
-    /* Prevent tap highlight flash on mobile */
-    -webkit-tap-highlight-color: transparent;
-  }
-  /* Premium focus ring — visible only for keyboard navigation */
-  :focus-visible {
-    outline: 2px solid oklch(0.74 0.06 232 / 0.75);
-    outline-offset: 3px;
-    border-radius: 2px;
   }
   ::selection {
     background: oklch(0.71 0.13 240 / 0.28);
@@ -150,8 +142,7 @@
     background: var(--gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
-    color: oklch(0.96 0.006 232);
-    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
   .text-glow {
     text-shadow: 0 0 18px oklch(0.74 0.04 72 / 0.10);
@@ -603,7 +594,7 @@
 }
 
 /* Belt-and-suspenders: prevent any descendant from causing horizontal scroll. */
-html, body { overflow-x: hidden; max-width: 100%; }
+html, body { overflow-x: clip; max-width: 100vw; }
 
 @keyframes streak {
   0% { transform: translateX(-30%); opacity: 0; }

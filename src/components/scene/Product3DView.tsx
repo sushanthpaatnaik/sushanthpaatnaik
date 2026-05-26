@@ -504,20 +504,14 @@ export function Product3DModal({
 
   useEffect(() => {
     if (!item) return;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     const prev = document.body.style.overflow;
-    const prevPad = document.body.style.paddingRight;
     document.body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
-      document.body.style.paddingRight = prevPad;
       window.removeEventListener("keydown", onKey);
     };
   }, [item, onClose]);
@@ -537,8 +531,6 @@ export function Product3DModal({
             background:
               "radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%)",
             backdropFilter: "blur(20px)",
-            willChange: "opacity",
-            transform: "translateZ(0)",
           }}
           onClick={onClose}
         >
@@ -567,11 +559,10 @@ export function Product3DModal({
           {item.aquamaxSimulation ? (
           <motion.div
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.55, ease: [0.19, 1, 0.22, 1] }}
-            style={{ willChange: "transform, opacity" }}
+            initial={{ scale: 0.98, y: 14 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.985, y: 8 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="relative grid w-full max-w-[1480px] grid-cols-1 gap-x-10 gap-y-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:px-10"
           >
             {/* LEFT — Aquamax product studio hero */}
@@ -703,11 +694,10 @@ export function Product3DModal({
           ) : (
           <motion.div
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.55, ease: [0.19, 1, 0.22, 1] }}
-            style={{ willChange: "transform, opacity" }}
+            initial={{ scale: 0.98, y: 14 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.985, y: 8 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="relative grid w-full max-w-[1240px] grid-cols-1 gap-x-12 gap-y-8 px-4 sm:px-6 lg:grid-cols-[1.65fr_0.9fr] md:px-10"
           >
             <div className="grid content-start gap-5">
