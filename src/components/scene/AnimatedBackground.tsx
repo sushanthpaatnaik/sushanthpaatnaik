@@ -57,12 +57,6 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
   });
 }
 
-// Blur removed — it was stacking across overlapping layers and muddying
-// every chapter handoff. Scene sharpness now carries section identity.
-function useSceneBlur(phase: MotionValue<number>, _center: number) {
-  return useTransform(phase, () => "none");
-}
-
 /**
  * Tracks normalized cursor position (-1…1) via rAF, smoothed with springs.
  * Returns zero-motion values on touch/coarse devices and when reduced-motion
@@ -140,7 +134,6 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale = useSceneScale(phase, index);
-  const blur = useSceneBlur(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
 
   // Scroll-driven vertical drift — alternating direction adds depth.
@@ -149,7 +142,7 @@ function SceneLayer({
     (p) => p * (index % 2 === 0 ? 1 : -1) * 24 * parallaxStrength,
   );
 
-  // Cursor-driven lateral shift — deeper layers (higher parallaxStrength) move more.
+  // Cursor-driven lateral shift — deeper layers move more.
   // Max amplitude: ±9px horizontal, ±6px vertical at parallaxStrength=1.
   const mouseX = useTransform(cursorX, (v) => v * 9 * parallaxStrength);
   const mouseY = useTransform(cursorY, (v) => v * 6 * parallaxStrength);
@@ -166,11 +159,13 @@ function SceneLayer({
   const glowDelay    = `${-(index * 5.8).toFixed(1)}s`;
 
   return (
-    // overflow-hidden clips the -4%/-6% inset layers during breathing scale.
-    <motion.div className="absolute inset-0 overflow-hidden" style={{ opacity, filter: blur }}>
+    // No overflow-hidden here — the outer container (fixed inset-0 overflow-hidden)
+    // handles all clipping. Adding it per-scene forces 7 extra GPU compositing
+    // layers that cause compositing thrash during opacity-driven transitions.
+    <motion.div className="absolute inset-0" style={{ opacity }}>
 
       {/* ── Layer 1: Breathing wrapper (CSS) / scroll+cursor (FM) ───────── */}
-      {/* Extends -4% outside parent so scale never reveals a hard edge.     */}
+      {/* Extends -4% outside parent bounds — clipped by the outer container. */}
       <div
         className={breatheClass(index)}
         style={{ position: "absolute", inset: "-4%", animationDelay: breatheDelay }}
@@ -196,8 +191,9 @@ function SceneLayer({
       </div>
 
       {/* ── Layer 2: Soft-focus edge haze ───────────────────────────────── */}
-      {/* Same image at very low opacity, masked to perimeter, drifts        */}
-      {/* counter to the base layer — adds illusion of depth behind focus.   */}
+      {/* Same image at 6% opacity drifting counter to the base — depth.    */}
+      {/* No mask-image (forces a GPU compositing layer) and no filter blur  */}
+      {/* (expensive on a full-viewport div). Low opacity is sufficient.     */}
       <div
         aria-hidden
         className={hazeClass(index)}
@@ -207,26 +203,23 @@ function SceneLayer({
           backgroundImage: `url(${scene.src})`,
           backgroundSize: "cover",
           backgroundPosition: scene.objectPosition ?? "center",
-          opacity: 0.07,
-          WebkitMaskImage:
-            "radial-gradient(ellipse 78% 68% at 50% 50%, transparent 32%, #000 78%)",
-          maskImage:
-            "radial-gradient(ellipse 78% 68% at 50% 50%, transparent 32%, #000 78%)",
+          opacity: 0.06,
           animationDelay: hazeDelay,
         }}
       />
 
       {/* ── Layer 3: Ambient glow sweep ─────────────────────────────────── */}
-      {/* Warm copper studio light drifts diagonally at ultra-low opacity.   */}
-      {/* mix-blend-screen keeps it additive — never darkens the plate.      */}
+      {/* Warm copper light drifts diagonally. No mix-blend-screen — blend   */}
+      {/* modes inside an opacity-animated parent create a compositing       */}
+      {/* isolation context that pops during 0↔1 transitions.               */}
       <div
         aria-hidden
-        className={`${glowClass(index)} mix-blend-screen`}
+        className={glowClass(index)}
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(55% 45% at 50% 50%, oklch(0.62 0.09 50 / 0.10), transparent 70%)",
+            "radial-gradient(55% 45% at 50% 50%, oklch(0.62 0.09 50 / 0.08), transparent 70%)",
           animationDelay: glowDelay,
         }}
       />
