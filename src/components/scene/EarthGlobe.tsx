@@ -435,7 +435,7 @@ export default function EarthGlobe({
 
     // ── Planet group — offset down to form curved horizon ────────────────
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(0, -13.0, -1.0);
+    planetGroup.position.set(0, -11.8, -1.0);
     scene.add(planetGroup);
 
     // ── Noise (shared by all procedural generators) ──────────────────────
@@ -463,7 +463,7 @@ export default function EarthGlobe({
     const haloMat = new THREE.ShaderMaterial({
       uniforms: {
         vSunDir:             { value: new THREE.Vector3() },
-        atmosphereIntensity: { value: 0.36 },
+        atmosphereIntensity: { value: 0.46 },
       },
       vertexShader:   HALO_VERT,
       fragmentShader: HALO_FRAG,
@@ -523,7 +523,7 @@ export default function EarthGlobe({
           tDiffuse:  { value: t.day },  tSpecular: { value: t.specular },
           tNight:    { value: t.night }, tNormal:   { value: t.bump },
           vSunDir:             { value: new THREE.Vector3() },
-          atmosphereIntensity: { value: 0.36 },
+          atmosphereIntensity: { value: 0.46 },
           specularIntensity:   { value: 0.48 },
           bumpStrength:        { value: 0.75 },
         },
@@ -658,7 +658,18 @@ export default function EarthGlobe({
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0,0,0,0.52)",
+          background: "rgba(0,0,0,0.46)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Soft atmospheric horizon band — restrained blue edge along the planet arc */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 90% 28% at 50% 88%, rgba(18,52,96,0.22) 0%, rgba(8,20,44,0.10) 55%, transparent 80%)",
           pointerEvents: "none",
         }}
       />
