@@ -350,7 +350,7 @@ const EARTH_FRAG = /* glsl */`
     vec3 nightL = night * (1.0-dayW) * 1.68;
     vec3 surface = mix(nightL, dayL+glint+sunset, dayW);
     float limb  = pow(1.0 - max(dot(normalize(vNormal), view), 0.0), 4.5);
-    surface += vec3(0.05,0.26,0.60) * limb * 0.75 * atmosphereIntensity;
+    surface += vec3(0.05,0.26,0.60) * limb * 0.79 * atmosphereIntensity;
     gl_FragColor = vec4(surface, 1.0);
   }
 `;
@@ -697,15 +697,15 @@ export default function EarthGlobe({
         }}
       />
 
-      {/* Ultra-faint film grain — SVG fractal noise tiled at 280px, overlay blend */}
+      {/* Ultra-faint film grain — SVG fractal noise tiled at 512px, overlay blend */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23g)' opacity='0.018'/%3E%3C/svg%3E\")",
-          backgroundSize: "280px 280px",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23g)' opacity='0.012'/%3E%3C/svg%3E\")",
+          backgroundSize: "512px 512px",
           backgroundRepeat: "repeat",
           mixBlendMode: "overlay",
           pointerEvents: "none",
@@ -765,20 +765,6 @@ export default function EarthGlobe({
         }}
       />
 
-      {/* Macro-scale space haze — low-frequency noise gives subconscious depth variation */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.032' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23h)' opacity='0.028'/%3E%3C/svg%3E\")",
-          backgroundSize: "512px 512px",
-          backgroundRepeat: "repeat",
-          mixBlendMode: "screen",
-          pointerEvents: "none",
-        }}
-      />
     </motion.div>
   );
 }
