@@ -1,5 +1,6 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
+import EarthLivingScene from "./EarthLivingScene";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
@@ -115,7 +116,12 @@ export default function AtmosphereLayer() {
       overlayStops={OVERLAY_STOPS}
       phaseSource={phase}
     >
-      {({ progress, phase }) => <ParticleField progress={progress} phase={phase} />}
+      {({ progress, phase }) => (
+        <>
+          <ParticleField progress={progress} phase={phase} />
+          <EarthLivingScene phase={phase} />
+        </>
+      )}
     </AnimatedBackground>
   );
 }
