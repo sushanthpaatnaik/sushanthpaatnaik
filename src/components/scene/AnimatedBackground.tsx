@@ -1,6 +1,5 @@
 import { useEffect, type ReactNode } from "react";
 import {
-  animate,
   motion,
   useMotionValue,
   useScroll,
@@ -22,48 +21,16 @@ export interface BackgroundScene {
   filter?: string;
   /** Per-chapter object-position for the plate (defaults to center). */
   objectPosition?: string;
-  /**
-   * Optional living-rotation config — drives a slow autonomous X/Y drift on
-   * the base image to simulate planetary rotation.  All motion is FM/WAAPI;
-   * no CSS keyframes are used so there is zero compositor-blink risk.
-   *
-   * scaleFactor must satisfy: scaleFactor ≥ (viewportW + 2×driftX) / viewportW
-   * e.g. for driftX=220 on 1440px: scaleFactor ≥ (1440+440)/1440 ≈ 1.31.
-   */
-  living?: {
-    /** Horizontal surface drift in px — simulates axial rotation. */
-    driftX: number;
-    /** Vertical orbital drift in px — simulates slight inclination shift. */
-    driftY: number;
-    /** Full cycle duration in seconds (mirror: goes there and back). */
-    duration: number;
-    /**
-     * Scale multiplier on top of the phase-based scale — must be large enough
-     * to hide the image edge at maximum drift.
-     */
-    scaleFactor: number;
-  };
 }
 
 interface AnimatedBackgroundProps {
-  /** Ordered chapter scenes; the layer crossfades between them with scroll. */
   scenes: BackgroundScene[];
-  /** Optional dark overlay opacity stops (length must equal scenes.length). */
   overlayStops?: number[];
-  /**
-   * Optional externally-driven chapter phase (integer N = chapter N centered
-   * in viewport). When provided, the background syncs to actual section
-   * positions instead of uniform scroll progress.
-   */
   phaseSource?: MotionValue<number>;
-  /** Optional children rendered on top of the scenes (e.g. ParticleField). */
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
 function useSceneOpacity(phase: MotionValue<number>, center: number) {
-  // Strict isolation: a scene only crossfades with its IMMEDIATE neighbour.
-  // Beyond ±1 chapter the layer is exactly 0 — no bleed from distant
-  // chapters, no stacked atmosphere across the page.
   return useTransform(phase, (v) => {
     const d = Math.abs(v - center);
     if (d >= 1) return 0;
@@ -79,11 +46,6 @@ function useSceneScale(phase: MotionValue<number>, center: number) {
   });
 }
 
-/**
- * Tracks normalized cursor position (-1…1) via rAF, smoothed with springs.
- * Returns zero-motion values on touch/coarse devices and when reduced-motion
- * is active — callers don't need to guard separately.
- */
 function useCursorParallax() {
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
@@ -148,58 +110,16 @@ function SceneLayer({
   const scale   = useSceneScale(phase, index);
   const parallaxStrength = scene.parallax ?? 1;
 
-  // ── Scroll + cursor parallax ──────────────────────────────────────────────
   const scrollY = useTransform(
     parallax,
     (p) => p * (index % 2 === 0 ? 1 : -1) * 24 * parallaxStrength,
   );
   const mouseX = useTransform(cursorX, (v) => v * 9 * parallaxStrength);
   const mouseY = useTransform(cursorY, (v) => v * 6 * parallaxStrength);
-
-  // ── Living rotation drift (Earth scene only) ──────────────────────────────
-  // Uses FM's imperative animate() to drive standalone MotionValues so the
-  // drift composes cleanly with cursor/scroll without any CSS keyframes.
-  const liveDriftX = useMotionValue(0);
-  const liveDriftY = useMotionValue(0);
-
-  useEffect(() => {
-    if (!scene.living) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const { driftX, driftY, duration } = scene.living;
-
-    const ctrlX = animate(liveDriftX, [0, -driftX, 0], {
-      duration,
-      repeat: Infinity,
-      repeatType: "mirror",
-      ease: "easeInOut",
-    });
-    // Y drift runs on a different sub-period so it drifts out of phase with X
-    const ctrlY = animate(liveDriftY, [0, -driftY, 0], {
-      duration: duration * 0.68,
-      repeat: Infinity,
-      repeatType: "mirror",
-      ease: "easeInOut",
-    });
-
-    return () => { ctrlX.stop(); ctrlY.stop(); };
-  // scene.living is a module-level constant object — stable reference, safe dep
-  }, [liveDriftX, liveDriftY, scene.living]);
-
-  // Compose: cursor + living drift on X; scroll + cursor + living drift on Y
-  const totalX = useTransform(
-    [mouseX, liveDriftX] as MotionValue<number>[],
-    ([mx, lx]: number[]) => mx + lx,
+  const combinedY = useTransform(
+    [scrollY, mouseY] as MotionValue<number>[],
+    ([sy, my]: number[]) => sy + my,
   );
-  const totalY = useTransform(
-    [scrollY, mouseY, liveDriftY] as MotionValue<number>[],
-    ([sy, my, ly]: number[]) => sy + my + ly,
-  );
-
-  // Apply scaleFactor for living scenes — must be large enough that the image
-  // edge stays invisible at maximum drift (scaleFactor ≥ 1 + 2×driftX / vw).
-  const livingScaleFactor = scene.living?.scaleFactor ?? 1;
-  const totalScale = useTransform(scale, (s) => s * livingScaleFactor);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
@@ -214,9 +134,9 @@ function SceneLayer({
         fetchPriority={isFirst ? "high" : "low"}
         className="h-full w-full object-cover select-none"
         style={{
-          scale: totalScale,
-          x: totalX,
-          y: totalY,
+          scale,
+          x: mouseX,
+          y: combinedY,
           filter: scene.filter ?? DEFAULT_FILTER,
           objectPosition: scene.objectPosition ?? "center",
         }}
@@ -237,11 +157,6 @@ function SceneLayer({
   );
 }
 
-/**
- * Cinematic scroll-synchronized background. Each scene carries its own
- * chroma tint, overlay gradient, parallax depth and (optionally) grade —
- * the chapters evolve rather than cross-fading between near-identical plates.
- */
 export default function AnimatedBackground({
   scenes,
   overlayStops,
@@ -260,8 +175,6 @@ export default function AnimatedBackground({
 
   const { x: cursorX, y: cursorY } = useCursorParallax();
 
-  // When a section-anchored phase is provided, smooth it the same way scroll
-  // progress is smoothed so the crossfade still breathes instead of snapping.
   const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
   const smoothedExternal = useSpring(phaseSource ?? rawPhase, {
     stiffness: 120,
@@ -271,8 +184,6 @@ export default function AnimatedBackground({
   const phase = phaseSource ? smoothedExternal : rawPhase;
   const parallax = useTransform(progress, [0, 1], [-1, 1]);
 
-  // A gentle global dim that breathes with progress — sits BENEATH each
-  // chapter's own overlay so legibility stays guaranteed during long reads.
   const globalDim = useTransform(
     progress,
     stops,
@@ -294,17 +205,10 @@ export default function AnimatedBackground({
         />
       ))}
 
-      {/* Soft global dim — additive, light touch only. */}
       <motion.div
         className="absolute inset-0"
-        style={{
-          opacity: globalDim,
-          background: "oklch(0.03 0.006 260)",
-        }}
+        style={{ opacity: globalDim, background: "oklch(0.03 0.006 260)" }}
       />
-
-      {/* Vignette — softened from 0.86 → 0.72 alpha so the focal pull
-          remains cinematic without crushing the plate edges into mud. */}
       <div
         className="absolute inset-0"
         style={{
@@ -312,22 +216,13 @@ export default function AnimatedBackground({
             "radial-gradient(ellipse at center, transparent 52%, oklch(0.02 0.006 260 / 0.58) 100%)",
         }}
       />
-
-      {/* Edge fades — lighter so chapter imagery remains legible across
-          section seams without overpowering the plate. */}
       <div
         className="absolute inset-x-0 top-0 h-28"
-        style={{
-          background:
-            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.32), transparent)",
-        }}
+        style={{ background: "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.32), transparent)" }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-28"
-        style={{
-          background:
-            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.32), transparent)",
-        }}
+        style={{ background: "linear-gradient(to top, oklch(0.03 0.006 260 / 0.32), transparent)" }}
       />
 
       {children?.({ progress, phase })}

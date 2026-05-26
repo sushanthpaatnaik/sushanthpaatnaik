@@ -1,5 +1,6 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
+import EarthGlobe from "./EarthGlobe";
 import EarthLivingScene from "./EarthLivingScene";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
@@ -89,21 +90,12 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneFuture,
     alt: "Future systems · planetary-scale industrial intelligence",
-    tint: "radial-gradient(ellipse 72% 60% at 60% 52%, oklch(0.36 0.042 232 / 0.10), oklch(0.04 0.010 245 / 0.26) 72%)",
+    // Very dark — serves as deep-space backdrop for the EarthGlobe above.
+    tint: undefined,
     overlay:
-      "radial-gradient(ellipse 96% 82% at 50% 55%, oklch(0.022 0.006 245 / 0.44) 0%, oklch(0.018 0.005 250 / 0.70) 80%, oklch(0.014 0.004 250 / 0.82) 100%)",
-    parallax: 0.7,
-    filter: "brightness(0.76) contrast(1.08) saturate(0.82) hue-rotate(-4deg)",
-    // Living rotation — slowly shifts the Earth surface to simulate axial spin.
-    // driftX 220px over 90s: at 1440px viewport the surface moves ~22% of its
-    // width per half-cycle, clearly perceptible as rotation without feeling fast.
-    // scaleFactor 1.44 provides ±330px edge headroom — well beyond driftX.
-    living: {
-      driftX: 220,
-      driftY: 18,
-      duration: 90,
-      scaleFactor: 1.44,
-    },
+      "linear-gradient(180deg, oklch(0.008 0.002 250 / 0.94) 0%, oklch(0.006 0.001 250 / 0.96) 100%)",
+    parallax: 0.3,
+    filter: "brightness(0.28) contrast(1.05) saturate(0.50) hue-rotate(-4deg)",
   },
 ];
 
@@ -129,6 +121,7 @@ export default function AtmosphereLayer() {
       {({ progress, phase }) => (
         <>
           <ParticleField progress={progress} phase={phase} />
+          <EarthGlobe phase={phase} src={sceneFuture} />
           <EarthLivingScene phase={phase} />
         </>
       )}
