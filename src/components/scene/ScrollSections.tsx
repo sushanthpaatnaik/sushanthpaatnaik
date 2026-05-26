@@ -497,17 +497,6 @@ function ClosingInvitation() {
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        {/* Living orbital pulse — opacity-only; scale replaced with opacity breathe */}
-        <motion.div
-          className="absolute left-1/2 top-1/2 h-[68vh] w-[68vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 50%, transparent 58%, oklch(0.62 0.035 232 / 0.07) 62%, transparent 66%)",
-            willChange: "opacity",
-          }}
-          animate={{ opacity: [0.42, 0.68, 0.42] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        />
 
         {/* Volumetric atmospheric diffusion — opacity-only, willChange promoted */}
         <motion.div
