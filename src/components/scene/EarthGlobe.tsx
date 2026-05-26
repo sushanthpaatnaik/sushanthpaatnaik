@@ -435,7 +435,7 @@ export default function EarthGlobe({
 
     // ── Planet group — offset down to form curved horizon ────────────────
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(0, -11.8, -1.0);
+    planetGroup.position.set(0, -10.8, -1.0);
     scene.add(planetGroup);
 
     // ── Noise (shared by all procedural generators) ──────────────────────
@@ -642,6 +642,7 @@ export default function EarthGlobe({
       aria-hidden
       style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none" }}
     >
+      {/* Canvas — blur(0.35px) softens the sharp WebGL render into a cinematic feel */}
       <canvas
         ref={canvasRef}
         style={{
@@ -650,6 +651,22 @@ export default function EarthGlobe({
           width: "100%",
           height: "100%",
           display: "block",
+          filter: "blur(0.35px) saturate(0.88)",
+        }}
+      />
+
+      {/* Ultra-faint film grain — SVG fractal noise tiled at 280px, overlay blend */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23g)' opacity='0.018'/%3E%3C/svg%3E\")",
+          backgroundSize: "280px 280px",
+          backgroundRepeat: "repeat",
+          mixBlendMode: "overlay",
+          pointerEvents: "none",
         }}
       />
 

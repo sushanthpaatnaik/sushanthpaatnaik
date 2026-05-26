@@ -124,7 +124,6 @@ export default function AtmosphereLayer() {
         <>
           <ParticleField progress={progress} phase={phase} />
           <EarthGlobe phase={phase} src={sceneFuture} />
-          <EarthLivingScene phase={phase} />
         </>
       )}
     </AnimatedBackground>
