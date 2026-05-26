@@ -800,12 +800,12 @@ export default function EarthGlobe({
         }}
       />
 
-      {/* Cinematic dark overlay — dims the WebGL scene to luxury background level */}
+      {/* Cinematic dark overlay — light scrim to ground the scene */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0,0,0,0.46)",
+          background: "rgba(0,0,0,0.18)",
           pointerEvents: "none",
         }}
       />
@@ -827,7 +827,7 @@ export default function EarthGlobe({
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 68% 58% at 50% 60%, transparent 0%, rgba(0,0,0,0.50) 52%, rgba(0,0,0,0.88) 76%, rgba(0,0,0,0.97) 100%)",
+            "radial-gradient(ellipse 68% 58% at 50% 60%, transparent 0%, rgba(0,0,0,0.22) 52%, rgba(0,0,0,0.60) 76%, rgba(0,0,0,0.82) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -838,7 +838,7 @@ export default function EarthGlobe({
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.55) 100%)",
+            "linear-gradient(to right, rgba(0,0,0,0.28) 0%, transparent 18%, transparent 82%, rgba(0,0,0,0.28) 100%)",
           pointerEvents: "none",
         }}
       />
