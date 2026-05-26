@@ -1350,15 +1350,15 @@ function RecognitionsPage() {
           />
         </div>
 
-        {/* Content — extreme vertical breathing, center-weighted */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 py-36 md:py-52 lg:py-64">
+        {/* Content — asymmetric breathing: generous top, compact bottom */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-8 pt-20 md:pt-28 pb-10 md:pb-14">
           {/* Eyebrow — forward signal */}
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.7 }}
             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-            className="font-mono text-[9px] uppercase tracking-[0.55em] text-muted-foreground/30 mb-20 md:mb-28"
+            className="font-mono text-[9px] uppercase tracking-[0.55em] text-muted-foreground/30 mb-10 md:mb-12"
           >
             07 · Future Signal
           </motion.p>
@@ -1403,7 +1403,7 @@ function RecognitionsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 1.0, delay: 0.9, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-20 md:mt-28"
+            className="mt-12 md:mt-16"
           >
             <Link
               to="/engage"
@@ -1430,7 +1430,7 @@ function RecognitionsPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.9 }}
             transition={{ duration: 2.0, delay: 1.4, ease: [0.19, 1, 0.22, 1] }}
-            className="mt-28 md:mt-36 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
+            className="mt-10 md:mt-12 font-mono text-[9px] uppercase tracking-[0.5em] text-muted-foreground/20"
           >
             Monoatom Labs · 2025
           </motion.p>
