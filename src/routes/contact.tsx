@@ -82,7 +82,7 @@ function AccessForm() {
       `What a conversation would change`,
       ask || "—",
     ].join("\n");
-    return `mailto:me@sushanthpaatnaik.com?subject=${encodeURIComponent(
+    return `mailto:info@sushanthpaatnaik.com?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
   }, [intentLabel, name, org, email, context, ask]);
@@ -261,7 +261,7 @@ function AccessForm() {
           <div className="flex flex-col gap-2 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45">
             <span>Reply window · 48 hours</span>
             <a
-              href="mailto:me@sushanthpaatnaik.com?subject=Hello"
+              href="mailto:info@sushanthpaatnaik.com?subject=Hello"
               className="text-foreground/65 transition-colors hover:text-accent"
             >
               Or write directly &nbsp;—↗
@@ -342,10 +342,10 @@ function ContactPage() {
       <EditorialSection number="07 · Direct lines" heading="The shortest path.">
         <p>
           <a
-            href="mailto:me@sushanthpaatnaik.com?subject=Hello"
+            href="mailto:info@sushanthpaatnaik.com?subject=Hello"
             className="text-foreground underline-offset-4 hover:underline"
           >
-            me@sushanthpaatnaik.com
+            info@sushanthpaatnaik.com
           </a>
         </p>
         <p className="text-foreground/65">
