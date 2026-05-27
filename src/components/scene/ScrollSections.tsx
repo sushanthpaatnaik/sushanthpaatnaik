@@ -101,7 +101,7 @@ function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof 
           }}
         />
 
-        <div className="relative z-10 max-w-4xl pointer-events-auto lg:-translate-x-12 xl:-translate-x-14">
+        <div className="relative z-10 max-w-4xl pointer-events-auto" style={{ transform: "translateX(-2vw)" }}>
           {/* Eyebrow — archival corner mark */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
@@ -556,7 +556,7 @@ function ClosingInvitation() {
         />
 
       </div>
-      <div className="relative z-10 max-w-3xl pointer-events-auto">
+      <div className="relative z-10 max-w-3xl pointer-events-auto" style={{ transform: "translateX(-1.5vw)" }}>
         <MotionReveal delay={0.35}>
           <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
             Future Systems
