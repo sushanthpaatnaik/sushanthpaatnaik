@@ -72,22 +72,19 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneRecognition,
     alt: "Recognition · cinematic institutional archive · awards in darkness",
-    // Ultra-restrained cool-silver tint — adds metallic sheen only on highlight peaks.
-    // mix-blend-mode:soft-light lets trophy metal catch the light while dark surround stays void.
-    tint: "radial-gradient(ellipse 38% 30% at 50% 58%, oklch(0.52 0.008 218 / 0.06) 0%, transparent 72%)",
-    // Three-gradient overlay stack:
-    //   [1] Deep aperture vignette — near-black perimeter, narrow center window over trophies
-    //   [2] Column light window — ceiling/floor crush, open midband for trophy visibility
-    //   [3] Cool atmospheric bloom — faint silver over the focal zone
+    // Cool-silver soft-light tint — adds metallic sheen on trophy highlights.
+    tint: "radial-gradient(ellipse 50% 42% at 50% 58%, oklch(0.56 0.010 218 / 0.08) 0%, transparent 72%)",
+    // Two-layer overlay:
+    //   [1] Edge vignette only — center stays open so trophies read through
+    //   [2] Ceiling/floor crush — darkens above and below the trophy band
     overlay: [
-      "radial-gradient(ellipse 38% 32% at 50% 60%, oklch(0.018 0.004 240 / 0.06) 0%, oklch(0.005 0.001 260 / 0.94) 95%)",
-      "linear-gradient(180deg, oklch(0.004 0.001 260 / 0.95) 0%, oklch(0.010 0.002 250 / 0.28) 26%, oklch(0.010 0.002 250 / 0.16) 52%, oklch(0.010 0.002 250 / 0.36) 80%, oklch(0.004 0.001 260 / 0.92) 100%)",
-      "radial-gradient(ellipse 44% 28% at 50% 60%, oklch(0.38 0.010 222 / 0.05), transparent 78%)",
+      "radial-gradient(ellipse 58% 50% at 50% 58%, transparent 0%, transparent 28%, oklch(0.006 0.001 260 / 0.78) 92%)",
+      "linear-gradient(180deg, oklch(0.006 0.001 260 / 0.86) 0%, transparent 32%, transparent 60%, oklch(0.006 0.001 260 / 0.82) 100%)",
     ].join(", "),
     parallax: 0.18,
-    // Very low brightness collapses ambient environment to void;
-    // high contrast lets trophy highlights emerge; near-zero saturation → silver-graphite tones.
-    filter: "brightness(0.34) contrast(1.38) saturate(0.20) sepia(0.00)",
+    // Moderate base darkness; high contrast pulls trophy highlights forward;
+    // low saturation pushes toward silver-graphite tones without crushing to black.
+    filter: "brightness(0.54) contrast(1.26) saturate(0.28) sepia(0.00)",
     objectPosition: "center 54%",
   },
   {
@@ -95,11 +92,13 @@ const SCENES: BackgroundScene[] = [
     alt: "Ecosystem · operating ecosystem at scale · distributed industrial intelligence",
     tint: "linear-gradient(160deg, oklch(0.18 0.022 240 / 0.10), transparent 52%, oklch(0.08 0.012 232 / 0.14))",
     overlay: [
-      "radial-gradient(ellipse 62% 72% at 50% 52%, oklch(0.018 0.005 240 / 0.52) 0%, oklch(0.010 0.003 250 / 0.86) 92%)",
-      "linear-gradient(180deg, oklch(0.006 0.002 250 / 0.82) 0%, oklch(0.012 0.004 245 / 0.28) 34%, transparent 54%, oklch(0.010 0.003 250 / 0.62) 100%)",
+      // Radial vignette — lighter center so the landscape reads through, darker perimeter
+      "radial-gradient(ellipse 68% 76% at 50% 52%, oklch(0.018 0.005 240 / 0.22) 0%, oklch(0.010 0.003 250 / 0.62) 92%)",
+      // Ceiling / floor frame — moderate crush, not black
+      "linear-gradient(180deg, oklch(0.006 0.002 250 / 0.60) 0%, oklch(0.012 0.004 245 / 0.16) 32%, transparent 52%, oklch(0.010 0.003 250 / 0.44) 100%)",
     ].join(", "),
     parallax: 0.20,
-    filter: "brightness(0.60) contrast(1.10) saturate(0.52) sepia(0.05)",
+    filter: "brightness(0.68) contrast(1.08) saturate(0.55) sepia(0.04)",
   },
   {
     src: sceneFuture,
@@ -121,8 +120,8 @@ const OVERLAY_STOPS = [
   0.20, // Founder
   0.16, // Material
   0.19, // Industrial
-  0.10, // Recognition — very low: filter is now extremely dark; near-zero global dim to avoid double-crush
-  0.14, // Ecosystem  — reduced: heavy blur+darken filter; avoid double-dimming
+  0.14, // Recognition — moderate: filter + edge vignette handle darkness; global dim adds depth
+  0.12, // Ecosystem  — light: overlay stack is now softer; global dim completes the grounding
   0.23, // Future
 ];
 
