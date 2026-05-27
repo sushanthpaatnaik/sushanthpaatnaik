@@ -84,6 +84,7 @@ export default function HeroAtmosphere() {
         className="absolute inset-x-0 bottom-[-6%] h-[44%] w-full"
         viewBox="0 0 100 40"
         preserveAspectRatio="xMidYMax slice"
+        style={{ transform: "translateX(-2vw)" }}
       >
         <defs>
           <radialGradient id="hero-planet-glow" cx="50%" cy="100%" r="80%">
