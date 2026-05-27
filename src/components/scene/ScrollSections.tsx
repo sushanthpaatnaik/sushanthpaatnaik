@@ -401,7 +401,7 @@ function RecognitionSignal() {
       className="relative min-h-[calc(var(--viewport-height)*0.95)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
-      <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto">
+      <div className="relative mx-auto w-full max-w-4xl text-center pointer-events-auto" style={{ transform: "translateX(-1vw)" }}>
         <MotionReveal>
           <p className="mb-8 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Recognition
