@@ -10,7 +10,7 @@ import sceneIndustrial from "@/assets/story-04-industrial.webp";
 import sceneEcosystem from "@/assets/story-06-india.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
-import sceneRecognition from "@/assets/honor-index-rail.webp";
+import sceneRecognition from "@/assets/honor-awards-cinematic.webp";
 
 /**
  * Homepage scroll-synchronized cinematic background.
@@ -71,26 +71,28 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneRecognition,
-    alt: "Recognition · awards and trophies · institutional archive",
-    // Cool-silver soft-light tint — cools the warm room light, adds metallic sheen on glass/crystal.
-    tint: "radial-gradient(ellipse 58% 46% at 50% 66%, oklch(0.56 0.010 218 / 0.09) 0%, transparent 75%)",
-    // Four-layer overlay — purpose-built for this bright-walled photoshoot:
-    //   [1] Top crush — obliterates the cream/beige wall (top 55% of frame)
-    //   [2] Side vignette — narrows the composition to the trophy group
-    //   [3] Bottom frame — grounds the reflective table edge
-    //   [4] Corner vignette — removes remaining environmental bleed
+    alt: "Recognition · awards and trophies · cinematic institutional archive",
+    // Faint cool-silver tint — enhances the atmospheric haze and glass/metal reflections.
+    // The image already has the right tonal foundation so this is a very light touch.
+    tint: "radial-gradient(ellipse 60% 50% at 50% 60%, oklch(0.50 0.008 218 / 0.07) 0%, transparent 78%)",
+    // Minimal overlay — the image already has a black studio background and
+    // dramatic lighting. We only need a soft perimeter vignette and a thin
+    // ceiling/floor frame to blend it into the scroll system.
     overlay: [
-      "linear-gradient(180deg, oklch(0.005 0.001 260 / 0.94) 0%, oklch(0.008 0.002 255 / 0.78) 20%, oklch(0.010 0.002 250 / 0.38) 44%, transparent 62%)",
-      "linear-gradient(90deg, oklch(0.005 0.001 260 / 0.74) 0%, transparent 20%, transparent 80%, oklch(0.005 0.001 260 / 0.74) 100%)",
-      "linear-gradient(0deg, oklch(0.004 0.001 260 / 0.82) 0%, oklch(0.008 0.002 255 / 0.38) 22%, transparent 46%)",
-      "radial-gradient(ellipse 68% 60% at 50% 64%, transparent 0%, transparent 30%, oklch(0.005 0.001 260 / 0.60) 92%)",
+      // Soft edge vignette — pulls the scroll system's dark border around the image
+      "radial-gradient(ellipse 72% 66% at 50% 58%, transparent 0%, transparent 38%, oklch(0.005 0.001 260 / 0.62) 95%)",
+      // Ceiling bleed — merges the top of the image into the section above
+      "linear-gradient(180deg, oklch(0.005 0.001 260 / 0.78) 0%, transparent 28%)",
+      // Floor frame — anchors the base into the dark environment
+      "linear-gradient(0deg, oklch(0.004 0.001 260 / 0.72) 0%, transparent 32%)",
     ].join(", "),
-    parallax: 0.18,
-    // Brightness lowers ambient room light; high contrast makes reflective trophy
-    // surfaces pop; near-zero saturation strips warm office light → silver-graphite tones.
-    filter: "brightness(0.62) contrast(1.22) saturate(0.32) sepia(0.00)",
-    // Shift the crop window toward the lower half so trophies dominate, cream wall minimised.
-    objectPosition: "center 72%",
+    parallax: 0.20,
+    // Image already has dramatic studio lighting — preserve it.
+    // Slight contrast bump enhances the light shafts; gentle saturation reduction
+    // pushes toward the website's silver-graphite tonal palette.
+    filter: "brightness(0.84) contrast(1.12) saturate(0.72) sepia(0.00)",
+    // Center the trophy group — they sit in the lower-center of the frame.
+    objectPosition: "center 60%",
   },
   {
     src: sceneEcosystem,
@@ -125,7 +127,7 @@ const OVERLAY_STOPS = [
   0.20, // Founder
   0.16, // Material
   0.19, // Industrial
-  0.16, // Recognition — moderate: filter + cream-wall crush; global dim adds final depth
+  0.14, // Recognition — light: cinematic image has its own darkness; global dim completes blend
   0.12, // Ecosystem  — light: overlay stack is now softer; global dim completes the grounding
   0.23, // Future
 ];
