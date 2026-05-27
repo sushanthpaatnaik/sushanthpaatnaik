@@ -101,7 +101,7 @@ function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof 
           }}
         />
 
-        <div className="relative z-10 max-w-4xl pointer-events-auto">
+        <div className="relative z-10 max-w-4xl pointer-events-auto lg:-translate-x-12 xl:-translate-x-14">
           {/* Eyebrow — archival corner mark */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
