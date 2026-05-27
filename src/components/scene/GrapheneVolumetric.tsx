@@ -41,8 +41,9 @@ function CanvasOpacity({ scrollProgress }: { scrollProgress: Props["scrollProgre
   useFrame(() => {
     if (!wrapper) return;
     const p = scrollProgress.current;
-    // Visible across chapters 02 → 06, peak around chapter 03 (Carbon Intelligence).
-    const v = Math.max(range(p, 0.14, 0.82, 0.1, 0.12), range(p, 0.28, 0.45, 0.05, 0.1));
+    // Visible across chapters 02 → 04 (Material → Recognition). Must be fully
+    // gone before Ecosystem (p≈0.833) — no polygon mesh in that chapter.
+    const v = Math.max(range(p, 0.14, 0.68, 0.10, 0.08), range(p, 0.28, 0.45, 0.05, 0.10));
     // Lowered ceiling — ambient atmosphere, never spectacle.
     wrapper.style.opacity = String(0.38 * v);
   });

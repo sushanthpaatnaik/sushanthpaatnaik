@@ -1,14 +1,13 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
 import EarthGlobe from "./EarthGlobe";
-import EarthLivingScene from "./EarthLivingScene";
 import RecognitionAmbient from "./RecognitionAmbient";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
-
 import sceneMaterial from "@/assets/story-03-material.webp";
 import sceneIndustrial from "@/assets/story-04-industrial.webp";
+import sceneEcosystem from "@/assets/story-06-india.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
 import sceneRecognition from "@/assets/honor-index-rail.webp";
@@ -91,22 +90,15 @@ const SCENES: BackgroundScene[] = [
     objectPosition: "center 58%",
   },
   {
-    // No image — pure atmospheric depth composition.
-    // Spatial presence through layered gradients: luminous column, side recession,
-    // horizon band, structural black. No polygon geometry, no network diagram.
-    alt: "Ecosystem · atmospheric systems depth · distributed planetary intelligence",
+    src: sceneEcosystem,
+    alt: "Ecosystem · operating ecosystem at scale · distributed industrial intelligence",
+    tint: "linear-gradient(160deg, oklch(0.18 0.022 240 / 0.10), transparent 52%, oklch(0.08 0.012 232 / 0.14))",
     overlay: [
-      // Luminous atmospheric column — central depth corridor, barely perceptible
-      "radial-gradient(ellipse 40% 70% at 52% 40%, oklch(0.050 0.014 234 / 0.38) 0%, oklch(0.018 0.006 242 / 0.0) 72%)",
-      // Side atmospheric recession — infinite lateral depth
-      "radial-gradient(ellipse 65% 80% at 20% 50%, oklch(0.028 0.008 244 / 0.28) 0%, transparent 62%)",
-      "radial-gradient(ellipse 55% 72% at 80% 54%, oklch(0.024 0.006 238 / 0.22) 0%, transparent 56%)",
-      // Horizon luminescence — faint systems activity at planetary scale
-      "radial-gradient(ellipse 100% 24% at 50% 72%, oklch(0.042 0.012 232 / 0.24) 0%, transparent 62%)",
-      // Structural black — ceiling/floor compression
-      "linear-gradient(180deg, oklch(0.005 0.002 250 / 0.92) 0%, transparent 30%, transparent 65%, oklch(0.005 0.002 250 / 0.82) 100%)",
+      "radial-gradient(ellipse 62% 72% at 50% 52%, oklch(0.018 0.005 240 / 0.52) 0%, oklch(0.010 0.003 250 / 0.86) 92%)",
+      "linear-gradient(180deg, oklch(0.006 0.002 250 / 0.82) 0%, oklch(0.012 0.004 245 / 0.28) 34%, transparent 54%, oklch(0.010 0.003 250 / 0.62) 100%)",
     ].join(", "),
-    parallax: 0.18,
+    parallax: 0.20,
+    filter: "brightness(0.60) contrast(1.10) saturate(0.52) sepia(0.05)",
   },
   {
     src: sceneFuture,
