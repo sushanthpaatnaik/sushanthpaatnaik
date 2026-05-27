@@ -92,7 +92,9 @@ const SCENES: BackgroundScene[] = [
     // pushes toward the website's silver-graphite tonal palette.
     filter: "brightness(0.84) contrast(1.12) saturate(0.72) sepia(0.00)",
     // Center the trophy group — they sit in the lower-center of the frame.
-    objectPosition: "center 60%",
+    // Shift composition slightly left so the Presidential trophy (far left)
+    // has more breathing room from the edge vignette.
+    objectPosition: "46% 60%",
   },
   {
     src: sceneEcosystem,

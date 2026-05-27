@@ -52,21 +52,34 @@ export default function RecognitionAmbient({ phase }: { phase: MotionValue<numbe
         }}
       />
 
-      {/* Side walls — museum recession pulls focus inward to the trophy axis */}
+      {/* Side walls — museum recession pulls focus inward.
+          Left wall is lighter than right: Presidential trophy sits in this zone
+          and needs breathing room to read as a prestige object. */}
       <div
         className="absolute inset-y-0 left-0"
         style={{
-          width: "20%",
+          width: "15%",
           background:
-            "linear-gradient(90deg, oklch(0.005 0.001 260 / 0.88) 0%, transparent 100%)",
+            "linear-gradient(90deg, oklch(0.005 0.001 260 / 0.52) 0%, transparent 100%)",
         }}
       />
       <div
         className="absolute inset-y-0 right-0"
         style={{
-          width: "20%",
+          width: "18%",
           background:
-            "linear-gradient(270deg, oklch(0.005 0.001 260 / 0.88) 0%, transparent 100%)",
+            "linear-gradient(270deg, oklch(0.005 0.001 260 / 0.68) 0%, transparent 100%)",
+        }}
+      />
+
+      {/* Presidential trophy rim light — subtle cool metallic edge illumination
+          from the far-left axis. Recovers trophy silhouette without brightening
+          the whole scene. Asymmetric: only applied on the left side. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 22% 55% at 2% 58%, oklch(0.60 0.010 218 / 0.09) 0%, transparent 100%)",
         }}
       />
 
