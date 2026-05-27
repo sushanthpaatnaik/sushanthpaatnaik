@@ -283,9 +283,9 @@ const STAR_VERT = /* glsl */`
     // Two-harmonic twinkle — organic flicker (phi-ratio second harmonic avoids periodicity)
     float t = uTime * aSpeed;
     float tw = sin(t + aPhase) * (0.62 + 0.38 * sin(t * 0.618 + aPhase * 1.41));
-    vOpacity = 0.38 + 0.28 * tw;
+    vOpacity = 0.52 + 0.26 * tw;
     vColor = aColor;
-    gl_PointSize = aSize * (460.0 / -mvPos.z);
+    gl_PointSize = aSize * (500.0 / -mvPos.z);
   }
 `;
 const STAR_FRAG = /* glsl */`
@@ -294,10 +294,10 @@ const STAR_FRAG = /* glsl */`
   void main() {
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
-    float core  = smoothstep(0.5, 0.10, d);
-    float bloom = smoothstep(0.5, 0.0,  d) * 0.05;
+    float core  = smoothstep(0.5, 0.06, d);
+    float bloom = smoothstep(0.5, 0.0,  d) * 0.07;
     float a = (core + bloom) * vOpacity;
-    gl_FragColor = vec4(vColor, a * 0.58);
+    gl_FragColor = vec4(vColor, a * 0.70);
   }
 `;
 const EARTH_VERT = /* glsl */`
@@ -588,14 +588,14 @@ export default function EarthGlobe({
       const density = noise.simplex3D(snx*0.85, sny*0.85, snz*0.85) * 0.5 + 0.5;
       let r: number, sBase: number, spBase: number, spRange: number;
       if (i < bgEnd) {
-        // Ultra-tiny dim — true micro-points, barely perceptible
-        r = 130 + Math.random()*45; sBase = 0.16 + Math.random()*0.26; spBase = 0.18; spRange = 0.20;
+        // 70% — distant micro-stars, rendered as 1-2px pinpoints
+        r = 130 + Math.random()*45; sBase = 0.32 + Math.random()*0.28; spBase = 0.18; spRange = 0.22;
       } else if (i < midEnd) {
-        // Faint medium — slightly larger, sparse
-        r = 88  + Math.random()*32; sBase = 0.38 + Math.random()*0.34; spBase = 0.50; spRange = 0.35;
+        // 20% — faint medium stars, 2-4px
+        r = 88  + Math.random()*30; sBase = 0.55 + Math.random()*0.32; spBase = 0.48; spRange = 0.34;
       } else {
-        // Soft glow — very few, only slightly larger than mid
-        r = 68  + Math.random()*18; sBase = 0.60 + Math.random()*0.42; spBase = 0.90; spRange = 0.40;
+        // 10% — sparse soft-glow stars, 4-7px max
+        r = 66  + Math.random()*18; sBase = 0.78 + Math.random()*0.36; spBase = 0.88; spRange = 0.38;
       }
       pos[i*3] = r*snx; pos[i*3+1] = r*sny; pos[i*3+2] = r*snz;
       sizes[i]  = sBase * (0.7 + density * 0.6);
