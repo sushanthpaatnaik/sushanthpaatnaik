@@ -357,10 +357,13 @@ function RecognitionAtmosphere() {
 
 function EcosystemAtmosphere() {
   return (
-    <>
-      <EngineeringGrid cell={96} color="oklch(0.72 0.02 232 / 0.04)" />
-      <ConnectingLines />
-    </>
+    <div
+      className="absolute inset-0 mix-blend-screen"
+      style={{
+        background:
+          "radial-gradient(ellipse 65% 55% at 50% 52%, oklch(0.28 0.018 232 / 0.06), transparent 72%), radial-gradient(ellipse 40% 60% at 72% 38%, oklch(0.22 0.012 240 / 0.04), transparent 68%)",
+      }}
+    />
   );
 }
 
