@@ -438,11 +438,11 @@ function EcosystemGateway() {
       id="ecosystem"
       className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_65%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
       {/* Bottom vignette — fades the section smoothly into the space transition below */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(to_bottom,transparent,oklch(0.02_0.008_232/0.72))]" />
-      <div className="relative mx-auto w-full max-w-6xl pointer-events-auto">
+      <div className="relative mx-auto w-full max-w-6xl pointer-events-auto mt-7">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Ecosystem

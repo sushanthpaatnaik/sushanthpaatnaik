@@ -10,7 +10,7 @@ import sceneIndustrial from "@/assets/story-04-industrial.webp";
 import sceneEcosystem from "@/assets/story-06-india.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
-import sceneRecognition from "@/assets/honor-index-rail.webp";
+import sceneRecognition from "@/assets/scene-recognition-archive.webp";
 
 /**
  * Homepage scroll-synchronized cinematic background.
@@ -71,23 +71,24 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneRecognition,
-    alt: "Recognition · awards and honours — institutional archive",
-    // Soft-light tint: warm museum gold concentrated over the trophy midline.
-    // mix-blend-mode:soft-light amplifies warm highlights on reflective trophy surfaces
-    // while leaving the already-dark surround untouched.
-    tint: "radial-gradient(ellipse 55% 44% at 50% 60%, oklch(0.60 0.028 52 / 0.13) 0%, oklch(0.28 0.012 44 / 0.04) 58%, transparent 80%)",
-    // Two-gradient overlay stack:
-    //   [1] Aperture vignette — deep elliptical falloff opens toward trophy line
-    //   [2] Column lighting — dark ceiling + dark floor, open center window
+    alt: "Recognition · cinematic institutional archive · awards in darkness",
+    // Ultra-restrained cool-silver tint — adds metallic sheen only on highlight peaks.
+    // mix-blend-mode:soft-light lets trophy metal catch the light while dark surround stays void.
+    tint: "radial-gradient(ellipse 38% 30% at 50% 58%, oklch(0.52 0.008 218 / 0.06) 0%, transparent 72%)",
+    // Three-gradient overlay stack:
+    //   [1] Deep aperture vignette — near-black perimeter, narrow center window over trophies
+    //   [2] Column light window — ceiling/floor crush, open midband for trophy visibility
+    //   [3] Cool atmospheric bloom — faint silver over the focal zone
     overlay: [
-      "radial-gradient(ellipse 52% 44% at 50% 60%, oklch(0.022 0.005 52 / 0.18) 0%, oklch(0.012 0.002 260 / 0.82) 92%)",
-      "linear-gradient(180deg, oklch(0.006 0.002 260 / 0.80) 0%, oklch(0.015 0.003 260 / 0.26) 30%, transparent 50%, oklch(0.015 0.003 260 / 0.36) 78%, oklch(0.006 0.002 260 / 0.78) 100%)",
+      "radial-gradient(ellipse 38% 32% at 50% 60%, oklch(0.018 0.004 240 / 0.06) 0%, oklch(0.005 0.001 260 / 0.94) 95%)",
+      "linear-gradient(180deg, oklch(0.004 0.001 260 / 0.95) 0%, oklch(0.010 0.002 250 / 0.28) 26%, oklch(0.010 0.002 250 / 0.16) 52%, oklch(0.010 0.002 250 / 0.36) 80%, oklch(0.004 0.001 260 / 0.92) 100%)",
+      "radial-gradient(ellipse 44% 28% at 50% 60%, oklch(0.38 0.010 222 / 0.05), transparent 78%)",
     ].join(", "),
-    parallax: 0.30,
-    // Higher contrast sharpens trophy detail; reduced saturation + faint sepia
-    // push toward archival institutional tone rather than commercial photoshoot.
-    filter: "brightness(0.58) contrast(1.18) saturate(0.60) sepia(0.07)",
-    objectPosition: "center 58%",
+    parallax: 0.18,
+    // Very low brightness collapses ambient environment to void;
+    // high contrast lets trophy highlights emerge; near-zero saturation → silver-graphite tones.
+    filter: "brightness(0.34) contrast(1.38) saturate(0.20) sepia(0.00)",
+    objectPosition: "center 54%",
   },
   {
     src: sceneEcosystem,
@@ -120,7 +121,7 @@ const OVERLAY_STOPS = [
   0.20, // Founder
   0.16, // Material
   0.19, // Industrial
-  0.16, // Recognition — reduced: per-scene filter is darker; less global dim needed
+  0.10, // Recognition — very low: filter is now extremely dark; near-zero global dim to avoid double-crush
   0.14, // Ecosystem  — reduced: heavy blur+darken filter; avoid double-dimming
   0.23, // Future
 ];

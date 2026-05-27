@@ -1,4 +1,4 @@
-import { motion, useTransform, type MotionValue } from "framer-motion";
+import { motion, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 /**
@@ -337,18 +337,35 @@ function IndustrialAtmosphere() {
 function RecognitionAtmosphere() {
   return (
     <>
+      {/* Deep institutional vignette — amplifies the void around the trophy zone */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, oklch(0.42 0.04 60 / 0.10), transparent 78%)",
+            "radial-gradient(ellipse 52% 40% at 50% 58%, transparent 0%, oklch(0.008 0.002 252 / 0.58) 92%)",
         }}
       />
+      {/* Hairline column markers — near-invisible guide lines aligning to spotlight beams */}
       <div
-        className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.10]"
+        style={{
+          backgroundImage: [
+            "linear-gradient(90deg, transparent 29.6%, oklch(0.72 0.010 220 / 0.18) 30%, transparent 30.4%)",
+            "linear-gradient(90deg, transparent 49.6%, oklch(0.72 0.010 220 / 0.22) 50%, transparent 50.4%)",
+            "linear-gradient(90deg, transparent 69.6%, oklch(0.72 0.010 220 / 0.18) 70%, transparent 70.4%)",
+          ].join(", "),
+          maskImage:
+            "linear-gradient(180deg, transparent 8%, #000 22%, #000 74%, transparent 92%)",
+          WebkitMaskImage:
+            "linear-gradient(180deg, transparent 8%, #000 22%, #000 74%, transparent 92%)",
+        }}
+      />
+      {/* Cool platinum micro-grain — ultra-low amplitude archival texture */}
+      <div
+        className="absolute inset-0 opacity-[0.038] mix-blend-overlay"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.30  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>\")",
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.60  0 0 0 0 0.66  0 0 0 0 0.78  0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>\")",
         }}
       />
     </>
@@ -356,14 +373,66 @@ function RecognitionAtmosphere() {
 }
 
 function EcosystemAtmosphere() {
+  const reduce = useReducedMotion();
   return (
-    <div
-      className="absolute inset-0 mix-blend-screen"
-      style={{
-        background:
-          "radial-gradient(ellipse 65% 55% at 50% 52%, oklch(0.28 0.018 232 / 0.06), transparent 72%), radial-gradient(ellipse 40% 60% at 72% 38%, oklch(0.22 0.012 240 / 0.04), transparent 68%)",
-      }}
-    />
+    <>
+      {/* Atmospheric glow — shifted right of center so the left typography column stays darker */}
+      <motion.div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 58% 50% at 65% 52%, oklch(0.28 0.018 232 / 0.07), transparent 72%), radial-gradient(ellipse 36% 56% at 80% 36%, oklch(0.22 0.012 240 / 0.05), transparent 68%)",
+        }}
+        animate={reduce ? undefined : { opacity: [0.68, 1, 0.68] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Volumetric haze drift — ultra-slow rightward atmospheric mass */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 42% 34% at 70% 56%, oklch(0.18 0.014 236 / 0.06), transparent 70%)",
+          filter: "blur(42px)",
+        }}
+        animate={reduce ? undefined : { x: [0, 10, -5, 0], opacity: [0.44, 1, 0.44] }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 6 }}
+      />
+
+      {/* Cinematic dust — 5 ultra-slow motes biased toward the right glow zone */}
+      {!reduce &&
+        [
+          { x: "63%", y: "46%", d: 36, delay: 0 },
+          { x: "76%", y: "60%", d: 42, delay: 10 },
+          { x: "56%", y: "64%", d: 40, delay: 19 },
+          { x: "84%", y: "40%", d: 46, delay: 5 },
+          { x: "70%", y: "54%", d: 38, delay: 15 },
+        ].map((p, i) => (
+          <motion.span
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: p.x,
+              top: p.y,
+              width: "1px",
+              height: "1px",
+              background: "oklch(0.66 0.008 232)",
+              filter: "blur(0.4px)",
+            }}
+            animate={{
+              opacity: [0, 0.26, 0.09, 0.20, 0],
+              y: [0, -12, -26, -42, -58],
+              x: [0, 4, -2, 5, 1],
+            }}
+            transition={{
+              duration: p.d,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: p.delay,
+            }}
+          />
+        ))}
+    </>
   );
 }
 
