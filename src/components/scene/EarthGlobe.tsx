@@ -93,7 +93,7 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const ctx = cv.getContext("2d")!;
-  ctx.fillStyle = "#010103";
+  ctx.fillStyle = "#000002";
   ctx.fillRect(0, 0, W, H);
   const img = ctx.createImageData(W, H);
   for (let y = 0; y < H; y++) {
@@ -112,9 +112,9 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
       const band2 = Math.exp(-Math.pow(lat + 0.30, 2) / 0.14) * 0.5;
       const gas2  = Math.max(0, n3 * band2);
       // Near-black charcoal — no visible purple/blue tint
-      img.data[idx]   = Math.floor(gas * 18 + gas2 * 12);
-      img.data[idx+1] = Math.floor(gas * 22 + gas2 * 16);
-      img.data[idx+2] = Math.floor(gas * 36 + gas2 * 24);
+      img.data[idx]   = Math.floor(gas * 4 + gas2 * 2);
+      img.data[idx+1] = Math.floor(gas * 5 + gas2 * 3);
+      img.data[idx+2] = Math.floor(gas * 8 + gas2 * 5);
       img.data[idx+3] = 255;
     }
   }
@@ -123,7 +123,7 @@ function buildSpaceBg(noise: ReturnType<typeof buildNoise>): THREE.CanvasTexture
   for (let i = 0; i < 9; i++) {
     const cx = Math.random()*W, cy = Math.random()*H, r = 80+Math.random()*200;
     const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-    gr.addColorStop(0, Math.random()>0.5 ? "rgba(10,16,34,0.15)" : "rgba(8,18,42,0.18)");
+    gr.addColorStop(0, Math.random()>0.5 ? "rgba(4,8,18,0.05)" : "rgba(3,8,20,0.06)");
     gr.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = gr;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
@@ -283,9 +283,9 @@ const STAR_VERT = /* glsl */`
     // Two-harmonic twinkle — organic flicker (phi-ratio second harmonic avoids periodicity)
     float t = uTime * aSpeed;
     float tw = sin(t + aPhase) * (0.62 + 0.38 * sin(t * 0.618 + aPhase * 1.41));
-    vOpacity = 0.82 + 0.18 * tw;
+    vOpacity = 0.38 + 0.28 * tw;
     vColor = aColor;
-    gl_PointSize = aSize * (600.0 / -mvPos.z);
+    gl_PointSize = aSize * (460.0 / -mvPos.z);
   }
 `;
 const STAR_FRAG = /* glsl */`
@@ -294,10 +294,10 @@ const STAR_FRAG = /* glsl */`
   void main() {
     float d = length(gl_PointCoord - vec2(0.5));
     if (d > 0.5) discard;
-    float core  = smoothstep(0.5, 0.04, d);
-    float bloom = smoothstep(0.5, 0.0,  d) * 0.14;
+    float core  = smoothstep(0.5, 0.10, d);
+    float bloom = smoothstep(0.5, 0.0,  d) * 0.05;
     float a = (core + bloom) * vOpacity;
-    gl_FragColor = vec4(vColor, a * 0.85);
+    gl_FragColor = vec4(vColor, a * 0.58);
   }
 `;
 const EARTH_VERT = /* glsl */`
@@ -570,9 +570,11 @@ export default function EarthGlobe({
     // bg 60%: r=120-175, tiny/faint, slow twinkle (deep field)
     // mid 30%: r=78-115, medium, moderate twinkle
     // near 10%: r=52-72, slightly larger, faster twinkle + soft bloom
-    const starCount = isMobile ? 700 : 1400;
-    const bgEnd  = Math.floor(starCount * 0.60);
-    const midEnd = Math.floor(starCount * 0.90);
+    // Star distribution: 70% ultra-tiny dim (bg), 20% faint medium (mid), 10% soft glow (near)
+    const starCount = isMobile ? 380 : 700;
+    const bgEnd  = Math.floor(starCount * 0.70);  // 70% bg — ultra tiny, very dim
+    const midEnd = Math.floor(starCount * 0.90);  // 20% mid — faint, small
+    // remaining 10% near — soft glow, still restrained
     const starGeo = new THREE.BufferGeometry();
     const pos    = new Float32Array(starCount * 3);
     const sizes  = new Float32Array(starCount);
@@ -583,21 +585,23 @@ export default function EarthGlobe({
       const theta = Math.random() * Math.PI * 2;
       const phi   = Math.acos(2 * Math.random() - 1);
       const snx = Math.sin(phi)*Math.cos(theta), sny = Math.sin(phi)*Math.sin(theta), snz = Math.cos(phi);
-      // Noise-based density variation — subtle clusters and voids
       const density = noise.simplex3D(snx*0.85, sny*0.85, snz*0.85) * 0.5 + 0.5;
       let r: number, sBase: number, spBase: number, spRange: number;
       if (i < bgEnd) {
-        r = 120 + Math.random()*55; sBase = 0.5 + Math.random()*0.9; spBase = 0.25; spRange = 0.30;
+        // Ultra-tiny dim — true micro-points, barely perceptible
+        r = 130 + Math.random()*45; sBase = 0.16 + Math.random()*0.26; spBase = 0.18; spRange = 0.20;
       } else if (i < midEnd) {
-        r = 78  + Math.random()*37; sBase = 1.0 + Math.random()*1.2; spBase = 0.65; spRange = 0.45;
+        // Faint medium — slightly larger, sparse
+        r = 88  + Math.random()*32; sBase = 0.38 + Math.random()*0.34; spBase = 0.50; spRange = 0.35;
       } else {
-        r = 52  + Math.random()*20; sBase = 1.8 + Math.random()*1.4; spBase = 1.20; spRange = 0.60;
+        // Soft glow — very few, only slightly larger than mid
+        r = 68  + Math.random()*18; sBase = 0.60 + Math.random()*0.42; spBase = 0.90; spRange = 0.40;
       }
       pos[i*3] = r*snx; pos[i*3+1] = r*sny; pos[i*3+2] = r*snz;
-      sizes[i]  = sBase * (0.6 + density * 0.8);
+      sizes[i]  = sBase * (0.7 + density * 0.6);
       phases[i] = Math.random() * Math.PI * 2;
       speeds[i] = spBase + Math.random() * spRange;
-      // Physically-inspired color: ~60% warm-white (G/F), ~22% blue-white (A/B), ~18% orange (K)
+      // Physically-inspired color distribution (same spectral ratios, just fewer stars)
       const cr = Math.random();
       if (cr < 0.60) {
         colors[i*3]=1.00; colors[i*3+1]=0.96+Math.random()*0.02; colors[i*3+2]=0.90+Math.random()*0.06;
@@ -623,7 +627,7 @@ export default function EarthGlobe({
     scene.add(new THREE.Points(starGeo, starMat));
 
     // ── Cosmic dust — ultra-fine particles at deep radii for volumetric depth ──
-    const DUST_COUNT = isMobile ? 140 : 280;
+    const DUST_COUNT = isMobile ? 40 : 80;
     const dustGeo = new THREE.BufferGeometry();
     const dustPos = new Float32Array(DUST_COUNT * 3);
     const dustSizes = new Float32Array(DUST_COUNT);
@@ -654,7 +658,7 @@ export default function EarthGlobe({
       transparent: true,
       blending:    THREE.AdditiveBlending,
       depthWrite:  false,
-      opacity:     0.09,
+      opacity:     0.032,
     });
     scene.add(new THREE.Points(dustGeo, dustMat));
 
@@ -895,13 +899,13 @@ export default function EarthGlobe({
         }}
       />
 
-      {/* Soft atmospheric horizon band — restrained blue edge along the planet arc */}
+      {/* Soft atmospheric horizon band — localised to Earth arc, does not spread upward */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 90% 28% at 50% 88%, rgba(18,52,96,0.22) 0%, rgba(8,20,44,0.10) 55%, transparent 80%)",
+            "radial-gradient(ellipse 70% 16% at 50% 96%, rgba(14,42,84,0.14) 0%, rgba(6,16,38,0.05) 52%, transparent 76%)",
           pointerEvents: "none",
         }}
       />
