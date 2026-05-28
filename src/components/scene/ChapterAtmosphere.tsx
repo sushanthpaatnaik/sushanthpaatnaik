@@ -319,17 +319,94 @@ function MaterialAtmosphere() {
 }
 
 function IndustrialAtmosphere() {
+  const reduce = useReducedMotion();
   return (
     <>
-      <EngineeringGrid cell={72} color="oklch(0.74 0.02 232 / 0.055)" />
+      <EngineeringGrid cell={72} color="oklch(0.74 0.02 232 / 0.040)" />
       <MeasurementRail side="right" />
+
+      {/* Warm amber floor wash — reflects the building's practical interior lights */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "linear-gradient(180deg, transparent 30%, oklch(0.42 0.05 50 / 0.045) 70%, transparent)",
+            "linear-gradient(180deg, transparent 52%, oklch(0.42 0.05 50 / 0.038) 82%, transparent)",
         }}
       />
+
+      {/* Faint drifting haze — ultra-slow lateral atmospheric mass, barely visible */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 38% at 38% 62%, oklch(0.12 0.010 232 / 0.10), transparent 68%)",
+          filter: "blur(32px)",
+        }}
+        animate={reduce ? undefined : { x: [0, 14, -8, 0], opacity: [0.40, 0.82, 0.40] }}
+        transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Slow interior light flicker — simulates the building's fluorescent/LED
+          array seen through the glass facade. Opacity-only: GPU-composited. */}
+      <motion.div
+        className="absolute mix-blend-screen"
+        style={{
+          right: "8%",
+          top: "22%",
+          width: "44%",
+          height: "42%",
+          background:
+            "radial-gradient(ellipse 80% 70% at 60% 45%, oklch(0.72 0.008 215 / 0.06), transparent 72%)",
+          willChange: "opacity",
+        }}
+        animate={reduce ? undefined : {
+          opacity: [0.55, 0.78, 0.60, 0.88, 0.55],
+        }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
+
+      {/* Restrained cool steel-blue highlight — upper-left architectural plane */}
+      <motion.div
+        className="absolute mix-blend-screen"
+        style={{
+          left: 0,
+          top: 0,
+          width: "40%",
+          height: "38%",
+          background:
+            "radial-gradient(ellipse 70% 60% at 28% 32%, oklch(0.55 0.015 220 / 0.05), transparent 78%)",
+          willChange: "opacity",
+        }}
+        animate={reduce ? undefined : { opacity: [0.45, 0.72, 0.45] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 7 }}
+      />
+
+      {/* Cinematic dust — 4 ultra-slow motes in the forecourt/entrance zone */}
+      {!reduce &&
+        [
+          { x: "34%", y: "58%", d: 44, delay: 0  },
+          { x: "52%", y: "48%", d: 50, delay: 14 },
+          { x: "44%", y: "66%", d: 42, delay: 27 },
+          { x: "60%", y: "54%", d: 48, delay: 8  },
+        ].map((p, i) => (
+          <motion.span
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: p.x,
+              top: p.y,
+              width: "1px",
+              height: "1px",
+              background: "oklch(0.78 0.006 220)",
+            }}
+            animate={{
+              opacity: [0, 0.22, 0.08, 0.18, 0],
+              y: [0, -10, -22, -36, -50],
+              x: [0, 3, -2, 4, 0],
+            }}
+            transition={{ duration: p.d, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          />
+        ))}
     </>
   );
 }

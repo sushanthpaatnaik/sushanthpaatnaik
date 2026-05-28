@@ -6,7 +6,7 @@ import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
 import sceneSpark from "@/assets/story-01-spark.webp";
 import sceneMaterial from "@/assets/story-03-material.webp";
-import sceneIndustrial from "@/assets/story-04-industrial.webp";
+import sceneIndustrial from "@/assets/story-04.1-industrial.webp";
 import sceneEcosystem from "@/assets/story-06-india.webp";
 import sceneFuture from "@/assets/story-07-future.webp";
 import sceneFounder from "@/assets/founder-presence.webp";
@@ -62,12 +62,25 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneIndustrial,
-    alt: "Industrial translation · infrastructure, manufacturing, energy",
-    tint: "linear-gradient(135deg, oklch(0.32 0.07 240 / 0.18) 0%, oklch(0.52 0.10 55 / 0.07) 100%)",
-    overlay:
-      "linear-gradient(165deg, oklch(0.028 0.006 260 / 0.54) 0%, oklch(0.045 0.018 240 / 0.24) 45%, oklch(0.028 0.006 260 / 0.54) 100%)",
-    parallax: 1.15,
-    filter: "brightness(0.88) contrast(1.10) saturate(1.00)",
+    alt: "SPI Industries headquarters · advanced materials facility at night",
+    // Faint warm tint at the base — preserves the amber practical lights
+    // inside the building without pushing the overall palette warm.
+    tint: "linear-gradient(180deg, transparent 55%, oklch(0.48 0.06 55 / 0.06) 100%)",
+    // Three-stop cinematic overlay per spec: strong top crush, lighter mid
+    // (lets the building facade and logo read), strong floor anchor.
+    // Stacked with an edge vignette to frame the architecture.
+    overlay: [
+      "linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.78) 100%)",
+      "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 28%, rgba(0,0,0,0.38) 100%)",
+    ].join(", "),
+    // Parallax reduced — a real building should drift less than abstract imagery.
+    parallax: 0.80,
+    // Saturate(0.82) = ~18% desaturation: mutes the image slightly so typography
+    // dominates without draining the warm amber interior glow entirely.
+    // Brightness pulled down to cinematic level; contrast bump sharpens the
+    // building geometry without clipping the lit windows.
+    filter: "brightness(0.84) contrast(1.06) saturate(0.82)",
+    objectPosition: "center center",
   },
   {
     src: sceneRecognition,
@@ -128,7 +141,7 @@ const OVERLAY_STOPS = [
   0.24, // Origin
   0.20, // Founder
   0.16, // Material
-  0.19, // Industrial
+  0.15, // Industrial — new SPI exterior has its own cinematic darkness
   0.14, // Recognition — light: cinematic image has its own darkness; global dim completes blend
   0.12, // Ecosystem  — light: overlay stack is now softer; global dim completes the grounding
   0.23, // Future
