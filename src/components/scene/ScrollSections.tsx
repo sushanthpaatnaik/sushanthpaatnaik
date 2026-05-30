@@ -275,7 +275,7 @@ function FounderScene() {
   return (
     <section
       id="founder"
-      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 py-32 md:py-44"
+      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-start md:items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-28 pb-20 md:py-44"
     >
       {/* Founder presence — dissolved into industrial darkness. Silhouette,
           glasses, and jawline barely legible; edge-lit by a cool key from

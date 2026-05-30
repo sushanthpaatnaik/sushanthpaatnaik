@@ -17,7 +17,7 @@ export default function Interstitial({
     <section
       aria-hidden={false}
       className={`relative flex items-center justify-center overflow-hidden px-6 ${
-        pause ? "min-h-[var(--viewport-height)] py-32 md:py-44" : "min-h-[44vh] py-24 md:py-32"
+        pause ? "min-h-[var(--viewport-height)] py-32 md:py-44" : "min-h-[32vh] md:min-h-[44vh] py-16 md:py-32"
       }`}
     >
       {!pause && (
@@ -26,12 +26,21 @@ export default function Interstitial({
         </div>
       )}
 
+      {/* Dark suppression layer — prevents competing chapter backgrounds from
+          overwhelming the interstitial text during scroll transitions. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "oklch(0.04 0.005 260 / 0.72)",
+        }}
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 40% 50% at 50% 50%, oklch(0.10 0.012 232 / 0.45), transparent 70%)",
+            "radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.10 0.012 232 / 0.55), transparent 80%)",
         }}
       />
 
