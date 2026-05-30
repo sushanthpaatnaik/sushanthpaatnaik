@@ -142,10 +142,11 @@ function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof 
             className="mx-auto mt-14 md:mt-20 max-w-xl"
           >
             <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
-              Inventor and deep-tech founder.<br className="hidden md:inline" />
+              Inventor and deep-tech founder.{" "}
+              <br className="hidden md:inline" />
               <span className="text-foreground/55">Building from India — for the world.</span>
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[9px] sm:text-[9.5px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-muted-foreground/50">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] sm:text-[9.5px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-muted-foreground/65">
               <span className="hidden sm:block h-px w-8 bg-foreground/12" />
               <span>Six-time Presidential awardee</span>
               <span className="h-px w-1 bg-foreground/20" />
@@ -185,8 +186,8 @@ function ScrollCue({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.4, delay: 1.6 }}
-      style={{ opacity, pointerEvents, mixBlendMode: "soft-light" }}
-      className="group absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-5 bg-transparent p-2 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/45 transition-colors duration-700 hover:text-foreground/70 focus-visible:outline-none focus-visible:text-foreground/75"
+      style={{ opacity, pointerEvents }}
+      className="group absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-5 bg-transparent p-2 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/65 transition-colors duration-700 hover:text-foreground/80 focus-visible:outline-none focus-visible:text-foreground/90"
     >
       <span className="blur-[0.3px]">Scroll</span>
       <motion.span
@@ -195,7 +196,7 @@ function ScrollCue({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY
         animate={
           prefersReducedMotion
             ? { opacity: 0.22 }
-            : { opacity: [0.12, 0.38, 0.12], scaleY: [1, 1.12, 1] }
+            : { opacity: [0.35, 0.70, 0.35], scaleY: [1, 1.12, 1] }
         }
         transition={
           prefersReducedMotion
@@ -275,7 +276,7 @@ function FounderScene() {
   return (
     <section
       id="founder"
-      className="relative isolate min-h-[calc(var(--viewport-height)*1.1)] flex items-start md:items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-28 pb-20 md:py-44"
+      className="relative isolate min-h-[78vh] md:min-h-[calc(var(--viewport-height)*1.1)] flex items-start md:items-center overflow-hidden px-5 sm:px-6 lg:pl-32 xl:pl-36 pt-20 pb-16 md:py-44"
     >
       {/* Founder presence — dissolved into industrial darkness. Silhouette,
           glasses, and jawline barely legible; edge-lit by a cool key from
@@ -289,7 +290,7 @@ function FounderScene() {
             Mystery preserved through deep crush + edge fade. */}
         <div
           aria-hidden
-          className="absolute inset-y-[2%] left-0 w-[68%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.24] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.58)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
+          className="absolute inset-y-[2%] left-0 w-[68%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.42] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.72)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)]"
           style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
         />
 
