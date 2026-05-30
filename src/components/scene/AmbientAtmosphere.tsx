@@ -96,7 +96,9 @@ export default function AmbientAtmosphere() {
             "linear-gradient(180deg, transparent, oklch(0.42 0.025 232 / 0.035) 50%, transparent)",
           filter: "blur(40px)",
         }}
-        animate={{ x: ["-6%", "6%", "-6%"], opacity: [0.5, 0.85, 0.5] }}
+        // x translation removed: blur(40px) on a moving element forces GPU
+        // rasterization on every translated frame. Opacity-only is composited.
+        animate={{ opacity: [0.5, 0.85, 0.5] }}
         transition={{ duration: 48, repeat: Infinity, ease: "easeInOut" }}
       />
 

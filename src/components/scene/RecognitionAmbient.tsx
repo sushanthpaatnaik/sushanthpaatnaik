@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 
 const RECOG = 4;
@@ -18,6 +19,14 @@ const RECOG = 4;
  */
 export default function RecognitionAmbient({ phase }: { phase: MotionValue<number> }) {
   const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+    setIsMobile(mq.matches);
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
 
   const visible = useTransform(phase, (v) => {
     const d = Math.abs(v - RECOG);
@@ -114,7 +123,7 @@ export default function RecognitionAmbient({ phase }: { phase: MotionValue<numbe
             "radial-gradient(ellipse 65% 42% at 50% 58%, oklch(0.28 0.010 226 / 0.08), transparent 74%)",
           filter: "blur(36px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.38, 0.82, 0.38], x: [0, 4, -3, 0] }}
+        animate={reduce ? undefined : { opacity: [0.38, 0.82, 0.38] }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
       />
 
@@ -130,12 +139,12 @@ export default function RecognitionAmbient({ phase }: { phase: MotionValue<numbe
             "radial-gradient(ellipse 100% 80% at 50% 50%, oklch(0.70 0.012 218 / 0.042) 0%, transparent 66%)",
           filter: "blur(24px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.06, 0.62, 0.18, 0.78, 0.06], x: [0, 7, -4, 3, 0] }}
+        animate={reduce ? undefined : { opacity: [0.06, 0.62, 0.18, 0.78, 0.06] }}
         transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 5 }}
       />
 
       {/* Cinematic dust — 8 ultra-slow motes, almost subconscious in the spotlight columns */}
-      {!reduce &&
+      {!reduce && !isMobile &&
         [
           { x: "29%", y: "58%", d: 38, delay: 0 },
           { x: "50%", y: "50%", d: 44, delay: 8 },

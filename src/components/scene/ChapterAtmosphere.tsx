@@ -1,5 +1,18 @@
+import { useEffect, useState } from "react";
 import { motion, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
+
+function useMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+    setMobile(mq.matches);
+    const h = (e: MediaQueryListEvent) => setMobile(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
+  return mobile;
+}
 
 /**
  * ChapterAtmosphere
@@ -320,6 +333,7 @@ function MaterialAtmosphere() {
 
 function IndustrialAtmosphere() {
   const reduce = useReducedMotion();
+  const isMobile = useMobile();
   return (
     <>
       <EngineeringGrid cell={72} color="oklch(0.74 0.02 232 / 0.040)" />
@@ -342,7 +356,7 @@ function IndustrialAtmosphere() {
             "radial-gradient(ellipse 55% 38% at 38% 62%, oklch(0.12 0.010 232 / 0.10), transparent 68%)",
           filter: "blur(32px)",
         }}
-        animate={reduce ? undefined : { x: [0, 14, -8, 0], opacity: [0.40, 0.82, 0.40] }}
+        animate={reduce ? undefined : { opacity: [0.40, 0.82, 0.40] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
       />
 
@@ -382,7 +396,7 @@ function IndustrialAtmosphere() {
       />
 
       {/* Cinematic dust — 4 ultra-slow motes in the forecourt/entrance zone */}
-      {!reduce &&
+      {!reduce && !isMobile &&
         [
           { x: "34%", y: "58%", d: 44, delay: 0  },
           { x: "52%", y: "48%", d: 50, delay: 14 },
@@ -451,6 +465,7 @@ function RecognitionAtmosphere() {
 
 function EcosystemAtmosphere() {
   const reduce = useReducedMotion();
+  const isMobile = useMobile();
   return (
     <>
       {/* Atmospheric glow — shifted right of center so the left typography column stays darker */}
@@ -472,12 +487,12 @@ function EcosystemAtmosphere() {
             "radial-gradient(ellipse 42% 34% at 70% 56%, oklch(0.18 0.014 236 / 0.06), transparent 70%)",
           filter: "blur(42px)",
         }}
-        animate={reduce ? undefined : { x: [0, 10, -5, 0], opacity: [0.44, 1, 0.44] }}
+        animate={reduce ? undefined : { opacity: [0.44, 1, 0.44] }}
         transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 6 }}
       />
 
       {/* Cinematic dust — 5 ultra-slow motes biased toward the right glow zone */}
-      {!reduce &&
+      {!reduce && !isMobile &&
         [
           { x: "63%", y: "46%", d: 36, delay: 0 },
           { x: "76%", y: "60%", d: 42, delay: 10 },

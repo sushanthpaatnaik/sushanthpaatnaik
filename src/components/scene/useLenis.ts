@@ -5,14 +5,20 @@ export function useLenis(onScroll?: (progress: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Touch devices (phones/tablets) use native hardware-accelerated scroll.
+    // Lenis syncTouch intercepts native touch and moves scroll computation to
+    // the main thread, causing jank. On coarse-pointer devices, disable all
+    // Lenis touch handling and let the browser own it entirely.
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
     const lenis = new Lenis({
-      // Longer glide + gentler easing for film-like scroll continuity.
-      duration: 1.45,
+      // Smooth wheel glide on desktop; instant on touch (native handles it).
+      duration: isTouch ? 0 : 1.45,
       easing: (t) => 1 - Math.pow(1 - t, 3.2),
-      smoothWheel: true,
+      smoothWheel: !isTouch,
       wheelMultiplier: 0.82,
-      touchMultiplier: 0.95,
-      syncTouch: true,
+      touchMultiplier: 0,     // 0 = Lenis does not process touch events
+      syncTouch: false,        // never intercept native touch scroll
     });
     lenisRef.current = lenis;
 

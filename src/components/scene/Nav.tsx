@@ -21,7 +21,7 @@ export default function Nav() {
       {/* Cinematic backdrop fade */}
       <div
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 right-0 z-40 h-24 md:h-28"
+        className="pointer-events-none fixed top-0 left-0 right-0 z-40 h-24 md:h-28 nav-backdrop"
         style={{
           background:
             "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%)",

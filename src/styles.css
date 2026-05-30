@@ -584,24 +584,47 @@
    Touch devices get simpler blends and a further caption lift. */
 @media (max-width: 768px) {
   .mix-blend-screen { mix-blend-mode: normal; }
+  /* Demote expensive blend modes — compositor layer for each blended element
+     is a significant GPU memory cost on mobile. Normal is free. */
+  .mix-blend-overlay { mix-blend-mode: normal; }
+  .mix-blend-soft-light { mix-blend-mode: normal; }
+  .mix-blend-luminosity { mix-blend-mode: normal; }
   .text-muted-foreground\/45 { color: color-mix(in oklab, var(--muted-foreground) 65%, transparent); }
   .text-muted-foreground\/40 { color: color-mix(in oklab, var(--muted-foreground) 60%, transparent); }
 
   /* Tame GPU-heavy blur stacks on small screens so scrolling stays smooth. */
   .blur-3xl { --tw-blur: blur(28px); filter: var(--tw-blur); }
   .blur-2xl { --tw-blur: blur(18px); filter: var(--tw-blur); }
+
+  /* Nav backdrop: replace expensive blur with opaque background on mobile.
+     iOS Safari re-composites the blur area on every scroll frame. */
+  .nav-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: linear-gradient(
+      180deg,
+      oklch(0.04 0.005 260 / 0.96) 0%,
+      oklch(0.04 0.005 260 / 0.82) 55%,
+      transparent 100%
+    ) !important;
+  }
+
   /* Soften backdrop-filter cost on iOS Safari */
   .cinematic-glass,
   .glass {
-    backdrop-filter: blur(8px) saturate(120%);
-    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    backdrop-filter: blur(6px) saturate(110%);
+    -webkit-backdrop-filter: blur(6px) saturate(110%);
   }
   .btn-cinematic {
     padding: 0.75rem 1.5rem;
     font-size: 0.75rem;
-    backdrop-filter: blur(6px) saturate(130%);
-    -webkit-backdrop-filter: blur(6px) saturate(130%);
+    backdrop-filter: blur(4px) saturate(120%);
+    -webkit-backdrop-filter: blur(4px) saturate(120%);
   }
+
+  /* Free will-change allocations on mobile — each one reserves 2–4 MB GPU memory. */
+  .will-change-transform { will-change: auto; }
+  .will-change-opacity  { will-change: auto; }
 }
 
 /* Belt-and-suspenders: prevent any descendant from causing horizontal scroll.
