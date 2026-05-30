@@ -42,7 +42,7 @@ export default function Nav() {
             className="h-7 w-7 md:h-8 md:w-8 select-none transition-[opacity,filter] duration-500 opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))]"
             draggable={false}
           />
-          <span className="text-[11px] md:text-sm tracking-[0.28em] md:tracking-[0.3em] uppercase font-medium leading-none">
+          <span className="text-[10px] md:text-sm tracking-[0.16em] md:tracking-[0.3em] uppercase font-medium leading-none whitespace-nowrap">
             Sushanth Paatnaik
           </span>
         </Link>
