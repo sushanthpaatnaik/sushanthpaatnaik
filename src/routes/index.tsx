@@ -4,6 +4,7 @@ import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
 import Loader from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
+import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
 
 // Heavy decorative scene layers — code-split so they don't block first paint.
@@ -224,6 +225,7 @@ function Index() {
 
       <Nav />
       <HUD scrollProgress={scrollProgress} />
+      <MobileCTABar />
       <main id="main">
         <ScrollSections />
       </main>
