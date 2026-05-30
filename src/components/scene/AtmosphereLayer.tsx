@@ -96,18 +96,15 @@ const SCENES: BackgroundScene[] = [
       "radial-gradient(ellipse 72% 66% at 50% 58%, transparent 0%, transparent 38%, oklch(0.005 0.001 260 / 0.62) 95%)",
       // Ceiling bleed — merges the top of the image into the section above
       "linear-gradient(180deg, oklch(0.005 0.001 260 / 0.78) 0%, transparent 28%)",
-      // Floor frame — anchors the base into the dark environment
-      "linear-gradient(0deg, oklch(0.004 0.001 260 / 0.72) 0%, transparent 32%)",
+      // Floor black-out — deep crush eliminates conference banners at image base.
+      // Covers 55% of height from bottom; near-opaque through the bottom third.
+      "linear-gradient(0deg, oklch(0.003 0 0 / 0.99) 0%, oklch(0.003 0 0 / 0.98) 20%, oklch(0.004 0.001 260 / 0.90) 34%, oklch(0.004 0.001 260 / 0.60) 46%, transparent 58%)",
     ].join(", "),
     parallax: 0.20,
-    // Image already has dramatic studio lighting — preserve it.
-    // Slight contrast bump enhances the light shafts; gentle saturation reduction
-    // pushes toward the website's silver-graphite tonal palette.
     filter: "brightness(0.84) contrast(1.12) saturate(0.72) sepia(0.00)",
-    // Center the trophy group — they sit in the lower-center of the frame.
-    // Shift composition slightly left so the Presidential trophy (far left)
-    // has more breathing room from the edge vignette.
-    objectPosition: "46% 60%",
+    // Revert to 50% vertical center so the trophy group stays well-framed;
+    // the floor black-out overlay handles the STARTUP banner below.
+    objectPosition: "46% 50%",
   },
   {
     src: sceneEcosystem,

@@ -63,7 +63,10 @@ function Index() {
     const lowMem = (nav.deviceMemory ?? 8) <= 4;
     const slowNet = nav.connection?.saveData ||
       ["slow-2g", "2g", "3g"].includes(nav.connection?.effectiveType ?? "");
-    setIsLowPower(Boolean(reduce || lowMem || slowNet));
+    // Mobile viewports: disable WebGL/heavy layers regardless of RAM — GPU
+    // headroom on iOS/Android is not reflected by deviceMemory alone.
+    const mobileViewport = window.innerWidth < 768;
+    setIsLowPower(Boolean(reduce || lowMem || slowNet || mobileViewport));
   }, []);
 
   useEffect(() => {
