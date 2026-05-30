@@ -556,7 +556,7 @@ function ClosingInvitation() {
         />
 
       </div>
-      <div className="relative z-10 max-w-3xl pointer-events-auto" style={{ transform: "translateX(-1.5vw)" }}>
+      <div className="relative z-10 max-w-3xl pointer-events-auto">
         <MotionReveal delay={0.35}>
           <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
             Future Systems
