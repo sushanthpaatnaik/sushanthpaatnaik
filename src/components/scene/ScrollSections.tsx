@@ -282,8 +282,7 @@ function FounderScene() {
           glasses, and jawline barely legible; edge-lit by a cool key from
           the upper-left and a faint copper rim from the right. */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Graphite-black base atmosphere */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_75%_at_30%_48%,oklch(0.07_0_0)_0%,oklch(0.035_0_0)_55%,oklch(0.015_0_0)_100%)]" />
+        {/* Base atmosphere — transparent to let video show through */}
 
         {/* The portrait — concealed but cinematically intelligent: eyes,
             glasses, facial contour and blazer edge selectively legible.
@@ -334,11 +333,9 @@ function FounderScene() {
         />
 
 
-        {/* Cinematic falloff — smoothed, less left-weighted */}
-        <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0)_88%)]" />
-        <div className="absolute inset-y-0 right-0 w-[58%] bg-[linear-gradient(270deg,oklch(0.018_0_0)_14%,oklch(0.025_0_0/0.42)_54%,transparent_96%)]" />
-        <div className="absolute inset-y-0 left-0 w-[8%] bg-[linear-gradient(90deg,oklch(0.018_0_0)_6%,transparent)]" />
-        <div className="absolute inset-x-0 top-0 h-[18%] bg-[linear-gradient(180deg,oklch(0.018_0_0)_8%,transparent)]" />
+        {/* Soft cinematic falloff — low-opacity gradients only, video shows through */}
+        <div className="absolute inset-x-0 bottom-0 h-[30%] bg-[linear-gradient(180deg,transparent,oklch(0.018_0_0/0.32)_100%)]" />
+        <div className="absolute inset-y-0 right-0 w-[30%] bg-[linear-gradient(270deg,oklch(0.018_0_0/0.20)_0%,transparent_80%)]" />
       </div>
 
       {/* Faint lattice particles — extremely low opacity, drifting motes
@@ -440,9 +437,9 @@ function EcosystemGateway() {
       className="relative min-h-[calc(var(--viewport-height)*1.1)] flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 py-28 md:py-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_65%_45%,oklch(0.18_0.012_232/0.10),transparent_72%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.5),transparent_18%,transparent_82%,oklch(0.03_0_0/0.55))]" />
-      {/* Bottom vignette — fades the section smoothly into the space transition below */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(to_bottom,transparent,oklch(0.02_0.008_232/0.72))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.03_0_0/0.22),transparent_18%,transparent_82%,oklch(0.03_0_0/0.24))]" />
+      {/* Bottom vignette — soft fade, video visible beneath */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[30%] bg-[linear-gradient(to_bottom,transparent,oklch(0.02_0.008_232/0.32))]" />
       <div className="relative mx-auto w-full max-w-6xl pointer-events-auto mt-7">
         <MotionReveal className="max-w-3xl">
           <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
@@ -536,10 +533,10 @@ function ClosingInvitation() {
         />
 
         <div
-          className="absolute inset-x-0 bottom-0 h-[58%]"
+          className="absolute inset-x-0 bottom-0 h-[40%]"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.42) 55%, oklch(0.014 0.004 250 / 0.86) 100%)",
+              "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.18) 55%, oklch(0.014 0.004 250 / 0.34) 100%)",
           }}
         />
 

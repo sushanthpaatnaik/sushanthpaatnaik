@@ -26,21 +26,13 @@ export default function Interstitial({
         </div>
       )}
 
-      {/* Dark suppression layer — prevents competing chapter backgrounds from
-          overwhelming the interstitial text during scroll transitions. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: "oklch(0.04 0.005 260 / 0.72)",
-        }}
-      />
+      {/* Soft readability vignette — transparent, video shows through */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.10 0.012 232 / 0.55), transparent 80%)",
+            "radial-gradient(ellipse 70% 80% at 50% 50%, oklch(0.04 0.005 260 / 0.36), transparent 85%)",
         }}
       />
 
@@ -66,6 +58,7 @@ export default function Interstitial({
               ? "text-[clamp(1.15rem,2.4vw,1.75rem)] tracking-[-0.005em]"
               : "text-[clamp(1rem,1.9vw,1.45rem)] tracking-[-0.005em]"
           }`}
+          style={{ textShadow: "0 1px 18px oklch(0.04 0.005 260 / 0.85), 0 0 1px oklch(0.04 0.005 260 / 0.6)" }}
         >
           <span className="whitespace-pre-line">{line}</span>
         </p>
