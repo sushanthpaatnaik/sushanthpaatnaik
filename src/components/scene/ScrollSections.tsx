@@ -640,14 +640,14 @@ export default function ScrollSections() {
     <div className="relative z-10 pointer-events-none">
       <ScrollProgressBar scrollYProgress={scrollYProgress} />
 
-      {/* 01 — Material Intelligence (opening thesis) */}
-      <StorySection chapter={carbonChapter} index={1} total={totalChapters} />
-
-      {/* Interlude — material into origin */}
-      <Interstitial line="Ideas entered industry." />
-
-      {/* 02 — Opening origin statement */}
+      {/* 01 — Opening thesis */}
       <HeroSection scrollY={scrollY} scrollYProgress={scrollYProgress} />
+
+      {/* 02 — Material Intelligence */}
+      <StorySection chapter={carbonChapter} index={2} total={totalChapters} />
+
+      {/* Interlude — material thesis */}
+      <Interstitial line="Ideas entered industry." />
 
       {/* 03 — Founder presence */}
       <FounderScene />
