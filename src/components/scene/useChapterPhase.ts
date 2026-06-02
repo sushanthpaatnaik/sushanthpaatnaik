@@ -111,8 +111,8 @@ export function useChapterPhase(ids: readonly string[]): MotionValue<number> {
 
 export const HOME_CHAPTER_IDS = [
   "spark",
-  "founder",
   "carbon-intelligence",
+  "founder",
   "industrial",
   "recognition",
   "ecosystem",

@@ -43,15 +43,6 @@ const SCENES: BackgroundScene[] = [
     objectPosition: "center 88%",
   },
   {
-    src: sceneFounder,
-    alt: "Founder · portrait dissolving into industrial darkness",
-    tint: "linear-gradient(120deg, oklch(0.42 0.040 50 / 0.09), transparent 58%, oklch(0.10 0.018 232 / 0.22))",
-    overlay:
-      "radial-gradient(ellipse 56% 66% at 38% 50%, oklch(0.030 0.006 40 / 0.22) 0%, oklch(0.022 0.004 232 / 0.66) 90%)",
-    parallax: 0.4,
-    filter: "brightness(0.78) contrast(1.08) saturate(0.76) sepia(0.04)",
-  },
-  {
     src: sceneMaterial,
     alt: "Material intelligence · graphene lattice and nano-materials",
     tint: "linear-gradient(180deg, oklch(0.54 0.10 200 / 0.16), oklch(0.18 0.05 230 / 0.14))",
@@ -59,6 +50,15 @@ const SCENES: BackgroundScene[] = [
       "linear-gradient(180deg, oklch(0.028 0.006 260 / 0.50) 0%, oklch(0.035 0.012 220 / 0.22) 45%, oklch(0.028 0.006 260 / 0.56) 100%)",
     parallax: 1.05,
     filter: "brightness(0.90) contrast(1.08) saturate(1.06) hue-rotate(-8deg)",
+  },
+  {
+    src: sceneFounder,
+    alt: "Founder · portrait dissolving into industrial darkness",
+    tint: "linear-gradient(120deg, oklch(0.42 0.040 50 / 0.09), transparent 58%, oklch(0.10 0.018 232 / 0.22))",
+    overlay:
+      "radial-gradient(ellipse 56% 66% at 38% 50%, oklch(0.030 0.006 40 / 0.22) 0%, oklch(0.022 0.004 232 / 0.66) 90%)",
+    parallax: 0.4,
+    filter: "brightness(0.78) contrast(1.08) saturate(0.76) sepia(0.04)",
   },
   {
     src: sceneIndustrial,
@@ -126,8 +126,8 @@ const SCENES: BackgroundScene[] = [
 // Per-chapter baseline dim — 7 stops, one per section.
 const OVERLAY_STOPS = [
   0.24, // Origin
-  0.20, // Founder
   0.16, // Material
+  0.20, // Founder
   0.15, // Industrial — new SPI exterior has its own cinematic darkness
   0.14, // Recognition — light: cinematic image has its own darkness; global dim completes blend
   0.12, // Ecosystem  — light: overlay stack is now softer; global dim completes the grounding

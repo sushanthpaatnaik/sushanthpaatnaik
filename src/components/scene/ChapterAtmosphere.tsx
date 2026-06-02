@@ -594,10 +594,10 @@ export default function ChapterAtmosphere() {
         <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer phase={phase} idx={1}>
-        <FounderAtmosphere />
+        <MaterialAtmosphere />
       </ChapterLayer>
       <ChapterLayer phase={phase} idx={2}>
-        <MaterialAtmosphere />
+        <FounderAtmosphere />
       </ChapterLayer>
       <ChapterLayer phase={phase} idx={3}>
         <IndustrialAtmosphere />

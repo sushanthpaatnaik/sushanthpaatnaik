@@ -643,14 +643,14 @@ export default function ScrollSections() {
       {/* 01 — Opening thesis */}
       <HeroSection scrollY={scrollY} scrollYProgress={scrollYProgress} />
 
-      {/* 02 — Founder presence */}
-      <FounderScene />
+      {/* 02 — Material Intelligence */}
+      <StorySection chapter={carbonChapter} index={2} total={totalChapters} />
 
       {/* Interlude — material thesis */}
       <Interstitial line="Ideas entered industry." />
 
-      {/* 03 — Innovation philosophy */}
-      <StorySection chapter={carbonChapter} index={3} total={totalChapters} />
+      {/* 03 — Founder presence */}
+      <FounderScene />
 
       {/* 04 — Industrial future vision */}
       <StorySection chapter={industrialChapter} index={4} total={totalChapters} />
