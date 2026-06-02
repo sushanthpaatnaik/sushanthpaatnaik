@@ -528,16 +528,84 @@ function EcosystemAtmosphere() {
   );
 }
 
+// Pre-computed star field — deterministic positions, 3 luminosity classes + super-bright.
+// Module-level constant so it is never re-allocated on re-renders.
+const STAR_FIELD_SVG =
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='700'>" +
+  "<g fill='white'>" +
+  "<g fill-opacity='0.42'>" +
+  "<circle cx='22' cy='15' r='0.6'/><circle cx='163' cy='9' r='0.6'/><circle cx='318' cy='22' r='0.6'/><circle cx='461' cy='14' r='0.6'/><circle cx='614' cy='81' r='0.6'/><circle cx='751' cy='62' r='0.6'/><circle cx='918' cy='74' r='0.6'/>" +
+  "<circle cx='78' cy='138' r='0.6'/><circle cx='228' cy='132' r='0.6'/><circle cx='384' cy='109' r='0.6'/><circle cx='524' cy='176' r='0.6'/><circle cx='672' cy='162' r='0.6'/><circle cx='814' cy='145' r='0.6'/>" +
+  "<circle cx='58' cy='218' r='0.6'/><circle cx='209' cy='236' r='0.6'/><circle cx='364' cy='245' r='0.6'/><circle cx='518' cy='221' r='0.6'/><circle cx='669' cy='290' r='0.6'/><circle cx='808' cy='268' r='0.6'/>" +
+  "<circle cx='42' cy='312' r='0.6'/><circle cx='194' cy='328' r='0.6'/><circle cx='349' cy='338' r='0.6'/><circle cx='502' cy='352' r='0.6'/><circle cx='654' cy='318' r='0.6'/><circle cx='794' cy='342' r='0.6'/>" +
+  "<circle cx='65' cy='418' r='0.6'/><circle cx='216' cy='434' r='0.6'/><circle cx='370' cy='443' r='0.6'/><circle cx='526' cy='412' r='0.6'/><circle cx='679' cy='483' r='0.6'/><circle cx='828' cy='464' r='0.6'/>" +
+  "<circle cx='34' cy='518' r='0.6'/><circle cx='186' cy='536' r='0.6'/><circle cx='342' cy='548' r='0.6'/><circle cx='497' cy='522' r='0.6'/><circle cx='648' cy='594' r='0.6'/><circle cx='798' cy='572' r='0.6'/>" +
+  "<circle cx='52' cy='628' r='0.6'/><circle cx='205' cy='644' r='0.6'/><circle cx='361' cy='654' r='0.6'/><circle cx='517' cy='634' r='0.6'/><circle cx='671' cy='648' r='0.6'/><circle cx='824' cy='656' r='0.6'/>" +
+  "</g><g fill-opacity='0.70'>" +
+  "<circle cx='89' cy='47' r='1'/><circle cx='688' cy='35' r='1'/><circle cx='149' cy='94' r='1'/><circle cx='738' cy='188' r='1'/><circle cx='438' cy='284' r='1'/><circle cx='744' cy='232' r='1'/><circle cx='116' cy='348' r='1'/><circle cx='578' cy='387' r='1'/><circle cx='447' cy='478' r='1'/><circle cx='574' cy='558' r='1'/><circle cx='108' cy='554' r='1'/><circle cx='283' cy='678' r='1'/><circle cx='749' cy='686' r='1'/><circle cx='958' cy='158' r='1'/><circle cx='952' cy='276' r='1'/>" +
+  "</g><g fill-opacity='0.88'>" +
+  "<circle cx='301' cy='131' r='1.5'/><circle cx='489' cy='184' r='1.5'/><circle cx='91' cy='278' r='1.5'/><circle cx='627' cy='93' r='1.5'/><circle cx='198' cy='341' r='1.5'/><circle cx='566' cy='267' r='1.5'/><circle cx='755' cy='211' r='1.5'/><circle cx='423' cy='482' r='1.5'/>" +
+  "</g><g fill-opacity='0.95'>" +
+  "<circle cx='312' cy='244' r='2'/><circle cx='664' cy='358' r='2'/>" +
+  "</g></g></svg>";
+
 function FutureAtmosphere() {
+  const reduce = useReducedMotion();
   return (
     <>
+      {/* Deep space ceiling — cool blue-black grounds the upper frame */}
+      <div
+        className="absolute inset-x-0 top-0 h-[62%]"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.04 0.010 260 / 0.68) 0%, transparent 100%)",
+        }}
+      />
+
+      {/* CSS star field — pre-computed SVG data URI, covers full frame */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          backgroundImage: `url("${STAR_FIELD_SVG}")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.90,
+        }}
+      />
+
+      {/* Milky Way band — faint tilted diffusion haze */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 70% 40% at 50% 100%, oklch(0.45 0.04 232 / 0.10), transparent 70%)",
+            "linear-gradient(148deg, transparent 18%, oklch(0.56 0.018 260 / 0.050) 36%, oklch(0.68 0.022 248 / 0.080) 50%, oklch(0.56 0.018 260 / 0.050) 64%, transparent 82%)",
+          filter: "blur(22px)",
         }}
       />
+
+      {/* Earth atmospheric glow — horizon limb light from the bottom */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 40% at 50% 100%, oklch(0.45 0.04 232 / 0.12), transparent 70%)",
+        }}
+      />
+
+      {/* Nebula accent — slow-breathing cool/warm depth pair */}
+      {!reduce && (
+        <motion.div
+          className="absolute inset-0 mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(ellipse 38% 26% at 72% 22%, oklch(0.42 0.028 280 / 0.055), transparent 80%), radial-gradient(ellipse 30% 22% at 22% 36%, oklch(0.38 0.022 210 / 0.048), transparent 80%)",
+            filter: "blur(30px)",
+          }}
+          animate={{ opacity: [0.45, 1, 0.45] }}
+          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        />
+      )}
     </>
   );
 }
@@ -590,25 +658,25 @@ export default function ChapterAtmosphere() {
       style={{ contain: "strict" }}
     >
       <ContinuityFloor />
-      <ChapterLayer phase={phase} idx={0}>
+      <ChapterLayer phase={phase} idx={0} span={1.2}>
         <OriginAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={1}>
+      <ChapterLayer phase={phase} idx={1} span={1.2}>
         <MaterialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={2}>
+      <ChapterLayer phase={phase} idx={2} span={1.2}>
         <FounderAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={3}>
+      <ChapterLayer phase={phase} idx={3} span={1.2}>
         <IndustrialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={4}>
+      <ChapterLayer phase={phase} idx={4} span={1.2}>
         <RecognitionAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={5}>
+      <ChapterLayer phase={phase} idx={5} span={1.2}>
         <EcosystemAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={6} span={1.3}>
+      <ChapterLayer phase={phase} idx={6} span={1.4}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>
