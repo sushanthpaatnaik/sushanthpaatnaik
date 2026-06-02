@@ -8,7 +8,8 @@ import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
 
 // Heavy decorative scene layers — code-split so they don't block first paint.
-const AtmosphereLayer = lazy(() => import("@/components/scene/AtmosphereLayer"));
+const CinematicLayer = lazy(() => import("@/components/scene/CinematicLayer"));
+const SceneDecorations = lazy(() => import("@/components/scene/SceneDecorations"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
 const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
 const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumetric"));
@@ -185,12 +186,18 @@ function Index() {
     <div className="relative bg-background text-foreground noise">
       <Loader />
 
-      {/* Sitewide cinematic atmosphere — deferred until idle. */}
+      {/* Persistent cinematic background — one video, scroll drives currentTime. */}
       {scenesReady && (
         <Suspense fallback={null}>
-          <div className="fixed inset-0 z-0 opacity-100 transition-opacity duration-[1800ms] ease-out">
-            <AtmosphereLayer />
-          </div>
+          <CinematicLayer scrollProgress={scrollProgress} />
+        </Suspense>
+      )}
+
+      {/* Scene decorations (particles, globe, recognition ambient) — sit above
+          the cinematic layer overlays but below chapter atmosphere. */}
+      {scenesReady && entered && (
+        <Suspense fallback={null}>
+          <SceneDecorations />
         </Suspense>
       )}
 
