@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
+import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 import sceneSpark from "@/assets/story-01-spark.webp";
 
 interface CinematicLayerProps {
@@ -8,12 +9,41 @@ interface CinematicLayerProps {
 }
 
 /**
+ * Chapter time anchors (seconds) — start of each chapter's video segment.
+ * Index maps 1:1 to HOME_CHAPTER_IDS: spark(0), founder(1), carbon(2),
+ * industrial(3), recognition(4), ecosystem(5), future(6), end(7).
+ */
+const CHAPTER_TIMES = [0.0, 1.2, 2.2, 3.4, 5.2, 6.2, 7.0, 8.0] as const;
+
+/**
+ * Map chapter phase (0–6, fractional) to a video timestamp in seconds.
+ *
+ * Phase is piecewise-linearly interpolated between chapter anchors so
+ * scrolling through a chapter scrubs only within that chapter's range.
+ * For the final chapter (Future Systems, phase ≥ 6) the tail of overall
+ * scroll progress extends playback toward 8.0 s.
+ */
+function phaseToTime(phase: number, scrollProg: number): number {
+  const p = Math.max(0, Math.min(phase, 6));
+  const i = Math.floor(p);
+  const f = p - i;
+
+  if (i >= 6) {
+    // Future Systems: use last 20 % of page scroll to scrub 7.0 → 8.0 s
+    const tail = Math.max(0, Math.min((scrollProg - 0.80) / 0.20, 1));
+    return 7.0 + tail * 1.0;
+  }
+
+  return CHAPTER_TIMES[i] + f * (CHAPTER_TIMES[i + 1] - CHAPTER_TIMES[i]);
+}
+
+/**
  * Single persistent cinematic background layer.
  *
  * Architecture:
  *   - One <video> element, mounted once, never remounted.
- *   - Scroll position drives video.currentTime (not autoplay).
- *   - 0 % scroll = frame 0 · 100 % scroll = last frame.
+ *   - Chapter phase drives video.currentTime — each chapter scrubs only
+ *     within its assigned time range (see CHAPTER_TIMES above).
  *   - Fixed position, full viewport, z-[1] — content scrolls above it.
  *   - Reduced-motion: static poster image, no video element.
  */
@@ -22,6 +52,7 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
   const reduce = useReducedMotion();
   const rafRef = useRef(0);
   const readyRef = useRef(false);
+  const phase = useChapterPhase(HOME_CHAPTER_IDS);
 
   useEffect(() => {
     if (reduce) return;
@@ -29,17 +60,16 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
     if (!vid) return;
 
     readyRef.current = vid.readyState >= 2;
-
     const onCanPlay = () => { readyRef.current = true; };
     vid.addEventListener("canplay", onCanPlay);
 
     const tick = () => {
       if (readyRef.current && vid.duration > 0) {
-        const target = Math.min(scrollProgress.current ?? 0, 1) * vid.duration;
-        // Only seek when the delta is larger than ~1 frame at 60 fps — avoids
-        // thrashing the decoder when the user isn't scrolling.
-        if (Math.abs(vid.currentTime - target) > 0.016) {
-          vid.currentTime = target;
+        const target = phaseToTime(phase.get(), scrollProgress.current ?? 0);
+        const clamped = Math.max(0, Math.min(target, vid.duration));
+        // Only seek when delta > ~1 frame at 60 fps to avoid decoder thrashing.
+        if (Math.abs(vid.currentTime - clamped) > 0.016) {
+          vid.currentTime = clamped;
         }
       }
       rafRef.current = requestAnimationFrame(tick);
@@ -50,7 +80,7 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
       cancelAnimationFrame(rafRef.current);
       vid.removeEventListener("canplay", onCanPlay);
     };
-  }, [reduce, scrollProgress]);
+  }, [reduce, scrollProgress, phase]);
 
   return (
     <div
@@ -58,14 +88,12 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
       className="fixed inset-0 z-[1] overflow-hidden pointer-events-none"
       style={{
         backgroundColor: "oklch(0.03 0.006 260)",
-        // Promote entire background stack to its own GPU compositor layer.
         willChange: "transform",
         transform: "translateZ(0)",
         contain: "strict",
       }}
     >
       {reduce ? (
-        /* Reduced-motion: static image, no video element at all. */
         <img
           src={sceneSpark}
           alt=""
@@ -73,7 +101,6 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
           style={{ filter: "brightness(0.50) saturate(0.45)" }}
         />
       ) : (
-        /* Full-motion: scroll-scrubbed video, GPU-accelerated. */
         <video
           ref={videoRef}
           muted
@@ -91,8 +118,6 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
           <source src="/videos/cinematic-homepage.mp4" type="video/mp4" />
         </video>
       )}
-
-      {/* ── Overlay stack (applied on top of both video and static image) ── */}
 
       {/* Text readability: darkens sky/highlights without crushing blacks */}
       <div
@@ -112,7 +137,7 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
         }}
       />
 
-      {/* Top / bottom letterbox frame: cinematic framing, section blending */}
+      {/* Top / bottom cinematic letterbox frames */}
       <div
         className="absolute inset-x-0 top-0 h-28 pointer-events-none"
         style={{
