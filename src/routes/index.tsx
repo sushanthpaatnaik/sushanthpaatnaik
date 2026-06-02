@@ -183,7 +183,7 @@ function Index() {
   }, []);
 
   return (
-    <div className="relative bg-background text-foreground noise">
+    <div className="relative bg-transparent text-foreground noise">
       <Loader />
 
       {/*
@@ -244,7 +244,7 @@ function Index() {
        * Without this, CSS group ordering (z-auto < z-positive) would
        * place the content BELOW the fixed z-[1] video layer.
        */}
-      <main id="main" className="relative z-[10]">
+      <main id="main" className="relative z-[10] bg-transparent">
         <ScrollSections />
       </main>
     </div>

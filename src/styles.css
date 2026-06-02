@@ -118,7 +118,7 @@
     border-color: var(--color-border);
   }
   html, body {
-    background-color: var(--color-background);
+    background-color: oklch(0.04 0 0);
     color: var(--color-foreground);
     font-family: var(--font-display);
     font-feature-settings: "ss01", "cv11";
