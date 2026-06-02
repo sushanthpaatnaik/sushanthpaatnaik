@@ -2,8 +2,6 @@ import { useScroll, useSpring } from "framer-motion";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 import RecognitionAmbient from "./RecognitionAmbient";
 import ParticleField from "./ParticleField";
-import EarthGlobe from "./EarthGlobe";
-import sceneFuture from "@/assets/story-07-future.webp";
 
 /**
  * Decorative scene elements that previously lived inside AtmosphereLayer's
@@ -27,7 +25,6 @@ export default function SceneDecorations() {
     >
       <RecognitionAmbient phase={phase} />
       <ParticleField progress={progress} phase={phase} />
-      <EarthGlobe phase={phase} src={sceneFuture} />
     </div>
   );
 }
