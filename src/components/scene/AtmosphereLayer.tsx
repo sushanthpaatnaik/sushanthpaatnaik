@@ -62,21 +62,12 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneIndustrial,
-    // Live cinematic background: SPI industrial-operations footage.
-    // Falls back to sceneIndustrial (static plate) when prefers-reduced-motion
-    // is active, or while the video is buffering (poster attribute).
-    videoSrc: "/videos/spi-industry-video.mp4",
     alt: "SPI Industries · advanced materials industrial operations",
-    // Faint warm tint at the base — preserves the amber practical lights
-    // inside the building without pushing the overall palette warm.
     tint: "linear-gradient(180deg, transparent 55%, oklch(0.48 0.06 55 / 0.06) 100%)",
-    // Three-stop cinematic overlay: strong top/bottom crush, lighter mid so
-    // the industrial operation and text remain readable over live footage.
     overlay: [
       "linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.78) 100%)",
       "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 28%, rgba(0,0,0,0.38) 100%)",
     ].join(", "),
-    // Parallax reduced — live footage should drift less than abstract imagery.
     parallax: 0.80,
     filter: "brightness(0.84) contrast(1.06) saturate(0.82)",
     objectPosition: "center center",
@@ -150,6 +141,7 @@ export default function AtmosphereLayer() {
       scenes={SCENES}
       overlayStops={OVERLAY_STOPS}
       phaseSource={phase}
+      globalVideoSrc="/videos/cinematic-homepage.mp4"
     >
       {({ progress, phase }) => (
         <>

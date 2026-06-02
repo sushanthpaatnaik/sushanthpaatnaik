@@ -13,8 +13,7 @@ export interface BackgroundScene {
   src?: string;
   alt: string;
   /** Public-relative path to an MP4 background video (e.g. "/videos/spi-industry-video.mp4").
-   *  When present the video replaces the static plate for this chapter.
-   *  Automatically falls back to `src` when prefers-reduced-motion is active. */
+   *  Ignored when a globalVideoSrc is active on the parent AnimatedBackground. */
   videoSrc?: string;
   /** Per-chapter chroma wash applied over the plate (mix-blend: soft-light). */
   tint?: string;
@@ -32,6 +31,14 @@ interface AnimatedBackgroundProps {
   scenes: BackgroundScene[];
   overlayStops?: number[];
   phaseSource?: MotionValue<number>;
+  /**
+   * Public-relative path to a single continuous MP4 that plays as the
+   * persistent backdrop for ALL chapters (e.g. "/videos/cinematic-homepage.mp4").
+   * When set, per-scene image/video plates are suppressed (only overlays/tints
+   * render) and the video runs autoplay/muted/loop behind the entire scroll.
+   * Reduced-motion users fall back to the per-scene static images.
+   */
+  globalVideoSrc?: string;
   children?: (ctx: { progress: MotionValue<number>; phase: MotionValue<number> }) => ReactNode;
 }
 
@@ -94,6 +101,43 @@ const DEFAULT_FILTER = "brightness(0.78) contrast(1.05) saturate(0.92)";
 const DEFAULT_OVERLAY =
   "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.65) 0%, oklch(0.03 0.006 260 / 0.38) 50%, oklch(0.03 0.006 260 / 0.72) 100%)";
 
+/**
+ * Persistent full-screen video that plays continuously behind all chapters.
+ * Mounted once — never remounted or paused during scroll.
+ */
+function GlobalVideoLayer({ src, fallbackSrc }: { src: string; fallbackSrc?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    // Resume if autoplay policy paused it (e.g. tab hidden then restored)
+    const onPause = () => vid.play().catch(() => {});
+    vid.addEventListener("pause", onPause);
+    vid.play().catch(() => {});
+    return () => vid.removeEventListener("pause", onPause);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster={fallbackSrc}
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover select-none"
+        style={{ filter: "brightness(0.72) contrast(1.04) saturate(0.82)" }}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+    </div>
+  );
+}
+
 function SceneLayer({
   scene,
   phase,
@@ -102,6 +146,7 @@ function SceneLayer({
   isFirst,
   cursorX,
   cursorY,
+  suppressPlate,
 }: {
   scene: BackgroundScene;
   phase: MotionValue<number>;
@@ -110,6 +155,8 @@ function SceneLayer({
   isFirst: boolean;
   cursorX: MotionValue<number>;
   cursorY: MotionValue<number>;
+  /** When true, skip image/video plates — only overlays/tints render (used with global video). */
+  suppressPlate: boolean;
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale   = useSceneScale(phase, index);
@@ -127,14 +174,10 @@ function SceneLayer({
     ([sy, my]: number[]) => sy + my,
   );
 
-  // Use video plate when videoSrc is set and user hasn't requested reduced motion.
-  // The video element stays permanently mounted (opacity drives visibility) so it
-  // never restarts on scroll — the browser keeps buffering even at opacity=0.
-  const showVideo = Boolean(scene.videoSrc) && !reduce;
+  // Per-scene video plate — only active when no global video is running.
+  const showVideo = !suppressPlate && Boolean(scene.videoSrc) && !reduce;
 
-  // Play-once + replay-on-reenter: when opacity rises above threshold the
-  // video resets to frame 0 and plays; when it falls below threshold the
-  // video pauses so it holds the last frame it reached.
+  // Play-once + replay-on-reenter for per-scene video.
   const videoRef = useRef<HTMLVideoElement>(null);
   const wasActiveRef = useRef(false);
   useEffect(() => {
@@ -146,11 +189,9 @@ function SceneLayer({
     const unsubscribe = opacity.on("change", (v) => {
       const active = v > THRESHOLD;
       if (active && !wasActiveRef.current) {
-        // Section entering view — restart from beginning
         vid.currentTime = 0;
-        vid.play().catch(() => {/* autoplay blocked — silently ignored */});
+        vid.play().catch(() => {});
       } else if (!active && wasActiveRef.current) {
-        // Section leaving view — freeze on current frame
         vid.pause();
       }
       wasActiveRef.current = active;
@@ -161,8 +202,8 @@ function SceneLayer({
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
-      {showVideo ? (
-        /* Video plate — transform wrapper keeps overflow clipped during scale */
+      {suppressPlate ? null : showVideo ? (
+        /* Per-scene video plate */
         <motion.div
           className="absolute inset-0 overflow-hidden"
           style={{ scale, x: mouseX, y: combinedY }}
@@ -185,7 +226,7 @@ function SceneLayer({
           </video>
         </motion.div>
       ) : scene.src ? (
-        /* Static image plate — unchanged original behaviour */
+        /* Static image plate — fallback for reduced-motion or non-global-video builds */
         <motion.img
           src={scene.src}
           alt={scene.alt}
@@ -226,6 +267,7 @@ export default function AnimatedBackground({
   scenes,
   overlayStops,
   phaseSource,
+  globalVideoSrc,
   children,
 }: AnimatedBackgroundProps) {
   const stages = scenes.length;
@@ -239,6 +281,7 @@ export default function AnimatedBackground({
   });
 
   const { x: cursorX, y: cursorY } = useCursorParallax();
+  const reduce = useReducedMotion();
 
   const rawPhase = useTransform(progress, [0, 1], [0, stages - 1]);
   const smoothedExternal = useSpring(phaseSource ?? rawPhase, {
@@ -255,11 +298,22 @@ export default function AnimatedBackground({
     overlayStops ?? Array(stages).fill(0.3),
   );
 
+  // Plates are suppressed when a global video is active and motion is allowed.
+  const suppressPlate = Boolean(globalVideoSrc) && !reduce;
+
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden bg-background">
+      {/* Global cinematic video — base layer, always mounted, never remounted */}
+      {suppressPlate && (
+        <GlobalVideoLayer
+          src={globalVideoSrc!}
+          fallbackSrc={scenes[0]?.src}
+        />
+      )}
+
       {scenes.map((scene, index) => (
         <SceneLayer
-          key={scene.src}
+          key={scene.src ?? index}
           scene={scene}
           phase={phase}
           index={index}
@@ -267,6 +321,7 @@ export default function AnimatedBackground({
           isFirst={index === 0}
           cursorX={cursorX}
           cursorY={cursorY}
+          suppressPlate={suppressPlate}
         />
       ))}
 
