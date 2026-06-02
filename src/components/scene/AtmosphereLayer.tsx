@@ -62,23 +62,22 @@ const SCENES: BackgroundScene[] = [
   },
   {
     src: sceneIndustrial,
-    alt: "SPI Industries headquarters · advanced materials facility at night",
+    // Live cinematic background: SPI industrial-operations footage.
+    // Falls back to sceneIndustrial (static plate) when prefers-reduced-motion
+    // is active, or while the video is buffering (poster attribute).
+    videoSrc: "/videos/spi-industry-video.mp4",
+    alt: "SPI Industries · advanced materials industrial operations",
     // Faint warm tint at the base — preserves the amber practical lights
     // inside the building without pushing the overall palette warm.
     tint: "linear-gradient(180deg, transparent 55%, oklch(0.48 0.06 55 / 0.06) 100%)",
-    // Three-stop cinematic overlay per spec: strong top crush, lighter mid
-    // (lets the building facade and logo read), strong floor anchor.
-    // Stacked with an edge vignette to frame the architecture.
+    // Three-stop cinematic overlay: strong top/bottom crush, lighter mid so
+    // the industrial operation and text remain readable over live footage.
     overlay: [
       "linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.78) 100%)",
       "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 28%, rgba(0,0,0,0.38) 100%)",
     ].join(", "),
-    // Parallax reduced — a real building should drift less than abstract imagery.
+    // Parallax reduced — live footage should drift less than abstract imagery.
     parallax: 0.80,
-    // Saturate(0.82) = ~18% desaturation: mutes the image slightly so typography
-    // dominates without draining the warm amber interior glow entirely.
-    // Brightness pulled down to cinematic level; contrast bump sharpens the
-    // building geometry without clipping the lit windows.
     filter: "brightness(0.84) contrast(1.06) saturate(0.82)",
     objectPosition: "center center",
   },

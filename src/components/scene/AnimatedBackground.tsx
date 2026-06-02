@@ -1,7 +1,8 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -11,6 +12,10 @@ import {
 export interface BackgroundScene {
   src?: string;
   alt: string;
+  /** Public-relative path to an MP4 background video (e.g. "/videos/spi-industry-video.mp4").
+   *  When present the video replaces the static plate for this chapter.
+   *  Automatically falls back to `src` when prefers-reduced-motion is active. */
+  videoSrc?: string;
   /** Per-chapter chroma wash applied over the plate (mix-blend: soft-light). */
   tint?: string;
   /** Per-chapter cinematic overlay gradient — sets the chapter's emotional tone. */
@@ -108,6 +113,7 @@ function SceneLayer({
 }) {
   const opacity = useSceneOpacity(phase, index);
   const scale   = useSceneScale(phase, index);
+  const reduce  = useReducedMotion();
   const parallaxStrength = scene.parallax ?? 1;
 
   const scrollY = useTransform(
@@ -121,9 +127,54 @@ function SceneLayer({
     ([sy, my]: number[]) => sy + my,
   );
 
+  // Use video plate when videoSrc is set and user hasn't requested reduced motion.
+  // The video element stays permanently mounted (opacity drives visibility) so it
+  // never restarts on scroll — the browser keeps buffering even at opacity=0.
+  const showVideo = Boolean(scene.videoSrc) && !reduce;
+
+  // Imperative play guard: if the browser paused the video (policy change,
+  // tab hidden then restored), resume it when the ref is available.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (!showVideo) return;
+    const vid = videoRef.current;
+    if (!vid) return;
+    const tryPlay = () => {
+      if (vid.paused) vid.play().catch(() => {/* autoplay blocked — silently ignored */});
+    };
+    vid.addEventListener("pause", tryPlay);
+    tryPlay();
+    return () => vid.removeEventListener("pause", tryPlay);
+  }, [showVideo]);
+
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
-      {scene.src && (
+      {showVideo ? (
+        /* Video plate — transform wrapper keeps overflow clipped during scale */
+        <motion.div
+          className="absolute inset-0 overflow-hidden"
+          style={{ scale, x: mouseX, y: combinedY }}
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={scene.src}
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover select-none"
+            style={{
+              filter: scene.filter ?? DEFAULT_FILTER,
+              objectPosition: scene.objectPosition ?? "center",
+            }}
+          >
+            <source src={scene.videoSrc} type="video/mp4" />
+          </video>
+        </motion.div>
+      ) : scene.src ? (
+        /* Static image plate — unchanged original behaviour */
         <motion.img
           src={scene.src}
           alt={scene.alt}
@@ -142,7 +193,8 @@ function SceneLayer({
             objectPosition: scene.objectPosition ?? "center",
           }}
         />
-      )}
+      ) : null}
+
       {scene.tint && (
         <div
           aria-hidden
