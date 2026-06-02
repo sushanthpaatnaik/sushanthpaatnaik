@@ -186,54 +186,65 @@ function Index() {
     <div className="relative bg-background text-foreground noise">
       <Loader />
 
-      {/* Persistent cinematic background — one video, scroll drives currentTime. */}
+      {/*
+       * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
+       *
+       *  z-[1]  CinematicLayer      — one video, scroll → currentTime
+       *  z-[2]  SceneDecorations    — particles, globe, recognition ambient
+       *  z-[2]  ChapterAtmosphere   — CSS/gradient per-chapter identity
+       *  z-[3]  AmbientAtmosphere   — slow-breathing haze blobs
+       *  z-[4]  GrapheneVolumetric  — WebGL graphene lattice (non-low-power)
+       *
+       * Content (<main> at z-[10]) scrolls above every background layer.
+       * Nav / HUD / MobileCTABar use their own high z-indexes (50+).
+       */}
+
       {scenesReady && (
         <Suspense fallback={null}>
           <CinematicLayer scrollProgress={scrollProgress} />
         </Suspense>
       )}
 
-      {/* Scene decorations (particles, globe, recognition ambient) — sit above
-          the cinematic layer overlays but below chapter atmosphere. */}
       {scenesReady && entered && (
         <Suspense fallback={null}>
           <SceneDecorations />
         </Suspense>
       )}
 
-      {/* Volumetric graphene lattice */}
       {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />
         </Suspense>
       )}
 
-      {/* Sitewide ambient atmosphere */}
       {scenesReady && entered && (
         <Suspense fallback={null}>
           <AmbientAtmosphere />
         </Suspense>
       )}
 
-      {/* Per-chapter atmospheric identity — image-free, scroll-synced */}
       {scenesReady && entered && (
         <Suspense fallback={null}>
           <ChapterAtmosphere />
         </Suspense>
       )}
 
-      {/* Cursor aura — desktop, non-low-power only */}
       {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <CursorAura />
         </Suspense>
       )}
 
-
       <Nav />
       <HUD scrollProgress={scrollProgress} />
       <MobileCTABar />
-      <main id="main">
+      {/*
+       * z-[10]: explicit stacking context ensures ALL section content
+       * renders above every fixed background layer (z-[1]–z-[4]).
+       * Without this, CSS group ordering (z-auto < z-positive) would
+       * place the content BELOW the fixed z-[1] video layer.
+       */}
+      <main id="main" className="relative z-[10]">
         <ScrollSections />
       </main>
     </div>
