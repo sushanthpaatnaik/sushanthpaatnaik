@@ -659,10 +659,10 @@ export default function ChapterAtmosphere() {
     >
       <ContinuityFloor />
       <ChapterLayer phase={phase} idx={0} span={1.2}>
-        <OriginAtmosphere />
+        <MaterialAtmosphere />
       </ChapterLayer>
       <ChapterLayer phase={phase} idx={1} span={1.2}>
-        <MaterialAtmosphere />
+        <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer phase={phase} idx={2} span={1.2}>
         <FounderAtmosphere />
