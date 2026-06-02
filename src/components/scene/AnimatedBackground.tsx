@@ -132,20 +132,32 @@ function SceneLayer({
   // never restarts on scroll — the browser keeps buffering even at opacity=0.
   const showVideo = Boolean(scene.videoSrc) && !reduce;
 
-  // Imperative play guard: if the browser paused the video (policy change,
-  // tab hidden then restored), resume it when the ref is available.
+  // Play-once + replay-on-reenter: when opacity rises above threshold the
+  // video resets to frame 0 and plays; when it falls below threshold the
+  // video pauses so it holds the last frame it reached.
   const videoRef = useRef<HTMLVideoElement>(null);
+  const wasActiveRef = useRef(false);
   useEffect(() => {
     if (!showVideo) return;
     const vid = videoRef.current;
     if (!vid) return;
-    const tryPlay = () => {
-      if (vid.paused) vid.play().catch(() => {/* autoplay blocked — silently ignored */});
-    };
-    vid.addEventListener("pause", tryPlay);
-    tryPlay();
-    return () => vid.removeEventListener("pause", tryPlay);
-  }, [showVideo]);
+
+    const THRESHOLD = 0.05;
+    const unsubscribe = opacity.on("change", (v) => {
+      const active = v > THRESHOLD;
+      if (active && !wasActiveRef.current) {
+        // Section entering view — restart from beginning
+        vid.currentTime = 0;
+        vid.play().catch(() => {/* autoplay blocked — silently ignored */});
+      } else if (!active && wasActiveRef.current) {
+        // Section leaving view — freeze on current frame
+        vid.pause();
+      }
+      wasActiveRef.current = active;
+    });
+
+    return unsubscribe;
+  }, [showVideo, opacity]);
 
   return (
     <motion.div className="absolute inset-0" style={{ opacity }}>
@@ -159,7 +171,6 @@ function SceneLayer({
             ref={videoRef}
             autoPlay
             muted
-            loop
             playsInline
             preload="auto"
             poster={scene.src}
