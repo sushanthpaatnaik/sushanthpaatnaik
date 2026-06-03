@@ -307,13 +307,13 @@ function FutureContent() {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Bottom fade */}
+      {/* Bottom fade — subtle depth only, no solid fill */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[30%]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.18) 55%, oklch(0.014 0.004 250 / 0.34) 100%)",
+            "linear-gradient(180deg, transparent 0%, oklch(0.018 0.005 250 / 0.10) 60%, oklch(0.014 0.004 250 / 0.18) 100%)",
         }}
       />
 
@@ -360,13 +360,17 @@ function FutureContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Opacity / Y / blur helpers
+   Opacity / Y helpers
    Shared crossfade window at each boundary keeps opacity-sum = 1.0.
-   FADE = 0.12  →  ~12 % of each chapter's scroll band used for
-   the shared crossfade; the remaining ~76 % is the hold phase.
+   FADE = 0.22 → ~22 % of each chapter's scroll band is the shared
+   crossfade window (~28 vh per boundary at TOTAL_VH=980).  The
+   remaining ~56 % is the active hold phase (~70 vh).
+   No filter applied to the outer wrapper — CSS filter isolation on a
+   viewport-sized element creates GPU backing-store artefacts that
+   appear as opaque dark rectangles.  Text blur is not used here.
    ────────────────────────────────────────────────────────────────── */
 const W    = 1 / N_CHAPTERS;
-const FADE = 0.12;
+const FADE = 0.22;
 const c01  = (v: number) => Math.max(0, Math.min(1, v));
 
 function chapOp(sp: number, n: number): number {
@@ -413,28 +417,6 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
   return yOut;
 }
 
-// Blur dissolves in from 12 px (text enters from above) and exits to 5 px.
-function chapBlur(sp: number, n: number): number {
-  const bIn  = n / N_CHAPTERS;
-  const bOut = (n + 1) / N_CHAPTERS;
-  const fiS  = bIn  - FADE * W;
-  const foS  = bOut - FADE * W;
-  if (n === 0) {
-    if (sp <= foS)  return 0;
-    if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * 5;
-    return 5;
-  }
-  if (n === N_CHAPTERS - 1) {
-    if (sp <= fiS) return 12;
-    if (sp <= bIn) return 12 * (1 - c01((sp - fiS) / (FADE * W)));
-    return 0;
-  }
-  if (sp <= fiS)  return 12;
-  if (sp <= bIn)  return 12 * (1 - c01((sp - fiS) / (FADE * W)));
-  if (sp <= foS)  return 0;
-  if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * 5;
-  return 5;
-}
 
 /* ──────────────────────────────────────────────────────────────────
    Main export — single sticky cinematic stage
@@ -447,8 +429,8 @@ export default function ScrollSections() {
     offset: ["start start", "end end"],
   });
 
-  const yIn  = reduce ? 0 : 28;
-  const yOut = reduce ? 0 : -18;
+  const yIn  = reduce ? 0 : 32;
+  const yOut = reduce ? 0 : -20;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));
@@ -465,14 +447,6 @@ export default function ScrollSections() {
   const y4 = useTransform(scrollYProgress, (sp) => chapY(sp, 4, yIn, yOut));
   const y5 = useTransform(scrollYProgress, (sp) => chapY(sp, 5, yIn, yOut));
   const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
-
-  const f0 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 0)}px)`);
-  const f1 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 1)}px)`);
-  const f2 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 2)}px)`);
-  const f3 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 3)}px)`);
-  const f4 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 4)}px)`);
-  const f5 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 5)}px)`);
-  const f6 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 6)}px)`);
 
   return (
     <div ref={containerRef} className="relative bg-transparent" style={{ height: `${TOTAL_VH}vh` }}>
@@ -498,7 +472,7 @@ export default function ScrollSections() {
         {/* Chapter 0 — Origin */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op0, y: y0, filter: f0, willChange: "opacity, transform" }}
+          style={{ opacity: op0, y: y0, willChange: "opacity, transform" }}
         >
           <OriginContent />
         </motion.div>
@@ -506,7 +480,7 @@ export default function ScrollSections() {
         {/* Chapter 1 — Founder */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op1, y: y1, filter: f1, willChange: "opacity, transform" }}
+          style={{ opacity: op1, y: y1, willChange: "opacity, transform" }}
         >
           <FounderContent />
         </motion.div>
@@ -514,7 +488,7 @@ export default function ScrollSections() {
         {/* Chapter 2 — Material Intelligence */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op2, y: y2, filter: f2, willChange: "opacity, transform" }}
+          style={{ opacity: op2, y: y2, willChange: "opacity, transform" }}
         >
           <MaterialContent />
         </motion.div>
@@ -522,7 +496,7 @@ export default function ScrollSections() {
         {/* Chapter 3 — Industrial Translation */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op3, y: y3, filter: f3, willChange: "opacity, transform" }}
+          style={{ opacity: op3, y: y3, willChange: "opacity, transform" }}
         >
           <IndustrialContent />
         </motion.div>
@@ -530,7 +504,7 @@ export default function ScrollSections() {
         {/* Chapter 4 — Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op4, y: y4, filter: f4, willChange: "opacity, transform" }}
+          style={{ opacity: op4, y: y4, willChange: "opacity, transform" }}
         >
           <RecognitionContent />
         </motion.div>
@@ -538,7 +512,7 @@ export default function ScrollSections() {
         {/* Chapter 5 — Ecosystem */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op5, y: y5, filter: f5, willChange: "opacity, transform" }}
+          style={{ opacity: op5, y: y5, willChange: "opacity, transform" }}
         >
           <EcosystemContent />
         </motion.div>
@@ -546,7 +520,7 @@ export default function ScrollSections() {
         {/* Chapter 6 — Future Systems */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ opacity: op6, y: y6, filter: f6, willChange: "opacity, transform" }}
+          style={{ opacity: op6, y: y6, willChange: "opacity, transform" }}
         >
           <FutureContent />
         </motion.div>

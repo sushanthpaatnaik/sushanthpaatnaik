@@ -428,12 +428,12 @@ function IndustrialAtmosphere() {
 function RecognitionAtmosphere() {
   return (
     <>
-      {/* Deep institutional vignette — amplifies the void around the trophy zone */}
+      {/* Subtle dark surround — softens edges without creating a solid rectangle */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 52% 40% at 50% 58%, transparent 0%, oklch(0.008 0.002 252 / 0.58) 92%)",
+            "radial-gradient(ellipse 62% 52% at 50% 56%, transparent 0%, oklch(0.008 0.002 252 / 0.30) 100%)",
         }}
       />
       {/* Hairline column markers — near-invisible guide lines aligning to spotlight beams */}
@@ -558,7 +558,7 @@ function FutureAtmosphere() {
         className="absolute inset-x-0 top-0 h-[62%]"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.04 0.010 260 / 0.68) 0%, transparent 100%)",
+            "linear-gradient(180deg, oklch(0.04 0.010 260 / 0.42) 0%, transparent 100%)",
         }}
       />
 
@@ -658,25 +658,25 @@ export default function ChapterAtmosphere() {
       style={{ contain: "strict" }}
     >
       <ContinuityFloor />
-      <ChapterLayer phase={phase} idx={0} span={1.2}>
+      <ChapterLayer phase={phase} idx={0} span={1.6}>
         <OriginAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={1} span={1.2}>
+      <ChapterLayer phase={phase} idx={1} span={1.6}>
         <MaterialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={2} span={1.2}>
+      <ChapterLayer phase={phase} idx={2} span={1.6}>
         <FounderAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={3} span={1.2}>
+      <ChapterLayer phase={phase} idx={3} span={1.6}>
         <IndustrialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={4} span={1.2}>
+      <ChapterLayer phase={phase} idx={4} span={1.6}>
         <RecognitionAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={5} span={1.2}>
+      <ChapterLayer phase={phase} idx={5} span={1.6}>
         <EcosystemAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={6} span={1.4}>
+      <ChapterLayer phase={phase} idx={6} span={1.8}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>
