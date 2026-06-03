@@ -112,7 +112,7 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
           style={{
             willChange: "transform",
             transform: "translateZ(0)",
-            filter: "brightness(0.72) contrast(1.04) saturate(0.82)",
+            filter: "brightness(0.65) contrast(1.06) saturate(0.78)",
           }}
         >
           <source src="/videos/cinematic-homepage.mp4" type="video/mp4" />

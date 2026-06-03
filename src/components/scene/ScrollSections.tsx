@@ -13,18 +13,23 @@ import founderPresence from "@/assets/founder-editorial.webp";
 /* ──────────────────────────────────────────────────────────────────
    Homepage = Grafillium-style single sticky cinematic stage.
    Seven chapters. One sticky viewport. Scroll drives everything.
+
+   Dwell-time is 30 % longer than the baseline 100 vh/chapter:
+   each chapter now occupies ~126 vh of scroll travel.
    ────────────────────────────────────────────────────────────────── */
 
-const TOTAL_VH = 800; // 7 × 100vh scroll + 100vh sticky stage
+const N_CHAPTERS = 7;
+const TOTAL_VH   = 980;                              // 880 vh scroll ÷ 7 ≈ 125.7 vh per chapter
+const CHAPTER_VH = (TOTAL_VH - 100) / N_CHAPTERS;   // scroll height per chapter in vh
 
 const gateways = [
-  { to: "/about", n: "I", label: "About", line: "Founder, philosophy, journey." },
-  { to: "/innovations", n: "II", label: "Innovations", line: "Graphene, materials, systems." },
-  { to: "/ventures", n: "III", label: "Ventures", line: "Five operating companies. One stack." },
-  { to: "/recognitions", n: "IV", label: "Recognitions", line: "Six Presidential awards. TED. MIT TR." },
-  { to: "/essays", n: "V", label: "Essays", line: "Notes from the workshop." },
-  { to: "/engage", n: "VI", label: "Engage", line: "Partnerships, advisory, and origin archive." },
-  { to: "/news", n: "VII", label: "News", line: "Editorial archive." },
+  { to: "/about",        n: "I",   label: "About",        line: "Founder, philosophy, journey." },
+  { to: "/innovations",  n: "II",  label: "Innovations",  line: "Graphene, materials, systems." },
+  { to: "/ventures",     n: "III", label: "Ventures",     line: "Five operating companies. One stack." },
+  { to: "/recognitions", n: "IV",  label: "Recognitions", line: "Six Presidential awards. TED. MIT TR." },
+  { to: "/essays",       n: "V",   label: "Essays",       line: "Notes from the workshop." },
+  { to: "/engage",       n: "VI",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
+  { to: "/news",         n: "VII", label: "News",         line: "Editorial archive." },
 ] as const;
 
 /* ──────────────────────────────────────────────────────────────────
@@ -33,7 +38,10 @@ const gateways = [
 function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
   const scaleX = useSpring(progress, { stiffness: 60, damping: 32, mass: 0.5 });
   return (
-    <div className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]" style={{ willChange: "transform" }}>
+    <div
+      className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]"
+      style={{ willChange: "transform" }}
+    >
       <motion.div
         className="h-full origin-left"
         style={{
@@ -352,6 +360,83 @@ function FutureContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
+   Opacity / Y / blur helpers
+   Shared crossfade window at each boundary keeps opacity-sum = 1.0.
+   FADE = 0.12  →  ~12 % of each chapter's scroll band used for
+   the shared crossfade; the remaining ~76 % is the hold phase.
+   ────────────────────────────────────────────────────────────────── */
+const W    = 1 / N_CHAPTERS;
+const FADE = 0.12;
+const c01  = (v: number) => Math.max(0, Math.min(1, v));
+
+function chapOp(sp: number, n: number): number {
+  const bIn  = n / N_CHAPTERS;
+  const bOut = (n + 1) / N_CHAPTERS;
+  const fiS  = bIn  - FADE * W;
+  const foS  = bOut - FADE * W;
+  if (n === 0) {
+    if (sp <= foS)  return 1;
+    if (sp <= bOut) return c01(1 - (sp - foS) / (FADE * W));
+    return 0;
+  }
+  if (n === N_CHAPTERS - 1) {
+    if (sp <= fiS) return 0;
+    if (sp <= bIn) return c01((sp - fiS) / (FADE * W));
+    return 1;
+  }
+  if (sp <= fiS)  return 0;
+  if (sp <= bIn)  return c01((sp - fiS) / (FADE * W));
+  if (sp <= foS)  return 1;
+  if (sp <= bOut) return c01(1 - (sp - foS) / (FADE * W));
+  return 0;
+}
+
+function chapY(sp: number, n: number, yIn: number, yOut: number): number {
+  const bIn  = n / N_CHAPTERS;
+  const bOut = (n + 1) / N_CHAPTERS;
+  const fiS  = bIn  - FADE * W;
+  const foS  = bOut - FADE * W;
+  if (n === 0) {
+    if (sp <= foS)  return 0;
+    if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * yOut;
+    return yOut;
+  }
+  if (n === N_CHAPTERS - 1) {
+    if (sp <= fiS) return yIn;
+    if (sp <= bIn) return yIn * (1 - c01((sp - fiS) / (FADE * W)));
+    return 0;
+  }
+  if (sp <= fiS)  return yIn;
+  if (sp <= bIn)  return yIn * (1 - c01((sp - fiS) / (FADE * W)));
+  if (sp <= foS)  return 0;
+  if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * yOut;
+  return yOut;
+}
+
+// Blur dissolves in from 12 px (text enters from above) and exits to 5 px.
+function chapBlur(sp: number, n: number): number {
+  const bIn  = n / N_CHAPTERS;
+  const bOut = (n + 1) / N_CHAPTERS;
+  const fiS  = bIn  - FADE * W;
+  const foS  = bOut - FADE * W;
+  if (n === 0) {
+    if (sp <= foS)  return 0;
+    if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * 5;
+    return 5;
+  }
+  if (n === N_CHAPTERS - 1) {
+    if (sp <= fiS) return 12;
+    if (sp <= bIn) return 12 * (1 - c01((sp - fiS) / (FADE * W)));
+    return 0;
+  }
+  if (sp <= fiS)  return 12;
+  if (sp <= bIn)  return 12 * (1 - c01((sp - fiS) / (FADE * W)));
+  if (sp <= foS)  return 0;
+  if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * 5;
+  return 5;
+}
+
+/* ──────────────────────────────────────────────────────────────────
    Main export — single sticky cinematic stage
    ────────────────────────────────────────────────────────────────── */
 export default function ScrollSections() {
@@ -361,68 +446,6 @@ export default function ScrollSections() {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-
-  // Function-form useTransform: avoids keyframe interpolation bugs in Framer Motion v12.
-  // Each chapter's crossfade window is SHARED with its neighbour — both chapters
-  // use the window [(N+1)/7 - FADE*W, (N+1)/7] at boundary N→N+1, so their
-  // opacities sum to exactly 1.0 throughout — no black void.
-  //
-  // W = 1/7 (each chapter's share of scroll progress)
-  // FADE = fraction of W used for each shared crossfade window
-  const W = 1 / 7;
-  const FADE = 0.13;
-  const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-
-  // Chapters fade in over [boundary_in - FADE*W, boundary_in] (shared with prev chapter's exit).
-  // Chapters fade out over [boundary_out - FADE*W, boundary_out] (shared with next chapter's entry).
-  const chapOp = (sp: number, n: number): number => {
-    const boundaryIn  = n / 7;           // chapter N becomes primary at this sp
-    const boundaryOut = (n + 1) / 7;     // chapter N stops being primary at this sp
-    const fadeInStart  = boundaryIn  - FADE * W;  // entry crossfade begins
-    const fadeOutStart = boundaryOut - FADE * W;  // exit crossfade begins
-
-    if (n === 0) {
-      // Origin: visible from start, fades out at end of its scroll range
-      if (sp <= fadeOutStart)  return 1;
-      if (sp <= boundaryOut)   return clamp01(1 - (sp - fadeOutStart) / (FADE * W));
-      return 0;
-    }
-    if (n === 6) {
-      // Future: fades in, then stays visible to end of page
-      if (sp <= fadeInStart)   return 0;
-      if (sp <= boundaryIn)    return clamp01((sp - fadeInStart) / (FADE * W));
-      return 1;
-    }
-    // Middle chapters: entry crossfade → hold → exit crossfade
-    if (sp <= fadeInStart)  return 0;
-    if (sp <= boundaryIn)   return clamp01((sp - fadeInStart)  / (FADE * W));
-    if (sp <= fadeOutStart) return 1;
-    if (sp <= boundaryOut)  return clamp01(1 - (sp - fadeOutStart) / (FADE * W));
-    return 0;
-  };
-
-  const chapY = (sp: number, n: number, yIn: number, yOut: number): number => {
-    const boundaryIn  = n / 7;
-    const boundaryOut = (n + 1) / 7;
-    const fadeInStart  = boundaryIn  - FADE * W;
-    const fadeOutStart = boundaryOut - FADE * W;
-
-    if (n === 0) {
-      if (sp <= fadeOutStart)  return 0;
-      if (sp <= boundaryOut)   return clamp01((sp - fadeOutStart) / (FADE * W)) * yOut;
-      return yOut;
-    }
-    if (n === 6) {
-      if (sp <= fadeInStart)   return yIn;
-      if (sp <= boundaryIn)    return yIn * (1 - clamp01((sp - fadeInStart) / (FADE * W)));
-      return 0;
-    }
-    if (sp <= fadeInStart)  return yIn;
-    if (sp <= boundaryIn)   return yIn * (1 - clamp01((sp - fadeInStart) / (FADE * W)));
-    if (sp <= fadeOutStart) return 0;
-    if (sp <= boundaryOut)  return clamp01((sp - fadeOutStart) / (FADE * W)) * yOut;
-    return yOut;
-  };
 
   const yIn  = reduce ? 0 : 28;
   const yOut = reduce ? 0 : -18;
@@ -443,15 +466,28 @@ export default function ScrollSections() {
   const y5 = useTransform(scrollYProgress, (sp) => chapY(sp, 5, yIn, yOut));
   const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
 
+  const f0 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 0)}px)`);
+  const f1 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 1)}px)`);
+  const f2 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 2)}px)`);
+  const f3 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 3)}px)`);
+  const f4 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 4)}px)`);
+  const f5 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 5)}px)`);
+  const f6 = useTransform(scrollYProgress, (sp) => reduce ? "blur(0px)" : `blur(${chapBlur(sp, 6)}px)`);
+
   return (
     <div ref={containerRef} className="relative bg-transparent" style={{ height: `${TOTAL_VH}vh` }}>
-      {/* Chapter anchors — invisible, at (N+0.5)×100vh for useChapterPhase tracking */}
+      {/* Chapter anchors — at the centre of each chapter's scroll band for useChapterPhase */}
       {(["spark", "founder", "carbon-intelligence", "industrial", "recognition", "ecosystem", "future"] as const).map((id, i) => (
         <div
           key={id}
           id={id}
           aria-hidden
-          style={{ position: "absolute", top: `${(i + 0.5) * 100}vh`, height: 0, width: "100%" }}
+          style={{
+            position: "absolute",
+            top: `${(i + 0.5) * CHAPTER_VH}vh`,
+            height: 0,
+            width: "100%",
+          }}
         />
       ))}
 
@@ -462,7 +498,7 @@ export default function ScrollSections() {
         {/* Chapter 0 — Origin */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op0, y: y0, willChange: "opacity, transform" }}
+          style={{ opacity: op0, y: y0, filter: f0, willChange: "opacity, transform" }}
         >
           <OriginContent />
         </motion.div>
@@ -470,7 +506,7 @@ export default function ScrollSections() {
         {/* Chapter 1 — Founder */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op1, y: y1, willChange: "opacity, transform" }}
+          style={{ opacity: op1, y: y1, filter: f1, willChange: "opacity, transform" }}
         >
           <FounderContent />
         </motion.div>
@@ -478,7 +514,7 @@ export default function ScrollSections() {
         {/* Chapter 2 — Material Intelligence */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op2, y: y2, willChange: "opacity, transform" }}
+          style={{ opacity: op2, y: y2, filter: f2, willChange: "opacity, transform" }}
         >
           <MaterialContent />
         </motion.div>
@@ -486,7 +522,7 @@ export default function ScrollSections() {
         {/* Chapter 3 — Industrial Translation */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op3, y: y3, willChange: "opacity, transform" }}
+          style={{ opacity: op3, y: y3, filter: f3, willChange: "opacity, transform" }}
         >
           <IndustrialContent />
         </motion.div>
@@ -494,7 +530,7 @@ export default function ScrollSections() {
         {/* Chapter 4 — Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op4, y: y4, willChange: "opacity, transform" }}
+          style={{ opacity: op4, y: y4, filter: f4, willChange: "opacity, transform" }}
         >
           <RecognitionContent />
         </motion.div>
@@ -502,7 +538,7 @@ export default function ScrollSections() {
         {/* Chapter 5 — Ecosystem */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op5, y: y5, willChange: "opacity, transform" }}
+          style={{ opacity: op5, y: y5, filter: f5, willChange: "opacity, transform" }}
         >
           <EcosystemContent />
         </motion.div>
@@ -510,7 +546,7 @@ export default function ScrollSections() {
         {/* Chapter 6 — Future Systems */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ opacity: op6, y: y6, willChange: "opacity, transform" }}
+          style={{ opacity: op6, y: y6, filter: f6, willChange: "opacity, transform" }}
         >
           <FutureContent />
         </motion.div>
