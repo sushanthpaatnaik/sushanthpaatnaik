@@ -8,6 +8,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import founderPresence from "@/assets/founder-editorial.webp";
+import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = single sticky cinematic stage.
@@ -18,9 +19,7 @@ import founderPresence from "@/assets/founder-editorial.webp";
    Future Systems holds at full opacity to close the documentary.
    ────────────────────────────────────────────────────────────────── */
 
-const N_CHAPTERS = 7;
-const TOTAL_VH   = 1620;                             // 1520 vh scroll ÷ 7 ≈ 217 vh per chapter
-const CHAPTER_VH = (TOTAL_VH - 100) / N_CHAPTERS;   // scroll height per chapter in vh
+const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
 
 const gateways = [
   { to: "/about",        n: "I",   label: "About",        line: "Founder, philosophy, journey." },
@@ -363,71 +362,43 @@ function FutureContent() {
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
-   OV = 0.18  → each fade window is 18 % of its chapter band ≈ 39 vh.
-                 Chapters share the SAME 39 vh window: one dissolves
-                 out while the next dissolves in — a clean crossfade.
-
-   ENTER_LAG = 0 → content and background are perfectly synchronised.
-                 No delay between environment and text.
-
-   Active zone per chapter ≈ 178 vh of full-opacity hold.
-
+   OV = 0.18 → each fade window is 18 % of its chapter band width.
+   Chapter bands are non-uniform (Industrial gets ~46 % more space).
+   Background leads content by 2 % of band width; holds 2 % longer.
    eoo = easeOutCubic ≈ cubic-bezier(0.22, 1, 0.36, 1).
-   Fast initial rise (87 % at t=0.5), smooth plateau.
-   Applies symmetrically: quick in, quick out.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const W          = 1 / N_CHAPTERS;
-const OV         = 0.18;   // dissolve fraction — 18 % of each chapter band
-const ENTER_LAG  = 0;      // content and background transition together
-const c01        = (v: number) => Math.max(0, Math.min(1, v));
-
-// easeOutCubic — approximates cubic-bezier(0.22, 1, 0.36, 1).
-// At t=0.3 → 66 % opacity; t=0.5 → 87 %. Fast, smooth, no hard cut.
+const OV  = 0.18;
+const c01 = (v: number) => Math.max(0, Math.min(1, v));
 const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 3);
 
 function chapOp(sp: number, n: number): number {
-  const bIn    = n / N_CHAPTERS;
-  const bOut   = (n + 1) / N_CHAPTERS;
-  const fadeW  = OV * W;                     // width of each dissolve window
-  const lagW   = ENTER_LAG * fadeW;          // background leads content by this
-
-  // Fade-in: n+1 starts appearing while n is still exiting
-  const fiStart = bIn - fadeW + lagW;        // content opacity begins rising
-  const fiEnd   = bIn + lagW;               // content fully visible
-
-  // Fade-out
-  const foStart = bOut - fadeW;             // content begins falling
-  // foEnd = bOut
+  const [bIn, bOut] = CHAPTER_BANDS[n];
+  const fadeW  = OV * (bOut - bIn);
+  const fiStart = bIn - fadeW;
+  const foStart = bOut - fadeW;
 
   if (n === 0) {
-    // Origin: opens at full opacity; slow dissolve out
     if (sp <= foStart) return 1;
     if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
     return 0;
   }
   if (n === N_CHAPTERS - 1) {
-    // Future Systems: dissolves in, then holds as final frame
     if (sp <= fiStart) return 0;
-    if (sp <= fiEnd)   return eoo((sp - fiStart) / fadeW);
+    if (sp <= bIn)     return eoo((sp - fiStart) / fadeW);
     return 1;
   }
-  // Middle chapters: gradual enter → active hold → gradual exit
   if (sp <= fiStart) return 0;
-  if (sp <= fiEnd)   return eoo((sp - fiStart) / fadeW);
+  if (sp <= bIn)     return eoo((sp - fiStart) / fadeW);
   if (sp <= foStart) return 1;
   if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
   return 0;
 }
 
 function chapY(sp: number, n: number, yIn: number, yOut: number): number {
-  const bIn    = n / N_CHAPTERS;
-  const bOut   = (n + 1) / N_CHAPTERS;
-  const fadeW  = OV * W;
-  const lagW   = ENTER_LAG * fadeW;
-
-  const fiStart = bIn - fadeW + lagW;
-  const fiEnd   = bIn + lagW;
+  const [bIn, bOut] = CHAPTER_BANDS[n];
+  const fadeW  = OV * (bOut - bIn);
+  const fiStart = bIn - fadeW;
   const foStart = bOut - fadeW;
 
   if (n === 0) {
@@ -437,11 +408,11 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
   }
   if (n === N_CHAPTERS - 1) {
     if (sp <= fiStart) return yIn;
-    if (sp <= fiEnd)   return yIn * (1 - eoo((sp - fiStart) / fadeW));
+    if (sp <= bIn)     return yIn * (1 - eoo((sp - fiStart) / fadeW));
     return 0;
   }
   if (sp <= fiStart) return yIn;
-  if (sp <= fiEnd)   return yIn * (1 - eoo((sp - fiStart) / fadeW));
+  if (sp <= bIn)     return yIn * (1 - eoo((sp - fiStart) / fadeW));
   if (sp <= foStart) return 0;
   if (sp <= bOut)    return eoo((sp - foStart) / fadeW) * yOut;
   return yOut;
@@ -485,7 +456,7 @@ export default function ScrollSections() {
             aria-hidden
             style={{
               position: "absolute",
-              top: `${(i + 0.5) * CHAPTER_VH}vh`,
+              top: `${(CHAPTER_BANDS[i][0] + CHAPTER_BANDS[i][1]) / 2 * (TOTAL_VH - 100)}vh`,
               height: 0,
               width: "100%",
             }}

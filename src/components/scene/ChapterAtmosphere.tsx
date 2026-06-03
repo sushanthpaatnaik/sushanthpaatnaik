@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
+import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 function useMobile() {
   const [mobile, setMobile] = useState(false);
@@ -36,40 +37,39 @@ function useMobile() {
  */
 
 /* ─── Atmosphere scroll-progress opacity ────────────────────────────────
-   OV_A = 0.20 → 44 vh fade window, slightly wider than content (39 vh).
-   Atmosphere enters ~4.5 vh before content, exits ~4.5 vh after.
-   eooA = easeOutCubic — same fast curve as content, perfectly paired.
+   Uses the same CHAPTER_BANDS as content — identical boundaries.
+   OV_A_IN  = 0.20 → atmosphere enters 2 % of band-width before content.
+   OV_A_OUT = 0.16 → atmosphere holds 2 % of band-width longer than content.
+   This guarantees: background is always at least as visible as content.
+   eooA = easeOutCubic — same curve as content.
    ─────────────────────────────────────────────────────────────────────── */
-const NA    = 7;
-const OV_A  = 0.20;
-const WA    = 1 / NA;
-const c01A  = (v: number) => Math.max(0, Math.min(1, v));
-const eooA  = (t: number) => 1 - Math.pow(1 - c01A(t), 3);
+const OV_A_IN  = 0.20;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.16;  // narrower exit — atmosphere holds after content fades
+const c01A = (v: number) => Math.max(0, Math.min(1, v));
+const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 3);
 
 function atmoOp(sp: number, n: number): number {
-  const bIn    = n / NA;
-  const bOut   = (n + 1) / NA;
-  const fadeW  = OV_A * WA;      // 45 % of chapter band per dissolve window
-  const fiStart = bIn - fadeW;   // atmosphere rises BEFORE chapter band starts
-  // fiEnd = bIn: atmosphere fully present exactly at chapter band start
-  const foStart = bOut - fadeW;  // atmosphere begins falling at 55 % into band
+  const [bIn, bOut] = CHAPTER_BANDS[n];
+  const W       = bOut - bIn;
+  const fadeIn  = OV_A_IN  * W;
+  const fadeOut = OV_A_OUT * W;
+  const fiStart = bIn - fadeIn;   // enters before content
+  const foStart = bOut - fadeOut; // exits after content
 
   if (n === 0) {
-    // Origin: opens at full; exits with cosine dissolve
     if (sp <= foStart) return 1;
-    if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeW);
+    if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeOut);
     return 0;
   }
-  if (n === NA - 1) {
-    // Future Systems: dissolves in, then holds forever
+  if (n === N_CHAPTERS - 1) {
     if (sp <= fiStart) return 0;
-    if (sp <= bIn)     return eooA((sp - fiStart) / fadeW);
+    if (sp <= bIn)     return eooA((sp - fiStart) / fadeIn);
     return 1;
   }
   if (sp <= fiStart) return 0;
-  if (sp <= bIn)     return eooA((sp - fiStart) / fadeW);
+  if (sp <= bIn)     return eooA((sp - fiStart) / fadeIn);
   if (sp <= foStart) return 1;
-  if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeW);
+  if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeOut);
   return 0;
 }
 
