@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
-import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
+import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 
 function useMobile() {
   const [mobile, setMobile] = useState(false);
@@ -36,27 +35,61 @@ function useMobile() {
  * scene and atmospheric identity all move as one synchronised system.
  */
 
-function chapterOpacity(phase: MotionValue<number>, idx: number, span = 0.85) {
-  return useTransform(phase, (p) => {
-    const d = Math.abs(p - idx);
-    if (d >= span) return 0;
-    const t = 1 - d / span;
-    return t * t * (3 - 2 * t);
-  });
+/* ─── Atmosphere scroll-progress opacity ────────────────────────────────
+   Driven by the same useScroll() as ScrollSections content — perfectly
+   synchronised, never drifts.
+
+   OV_A = 0.45 → atmosphere dissolves in/out over 45 % of its chapter band
+                  ≈ 97.7 vh per fade at TOTAL_VH=1620.
+                  Wider than content (OV=0.40 → 87 vh), so:
+                    • Environment shifts FIRST, then text appears.
+                    • Environment holds AFTER text departs.
+   No ENTER_LAG: atmosphere has zero offset — it leads unconditionally.
+   eioA = cosine ease-in-out, same gentle curve as content transitions.
+   ─────────────────────────────────────────────────────────────────────── */
+const NA    = 7;
+const OV_A  = 0.45;
+const WA    = 1 / NA;
+const c01A  = (v: number) => Math.max(0, Math.min(1, v));
+const eioA  = (t: number) => (1 - Math.cos(Math.PI * c01A(t))) / 2;
+
+function atmoOp(sp: number, n: number): number {
+  const bIn    = n / NA;
+  const bOut   = (n + 1) / NA;
+  const fadeW  = OV_A * WA;      // 45 % of chapter band per dissolve window
+  const fiStart = bIn - fadeW;   // atmosphere rises BEFORE chapter band starts
+  // fiEnd = bIn: atmosphere fully present exactly at chapter band start
+  const foStart = bOut - fadeW;  // atmosphere begins falling at 55 % into band
+
+  if (n === 0) {
+    // Origin: opens at full; exits with cosine dissolve
+    if (sp <= foStart) return 1;
+    if (sp <= bOut)    return eioA(1 - (sp - foStart) / fadeW);
+    return 0;
+  }
+  if (n === NA - 1) {
+    // Future Systems: dissolves in, then holds forever
+    if (sp <= fiStart) return 0;
+    if (sp <= bIn)     return eioA((sp - fiStart) / fadeW);
+    return 1;
+  }
+  if (sp <= fiStart) return 0;
+  if (sp <= bIn)     return eioA((sp - fiStart) / fadeW);
+  if (sp <= foStart) return 1;
+  if (sp <= bOut)    return eioA(1 - (sp - foStart) / fadeW);
+  return 0;
 }
 
 function ChapterLayer({
-  phase,
+  scrollYProgress,
   idx,
-  span = 0.85,
   children,
 }: {
-  phase: MotionValue<number>;
+  scrollYProgress: MotionValue<number>;
   idx: number;
-  span?: number;
   children: React.ReactNode;
 }) {
-  const opacity = chapterOpacity(phase, idx, span);
+  const opacity = useTransform(scrollYProgress, (sp) => atmoOp(sp, idx));
   return (
     <motion.div
       aria-hidden
@@ -650,7 +683,7 @@ function ContinuityFloor() {
 }
 
 export default function ChapterAtmosphere() {
-  const phase = useChapterPhase(HOME_CHAPTER_IDS);
+  const { scrollYProgress } = useScroll();
   return (
     <div
       aria-hidden
@@ -658,25 +691,25 @@ export default function ChapterAtmosphere() {
       style={{ contain: "strict" }}
     >
       <ContinuityFloor />
-      <ChapterLayer phase={phase} idx={0} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={0}>
         <OriginAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={1} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={1}>
         <MaterialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={2} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={2}>
         <FounderAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={3} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={3}>
         <IndustrialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={4} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={4}>
         <RecognitionAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={5} span={1.6}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={5}>
         <EcosystemAtmosphere />
       </ChapterLayer>
-      <ChapterLayer phase={phase} idx={6} span={1.8}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={6}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>

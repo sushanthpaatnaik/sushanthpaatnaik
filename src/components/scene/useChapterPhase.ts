@@ -58,11 +58,11 @@ export function useChapterPhase(ids: readonly string[]): MotionValue<number> {
       // still preserving a short crossfade.
       const base = Math.floor(raw);
       const f = raw - base;
-      // Custom curve: flat at 0, steep near 0.5, flat at 1.
-      // 6t^5 - 15t^4 + 10t^3 (smootherstep) is too gentle; sharpen it.
+      // Gentle S-curve: smooth crossfade through the boundary midline.
+      // k=1.3 gives a gradual transition — chapter labels in HUD still advance
+      // clearly but without the snap that made atmosphere feel section-like.
       const sharp = (() => {
-        // remap 0..1 with a steep S that snaps before/after 0.5
-        const k = 2.4; // steepness
+        const k = 1.3; // steepness (was 2.4 — softened for cinematic pacing)
         const x = (f - 0.5) * k;
         const s = 1 / (1 + Math.exp(-x));
         // normalise so f=0→0, f=1→1
