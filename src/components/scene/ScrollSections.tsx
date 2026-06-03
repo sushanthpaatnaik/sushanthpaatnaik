@@ -21,7 +21,7 @@ import founderPresence from "@/assets/founder-editorial.webp";
    ────────────────────────────────────────────────────────────────── */
 
 const N_CHAPTERS = 7;
-const TOTAL_VH   = 1500;                             // 1400 vh scroll ÷ 7 ≈ 200 vh per chapter
+const TOTAL_VH   = 1620;                             // 1520 vh scroll ÷ 7 ≈ 217 vh per chapter
 const CHAPTER_VH = (TOTAL_VH - 100) / N_CHAPTERS;   // scroll height per chapter in vh
 
 const gateways = [
@@ -365,31 +365,38 @@ function FutureContent() {
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
-   OV = 0.30  → each chapter dissolves in/out over 30 % of its band
-                 = ~60 vh of shared overlap at TOTAL_VH=1500.
-                 Outgoing chapter and incoming chapter coexist for the
-                 full 60 vh window — no hard cuts, no instant swaps.
+   OV = 0.40  → each chapter dissolves in/out over 40 % of its band
+                 ≈ 87 vh of shared overlap at TOTAL_VH=1620.
+                 Outgoing and incoming chapters coexist for ~62 vh —
+                 story evolves continuously, never switches.
 
-   ENTER_LAG = 0.22
-                 → content appears 22 % into the overlap window.
-                 Background (video + atmosphere) shifts first; text
-                 follows ~13 vh later. Environment prepares the viewer.
+   ENTER_LAG = 0.28
+                 → content appears 28 % into the overlap window.
+                 Background shifts first; text follows ~24 vh later.
+                 Viewer's environment changes before words arrive.
 
-   Active zone per chapter ≈ 127 vh (content fully visible, no fading).
-   Future Systems (ch 6) holds at opacity 1 through end of scroll —
+   Active zone per chapter ≈ 105 vh — over a full screen height where
+   the chapter is the sole voice before dissolving into the next.
+
+   Future Systems holds at opacity 1 through end of scroll — the
    documentary closes on a held frame, not a fade.
 
-   eio = cubic ease-in-out: slow start → fast middle → slow rest.
+   eio = cosine ease-in-out: the most gradual, film-like curve.
+   Chapters appear early and fade late — no snap, no rush, no cut.
+   At t=0.2 → 9.5 % visible (vs 3.2 % with cubic).
+   At t=0.8 → 90.5 % still visible — outgoing chapter stays present.
    No filter on absolute outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
 const W          = 1 / N_CHAPTERS;
-const OV         = 0.30;   // overlap / dissolve fraction of chapter band
-const ENTER_LAG  = 0.22;   // fraction of OV window before content starts
+const OV         = 0.40;   // dissolve fraction — 40 % of each chapter band
+const ENTER_LAG  = 0.28;   // background leads content by this fraction of OV
 const c01        = (v: number) => Math.max(0, Math.min(1, v));
 
+// Cosine ease-in-out: slow start, linear-ish middle, slow finish.
+// Much gentler than cubic — identical to professional cross-dissolves.
 const eio = (t: number): number => {
   const x = c01(t);
-  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  return (1 - Math.cos(Math.PI * x)) / 2;
 };
 
 function chapOp(sp: number, n: number): number {
@@ -398,27 +405,27 @@ function chapOp(sp: number, n: number): number {
   const fadeW  = OV * W;                     // width of each dissolve window
   const lagW   = ENTER_LAG * fadeW;          // background leads content by this
 
-  // Content fade-in window: chapter n+1 starts entering during chapter n's exit
-  const fiStart = bIn - fadeW + lagW;        // content opacity starts rising
-  const fiEnd   = bIn + lagW;               // content fully visible (background already there)
+  // Fade-in: n+1 starts appearing while n is still exiting
+  const fiStart = bIn - fadeW + lagW;        // content opacity begins rising
+  const fiEnd   = bIn + lagW;               // content fully visible
 
-  // Content fade-out window
-  const foStart = bOut - fadeW;             // content starts falling
-  // foEnd = bOut (fully gone)
+  // Fade-out
+  const foStart = bOut - fadeW;             // content begins falling
+  // foEnd = bOut
 
   if (n === 0) {
-    // Origin: opens at full opacity; exits with dissolve
+    // Origin: opens at full opacity; slow dissolve out
     if (sp <= foStart) return 1;
     if (sp <= bOut)    return eio(1 - (sp - foStart) / fadeW);
     return 0;
   }
   if (n === N_CHAPTERS - 1) {
-    // Future Systems: enters with dissolve, then holds forever — cinematic close
+    // Future Systems: dissolves in, then holds as final frame
     if (sp <= fiStart) return 0;
     if (sp <= fiEnd)   return eio((sp - fiStart) / fadeW);
     return 1;
   }
-  // All other chapters: enter overlap → active → exit overlap
+  // Middle chapters: gradual enter → active hold → gradual exit
   if (sp <= fiStart) return 0;
   if (sp <= fiEnd)   return eio((sp - fiStart) / fadeW);
   if (sp <= foStart) return 1;
@@ -465,8 +472,8 @@ export default function ScrollSections() {
     offset: ["start start", "end end"],
   });
 
-  const yIn  = reduce ? 0 : 48;
-  const yOut = reduce ? 0 : -28;
+  const yIn  = reduce ? 0 : 52;
+  const yOut = reduce ? 0 : -30;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));
