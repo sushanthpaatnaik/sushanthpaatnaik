@@ -1,44 +1,65 @@
 import { useEffect, useRef, useState } from "react";
 import monogram from "@/assets/sp-monogram.svg";
 
-const SESSION_KEY = "sp_preloader_seen";
+export const LOADER_SESSION_KEY = "sp_preloader_seen";
+
+const MIN_SHOW_MS = 1_400; // always show for at least this long on first visit
 
 /**
  * CinematicLoader
  *
- * Shows once per session (sessionStorage gate). Subsequent navigations
- * within the same tab see nothing — the component returns null immediately.
+ * Holds the screen until `ready` is true (video canplaythrough) AND
+ * the minimum display time has elapsed, then fades out.
  *
- * All animations are GPU-composited (opacity + transform only).
- * Timeline: enter 0–800ms → hold → exit at 1700ms → unmount at 2300ms.
+ * Shows once per session (sessionStorage gate). On subsequent navigations
+ * within the same tab the component is a no-op.
  */
-export default function Loader() {
-  // false on both server and client initial render → no hydration mismatch.
+export default function Loader({ ready }: { ready: boolean }) {
   const [entering, setEntering] = useState(false);
-  const [exiting, setExiting] = useState(false);
-  const [done, setDone] = useState(false);
-  const rafRef = useRef<number>(0);
+  const [loadProgress, setLoadProgress] = useState<"idle" | "loading" | "complete">("idle");
+  const [exiting, setExiting]   = useState(false);
+  const [done, setDone]         = useState(false);
+  const startRef = useRef(0);
+  const exitedRef = useRef(false);
 
   useEffect(() => {
-    // If already seen this session, skip immediately.
-    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+    if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
       setDone(true);
       return;
     }
-    sessionStorage.setItem(SESSION_KEY, "1");
+    sessionStorage.setItem(LOADER_SESSION_KEY, "1");
+    startRef.current = Date.now();
 
-    // One rAF so the "entering" CSS transitions have a starting frame to diff against.
-    rafRef.current = requestAnimationFrame(() => setEntering(true));
-
-    const t1 = setTimeout(() => setExiting(true), 1700);
-    const t2 = setTimeout(() => setDone(true), 2400);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    const raf = requestAnimationFrame(() => {
+      setEntering(true);
+      // Start the indeterminate progress bar sweep
+      requestAnimationFrame(() => setLoadProgress("loading"));
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
+
+  // When the video signals ready, complete the bar then begin the exit fade.
+  useEffect(() => {
+    if (!ready || done || exiting || exitedRef.current) return;
+
+    const elapsed = Date.now() - startRef.current;
+    const remaining = Math.max(0, MIN_SHOW_MS - elapsed);
+
+    const t = setTimeout(() => {
+      if (exitedRef.current) return;
+      exitedRef.current = true;
+      setLoadProgress("complete");
+
+      // Let the bar reach 100 % before the overlay fades
+      const t2 = setTimeout(() => {
+        setExiting(true);
+        setTimeout(() => setDone(true), 700);
+      }, 380);
+      return () => clearTimeout(t2);
+    }, remaining);
+
+    return () => clearTimeout(t);
+  }, [ready, done, exiting]);
 
   if (done) return null;
 
@@ -62,7 +83,7 @@ export default function Loader() {
         }}
       />
 
-      {/* ── Scanlines — ultra-thin horizontal lines, barely perceptible ──── */}
+      {/* ── Scanlines ────────────────────────────────────────────────────── */}
       <div
         aria-hidden
         className="sp-scanlines pointer-events-none absolute inset-0"
@@ -73,7 +94,7 @@ export default function Loader() {
         }}
       />
 
-      {/* ── Grid crosshair — very faint structural reference lines ───────── */}
+      {/* ── Grid crosshair ───────────────────────────────────────────────── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -87,7 +108,6 @@ export default function Loader() {
 
       {/* ── Centre content ───────────────────────────────────────────────── */}
       <div className="relative flex flex-col items-center">
-
         {/* SP Monogram */}
         <div
           className="relative mb-10 flex items-center justify-center"
@@ -100,7 +120,6 @@ export default function Loader() {
             willChange: "opacity, transform",
           }}
         >
-          {/* Bloom — static, no animation overhead */}
           <div
             aria-hidden
             className="pointer-events-none absolute rounded-full"
@@ -111,14 +130,10 @@ export default function Loader() {
               filter: "blur(18px)",
             }}
           />
-          {/* Outer ring */}
           <div
             aria-hidden
             className="absolute rounded-full border"
-            style={{
-              inset: "-18px",
-              borderColor: "oklch(0.63 0.10 75 / 0.12)",
-            }}
+            style={{ inset: "-18px", borderColor: "oklch(0.63 0.10 75 / 0.12)" }}
           />
           <img
             src={monogram}
@@ -134,7 +149,7 @@ export default function Loader() {
           />
         </div>
 
-        {/* Gold accent rule — extends from centre outward */}
+        {/* Gold accent rule */}
         <div
           aria-hidden
           className="mb-9 h-px"
@@ -171,15 +186,18 @@ export default function Loader() {
           </span>
         </div>
 
-        {/* System label */}
+        {/* Status label — updates when video is ready */}
         <div
-          className="mt-14 font-mono text-[8px] uppercase tracking-[0.55em] text-foreground/18"
+          className="mt-14 font-mono text-[8px] uppercase tracking-[0.55em] transition-colors duration-500"
           style={{
+            color: loadProgress === "complete"
+              ? "oklch(0.63 0.10 75 / 0.55)"
+              : "oklch(0.967 0 0 / 0.18)",
             opacity: entering ? 1 : 0,
-            transition: entering ? "opacity 600ms 550ms ease" : "none",
+            transition: entering ? "opacity 600ms 550ms ease, color 500ms ease" : "none",
           }}
         >
-          Archive · Initialising
+          {loadProgress === "complete" ? "Archive · Ready" : "Archive · Loading"}
         </div>
       </div>
 
@@ -193,10 +211,14 @@ export default function Loader() {
           style={{
             background:
               "linear-gradient(90deg, transparent 0%, oklch(0.63 0.10 75 / 0.6) 15%, oklch(0.82 0.08 76 / 0.88) 50%, oklch(0.63 0.10 75 / 0.6) 85%, transparent 100%)",
-            transform: entering ? "scaleX(1)" : "scaleX(0)",
-            transition: entering
-              ? "transform 1700ms cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-              : "none",
+            transform:
+              loadProgress === "idle"    ? "scaleX(0)" :
+              loadProgress === "loading" ? "scaleX(0.88)" :
+              "scaleX(1)",
+            transition:
+              loadProgress === "idle"    ? "none" :
+              loadProgress === "loading" ? "transform 10000ms cubic-bezier(0.12, 0, 0.2, 1)" :
+              "transform 380ms cubic-bezier(0.19, 1, 0.22, 1)",
             willChange: "transform",
           }}
         />

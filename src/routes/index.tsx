@@ -2,13 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useCallback, useEffect, useState, lazy, Suspense } from "react";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
-import Loader from "@/components/scene/Loader";
+import Loader, { LOADER_SESSION_KEY } from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
 
-// Heavy decorative scene layers — code-split so they don't block first paint.
-const CinematicLayer = lazy(() => import("@/components/scene/CinematicLayer"));
+// CinematicLayer is imported directly (not lazy) so the video starts loading
+// on the very first render — the Loader overlay holds the screen until ready.
+import CinematicLayer from "@/components/scene/CinematicLayer";
 const SceneDecorations = lazy(() => import("@/components/scene/SceneDecorations"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
 const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
@@ -47,6 +48,13 @@ function Index() {
   const [entered, setEntered] = useState(false);
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
+
+  // videoReady starts true for repeat tab visits (video is browser-cached).
+  // For first visits it stays false until CinematicLayer fires onReady().
+  const [videoReady, setVideoReady] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
+  });
 
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
@@ -184,7 +192,8 @@ function Index() {
 
   return (
     <div className="relative bg-transparent text-foreground noise">
-      <Loader />
+      {/* Loader holds the screen until the video is ready to play */}
+      <Loader ready={videoReady} />
 
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
@@ -199,11 +208,11 @@ function Index() {
        * Nav / HUD / MobileCTABar use their own high z-indexes (50+).
        */}
 
-      {scenesReady && (
-        <Suspense fallback={null}>
-          <CinematicLayer scrollProgress={scrollProgress} />
-        </Suspense>
-      )}
+      {/* CinematicLayer renders immediately so the video starts buffering on first paint. */}
+      <CinematicLayer
+        scrollProgress={scrollProgress}
+        onReady={() => setVideoReady(true)}
+      />
 
       {scenesReady && entered && (
         <Suspense fallback={null}>

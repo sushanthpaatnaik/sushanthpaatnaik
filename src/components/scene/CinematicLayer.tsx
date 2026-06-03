@@ -5,6 +5,9 @@ import sceneSpark from "@/assets/story-01-spark.webp";
 interface CinematicLayerProps {
   /** Lenis-smoothed scroll progress 0→1, updated each RAF frame. */
   scrollProgress: React.RefObject<number>;
+  /** Fires once when the video has enough data to play through (canplaythrough).
+   *  On reduced-motion devices (no video), fires on the next microtask. */
+  onReady?: () => void;
 }
 
 /**
@@ -48,20 +51,45 @@ function scrollToTime(scrollProg: number): number {
  * - Fixed, full-viewport, z-[1].  Content layers sit above.
  * - Reduced-motion: static poster image, no video element.
  */
-export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const reduce   = useReducedMotion();
-  const rafRef   = useRef(0);
-  const readyRef = useRef(false);
+export default function CinematicLayer({ scrollProgress, onReady }: CinematicLayerProps) {
+  const videoRef   = useRef<HTMLVideoElement>(null);
+  const reduce     = useReducedMotion();
+  const rafRef     = useRef(0);
+  const readyRef   = useRef(false);
+  const notifiedRef = useRef(false);
+
+  // For reduced-motion users there is no video — signal ready immediately.
+  useEffect(() => {
+    if (!reduce) return;
+    if (!notifiedRef.current) {
+      notifiedRef.current = true;
+      onReady?.();
+    }
+  }, [reduce, onReady]);
 
   useEffect(() => {
     if (reduce) return;
     const vid = videoRef.current;
     if (!vid) return;
 
+    const notifyReady = () => {
+      if (notifiedRef.current) return;
+      notifiedRef.current = true;
+      readyRef.current   = true;
+      onReady?.();
+    };
+
     readyRef.current = vid.readyState >= 2;
-    const onCanPlay = () => { readyRef.current = true; };
+    // Already has enough data (e.g. cached from previous visit)
+    if (vid.readyState >= 4) notifyReady();
+
+    const onCanPlay    = () => { readyRef.current = true; };
+    const onCanPlayThrough = notifyReady;
+    // Fallback: if canplaythrough never fires (very slow connection), reveal after 12 s
+    const fallback = window.setTimeout(notifyReady, 12_000);
+
     vid.addEventListener("canplay", onCanPlay);
+    vid.addEventListener("canplaythrough", onCanPlayThrough);
 
     const tick = () => {
       if (readyRef.current && vid.duration > 0) {
@@ -78,9 +106,11 @@ export default function CinematicLayer({ scrollProgress }: CinematicLayerProps) 
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      clearTimeout(fallback);
       vid.removeEventListener("canplay", onCanPlay);
+      vid.removeEventListener("canplaythrough", onCanPlayThrough);
     };
-  }, [reduce, scrollProgress]);
+  }, [reduce, scrollProgress, onReady]);
 
   return (
     <div
