@@ -13,9 +13,8 @@ import founderPresence from "@/assets/founder-editorial.webp";
    Homepage = single sticky cinematic stage.
    Seven chapters. One viewport. Scroll is the timeline.
 
-   Each chapter occupies ~200 vh of scroll travel.
-   OV=0.30 → 30 % of each band is the dissolve window (~60 vh).
-   ENTER_LAG → background shifts first; content follows 13 vh later.
+   Each chapter occupies ~217 vh of scroll travel.
+   OV=0.18 → 18 % fade window (39 vh). Active hold: 178 vh.
    Future Systems holds at full opacity to close the documentary.
    ────────────────────────────────────────────────────────────────── */
 
@@ -364,39 +363,28 @@ function FutureContent() {
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
-   OV = 0.40  → each chapter dissolves in/out over 40 % of its band
-                 ≈ 87 vh of shared overlap at TOTAL_VH=1620.
-                 Outgoing and incoming chapters coexist for ~62 vh —
-                 story evolves continuously, never switches.
+   OV = 0.18  → each fade window is 18 % of its chapter band ≈ 39 vh.
+                 Chapters share the SAME 39 vh window: one dissolves
+                 out while the next dissolves in — a clean crossfade.
 
-   ENTER_LAG = 0.28
-                 → content appears 28 % into the overlap window.
-                 Background shifts first; text follows ~24 vh later.
-                 Viewer's environment changes before words arrive.
+   ENTER_LAG = 0 → content and background are perfectly synchronised.
+                 No delay between environment and text.
 
-   Active zone per chapter ≈ 105 vh — over a full screen height where
-   the chapter is the sole voice before dissolving into the next.
+   Active zone per chapter ≈ 178 vh of full-opacity hold.
 
-   Future Systems holds at opacity 1 through end of scroll — the
-   documentary closes on a held frame, not a fade.
-
-   eio = cosine ease-in-out: the most gradual, film-like curve.
-   Chapters appear early and fade late — no snap, no rush, no cut.
-   At t=0.2 → 9.5 % visible (vs 3.2 % with cubic).
-   At t=0.8 → 90.5 % still visible — outgoing chapter stays present.
-   No filter on absolute outer wrappers (GPU compositing artefacts).
+   eoo = easeOutCubic ≈ cubic-bezier(0.22, 1, 0.36, 1).
+   Fast initial rise (87 % at t=0.5), smooth plateau.
+   Applies symmetrically: quick in, quick out.
+   No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
 const W          = 1 / N_CHAPTERS;
-const OV         = 0.40;   // dissolve fraction — 40 % of each chapter band
-const ENTER_LAG  = 0.28;   // background leads content by this fraction of OV
+const OV         = 0.18;   // dissolve fraction — 18 % of each chapter band
+const ENTER_LAG  = 0;      // content and background transition together
 const c01        = (v: number) => Math.max(0, Math.min(1, v));
 
-// Cosine ease-in-out: slow start, linear-ish middle, slow finish.
-// Much gentler than cubic — identical to professional cross-dissolves.
-const eio = (t: number): number => {
-  const x = c01(t);
-  return (1 - Math.cos(Math.PI * x)) / 2;
-};
+// easeOutCubic — approximates cubic-bezier(0.22, 1, 0.36, 1).
+// At t=0.3 → 66 % opacity; t=0.5 → 87 %. Fast, smooth, no hard cut.
+const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 3);
 
 function chapOp(sp: number, n: number): number {
   const bIn    = n / N_CHAPTERS;
@@ -415,20 +403,20 @@ function chapOp(sp: number, n: number): number {
   if (n === 0) {
     // Origin: opens at full opacity; slow dissolve out
     if (sp <= foStart) return 1;
-    if (sp <= bOut)    return eio(1 - (sp - foStart) / fadeW);
+    if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
     return 0;
   }
   if (n === N_CHAPTERS - 1) {
     // Future Systems: dissolves in, then holds as final frame
     if (sp <= fiStart) return 0;
-    if (sp <= fiEnd)   return eio((sp - fiStart) / fadeW);
+    if (sp <= fiEnd)   return eoo((sp - fiStart) / fadeW);
     return 1;
   }
   // Middle chapters: gradual enter → active hold → gradual exit
   if (sp <= fiStart) return 0;
-  if (sp <= fiEnd)   return eio((sp - fiStart) / fadeW);
+  if (sp <= fiEnd)   return eoo((sp - fiStart) / fadeW);
   if (sp <= foStart) return 1;
-  if (sp <= bOut)    return eio(1 - (sp - foStart) / fadeW);
+  if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
   return 0;
 }
 
@@ -444,18 +432,18 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
 
   if (n === 0) {
     if (sp <= foStart) return 0;
-    if (sp <= bOut)    return eio((sp - foStart) / fadeW) * yOut;
+    if (sp <= bOut)    return eoo((sp - foStart) / fadeW) * yOut;
     return yOut;
   }
   if (n === N_CHAPTERS - 1) {
     if (sp <= fiStart) return yIn;
-    if (sp <= fiEnd)   return yIn * (1 - eio((sp - fiStart) / fadeW));
+    if (sp <= fiEnd)   return yIn * (1 - eoo((sp - fiStart) / fadeW));
     return 0;
   }
   if (sp <= fiStart) return yIn;
-  if (sp <= fiEnd)   return yIn * (1 - eio((sp - fiStart) / fadeW));
+  if (sp <= fiEnd)   return yIn * (1 - eoo((sp - fiStart) / fadeW));
   if (sp <= foStart) return 0;
-  if (sp <= bOut)    return eio((sp - foStart) / fadeW) * yOut;
+  if (sp <= bOut)    return eoo((sp - foStart) / fadeW) * yOut;
   return yOut;
 }
 
@@ -467,8 +455,8 @@ export default function ScrollSections() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
-  const yIn  = reduce ? 0 : 52;
-  const yOut = reduce ? 0 : -30;
+  const yIn  = reduce ? 0 : 24;
+  const yOut = reduce ? 0 : -12;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));

@@ -36,22 +36,15 @@ function useMobile() {
  */
 
 /* ─── Atmosphere scroll-progress opacity ────────────────────────────────
-   Driven by the same useScroll() as ScrollSections content — perfectly
-   synchronised, never drifts.
-
-   OV_A = 0.45 → atmosphere dissolves in/out over 45 % of its chapter band
-                  ≈ 97.7 vh per fade at TOTAL_VH=1620.
-                  Wider than content (OV=0.40 → 87 vh), so:
-                    • Environment shifts FIRST, then text appears.
-                    • Environment holds AFTER text departs.
-   No ENTER_LAG: atmosphere has zero offset — it leads unconditionally.
-   eioA = cosine ease-in-out, same gentle curve as content transitions.
+   OV_A = 0.20 → 44 vh fade window, slightly wider than content (39 vh).
+   Atmosphere enters ~4.5 vh before content, exits ~4.5 vh after.
+   eooA = easeOutCubic — same fast curve as content, perfectly paired.
    ─────────────────────────────────────────────────────────────────────── */
 const NA    = 7;
-const OV_A  = 0.45;
+const OV_A  = 0.20;
 const WA    = 1 / NA;
 const c01A  = (v: number) => Math.max(0, Math.min(1, v));
-const eioA  = (t: number) => (1 - Math.cos(Math.PI * c01A(t))) / 2;
+const eooA  = (t: number) => 1 - Math.pow(1 - c01A(t), 3);
 
 function atmoOp(sp: number, n: number): number {
   const bIn    = n / NA;
@@ -64,19 +57,19 @@ function atmoOp(sp: number, n: number): number {
   if (n === 0) {
     // Origin: opens at full; exits with cosine dissolve
     if (sp <= foStart) return 1;
-    if (sp <= bOut)    return eioA(1 - (sp - foStart) / fadeW);
+    if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeW);
     return 0;
   }
   if (n === NA - 1) {
     // Future Systems: dissolves in, then holds forever
     if (sp <= fiStart) return 0;
-    if (sp <= bIn)     return eioA((sp - fiStart) / fadeW);
+    if (sp <= bIn)     return eooA((sp - fiStart) / fadeW);
     return 1;
   }
   if (sp <= fiStart) return 0;
-  if (sp <= bIn)     return eioA((sp - fiStart) / fadeW);
+  if (sp <= bIn)     return eooA((sp - fiStart) / fadeW);
   if (sp <= foStart) return 1;
-  if (sp <= bOut)    return eioA(1 - (sp - foStart) / fadeW);
+  if (sp <= bOut)    return eooA(1 - (sp - foStart) / fadeW);
   return 0;
 }
 
