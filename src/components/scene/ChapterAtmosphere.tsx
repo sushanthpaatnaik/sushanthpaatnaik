@@ -695,10 +695,10 @@ export default function ChapterAtmosphere() {
         <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={1}>
-        <MaterialAtmosphere />
+        <FounderAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={2}>
-        <FounderAtmosphere />
+        <MaterialAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={3}>
         <IndustrialAtmosphere />
