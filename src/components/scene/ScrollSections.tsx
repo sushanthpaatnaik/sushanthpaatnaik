@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   motion,
@@ -465,12 +464,8 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
    Main export — single sticky cinematic stage
    ────────────────────────────────────────────────────────────────── */
 export default function ScrollSections() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  const { scrollYProgress } = useScroll();
 
   const yIn  = reduce ? 0 : 52;
   const yOut = reduce ? 0 : -30;
@@ -492,24 +487,29 @@ export default function ScrollSections() {
   const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
 
   return (
-    <div ref={containerRef} className="relative bg-transparent" style={{ height: `${TOTAL_VH}vh` }}>
-      {/* Chapter anchors — at the centre of each chapter's scroll band for useChapterPhase */}
-      {(["spark", "founder", "carbon-intelligence", "industrial", "recognition", "ecosystem", "future"] as const).map((id, i) => (
-        <div
-          key={id}
-          id={id}
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: `${(i + 0.5) * CHAPTER_VH}vh`,
-            height: 0,
-            width: "100%",
-          }}
-        />
-      ))}
+    <>
+      {/* Ghost scroll track — provides TOTAL_VH of scroll travel and chapter anchor points */}
+      <div className="relative" style={{ height: `${TOTAL_VH}vh` }}>
+        {(["spark", "founder", "carbon-intelligence", "industrial", "recognition", "ecosystem", "future"] as const).map((id, i) => (
+          <div
+            key={id}
+            id={id}
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: `${(i + 0.5) * CHAPTER_VH}vh`,
+              height: 0,
+              width: "100%",
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Sticky cinematic stage */}
-      <div className="sticky top-0 h-screen overflow-hidden bg-transparent">
+      {/* Fixed cinematic content stage — all chapters layered, driven by global scroll */}
+      <div
+        className="fixed inset-0 overflow-hidden"
+        style={{ pointerEvents: "none" }}
+      >
         <ScrollProgressBar progress={scrollYProgress} />
 
         {/* Chapter 0 — Origin */}
@@ -568,6 +568,6 @@ export default function ScrollSections() {
           <FutureContent />
         </motion.div>
       </div>
-    </div>
+    </>
   );
 }

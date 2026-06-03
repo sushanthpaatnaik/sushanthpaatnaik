@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion, useScroll } from "framer-motion";
 import sceneSpark from "@/assets/story-01-spark.webp";
 
 interface CinematicLayerProps {
-  /** Lenis-smoothed scroll progress 0→1, updated each RAF frame. */
-  scrollProgress: React.RefObject<number>;
   /** Fires once when the video has enough data to play through (canplaythrough).
    *  On reduced-motion devices (no video), fires on the next microtask. */
   onReady?: () => void;
@@ -51,12 +49,13 @@ function scrollToTime(scrollProg: number): number {
  * - Fixed, full-viewport, z-[1].  Content layers sit above.
  * - Reduced-motion: static poster image, no video element.
  */
-export default function CinematicLayer({ scrollProgress, onReady }: CinematicLayerProps) {
+export default function CinematicLayer({ onReady }: CinematicLayerProps) {
   const videoRef   = useRef<HTMLVideoElement>(null);
   const reduce     = useReducedMotion();
   const rafRef     = useRef(0);
   const readyRef   = useRef(false);
   const notifiedRef = useRef(false);
+  const { scrollYProgress } = useScroll();
 
   // For reduced-motion users there is no video — signal ready immediately.
   useEffect(() => {
@@ -93,7 +92,7 @@ export default function CinematicLayer({ scrollProgress, onReady }: CinematicLay
 
     const tick = () => {
       if (readyRef.current && vid.duration > 0) {
-        const target  = scrollToTime(scrollProgress.current ?? 0);
+        const target  = scrollToTime(scrollYProgress.get());
         const clamped = Math.max(0, Math.min(target, vid.duration));
         // Skip seeks smaller than one ~60 fps frame to avoid decoder thrashing.
         if (Math.abs(vid.currentTime - clamped) > 0.016) {
@@ -110,7 +109,7 @@ export default function CinematicLayer({ scrollProgress, onReady }: CinematicLay
       vid.removeEventListener("canplay", onCanPlay);
       vid.removeEventListener("canplaythrough", onCanPlayThrough);
     };
-  }, [reduce, scrollProgress, onReady]);
+  }, [reduce, scrollYProgress, onReady]);
 
   return (
     <div

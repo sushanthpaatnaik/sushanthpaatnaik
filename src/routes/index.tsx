@@ -210,7 +210,6 @@ function Index() {
 
       {/* CinematicLayer renders immediately so the video starts buffering on first paint. */}
       <CinematicLayer
-        scrollProgress={scrollProgress}
         onReady={() => setVideoReady(true)}
       />
 
