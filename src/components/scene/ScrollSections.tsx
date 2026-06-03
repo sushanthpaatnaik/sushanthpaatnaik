@@ -19,7 +19,7 @@ import founderPresence from "@/assets/founder-editorial.webp";
    ────────────────────────────────────────────────────────────────── */
 
 const N_CHAPTERS = 7;
-const TOTAL_VH   = 980;                              // 880 vh scroll ÷ 7 ≈ 125.7 vh per chapter
+const TOTAL_VH   = 1100;                             // 1000 vh scroll ÷ 7 ≈ 142.9 vh per chapter (~45 % longer dwell)
 const CHAPTER_VH = (TOTAL_VH - 100) / N_CHAPTERS;   // scroll height per chapter in vh
 
 const gateways = [
@@ -360,60 +360,70 @@ function FutureContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Opacity / Y helpers
-   Shared crossfade window at each boundary keeps opacity-sum = 1.0.
-   FADE = 0.22 → ~22 % of each chapter's scroll band is the shared
-   crossfade window (~28 vh per boundary at TOTAL_VH=980).  The
-   remaining ~56 % is the active hold phase (~70 vh).
-   No filter applied to the outer wrapper — CSS filter isolation on a
-   viewport-sized element creates GPU backing-store artefacts that
-   appear as opaque dark rectangles.  Text blur is not used here.
+   Opacity / Y helpers — cinematic easeInOut timing
+   FADE = 0.28 → ~28 % of each chapter's scroll band is shared
+   crossfade (~40 vh per boundary at TOTAL_VH=1100).
+   ENTER_LAG delays content entry 15 % into the fade window so the
+   background (video) always visually leads the text.
+   eio = ease-in-out cubic: slow start, fast middle, slow end.
+   No filter on outer wrappers — CSS filter creates GPU backing-store
+   artefacts that appear as opaque dark rectangles.
    ────────────────────────────────────────────────────────────────── */
-const W    = 1 / N_CHAPTERS;
-const FADE = 0.22;
-const c01  = (v: number) => Math.max(0, Math.min(1, v));
+const W          = 1 / N_CHAPTERS;
+const FADE       = 0.28;
+const ENTER_LAG  = 0.15;
+const c01        = (v: number) => Math.max(0, Math.min(1, v));
+
+const eio = (t: number): number => {
+  const x = c01(t);
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+};
 
 function chapOp(sp: number, n: number): number {
-  const bIn  = n / N_CHAPTERS;
-  const bOut = (n + 1) / N_CHAPTERS;
-  const fiS  = bIn  - FADE * W;
-  const foS  = bOut - FADE * W;
+  const bIn    = n / N_CHAPTERS;
+  const bOut   = (n + 1) / N_CHAPTERS;
+  const fiS    = bIn  - FADE * W;
+  const foS    = bOut - FADE * W;
+  const fiSeff = fiS + ENTER_LAG * (FADE * W);   // content enters after background
+  const fiW    = bIn - fiSeff;
   if (n === 0) {
     if (sp <= foS)  return 1;
-    if (sp <= bOut) return c01(1 - (sp - foS) / (FADE * W));
+    if (sp <= bOut) return eio(1 - (sp - foS) / (FADE * W));
     return 0;
   }
   if (n === N_CHAPTERS - 1) {
-    if (sp <= fiS) return 0;
-    if (sp <= bIn) return c01((sp - fiS) / (FADE * W));
+    if (sp <= fiSeff) return 0;
+    if (sp <= bIn)    return eio((sp - fiSeff) / fiW);
     return 1;
   }
-  if (sp <= fiS)  return 0;
-  if (sp <= bIn)  return c01((sp - fiS) / (FADE * W));
-  if (sp <= foS)  return 1;
-  if (sp <= bOut) return c01(1 - (sp - foS) / (FADE * W));
+  if (sp <= fiSeff) return 0;
+  if (sp <= bIn)    return eio((sp - fiSeff) / fiW);
+  if (sp <= foS)    return 1;
+  if (sp <= bOut)   return eio(1 - (sp - foS) / (FADE * W));
   return 0;
 }
 
 function chapY(sp: number, n: number, yIn: number, yOut: number): number {
-  const bIn  = n / N_CHAPTERS;
-  const bOut = (n + 1) / N_CHAPTERS;
-  const fiS  = bIn  - FADE * W;
-  const foS  = bOut - FADE * W;
+  const bIn    = n / N_CHAPTERS;
+  const bOut   = (n + 1) / N_CHAPTERS;
+  const fiS    = bIn  - FADE * W;
+  const foS    = bOut - FADE * W;
+  const fiSeff = fiS + ENTER_LAG * (FADE * W);
+  const fiW    = bIn - fiSeff;
   if (n === 0) {
     if (sp <= foS)  return 0;
-    if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * yOut;
+    if (sp <= bOut) return eio((sp - foS) / (FADE * W)) * yOut;
     return yOut;
   }
   if (n === N_CHAPTERS - 1) {
-    if (sp <= fiS) return yIn;
-    if (sp <= bIn) return yIn * (1 - c01((sp - fiS) / (FADE * W)));
+    if (sp <= fiSeff) return yIn;
+    if (sp <= bIn)    return yIn * (1 - eio((sp - fiSeff) / fiW));
     return 0;
   }
-  if (sp <= fiS)  return yIn;
-  if (sp <= bIn)  return yIn * (1 - c01((sp - fiS) / (FADE * W)));
-  if (sp <= foS)  return 0;
-  if (sp <= bOut) return c01((sp - foS) / (FADE * W)) * yOut;
+  if (sp <= fiSeff) return yIn;
+  if (sp <= bIn)    return yIn * (1 - eio((sp - fiSeff) / fiW));
+  if (sp <= foS)    return 0;
+  if (sp <= bOut)   return eio((sp - foS) / (FADE * W)) * yOut;
   return yOut;
 }
 
@@ -429,8 +439,8 @@ export default function ScrollSections() {
     offset: ["start start", "end end"],
   });
 
-  const yIn  = reduce ? 0 : 32;
-  const yOut = reduce ? 0 : -20;
+  const yIn  = reduce ? 0 : 40;
+  const yOut = reduce ? 0 : -24;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));
