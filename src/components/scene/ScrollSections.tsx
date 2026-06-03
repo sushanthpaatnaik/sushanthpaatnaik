@@ -15,8 +15,7 @@ import founderPresence from "@/assets/founder-editorial.webp";
    Seven chapters. One sticky viewport. Scroll drives everything.
    ────────────────────────────────────────────────────────────────── */
 
-const CHAPTERS = 7;
-const TOTAL_VH = 800; // 7 × 100vh + 100vh sticky
+const TOTAL_VH = 800; // 7 × 100vh scroll + 100vh sticky stage
 
 const gateways = [
   { to: "/about", n: "I", label: "About", line: "Founder, philosophy, journey." },
@@ -363,35 +362,86 @@ export default function ScrollSections() {
     offset: ["start start", "end end"],
   });
 
-  // All useTransform calls at top level — React rules of hooks
-  // Chapter progress values (linear 0→1 within each chapter's scroll range)
-  const raw0 = useTransform(scrollYProgress, [0 / 7, 1 / 7], [0, 1]);
-  const raw1 = useTransform(scrollYProgress, [1 / 7, 2 / 7], [0, 1]);
-  const raw2 = useTransform(scrollYProgress, [2 / 7, 3 / 7], [0, 1]);
-  const raw3 = useTransform(scrollYProgress, [3 / 7, 4 / 7], [0, 1]);
-  const raw4 = useTransform(scrollYProgress, [4 / 7, 5 / 7], [0, 1]);
-  const raw5 = useTransform(scrollYProgress, [5 / 7, 6 / 7], [0, 1]);
-  const raw6 = useTransform(scrollYProgress, [6 / 7, 7 / 7], [0, 1]);
+  // Function-form useTransform: avoids keyframe interpolation bugs in Framer Motion v12.
+  // Each chapter's crossfade window is SHARED with its neighbour — both chapters
+  // use the window [(N+1)/7 - FADE*W, (N+1)/7] at boundary N→N+1, so their
+  // opacities sum to exactly 1.0 throughout — no black void.
+  //
+  // W = 1/7 (each chapter's share of scroll progress)
+  // FADE = fraction of W used for each shared crossfade window
+  const W = 1 / 7;
+  const FADE = 0.13;
+  const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
-  // Chapter opacity — ch0 starts fully visible; ch6 ends fully visible; rest crossfade
-  const op0 = useTransform(raw0, [0, 0.87, 1], [1, 1, 0]);
-  const op1 = useTransform(raw1, [0, 0.13, 0.87, 1], [0, 1, 1, 0]);
-  const op2 = useTransform(raw2, [0, 0.13, 0.87, 1], [0, 1, 1, 0]);
-  const op3 = useTransform(raw3, [0, 0.13, 0.87, 1], [0, 1, 1, 0]);
-  const op4 = useTransform(raw4, [0, 0.13, 0.87, 1], [0, 1, 1, 0]);
-  const op5 = useTransform(raw5, [0, 0.13, 0.87, 1], [0, 1, 1, 0]);
-  const op6 = useTransform(raw6, [0, 0.13], [0, 1]);
+  // Chapters fade in over [boundary_in - FADE*W, boundary_in] (shared with prev chapter's exit).
+  // Chapters fade out over [boundary_out - FADE*W, boundary_out] (shared with next chapter's entry).
+  const chapOp = (sp: number, n: number): number => {
+    const boundaryIn  = n / 7;           // chapter N becomes primary at this sp
+    const boundaryOut = (n + 1) / 7;     // chapter N stops being primary at this sp
+    const fadeInStart  = boundaryIn  - FADE * W;  // entry crossfade begins
+    const fadeOutStart = boundaryOut - FADE * W;  // exit crossfade begins
 
-  // Chapter Y transform (enter from below, exit upward) — zeroed if reduce
-  const yIn = reduce ? 0 : 28;
+    if (n === 0) {
+      // Origin: visible from start, fades out at end of its scroll range
+      if (sp <= fadeOutStart)  return 1;
+      if (sp <= boundaryOut)   return clamp01(1 - (sp - fadeOutStart) / (FADE * W));
+      return 0;
+    }
+    if (n === 6) {
+      // Future: fades in, then stays visible to end of page
+      if (sp <= fadeInStart)   return 0;
+      if (sp <= boundaryIn)    return clamp01((sp - fadeInStart) / (FADE * W));
+      return 1;
+    }
+    // Middle chapters: entry crossfade → hold → exit crossfade
+    if (sp <= fadeInStart)  return 0;
+    if (sp <= boundaryIn)   return clamp01((sp - fadeInStart)  / (FADE * W));
+    if (sp <= fadeOutStart) return 1;
+    if (sp <= boundaryOut)  return clamp01(1 - (sp - fadeOutStart) / (FADE * W));
+    return 0;
+  };
+
+  const chapY = (sp: number, n: number, yIn: number, yOut: number): number => {
+    const boundaryIn  = n / 7;
+    const boundaryOut = (n + 1) / 7;
+    const fadeInStart  = boundaryIn  - FADE * W;
+    const fadeOutStart = boundaryOut - FADE * W;
+
+    if (n === 0) {
+      if (sp <= fadeOutStart)  return 0;
+      if (sp <= boundaryOut)   return clamp01((sp - fadeOutStart) / (FADE * W)) * yOut;
+      return yOut;
+    }
+    if (n === 6) {
+      if (sp <= fadeInStart)   return yIn;
+      if (sp <= boundaryIn)    return yIn * (1 - clamp01((sp - fadeInStart) / (FADE * W)));
+      return 0;
+    }
+    if (sp <= fadeInStart)  return yIn;
+    if (sp <= boundaryIn)   return yIn * (1 - clamp01((sp - fadeInStart) / (FADE * W)));
+    if (sp <= fadeOutStart) return 0;
+    if (sp <= boundaryOut)  return clamp01((sp - fadeOutStart) / (FADE * W)) * yOut;
+    return yOut;
+  };
+
+  const yIn  = reduce ? 0 : 28;
   const yOut = reduce ? 0 : -18;
-  const y0 = useTransform(raw0, [0.87, 1], [0, yOut]);
-  const y1 = useTransform(raw1, [0, 0.13, 0.87, 1], [yIn, 0, 0, yOut]);
-  const y2 = useTransform(raw2, [0, 0.13, 0.87, 1], [yIn, 0, 0, yOut]);
-  const y3 = useTransform(raw3, [0, 0.13, 0.87, 1], [yIn, 0, 0, yOut]);
-  const y4 = useTransform(raw4, [0, 0.13, 0.87, 1], [yIn, 0, 0, yOut]);
-  const y5 = useTransform(raw5, [0, 0.13, 0.87, 1], [yIn, 0, 0, yOut]);
-  const y6 = useTransform(raw6, [0, 0.13], [yIn, 0]);
+
+  const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
+  const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));
+  const op2 = useTransform(scrollYProgress, (sp) => chapOp(sp, 2));
+  const op3 = useTransform(scrollYProgress, (sp) => chapOp(sp, 3));
+  const op4 = useTransform(scrollYProgress, (sp) => chapOp(sp, 4));
+  const op5 = useTransform(scrollYProgress, (sp) => chapOp(sp, 5));
+  const op6 = useTransform(scrollYProgress, (sp) => chapOp(sp, 6));
+
+  const y0 = useTransform(scrollYProgress, (sp) => chapY(sp, 0, yIn, yOut));
+  const y1 = useTransform(scrollYProgress, (sp) => chapY(sp, 1, yIn, yOut));
+  const y2 = useTransform(scrollYProgress, (sp) => chapY(sp, 2, yIn, yOut));
+  const y3 = useTransform(scrollYProgress, (sp) => chapY(sp, 3, yIn, yOut));
+  const y4 = useTransform(scrollYProgress, (sp) => chapY(sp, 4, yIn, yOut));
+  const y5 = useTransform(scrollYProgress, (sp) => chapY(sp, 5, yIn, yOut));
+  const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
 
   return (
     <div ref={containerRef} className="relative bg-transparent" style={{ height: `${TOTAL_VH}vh` }}>
