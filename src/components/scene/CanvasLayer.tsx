@@ -51,6 +51,10 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
   );
   // loading[groupIdx] — true once fetch for that group has started
   const loadingRef  = useRef<boolean[]>(Array(N_GROUPS).fill(false));
+  // Generation counter — incremented on cleanup so in-flight fetches from
+  // a previous effect run (React StrictMode double-invoke) are discarded
+  // without duplicating the bitmap array into memory.
+  const genRef      = useRef(0);
 
   const { scrollYProgress } = useScroll();
 
@@ -116,23 +120,29 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
       if (loadingRef.current[gi]) return;
       loadingRef.current[gi] = true;
       const { path } = GROUPS[gi];
-      for (let i = 0; i < FRAME_COUNT; i++) {
-        const fi  = i;
+      const gen = genRef.current; // capture generation at load-start
+
+      const loadFrame = (fi: number): Promise<void> => {
         const pad = String(fi + 1).padStart(4, "0");
-        fetch(`/sequences/${path}/frame_${pad}.webp`)
+        return fetch(`/sequences/${path}/frame_${pad}.webp`)
           .then(r  => r.blob())
           .then(b  => createImageBitmap(b))
           .then(bmp => {
-            if (destroyed) { bmp.close(); return; }
+            // Discard if this effect run was already cleaned up (StrictMode or unmount).
+            if (destroyed || genRef.current !== gen) { bmp.close(); return; }
             bitmapsRef.current[gi][fi] = bmp;
-            // Unblock loader as soon as the very first visible frame is ready.
             if (gi === 0 && fi === 0) notifyReady();
           })
           .catch(() => {
-            // On network error for frame 0/group 0, still unblock the loader.
             if (gi === 0 && fi === 0) notifyReady();
           });
-      }
+      };
+
+      // Frame 0 loads first so notifyReady fires promptly and the canvas
+      // always has something to draw before the rest of the group arrives.
+      loadFrame(0).then(() => {
+        for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
+      });
     };
 
     // ── Group lookup from global scroll progress ─────────────────────────────
@@ -167,8 +177,17 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
       // Skip draw if frame unchanged — avoids redundant canvas writes.
       if (fi === lastFrameRef.current) return;
 
-      const bmp = bitmapsRef.current[gi][fi];
-      if (!bmp) return; // frame not yet decoded — keep previous frame visible
+      // Find the nearest loaded frame: try exact match, then search outward.
+      // This prevents frozen canvas when reversing to a group mid-load.
+      let bmp = bitmapsRef.current[gi][fi];
+      if (!bmp) {
+        for (let d = 1; d < FRAME_COUNT; d++) {
+          const lo = fi - d, hi = fi + d;
+          if (lo >= 0 && bitmapsRef.current[gi][lo]) { bmp = bitmapsRef.current[gi][lo]!; break; }
+          if (hi < FRAME_COUNT && bitmapsRef.current[gi][hi]) { bmp = bitmapsRef.current[gi][hi]!; break; }
+        }
+      }
+      if (!bmp) return; // group has zero loaded frames yet — keep previous visible
 
       lastFrameRef.current = fi;
       drawBitmap(bmp);
@@ -180,6 +199,7 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
 
     return () => {
       destroyed = true;
+      genRef.current++;            // invalidate all in-flight fetches from this run
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
       ro?.disconnect();
