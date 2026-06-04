@@ -153,6 +153,17 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
             "linear-gradient(to top, oklch(0.03 0.006 260 / 0.26), transparent)",
         }}
       />
+
+      {/* Bottom-right corner cover — hides any video watermark */}
+      <div
+        className="absolute bottom-0 right-0 pointer-events-none"
+        style={{
+          width: "280px",
+          height: "80px",
+          background:
+            "linear-gradient(135deg, transparent 0%, oklch(0.03 0.006 260 / 0.82) 55%, oklch(0.02 0.004 260 / 0.96) 100%)",
+        }}
+      />
     </div>
   );
 }
