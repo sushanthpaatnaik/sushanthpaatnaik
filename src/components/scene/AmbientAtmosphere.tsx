@@ -15,7 +15,7 @@ export default function AmbientAtmosphere() {
             "radial-gradient(circle at center, oklch(0.48 0.03 230 / 0.05), transparent 65%)",
         }}
         animate={{ opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
       />
       {/* Haze blob B — offset phase, opacity-only */}
       <motion.div
@@ -25,7 +25,7 @@ export default function AmbientAtmosphere() {
             "radial-gradient(circle at center, oklch(0.42 0.025 232 / 0.045), transparent 70%)",
         }}
         animate={{ opacity: [0.65, 1, 0.65] }}
-        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Faint vertical atmospheric depth — static, zero GPU cost */}
@@ -45,7 +45,7 @@ export default function AmbientAtmosphere() {
             "radial-gradient(ellipse 80% 60% at 50% 45%, oklch(0.58 0.03 232 / 0.055), transparent 70%)",
         }}
         animate={{ opacity: [0.55, 1, 0.55] }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Organic film grain — static, mix-blend-overlay, no animation */}

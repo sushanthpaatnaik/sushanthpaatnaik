@@ -98,7 +98,7 @@ export default function HUD({
               mixBlendMode: "screen",
             }}
             animate={{ y: ["8%", "92%"], opacity: [0, 0.85, 0] }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
         </nav>
       </div>

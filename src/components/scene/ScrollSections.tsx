@@ -293,7 +293,7 @@ function FutureContent() {
           willChange: "opacity",
         }}
         animate={{ opacity: [0.45, 0.62, 0.45] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Bottom fade — subtle depth only, no solid fill */}
@@ -360,7 +360,7 @@ function FutureContent() {
    This makes chapters feel they snap into place instantly and leave cleanly.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.15;
+const OV  = 0.11;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
 // t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %
@@ -420,8 +420,8 @@ export default function ScrollSections() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
-  const yIn  = reduce ? 0 : 14;
-  const yOut = reduce ? 0 : -7;
+  const yIn  = reduce ? 0 : 10;
+  const yOut = reduce ? 0 : -5;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));

@@ -30,8 +30,8 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
    This guarantees: background is always at least as visible as content.
    eooA = easeOutExpo — same curve as content, matching cubic-bezier(0.16,1,0.3,1).
    ─────────────────────────────────────────────────────────────────────── */
-const OV_A_IN  = 0.17;  // wider entry  — atmosphere appears before content
-const OV_A_OUT = 0.13;  // narrower exit — atmosphere holds after content fades
+const OV_A_IN  = 0.13;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.09;  // narrower exit — atmosphere holds after content fades
 const c01A = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — same curve as content, perfectly synchronised
 const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 5);
@@ -392,7 +392,7 @@ function IndustrialAtmosphere() {
             "radial-gradient(ellipse 80% 70% at 60% 45%, oklch(0.76 0.010 215 / 0.09), transparent 72%)",
         }}
         animate={reduce ? undefined : { opacity: [0.60, 0.86, 0.68, 0.94, 0.60] }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Steel-blue architectural highlight — opacity-only */}
@@ -407,7 +407,7 @@ function IndustrialAtmosphere() {
             "radial-gradient(ellipse 70% 60% at 28% 32%, oklch(0.60 0.018 220 / 0.072), transparent 78%)",
         }}
         animate={reduce ? undefined : { opacity: [0.50, 0.82, 0.50] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 7 }}
+        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
       />
     </>
   );
@@ -472,7 +472,7 @@ function EcosystemAtmosphere() {
             "radial-gradient(ellipse 58% 50% at 65% 52%, oklch(0.28 0.018 232 / 0.07), transparent 72%), radial-gradient(ellipse 36% 56% at 80% 36%, oklch(0.22 0.012 240 / 0.05), transparent 68%)",
         }}
         animate={reduce ? undefined : { opacity: [0.68, 1, 0.68] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Volumetric haze — blur on static element, no animation (cached rasterization) */}
@@ -606,7 +606,7 @@ function FutureAtmosphere() {
                 "radial-gradient(ellipse 40% 28% at 74% 20%, oklch(0.44 0.030 280 / 0.062), transparent 80%), radial-gradient(ellipse 32% 24% at 20% 34%, oklch(0.38 0.024 210 / 0.052), transparent 80%)",
             }}
             animate={{ opacity: [0.40, 1, 0.40] }}
-            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
       )}
