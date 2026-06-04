@@ -7,7 +7,6 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import founderPresence from "@/assets/founder-editorial.webp";
 import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 /* ──────────────────────────────────────────────────────────────────
@@ -109,13 +108,6 @@ function OriginContent() {
 function FounderContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pointer-events-auto">
-      {/* Portrait — dissolved into industrial darkness */}
-      <div
-        aria-hidden
-        className="absolute inset-y-[2%] left-0 w-[68%] md:w-[54%] lg:w-[46%] bg-center bg-no-repeat bg-cover opacity-[0.42] md:opacity-[0.27] [filter:grayscale(1)_contrast(1.04)_brightness(0.72)_saturate(1)_blur(2.2px)] [mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] [-webkit-mask-image:radial-gradient(ellipse_52%_62%_at_38%_40%,#000_18%,rgba(0,0,0,0.82)_44%,rgba(0,0,0,0.32)_68%,transparent_92%)] pointer-events-none"
-        style={{ backgroundImage: `url(${founderPresence})`, backgroundPosition: "center 28%" }}
-      />
-
       {/* Founder label top left */}
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
         Founder
