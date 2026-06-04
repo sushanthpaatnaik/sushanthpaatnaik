@@ -158,27 +158,14 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
       <div
         className="absolute bottom-0 right-0 pointer-events-none"
         style={{
-          width: "280px",
-          height: "80px",
+          width: "320px",
+          height: "200px",
           background:
-            "linear-gradient(135deg, transparent 0%, oklch(0.03 0.006 260 / 0.82) 55%, oklch(0.02 0.004 260 / 0.96) 100%)",
+            "radial-gradient(ellipse at 85% 80%, oklch(0.02 0.004 260 / 0.97) 0%, oklch(0.02 0.004 260 / 0.88) 28%, oklch(0.02 0.004 260 / 0.45) 55%, transparent 78%)",
+          filter: "blur(4px)",
         }}
       />
 
-      {/* Center watermark cover — soft radial matched to background, invisible at the edges */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "160px",
-          height: "160px",
-          background:
-            "radial-gradient(ellipse at center, oklch(0.025 0.005 260 / 0.96) 0%, oklch(0.025 0.005 260 / 0.80) 28%, oklch(0.025 0.005 260 / 0.30) 58%, transparent 80%)",
-          filter: "blur(6px)",
-        }}
-      />
 
     </div>
   );
