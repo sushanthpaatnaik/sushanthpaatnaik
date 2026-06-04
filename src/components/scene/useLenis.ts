@@ -12,10 +12,10 @@ export function useLenis(onScroll?: (progress: number) => void) {
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
     const lenis = new Lenis({
-      duration: isTouch ? 0 : 0.82,
-      easing: (t) => 1 - Math.pow(1 - t, 2.4),
+      duration: isTouch ? 0 : 0.65,
+      easing: (t) => 1 - Math.pow(1 - t, 2),
       smoothWheel: !isTouch,
-      wheelMultiplier: 1.0,
+      wheelMultiplier: 1.1,
       touchMultiplier: 0,
       syncTouch: false,
     });
