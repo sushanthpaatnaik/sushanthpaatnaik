@@ -7,9 +7,9 @@ import HUD from "@/components/scene/HUD";
 import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
 
-// CanvasLayer is imported directly (not lazy) so frame preloading starts
+// CinematicLayer is imported directly (not lazy) so the video starts loading
 // on the very first render — the Loader overlay holds the screen until ready.
-import CanvasLayer from "@/components/scene/CanvasLayer";
+import CinematicLayer from "@/components/scene/CinematicLayer";
 const SceneDecorations = lazy(() => import("@/components/scene/SceneDecorations"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
 const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
@@ -198,7 +198,7 @@ function Index() {
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
        *
-       *  z-[1]  CanvasLayer         — image sequence, scroll → frame index
+       *  z-[1]  CinematicLayer      — one video, scroll → currentTime
        *  z-[2]  SceneDecorations    — particles, globe, recognition ambient
        *  z-[2]  ChapterAtmosphere   — CSS/gradient per-chapter identity
        *  z-[3]  AmbientAtmosphere   — slow-breathing haze blobs
@@ -208,8 +208,8 @@ function Index() {
        * Nav / HUD / MobileCTABar use their own high z-indexes (50+).
        */}
 
-      {/* CanvasLayer renders immediately so frame preloading starts on first paint. */}
-      <CanvasLayer
+      {/* CinematicLayer renders immediately so the video starts buffering on first paint. */}
+      <CinematicLayer
         onReady={() => setVideoReady(true)}
       />
 
