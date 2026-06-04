@@ -93,7 +93,7 @@ function OriginContent() {
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 pointer-events-auto">
       {/* Origin: dark cosmic background — gentle center shield for the headline */}
       <ContentShield align="center" strength={0.52} />
-      <div className="relative z-10 max-w-4xl text-center" style={{ transform: "translateX(-2vw)" }}>
+      <div className="relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
         <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
           <span className="h-px w-8 bg-foreground/20" />
