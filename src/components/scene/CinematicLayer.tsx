@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion, useScroll } from "framer-motion";
 import sceneSpark from "@/assets/story-01-spark.webp";
+import bgVideo from "@/assets/sp-background-video.mp4";
 
 interface CinematicLayerProps {
   /** Fires once when the video has enough data to play through (canplaythrough).
@@ -120,7 +121,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
             filter: "brightness(0.80) contrast(1.04) saturate(0.84)",
           }}
         >
-          <source src="/videos/sp-background-video.mp4" type="video/mp4" />
+          <source src={bgVideo} type="video/mp4" />
         </video>
       )}
 

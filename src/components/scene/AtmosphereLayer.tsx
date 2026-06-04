@@ -4,6 +4,7 @@ import EarthGlobe from "./EarthGlobe";
 import RecognitionAmbient from "./RecognitionAmbient";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
+import bgVideo from "@/assets/sp-background-video.mp4";
 import sceneSpark from "@/assets/story-01-spark.webp";
 import sceneMaterial from "@/assets/story-03-material.webp";
 import sceneIndustrial from "@/assets/story-04.1-industrial.webp";
@@ -141,7 +142,7 @@ export default function AtmosphereLayer() {
       scenes={SCENES}
       overlayStops={OVERLAY_STOPS}
       phaseSource={phase}
-      globalVideoSrc="/videos/sp-background-video.mp4"
+      globalVideoSrc={bgVideo}
     >
       {({ progress, phase }) => (
         <>
