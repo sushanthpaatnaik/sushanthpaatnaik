@@ -141,7 +141,7 @@ export default function AtmosphereLayer() {
       scenes={SCENES}
       overlayStops={OVERLAY_STOPS}
       phaseSource={phase}
-      globalVideoSrc="/videos/cinematic-homepage.mp4"
+      globalVideoSrc="/videos/sp-background-video.mp4"
     >
       {({ progress, phase }) => (
         <>

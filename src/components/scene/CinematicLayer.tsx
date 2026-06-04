@@ -120,7 +120,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
             filter: "brightness(0.80) contrast(1.04) saturate(0.84)",
           }}
         >
-          <source src="/videos/cinematic-homepage.mp4" type="video/mp4" />
+          <source src="/videos/sp-background-video.mp4" type="video/mp4" />
         </video>
       )}
 
