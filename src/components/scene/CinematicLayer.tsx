@@ -165,6 +165,21 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         }}
       />
 
+      {/* Center watermark cover — soft radial matched to background, invisible at the edges */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "160px",
+          height: "160px",
+          background:
+            "radial-gradient(ellipse at center, oklch(0.025 0.005 260 / 0.96) 0%, oklch(0.025 0.005 260 / 0.80) 28%, oklch(0.025 0.005 260 / 0.30) 58%, transparent 80%)",
+          filter: "blur(6px)",
+        }}
+      />
+
     </div>
   );
 }
