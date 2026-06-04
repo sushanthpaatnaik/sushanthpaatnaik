@@ -17,7 +17,7 @@ function getChapterFromProgress(sp: number): number {
   // crosses 55 % of its band start (earlier = feels laggy, later = snappy).
   for (let i = N_CHAPTERS - 1; i >= 0; i--) {
     const [bIn, bOut] = CHAPTER_BANDS[i];
-    const threshold = i === 0 ? 0 : bIn + (bOut - bIn) * 0.15;
+    const threshold = i === 0 ? 0 : bIn + (bOut - bIn) * 0.05;
     if (sp >= threshold) return i;
   }
   return 0;
