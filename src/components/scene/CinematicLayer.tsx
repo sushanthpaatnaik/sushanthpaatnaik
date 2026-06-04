@@ -120,30 +120,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         </video>
       )}
 
-      {/* Watermark eraser — blur only, no colour, masked edges.
-          backdrop-filter smears the star's pixels into surrounding video
-          content. Radial mask dissolves the boundary so no circle is visible. */}
-      {!reduce && (
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "130px",
-            height: "130px",
-            backdropFilter: "blur(22px)",
-            WebkitBackdropFilter: "blur(22px)",
-            maskImage:
-              "radial-gradient(circle, black 20%, transparent 70%)",
-            WebkitMaskImage:
-              "radial-gradient(circle, black 20%, transparent 70%)",
-          }}
-        />
-      )}
-
-      {/* Text readability — darkens sky/highlights without crushing blacks */}
+{/* Text readability — darkens sky/highlights without crushing blacks */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
