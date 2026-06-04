@@ -138,6 +138,15 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         }}
       />
 
+      {/* Bottom-right corner deepener — extends natural vignette over watermark zone */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 38% 32% at 100% 100%, oklch(0.01 0.003 260 / 0.97) 0%, oklch(0.01 0.003 260 / 0.72) 38%, transparent 72%)",
+        }}
+      />
+
       {/* Top / bottom cinematic letterbox frames */}
       <div
         className="absolute inset-x-0 top-0 h-28 pointer-events-none"
