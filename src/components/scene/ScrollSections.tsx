@@ -35,7 +35,8 @@ const gateways = [
    Scroll progress bar
    ────────────────────────────────────────────────────────────────── */
 function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
-  const scaleX = useSpring(progress, { stiffness: 60, damping: 32, mass: 0.5 });
+  // Tight spring so the bar tracks scroll with <1 frame of visual lag.
+  const scaleX = useSpring(progress, { stiffness: 380, damping: 38, mass: 0.18 });
   return (
     <div
       className="fixed left-0 right-0 top-0 z-[55] h-px bg-foreground/[0.04]"
@@ -362,15 +363,18 @@ function FutureContent() {
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
-   OV = 0.15 → Enter 0–15 %, Active 15–85 %, Exit 85–100 % of band width.
+   OV = 0.12 → Enter 0–12 %, Active 12–88 %, Exit 88–100 % of band width.
    Chapter bands are non-uniform (Industrial gets ~83 % more space than avg).
    Background leads content by 2 pp; holds 2 pp longer (OV_A_IN/OV_A_OUT).
-   eoo = easeOutCubic ≈ cubic-bezier(0.22, 1, 0.36, 1).
+   eoo = easeOutExpo ≈ cubic-bezier(0.16, 1, 0.3, 1).
+   At t=0.10 → 50 % opacity; t=0.30 → 88 %; t=0.50 → 97 %.
+   This makes chapters feel they snap into place instantly and leave cleanly.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.15;
+const OV  = 0.12;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
-const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 3);
+// easeOutExpo: very fast initial snap, clean tail — matches cubic-bezier(0.16,1,0.3,1)
+const eoo = (t: number): number => t >= 1 ? 1 : 1 - Math.pow(2, -10 * c01(t));
 
 function chapOp(sp: number, n: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
@@ -426,8 +430,8 @@ export default function ScrollSections() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
-  const yIn  = reduce ? 0 : 24;
-  const yOut = reduce ? 0 : -12;
+  const yIn  = reduce ? 0 : 16;
+  const yOut = reduce ? 0 : -8;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
   const op1 = useTransform(scrollYProgress, (sp) => chapOp(sp, 1));

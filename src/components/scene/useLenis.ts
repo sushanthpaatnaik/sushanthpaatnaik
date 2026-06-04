@@ -12,13 +12,16 @@ export function useLenis(onScroll?: (progress: number) => void) {
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
     const lenis = new Lenis({
-      // Smooth wheel glide on desktop; instant on touch (native handles it).
-      duration: isTouch ? 0 : 1.45,
-      easing: (t) => 1 - Math.pow(1 - t, 3.2),
+      // Reduced from 1.45 → 1.05: noticeably faster chapter-to-chapter
+      // response while retaining the premium glide feel. The exponent is
+      // reduced slightly (3.2→2.8) so momentum bleeds off quicker on direction
+      // reversal — eliminating the coasting-through-a-chapter feeling.
+      duration: isTouch ? 0 : 1.05,
+      easing: (t) => 1 - Math.pow(1 - t, 2.8),
       smoothWheel: !isTouch,
-      wheelMultiplier: 0.82,
-      touchMultiplier: 0,     // 0 = Lenis does not process touch events
-      syncTouch: false,        // never intercept native touch scroll
+      wheelMultiplier: 0.92,   // 0.82→0.92: more travel per tick
+      touchMultiplier: 0,
+      syncTouch: false,
     });
     lenisRef.current = lenis;
 

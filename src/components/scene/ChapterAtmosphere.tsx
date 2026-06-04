@@ -38,15 +38,16 @@ function useMobile() {
 
 /* ─── Atmosphere scroll-progress opacity ────────────────────────────────
    Uses the same CHAPTER_BANDS as content — identical boundaries.
-   OV_A_IN  = 0.17 → atmosphere enters 2 pp before content (OV=0.15 + 2 pp).
-   OV_A_OUT = 0.13 → atmosphere holds 2 pp after content (OV=0.15 - 2 pp).
+   OV_A_IN  = 0.14 → atmosphere enters 2 pp before content (OV=0.12 + 2 pp).
+   OV_A_OUT = 0.10 → atmosphere holds 2 pp after content (OV=0.12 - 2 pp).
    This guarantees: background is always at least as visible as content.
-   eooA = easeOutCubic — same curve as content.
+   eooA = easeOutExpo — same curve as content, matching cubic-bezier(0.16,1,0.3,1).
    ─────────────────────────────────────────────────────────────────────── */
-const OV_A_IN  = 0.17;  // wider entry  — atmosphere appears before content
-const OV_A_OUT = 0.13;  // narrower exit — atmosphere holds after content fades
+const OV_A_IN  = 0.14;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.10;  // narrower exit — atmosphere holds after content fades
 const c01A = (v: number) => Math.max(0, Math.min(1, v));
-const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 3);
+// easeOutExpo: fast snap on entry, clean tail on exit — prevents background lag
+const eooA = (t: number) => t >= 1 ? 1 : 1 - Math.pow(2, -10 * c01A(t));
 
 function atmoOp(sp: number, n: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
