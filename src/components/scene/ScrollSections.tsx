@@ -14,8 +14,8 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
    Homepage = single sticky cinematic stage.
    Seven chapters. One viewport. Scroll is the timeline.
 
-   Each chapter occupies ~217 vh of scroll travel.
-   OV=0.18 → 18 % fade window (39 vh). Active hold: 178 vh.
+   Each chapter occupies ~217 vh of scroll travel (Industrial: ~336 vh).
+   OV=0.15 → 15 % fade window. Active hold: 70 % of band.
    Future Systems holds at full opacity to close the documentary.
    ────────────────────────────────────────────────────────────────── */
 
@@ -362,13 +362,13 @@ function FutureContent() {
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
-   OV = 0.18 → each fade window is 18 % of its chapter band width.
-   Chapter bands are non-uniform (Industrial gets ~46 % more space).
-   Background leads content by 2 % of band width; holds 2 % longer.
+   OV = 0.15 → Enter 0–15 %, Active 15–85 %, Exit 85–100 % of band width.
+   Chapter bands are non-uniform (Industrial gets ~83 % more space than avg).
+   Background leads content by 2 pp; holds 2 pp longer (OV_A_IN/OV_A_OUT).
    eoo = easeOutCubic ≈ cubic-bezier(0.22, 1, 0.36, 1).
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.18;
+const OV  = 0.15;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 3);
 

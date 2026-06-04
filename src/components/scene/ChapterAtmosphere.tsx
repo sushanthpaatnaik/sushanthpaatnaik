@@ -38,13 +38,13 @@ function useMobile() {
 
 /* ─── Atmosphere scroll-progress opacity ────────────────────────────────
    Uses the same CHAPTER_BANDS as content — identical boundaries.
-   OV_A_IN  = 0.20 → atmosphere enters 2 % of band-width before content.
-   OV_A_OUT = 0.16 → atmosphere holds 2 % of band-width longer than content.
+   OV_A_IN  = 0.17 → atmosphere enters 2 pp before content (OV=0.15 + 2 pp).
+   OV_A_OUT = 0.13 → atmosphere holds 2 pp after content (OV=0.15 - 2 pp).
    This guarantees: background is always at least as visible as content.
    eooA = easeOutCubic — same curve as content.
    ─────────────────────────────────────────────────────────────────────── */
-const OV_A_IN  = 0.20;  // wider entry  — atmosphere appears before content
-const OV_A_OUT = 0.16;  // narrower exit — atmosphere holds after content fades
+const OV_A_IN  = 0.17;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.13;  // narrower exit — atmosphere holds after content fades
 const c01A = (v: number) => Math.max(0, Math.min(1, v));
 const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 3);
 
@@ -554,26 +554,47 @@ function EcosystemAtmosphere() {
   );
 }
 
-// Pre-computed star field — deterministic positions, 3 luminosity classes + super-bright.
+// Pre-computed star field — deterministic positions, 4 luminosity classes + navigational stars.
 // Module-level constant so it is never re-allocated on re-renders.
+// Density: ~120 faint + 20 mid + 12 bright + 4 super + 2 navigational.
 const STAR_FIELD_SVG =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='700'>" +
   "<g fill='white'>" +
-  "<g fill-opacity='0.42'>" +
+  // Faint background stars — dense field, 0.6r
+  "<g fill-opacity='0.38'>" +
   "<circle cx='22' cy='15' r='0.6'/><circle cx='163' cy='9' r='0.6'/><circle cx='318' cy='22' r='0.6'/><circle cx='461' cy='14' r='0.6'/><circle cx='614' cy='81' r='0.6'/><circle cx='751' cy='62' r='0.6'/><circle cx='918' cy='74' r='0.6'/>" +
-  "<circle cx='78' cy='138' r='0.6'/><circle cx='228' cy='132' r='0.6'/><circle cx='384' cy='109' r='0.6'/><circle cx='524' cy='176' r='0.6'/><circle cx='672' cy='162' r='0.6'/><circle cx='814' cy='145' r='0.6'/>" +
-  "<circle cx='58' cy='218' r='0.6'/><circle cx='209' cy='236' r='0.6'/><circle cx='364' cy='245' r='0.6'/><circle cx='518' cy='221' r='0.6'/><circle cx='669' cy='290' r='0.6'/><circle cx='808' cy='268' r='0.6'/>" +
-  "<circle cx='42' cy='312' r='0.6'/><circle cx='194' cy='328' r='0.6'/><circle cx='349' cy='338' r='0.6'/><circle cx='502' cy='352' r='0.6'/><circle cx='654' cy='318' r='0.6'/><circle cx='794' cy='342' r='0.6'/>" +
-  "<circle cx='65' cy='418' r='0.6'/><circle cx='216' cy='434' r='0.6'/><circle cx='370' cy='443' r='0.6'/><circle cx='526' cy='412' r='0.6'/><circle cx='679' cy='483' r='0.6'/><circle cx='828' cy='464' r='0.6'/>" +
-  "<circle cx='34' cy='518' r='0.6'/><circle cx='186' cy='536' r='0.6'/><circle cx='342' cy='548' r='0.6'/><circle cx='497' cy='522' r='0.6'/><circle cx='648' cy='594' r='0.6'/><circle cx='798' cy='572' r='0.6'/>" +
-  "<circle cx='52' cy='628' r='0.6'/><circle cx='205' cy='644' r='0.6'/><circle cx='361' cy='654' r='0.6'/><circle cx='517' cy='634' r='0.6'/><circle cx='671' cy='648' r='0.6'/><circle cx='824' cy='656' r='0.6'/>" +
-  "</g><g fill-opacity='0.70'>" +
+  "<circle cx='78' cy='138' r='0.6'/><circle cx='228' cy='132' r='0.6'/><circle cx='384' cy='109' r='0.6'/><circle cx='524' cy='176' r='0.6'/><circle cx='672' cy='162' r='0.6'/><circle cx='814' cy='145' r='0.6'/><circle cx='962' cy='112' r='0.6'/>" +
+  "<circle cx='58' cy='218' r='0.6'/><circle cx='209' cy='236' r='0.6'/><circle cx='364' cy='245' r='0.6'/><circle cx='518' cy='221' r='0.6'/><circle cx='669' cy='290' r='0.6'/><circle cx='808' cy='268' r='0.6'/><circle cx='944' cy='194' r='0.6'/>" +
+  "<circle cx='42' cy='312' r='0.6'/><circle cx='194' cy='328' r='0.6'/><circle cx='349' cy='338' r='0.6'/><circle cx='502' cy='352' r='0.6'/><circle cx='654' cy='318' r='0.6'/><circle cx='794' cy='342' r='0.6'/><circle cx='878' cy='298' r='0.6'/>" +
+  "<circle cx='65' cy='418' r='0.6'/><circle cx='216' cy='434' r='0.6'/><circle cx='370' cy='443' r='0.6'/><circle cx='526' cy='412' r='0.6'/><circle cx='679' cy='483' r='0.6'/><circle cx='828' cy='464' r='0.6'/><circle cx='934' cy='436' r='0.6'/>" +
+  "<circle cx='34' cy='518' r='0.6'/><circle cx='186' cy='536' r='0.6'/><circle cx='342' cy='548' r='0.6'/><circle cx='497' cy='522' r='0.6'/><circle cx='648' cy='594' r='0.6'/><circle cx='798' cy='572' r='0.6'/><circle cx='912' cy='548' r='0.6'/>" +
+  "<circle cx='52' cy='628' r='0.6'/><circle cx='205' cy='644' r='0.6'/><circle cx='361' cy='654' r='0.6'/><circle cx='517' cy='634' r='0.6'/><circle cx='671' cy='648' r='0.6'/><circle cx='824' cy='656' r='0.6'/><circle cx='968' cy='632' r='0.6'/>" +
+  // Extra faint scatter — fills gaps for deep-space density
+  "<circle cx='130' cy='52' r='0.5'/><circle cx='255' cy='68' r='0.5'/><circle cx='400' cy='46' r='0.5'/><circle cx='542' cy='58' r='0.5'/><circle cx='840' cy='28' r='0.5'/><circle cx='980' cy='42' r='0.5'/>" +
+  "<circle cx='106' cy='172' r='0.5'/><circle cx='296' cy='158' r='0.5'/><circle cx='456' cy='148' r='0.5'/><circle cx='608' cy='122' r='0.5'/><circle cx='762' cy='106' r='0.5'/><circle cx='888' cy='136' r='0.5'/>" +
+  "<circle cx='148' cy='282' r='0.5'/><circle cx='308' cy='274' r='0.5'/><circle cx='468' cy='306' r='0.5'/><circle cx='626' cy='378' r='0.5'/><circle cx='786' cy='394' r='0.5'/><circle cx='922' cy='366' r='0.5'/>" +
+  "<circle cx='172' cy='394' r='0.5'/><circle cx='332' cy='456' r='0.5'/><circle cx='484' cy='468' r='0.5'/><circle cx='642' cy='436' r='0.5'/><circle cx='854' cy='514' r='0.5'/><circle cx='976' cy='494' r='0.5'/>" +
+  "<circle cx='118' cy='484' r='0.5'/><circle cx='272' cy='498' r='0.5'/><circle cx='428' cy='514' r='0.5'/><circle cx='588' cy='526' r='0.5'/><circle cx='738' cy='496' r='0.5'/><circle cx='896' cy='508' r='0.5'/>" +
+  "</g>" +
+  // Mid-brightness stars
+  "<g fill-opacity='0.70'>" +
   "<circle cx='89' cy='47' r='1'/><circle cx='688' cy='35' r='1'/><circle cx='149' cy='94' r='1'/><circle cx='738' cy='188' r='1'/><circle cx='438' cy='284' r='1'/><circle cx='744' cy='232' r='1'/><circle cx='116' cy='348' r='1'/><circle cx='578' cy='387' r='1'/><circle cx='447' cy='478' r='1'/><circle cx='574' cy='558' r='1'/><circle cx='108' cy='554' r='1'/><circle cx='283' cy='678' r='1'/><circle cx='749' cy='686' r='1'/><circle cx='958' cy='158' r='1'/><circle cx='952' cy='276' r='1'/>" +
-  "</g><g fill-opacity='0.88'>" +
+  "<circle cx='336' cy='72' r='1'/><circle cx='536' cy='128' r='1'/><circle cx='836' cy='92' r='1'/><circle cx='248' cy='462' r='1'/><circle cx='862' cy='582' r='1'/>" +
+  "</g>" +
+  // Bright stars
+  "<g fill-opacity='0.88'>" +
   "<circle cx='301' cy='131' r='1.5'/><circle cx='489' cy='184' r='1.5'/><circle cx='91' cy='278' r='1.5'/><circle cx='627' cy='93' r='1.5'/><circle cx='198' cy='341' r='1.5'/><circle cx='566' cy='267' r='1.5'/><circle cx='755' cy='211' r='1.5'/><circle cx='423' cy='482' r='1.5'/>" +
-  "</g><g fill-opacity='0.95'>" +
-  "<circle cx='312' cy='244' r='2'/><circle cx='664' cy='358' r='2'/>" +
-  "</g></g></svg>";
+  "<circle cx='182' cy='56' r='1.5'/><circle cx='872' cy='144' r='1.5'/><circle cx='692' cy='454' r='1.5'/><circle cx='344' cy='596' r='1.5'/>" +
+  "</g>" +
+  // Super-bright stars
+  "<g fill-opacity='0.96'>" +
+  "<circle cx='312' cy='244' r='2'/><circle cx='664' cy='358' r='2'/><circle cx='138' cy='178' r='2'/><circle cx='826' cy='316' r='2'/>" +
+  "</g>" +
+  // Navigational / focal stars — largest, with subtle diffraction feel
+  "<g fill-opacity='1'>" +
+  "<circle cx='468' cy='112' r='2.4'/><circle cx='722' cy='486' r='2.2'/>" +
+  "</g>" +
+  "</g></svg>";
 
 function FutureAtmosphere() {
   const reduce = useReducedMotion();
@@ -581,10 +602,10 @@ function FutureAtmosphere() {
     <>
       {/* Deep space ceiling — cool blue-black grounds the upper frame */}
       <div
-        className="absolute inset-x-0 top-0 h-[62%]"
+        className="absolute inset-x-0 top-0 h-[68%]"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.04 0.010 260 / 0.42) 0%, transparent 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.012 262 / 0.55) 0%, oklch(0.04 0.010 260 / 0.22) 55%, transparent 100%)",
         }}
       />
 
@@ -596,18 +617,29 @@ function FutureAtmosphere() {
           backgroundSize: "cover",
           backgroundPosition: "center top",
           backgroundRepeat: "no-repeat",
-          opacity: 0.90,
+          opacity: 0.92,
         }}
       />
 
-      {/* Milky Way band — faint tilted diffusion haze */}
+      {/* Milky Way band — faint tilted diffusion haze crossing the field */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "linear-gradient(148deg, transparent 18%, oklch(0.56 0.018 260 / 0.050) 36%, oklch(0.68 0.022 248 / 0.080) 50%, oklch(0.56 0.018 260 / 0.050) 64%, transparent 82%)",
-          filter: "blur(22px)",
+            "linear-gradient(148deg, transparent 18%, oklch(0.56 0.018 260 / 0.055) 34%, oklch(0.68 0.022 248 / 0.090) 50%, oklch(0.56 0.018 260 / 0.055) 66%, transparent 82%)",
+          filter: "blur(24px)",
         }}
+      />
+
+      {/* Planetary arc — horizon curvature at the bottom of the frame */}
+      <PlanetaryArc />
+
+      {/* Orbital rings — concentric ellipses rising from the limb */}
+      <OrbitalRings
+        cx="50%"
+        cy="112%"
+        radii={[68, 84, 102, 122, 144]}
+        stroke="oklch(0.76 0.022 232 / 0.09)"
       />
 
       {/* Earth atmospheric glow — horizon limb light from the bottom */}
@@ -615,23 +647,32 @@ function FutureAtmosphere() {
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 70% 40% at 50% 100%, oklch(0.45 0.04 232 / 0.12), transparent 70%)",
+            "radial-gradient(ellipse 80% 45% at 50% 100%, oklch(0.46 0.042 232 / 0.15), transparent 68%)",
         }}
       />
 
-      {/* Nebula accent — slow-breathing cool/warm depth pair */}
+      {/* Nebula depth pair — slow-breathing cool/warm accent */}
       {!reduce && (
         <motion.div
           className="absolute inset-0 mix-blend-screen"
           style={{
             background:
-              "radial-gradient(ellipse 38% 26% at 72% 22%, oklch(0.42 0.028 280 / 0.055), transparent 80%), radial-gradient(ellipse 30% 22% at 22% 36%, oklch(0.38 0.022 210 / 0.048), transparent 80%)",
-            filter: "blur(30px)",
+              "radial-gradient(ellipse 40% 28% at 74% 20%, oklch(0.44 0.030 280 / 0.062), transparent 80%), radial-gradient(ellipse 32% 24% at 20% 34%, oklch(0.38 0.024 210 / 0.052), transparent 80%)",
+            filter: "blur(32px)",
           }}
-          animate={{ opacity: [0.45, 1, 0.45] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ opacity: [0.40, 1, 0.40] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
         />
       )}
+
+      {/* Soft far-depth vignette — increases perceived planetary scale */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 85% at 50% 30%, transparent 42%, oklch(0.02 0.008 260 / 0.28) 100%)",
+        }}
+      />
     </>
   );
 }

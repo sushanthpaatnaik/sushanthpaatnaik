@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValueEvent } from "framer-motion";
-import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
+import { useRef, useState } from "react";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 const chapters = [
   { id: "spark", label: "Origin" },
@@ -12,6 +12,17 @@ const chapters = [
   { id: "future", label: "Future Systems" },
 ];
 
+function getChapterFromProgress(sp: number): number {
+  // Use band midpoints as chapter centers — chapter is active once scroll
+  // crosses 55 % of its band start (earlier = feels laggy, later = snappy).
+  for (let i = N_CHAPTERS - 1; i >= 0; i--) {
+    const [bIn, bOut] = CHAPTER_BANDS[i];
+    const threshold = i === 0 ? 0 : bIn + (bOut - bIn) * 0.15;
+    if (sp >= threshold) return i;
+  }
+  return 0;
+}
+
 export default function HUD({
   scrollProgress: _scrollProgress,
 }: {
@@ -19,38 +30,15 @@ export default function HUD({
 }) {
   const [idx, setIdx] = useState(0);
   const lastIdx = useRef(0);
-  const phase = useChapterPhase(HOME_CHAPTER_IDS);
+  const { scrollYProgress } = useScroll();
 
-  useMotionValueEvent(phase, "change", (v) => {
-    const cur = lastIdx.current;
-    // Use a 0.82 threshold (not 0.50) so the chapter label only advances once
-    // the next section is actually entering the viewport. This prevents the HUD
-    // from switching to "Future Systems" during the long pause interstitial where
-    // the Future section center becomes geometrically closer before it is visible.
-    const ADVANCE = 0.82;
-    let next = cur;
-    if (v >= cur + ADVANCE && cur < chapters.length - 1) next = cur + 1;
-    else if (v <= cur - ADVANCE && cur > 0) next = cur - 1;
-    // Large jump (anchor nav / restoring scroll): fall back to nearest round
-    if (Math.abs(Math.round(v) - cur) > 1) next = Math.min(chapters.length - 1, Math.max(0, Math.round(v)));
-    if (next !== cur) {
-      lastIdx.current = next;
-      setIdx(next);
-    }
-  });
-
-  useEffect(() => {
-    // Initial sync (motion value may already be at a non-zero value on mount
-    // when navigating back to the page mid-scroll).
-    const next = Math.min(
-      chapters.length - 1,
-      Math.max(0, Math.round(phase.get())),
-    );
+  useMotionValueEvent(scrollYProgress, "change", (sp) => {
+    const next = getChapterFromProgress(sp);
     if (next !== lastIdx.current) {
       lastIdx.current = next;
       setIdx(next);
     }
-  }, [phase]);
+  });
 
 
 
