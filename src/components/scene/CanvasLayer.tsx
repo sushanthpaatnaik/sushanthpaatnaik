@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
-import { useReducedMotion, useScroll } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
+import type Lenis from "lenis";
 import sceneSpark from "@/assets/story-01-spark.webp";
 
 // ─── Sequence groups ────────────────────────────────────────────────────────
@@ -22,6 +23,7 @@ type Bitmaps = (ImageBitmap | null)[][];
 
 interface CanvasLayerProps {
   onReady?: () => void;
+  lenisRef?: React.MutableRefObject<Lenis | null>;
 }
 
 /**
@@ -37,7 +39,7 @@ interface CanvasLayerProps {
  * Draw: object-fit:cover with DPR-correct canvas buffer.
  * Reduced-motion: static poster, no canvas.
  */
-export default function CanvasLayer({ onReady }: CanvasLayerProps) {
+export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const reduce       = useReducedMotion();
   const rafRef       = useRef(0);
@@ -55,8 +57,6 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
   // a previous effect run (React StrictMode double-invoke) are discarded
   // without duplicating the bitmap array into memory.
   const genRef      = useRef(0);
-
-  const { scrollYProgress } = useScroll();
 
   // Reduced-motion path — no canvas, signal ready immediately.
   useEffect(() => {
@@ -157,7 +157,14 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
     const tick = () => {
       if (!destroyed) rafRef.current = requestAnimationFrame(tick);
 
-      const sp  = Math.max(0, Math.min(scrollYProgress.get(), 1));
+      // Read lenis.targetScroll (raw user intent, no smoothing applied) so
+      // frame updates are decoupled from Lenis easing — under-16ms latency.
+      // Falls back to window.scrollY when Lenis isn't ready yet.
+      const lenis = lenisRef?.current;
+      const rawSp = lenis && lenis.limit > 0
+        ? lenis.targetScroll / lenis.limit
+        : window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const sp  = Math.max(0, Math.min(rawSp, 1));
       const gi  = getGroupIdx(sp);
       const grp = GROUPS[gi];
 
@@ -210,7 +217,7 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
       lastFrameRef.current = -1;
       lastGroupRef.current = -1;
     };
-  }, [reduce, scrollYProgress, onReady]);
+  }, [reduce, lenisRef, onReady]);
 
   return (
     <div

@@ -211,6 +211,7 @@ function Index() {
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
         onReady={() => setVideoReady(true)}
+        lenisRef={lenisRef}
       />
 
       {scenesReady && entered && (
