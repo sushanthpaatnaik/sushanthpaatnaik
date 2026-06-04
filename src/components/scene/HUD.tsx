@@ -140,7 +140,7 @@ function ChapterMarker({
         transition={{
           opacity: active
             ? { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
-            : { duration: 0.9, ease: [0.19, 1, 0.22, 1] },
+            : { duration: 0.8, ease: [0.19, 1, 0.22, 1] },
         }}
       />
 
@@ -158,7 +158,7 @@ function ChapterMarker({
             opacity: active ? 1 : 0,
             scale: active ? 1 : 1.5,
           }}
-          transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 0.72, ease: [0.19, 1, 0.22, 1] }}
         />
 
         {/* Core dot */}
@@ -180,7 +180,7 @@ function ChapterMarker({
               ? "oklch(0.97 0.0 0)"
               : "oklch(0.55 0.0 0 / 0.38)",
           }}
-          transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 0.72, ease: [0.19, 1, 0.22, 1] }}
         />
       </div>
 
@@ -192,7 +192,7 @@ function ChapterMarker({
           opacity: active ? 0.98 : visible ? (hovered ? 0.9 : 0.62) : 0.36,
           x: active ? 1 : 0,
         }}
-        transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
+        transition={{ duration: 0.76, ease: [0.19, 1, 0.22, 1] }}
       >
 
         {/* Chapter label — reveals on active / hover */}
@@ -208,7 +208,7 @@ function ChapterMarker({
             opacity: showLabel ? 1 : 0,
             x: showLabel ? 0 : -6,
           }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 0.63, ease: [0.19, 1, 0.22, 1] }}
         >
           {chapter.label}
         </motion.span>

@@ -360,7 +360,7 @@ function FutureContent() {
    This makes chapters feel they snap into place instantly and leave cleanly.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.08;
+const OV  = 0.07;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
 // t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %
