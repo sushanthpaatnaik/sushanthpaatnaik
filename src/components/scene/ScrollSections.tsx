@@ -31,29 +31,68 @@ const gateways = [
 
 /* ──────────────────────────────────────────────────────────────────
    Cinematic content protection gradient
-   Darkens only the side where the text column sits — no card, no box.
-   "align" controls which side the dark end faces.
-   "strength" scales the peak opacity (0 → 1).
+   Film-style scrim — no card, no box, no border.
+
+   Left/Right: multi-stop linear dissolve from the text column edge
+   toward the subject, peak rgba(0,0,0, strength), transparent by 82%.
+
+   Center: radial headline shield + vertical body-copy lift so all
+   three text sizes (h1/h2, body, mono) clear WCAG AA contrast.
+
+   strength tuning:
+     bright backgrounds (metallic, industrial)  → 0.78–0.84
+     mid backgrounds (founder, ecosystem)       → 0.62–0.70
+     dark backgrounds (origin, recognition,
+                       future)                  → 0.52–0.58
    ────────────────────────────────────────────────────────────────── */
 function ContentShield({
   align = "left" as "left" | "right" | "center",
-  strength = 0.65,
+  strength = 0.72,
 }: {
   align?: "left" | "right" | "center";
   strength?: number;
 }) {
-  const a = strength;
+  const s = strength;
+  const o = (v: number) => (s * v).toFixed(2);
   let bg: string;
+
   if (align === "left") {
-    // Dark on left (text side), dissolves right.
-    bg = `linear-gradient(90deg, rgba(0,0,0,${(a * 0.96).toFixed(2)}) 0%, rgba(0,0,0,${(a * 0.72).toFixed(2)}) 22%, rgba(0,0,0,${(a * 0.42).toFixed(2)}) 48%, rgba(0,0,0,${(a * 0.14).toFixed(2)}) 68%, transparent 84%)`;
+    bg = `linear-gradient(90deg,
+      rgba(0,0,0,${o(1.00)})  0%,
+      rgba(0,0,0,${o(0.97)})  8%,
+      rgba(0,0,0,${o(0.88)}) 20%,
+      rgba(0,0,0,${o(0.72)}) 34%,
+      rgba(0,0,0,${o(0.50)}) 48%,
+      rgba(0,0,0,${o(0.28)}) 60%,
+      rgba(0,0,0,${o(0.10)}) 72%,
+      transparent            82%)`;
   } else if (align === "right") {
-    // Dark on right (text side), dissolves left.
-    bg = `linear-gradient(270deg, rgba(0,0,0,${(a * 0.96).toFixed(2)}) 0%, rgba(0,0,0,${(a * 0.72).toFixed(2)}) 22%, rgba(0,0,0,${(a * 0.42).toFixed(2)}) 48%, rgba(0,0,0,${(a * 0.14).toFixed(2)}) 68%, transparent 84%)`;
+    bg = `linear-gradient(270deg,
+      rgba(0,0,0,${o(1.00)})  0%,
+      rgba(0,0,0,${o(0.97)})  8%,
+      rgba(0,0,0,${o(0.88)}) 20%,
+      rgba(0,0,0,${o(0.72)}) 34%,
+      rgba(0,0,0,${o(0.50)}) 48%,
+      rgba(0,0,0,${o(0.28)}) 60%,
+      rgba(0,0,0,${o(0.10)}) 72%,
+      transparent            82%)`;
   } else {
-    // Center: symmetric radial — text in the middle, imagery at edges.
-    bg = `radial-gradient(ellipse 88% 82% at 50% 50%, rgba(0,0,0,${(a * 0.62).toFixed(2)}) 0%, rgba(0,0,0,${(a * 0.44).toFixed(2)}) 35%, rgba(0,0,0,${(a * 0.18).toFixed(2)}) 62%, transparent 80%)`;
+    // Radial covers headline zone; vertical lift covers body-copy rows below.
+    bg = [
+      `radial-gradient(ellipse 78% 68% at 50% 46%,
+        rgba(0,0,0,${o(0.82)})  0%,
+        rgba(0,0,0,${o(0.62)}) 22%,
+        rgba(0,0,0,${o(0.36)}) 50%,
+        rgba(0,0,0,${o(0.10)}) 70%,
+        transparent            82%)`,
+      `linear-gradient(180deg,
+        transparent            15%,
+        rgba(0,0,0,${o(0.18)}) 45%,
+        rgba(0,0,0,${o(0.34)}) 72%,
+        rgba(0,0,0,${o(0.44)}) 100%)`,
+    ].join(", ");
   }
+
   return (
     <div
       aria-hidden
@@ -91,8 +130,8 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
 function OriginContent() {
   return (
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 pointer-events-auto">
-      {/* Origin: dark cosmic background — gentle center shield for the headline */}
-      <ContentShield align="center" strength={0.52} />
+      {/* Origin: dark cosmic background — moderate center shield */}
+      <ContentShield align="center" strength={0.56} />
       <div className="relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
         <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
@@ -142,7 +181,7 @@ function FounderContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pointer-events-auto">
       {/* Founder: dark footage, text on right — right-side shield */}
-      <ContentShield align="right" strength={0.62} />
+      <ContentShield align="right" strength={0.68} />
       {/* Founder label top left */}
       <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
         Founder
@@ -180,7 +219,7 @@ function MaterialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 pointer-events-auto">
       {/* Material: bright metallic footage — strongest shield, left column */}
-      <ContentShield align="left" strength={0.84} />
+      <ContentShield align="left" strength={0.82} />
       <div className="relative z-10 mr-auto text-left max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-7 bg-gradient-to-r from-primary via-accent to-transparent" />
@@ -208,7 +247,7 @@ function IndustrialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 pointer-events-auto">
       {/* Industrial: bright machinery footage, text on right — right-side shield */}
-      <ContentShield align="right" strength={0.76} />
+      <ContentShield align="right" strength={0.80} />
       <div className="relative z-10 ml-auto md:text-right max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-7 ml-auto bg-gradient-to-l from-primary via-accent to-transparent" />
@@ -235,8 +274,8 @@ function IndustrialContent() {
 function RecognitionContent() {
   return (
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pointer-events-auto">
-      {/* Recognition: dark spotlight setting — gentle center shield */}
-      <ContentShield align="center" strength={0.55} />
+      {/* Recognition: dark spotlight setting — moderate center shield */}
+      <ContentShield align="center" strength={0.60} />
       {/* Soft radial gradient bg */}
       <div
         aria-hidden
@@ -278,7 +317,7 @@ function EcosystemContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 overflow-y-auto pointer-events-auto">
       {/* Ecosystem: dark infrastructure footage, left-aligned content */}
-      <ContentShield align="left" strength={0.60} />
+      <ContentShield align="left" strength={0.66} />
       <div className="relative z-10 w-full max-w-6xl mt-7">
         {/* Eyebrow */}
         <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
@@ -328,8 +367,8 @@ function EcosystemContent() {
 function FutureContent() {
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden pointer-events-auto">
-      {/* Future: dark space, centered text — gentle center shield */}
-      <ContentShield align="center" strength={0.48} />
+      {/* Future: dark space, centered text — light center shield */}
+      <ContentShield align="center" strength={0.54} />
       {/* Atmospheric volumetric glow */}
       <motion.div
         aria-hidden
