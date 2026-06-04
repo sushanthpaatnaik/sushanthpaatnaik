@@ -34,3 +34,4 @@ dist-ssr
 # Generated image sequences (delivered as ZIPs, not tracked in git)
 public/sequence-12fps/
 public/sequence-24fps/
+public/sequences/
