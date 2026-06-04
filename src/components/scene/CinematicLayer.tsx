@@ -103,7 +103,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
           src={sceneSpark}
           alt=""
           className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
-          style={{ filter: "brightness(0.50) saturate(0.45)" }}
+          style={{ filter: "brightness(0.65) saturate(0.52)" }}
         />
       ) : (
         <video
@@ -117,7 +117,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
           style={{
             willChange: "transform",
             transform: "translateZ(0)",
-            filter: "brightness(0.65) contrast(1.06) saturate(0.78)",
+            filter: "brightness(0.80) contrast(1.04) saturate(0.84)",
           }}
         >
           <source src="/videos/cinematic-homepage.mp4" type="video/mp4" />
@@ -129,7 +129,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.58) 0%, oklch(0.03 0.006 260 / 0.26) 48%, oklch(0.03 0.006 260 / 0.62) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 260 / 0.38) 0%, oklch(0.03 0.006 260 / 0.12) 48%, oklch(0.03 0.006 260 / 0.42) 100%)",
         }}
       />
 
@@ -138,7 +138,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 46%, oklch(0.02 0.006 260 / 0.72) 100%)",
+            "radial-gradient(ellipse at center, transparent 52%, oklch(0.02 0.006 260 / 0.50) 100%)",
         }}
       />
 
@@ -147,14 +147,14 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         className="absolute inset-x-0 top-0 h-28 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.44), transparent)",
+            "linear-gradient(to bottom, oklch(0.03 0.006 260 / 0.26), transparent)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-28 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.44), transparent)",
+            "linear-gradient(to top, oklch(0.03 0.006 260 / 0.26), transparent)",
         }}
       />
     </div>

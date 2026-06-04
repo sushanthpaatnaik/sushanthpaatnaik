@@ -362,32 +362,41 @@ function IndustrialAtmosphere() {
   const isMobile = useMobile();
   return (
     <>
-      <EngineeringGrid cell={72} color="oklch(0.74 0.02 232 / 0.040)" />
+      {/* Engineering grid — slightly brighter to reveal facility structure */}
+      <EngineeringGrid cell={72} color="oklch(0.78 0.02 232 / 0.060)" />
       <MeasurementRail side="right" />
 
-      {/* Warm amber floor wash — reflects the building's practical interior lights */}
+      {/* Warm amber floor wash — reveals facility interior scale */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "linear-gradient(180deg, transparent 52%, oklch(0.42 0.05 50 / 0.038) 82%, transparent)",
+            "linear-gradient(180deg, transparent 44%, oklch(0.48 0.06 50 / 0.065) 76%, oklch(0.42 0.05 50 / 0.040) 100%)",
         }}
       />
 
-      {/* Faint drifting haze — ultra-slow lateral atmospheric mass, barely visible */}
+      {/* Mid-level brightness lift — reveals operational depth at facility center */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 55% at 54% 48%, oklch(0.62 0.018 220 / 0.055), transparent 72%)",
+        }}
+      />
+
+      {/* Faint drifting haze — ultra-slow lateral atmospheric mass */}
       <motion.div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 55% 38% at 38% 62%, oklch(0.12 0.010 232 / 0.10), transparent 68%)",
+            "radial-gradient(ellipse 55% 38% at 38% 62%, oklch(0.18 0.010 232 / 0.08), transparent 68%)",
           filter: "blur(32px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.40, 0.82, 0.40] }}
+        animate={reduce ? undefined : { opacity: [0.45, 0.90, 0.45] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Slow interior light flicker — simulates the building's fluorescent/LED
-          array seen through the glass facade. Opacity-only: GPU-composited. */}
+      {/* Interior light — facility fluorescent/LED through glass facade */}
       <motion.div
         className="absolute mix-blend-screen"
         style={{
@@ -396,16 +405,16 @@ function IndustrialAtmosphere() {
           width: "44%",
           height: "42%",
           background:
-            "radial-gradient(ellipse 80% 70% at 60% 45%, oklch(0.72 0.008 215 / 0.06), transparent 72%)",
+            "radial-gradient(ellipse 80% 70% at 60% 45%, oklch(0.76 0.010 215 / 0.09), transparent 72%)",
           willChange: "opacity",
         }}
         animate={reduce ? undefined : {
-          opacity: [0.55, 0.78, 0.60, 0.88, 0.55],
+          opacity: [0.60, 0.86, 0.68, 0.94, 0.60],
         }}
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
 
-      {/* Restrained cool steel-blue highlight — upper-left architectural plane */}
+      {/* Cool steel-blue architectural highlight — upper-left plane */}
       <motion.div
         className="absolute mix-blend-screen"
         style={{
@@ -414,10 +423,10 @@ function IndustrialAtmosphere() {
           width: "40%",
           height: "38%",
           background:
-            "radial-gradient(ellipse 70% 60% at 28% 32%, oklch(0.55 0.015 220 / 0.05), transparent 78%)",
+            "radial-gradient(ellipse 70% 60% at 28% 32%, oklch(0.60 0.018 220 / 0.072), transparent 78%)",
           willChange: "opacity",
         }}
-        animate={reduce ? undefined : { opacity: [0.45, 0.72, 0.45] }}
+        animate={reduce ? undefined : { opacity: [0.50, 0.82, 0.50] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 7 }}
       />
 
@@ -454,12 +463,21 @@ function IndustrialAtmosphere() {
 function RecognitionAtmosphere() {
   return (
     <>
-      {/* Subtle dark surround — softens edges without creating a solid rectangle */}
+      {/* Subtle dark surround — luxury edge, eased to avoid crushed shadows */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 62% 52% at 50% 56%, transparent 0%, oklch(0.008 0.002 252 / 0.30) 100%)",
+            "radial-gradient(ellipse 68% 58% at 50% 54%, transparent 0%, oklch(0.008 0.002 252 / 0.20) 100%)",
+        }}
+      />
+
+      {/* Soft warm glow at center — improves trophy/subject visibility */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 44% 38% at 50% 52%, oklch(0.52 0.018 45 / 0.045), transparent 70%)",
         }}
       />
       {/* Hairline column markers — near-invisible guide lines aligning to spotlight beams */}
@@ -617,7 +635,7 @@ function FutureAtmosphere() {
           backgroundSize: "cover",
           backgroundPosition: "center top",
           backgroundRepeat: "no-repeat",
-          opacity: 0.92,
+          opacity: 1.0,
         }}
       />
 
@@ -626,7 +644,7 @@ function FutureAtmosphere() {
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "linear-gradient(148deg, transparent 18%, oklch(0.56 0.018 260 / 0.055) 34%, oklch(0.68 0.022 248 / 0.090) 50%, oklch(0.56 0.018 260 / 0.055) 66%, transparent 82%)",
+            "linear-gradient(148deg, transparent 18%, oklch(0.58 0.020 260 / 0.070) 34%, oklch(0.70 0.024 248 / 0.110) 50%, oklch(0.58 0.020 260 / 0.070) 66%, transparent 82%)",
           filter: "blur(24px)",
         }}
       />
@@ -639,15 +657,23 @@ function FutureAtmosphere() {
         cx="50%"
         cy="112%"
         radii={[68, 84, 102, 122, 144]}
-        stroke="oklch(0.76 0.022 232 / 0.09)"
+        stroke="oklch(0.80 0.024 232 / 0.12)"
       />
 
-      {/* Earth atmospheric glow — horizon limb light from the bottom */}
+      {/* Earth rim lighting — stronger atmospheric glow for depth */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 80% 45% at 50% 100%, oklch(0.46 0.042 232 / 0.15), transparent 68%)",
+            "radial-gradient(ellipse 88% 52% at 50% 100%, oklch(0.50 0.048 232 / 0.20), transparent 65%)",
+        }}
+      />
+      {/* Secondary warm inner-limb highlight */}
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 22% at 50% 100%, oklch(0.68 0.032 210 / 0.12), transparent 70%)",
         }}
       />
 

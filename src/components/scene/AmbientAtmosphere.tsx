@@ -59,7 +59,7 @@ export default function AmbientAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.05 0.006 232 / 0.10) 0%, transparent 30%, transparent 70%, oklch(0.04 0.006 232 / 0.12) 100%)",
+            "linear-gradient(180deg, oklch(0.05 0.006 232 / 0.06) 0%, transparent 30%, transparent 70%, oklch(0.04 0.006 232 / 0.07) 100%)",
         }}
       />
 
@@ -68,7 +68,7 @@ export default function AmbientAtmosphere() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 45%, oklch(0.55 0.03 232 / 0.035), transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 50% 45%, oklch(0.58 0.03 232 / 0.055), transparent 70%)",
         }}
         animate={{ opacity: [0.55, 1, 0.55] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
