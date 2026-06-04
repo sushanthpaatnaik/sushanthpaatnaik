@@ -30,8 +30,8 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
    This guarantees: background is always at least as visible as content.
    eooA = easeOutExpo — same curve as content, matching cubic-bezier(0.16,1,0.3,1).
    ─────────────────────────────────────────────────────────────────────── */
-const OV_A_IN  = 0.072;  // wider entry  — atmosphere appears before content
-const OV_A_OUT = 0.054;  // narrower exit — atmosphere holds after content fades
+const OV_A_IN  = 0.065;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.049;  // narrower exit — atmosphere holds after content fades
 const c01A = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — same curve as content, perfectly synchronised
 const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 5);

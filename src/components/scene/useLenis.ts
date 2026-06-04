@@ -15,7 +15,7 @@ export function useLenis(onScroll?: (progress: number) => void) {
       // lerp replaces duration+easing: each frame closes lerp% of the
       // remaining gap, so direction reversals respond in the next frame
       // with zero catch-up. lerp=0.14 ≈ 95% settled in ~300ms @ 60fps.
-      lerp: isTouch ? 1 : 0.155,
+      lerp: isTouch ? 1 : 0.171,
       smoothWheel: !isTouch,
       wheelMultiplier: 1.2,
       touchMultiplier: 0,
