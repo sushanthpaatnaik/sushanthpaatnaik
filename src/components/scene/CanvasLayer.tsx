@@ -19,6 +19,23 @@ const N_GROUPS    = GROUPS.length;        // 5
 const FRAME_COUNT = 96;                   // frames per sequence
 const LAST_FRAME  = FRAME_COUNT - 1;      // 95
 
+// ─── Per-chapter color grades ────────────────────────────────────────────────
+// Applied as mix-blend-mode:color overlays — replaces hue+saturation of the
+// canvas frames while preserving luminance, matching a film LUT grade.
+// opacity is the active strength; divs fade in/out on group transition.
+const CHAPTER_GRADES = [
+  // origin-founder — cold blue atmosphere, warm gold horizon
+  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.16 },
+  // material-intelligence — graphene blue: deep, cool, metallic
+  { bg: "oklch(0.36 0.14 218)", opacity: 0.18 },
+  // industrial-translation — warm industrial amber
+  { bg: "oklch(0.58 0.15 50)", opacity: 0.17 },
+  // recognition-ecosystem — prestige white-gold
+  { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.14 },
+  // future-systems — electric blue-cyan
+  { bg: "oklch(0.48 0.24 242)", opacity: 0.21 },
+] as const;
+
 type Bitmaps = (ImageBitmap | null)[][];
 
 interface CanvasLayerProps {
@@ -41,6 +58,7 @@ interface CanvasLayerProps {
  */
 export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
+  const gradeRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null]);
   const reduce       = useReducedMotion();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
@@ -172,13 +190,16 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
       const lp  = Math.max(0, Math.min((sp - grp.start) / (grp.end - grp.start), 1));
       const fi  = Math.floor(lp * LAST_FRAME);
 
-      // On group change: preload active ± 1, reset frame tracker.
+      // On group change: preload active ± 1, reset frame tracker, swap color grade.
       if (gi !== lastGroupRef.current) {
         lastGroupRef.current = gi;
         loadGroup(gi);
         loadGroup(gi + 1);
         loadGroup(gi - 1);
         lastFrameRef.current = -1; // force redraw for new group
+        gradeRefs.current.forEach((el, i) => {
+          if (el) el.style.opacity = i === gi ? String(CHAPTER_GRADES[i].opacity) : "0";
+        });
       }
 
       // Skip draw if frame unchanged — avoids redundant canvas writes.
@@ -250,6 +271,22 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
           }}
         />
       )}
+
+      {/* Chapter color grades — mix-blend-mode:color tints each sequence */}
+      {CHAPTER_GRADES.map((grade, i) => (
+        <div
+          key={i}
+          ref={el => { gradeRefs.current[i] = el; }}
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            mixBlendMode: "color",
+            background: grade.bg,
+            opacity: i === 0 ? grade.opacity : 0,
+            transition: "opacity 1.4s ease",
+          }}
+        />
+      ))}
 
       {/* Text readability — darkens sky/highlights without crushing blacks */}
       <div
