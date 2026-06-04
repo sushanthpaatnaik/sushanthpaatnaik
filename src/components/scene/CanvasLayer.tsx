@@ -111,7 +111,27 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
       const scale = Math.max(cW / bmp.width, cH / bmp.height);
       const dW    = bmp.width  * scale;
       const dH    = bmp.height * scale;
-      ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
+      const offX  = (cW - dW) / 2;
+      const offY  = (cH - dH) / 2;
+      ctx.drawImage(bmp, offX, offY, dW, dH);
+
+      // Paint out the bottom-right watermark baked into every source frame.
+      // Source frames are always 1280×720; star occupies (1060–1185, 540–665).
+      // A 16px padding ensures complete coverage regardless of DPR or frame size.
+      const wmX = Math.floor(1060 * scale + offX) - 16;
+      const wmY = Math.floor(540  * scale + offY) - 16;
+      const wmW = Math.ceil((1185 - 1060) * scale) + 32;
+      const wmH = Math.ceil((665  - 540)  * scale) + 32;
+      // Radial gradient blends the patch into the surrounding dark corner
+      const grd = ctx.createRadialGradient(
+        wmX + wmW * 0.62, wmY + wmH * 0.50, 0,
+        wmX + wmW * 0.62, wmY + wmH * 0.50, Math.max(wmW, wmH) * 0.80,
+      );
+      grd.addColorStop(0,   "rgba(2,2,5,1)");
+      grd.addColorStop(0.6, "rgba(2,2,5,0.96)");
+      grd.addColorStop(1,   "rgba(2,2,5,0)");
+      ctx.fillStyle = grd;
+      ctx.fillRect(wmX, wmY, wmW, wmH);
     };
 
     // ── Group loader ─────────────────────────────────────────────────────────
@@ -269,12 +289,12 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
         }}
       />
 
-      {/* Bottom-right corner deepener — extends natural vignette over watermark zone */}
+      {/* Bottom-right corner deepener — reinforces canvas patch over watermark zone */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 38% 32% at 100% 100%, oklch(0.01 0.003 260 / 0.97) 0%, oklch(0.01 0.003 260 / 0.72) 38%, transparent 72%)",
+            "radial-gradient(ellipse 72% 58% at 100% 100%, oklch(0.01 0.003 260 / 0.99) 0%, oklch(0.01 0.003 260 / 0.95) 28%, oklch(0.01 0.003 260 / 0.62) 52%, transparent 72%)",
         }}
       />
 
