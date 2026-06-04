@@ -165,20 +165,6 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         }}
       />
 
-      {/* Center watermark cover — blurred dark radial, fully hides embedded logo */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "220px",
-          height: "220px",
-          background:
-            "radial-gradient(ellipse at center, oklch(0.04 0.004 260 / 0.98) 0%, oklch(0.04 0.004 260 / 0.92) 30%, transparent 72%)",
-          filter: "blur(8px)",
-        }}
-      />
     </div>
   );
 }
