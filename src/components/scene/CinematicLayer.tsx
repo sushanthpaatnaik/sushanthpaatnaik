@@ -154,19 +154,6 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         }}
       />
 
-      {/* Bottom-right watermark cover — tight dark spot centred on the star */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          right: "4%",
-          bottom: "8%",
-          width: "130px",
-          height: "130px",
-          background:
-            "radial-gradient(circle, oklch(0.022 0.005 260 / 0.99) 0%, oklch(0.022 0.005 260 / 0.96) 30%, oklch(0.022 0.005 260 / 0.70) 58%, transparent 80%)",
-          filter: "blur(8px)",
-        }}
-      />
 
 
     </div>
