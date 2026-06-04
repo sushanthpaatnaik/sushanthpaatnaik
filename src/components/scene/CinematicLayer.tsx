@@ -154,15 +154,17 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
         }}
       />
 
-      {/* Bottom-right corner cover — hides any video watermark */}
+      {/* Bottom-right watermark cover — tight dark spot centred on the star */}
       <div
-        className="absolute bottom-0 right-0 pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
-          width: "320px",
-          height: "200px",
+          right: "4%",
+          bottom: "8%",
+          width: "130px",
+          height: "130px",
           background:
-            "radial-gradient(ellipse at 85% 80%, oklch(0.02 0.004 260 / 0.97) 0%, oklch(0.02 0.004 260 / 0.88) 28%, oklch(0.02 0.004 260 / 0.45) 55%, transparent 78%)",
-          filter: "blur(4px)",
+            "radial-gradient(circle, oklch(0.022 0.005 260 / 0.99) 0%, oklch(0.022 0.005 260 / 0.96) 30%, oklch(0.022 0.005 260 / 0.70) 58%, transparent 80%)",
+          filter: "blur(8px)",
         }}
       />
 
