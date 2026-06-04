@@ -63,17 +63,12 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
       if (readyRef.current && vid.duration > 0) {
         const target  = Math.max(0, Math.min(scrollYProgress.get(), 1)) * vid.duration;
         const clamped = Math.max(0, Math.min(target, vid.duration));
-        // Skip seeks smaller than one ~60 fps frame to avoid decoder thrashing.
-        if (Math.abs(vid.currentTime - clamped) > 0.016) {
-          // fastSeek() is non-standard but supported in Chrome/Firefox — it
-          // seeks to the nearest keyframe and avoids full decoder decode, giving
-          // ~2× lower seek latency at the cost of sub-frame precision (fine for
-          // scroll-driven playback where we re-seek every rAF anyway).
-          if (typeof (vid as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek === "function") {
-            (vid as HTMLVideoElement & { fastSeek: (t: number) => void }).fastSeek(clamped);
-          } else {
-            vid.currentTime = clamped;
-          }
+        // Skip seeks < 2 frames (33 ms) to avoid decoder thrashing while still
+        // advancing frame-accurately. fastSeek() is intentionally NOT used —
+        // it jumps to the nearest keyframe (can be seconds apart) which causes
+        // the background to visibly jump rather than advance smoothly.
+        if (Math.abs(vid.currentTime - clamped) > 0.033) {
+          vid.currentTime = clamped;
         }
       }
       rafRef.current = requestAnimationFrame(tick);

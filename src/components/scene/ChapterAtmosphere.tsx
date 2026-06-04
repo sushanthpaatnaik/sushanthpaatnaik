@@ -43,11 +43,11 @@ function useMobile() {
    This guarantees: background is always at least as visible as content.
    eooA = easeOutExpo — same curve as content, matching cubic-bezier(0.16,1,0.3,1).
    ─────────────────────────────────────────────────────────────────────── */
-const OV_A_IN  = 0.10;  // wider entry  — atmosphere appears before content
-const OV_A_OUT = 0.06;  // narrower exit — atmosphere holds after content fades
+const OV_A_IN  = 0.17;  // wider entry  — atmosphere appears before content
+const OV_A_OUT = 0.13;  // narrower exit — atmosphere holds after content fades
 const c01A = (v: number) => Math.max(0, Math.min(1, v));
-// Same steep easeOutExpo as content — perfectly synchronised
-const eooA = (t: number) => t >= 1 ? 1 : 1 - Math.pow(2, -13 * c01A(t));
+// easeOutQuint — same curve as content, perfectly synchronised
+const eooA = (t: number) => 1 - Math.pow(1 - c01A(t), 5);
 
 function atmoOp(sp: number, n: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
