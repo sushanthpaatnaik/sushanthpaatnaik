@@ -2,33 +2,59 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion, useScroll } from "framer-motion";
 import sceneSpark from "@/assets/story-01-spark.webp";
 
-const FRAME_COUNT = 120;
-const FRAME_BASE  = "/sequence-12fps/frame_";
+// ─── Sequence groups ────────────────────────────────────────────────────────
+// Each entry spans one or two CHAPTER_BANDS and owns a 96-frame WebP sequence.
+// start/end must exactly match the combined chapter band boundaries so that
+// all scroll layers (content, atmosphere, HUD, canvas) share one timeline.
+const GROUPS = [
+  { path: "origin-founder",         start: 0.000, end: 0.240 },
+  { path: "material-intelligence",  start: 0.240, end: 0.360 },
+  { path: "industrial-translation", start: 0.360, end: 0.580 },
+  { path: "recognition-ecosystem",  start: 0.580, end: 0.810 },
+  { path: "future-systems",         start: 0.810, end: 1.000 },
+] as const;
+
+const N_GROUPS    = GROUPS.length;        // 5
+const FRAME_COUNT = 96;                   // frames per sequence
+const LAST_FRAME  = FRAME_COUNT - 1;      // 95
+
+type Bitmaps = (ImageBitmap | null)[][];
 
 interface CanvasLayerProps {
   onReady?: () => void;
 }
 
 /**
- * Single persistent cinematic background — canvas image-sequence edition.
+ * Chapter-based image-sequence canvas background.
  *
- * - 120 WebP frames preloaded via createImageBitmap (GPU-ready, zero decode latency).
- * - scrollProgress [0,1] → frameIndex = floor(sp * 119), instant on direction reversal.
- * - Fixed, full-viewport, z-[1]. Content layers sit above.
- * - Reduced-motion: static poster image, no canvas.
- * - onReady fires after first frame decodes (or after 12s fallback).
+ * Master timeline: scrollYProgress [0, 1]
+ *   → active group
+ *   → group-local progress [0, 1]
+ *   → frameIndex = floor(localProgress * 95)
+ *
+ * Preload policy: active group + one ahead + one behind.
+ * Decode: createImageBitmap — GPU-ready, zero latency at draw time.
+ * Draw: object-fit:cover with DPR-correct canvas buffer.
+ * Reduced-motion: static poster, no canvas.
  */
 export default function CanvasLayer({ onReady }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const reduce       = useReducedMotion();
   const rafRef       = useRef(0);
-  const bitmapsRef   = useRef<(ImageBitmap | null)[]>(Array(FRAME_COUNT).fill(null));
-  const loadedRef    = useRef(0);
   const notifiedRef  = useRef(false);
   const lastFrameRef = useRef(-1);
+  const lastGroupRef = useRef(-1);
+
+  // bitmaps[groupIdx][frameIdx] — populated lazily as frames decode
+  const bitmapsRef  = useRef<Bitmaps>(
+    Array.from({ length: N_GROUPS }, () => Array(FRAME_COUNT).fill(null))
+  );
+  // loading[groupIdx] — true once fetch for that group has started
+  const loadingRef  = useRef<boolean[]>(Array(N_GROUPS).fill(false));
+
   const { scrollYProgress } = useScroll();
 
-  // Reduced-motion: no canvas — signal ready immediately.
+  // Reduced-motion path — no canvas, signal ready immediately.
   useEffect(() => {
     if (!reduce) return;
     if (!notifiedRef.current) {
@@ -41,7 +67,6 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
     if (reduce) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
@@ -53,18 +78,19 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
       onReady?.();
     };
 
-    // 12-second fallback — same pattern as original CinematicLayer.
+    // 12 s hard fallback — same contract as the original video layer.
     const fallback = window.setTimeout(notifyReady, 12_000);
 
-    // Resize canvas to match device pixels.
+    // ── Canvas sizing ────────────────────────────────────────────────────────
+    // Canvas buffer = physical pixels (DPR × CSS pixels) for crisp retina output.
+    // drawBitmap operates in physical-pixel space to match.
     const syncSize = () => {
       const dpr = window.devicePixelRatio || 1;
-      const w   = window.innerWidth;
-      const h   = window.innerHeight;
-      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
-        canvas.width  = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
-        ctx.scale(dpr, dpr);
+      const nW  = Math.round(window.innerWidth  * dpr);
+      const nH  = Math.round(window.innerHeight * dpr);
+      if (canvas.width !== nW || canvas.height !== nH) {
+        canvas.width  = nW;
+        canvas.height = nH;
         lastFrameRef.current = -1; // force redraw after resize
       }
     };
@@ -74,67 +100,96 @@ export default function CanvasLayer({ onReady }: CanvasLayerProps) {
       : null;
     if (ro) ro.observe(document.documentElement);
 
-    // Draw a single bitmap with object-fit:cover semantics.
-    const drawFrame = (bmp: ImageBitmap) => {
-      const dpr = window.devicePixelRatio || 1;
-      const cW  = canvas.width  / dpr;
-      const cH  = canvas.height / dpr;
-      const iW  = bmp.width;
-      const iH  = bmp.height;
-      const scale = Math.max(cW / iW, cH / iH);
-      const dW  = iW * scale;
-      const dH  = iH * scale;
-      const dx  = (cW - dW) / 2;
-      const dy  = (cH - dH) / 2;
-      ctx.drawImage(bmp, dx, dy, dW, dH);
+    // ── object-fit:cover draw in physical-pixel space ────────────────────────
+    const drawBitmap = (bmp: ImageBitmap) => {
+      const cW    = canvas.width;
+      const cH    = canvas.height;
+      const scale = Math.max(cW / bmp.width, cH / bmp.height);
+      const dW    = bmp.width  * scale;
+      const dH    = bmp.height * scale;
+      ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
     };
 
-    // RAF loop — reads scroll MotionValue directly (no re-render).
+    // ── Group loader ─────────────────────────────────────────────────────────
+    const loadGroup = (gi: number) => {
+      if (gi < 0 || gi >= N_GROUPS) return;
+      if (loadingRef.current[gi]) return;
+      loadingRef.current[gi] = true;
+      const { path } = GROUPS[gi];
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const fi  = i;
+        const pad = String(fi + 1).padStart(4, "0");
+        fetch(`/sequences/${path}/frame_${pad}.webp`)
+          .then(r  => r.blob())
+          .then(b  => createImageBitmap(b))
+          .then(bmp => {
+            if (destroyed) { bmp.close(); return; }
+            bitmapsRef.current[gi][fi] = bmp;
+            // Unblock loader as soon as the very first visible frame is ready.
+            if (gi === 0 && fi === 0) notifyReady();
+          })
+          .catch(() => {
+            // On network error for frame 0/group 0, still unblock the loader.
+            if (gi === 0 && fi === 0) notifyReady();
+          });
+      }
+    };
+
+    // ── Group lookup from global scroll progress ─────────────────────────────
+    const getGroupIdx = (sp: number): number => {
+      for (let i = N_GROUPS - 1; i >= 0; i--) {
+        if (sp >= GROUPS[i].start) return i;
+      }
+      return 0;
+    };
+
+    // ── RAF render loop ──────────────────────────────────────────────────────
     const tick = () => {
       if (!destroyed) rafRef.current = requestAnimationFrame(tick);
+
       const sp  = Math.max(0, Math.min(scrollYProgress.get(), 1));
-      const idx = Math.floor(sp * (FRAME_COUNT - 1));
-      if (idx === lastFrameRef.current) return;
-      const bmp = bitmapsRef.current[idx];
-      if (!bmp) return;
-      lastFrameRef.current = idx;
-      drawFrame(bmp);
+      const gi  = getGroupIdx(sp);
+      const grp = GROUPS[gi];
+
+      // Local progress within this group, clamped to [0, 1].
+      const lp  = Math.max(0, Math.min((sp - grp.start) / (grp.end - grp.start), 1));
+      const fi  = Math.floor(lp * LAST_FRAME);
+
+      // On group change: preload active ± 1, reset frame tracker.
+      if (gi !== lastGroupRef.current) {
+        lastGroupRef.current = gi;
+        loadGroup(gi);
+        loadGroup(gi + 1);
+        loadGroup(gi - 1);
+        lastFrameRef.current = -1; // force redraw for new group
+      }
+
+      // Skip draw if frame unchanged — avoids redundant canvas writes.
+      if (fi === lastFrameRef.current) return;
+
+      const bmp = bitmapsRef.current[gi][fi];
+      if (!bmp) return; // frame not yet decoded — keep previous frame visible
+
+      lastFrameRef.current = fi;
+      drawBitmap(bmp);
     };
+
+    // Kick off: load group 0 immediately, start RAF.
+    loadGroup(0);
     rafRef.current = requestAnimationFrame(tick);
-
-    // Preload all frames. Frame 0 triggers onReady.
-    const loadFrame = (i: number) => {
-      const n   = String(i + 1).padStart(4, "0");
-      const url = `${FRAME_BASE}${n}.webp`;
-      fetch(url)
-        .then(r => r.blob())
-        .then(blob => createImageBitmap(blob))
-        .then(bmp => {
-          if (destroyed) { bmp.close(); return; }
-          bitmapsRef.current[i] = bmp;
-          loadedRef.current += 1;
-          // Fire onReady as soon as frame 0 is available.
-          if (i === 0) notifyReady();
-        })
-        .catch(() => {
-          loadedRef.current += 1;
-        });
-    };
-
-    for (let i = 0; i < FRAME_COUNT; i++) loadFrame(i);
 
     return () => {
       destroyed = true;
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
       ro?.disconnect();
-      bitmapsRef.current.forEach(bmp => bmp?.close());
-      bitmapsRef.current = Array(FRAME_COUNT).fill(null);
-      loadedRef.current  = 0;
-      lastFrameRef.current = -1;
+      bitmapsRef.current.forEach(grp => grp.forEach(bmp => bmp?.close()));
+      bitmapsRef.current = Array.from({ length: N_GROUPS }, () => Array(FRAME_COUNT).fill(null));
+      loadingRef.current = Array(N_GROUPS).fill(false);
       notifiedRef.current  = false;
+      lastFrameRef.current = -1;
+      lastGroupRef.current = -1;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduce, scrollYProgress, onReady]);
 
   return (

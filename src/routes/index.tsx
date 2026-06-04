@@ -7,9 +7,9 @@ import HUD from "@/components/scene/HUD";
 import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
 
-// CinematicLayer is imported directly (not lazy) so the video starts loading
+// CanvasLayer is imported directly (not lazy) so sequence preloading starts
 // on the very first render — the Loader overlay holds the screen until ready.
-import CinematicLayer from "@/components/scene/CinematicLayer";
+import CanvasLayer from "@/components/scene/CanvasLayer";
 const SceneDecorations = lazy(() => import("@/components/scene/SceneDecorations"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
 const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
@@ -49,8 +49,8 @@ function Index() {
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
 
-  // videoReady starts true for repeat tab visits (video is browser-cached).
-  // For first visits it stays false until CinematicLayer fires onReady().
+  // videoReady starts true for repeat tab visits (sequences are browser-cached).
+  // For first visits it stays false until CanvasLayer fires onReady().
   const [videoReady, setVideoReady] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
@@ -198,7 +198,7 @@ function Index() {
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
        *
-       *  z-[1]  CinematicLayer      — one video, scroll → currentTime
+       *  z-[1]  CanvasLayer         — chapter image sequences, scroll → frame
        *  z-[2]  SceneDecorations    — particles, globe, recognition ambient
        *  z-[2]  ChapterAtmosphere   — CSS/gradient per-chapter identity
        *  z-[3]  AmbientAtmosphere   — slow-breathing haze blobs
@@ -208,8 +208,8 @@ function Index() {
        * Nav / HUD / MobileCTABar use their own high z-indexes (50+).
        */}
 
-      {/* CinematicLayer renders immediately so the video starts buffering on first paint. */}
-      <CinematicLayer
+      {/* CanvasLayer starts preloading sequences on first paint. */}
+      <CanvasLayer
         onReady={() => setVideoReady(true)}
       />
 
