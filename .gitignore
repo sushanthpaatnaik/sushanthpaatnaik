@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated image sequences (delivered as ZIPs, not tracked in git)
+public/sequence-12fps/
+public/sequence-24fps/
