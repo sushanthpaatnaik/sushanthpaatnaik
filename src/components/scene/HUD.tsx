@@ -52,9 +52,7 @@ export default function HUD({
           className="absolute left-0 top-1/2 -translate-y-1/2 w-[68px] h-[min(400px,60vh)]"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.025 0.006 245 / 0.60) 0%, oklch(0.025 0.006 245 / 0.28) 55%, transparent 100%)",
-            WebkitBackdropFilter: "blur(10px) saturate(120%)",
-            backdropFilter: "blur(10px) saturate(120%)",
+              "linear-gradient(90deg, oklch(0.018 0.006 245 / 0.75) 0%, oklch(0.022 0.006 245 / 0.38) 55%, transparent 100%)",
             maskImage:
               "linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%)",
             WebkitMaskImage:
@@ -97,7 +95,6 @@ export default function HUD({
               height: 26,
               background:
                 "linear-gradient(180deg, transparent 0%, oklch(0.78 0.06 232 / 0.55) 50%, transparent 100%)",
-              filter: "blur(1.2px)",
               mixBlendMode: "screen",
             }}
             animate={{ y: ["8%", "92%"], opacity: [0, 0.85, 0] }}

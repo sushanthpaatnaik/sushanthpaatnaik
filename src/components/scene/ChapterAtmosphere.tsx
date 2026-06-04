@@ -1,18 +1,5 @@
-import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
-
-function useMobile() {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse)");
-    setMobile(mq.matches);
-    const h = (e: MediaQueryListEvent) => setMobile(e.matches);
-    mq.addEventListener("change", h);
-    return () => mq.removeEventListener("change", h);
-  }, []);
-  return mobile;
-}
 
 /**
  * ChapterAtmosphere
@@ -360,14 +347,12 @@ function MaterialAtmosphere() {
 
 function IndustrialAtmosphere() {
   const reduce = useReducedMotion();
-  const isMobile = useMobile();
   return (
     <>
-      {/* Engineering grid — slightly brighter to reveal facility structure */}
       <EngineeringGrid cell={72} color="oklch(0.78 0.02 232 / 0.060)" />
       <MeasurementRail side="right" />
 
-      {/* Warm amber floor wash — reveals facility interior scale */}
+      {/* Warm amber floor wash */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
@@ -376,7 +361,7 @@ function IndustrialAtmosphere() {
         }}
       />
 
-      {/* Mid-level brightness lift — reveals operational depth at facility center */}
+      {/* Mid-level brightness lift */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
@@ -385,19 +370,17 @@ function IndustrialAtmosphere() {
         }}
       />
 
-      {/* Faint drifting haze — ultra-slow lateral atmospheric mass */}
-      <motion.div
+      {/* Faint atmospheric haze — opacity-only, blur on static element (cached rasterization) */}
+      <div
         className="absolute inset-0"
         style={{
           background:
             "radial-gradient(ellipse 55% 38% at 38% 62%, oklch(0.18 0.010 232 / 0.08), transparent 68%)",
           filter: "blur(32px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.45, 0.90, 0.45] }}
-        transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Interior light — facility fluorescent/LED through glass facade */}
+      {/* Interior light — opacity-only animation */}
       <motion.div
         className="absolute mix-blend-screen"
         style={{
@@ -407,15 +390,12 @@ function IndustrialAtmosphere() {
           height: "42%",
           background:
             "radial-gradient(ellipse 80% 70% at 60% 45%, oklch(0.76 0.010 215 / 0.09), transparent 72%)",
-          willChange: "opacity",
         }}
-        animate={reduce ? undefined : {
-          opacity: [0.60, 0.86, 0.68, 0.94, 0.60],
-        }}
+        animate={reduce ? undefined : { opacity: [0.60, 0.86, 0.68, 0.94, 0.60] }}
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
 
-      {/* Cool steel-blue architectural highlight — upper-left plane */}
+      {/* Steel-blue architectural highlight — opacity-only */}
       <motion.div
         className="absolute mix-blend-screen"
         style={{
@@ -425,38 +405,10 @@ function IndustrialAtmosphere() {
           height: "38%",
           background:
             "radial-gradient(ellipse 70% 60% at 28% 32%, oklch(0.60 0.018 220 / 0.072), transparent 78%)",
-          willChange: "opacity",
         }}
         animate={reduce ? undefined : { opacity: [0.50, 0.82, 0.50] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 7 }}
       />
-
-      {/* Cinematic dust — 4 ultra-slow motes in the forecourt/entrance zone */}
-      {!reduce && !isMobile &&
-        [
-          { x: "34%", y: "58%", d: 44, delay: 0  },
-          { x: "52%", y: "48%", d: 50, delay: 14 },
-          { x: "44%", y: "66%", d: 42, delay: 27 },
-          { x: "60%", y: "54%", d: 48, delay: 8  },
-        ].map((p, i) => (
-          <motion.span
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: p.x,
-              top: p.y,
-              width: "1px",
-              height: "1px",
-              background: "oklch(0.78 0.006 220)",
-            }}
-            animate={{
-              opacity: [0, 0.22, 0.08, 0.18, 0],
-              y: [0, -10, -22, -36, -50],
-              x: [0, 3, -2, 4, 0],
-            }}
-            transition={{ duration: p.d, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
-          />
-        ))}
     </>
   );
 }
@@ -510,10 +462,9 @@ function RecognitionAtmosphere() {
 
 function EcosystemAtmosphere() {
   const reduce = useReducedMotion();
-  const isMobile = useMobile();
   return (
     <>
-      {/* Atmospheric glow — shifted right of center so the left typography column stays darker */}
+      {/* Atmospheric glow — opacity-only, GPU-composited */}
       <motion.div
         className="absolute inset-0 mix-blend-screen"
         style={{
@@ -524,51 +475,15 @@ function EcosystemAtmosphere() {
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Volumetric haze drift — ultra-slow rightward atmospheric mass */}
-      <motion.div
+      {/* Volumetric haze — blur on static element, no animation (cached rasterization) */}
+      <div
         className="absolute inset-0"
         style={{
           background:
             "radial-gradient(ellipse 42% 34% at 70% 56%, oklch(0.18 0.014 236 / 0.06), transparent 70%)",
           filter: "blur(42px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.44, 1, 0.44] }}
-        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 6 }}
       />
-
-      {/* Cinematic dust — 5 ultra-slow motes biased toward the right glow zone */}
-      {!reduce && !isMobile &&
-        [
-          { x: "63%", y: "46%", d: 36, delay: 0 },
-          { x: "76%", y: "60%", d: 42, delay: 10 },
-          { x: "56%", y: "64%", d: 40, delay: 19 },
-          { x: "84%", y: "40%", d: 46, delay: 5 },
-          { x: "70%", y: "54%", d: 38, delay: 15 },
-        ].map((p, i) => (
-          <motion.span
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: p.x,
-              top: p.y,
-              width: "1px",
-              height: "1px",
-              background: "oklch(0.66 0.008 232)",
-              filter: "blur(0.4px)",
-            }}
-            animate={{
-              opacity: [0, 0.26, 0.09, 0.20, 0],
-              y: [0, -12, -26, -42, -58],
-              x: [0, 4, -2, 5, 1],
-            }}
-            transition={{
-              duration: p.d,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: p.delay,
-            }}
-          />
-        ))}
     </>
   );
 }
@@ -678,18 +593,22 @@ function FutureAtmosphere() {
         }}
       />
 
-      {/* Nebula depth pair — slow-breathing cool/warm accent */}
+      {/* Nebula depth pair — blur on outer static div (cached), opacity-only on inner */}
       {!reduce && (
-        <motion.div
+        <div
           className="absolute inset-0 mix-blend-screen"
-          style={{
-            background:
-              "radial-gradient(ellipse 40% 28% at 74% 20%, oklch(0.44 0.030 280 / 0.062), transparent 80%), radial-gradient(ellipse 32% 24% at 20% 34%, oklch(0.38 0.024 210 / 0.052), transparent 80%)",
-            filter: "blur(32px)",
-          }}
-          animate={{ opacity: [0.40, 1, 0.40] }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-        />
+          style={{ filter: "blur(32px)" }}
+        >
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 40% 28% at 74% 20%, oklch(0.44 0.030 280 / 0.062), transparent 80%), radial-gradient(ellipse 32% 24% at 20% 34%, oklch(0.38 0.024 210 / 0.052), transparent 80%)",
+            }}
+            animate={{ opacity: [0.40, 1, 0.40] }}
+            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
       )}
 
       {/* Soft far-depth vignette — increases perceived planetary scale */}

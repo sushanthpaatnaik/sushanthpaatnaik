@@ -1,18 +1,5 @@
 import { motion } from "framer-motion";
 
-/**
- * Sitewide ambient atmosphere — a near-imperceptible layer of cinematic depth.
- *
- * Five barely-visible passes, tuned for restraint:
- *  1. Three slow-drifting volumetric haze blobs (industrial cool tint + one warm).
- *  2. A faint blueprint-trace SVG layer for industrial micro-texture in dead-center regions.
- *  3. A faint vertical depth gradient.
- *  4. A very low-opacity SVG film grain.
- *  5. A slow cinematic "light breathing" overlay.
- *
- * Everything is fixed, pointer-events-none, mix-blend-screen. The eye never
- * notices it directly — it only feels the scene breathe and stay alive.
- */
 export default function AmbientAtmosphere() {
   return (
     <div
@@ -20,41 +7,28 @@ export default function AmbientAtmosphere() {
       className="pointer-events-none fixed inset-0 z-[3] overflow-hidden mix-blend-screen"
       style={{ contain: "strict" }}
     >
-      {/* Three slow drifting haze fields. The third one carries a hint of
-          restrained copper to break perfect tonal uniformity. */}
+      {/* Haze blob A — opacity-only: GPU composites without re-rasterizing */}
       <motion.div
-        className="absolute -left-[20%] top-[10%] h-[70vh] w-[70vw] rounded-full will-change-transform"
+        className="absolute -left-[20%] top-[10%] h-[70vh] w-[70vw] rounded-full"
         style={{
           background:
             "radial-gradient(circle at center, oklch(0.48 0.03 230 / 0.05), transparent 65%)",
         }}
-        animate={{ x: [0, 40, 0], y: [0, -20, 0], opacity: [0.7, 1, 0.7] }}
+        animate={{ opacity: [0.7, 1, 0.7] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
       />
+      {/* Haze blob B — offset phase, opacity-only */}
       <motion.div
-        className="absolute -right-[15%] bottom-[8%] h-[60vh] w-[60vw] rounded-full will-change-transform"
+        className="absolute -right-[15%] bottom-[8%] h-[60vh] w-[60vw] rounded-full"
         style={{
           background:
             "radial-gradient(circle at center, oklch(0.42 0.025 232 / 0.045), transparent 70%)",
         }}
-        animate={{ x: [0, -30, 0], y: [0, 18, 0], opacity: [0.65, 1, 0.65] }}
+        animate={{ opacity: [0.65, 1, 0.65] }}
         transition={{ duration: 40, repeat: Infinity, ease: "easeInOut", delay: 4 }}
       />
-      {/* Restrained copper haze — barely visible, breaks tonal monotony. */}
-      <motion.div
-        className="absolute left-[35%] top-[35%] hidden h-[55vh] w-[55vw] rounded-full will-change-transform md:block"
-        style={{
-          background:
-            "radial-gradient(circle at center, oklch(0.5 0.04 50 / 0.028), transparent 70%)",
-        }}
-        animate={{ x: [0, 24, -10, 0], y: [0, -16, 12, 0], opacity: [0.5, 0.95, 0.6, 0.5] }}
-        transition={{ duration: 54, repeat: Infinity, ease: "easeInOut", delay: 8 }}
-      />
 
-      {/* Blueprint-trace SVG layer removed — it was rendering a visible
-          radial/hexagonal artifact behind hero typography under screen blend. */}
-
-      {/* Faint vertical atmospheric depth */}
+      {/* Faint vertical atmospheric depth — static, zero GPU cost */}
       <div
         className="absolute inset-0"
         style={{
@@ -63,7 +37,7 @@ export default function AmbientAtmosphere() {
         }}
       />
 
-      {/* Slow cinematic light breathing — global luminance pulse. */}
+      {/* Slow cinematic light breathing — opacity-only, GPU-composited */}
       <motion.div
         className="absolute inset-0"
         style={{
@@ -74,35 +48,7 @@ export default function AmbientAtmosphere() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Counter-phase breathing — fills the opposing corner so empty
-          regions on either side of the page never feel digitally dead. */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 45% at 78% 72%, oklch(0.45 0.025 232 / 0.028), transparent 75%)",
-        }}
-        animate={{ opacity: [0.4, 0.95, 0.4] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 11 }}
-      />
-
-      {/* Horizontal atmospheric haze band — a slow drifting strip of warm
-          haze that crosses mid-screen, eliminating empty black mid-sections
-          between chapters. */}
-      <motion.div
-        className="absolute left-0 right-0 top-[42%] h-[26vh] will-change-transform"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent, oklch(0.42 0.025 232 / 0.035) 50%, transparent)",
-          filter: "blur(40px)",
-        }}
-        // x translation removed: blur(40px) on a moving element forces GPU
-        // rasterization on every translated frame. Opacity-only is composited.
-        animate={{ opacity: [0.5, 0.85, 0.5] }}
-        transition={{ duration: 48, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Organic film grain — barely perceptible industrial texture */}
+      {/* Organic film grain — static, mix-blend-overlay, no animation */}
       <div
         className="absolute inset-0 opacity-[0.035] mix-blend-overlay"
         style={{
