@@ -360,7 +360,7 @@ function FutureContent() {
    This makes chapters feel they snap into place instantly and leave cleanly.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.07;
+const OV  = 0.063;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
 // t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %
@@ -420,7 +420,7 @@ export default function ScrollSections() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
-  const yIn  = reduce ? 0 : 8;
+  const yIn  = reduce ? 0 : 7;
   const yOut = reduce ? 0 : -4;
 
   const op0 = useTransform(scrollYProgress, (sp) => chapOp(sp, 0));
