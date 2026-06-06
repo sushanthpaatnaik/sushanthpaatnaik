@@ -160,7 +160,6 @@ function OriginContent() {
               Building from India — for the world.
             </p>
           </div>
-        </div>
       </div>
 
       {/* Scroll cue — absolute bottom, order: awards → SCROLL → track → chevrons */}
