@@ -7,29 +7,29 @@ import CinematicPageShell, {
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-media-wall.webp";
 
-// Institutional & outlet logos used as visual signal for each voice block.
 import mitTrLogo from "@/assets/outlets/mit-tr-color.webp";
 import tedLogo from "@/assets/outlets/ted-color.webp";
 import nifLogo from "@/assets/outlets/nif-color.webp";
 import ioclLogo from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
+import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 
 export const Route = createFileRoute("/voices")({
   component: VoicesPage,
   head: () => ({
     meta: [
-      { title: "Voices — Institutional Endorsements & On-Record Recognition" },
+      { title: "Voices — Testimonials & On-Record Recognition" },
       {
         name: "description",
         content:
-          "Institutional voices, on-record recognition, and editorial endorsements — from Presidents of India and NIF to MIT Technology Review, TED, INK, and the global press.",
+          "What institutions, founders, journalists, and global platforms say about the work — on record testimonials from MIT Technology Review, NIF, Deloitte, TED, INK, and more.",
       },
       { property: "og:title", content: "Voices — Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "How institutions, stages, and the press have framed two decades of invention and industrial work.",
+          "Testimonials and endorsements from sovereign bodies, innovation foundations, global press, and industry leaders.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/voices" },
@@ -42,82 +42,103 @@ export const Route = createFileRoute("/voices")({
 });
 
 type Voice = {
-  source: string;
-  role: string;
+  category: string;
   quote: string;
+  personName: string;
+  personTitle: string;
+  organization: string;
   logo?: string;
   href?: string;
-  lighten?: boolean;       // dark logos: invert + desaturate → reads as soft silver
-  transparentBg?: boolean; // dark-filled logos: mix-blend-mode screen
+  lighten?: boolean;
+  transparentBg?: boolean;
   tone?: "muted" | "lift";
-  wide?: boolean;          // horizontal marks: tighter mobile padding so logo fills the card
+  wide?: boolean;
 };
 
-const institutional: Voice[] = [
+const voices: Voice[] = [
   {
-    source: "Government of India",
-    role: "Presidential Recognition · Six laureate cycles",
+    category: "Innovation Foundation · India",
     quote:
-      "Honored by Presidents Pratibha Patil and Pranab Mukherjee across IGNITE, NIF and National Inspire platforms — among the youngest multi-cycle Presidential awardees.",
+      "Sushant is an amazing innovator and always innovates with high social impact.",
+    personName: "Anil K. Gupta",
+    personTitle: "Professor, IIM-Ahmedabad · Vice-Chair",
+    organization: "National Innovation Foundation — India",
     logo: nifLogo,
     lighten: true,
     wide: true,
   },
   {
-    source: "National Innovation Foundation — India",
-    role: "Featured Inventor · IGNITE & NIF Chair",
+    category: "Press · Technology",
     quote:
-      "Catalogued in NIF's official archive of grassroots inventors, with multiple prototypes selected for national exhibition and Presidential demonstration.",
-    logo: nifLogo,
-    lighten: true,
-    wide: true,
-  },
-  {
-    source: "MIT Technology Review",
-    role: "Editorial coverage · Innovators track",
-    quote:
-      "Featured in the global innovators discourse for graphene-anchored material work emerging from India's deep-tech bench.",
+      "A life-changing innovation 'Enabler' for the disabled — highly appreciable.",
+    personName: "Mr. Srinivas",
+    personTitle: "Senior Journalist",
+    organization: "MIT Technology Review Magazine",
     logo: mitTrLogo,
     tone: "lift",
   },
   {
-    source: "TED · TED-India",
-    role: "Speaker · Long-form stage",
+    category: "Professional Services · Innovation",
     quote:
-      "On-stage at TED-India and allied platforms on invention, materials, and the industrial future of the carbon century.",
-    logo: tedLogo,
-    tone: "muted",
+      "The best AI live demo ever seen so far. This demo really made my day.",
+    personName: "P. R. Ramesh",
+    personTitle: "Chairman",
+    organization: "Deloitte India",
+    logo: deloitteLogo,
+    lighten: true,
   },
   {
-    source: "INK Talks · INK Fellows Retreat",
-    role: "INK Fellow · Speaker",
+    category: "Energy Sector · Industrial",
     quote:
-      "Selected as an INK Fellow and featured speaker — part of a curated cohort of inventors, founders, and public thinkers.",
-    logo: inkTalksLogo,
-    transparentBg: true,
-  },
-  {
-    source: "Indian Oil Corporation (IOCL)",
-    role: "Industrial Recognition · Sujoy Choudhury, Director",
-    quote:
-      "Recognized at IOCL's R&D forum for advanced-materials work at the energy interface.",
+      "Very effective and innovative solution for underground pipelines.",
+    personName: "Mr. Joseph",
+    personTitle: "Eastern Zone",
+    organization: "Indian Oil Corporation (IOCL)",
     logo: ioclLogo,
     tone: "lift",
   },
   {
-    source: "Deloitte",
-    role: "Innovation programs · Featured founder",
+    category: "Media · Entrepreneurship",
     quote:
-      "Profiled within Deloitte's innovation and deep-tech programming as a founder operating across materials and industrial commercialization.",
-    logo: deloitteLogo,
+      "A very inspiring entrepreneur and great social-revolutionary products.",
+    personName: "Shradha Sharma",
+    personTitle: "Founder & CEO",
+    organization: "YourStory",
+    logo: yourStoryLogo,
+    tone: "lift",
+  },
+  {
+    category: "Global Stage · Ideas",
+    quote:
+      "Invited to the TED-India stage to speak on invention, materials, and the industrial future of the carbon century — among a select cohort of global thinkers.",
+    personName: "TED · TED-India",
+    personTitle: "Speaker · Long-form stage",
+    organization: "TED Conferences",
+    logo: tedLogo,
+    tone: "muted",
+  },
+  {
+    category: "Innovation Platform · Curated Fellows",
+    quote:
+      "Selected as an INK Fellow and invited speaker — part of a curated cohort of inventors, founders, and public thinkers shaping the next decade.",
+    personName: "INK Talks",
+    personTitle: "INK Fellow · Speaker",
+    organization: "INK Fellows Retreat",
+    logo: inkTalksLogo,
+    transparentBg: true,
+  },
+  {
+    category: "Sovereign Recognition · India",
+    quote:
+      "Honored by Presidents Pratibha Patil and Pranab Mukherjee across IGNITE, NIF and National Inspire platforms — among the youngest multi-cycle Presidential awardees in the country.",
+    personName: "Government of India",
+    personTitle: "Presidential Recognition",
+    organization: "Six laureate cycles · IGNITE & NIF",
+    logo: nifLogo,
     lighten: true,
+    wide: true,
   },
 ];
-
-// Editorial / press voices have been moved out of this section. Media
-// coverage and the press archive live exclusively on the /news page so
-// Voices remains a pure wall of institutional endorsement.
-
 
 function VoicesStrip() {
   return (
@@ -133,76 +154,89 @@ function VoicesStrip() {
   );
 }
 
+function LogoMark({ v }: { v: Voice }) {
+  const imgStyle: CSSProperties = {
+    objectFit: "contain",
+    ...(v.wide
+      ? { maxHeight: "60%", maxWidth: "88%" }
+      : { maxHeight: "100%", maxWidth: "100%" }),
+  };
+  if (v.transparentBg) imgStyle.mixBlendMode = "screen";
+
+  const imgCls =
+    v.wide && v.lighten
+      ? "[filter:invert(1)_brightness(1.08)_contrast(1.15)_saturate(0)] opacity-[0.96] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.14)_contrast(1.2)_saturate(0)] transition-all duration-700"
+      : v.transparentBg
+      ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 transition-all duration-700"
+      : v.lighten
+      ? "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)] transition-all duration-700"
+      : v.tone === "muted"
+      ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04] transition-all duration-700"
+      : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06] transition-all duration-700";
+
+  return (
+    <div
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${
+        v.wide ? "h-10 w-24 sm:h-11 sm:w-28 p-1.5" : "h-12 w-12 sm:h-14 sm:w-14 p-2"
+      }`}
+    >
+      {v.logo ? (
+        <img
+          src={v.logo}
+          alt={`${v.organization} logo`}
+          loading="lazy"
+          style={imgStyle}
+          className={`h-auto w-auto ${imgCls}`}
+        />
+      ) : (
+        <span className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground/60">
+          {v.organization.slice(0, 2).toUpperCase()}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function VoiceCard({ v, i }: { v: Voice; i: number }) {
   const Wrap = v.href ? "a" : "div";
   return (
     <motion.li
       initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.1, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-      className="border-t border-foreground/[0.08] py-10 md:py-12"
+      className="border-t border-foreground/[0.08] py-10 md:py-14"
     >
       <Wrap
         {...(v.href
           ? { href: v.href, target: "_blank", rel: "noopener noreferrer" }
           : {})}
-        className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
+        className="group"
       >
-        {/* Logo card.
-            - Standard logos: 64×64 square, p-2.5.
-            - Wide horizontal marks (GoI / NIF): rectangular card h-12 w-28
-              on mobile, h-14 w-32 on sm+. The wider card lets the 4:1 logo
-              render at ~24–28px tall instead of ~4px in a square. */}
-        <div className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${v.wide ? "h-12 w-28 sm:h-14 sm:w-32 p-1.5" : "h-16 w-16 p-2.5"}`}>
-          {v.logo ? (() => {
-            const imgStyle: CSSProperties = {
-              objectFit: "contain",
-              // Wide logos: maxHeight % lets the 4:1 mark scale to ~25px tall
-              // while maxWidth caps it from overflowing the card.
-              ...(v.wide
-                ? { maxHeight: "60%", maxWidth: "88%" }
-                : { maxHeight: "100%", maxWidth: "100%" }),
-            };
-            if (v.transparentBg) imgStyle.mixBlendMode = "screen";
+        {/* Category label */}
+        <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45 mb-6">
+          {v.category}
+        </p>
 
-            // Wide+lighten (GoI/NIF): stronger brightness/contrast than standard
-            // lighten because the mark is very fine-lined and needs extra lift.
-            const imgCls = v.wide && v.lighten
-              ? "[filter:invert(1)_brightness(1.08)_contrast(1.15)_saturate(0)] opacity-[0.96] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.14)_contrast(1.2)_saturate(0)] transition-all duration-700"
-              : v.transparentBg
-              ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 transition-all duration-700"
-              : v.lighten
-              ? "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)] transition-all duration-700"
-              : v.tone === "muted"
-              ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04] transition-all duration-700"
-              : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06] transition-all duration-700";
+        {/* Quote — visually dominant */}
+        <blockquote className="max-w-3xl font-display text-[clamp(1.15rem,2.4vw,1.65rem)] leading-[1.48] tracking-[-0.018em] text-foreground/90 italic mb-8">
+          &ldquo;{v.quote}&rdquo;
+        </blockquote>
 
-            return (
-              <img
-                src={v.logo}
-                alt={`${v.source} logo`}
-                loading="lazy"
-                style={imgStyle}
-                className={`h-auto w-auto ${imgCls}`}
-              />
-            );
-          })() : (
-            <span className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground/60">
-              {v.source.slice(0, 2).toUpperCase()}
-            </span>
-          )}
-        </div>
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55">
-            {v.role}
-          </p>
-          <h3 className="mt-3 font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">
-            {v.source}
-          </h3>
-          <p className="mt-4 max-w-2xl text-[15px] leading-[1.7] text-foreground/70 md:text-base italic">
-            “{v.quote}”
-          </p>
+        {/* Attribution row: logo + name + title */}
+        <div className="flex items-center gap-4 md:gap-5">
+          <LogoMark v={v} />
+          <div>
+            <p className="font-display text-[14px] md:text-[15px] tracking-[-0.01em] text-foreground/85 leading-snug">
+              {v.personName}
+            </p>
+            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/50 leading-snug">
+              {v.personTitle}
+            </p>
+            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/38 leading-snug">
+              {v.organization}
+            </p>
+          </div>
         </div>
       </Wrap>
     </motion.li>
@@ -213,7 +247,7 @@ function VoicesList({ items }: { items: Voice[] }) {
   return (
     <ul className="not-prose mt-12 md:mt-16 flex flex-col">
       {items.map((v, i) => (
-        <VoiceCard key={v.source} v={v} i={i} />
+        <VoiceCard key={`${v.personName}-${v.organization}`} v={v} i={i} />
       ))}
       <li className="border-t border-foreground/[0.08]" />
     </ul>
@@ -223,27 +257,26 @@ function VoicesList({ items }: { items: Voice[] }) {
 function VoicesPage() {
   return (
     <CinematicPageShell
-      eyebrow="Voices · Institutional Endorsements"
+      eyebrow="Voices · Endorsements & Testimonials"
       title={
         <>
-          What the institutions<br className="hidden md:inline" /> have on record.
+          What people say<br className="hidden md:inline" /> about the work.
         </>
       }
-      lead="A curated wall of institutional endorsement — sovereign bodies, foundations, and global platforms speaking on the work. Quotes are paraphrased from public record."
+      lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages — spanning two decades of invention."
       backdrop={backdrop}
       overlay={0.76}
     >
       <VoicesStrip />
 
-      <EditorialSection number="01 · Institutions" heading="On the record, from the institutions.">
+      <EditorialSection number="01 · Voices" heading="Direct, on the record.">
         <p>
-          Voices from sovereign bodies, foundations, and global platforms
-          that have engaged the work over the past two decades.
+          Comments, endorsements, and testimonials from the people and
+          institutions who have engaged the work — in their own words.
         </p>
       </EditorialSection>
 
-      <VoicesList items={institutional} />
-
+      <VoicesList items={voices} />
     </CinematicPageShell>
   );
 }
