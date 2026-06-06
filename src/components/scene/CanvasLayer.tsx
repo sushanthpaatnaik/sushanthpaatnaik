@@ -93,6 +93,7 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
     if (!ctx) return;
 
     let destroyed = false;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
     const notifyReady = () => {
       if (notifiedRef.current) return;
@@ -100,14 +101,16 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
       onReady?.();
     };
 
-    // 12 s hard fallback — same contract as the original video layer.
-    const fallback = window.setTimeout(notifyReady, 12_000);
+    // Hard fallback — dismiss loader if frame 0 never arrives (slow network).
+    // 6s on mobile (CDN-cached frames typically <1s; 6s covers 3G edge cases).
+    // 10s on desktop where a slow connection is less common.
+    const fallbackMs = isTouch ? 6_000 : 10_000;
+    const fallback = window.setTimeout(notifyReady, fallbackMs);
 
     // ── Canvas sizing ────────────────────────────────────────────────────────
-    // Cap DPR at 1.5 on all devices. iPhone 15 Pro reports DPR=3 which creates
-    // a 1170×2532 buffer — 9× more pixels than DPR=1. At DPR=1.5 the buffer is
-    // 585×1266: sharp enough at phone viewing distance, ~4× faster draws.
-    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    // Cap DPR at 1.5 on mobile. iPhone 15 Pro reports DPR=3 which creates
+    // a 1170×2532 buffer — 9× more pixels than needed. At 1.5 the buffer is
+    // 585×1266: sharp at phone viewing distance, ~4× faster draws.
     const syncSize = () => {
       const rawDpr = window.devicePixelRatio || 1;
       const dpr = isTouch ? Math.min(rawDpr, 1.5) : Math.min(rawDpr, 2);
@@ -145,7 +148,10 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
 
       const loadFrame = (fi: number): Promise<void> => {
         const pad = String(fi + 1).padStart(4, "0");
-        return fetch(`/sequences/${path}/frame_${pad}.webp`)
+        // Frame 0: high priority so the loader dismisses quickly.
+        // Remaining frames: auto priority so they don't starve other resources.
+        const priority: RequestInit = fi === 0 ? { priority: "high" } as RequestInit : {};
+        return fetch(`/sequences/${path}/frame_${pad}.webp`, priority)
           .then(r  => r.blob())
           .then(b  => createImageBitmap(b))
           .then(bmp => {

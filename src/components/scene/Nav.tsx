@@ -61,12 +61,13 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-3 pointer-events-auto">
-          <Link
-            to="/contact"
-            className="btn-cinematic btn-cinematic-sm hidden sm:inline-flex"
-          >
-            Contact
-          </Link>
+          {/* Wrapper div hides at mobile widths — prevents .btn-cinematic's
+              display:inline-flex from overriding Tailwind's hidden utility */}
+          <div className="hidden sm:block">
+            <Link to="/contact" className="btn-cinematic btn-cinematic-sm">
+              Contact
+            </Link>
+          </div>
           {/* Mobile trigger — 44px minimum touch target per WCAG */}
           <button
             type="button"
