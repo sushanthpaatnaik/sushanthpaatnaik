@@ -10,7 +10,7 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = single sticky cinematic stage.
-   Seven chapters. One viewport. Scroll is the timeline.
+   Eight chapters. One viewport. Scroll is the timeline.
 
    Each chapter occupies ~217 vh of scroll travel (Industrial: ~336 vh).
    OV=0.15 → 15 % fade window. Active hold: 70 % of band.
@@ -20,13 +20,14 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
 
 const gateways = [
-  { to: "/about",        n: "I",   label: "About",        line: "Founder, philosophy, journey." },
-  { to: "/innovations",  n: "II",  label: "Innovations",  line: "Graphene, materials, systems." },
-  { to: "/ventures",     n: "III", label: "Ventures",     line: "Five operating companies. One stack." },
-  { to: "/recognitions", n: "IV",  label: "Recognitions", line: "Six Presidential awards. TED. MIT TR." },
-  { to: "/essays",       n: "V",   label: "Essays",       line: "Notes from the workshop." },
-  { to: "/engage",       n: "VI",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
-  { to: "/news",         n: "VII", label: "News",         line: "Editorial archive." },
+  { to: "/about",        n: "I",    label: "About",        line: "Founder, philosophy, journey." },
+  { to: "/innovations",  n: "II",   label: "Innovations",  line: "Graphene, materials, systems." },
+  { to: "/ventures",     n: "III",  label: "Ventures",     line: "Five operating companies. One stack." },
+  { to: "/recognitions", n: "IV",   label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
+  { to: "/voices",       n: "V",    label: "Voices",       line: "Talks, perspectives, and interviews." },
+  { to: "/essays",       n: "VI",   label: "Blogs",        line: "Notes from the workshop." },
+  { to: "/engage",       n: "VII",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
+  { to: "/news",         n: "VIII", label: "News",         line: "Editorial archive." },
 ] as const;
 
 /* ──────────────────────────────────────────────────────────────────
@@ -325,7 +326,7 @@ function EcosystemContent() {
         </p>
         {/* H2 */}
         <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
-          Seven thresholds into the work.
+          Eight thresholds into the work.
         </h2>
         {/* Body */}
         <p className="mt-8 max-w-xl text-sm text-muted-foreground/85">
