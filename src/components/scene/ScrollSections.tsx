@@ -519,6 +519,17 @@ export default function ScrollSections() {
   const op5 = useTransform(scrollYProgress, (sp) => chapOp(sp, 5));
   const op6 = useTransform(scrollYProgress, (sp) => chapOp(sp, 6));
 
+  // Gate pointer events to whichever chapter is currently visible.
+  // Without this, zero-opacity chapters sitting above in DOM order
+  // silently absorb clicks intended for the visible chapter.
+  const pe0 = useTransform(op0, (v) => v > 0.05 ? "auto" : "none");
+  const pe1 = useTransform(op1, (v) => v > 0.05 ? "auto" : "none");
+  const pe2 = useTransform(op2, (v) => v > 0.05 ? "auto" : "none");
+  const pe3 = useTransform(op3, (v) => v > 0.05 ? "auto" : "none");
+  const pe4 = useTransform(op4, (v) => v > 0.05 ? "auto" : "none");
+  const pe5 = useTransform(op5, (v) => v > 0.05 ? "auto" : "none");
+  const pe6 = useTransform(op6, (v) => v > 0.05 ? "auto" : "none");
+
   const y0 = useTransform(scrollYProgress, (sp) => chapY(sp, 0, yIn, yOut));
   const y1 = useTransform(scrollYProgress, (sp) => chapY(sp, 1, yIn, yOut));
   const y2 = useTransform(scrollYProgress, (sp) => chapY(sp, 2, yIn, yOut));
@@ -556,7 +567,7 @@ export default function ScrollSections() {
         {/* Chapter 0 — Origin */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op0, y: y0, willChange: "opacity, transform" }}
+          style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: "opacity, transform" }}
         >
           <OriginContent />
         </motion.div>
@@ -564,7 +575,7 @@ export default function ScrollSections() {
         {/* Chapter 1 — Founder */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op1, y: y1, willChange: "opacity, transform" }}
+          style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: "opacity, transform" }}
         >
           <FounderContent />
         </motion.div>
@@ -572,7 +583,7 @@ export default function ScrollSections() {
         {/* Chapter 2 — Material Intelligence */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op2, y: y2, willChange: "opacity, transform" }}
+          style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: "opacity, transform" }}
         >
           <MaterialContent />
         </motion.div>
@@ -580,7 +591,7 @@ export default function ScrollSections() {
         {/* Chapter 3 — Industrial Translation */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op3, y: y3, willChange: "opacity, transform" }}
+          style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: "opacity, transform" }}
         >
           <IndustrialContent />
         </motion.div>
@@ -588,7 +599,7 @@ export default function ScrollSections() {
         {/* Chapter 4 — Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op4, y: y4, willChange: "opacity, transform" }}
+          style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: "opacity, transform" }}
         >
           <RecognitionContent />
         </motion.div>
@@ -596,7 +607,7 @@ export default function ScrollSections() {
         {/* Chapter 5 — Ecosystem */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op5, y: y5, willChange: "opacity, transform" }}
+          style={{ opacity: op5, y: y5, pointerEvents: pe5, willChange: "opacity, transform" }}
         >
           <EcosystemContent />
         </motion.div>
@@ -604,7 +615,7 @@ export default function ScrollSections() {
         {/* Chapter 6 — Future Systems */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ opacity: op6, y: y6, willChange: "opacity, transform" }}
+          style={{ opacity: op6, y: y6, pointerEvents: pe6, willChange: "opacity, transform" }}
         >
           <FutureContent />
         </motion.div>
