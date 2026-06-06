@@ -149,19 +149,28 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           : {})}
         className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
       >
-        {/* Logo card — same matte-anodised panel as News masthead grid.
-            Wide horizontal marks (GoI/NIF) get tighter mobile padding so
-            the logo fills 65–75% of the card area. p-1 mobile / p-2.5 sm+. */}
-        <div className={`relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${v.wide ? "p-1 sm:p-2.5" : "p-2.5"}`}>
+        {/* Logo card.
+            - Standard logos: 64×64 square, p-2.5.
+            - Wide horizontal marks (GoI / NIF): rectangular card h-12 w-28
+              on mobile, h-14 w-32 on sm+. The wider card lets the 4:1 logo
+              render at ~24–28px tall instead of ~4px in a square. */}
+        <div className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${v.wide ? "h-12 w-28 sm:h-14 sm:w-32 p-1.5" : "h-16 w-16 p-2.5"}`}>
           {v.logo ? (() => {
             const imgStyle: CSSProperties = {
-              maxHeight: "100%",
-              maxWidth: "100%",
               objectFit: "contain",
+              // Wide logos: maxHeight % lets the 4:1 mark scale to ~25px tall
+              // while maxWidth caps it from overflowing the card.
+              ...(v.wide
+                ? { maxHeight: "60%", maxWidth: "88%" }
+                : { maxHeight: "100%", maxWidth: "100%" }),
             };
             if (v.transparentBg) imgStyle.mixBlendMode = "screen";
 
-            const imgCls = v.transparentBg
+            // Wide+lighten (GoI/NIF): stronger brightness/contrast than standard
+            // lighten because the mark is very fine-lined and needs extra lift.
+            const imgCls = v.wide && v.lighten
+              ? "[filter:invert(1)_brightness(1.08)_contrast(1.15)_saturate(0)] opacity-[0.96] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.14)_contrast(1.2)_saturate(0)] transition-all duration-700"
+              : v.transparentBg
               ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 transition-all duration-700"
               : v.lighten
               ? "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)] transition-all duration-700"
