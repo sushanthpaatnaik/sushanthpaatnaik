@@ -130,7 +130,7 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 function OriginContent() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 pointer-events-auto">
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6">
       {/* Origin: dark cosmic background — moderate center shield */}
       <ContentShield align="center" strength={0.56} />
       <div className="relative z-10 max-w-4xl text-center">
@@ -180,7 +180,7 @@ function OriginContent() {
    ────────────────────────────────────────────────────────────────── */
 function FounderContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pointer-events-auto">
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
       {/* Founder: dark footage, text on right — right-side shield */}
       <ContentShield align="right" strength={0.68} />
       {/* Founder label top left */}
@@ -218,7 +218,7 @@ function FounderContent() {
    ────────────────────────────────────────────────────────────────── */
 function MaterialContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 pointer-events-auto">
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
       {/* Material: bright metallic footage — strongest shield, left column */}
       <ContentShield align="left" strength={0.82} />
       <div className="relative z-10 mr-auto text-left max-w-2xl">
@@ -246,7 +246,7 @@ function MaterialContent() {
    ────────────────────────────────────────────────────────────────── */
 function IndustrialContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 pointer-events-auto">
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
       {/* Industrial: bright machinery footage, text on right — right-side shield */}
       <ContentShield align="right" strength={0.80} />
       <div className="relative z-10 ml-auto md:text-right max-w-2xl">
@@ -274,7 +274,7 @@ function IndustrialContent() {
    ────────────────────────────────────────────────────────────────── */
 function RecognitionContent() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36 pointer-events-auto">
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
       {/* Recognition: dark spotlight setting — moderate center shield */}
       <ContentShield align="center" strength={0.60} />
       {/* Soft radial gradient bg */}
@@ -316,7 +316,7 @@ function RecognitionContent() {
    ────────────────────────────────────────────────────────────────── */
 function EcosystemContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 overflow-y-auto pointer-events-auto">
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 overflow-y-auto">
       {/* Ecosystem: dark infrastructure footage, left-aligned content */}
       <ContentShield align="left" strength={0.66} />
       <div className="relative z-10 w-full max-w-6xl mt-7">
@@ -367,7 +367,7 @@ function EcosystemContent() {
    ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden pointer-events-auto">
+    <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden">
       {/* Future: dark space, centered text — light center shield */}
       <ContentShield align="center" strength={0.54} />
       {/* Atmospheric volumetric glow */}
