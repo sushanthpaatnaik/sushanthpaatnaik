@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import CinematicPageShell, {
@@ -46,6 +47,9 @@ type Voice = {
   quote: string;
   logo?: string;
   href?: string;
+  lighten?: boolean;       // dark logos: invert + desaturate → reads as soft silver
+  transparentBg?: boolean; // dark-filled logos: mix-blend-mode screen
+  tone?: "muted" | "lift";
 };
 
 const institutional: Voice[] = [
@@ -55,6 +59,7 @@ const institutional: Voice[] = [
     quote:
       "Honored by Presidents Pratibha Patil and Pranab Mukherjee across IGNITE, NIF and National Inspire platforms — among the youngest multi-cycle Presidential awardees.",
     logo: nifLogo,
+    lighten: true,
   },
   {
     source: "National Innovation Foundation — India",
@@ -62,6 +67,7 @@ const institutional: Voice[] = [
     quote:
       "Catalogued in NIF's official archive of grassroots inventors, with multiple prototypes selected for national exhibition and Presidential demonstration.",
     logo: nifLogo,
+    lighten: true,
   },
   {
     source: "MIT Technology Review",
@@ -69,6 +75,7 @@ const institutional: Voice[] = [
     quote:
       "Featured in the global innovators discourse for graphene-anchored material work emerging from India's deep-tech bench.",
     logo: mitTrLogo,
+    tone: "lift",
   },
   {
     source: "TED · TED-India",
@@ -76,6 +83,7 @@ const institutional: Voice[] = [
     quote:
       "On-stage at TED-India and allied platforms on invention, materials, and the industrial future of the carbon century.",
     logo: tedLogo,
+    tone: "muted",
   },
   {
     source: "INK Talks · INK Fellows Retreat",
@@ -83,6 +91,7 @@ const institutional: Voice[] = [
     quote:
       "Selected as an INK Fellow and featured speaker — part of a curated cohort of inventors, founders, and public thinkers.",
     logo: inkTalksLogo,
+    transparentBg: true,
   },
   {
     source: "Indian Oil Corporation (IOCL)",
@@ -90,6 +99,7 @@ const institutional: Voice[] = [
     quote:
       "Recognized at IOCL's R&D forum for advanced-materials work at the energy interface.",
     logo: ioclLogo,
+    tone: "lift",
   },
   {
     source: "Deloitte",
@@ -97,6 +107,7 @@ const institutional: Voice[] = [
     quote:
       "Profiled within Deloitte's innovation and deep-tech programming as a founder operating across materials and industrial commercialization.",
     logo: deloitteLogo,
+    lighten: true,
   },
 ];
 
@@ -135,34 +146,34 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           : {})}
         className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
       >
-        <div
-          className="shrink-0 flex items-center justify-center"
-          style={{
-            width: "clamp(48px, 6vw, 64px)",
-            height: "clamp(48px, 6vw, 64px)",
-            padding: "10px",
-            borderRadius: "10px",
-            background: "rgba(255,255,255,0.045)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            boxShadow: "0 0 16px 0 rgba(255,255,255,0.04)",
-          }}
-        >
-          {v.logo ? (
-            <img
-              src={v.logo}
-              alt={`${v.source} logo`}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                opacity: 0.92,
-                filter: "brightness(1.15) contrast(1.1)",
-                transition: "opacity 0.2s, filter 0.2s",
-              }}
-              className="group-hover:opacity-100"
-              loading="lazy"
-            />
-          ) : (
+        {/* Logo card — same matte-anodised panel as News masthead grid */}
+        <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] p-2.5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)]">
+          {v.logo ? (() => {
+            const imgStyle: CSSProperties = {
+              maxHeight: "100%",
+              maxWidth: "100%",
+              objectFit: "contain",
+            };
+            if (v.transparentBg) imgStyle.mixBlendMode = "screen";
+
+            const imgCls = v.transparentBg
+              ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 transition-all duration-700"
+              : v.lighten
+              ? "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)] transition-all duration-700"
+              : v.tone === "muted"
+              ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04] transition-all duration-700"
+              : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06] transition-all duration-700";
+
+            return (
+              <img
+                src={v.logo}
+                alt={`${v.source} logo`}
+                loading="lazy"
+                style={imgStyle}
+                className={`h-auto w-auto ${imgCls}`}
+              />
+            );
+          })() : (
             <span className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground/60">
               {v.source.slice(0, 2).toUpperCase()}
             </span>
