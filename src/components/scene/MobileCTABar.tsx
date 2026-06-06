@@ -60,7 +60,8 @@ export default function MobileCTABar() {
       >
         <Link
           to="/contact"
-          className="flex h-[52px] w-full items-center justify-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/85 hover:text-foreground active:text-foreground transition-colors"
+          className="flex w-full items-center justify-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/85 hover:text-foreground active:text-foreground transition-colors"
+          style={{ height: "calc(52px + env(safe-area-inset-bottom, 0px))", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         >
           <span>Begin a conversation</span>
           <span className="text-primary/80 text-[13px]">→</span>

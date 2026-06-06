@@ -5,10 +5,12 @@ export function useLenis(onScroll?: (progress: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Touch devices (phones/tablets) use native hardware-accelerated scroll.
-    // Lenis syncTouch intercepts native touch and moves scroll computation to
-    // the main thread, causing jank. On coarse-pointer devices, disable all
-    // Lenis touch handling and let the browser own it entirely.
+    // Touch devices (phones/tablets): enable syncTouch so Lenis tracks finger
+    // position and fires scroll events on every touch-move frame.  The canvas
+    // reads lenis.targetScroll / lenis.limit on every RAF tick, so the image
+    // sequence advances in lock-step with the finger — no lag, no jank.
+    // lerp=1 on touch means no additional smoothing beyond what the browser
+    // already provides via momentum / deceleration.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
     const lenis = new Lenis({
@@ -18,8 +20,10 @@ export function useLenis(onScroll?: (progress: number) => void) {
       lerp: isTouch ? 1 : 0.1,
       smoothWheel: !isTouch,
       wheelMultiplier: 1.4,
-      touchMultiplier: 0,
-      syncTouch: false,
+      // touchMultiplier: positive value (default 2) lets Lenis track finger
+      // position and emit scroll events — required for canvas to animate.
+      touchMultiplier: isTouch ? 2 : 0,
+      syncTouch: isTouch,
     });
     lenisRef.current = lenis;
 

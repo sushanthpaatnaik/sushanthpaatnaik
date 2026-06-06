@@ -50,6 +50,7 @@ type Voice = {
   lighten?: boolean;       // dark logos: invert + desaturate → reads as soft silver
   transparentBg?: boolean; // dark-filled logos: mix-blend-mode screen
   tone?: "muted" | "lift";
+  wide?: boolean;          // horizontal marks: tighter mobile padding so logo fills the card
 };
 
 const institutional: Voice[] = [
@@ -60,6 +61,7 @@ const institutional: Voice[] = [
       "Honored by Presidents Pratibha Patil and Pranab Mukherjee across IGNITE, NIF and National Inspire platforms — among the youngest multi-cycle Presidential awardees.",
     logo: nifLogo,
     lighten: true,
+    wide: true,
   },
   {
     source: "National Innovation Foundation — India",
@@ -68,6 +70,7 @@ const institutional: Voice[] = [
       "Catalogued in NIF's official archive of grassroots inventors, with multiple prototypes selected for national exhibition and Presidential demonstration.",
     logo: nifLogo,
     lighten: true,
+    wide: true,
   },
   {
     source: "MIT Technology Review",
@@ -146,8 +149,10 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           : {})}
         className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
       >
-        {/* Logo card — same matte-anodised panel as News masthead grid */}
-        <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] p-2.5 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)]">
+        {/* Logo card — same matte-anodised panel as News masthead grid.
+            Wide horizontal marks (GoI/NIF) get tighter mobile padding so
+            the logo fills 65–75% of the card area. p-1 mobile / p-2.5 sm+. */}
+        <div className={`relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${v.wide ? "p-1 sm:p-2.5" : "p-2.5"}`}>
           {v.logo ? (() => {
             const imgStyle: CSSProperties = {
               maxHeight: "100%",
