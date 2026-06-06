@@ -164,12 +164,61 @@ function OriginContent() {
       </div>
 
       {/* Scroll cue */}
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-5 text-[9.5px] font-extralight uppercase tracking-[0.5em] text-muted-foreground/65">
-        <span className="blur-[0.3px]">Scroll</span>
-        <span
-          aria-hidden
-          className="block h-16 w-px origin-top bg-gradient-to-b from-foreground/22 via-foreground/12 to-transparent"
-        />
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span className="font-mono text-[9px] uppercase tracking-[0.52em] text-muted-foreground/50 blur-[0.3px]">
+          Scroll
+        </span>
+        {/* Animated track */}
+        <div className="relative flex flex-col items-center" aria-hidden>
+          {/* Static track line */}
+          <div className="w-px h-16 bg-gradient-to-b from-foreground/18 via-foreground/10 to-transparent" />
+          {/* Gliding dot */}
+          <motion.div
+            className="absolute top-0 w-[3px] h-[3px] rounded-full"
+            style={{
+              background: "oklch(0.88 0.04 232 / 0.85)",
+              boxShadow: "0 0 6px 1px oklch(0.78 0.06 232 / 0.55)",
+              left: "50%",
+              translateX: "-50%",
+            }}
+            animate={{ y: [0, 52, 52], opacity: [0, 1, 0] }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              repeatDelay: 0.4,
+              ease: ["easeIn", "easeOut", "easeOut"],
+              times: [0, 0.72, 1],
+            }}
+          />
+        </div>
+        {/* Animated chevrons */}
+        <div className="flex flex-col items-center gap-[3px] mt-1" aria-hidden>
+          {[0, 1, 2].map((i) => (
+            <motion.svg
+              key={i}
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              animate={{ opacity: [0.15, 0.65, 0.15] }}
+              transition={{
+                duration: 1.4,
+                repeat: Infinity,
+                delay: i * 0.22,
+                ease: "easeInOut",
+              }}
+            >
+              <path
+                d="M1 1L5 5L9 1"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-foreground/60"
+              />
+            </motion.svg>
+          ))}
+        </div>
       </div>
     </div>
   );
