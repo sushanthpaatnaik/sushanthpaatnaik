@@ -135,9 +135,9 @@ function OriginContent() {
       <ContentShield align="center" strength={0.56} />
 
       {/* All text content lives in one centered block — headline, subtitle,
-          awards, and SCROLL label. Nothing can overlap because they share
-          a single layout context. The animated indicator is purely decorative
-          (aria-hidden) and lives at absolute bottom separately. */}
+          and awards. Nothing can overlap because they share a single layout
+          context. The animated indicator is purely decorative (aria-hidden)
+          and lives at absolute bottom separately. */}
       <div className="relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
         <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
@@ -166,10 +166,7 @@ function OriginContent() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
             Six-time Presidential awardee · TED · MIT TR-35
           </div>
-          {/* SCROLL label — always below awards */}
-          <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.52em] text-muted-foreground/50 blur-[0.3px]">
-            Scroll
-          </p>
+
         </div>
       </div>
 
