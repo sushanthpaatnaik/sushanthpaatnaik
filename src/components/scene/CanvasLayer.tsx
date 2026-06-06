@@ -104,10 +104,13 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
     const fallback = window.setTimeout(notifyReady, 12_000);
 
     // ── Canvas sizing ────────────────────────────────────────────────────────
-    // Canvas buffer = physical pixels (DPR × CSS pixels) for crisp retina output.
-    // drawBitmap operates in physical-pixel space to match.
+    // Cap DPR at 1.5 on all devices. iPhone 15 Pro reports DPR=3 which creates
+    // a 1170×2532 buffer — 9× more pixels than DPR=1. At DPR=1.5 the buffer is
+    // 585×1266: sharp enough at phone viewing distance, ~4× faster draws.
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
     const syncSize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const rawDpr = window.devicePixelRatio || 1;
+      const dpr = isTouch ? Math.min(rawDpr, 1.5) : Math.min(rawDpr, 2);
       const nW  = Math.round(window.innerWidth  * dpr);
       const nH  = Math.round(window.innerHeight * dpr);
       if (canvas.width !== nW || canvas.height !== nH) {
@@ -158,8 +161,23 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
 
       // Frame 0 loads first so notifyReady fires promptly and the canvas
       // always has something to draw before the rest of the group arrives.
+      // Mobile: load remaining frames in serial batches of 6 so we never
+      // saturate the browser's HTTP/2 connection pool (6 concurrent streams
+      // per origin on Chrome/Safari mobile). Desktop: fire all in parallel —
+      // HTTP/2 multiplexing on fast connections makes this fastest.
       loadFrame(0).then(() => {
-        for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
+        if (isTouch) {
+          const loadBatch = async (start: number): Promise<void> => {
+            const end = Math.min(start + 6, FRAME_COUNT);
+            const batch: Promise<void>[] = [];
+            for (let i = start; i < end; i++) batch.push(loadFrame(i));
+            await Promise.all(batch);
+            if (end < FRAME_COUNT && !destroyed) await loadBatch(end);
+          };
+          loadBatch(1);
+        } else {
+          for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
+        }
       });
     };
 
