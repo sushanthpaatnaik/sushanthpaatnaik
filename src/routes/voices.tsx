@@ -135,12 +135,31 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           : {})}
         className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
       >
-        <div className="h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-sm border border-foreground/10 bg-background/30 p-2 flex items-center justify-center">
+        <div
+          className="shrink-0 flex items-center justify-center"
+          style={{
+            width: "clamp(48px, 6vw, 64px)",
+            height: "clamp(48px, 6vw, 64px)",
+            padding: "10px",
+            borderRadius: "10px",
+            background: "rgba(255,255,255,0.045)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            boxShadow: "0 0 16px 0 rgba(255,255,255,0.04)",
+          }}
+        >
           {v.logo ? (
             <img
               src={v.logo}
               alt={`${v.source} logo`}
-              className="max-h-full max-w-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                opacity: 0.92,
+                filter: "brightness(1.15) contrast(1.1)",
+                transition: "opacity 0.2s, filter 0.2s",
+              }}
+              className="group-hover:opacity-100"
               loading="lazy"
             />
           ) : (
