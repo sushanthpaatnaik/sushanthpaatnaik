@@ -692,6 +692,22 @@ html, body { overflow-x: clip; max-width: 100%; }
 html.lenis, html.lenis body {
   height: auto;
 }
+
+/* Cinematic stage and canvas overlays must not block vertical touch events.
+   touch-action: pan-y lets iOS Safari and Chrome Android pass vertical
+   swipe gestures through to the document scroll handler so Lenis
+   (syncTouch mode) fires on every touch-move frame. */
+.cinematic-stage-overlay {
+  touch-action: pan-y;
+}
+
+/* iOS Safari momentum scroll for explicitly scrollable inner elements.
+   Without this, overflow-y:auto containers inside a fixed parent feel
+   "sticky" / non-momentum on iOS. */
+[data-lenis-prevent],
+.overscroll-contain {
+  -webkit-overflow-scrolling: touch;
+}
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
@@ -782,9 +798,14 @@ html.lenis, html.lenis body {
     line-height: 1.55;
   }
   /* Media safety — no media element can break the layout */
-  img, video, canvas, svg, iframe, picture {
+  img, video, svg, iframe, picture {
     max-width: 100%;
     height: auto;
+  }
+  /* Canvas must NOT get height:auto — it uses explicit width/height attributes
+     for DPR-correct pixel buffer sizing, and the CSS should match via 100%. */
+  canvas {
+    max-width: 100%;
   }
   /* Allow explicit aspect-ratio containers to still control height */
   video[controls], video[autoplay] {

@@ -243,7 +243,7 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
   return (
     <div
       aria-hidden
-      className="fixed inset-0 z-[1] overflow-hidden pointer-events-none"
+      className="fixed inset-0 z-[1] overflow-hidden pointer-events-none cinematic-stage-overlay"
       style={{
         backgroundColor: "oklch(0.03 0.006 260)",
         willChange: "transform",

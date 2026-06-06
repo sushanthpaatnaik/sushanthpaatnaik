@@ -130,38 +130,48 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 function OriginContent() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6">
+    <div className="relative w-full h-full flex flex-col items-center px-5 sm:px-6">
       {/* Origin: dark cosmic background — moderate center shield */}
       <ContentShield align="center" strength={0.56} />
-      <div className="relative z-10 max-w-4xl text-center">
-        {/* Eyebrow */}
-        <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
-          <span className="h-px w-8 bg-foreground/20" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
-            Origin
-          </span>
-          <span className="h-px w-8 bg-foreground/20" />
-        </div>
 
-        {/* H1 */}
-        <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
-          <span className="block py-1 text-gradient">I build</span>
-          <span className="block py-1 text-gradient">what does not</span>
-          <span className="block py-1 text-foreground/95">yet exist.</span>
-        </h1>
+      {/* Headline zone — flex-1 takes all space above the scroll cue block.
+          py-16/py-20 keeps content clear of nav (top) and the cue (bottom),
+          guaranteeing no overlap at any viewport height (including 768px tall). */}
+      <div className="relative z-10 flex-1 flex items-center justify-center w-full min-h-0 py-16 md:py-20">
+        <div className="max-w-4xl text-center">
+          {/* Eyebrow */}
+          <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
+            <span className="h-px w-8 bg-foreground/20" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
+              Origin
+            </span>
+            <span className="h-px w-8 bg-foreground/20" />
+          </div>
 
-        {/* Subtitle */}
-        <div className="mx-auto mt-14 md:mt-20 max-w-xl">
-          <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
-            Inventor and deep-tech founder.{" "}
-            <br className="hidden md:inline" />
-            Building from India — for the world.
-          </p>
+          {/* H1 */}
+          <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
+            <span className="block py-1 text-gradient">I build</span>
+            <span className="block py-1 text-gradient">what does not</span>
+            <span className="block py-1 text-foreground/95">yet exist.</span>
+          </h1>
+
+          {/* Subtitle */}
+          <div className="mx-auto mt-14 md:mt-20 max-w-xl">
+            <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
+              Inventor and deep-tech founder.{" "}
+              <br className="hidden md:inline" />
+              Building from India — for the world.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      {/* Scroll cue — natural flow after content, never overlaps.
+          Order: awards · SCROLL · animated track · chevrons. */}
+      <div
+        className="relative z-10 flex flex-col items-center gap-3 pb-8 sm:pb-10"
+        style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom, 2rem))" }}
+      >
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
           Six-time Presidential awardee · TED · MIT TR-35
         </div>
@@ -170,9 +180,7 @@ function OriginContent() {
         </span>
         {/* Animated track */}
         <div className="relative flex flex-col items-center" aria-hidden>
-          {/* Static track line */}
           <div className="w-px h-16 bg-gradient-to-b from-foreground/18 via-foreground/10 to-transparent" />
-          {/* Gliding dot */}
           <motion.div
             className="absolute top-0 w-[3px] h-[3px] rounded-full"
             style={{
@@ -335,7 +343,7 @@ function RecognitionContent() {
             "radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)",
         }}
       />
-      <div className="relative z-10 max-w-4xl text-center" style={{ transform: "translateX(-1vw)" }}>
+      <div className="relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
         <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-8">
           Recognition
@@ -365,16 +373,18 @@ function RecognitionContent() {
    ────────────────────────────────────────────────────────────────── */
 function EcosystemContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 overflow-y-auto">
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
       {/* Ecosystem: dark infrastructure footage, left-aligned content */}
       <ContentShield align="left" strength={0.66} />
-      <div className="relative z-10 w-full max-w-6xl mt-7">
+      {/* overflow-y-auto on the inner scroller, not the flex container, so iOS
+          doesn't fight the fixed parent's overflow-hidden on the scroll chain. */}
+      <div className="relative z-10 w-full max-w-6xl mt-7 overflow-y-auto overscroll-contain" style={{ maxHeight: "100%", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         {/* Eyebrow */}
         <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
           Ecosystem
         </p>
         {/* H2 */}
-        <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient">
+        <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient [text-wrap:balance]">
           Eight thresholds into the work.
         </h2>
         {/* Body */}
@@ -477,7 +487,7 @@ function FutureContent() {
           </Link>
         </div>
         {/* Tag row */}
-        <p className="mt-6 md:mt-8 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
+        <p className="mt-6 md:mt-8 font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.4em] text-muted-foreground/45 [text-wrap:balance]">
           Advanced Materials · Energy Systems · Planetary Infrastructure
         </p>
       </div>
@@ -608,7 +618,7 @@ export default function ScrollSections() {
 
       {/* Fixed cinematic content stage — all chapters layered, driven by global scroll */}
       <div
-        className="fixed inset-0 overflow-hidden"
+        className="fixed inset-0 overflow-hidden cinematic-stage-overlay"
         style={{ pointerEvents: "none" }}
       >
         <ScrollProgressBar progress={scrollYProgress} />
