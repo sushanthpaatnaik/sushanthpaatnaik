@@ -157,14 +157,14 @@ function OriginContent() {
             <br className="hidden md:inline" />
             Building from India — for the world.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
-            Six-time Presidential awardee · TED · MIT TR-35
-          </div>
         </div>
       </div>
 
       {/* Scroll cue */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
+          Six-time Presidential awardee · TED · MIT TR-35
+        </div>
         <span className="font-mono text-[9px] uppercase tracking-[0.52em] text-muted-foreground/50 blur-[0.3px]">
           Scroll
         </span>
