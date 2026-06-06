@@ -42,7 +42,7 @@ export function useLenis(onScroll?: (progress: number) => void) {
     const resize = () => lenis.resize();
     const snapState = () => {
       const current = window.scrollY || window.pageYOffset || 0;
-      lenis.scrollTo(current, { immediate: true, force: true, lock: true });
+      lenis.scrollTo(current, { immediate: true, force: true });
     };
     const onLoad = () => {
       lenis.resize();

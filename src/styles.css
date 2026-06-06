@@ -693,6 +693,21 @@ html.lenis, html.lenis body {
   height: auto;
 }
 
+/* Mobile scroll safety — ensure vertical scrolling is never accidentally
+   blocked on touch devices. Lenis owns the scroll mechanics; these rules
+   prevent iOS Safari from treating the page as a fixed/non-scrollable surface. */
+@media (pointer: coarse) {
+  html {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body {
+    overflow-y: auto;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* Cinematic stage and canvas overlays must not block vertical touch events.
    touch-action: pan-y lets iOS Safari and Chrome Android pass vertical
    swipe gestures through to the document scroll handler so Lenis
