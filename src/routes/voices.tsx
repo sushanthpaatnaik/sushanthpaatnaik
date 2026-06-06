@@ -8,11 +8,9 @@ import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-media-wall.webp";
 
 import mitTrLogo from "@/assets/outlets/mit-tr-color.webp";
-import tedLogo from "@/assets/outlets/ted-color.webp";
 import nifLogo from "@/assets/outlets/nif-color.webp";
 import ioclLogo from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
-import inkTalksLogo from "@/assets/outlets/inktalks.webp";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 
 export const Route = createFileRoute("/voices")({
@@ -106,26 +104,6 @@ const voices: Voice[] = [
     organization: "YourStory",
     logo: yourStoryLogo,
     tone: "lift",
-  },
-  {
-    category: "Global Stage · Ideas",
-    quote:
-      "Invited to the TED-India stage to speak on invention, materials, and the industrial future of the carbon century — among a select cohort of global thinkers.",
-    personName: "TED · TED-India",
-    personTitle: "Speaker · Long-form stage",
-    organization: "TED Conferences",
-    logo: tedLogo,
-    tone: "muted",
-  },
-  {
-    category: "Innovation Platform · Curated Fellows",
-    quote:
-      "Selected as an INK Fellow and invited speaker — part of a curated cohort of inventors, founders, and public thinkers shaping the next decade.",
-    personName: "INK Talks",
-    personTitle: "INK Fellow · Speaker",
-    organization: "INK Fellows Retreat",
-    logo: inkTalksLogo,
-    transparentBg: true,
   },
   {
     category: "Sovereign Recognition · India",
