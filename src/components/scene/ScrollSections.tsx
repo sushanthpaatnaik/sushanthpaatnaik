@@ -130,15 +130,12 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 function OriginContent() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center px-5 sm:px-6">
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6">
       {/* Origin: dark cosmic background — moderate center shield */}
       <ContentShield align="center" strength={0.56} />
 
-      {/* Headline zone — flex-1 takes all space above the scroll cue block.
-          py-16/py-20 keeps content clear of nav (top) and the cue (bottom),
-          guaranteeing no overlap at any viewport height (including 768px tall). */}
-      <div className="relative z-10 flex-1 flex items-center justify-center w-full min-h-0 py-16 md:py-20">
-        <div className="max-w-4xl text-center">
+      {/* Main content — centered in the full viewport, matching Earth position */}
+      <div className="relative z-10 max-w-4xl text-center">
           {/* Eyebrow */}
           <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-foreground/20" />
@@ -166,11 +163,10 @@ function OriginContent() {
         </div>
       </div>
 
-      {/* Scroll cue — natural flow after content, never overlaps.
-          Order: awards · SCROLL · animated track · chevrons. */}
+      {/* Scroll cue — absolute bottom, order: awards → SCROLL → track → chevrons */}
       <div
-        className="relative z-10 flex flex-col items-center gap-3 pb-8 sm:pb-10"
-        style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom, 2rem))" }}
+        className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
           Six-time Presidential awardee · TED · MIT TR-35
