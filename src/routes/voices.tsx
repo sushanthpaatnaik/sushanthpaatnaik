@@ -105,17 +105,6 @@ const voices: Voice[] = [
     logo: yourStoryLogo,
     tone: "lift",
   },
-  {
-    category: "Sovereign Recognition · India",
-    quote:
-      "Honored by Presidents Pratibha Patil and Pranab Mukherjee across IGNITE, NIF and National Inspire platforms — among the youngest multi-cycle Presidential awardees in the country.",
-    personName: "Government of India",
-    personTitle: "Presidential Recognition",
-    organization: "Six laureate cycles · IGNITE & NIF",
-    logo: nifLogo,
-    lighten: true,
-    wide: true,
-  },
 ];
 
 function VoicesStrip() {
