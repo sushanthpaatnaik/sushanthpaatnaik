@@ -134,48 +134,54 @@ function OriginContent() {
       {/* Origin: dark cosmic background — moderate center shield */}
       <ContentShield align="center" strength={0.56} />
 
-      {/* Main content — centered in the full viewport, matching Earth position */}
+      {/* All text content lives in one centered block — headline, subtitle,
+          awards, and SCROLL label. Nothing can overlap because they share
+          a single layout context. The animated indicator is purely decorative
+          (aria-hidden) and lives at absolute bottom separately. */}
       <div className="relative z-10 max-w-4xl text-center">
-          {/* Eyebrow */}
-          <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-foreground/20" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
-              Origin
-            </span>
-            <span className="h-px w-8 bg-foreground/20" />
-          </div>
+        {/* Eyebrow */}
+        <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
+          <span className="h-px w-8 bg-foreground/20" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
+            Origin
+          </span>
+          <span className="h-px w-8 bg-foreground/20" />
+        </div>
 
-          {/* H1 */}
-          <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
-            <span className="block py-1 text-gradient">I build</span>
-            <span className="block py-1 text-gradient">what does not</span>
-            <span className="block py-1 text-foreground/95">yet exist.</span>
-          </h1>
+        {/* H1 */}
+        <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
+          <span className="block py-1 text-gradient">I build</span>
+          <span className="block py-1 text-gradient">what does not</span>
+          <span className="block py-1 text-foreground/95">yet exist.</span>
+        </h1>
 
-          {/* Subtitle */}
-          <div className="mx-auto mt-14 md:mt-20 max-w-xl">
-            <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
-              Inventor and deep-tech founder.{" "}
-              <br className="hidden md:inline" />
-              Building from India — for the world.
-            </p>
+        {/* Subtitle */}
+        <div className="mx-auto mt-14 md:mt-20 max-w-xl">
+          <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
+            Inventor and deep-tech founder.{" "}
+            <br className="hidden md:inline" />
+            Building from India — for the world.
+          </p>
+          {/* Awards line — always below subtitle, always above SCROLL */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
+            Six-time Presidential awardee · TED · MIT TR-35
           </div>
+          {/* SCROLL label — always below awards */}
+          <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.52em] text-muted-foreground/50 blur-[0.3px]">
+            Scroll
+          </p>
+        </div>
       </div>
 
-      {/* Scroll cue — absolute bottom, order: awards → SCROLL → track → chevrons */}
+      {/* Animated indicator — decorative only, no text, aria-hidden.
+          Lives at absolute bottom; cannot overlap any text. */}
       <div
-        className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-[3px]"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        aria-hidden
       >
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
-          Six-time Presidential awardee · TED · MIT TR-35
-        </div>
-        <span className="font-mono text-[9px] uppercase tracking-[0.52em] text-muted-foreground/50 blur-[0.3px]">
-          Scroll
-        </span>
-        {/* Animated track */}
-        <div className="relative flex flex-col items-center" aria-hidden>
-          <div className="w-px h-16 bg-gradient-to-b from-foreground/18 via-foreground/10 to-transparent" />
+        <div className="relative flex flex-col items-center">
+          <div className="w-px h-12 sm:h-16 bg-gradient-to-b from-foreground/18 via-foreground/10 to-transparent" />
           <motion.div
             className="absolute top-0 w-[3px] h-[3px] rounded-full"
             style={{
@@ -184,7 +190,7 @@ function OriginContent() {
               left: "50%",
               translateX: "-50%",
             }}
-            animate={{ y: [0, 52, 52], opacity: [0, 1, 0] }}
+            animate={{ y: [0, 40, 40], opacity: [0, 1, 0] }}
             transition={{
               duration: 1.8,
               repeat: Infinity,
@@ -194,8 +200,7 @@ function OriginContent() {
             }}
           />
         </div>
-        {/* Animated chevrons */}
-        <div className="flex flex-col items-center gap-[3px] mt-1" aria-hidden>
+        <div className="flex flex-col items-center gap-[3px]">
           {[0, 1, 2].map((i) => (
             <motion.svg
               key={i}
