@@ -797,6 +797,12 @@ export default function EarthGlobe({
 
     function tick() {
       rafId = requestAnimationFrame(tick);
+      // Skip ALL GPU work while the globe is invisible. It only fades in near
+      // the Future/Ecosystem chapters (phase 4.8–7); rendering this full WebGL
+      // scene (earth shaders, clouds, orbiting moon, hundreds of stars, halo,
+      // skybox) at 60fps for the entire scroll exhausts mobile GPUs and hangs
+      // the device. The rAF stays alive (cheap) so it resumes instantly.
+      if (opacity.get() <= 0.001) return;
       rotY += SPIN_PER_FRAME;
       planetGroup.rotation.y = rotY;
       if (cloudMesh) cloudMesh.rotation.y += 0.00018; // clouds drift faster than surface
@@ -854,7 +860,7 @@ export default function EarthGlobe({
       if (cloudMat) { cloudMat.uniforms.tClouds?.value?.dispose(); cloudMat.dispose(); }
       renderer.dispose();
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, opacity]);
 
   return (
     <motion.div
