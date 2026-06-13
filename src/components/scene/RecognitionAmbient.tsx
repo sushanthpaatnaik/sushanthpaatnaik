@@ -117,33 +117,38 @@ export default function RecognitionAmbient({ phase }: { phase: MotionValue<numbe
         transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Volumetric haze — silver-blue atmospheric diffusion, near-imperceptible drift */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 65% 42% at 50% 58%, oklch(0.28 0.010 226 / 0.08), transparent 74%)",
-          filter: "blur(36px)",
-        }}
-        animate={reduce ? undefined : { opacity: [0.38, 0.82, 0.38] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-      />
+      {/* Volumetric haze — silver-blue atmospheric diffusion, near-imperceptible drift.
+          The large blur() filter is a heavy mobile-GPU offscreen pass; skip on mobile. */}
+      {!isMobile && (
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 42% at 50% 58%, oklch(0.28 0.010 226 / 0.08), transparent 74%)",
+            filter: "blur(36px)",
+          }}
+          animate={reduce ? undefined : { opacity: [0.38, 0.82, 0.38] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        />
+      )}
 
       {/* Trophy surface shimmer — slow cool reflective light drift across focal zone */}
-      <motion.div
-        className="absolute"
-        style={{
-          left: "18%",
-          right: "18%",
-          top: "40%",
-          bottom: "16%",
-          background:
-            "radial-gradient(ellipse 100% 80% at 50% 50%, oklch(0.70 0.012 218 / 0.042) 0%, transparent 66%)",
-          filter: "blur(24px)",
-        }}
-        animate={reduce ? undefined : { opacity: [0.06, 0.62, 0.18, 0.78, 0.06] }}
-        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-      />
+      {!isMobile && (
+        <motion.div
+          className="absolute"
+          style={{
+            left: "18%",
+            right: "18%",
+            top: "40%",
+            bottom: "16%",
+            background:
+              "radial-gradient(ellipse 100% 80% at 50% 50%, oklch(0.70 0.012 218 / 0.042) 0%, transparent 66%)",
+            filter: "blur(24px)",
+          }}
+          animate={reduce ? undefined : { opacity: [0.06, 0.62, 0.18, 0.78, 0.06] }}
+          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+        />
+      )}
 
       {/* Cinematic dust — 8 ultra-slow motes, almost subconscious in the spotlight columns */}
       {!reduce && !isMobile &&
