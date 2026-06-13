@@ -20,6 +20,10 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Generated image sequences (chapter WebP frames — not source-controlled)
+public/sequence-*/
+public/sequences/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
