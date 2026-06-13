@@ -922,10 +922,21 @@ function RecognitionsPage() {
                       onLeft ? "" : "md:[&>figure]:order-2"
                     }`}
                   >
+                    {/* Presidential ambient glow */}
+                    {m.category === "Presidential" && (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 rounded-sm opacity-20"
+                        style={{
+                          background:
+                            "radial-gradient(ellipse 80% 60% at 50% 40%, oklch(0.62 0.12 65 / 0.35), transparent 70%)",
+                        }}
+                      />
+                    )}
                     <figure
                       className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.045_0.006_245)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
-                        m.title.includes("Presidential")
-                          ? "ring-1 ring-foreground/10 shadow-[0_30px_70px_-30px_oklch(0_0_0/0.7),inset_0_1px_0_oklch(1_0_0/0.025)] group-hover:shadow-[0_42px_90px_-32px_oklch(0_0_0/0.78),inset_0_1px_0_oklch(1_0_0/0.03)]"
+                        m.category === "Presidential"
+                          ? "ring-1 ring-[oklch(0.62_0.12_65/0.30)] shadow-[0_30px_70px_-30px_oklch(0_0_0/0.7),0_0_40px_-20px_oklch(0.62_0.12_65/0.15),inset_0_1px_0_oklch(1_0_0/0.025)] group-hover:shadow-[0_42px_90px_-32px_oklch(0_0_0/0.78),0_0_60px_-20px_oklch(0.62_0.12_65/0.22),inset_0_1px_0_oklch(1_0_0/0.03)]"
                           : "ring-1 ring-foreground/8 shadow-[0_24px_60px_-30px_oklch(0_0_0/0.55),inset_0_1px_0_oklch(1_0_0/0.02)] group-hover:shadow-[0_34px_78px_-32px_oklch(0_0_0/0.62)]"
                       }`}
                     >
@@ -969,10 +980,14 @@ function RecognitionsPage() {
                           Milestone {String(i + 1).padStart(2, "0")}
                         </span>
                         {/* Category chip — archival classification */}
-                        <span className="inline-flex items-center gap-1.5 border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70">
+                        <span className={`inline-flex items-center gap-1.5 border px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] ${
+                          m.category === "Presidential"
+                            ? "border-[oklch(0.62_0.12_65/0.35)] bg-[oklch(0.62_0.12_65/0.06)] text-[oklch(0.75_0.12_65/0.90)]"
+                            : "border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 text-foreground/70"
+                        }`}>
                           <span
                             aria-hidden
-                            className="h-[3px] w-[3px] rounded-full bg-accent/80"
+                            className={`h-[3px] w-[3px] rounded-full ${m.category === "Presidential" ? "bg-[oklch(0.62_0.12_65/0.80)]" : "bg-accent/80"}`}
                           />
                           {m.category}
                         </span>
@@ -983,7 +998,9 @@ function RecognitionsPage() {
                         )}
                       </div>
 
-                      <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70 mb-3">
+                      <span className={`block font-mono text-[9px] uppercase tracking-[0.32em] mb-3 ${
+                        m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.85)]" : "text-accent/70"
+                      }`}>
                         {m.institution}
                       </span>
                       <h3

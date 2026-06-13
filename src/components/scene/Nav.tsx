@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import spLogo from "@/assets/sp-logo.svg";
 
 const navLinks = [
@@ -15,6 +15,14 @@ const navLinks = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
@@ -31,7 +39,7 @@ export default function Nav() {
           WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
         }}
       />
-      <header className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5 md:py-6 flex items-center justify-between pointer-events-none">
+      <header className={`fixed top-0 left-0 right-0 z-50 px-5 md:px-10 flex items-center justify-between pointer-events-none transition-[padding] duration-300 ease-out ${scrolled ? "py-3 md:py-3.5" : "py-5 md:py-6"}`}>
         <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik — Home">
           <img
             src={spLogo}

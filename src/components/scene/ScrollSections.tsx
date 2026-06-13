@@ -146,12 +146,21 @@ function HeroSection({ scrollY, scrollYProgress }: { scrollY: ReturnType<typeof 
               <br className="hidden md:inline" />
               <span className="text-foreground/55">Building from India — for the world.</span>
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] sm:text-[9.5px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-muted-foreground/65">
-              <span className="hidden sm:block h-px w-8 bg-foreground/12" />
-              <span>Six-time Presidential awardee</span>
-              <span className="h-px w-1 bg-foreground/20" />
-              <span>TED · MIT TR-35</span>
-              <span className="hidden sm:block h-px w-8 bg-foreground/12" />
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-2">
+              {[
+                { v: "06", l: "Presidential Awards" },
+                { v: "23+", l: "Innovations" },
+                { v: "05", l: "Ventures" },
+                { v: "TED · MIT TR", l: "Global Recognition" },
+              ].map((s, i, arr) => (
+                <span key={s.l} className="inline-flex items-center whitespace-nowrap">
+                  <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
+                  <span className="ml-2 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.3em] text-muted-foreground/50">{s.l}</span>
+                  {i < arr.length - 1 && (
+                    <span className="ml-2.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
+                  )}
+                </span>
+              ))}
             </div>
           </motion.div>
         </div>
@@ -456,7 +465,7 @@ function EcosystemGateway() {
           </p>
         </MotionReveal>
 
-        <ul className="mt-16 md:mt-24 grid gap-x-10 gap-y-2 sm:grid-cols-2">
+        <ul className="mt-16 md:mt-24 grid gap-x-10 gap-y-2 grid-cols-2">
           {gateways.map((g, i) => (
             <MotionReveal key={g.to} delay={i * 0.04}>
               <Link

@@ -5,20 +5,37 @@ export function useLenis(onScroll?: (progress: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Touch devices (phones/tablets) use native hardware-accelerated scroll.
-    // Lenis syncTouch intercepts native touch and moves scroll computation to
-    // the main thread, causing jank. On coarse-pointer devices, disable all
-    // Lenis touch handling and let the browser own it entirely.
+    // ── Touch devices (phones/tablets): NO Lenis ──────────────────────────────
+    // Lenis syncTouch hijacks native touch scrolling and re-drives it via RAF.
+    // Combined with touchMultiplier it amplified finger swipes ~2× — the page
+    // flew past content and felt broken/uncontrollable.  Native touch scrolling
+    // has correct momentum, deceleration, and overscroll behavior for free, and
+    // the background layer RAF loop already falls back to window.scrollY when no
+    // Lenis is present.  Only attach a passive scroll listener so HUD progress
+    // keeps updating.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
+    if (isTouch) {
+      const onNativeScroll = () => {
+        const limit = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = limit > 0 ? Math.min(Math.max(window.scrollY / limit, 0), 1) : 0;
+        onScroll?.(progress);
+      };
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
+      onNativeScroll();
+      return () => {
+        window.removeEventListener("scroll", onNativeScroll);
+        lenisRef.current = null;
+      };
+    }
+
+    // ── Pointer devices (desktop): Lenis smooth-wheel ─────────────────────────
     const lenis = new Lenis({
-      // Smooth wheel glide on desktop; instant on touch (native handles it).
-      duration: isTouch ? 0 : 1.45,
-      easing: (t) => 1 - Math.pow(1 - t, 3.2),
-      smoothWheel: !isTouch,
-      wheelMultiplier: 0.82,
-      touchMultiplier: 0,     // 0 = Lenis does not process touch events
-      syncTouch: false,        // never intercept native touch scroll
+      lerp: 0.1,
+      smoothWheel: true,
+      wheelMultiplier: 1.4,
+      touchMultiplier: 0,
+      syncTouch: false,
     });
     lenisRef.current = lenis;
 
@@ -37,7 +54,7 @@ export function useLenis(onScroll?: (progress: number) => void) {
     const resize = () => lenis.resize();
     const snapState = () => {
       const current = window.scrollY || window.pageYOffset || 0;
-      lenis.scrollTo(current, { immediate: true, force: true, lock: true });
+      lenis.scrollTo(current, { immediate: true, force: true });
     };
     const onLoad = () => {
       lenis.resize();

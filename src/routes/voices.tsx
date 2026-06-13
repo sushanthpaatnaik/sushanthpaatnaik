@@ -46,6 +46,7 @@ type Voice = {
   quote: string;
   logo?: string;
   href?: string;
+  logoWhiteBg?: boolean;
 };
 
 const institutional: Voice[] = [
@@ -90,6 +91,7 @@ const institutional: Voice[] = [
     quote:
       "Recognized at IOCL's R&D forum for advanced-materials work at the energy interface.",
     logo: ioclLogo,
+    logoWhiteBg: true,
   },
   {
     source: "Deloitte",
@@ -135,7 +137,11 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           : {})}
         className="group grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start"
       >
-        <div className="h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-sm border border-foreground/10 bg-background/30 p-2 flex items-center justify-center">
+        <div className={`h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-sm border p-2 flex items-center justify-center ${
+          v.logoWhiteBg
+            ? "border-foreground/10 bg-white"
+            : "border-foreground/10 bg-background/30"
+        }`}>
           {v.logo ? (
             <img
               src={v.logo}

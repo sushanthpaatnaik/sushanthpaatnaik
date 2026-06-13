@@ -226,7 +226,7 @@ function Index() {
       <Nav />
       <HUD scrollProgress={scrollProgress} />
       <MobileCTABar />
-      <main id="main">
+      <main id="main" className="relative z-[10] bg-transparent">
         <ScrollSections />
       </main>
     </div>

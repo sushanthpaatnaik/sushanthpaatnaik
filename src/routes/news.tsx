@@ -589,6 +589,12 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
         />
         {/* Body */}
         <div className="col-span-2 md:col-span-1">
+          <MediaPlate
+            src={item.image}
+            alt={`${item.title} — ${item.outlet}`}
+            objectPosition={item.objectPosition}
+            className="md:hidden mb-3 aspect-[16/9] rounded-sm border border-foreground/[0.08]"
+          />
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
               {item.outlet}
