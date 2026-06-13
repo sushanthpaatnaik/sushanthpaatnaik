@@ -72,6 +72,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Sushanth Paatnaik" },
+      { name: "format-detection", content: "telephone=no" },
       { title: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
       {
         name: "description",
@@ -99,6 +104,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
     ],
     links: [
+      { rel: "preconnect", href: "https://storage.googleapis.com" },
+      { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
       {
         rel: "stylesheet",
         href: appCss,
