@@ -162,21 +162,21 @@ function OriginContent() {
             <br className="hidden md:inline" />
             Building from India — for the world.
           </p>
-          {/* Credibility strip — 4 understated stats */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-0 gap-y-0">
+          {/* Credibility strip — 2×2 on mobile, single row on sm+ */}
+          <div className="mt-10 grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-y-5 sm:gap-y-0">
             {[
               { v: "06", l: "Presidential Awards" },
               { v: "23+", l: "Innovations" },
               { v: "05", l: "Ventures" },
               { v: "TED · MIT TR", l: "Global Recognition" },
             ].map((s, i, arr) => (
-              <span key={s.v} className="flex items-center">
+              <span key={s.v} className="flex items-center justify-center sm:justify-start">
                 <span className="flex flex-col items-center px-3 sm:px-4">
                   <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
-                  <span className="font-mono text-[8px] uppercase tracking-[0.38em] text-muted-foreground/45 mt-0.5">{s.l}</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.32em] text-muted-foreground/45 mt-0.5 whitespace-nowrap">{s.l}</span>
                 </span>
                 {i < arr.length - 1 && (
-                  <span className="h-5 w-px bg-foreground/[0.12] mx-0.5" aria-hidden />
+                  <span className="hidden sm:block h-5 w-px bg-foreground/[0.12] mx-0.5" aria-hidden />
                 )}
               </span>
             ))}

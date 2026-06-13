@@ -66,12 +66,41 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+function withCacheHeaders(response: Response, request: Request): Response {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const contentType = response.headers.get("content-type") ?? "";
+
+  // Sequence frame images are large fixed-name WebP assets — cache aggressively.
+  const isSequenceAsset =
+    path.startsWith("/sequences/") ||
+    path.startsWith("/sequence-12fps/") ||
+    path.startsWith("/sequence-24fps/");
+
+  // Hashed JS/CSS/image bundles from Vite build — already immutable by filename hash.
+  const isHashedAsset = /\.[a-f0-9]{8,}\.(js|css|woff2?|webp|png|svg)$/.test(path);
+
+  const headers = new Headers(response.headers);
+
+  if (isSequenceAsset) {
+    headers.set("Cache-Control", "public, max-age=2592000, stale-while-revalidate=604800");
+  } else if (isHashedAsset) {
+    headers.set("Cache-Control", "public, max-age=31536000, immutable");
+  } else if (contentType.includes("text/html")) {
+    // HTML pages must always revalidate so deploys land immediately.
+    headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+  }
+
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return withCacheHeaders(normalized, request);
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();
