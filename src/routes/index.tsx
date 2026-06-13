@@ -60,7 +60,15 @@ function Index() {
     const lowMem = (nav.deviceMemory ?? 8) <= 4;
     const slowNet = nav.connection?.saveData ||
       ["slow-2g", "2g", "3g"].includes(nav.connection?.effectiveType ?? "");
-    setIsLowPower(Boolean(reduce || lowMem || slowNet));
+    // Touch devices: skip the WebGL graphene lattice + cursor aura regardless
+    // of RAM or width. GPU headroom on iOS/Android isn't reflected by
+    // deviceMemory, and a width-only check lets large phones and FOLDABLES
+    // (Samsung Fold 6 inner display ≥768px) slip through and run the full
+    // three.js + postprocessing stack on a phone GPU — the "ecosystem hang".
+    // Any coarse pointer = no WebGL.
+    const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches;
+    const mobileViewport = window.innerWidth < 768;
+    setIsLowPower(Boolean(reduce || lowMem || slowNet || coarsePointer || mobileViewport));
   }, []);
 
   useEffect(() => {
