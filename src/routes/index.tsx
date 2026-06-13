@@ -230,13 +230,18 @@ function Index() {
         </Suspense>
       )}
 
-      {scenesReady && entered && (
+      {/* Heavy compositor layers (full-screen mix-blend-screen + large blur
+          filters). On mobile/touch these stack and cross-fade through the
+          chapters and overwhelm the GPU around the Recognition/Ecosystem
+          point → device hang. Gated off on mobile; the canvas image-sequence
+          (the core cinematic feature) and chapter content carry the experience. */}
+      {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <AmbientAtmosphere />
         </Suspense>
       )}
 
-      {scenesReady && entered && (
+      {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <ChapterAtmosphere />
         </Suspense>
