@@ -1,6 +1,5 @@
 import AnimatedBackground, { type BackgroundScene } from "./AnimatedBackground";
 import ParticleField from "./ParticleField";
-import EarthGlobe from "./EarthGlobe";
 import RecognitionAmbient from "./RecognitionAmbient";
 import { useChapterPhase, HOME_CHAPTER_IDS } from "./useChapterPhase";
 
@@ -121,14 +120,13 @@ const SCENES: BackgroundScene[] = [
   {
     src: sceneFuture,
     alt: "Future systems · planetary-scale industrial intelligence",
-    // Near-black — acts as deep-space fallback while the WebGL canvas fades in.
-    // The WebGL scene renders its own cosmic background so this plate is only
-    // visible during the chapter transition (opacity < 1).
-    tint: undefined,
-    overlay:
-      "linear-gradient(180deg, oklch(0.010 0.002 250 / 0.96) 0%, oklch(0.008 0.002 250 / 0.98) 100%)",
-    parallax: 0.2,
-    filter: "brightness(0.22) contrast(1.03) saturate(0.25)",
+    tint: "radial-gradient(ellipse 70% 50% at 50% 38%, oklch(0.30 0.06 232 / 0.12), transparent 72%)",
+    overlay: [
+      "radial-gradient(ellipse 70% 68% at 50% 50%, oklch(0.018 0.005 240 / 0.28) 0%, oklch(0.010 0.003 250 / 0.70) 90%)",
+      "linear-gradient(180deg, oklch(0.006 0.002 250 / 0.62) 0%, transparent 35%, oklch(0.010 0.003 250 / 0.52) 100%)",
+    ].join(", "),
+    parallax: 0.25,
+    filter: "brightness(0.52) contrast(1.06) saturate(0.60) hue-rotate(8deg)",
   },
 ];
 
@@ -155,7 +153,6 @@ export default function AtmosphereLayer() {
         <>
           <RecognitionAmbient phase={phase} />
           <ParticleField progress={progress} phase={phase} />
-          <EarthGlobe phase={phase} src={sceneFuture} />
         </>
       )}
     </AnimatedBackground>
