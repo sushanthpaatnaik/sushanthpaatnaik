@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import spLogo from "@/assets/sp-logo.svg";
 
 const navLinks = [
@@ -15,23 +15,39 @@ const navLinks = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
-      {/* Cinematic backdrop fade */}
+      {/* Cinematic backdrop fade — tightens on scroll */}
       <div
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 right-0 z-40 h-24 md:h-28 nav-backdrop"
+        className={`pointer-events-none fixed top-0 left-0 right-0 z-40 nav-backdrop transition-[height] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          scrolled ? "h-16 md:h-[60px]" : "h-24 md:h-28"
+        }`}
         style={{
-          background:
-            "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%)",
-          WebkitBackdropFilter: "blur(8px)",
-          backdropFilter: "blur(8px)",
-          maskImage: "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 55%, transparent 100%)",
+          background: scrolled
+            ? "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.94) 0%, oklch(0.04 0.005 260 / 0.88) 75%, transparent 100%)"
+            : "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%)",
+          WebkitBackdropFilter: "blur(12px)",
+          backdropFilter: "blur(12px)",
+          maskImage: "linear-gradient(180deg, #000 0%, #000 70%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 70%, transparent 100%)",
+          transition: "height 0.5s cubic-bezier(0.19,1,0.22,1), background 0.5s cubic-bezier(0.19,1,0.22,1)",
         }}
       />
-      <header className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5 md:py-6 flex items-center justify-between pointer-events-none">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 px-5 md:px-10 flex items-center justify-between pointer-events-none transition-[padding-top,padding-bottom] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          scrolled ? "py-3 md:py-3.5" : "py-5 md:py-6"
+        }`}
+      >
         <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik — Home">
           <img
             src={spLogo}
@@ -39,10 +55,18 @@ export default function Nav() {
             aria-hidden
             width={28}
             height={28}
-            className="h-7 w-7 md:h-8 md:w-8 select-none transition-[opacity,filter] duration-500 opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))]"
+            className={`select-none transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))] ${
+              scrolled ? "h-6 w-6 md:h-7 md:w-7" : "h-7 w-7 md:h-8 md:w-8"
+            }`}
             draggable={false}
           />
-          <span className="text-[10px] md:text-sm tracking-[0.16em] md:tracking-[0.3em] uppercase font-medium leading-none whitespace-nowrap">
+          <span
+            className={`uppercase font-medium leading-none whitespace-nowrap transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+              scrolled
+                ? "text-[9px] md:text-[11px] tracking-[0.14em] md:tracking-[0.26em]"
+                : "text-[10px] md:text-sm tracking-[0.16em] md:tracking-[0.3em]"
+            }`}
+          >
             Sushanth Paatnaik
           </span>
         </Link>
@@ -52,8 +76,8 @@ export default function Nav() {
             <Link
               key={l.to}
               to={l.to}
-              className="whitespace-nowrap hover:text-foreground transition-colors"
-              activeProps={{ className: "text-foreground" }}
+              className="whitespace-nowrap hover:text-foreground transition-colors duration-300 relative after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:bg-foreground/30 after:transition-all after:duration-500 hover:after:w-full"
+              activeProps={{ className: "text-foreground after:!w-full after:!bg-primary/60" }}
             >
               {l.label}
             </Link>

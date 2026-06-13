@@ -42,11 +42,11 @@ const socials = [
 ];
 
 const intents = [
-  { id: "partnership", label: "Industrial partnership" },
-  { id: "capital", label: "Capital co-architecture" },
-  { id: "research", label: "Research collaboration" },
-  { id: "advisory", label: "Advisory · Board" },
-  { id: "editorial", label: "Editorial · Speaking" },
+  { id: "partnership", label: "Industry Partnerships" },
+  { id: "advisory", label: "Strategic Advisory" },
+  { id: "speaking", label: "Speaking Engagements" },
+  { id: "ventures", label: "Deep-Tech Ventures" },
+  { id: "research", label: "Research Collaborations" },
 ] as const;
 
 type IntentId = (typeof intents)[number]["id"];
@@ -310,10 +310,10 @@ function ContactPage() {
       eyebrow="Contact · Direct Line · By Appointment"
       title={
         <>
-          A short note, read<br className="hidden md:inline" /> by the founder.
+          Build with<br className="hidden md:inline" /> Sushanth.
         </>
       }
-      lead="One inbox. Read personally. Open to collaborations on sustainable technology, R&D consulting, advisory mandates, and deep-tech investments — when the work is right."
+      lead="One inbox. Read personally. Open to industry partnerships, strategic advisory, speaking, deep-tech ventures, and research collaborations — when the work is right."
       backdrop={backdrop}
       overlay={0.76}
     >

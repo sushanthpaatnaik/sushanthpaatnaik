@@ -194,7 +194,7 @@ function VenturesPage() {
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.9, delay: i * 1, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 0.9, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
             className="group relative"
           >
             {/* Hairline separator — full width, subtle */}
