@@ -162,9 +162,24 @@ function OriginContent() {
             <br className="hidden md:inline" />
             Building from India — for the world.
           </p>
-          {/* Awards line — always below subtitle, always above SCROLL */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/65">
-            Six-time Presidential awardee · TED · MIT TR-35
+          {/* Credibility strip — 4 understated stats */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-0 gap-y-0">
+            {[
+              { v: "06", l: "Presidential Awards" },
+              { v: "23+", l: "Innovations" },
+              { v: "05", l: "Ventures" },
+              { v: "TED · MIT TR", l: "Global Recognition" },
+            ].map((s, i, arr) => (
+              <span key={s.v} className="flex items-center">
+                <span className="flex flex-col items-center px-3 sm:px-4">
+                  <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.38em] text-muted-foreground/45 mt-0.5">{s.l}</span>
+                </span>
+                {i < arr.length - 1 && (
+                  <span className="h-5 w-px bg-foreground/[0.12] mx-0.5" aria-hidden />
+                )}
+              </span>
+            ))}
           </div>
 
         </div>
@@ -374,39 +389,41 @@ function EcosystemContent() {
       {/* Ecosystem: dark infrastructure footage, left-aligned content */}
       <ContentShield align="left" strength={0.66} />
       {/* overflow-y-auto on the inner scroller, not the flex container, so iOS
-          doesn't fight the fixed parent's overflow-hidden on the scroll chain. */}
-      <div className="relative z-10 w-full max-w-6xl mt-7 overflow-y-auto overscroll-contain" style={{ maxHeight: "100%", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+          doesn't fight the fixed parent's overflow-hidden on the scroll chain.
+          max-height uses dvh so it's constrained to the actual viewport height
+          and overflow-y actually triggers (100% in flex items-center doesn't). */}
+      <div className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain" style={{ maxHeight: "calc(100dvh - 5rem)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         {/* Eyebrow */}
-        <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+        <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
           Ecosystem
         </p>
-        {/* H2 */}
-        <h2 className="font-display text-[clamp(2.2rem,7.5vw,4.75rem)] leading-[1] tracking-[-0.04em] text-gradient [text-wrap:balance]">
+        {/* H2 — smaller clamp floor on mobile so it doesn't eat too much height */}
+        <h2 className="font-display text-[clamp(1.75rem,6.5vw,4.75rem)] leading-[1.02] tracking-[-0.04em] text-gradient [text-wrap:balance]">
           Eight thresholds into the work.
         </h2>
         {/* Body */}
-        <p className="mt-8 max-w-xl text-sm text-muted-foreground/85">
+        <p className="mt-4 md:mt-8 max-w-xl text-sm text-muted-foreground/85">
           The homepage is the opening sequence. The ecosystem lives behind these doors — each one its own cinematic world.
         </p>
-        {/* Gateway list */}
-        <div className="mt-12 md:mt-16 grid gap-x-10 gap-y-1 sm:grid-cols-2">
+        {/* Gateway list — 2-col on mobile so all 8 fit without scrolling */}
+        <div className="mt-6 md:mt-12 lg:mt-16 grid grid-cols-2 gap-x-4 sm:gap-x-10 gap-y-0">
           {gateways.map((g) => (
             <Link
               key={g.to}
               to={g.to}
-              className="group block border-t border-foreground/[0.08] py-5 hover:border-foreground/30 transition-colors duration-500"
+              className="group block border-t border-foreground/[0.08] py-3 md:py-4 lg:py-5 hover:border-foreground/30 transition-colors duration-500"
             >
-              <div className="flex items-baseline gap-5">
-                <span className="font-mono text-[10px] tracking-[0.4em] text-muted-foreground/50 w-6">
+              <div className="flex items-baseline gap-3 md:gap-5">
+                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/50 w-5 md:w-6 shrink-0">
                   {g.n}
                 </span>
-                <div className="flex-1">
-                  <div className="font-display text-xl md:text-2xl tracking-[-0.015em] text-foreground/90 group-hover:text-gradient transition-colors duration-500">
+                <div className="flex-1 min-w-0">
+                  <div className="font-display text-sm sm:text-base md:text-xl lg:text-2xl tracking-[-0.015em] text-foreground/90 group-hover:text-gradient transition-colors duration-500">
                     {g.label}
                   </div>
-                  <p className="text-[13px] text-muted-foreground/70">{g.line}</p>
+                  <p className="text-[10px] md:text-[13px] text-muted-foreground/70 truncate">{g.line}</p>
                 </div>
-                <span className="text-foreground/40 group-hover:text-foreground/80 group-hover:translate-x-1 transition-all duration-500">
+                <span className="hidden sm:block text-foreground/40 group-hover:text-foreground/80 group-hover:translate-x-1 transition-all duration-500">
                   →
                 </span>
               </div>

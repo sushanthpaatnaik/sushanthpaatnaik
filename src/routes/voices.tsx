@@ -47,10 +47,9 @@ type Voice = {
   organization: string;
   logo?: string;
   href?: string;
-  lighten?: boolean;
-  transparentBg?: boolean;
-  tone?: "muted" | "lift";
-  wide?: boolean;
+  logoInvert?: boolean;
+  logoWhiteBg?: boolean;
+  logoScale?: number;
 };
 
 const voices: Voice[] = [
@@ -62,8 +61,8 @@ const voices: Voice[] = [
     personTitle: "Professor, IIM-Ahmedabad · Vice-Chair",
     organization: "National Innovation Foundation — India",
     logo: nifLogo,
-    lighten: true,
-    wide: true,
+    logoInvert: true,
+    logoScale: 1.1,
   },
   {
     category: "Press · Technology",
@@ -73,7 +72,8 @@ const voices: Voice[] = [
     personTitle: "Senior Journalist",
     organization: "MIT Technology Review Magazine",
     logo: mitTrLogo,
-    tone: "lift",
+    logoInvert: true,
+    logoScale: 0.95,
   },
   {
     category: "Professional Services · Innovation",
@@ -83,7 +83,8 @@ const voices: Voice[] = [
     personTitle: "Chairman",
     organization: "Deloitte India",
     logo: deloitteLogo,
-    lighten: true,
+    logoInvert: true,
+    logoScale: 0.9,
   },
   {
     category: "Energy Sector · Industrial",
@@ -93,7 +94,8 @@ const voices: Voice[] = [
     personTitle: "Eastern Zone",
     organization: "Indian Oil Corporation (IOCL)",
     logo: ioclLogo,
-    tone: "lift",
+    logoWhiteBg: true,
+    logoScale: 0.92,
   },
   {
     category: "Media · Entrepreneurship",
@@ -102,8 +104,8 @@ const voices: Voice[] = [
     personName: "Shradha Sharma",
     personTitle: "Founder & CEO",
     organization: "YourStory",
+    logoScale: 1.0,
     logo: yourStoryLogo,
-    tone: "lift",
   },
 ];
 
@@ -121,31 +123,28 @@ function VoicesStrip() {
   );
 }
 
-function LogoMark({ v }: { v: Voice }) {
-  const imgStyle: CSSProperties = {
-    objectFit: "contain",
-    ...(v.wide
-      ? { maxHeight: "60%", maxWidth: "88%" }
-      : { maxHeight: "100%", maxWidth: "100%" }),
-  };
-  if (v.transparentBg) imgStyle.mixBlendMode = "screen";
+function LogoPlate({ v }: { v: Voice }) {
+  const scale = v.logoScale ?? 1;
 
-  const imgCls =
-    v.wide && v.lighten
-      ? "[filter:invert(1)_brightness(1.08)_contrast(1.15)_saturate(0)] opacity-[0.96] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.14)_contrast(1.2)_saturate(0)] transition-all duration-700"
-      : v.transparentBg
-      ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100 transition-all duration-700"
-      : v.lighten
-      ? "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)] transition-all duration-700"
-      : v.tone === "muted"
-      ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04] transition-all duration-700"
-      : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06] transition-all duration-700";
+  const containerCls = v.logoWhiteBg
+    ? "rounded-[6px] border border-black/[0.08] bg-white shadow-[0_2px_12px_oklch(0_0_0_/_0.18)]"
+    : "rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.07_0.004_250)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
+
+  const imgStyle: CSSProperties = {
+    maxWidth: `${Math.round(76 * scale)}%`,
+    maxHeight: `${Math.round(52 * scale)}px`,
+    objectFit: "contain",
+  };
+
+  const imgCls = v.logoWhiteBg
+    ? "opacity-100"
+    : v.logoInvert
+    ? "[filter:invert(1)_brightness(1.05)_contrast(1.1)_saturate(0)] opacity-[0.92] group-hover:opacity-100 transition-all duration-700"
+    : "opacity-[0.88] saturate-[0.9] brightness-[1.04] group-hover:opacity-100 transition-all duration-700";
 
   return (
     <div
-      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] ${
-        v.wide ? "h-10 w-24 sm:h-11 sm:w-28 p-1.5" : "h-12 w-12 sm:h-14 sm:w-14 p-2"
-      }`}
+      className={`flex shrink-0 items-center justify-center w-[88px] h-[88px] md:w-[108px] md:h-[108px] ${containerCls}`}
     >
       {v.logo ? (
         <img
@@ -153,10 +152,10 @@ function LogoMark({ v }: { v: Voice }) {
           alt={`${v.organization} logo`}
           loading="lazy"
           style={imgStyle}
-          className={`h-auto w-auto ${imgCls}`}
+          className={`w-auto h-auto ${imgCls}`}
         />
       ) : (
-        <span className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground/60">
+        <span className="font-mono text-[11px] tracking-[0.3em] text-muted-foreground/60">
           {v.organization.slice(0, 2).toUpperCase()}
         </span>
       )}
@@ -168,41 +167,58 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
   const Wrap = v.href ? "a" : "div";
   return (
     <motion.li
-      initial={{ opacity: 0, y: 22 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 1.1, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-      className="border-t border-foreground/[0.08] py-10 md:py-14"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 1.1, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
+      className="border-t border-foreground/[0.07]"
     >
       <Wrap
         {...(v.href
           ? { href: v.href, target: "_blank", rel: "noopener noreferrer" }
           : {})}
-        className="group"
+        className="group block py-10 md:py-14 lg:py-16"
       >
-        {/* Category label */}
-        <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45 mb-6">
-          {v.category}
-        </p>
+        {/* ── Desktop: 2-column grid (logo | content). Mobile: stacked. ── */}
+        <div className="grid grid-cols-1 md:grid-cols-[120px_1fr] lg:grid-cols-[140px_1fr] gap-6 md:gap-10 lg:gap-16 items-start">
 
-        {/* Quote — visually dominant */}
-        <blockquote className="max-w-3xl font-display text-[clamp(1.15rem,2.4vw,1.65rem)] leading-[1.48] tracking-[-0.018em] text-foreground/90 italic mb-8">
-          &ldquo;{v.quote}&rdquo;
-        </blockquote>
-
-        {/* Attribution row: logo + name + title */}
-        <div className="flex items-center gap-4 md:gap-5">
-          <LogoMark v={v} />
-          <div>
-            <p className="font-display text-[14px] md:text-[15px] tracking-[-0.01em] text-foreground/85 leading-snug">
-              {v.personName}
-            </p>
-            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/50 leading-snug">
-              {v.personTitle}
-            </p>
-            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground/38 leading-snug">
+          {/* LEFT col — logo + institution name */}
+          <div className="flex md:flex-col items-center md:items-start gap-4 md:gap-4">
+            <LogoPlate v={v} />
+            {/* Institution name below logo on desktop */}
+            <p className="hidden md:block font-mono text-[9.5px] uppercase tracking-[0.32em] text-muted-foreground/45 leading-relaxed mt-1">
               {v.organization}
             </p>
+          </div>
+
+          {/* RIGHT col — full content */}
+          <div>
+            {/* Category eyebrow */}
+            <p className="font-mono text-[9px] uppercase tracking-[0.48em] text-primary/70 mb-5 md:mb-6">
+              {v.category}
+            </p>
+
+            {/* Quote — dominant */}
+            <blockquote className="font-display text-[clamp(1.2rem,2.6vw,1.75rem)] leading-[1.45] tracking-[-0.02em] text-foreground/92 italic mb-8 md:mb-10">
+              &ldquo;{v.quote}&rdquo;
+            </blockquote>
+
+            {/* Attribution */}
+            <div className="flex items-center gap-3">
+              <span className="h-px w-6 bg-accent/50 shrink-0" />
+              <div>
+                <p className="font-display text-[14px] md:text-[15px] tracking-[-0.01em] text-foreground/88 leading-snug">
+                  {v.personName}
+                </p>
+                <p className="mt-0.5 font-mono text-[9.5px] uppercase tracking-[0.32em] text-muted-foreground/50 leading-snug">
+                  {v.personTitle}
+                </p>
+                {/* Institution shown inline on mobile (hidden on desktop where it's in left col) */}
+                <p className="md:hidden mt-0.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground/38 leading-snug">
+                  {v.organization}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </Wrap>
@@ -212,11 +228,11 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
 
 function VoicesList({ items }: { items: Voice[] }) {
   return (
-    <ul className="not-prose mt-12 md:mt-16 flex flex-col">
+    <ul className="not-prose mt-10 md:mt-14 flex flex-col">
       {items.map((v, i) => (
         <VoiceCard key={`${v.personName}-${v.organization}`} v={v} i={i} />
       ))}
-      <li className="border-t border-foreground/[0.08]" />
+      <li className="border-t border-foreground/[0.07]" />
     </ul>
   );
 }
