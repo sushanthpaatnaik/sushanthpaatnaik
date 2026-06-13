@@ -654,7 +654,11 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                 >
                   {e.featured ? (
                     <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-foreground/55 pt-1">
+                      <span className={`font-mono text-[9px] uppercase tracking-[0.42em] pt-1 ${
+                        e.institution?.includes("President") || e.institution?.includes("NIF")
+                          ? "text-[oklch(0.75_0.12_65/0.80)]"
+                          : "text-foreground/55"
+                      }`}>
                         ◆
                       </span>
                       <div>
@@ -922,10 +926,20 @@ function RecognitionsPage() {
                       onLeft ? "" : "md:[&>figure]:order-2"
                     }`}
                   >
+                    {m.category === "Presidential" && (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+                        style={{
+                          background:
+                            "radial-gradient(ellipse 55% 60% at 35% 50%, oklch(0.62 0.10 65 / 0.07) 0%, transparent 65%)",
+                        }}
+                      />
+                    )}
                     <figure
                       className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.045_0.006_245)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
                         m.title.includes("Presidential")
-                          ? "ring-1 ring-foreground/10 shadow-[0_30px_70px_-30px_oklch(0_0_0/0.7),inset_0_1px_0_oklch(1_0_0/0.025)] group-hover:shadow-[0_42px_90px_-32px_oklch(0_0_0/0.78),inset_0_1px_0_oklch(1_0_0/0.03)]"
+                          ? "ring-1 ring-[oklch(0.62_0.12_65/0.30)] shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.12),0_32px_72px_-28px_oklch(0_0_0/0.72),inset_0_1px_0_oklch(1_0_0/0.04)] group-hover:shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.22),0_44px_96px_-30px_oklch(0_0_0/0.82),inset_0_1px_0_oklch(1_0_0/0.05)]"
                           : "ring-1 ring-foreground/8 shadow-[0_24px_60px_-30px_oklch(0_0_0/0.55),inset_0_1px_0_oklch(1_0_0/0.02)] group-hover:shadow-[0_34px_78px_-32px_oklch(0_0_0/0.62)]"
                       }`}
                     >
@@ -969,21 +983,27 @@ function RecognitionsPage() {
                           Milestone {String(i + 1).padStart(2, "0")}
                         </span>
                         {/* Category chip — archival classification */}
-                        <span className="inline-flex items-center gap-1.5 border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70">
+                        <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] ${
+                          m.category === "Presidential"
+                            ? "border border-[oklch(0.62_0.12_65/0.45)] bg-[oklch(0.62_0.12_65/0.08)] text-[oklch(0.80_0.12_65)]"
+                            : "border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 text-foreground/70"
+                        }`}>
                           <span
                             aria-hidden
-                            className="h-[3px] w-[3px] rounded-full bg-accent/80"
+                            className={`h-[3px] w-[3px] rounded-full ${m.category === "Presidential" ? "bg-[oklch(0.75_0.14_65)]" : "bg-accent/80"}`}
                           />
                           {m.category}
                         </span>
                         {m.major && (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-foreground/45">
+                          <span className={`font-mono text-[9px] uppercase tracking-[0.26em] ${m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.6)]" : "text-foreground/45"}`}>
                             · Anchor
                           </span>
                         )}
                       </div>
 
-                      <span className="block font-mono text-[9px] uppercase tracking-[0.32em] text-accent/70 mb-3">
+                      <span className={`block font-mono text-[9px] uppercase tracking-[0.32em] mb-3 ${
+                        m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.85)]" : "text-accent/70"
+                      }`}>
                         {m.institution}
                       </span>
                       <h3
