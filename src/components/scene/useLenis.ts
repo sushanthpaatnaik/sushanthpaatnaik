@@ -5,25 +5,40 @@ export function useLenis(onScroll?: (progress: number) => void) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Touch devices (phones/tablets): enable syncTouch so Lenis tracks finger
-    // position and fires scroll events on every touch-move frame.  The canvas
-    // reads lenis.targetScroll / lenis.limit on every RAF tick, so the image
-    // sequence advances in lock-step with the finger — no lag, no jank.
-    // lerp=1 on touch means no additional smoothing beyond what the browser
-    // already provides via momentum / deceleration.
+    // ── Touch devices (phones/tablets): NO Lenis ──────────────────────────────
+    // Lenis syncTouch hijacks native touch scrolling and re-drives it via RAF.
+    // Combined with touchMultiplier it amplified finger swipes ~2× — the page
+    // flew past content and felt broken/uncontrollable.  Native touch scrolling
+    // has correct momentum, deceleration, and overscroll behavior for free, and
+    // the canvas RAF loop already falls back to window.scrollY when no Lenis is
+    // present, so the cinematic image-sequence still animates in lock-step.
+    // We only attach a passive scroll listener so HUD progress keeps updating.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
+    if (isTouch) {
+      const onNativeScroll = () => {
+        const limit = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = limit > 0 ? Math.min(Math.max(window.scrollY / limit, 0), 1) : 0;
+        onScroll?.(progress);
+      };
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
+      onNativeScroll();
+      return () => {
+        window.removeEventListener("scroll", onNativeScroll);
+        lenisRef.current = null;
+      };
+    }
+
+    // ── Pointer devices (desktop): Lenis smooth-wheel, unchanged ──────────────
     const lenis = new Lenis({
       // lerp=0.1: each frame closes 10% of remaining gap — snappier than 0.171,
       // instant direction reversal, ~16ms latency at 60fps vs ~35ms before.
       // Canvas reads lenis.targetScroll (raw) so frame updates are decoupled.
-      lerp: isTouch ? 1 : 0.1,
-      smoothWheel: !isTouch,
+      lerp: 0.1,
+      smoothWheel: true,
       wheelMultiplier: 1.4,
-      // touchMultiplier: positive value (default 2) lets Lenis track finger
-      // position and emit scroll events — required for canvas to animate.
-      touchMultiplier: isTouch ? 2 : 0,
-      syncTouch: isTouch,
+      touchMultiplier: 0,
+      syncTouch: false,
     });
     lenisRef.current = lenis;
 

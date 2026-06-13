@@ -162,21 +162,21 @@ function OriginContent() {
             <br className="hidden md:inline" />
             Building from India — for the world.
           </p>
-          {/* Credibility strip — 2×2 on mobile, single row on sm+ */}
-          <div className="mt-10 grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-y-5 sm:gap-y-0">
+          {/* Credibility strip — inline value+label pairs, dot-separated.
+              Each pair is whitespace-nowrap so wrapping only ever happens
+              between pairs, never mid-pair. */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-2">
             {[
               { v: "06", l: "Presidential Awards" },
               { v: "23+", l: "Innovations" },
               { v: "05", l: "Ventures" },
               { v: "TED · MIT TR", l: "Global Recognition" },
             ].map((s, i, arr) => (
-              <span key={s.v} className="flex items-center justify-center sm:justify-start">
-                <span className="flex flex-col items-center px-3 sm:px-4">
-                  <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
-                  <span className="font-mono text-[8px] uppercase tracking-[0.32em] text-muted-foreground/45 mt-0.5 whitespace-nowrap">{s.l}</span>
-                </span>
+              <span key={s.l} className="inline-flex items-center whitespace-nowrap">
+                <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
+                <span className="ml-2 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.3em] text-muted-foreground/50">{s.l}</span>
                 {i < arr.length - 1 && (
-                  <span className="hidden sm:block h-5 w-px bg-foreground/[0.12] mx-0.5" aria-hidden />
+                  <span className="ml-2.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
                 )}
               </span>
             ))}
