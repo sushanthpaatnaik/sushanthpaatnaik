@@ -95,6 +95,38 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
     let destroyed = false;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
+    // ── Mobile memory budget ──────────────────────────────────────────────────
+    // Source frames are 1280×720 → ~3.69 MB each as a decoded ImageBitmap.
+    // 96 frames × 5 groups = ~1.77 GB if all retained — far past iOS Safari's
+    // ~300 MB per-tab ceiling, which crashes the tab ("A problem repeatedly
+    // occurred"). On touch we (1) decode at reduced resolution, (2) load every
+    // 2nd frame, and (3) evict groups outside the active±1 window. The
+    // nearest-loaded-frame search in the render loop covers the skipped frames,
+    // so the sequence still animates in lock-step with scroll.
+    const decodeOpts: ImageBitmapOptions | undefined = isTouch
+      ? { resizeWidth: 854, resizeHeight: 480, resizeQuality: "medium" }
+      : undefined;
+    const makeBitmap = (blob: Blob): Promise<ImageBitmap> =>
+      decodeOpts
+        ? createImageBitmap(blob, decodeOpts).catch(() => createImageBitmap(blob))
+        : createImageBitmap(blob);
+    const frameStep = isTouch ? 2 : 1;
+
+    // Close + drop every retained bitmap for groups outside [lo, hi] and mark
+    // them reloadable. Touch only — desktop keeps all groups for instant
+    // scroll-back, unchanged.
+    const evictExcept = (lo: number, hi: number) => {
+      for (let g = 0; g < N_GROUPS; g++) {
+        if (g >= lo && g <= hi) continue;
+        const grp = bitmapsRef.current[g];
+        let freed = false;
+        for (let f = 0; f < FRAME_COUNT; f++) {
+          if (grp[f]) { grp[f]!.close(); grp[f] = null; freed = true; }
+        }
+        if (freed) loadingRef.current[g] = false;
+      }
+    };
+
     const notifyReady = () => {
       if (notifiedRef.current) return;
       notifiedRef.current = true;
@@ -153,10 +185,14 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
         const priority: RequestInit = fi === 0 ? { priority: "high" } as RequestInit : {};
         return fetch(`/sequences/${path}/frame_${pad}.webp`, priority)
           .then(r  => r.blob())
-          .then(b  => createImageBitmap(b))
+          .then(b  => makeBitmap(b))
           .then(bmp => {
-            // Discard if this effect run was already cleaned up (StrictMode or unmount).
-            if (destroyed || genRef.current !== gen) { bmp.close(); return; }
+            // Discard if cleaned up (StrictMode/unmount), OR if this group has
+            // since been evicted from the active±1 window — otherwise a late
+            // frame would silently re-bloat memory for an off-screen group.
+            const active = lastGroupRef.current;
+            const evicted = active >= 0 && (gi < active - 1 || gi > active + 1);
+            if (destroyed || genRef.current !== gen || evicted) { bmp.close(); return; }
             bitmapsRef.current[gi][fi] = bmp;
             if (gi === 0 && fi === 0) notifyReady();
           })
@@ -173,14 +209,16 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
       // HTTP/2 multiplexing on fast connections makes this fastest.
       loadFrame(0).then(() => {
         if (isTouch) {
+          // Serial batches of 6, stepping by frameStep (every 2nd frame) so we
+          // load ~48 frames/group instead of 96 — half the memory and decodes.
           const loadBatch = async (start: number): Promise<void> => {
-            const end = Math.min(start + 6, FRAME_COUNT);
             const batch: Promise<void>[] = [];
-            for (let i = start; i < end; i++) batch.push(loadFrame(i));
+            let i = start;
+            for (let c = 0; c < 6 && i < FRAME_COUNT; c++, i += frameStep) batch.push(loadFrame(i));
             await Promise.all(batch);
-            if (end < FRAME_COUNT && !destroyed) await loadBatch(end);
+            if (i < FRAME_COUNT && !destroyed) await loadBatch(i);
           };
-          loadBatch(1);
+          loadBatch(frameStep);
         } else {
           for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
         }
@@ -220,6 +258,9 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
         loadGroup(gi);
         loadGroup(gi + 1);
         loadGroup(gi - 1);
+        // Touch: free everything outside active±1 to stay under the iOS/Android
+        // memory ceiling. Desktop retains all groups (unchanged).
+        if (isTouch) evictExcept(gi - 1, gi + 1);
         lastFrameRef.current = -1; // force redraw for new group
         gradeRefs.current.forEach((el, i) => {
           if (el) el.style.opacity = i === gi ? String(CHAPTER_GRADES[i].opacity) : "0";
