@@ -40,6 +40,7 @@ type Bitmaps = (ImageBitmap | null)[][];
 
 interface CanvasLayerProps {
   onReady?: () => void;
+  onProgress?: (pct: number) => void;
   lenisRef?: React.MutableRefObject<Lenis | null>;
 }
 
@@ -56,7 +57,7 @@ interface CanvasLayerProps {
  * Draw: object-fit:cover with DPR-correct canvas buffer.
  * Reduced-motion: static poster, no canvas.
  */
-export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
+export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const gradeRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null]);
   const reduce       = useReducedMotion();
@@ -111,6 +112,14 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
         ? createImageBitmap(blob, decodeOpts).catch(() => createImageBitmap(blob))
         : createImageBitmap(blob);
     const frameStep = isTouch ? 2 : 1;
+
+    // ── Critical frame threshold ──────────────────────────────────────────────
+    // Scroll is locked until this many group-0 frames are decoded and drawn.
+    // Mobile (frameStep=2): 6 frames = every-other frame 0,2,4,6,8,10.
+    // Desktop: 12 frames = first ~⅛ of the opening chapter, enough for smooth
+    // initial scroll without visible gaps.
+    const criticalCount = isTouch ? 6 : 12;
+    let criticalLoaded  = 0;
 
     // Close + drop every retained bitmap for groups outside [lo, hi] and mark
     // them reloadable. Touch only — desktop keeps all groups for instant
@@ -194,10 +203,27 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
             const evicted = active >= 0 && (gi < active - 1 || gi > active + 1);
             if (destroyed || genRef.current !== gen || evicted) { bmp.close(); return; }
             bitmapsRef.current[gi][fi] = bmp;
-            if (gi === 0 && fi === 0) notifyReady();
+            // Count critical group-0 frames; fire notifyReady once threshold
+            // is met — not on frame 0 alone — so scroll unlocks only after
+            // the opener can play smoothly without visible gaps.
+            if (gi === 0 && criticalLoaded < criticalCount) {
+              criticalLoaded++;
+              onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
+              if (criticalLoaded >= criticalCount) notifyReady();
+            }
           })
           .catch(() => {
-            if (gi === 0 && fi === 0) notifyReady();
+            // Frame-0 error: unblock immediately rather than hanging.
+            // Other critical-frame errors: still count toward threshold so a
+            // partial CDN failure doesn't stall the loader (fallback timer is
+            // the last resort for total failure).
+            if (gi === 0) {
+              if (fi === 0) { notifyReady(); return; }
+              if (criticalLoaded < criticalCount) {
+                criticalLoaded++;
+                if (criticalLoaded >= criticalCount) notifyReady();
+              }
+            }
           });
       };
 

@@ -56,6 +56,13 @@ function Index() {
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
   });
 
+  // frameProgress (0–100) reflects how many critical group-0 frames have decoded.
+  // Starts at 100 on repeat visits so the Loader skips immediately.
+  const [frameProgress, setFrameProgress] = useState(() => {
+    if (typeof window === "undefined") return 100;
+    return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1" ? 100 : 0;
+  });
+
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
   }, []);
@@ -149,6 +156,21 @@ function Index() {
     };
   }, [lenisRef]);
 
+  // Pause Lenis while the preloader is active; resume once canvas is ready.
+  // Event prevention in Loader handles wheel/touch/keyboard lock — this
+  // stops Lenis's internal RAF from advancing the virtual scroll position.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!videoReady) {
+      const stop = () => lenisRef.current?.stop();
+      stop();
+      // Retry after a tick in case Lenis initialises after this effect fires.
+      const t = window.setTimeout(stop, 80);
+      return () => clearTimeout(t);
+    }
+    lenisRef.current?.start();
+  }, [videoReady, lenisRef]);
+
   // Reveal main content quickly; defer heavy scene layers until idle.
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 300);
@@ -196,8 +218,8 @@ function Index() {
 
   return (
     <div className="relative bg-transparent text-foreground noise">
-      {/* Loader holds the screen until the video is ready to play */}
-      <Loader ready={videoReady} />
+      {/* Loader holds the screen until critical frames are decoded */}
+      <Loader progress={frameProgress} />
 
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
@@ -215,6 +237,7 @@ function Index() {
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
         onReady={() => setVideoReady(true)}
+        onProgress={setFrameProgress}
         lenisRef={lenisRef}
       />
 
