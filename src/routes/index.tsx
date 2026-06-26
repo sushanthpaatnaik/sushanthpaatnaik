@@ -48,6 +48,8 @@ function Index() {
   const [entered, setEntered] = useState(false);
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
+  // contentVisible drives the 500 ms homepage fade-in after the loader exits.
+  const [contentVisible, setContentVisible] = useState(false);
 
   // videoReady starts true for repeat tab visits (sequences are browser-cached).
   // For first visits it stays false until CanvasLayer fires onReady().
@@ -57,14 +59,23 @@ function Index() {
   });
 
   // frameProgress (0–100) reflects how many critical group-0 frames have decoded.
-  // Starts at 100 on repeat visits so the Loader skips immediately.
+  // SSR must return 0 — TanStack Start serialises this value and sends it to the
+  // client, so returning 100 on the server would cause a first-visit client to
+  // hydrate at 100 % and skip the loader before any frames have loaded.
   const [frameProgress, setFrameProgress] = useState(() => {
-    if (typeof window === "undefined") return 100;
+    if (typeof window === "undefined") return 0;
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1" ? 100 : 0;
   });
 
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
+  }, []);
+
+  // Called by Loader after its fade-out completes — starts the 500 ms content
+  // fade-in and ensures scroll is unlocked (Lenis is already running via
+  // videoReady; CSS lock is released by Loader's cleanup).
+  const handleLoaderDone = useCallback(() => {
+    setContentVisible(true);
   }, []);
 
   const lenisRef = useLenis(handleScroll);
@@ -219,7 +230,7 @@ function Index() {
   return (
     <div className="relative bg-transparent text-foreground noise">
       {/* Loader holds the screen until critical frames are decoded */}
-      <Loader progress={frameProgress} />
+      <Loader progress={frameProgress} onDone={handleLoaderDone} />
 
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
@@ -276,18 +287,31 @@ function Index() {
         </Suspense>
       )}
 
-      <Nav />
-      <HUD scrollProgress={scrollProgress} />
-      <MobileCTABar />
       {/*
-       * z-[10]: explicit stacking context ensures ALL section content
-       * renders above every fixed background layer (z-[1]–z-[4]).
-       * Without this, CSS group ordering (z-auto < z-positive) would
-       * place the content BELOW the fixed z-[1] video layer.
+       * Homepage content fades in over 500 ms after the loader exits.
+       * contentVisible is false during loading (opacity 0, pointer-events
+       * none) so accidental clicks can't land on hidden UI.
        */}
-      <main id="main" className="relative z-[10] bg-transparent">
-        <ScrollSections />
-      </main>
+      <div
+        style={{
+          opacity: contentVisible ? 1 : 0,
+          transition: contentVisible ? "opacity 500ms ease" : "none",
+          pointerEvents: contentVisible ? undefined : "none",
+        }}
+      >
+        <Nav />
+        <HUD scrollProgress={scrollProgress} />
+        <MobileCTABar />
+        {/*
+         * z-[10]: explicit stacking context ensures ALL section content
+         * renders above every fixed background layer (z-[1]–z-[4]).
+         * Without this, CSS group ordering (z-auto < z-positive) would
+         * place the content BELOW the fixed z-[1] video layer.
+         */}
+        <main id="main" className="relative z-[10] bg-transparent">
+          <ScrollSections />
+        </main>
+      </div>
     </div>
   );
 }
