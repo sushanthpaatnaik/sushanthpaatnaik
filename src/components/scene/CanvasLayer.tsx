@@ -139,6 +139,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const notifyReady = () => {
       if (notifiedRef.current) return;
       notifiedRef.current = true;
+      // Always push to 100 % so the Loader exits — covers the fallback-timer
+      // path where criticalCount frames never fully loaded.
+      onProgress?.(100);
       onReady?.();
     };
 
@@ -214,13 +217,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           })
           .catch(() => {
             // Frame-0 error: unblock immediately rather than hanging.
-            // Other critical-frame errors: still count toward threshold so a
-            // partial CDN failure doesn't stall the loader (fallback timer is
-            // the last resort for total failure).
+            // Other critical-frame errors: count toward threshold AND report
+            // progress so the bar advances even through CDN failures.
             if (gi === 0) {
               if (fi === 0) { notifyReady(); return; }
               if (criticalLoaded < criticalCount) {
                 criticalLoaded++;
+                onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
                 if (criticalLoaded >= criticalCount) notifyReady();
               }
             }
