@@ -22,7 +22,7 @@ import futureBackdrop from "@/assets/scene-future-signal.webp";
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
-import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.png";
+import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
 import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
@@ -48,10 +48,10 @@ import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.webp";
 
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
-import honorIntelIris from "@/assets/honor-intel-iris.png";
-import honorPresidentialTrio from "@/assets/honor-presidential-trio.png";
-import honorMitFab from "@/assets/honor-mit-fab.png";
-import honorMitTr35 from "@/assets/honor-mit-tr35.png";
+import honorIntelIris from "@/assets/honor-intel-iris.webp";
+import honorPresidentialTrio from "@/assets/honor-presidential-trio.webp";
+import honorMitFab from "@/assets/honor-mit-fab.webp";
+import honorMitTr35 from "@/assets/honor-mit-tr35.webp";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";

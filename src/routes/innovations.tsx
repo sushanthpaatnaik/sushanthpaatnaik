@@ -32,29 +32,29 @@ import imgFibrasphene from "@/assets/innovations/fibrasphene.webp";
 import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
 // Transparent product cut-outs — identity-preserved studio product staging
-import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.png";
-import cutGraffisol from "@/assets/innovations/cutouts/graffisol.png";
-import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.png";
-import cutHdgpe from "@/assets/innovations/cutouts/hdgpe.png";
-import cutGraphenodes from "@/assets/innovations/cutouts/graphenodes.png";
-import cutCoalorix from "@/assets/innovations/cutouts/coalorix.png";
-import cutAquamax from "@/assets/innovations/cutouts/aquamax.png";
-import cutIgnitronD from "@/assets/innovations/cutouts/ignitron-d.png";
-import cutIgnitronP from "@/assets/innovations/cutouts/ignitron-p.png";
-import cutLubritron from "@/assets/innovations/cutouts/lubritron.png";
-import cutBitumax from "@/assets/innovations/cutouts/bitumax.png";
-import cutRustene from "@/assets/innovations/cutouts/rustene.png";
-import cutPyronex from "@/assets/innovations/cutouts/pyronex.png";
-import cutGraphyre from "@/assets/innovations/cutouts/graphyre.png";
-import cutGraphosite from "@/assets/innovations/cutouts/graphosite.png";
-import cutThermaphene from "@/assets/innovations/cutouts/thermaphene.png";
-import cutArmophene from "@/assets/innovations/cutouts/armophene.png";
-import cutGryogen from "@/assets/innovations/cutouts/gryogen.png";
-import cutHydrocell from "@/assets/innovations/cutouts/hydrocell.png";
-import cutMariphene from "@/assets/innovations/cutouts/mariphene.png";
-import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.png";
-import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.png";
-import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.png";
+import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.webp";
+import cutGraffisol from "@/assets/innovations/cutouts/graffisol.webp";
+import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.webp";
+import cutHdgpe from "@/assets/innovations/cutouts/hdgpe.webp";
+import cutGraphenodes from "@/assets/innovations/cutouts/graphenodes.webp";
+import cutCoalorix from "@/assets/innovations/cutouts/coalorix.webp";
+import cutAquamax from "@/assets/innovations/cutouts/aquamax.webp";
+import cutIgnitronD from "@/assets/innovations/cutouts/ignitron-d.webp";
+import cutIgnitronP from "@/assets/innovations/cutouts/ignitron-p.webp";
+import cutLubritron from "@/assets/innovations/cutouts/lubritron.webp";
+import cutBitumax from "@/assets/innovations/cutouts/bitumax.webp";
+import cutRustene from "@/assets/innovations/cutouts/rustene.webp";
+import cutPyronex from "@/assets/innovations/cutouts/pyronex.webp";
+import cutGraphyre from "@/assets/innovations/cutouts/graphyre.webp";
+import cutGraphosite from "@/assets/innovations/cutouts/graphosite.webp";
+import cutThermaphene from "@/assets/innovations/cutouts/thermaphene.webp";
+import cutArmophene from "@/assets/innovations/cutouts/armophene.webp";
+import cutGryogen from "@/assets/innovations/cutouts/gryogen.webp";
+import cutHydrocell from "@/assets/innovations/cutouts/hydrocell.webp";
+import cutMariphene from "@/assets/innovations/cutouts/mariphene.webp";
+import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.webp";
+import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.webp";
+import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 
 // Application / use-case imagery — shown as the secondary still in the
 // inspection modal. Each one depicts the product's real-world context.

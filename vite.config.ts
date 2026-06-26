@@ -12,4 +12,23 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  // Split large, rarely-changing vendor libraries into their own chunks so they
+  // stay cached across deploys instead of being re-downloaded inside the main
+  // app bundle on every release. (three.js already ships in the lazy-loaded
+  // GrapheneVolumetric chunk, so it is intentionally not listed here.)
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes("node_modules")) {
+              if (id.includes("framer-motion") || id.includes("motion-dom") || id.includes("motion-utils"))
+                return "vendor-motion";
+              if (id.includes("/gsap/")) return "vendor-gsap";
+            }
+          },
+        },
+      },
+    },
+  },
 });
