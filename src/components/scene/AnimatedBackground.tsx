@@ -126,7 +126,7 @@ function GlobalVideoLayer({ src, fallbackSrc }: { src: string; fallbackSrc?: str
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster={fallbackSrc}
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover select-none"
@@ -213,7 +213,7 @@ function SceneLayer({
             autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="none"
             poster={scene.src}
             aria-hidden
             className="absolute inset-0 h-full w-full object-cover select-none"

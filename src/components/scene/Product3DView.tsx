@@ -369,7 +369,7 @@ function HeroVideo({
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
         onClick={() => togglePlay()}
         initial={{ opacity: 0, scale: 1.025 }}
         animate={{ opacity: 1, scale: 1 }}
