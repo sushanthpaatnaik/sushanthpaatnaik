@@ -49,21 +49,31 @@ function Index() {
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
   // contentVisible drives the 500 ms homepage fade-in after the loader exits.
-  const [contentVisible, setContentVisible] = useState(false);
+  // Pre-set to true on SPA navigations (no loader shown, content instant).
+  const [contentVisible, setContentVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return false;
+    return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
+  });
 
-  // videoReady starts true for repeat tab visits (sequences are browser-cached).
-  // For first visits it stays false until CanvasLayer fires onReady().
+  // videoReady starts true only for same-session SPA navigations (sequences
+  // are browser-cached and the loader is skipped). On first visit or refresh
+  // it stays false until CanvasLayer fires onReady().
   const [videoReady, setVideoReady] = useState(() => {
     if (typeof window === "undefined") return false;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return false;
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
   });
 
   // frameProgress (0–100) reflects how many critical group-0 frames have decoded.
-  // SSR must return 0 — TanStack Start serialises this value and sends it to the
-  // client, so returning 100 on the server would cause a first-visit client to
-  // hydrate at 100 % and skip the loader before any frames have loaded.
+  // SSR must return 0. Reloads also start at 0 even though sessionStorage has
+  // the seen flag — the loader must show again and fill from scratch.
   const [frameProgress, setFrameProgress] = useState(() => {
     if (typeof window === "undefined") return 0;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return 0;
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1" ? 100 : 0;
   });
 

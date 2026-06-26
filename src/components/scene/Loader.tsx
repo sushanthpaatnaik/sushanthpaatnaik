@@ -29,9 +29,13 @@ export default function Loader({
   const startRef  = useRef(0);
   const exitedRef = useRef(false);
 
-  // Session gate — skip loader on repeat visits within the same tab.
+  // Session gate — skip loader on SPA client-side navigations, but always
+  // show it on first visit and on page refreshes (reload clears the intent
+  // to skip, even though sessionStorage survives across F5).
   useEffect(() => {
-    if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
+    const navType = performance.getEntriesByType?.("navigation")[0]?.type;
+    const isReload = navType === "reload";
+    if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1" && !isReload) {
       setDone(true);
       onDone?.();
       return;
