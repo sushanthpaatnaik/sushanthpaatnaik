@@ -481,7 +481,8 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Studio still
         </span>
       </div>
-      <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
+      {/* Stage badge — desktop only; mobile has no room alongside the metric */}
+      <div className="absolute bottom-4 right-4 z-10 hidden md:flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
           {item.stage}
         </span>
@@ -489,7 +490,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           {item.status}
         </span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7">
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 md:pr-[5.5rem]">
         <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
         </p>
@@ -542,7 +543,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
+        <p className="truncate font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
         <h3 className="mt-1 font-display text-base leading-tight tracking-[-0.01em] text-foreground/95 md:text-lg">

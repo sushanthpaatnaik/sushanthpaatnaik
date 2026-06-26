@@ -59,6 +59,14 @@ export function Tilt3DSurface({
   hero = false,
 }: TiltImageProps) {
   const reduced = useReducedMotion();
+  // On touch/coarse-pointer devices: disable all repeat:Infinity animations
+  // (23 cards × 3 animations = 69 RAF loops → iOS Safari OOM crash).
+  // Also skip the floor-reflection image (halves per-card image memory).
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    setCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+  const still = reduced || coarse;
   // Hero products get tighter padding → ~12% larger visual presence.
   const pad = hero ? "p-[7%]" : "p-[9%]";
   const reflPad = hero ? "7%" : "9%";
@@ -69,8 +77,8 @@ export function Tilt3DSurface({
       <motion.div
         aria-hidden
         className="absolute inset-0"
-        animate={reduced ? undefined : { opacity: [0.95, 1, 0.96] }}
-        transition={reduced ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        animate={still ? undefined : { opacity: [0.95, 1, 0.96] }}
+        transition={still ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
             "radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%)",
@@ -118,8 +126,8 @@ export function Tilt3DSurface({
         src={src}
         alt={alt}
         loading="lazy"
-        animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
-        transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        animate={still ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
+        transition={still ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
         className={`absolute inset-0 h-full w-full object-contain ${pad} ${imgClassName}`}
         style={{
           filter:
@@ -128,30 +136,31 @@ export function Tilt3DSurface({
         }}
       />
 
-      {/* Floor reflection — mirrored, blurred, masked.
-          NOTE: framer-motion's `y`/`scale` writes to transform and would
-          overwrite the flip. Keep flip on a static wrapper; animate INSIDE. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-        style={{
-          transform: "scaleY(-1) translateY(-78%)",
-          opacity: 0.16,
-          filter: "blur(5px) saturate(0.55) brightness(0.65)",
-          maskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
-          WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
-        }}
-      >
-        <motion.img
-          src={src}
-          alt=""
-          loading="lazy"
-          animate={reduced ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
-          transition={reduced ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-0 h-full w-full object-contain"
-          style={{ padding: reflPad }}
-        />
-      </div>
+      {/* Floor reflection — mirrored, blurred, masked. Skipped on touch to
+          halve per-card image memory and eliminate the RAF loop. */}
+      {!coarse && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          style={{
+            transform: "scaleY(-1) translateY(-78%)",
+            opacity: 0.16,
+            filter: "blur(5px) saturate(0.55) brightness(0.65)",
+            maskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
+            WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
+          }}
+        >
+          <motion.img
+            src={src}
+            alt=""
+            loading="lazy"
+            animate={still ? undefined : { y: [0, -2.5, 0], scale: [1.012, 1.02, 1.012] }}
+            transition={still ? undefined : { duration: 11, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 h-full w-full object-contain"
+            style={{ padding: reflPad }}
+          />
+        </div>
+      )}
 
       {/* Top edge specular — soft rim light */}
       <div
