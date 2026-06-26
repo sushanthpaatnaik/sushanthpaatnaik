@@ -635,12 +635,12 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
             transition={{ duration: 1.0, delay: Math.min(gi * 0.05, 0.3), ease: [0.19, 1, 0.22, 1] }}
             className="relative grid grid-cols-[72px_1fr] md:grid-cols-[112px_1fr] gap-x-8 md:gap-x-12"
           >
-            <div className="relative">
+            <div className="relative overflow-visible">
               <div
                 aria-hidden
-                className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]"
+                className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-2 md:ring-4 ring-[oklch(0.045_0.003_245)]"
               />
-              <h4 className="font-display text-xl md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2">
+              <h4 className="font-display text-base md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2 whitespace-nowrap">
                 {group.year}
               </h4>
             </div>
