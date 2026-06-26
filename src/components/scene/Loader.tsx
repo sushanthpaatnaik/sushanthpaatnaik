@@ -3,25 +3,29 @@ import monogram from "@/assets/sp-monogram.svg";
 
 export const LOADER_SESSION_KEY = "sp_preloader_seen";
 
-const MIN_SHOW_MS = 1_400; // always show for at least this long on first visit
+const MIN_SHOW_MS = 1_400; // always display for at least this long on first visit
 
 /**
  * CinematicLoader
  *
- * Holds the screen until `ready` is true (video canplaythrough) AND
- * the minimum display time has elapsed, then fades out.
+ * Accepts real loading `progress` (0–100) from CanvasLayer's onProgress
+ * callback. Holds the screen until progress reaches 100 AND the minimum
+ * display time has elapsed, then fades out.
  *
- * Shows once per session (sessionStorage gate). On subsequent navigations
- * within the same tab the component is a no-op.
+ * Scroll is locked for the full duration via event prevention (wheel,
+ * touchmove, keyboard) so the canvas sequence is never entered mid-load.
+ *
+ * Shows once per session (sessionStorage gate). Subsequent navigations
+ * within the same tab skip the loader entirely.
  */
-export default function Loader({ ready }: { ready: boolean }) {
+export default function Loader({ progress }: { progress: number }) {
   const [entering, setEntering] = useState(false);
-  const [loadProgress, setLoadProgress] = useState<"idle" | "loading" | "complete">("idle");
   const [exiting, setExiting]   = useState(false);
   const [done, setDone]         = useState(false);
-  const startRef = useRef(0);
-  const exitedRef = useRef(false);
+  const startRef   = useRef(0);
+  const exitedRef  = useRef(false);
 
+  // Session gate — mark seen on first mount so repeat tab visits skip loader.
   useEffect(() => {
     if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
       setDone(true);
@@ -32,36 +36,59 @@ export default function Loader({ ready }: { ready: boolean }) {
 
     const raf = requestAnimationFrame(() => {
       setEntering(true);
-      // Start the indeterminate progress bar sweep
-      requestAnimationFrame(() => setLoadProgress("loading"));
     });
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // When the video signals ready, complete the bar then begin the exit fade.
+  // Scroll lock — prevent wheel, touch and keyboard scrolling while the
+  // loader is visible so the canvas sequence starts at frame 0 on reveal.
   useEffect(() => {
-    if (!ready || done || exiting || exitedRef.current) return;
+    if (done) return;
 
-    const elapsed = Date.now() - startRef.current;
+    const stopWheel = (e: WheelEvent) => { e.preventDefault(); };
+    const stopTouch = (e: TouchEvent) => { e.preventDefault(); };
+    const stopKeys  = (e: KeyboardEvent) => {
+      if ([" ", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"].includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel",     stopWheel, { passive: false });
+    window.addEventListener("touchmove", stopTouch, { passive: false });
+    window.addEventListener("keydown",   stopKeys);
+
+    return () => {
+      window.removeEventListener("wheel",     stopWheel);
+      window.removeEventListener("touchmove", stopTouch);
+      window.removeEventListener("keydown",   stopKeys);
+    };
+  }, [done]);
+
+  // Exit once progress hits 100 % and the minimum display time has elapsed.
+  useEffect(() => {
+    if (progress < 100 || done || exiting || exitedRef.current) return;
+
+    const elapsed   = Date.now() - startRef.current;
     const remaining = Math.max(0, MIN_SHOW_MS - elapsed);
 
     const t = setTimeout(() => {
       if (exitedRef.current) return;
       exitedRef.current = true;
-      setLoadProgress("complete");
 
-      // Let the bar reach 100 % before the overlay fades
+      // Brief pause so the user sees the completed bar before the fade.
       const t2 = setTimeout(() => {
         setExiting(true);
         setTimeout(() => setDone(true), 700);
-      }, 380);
+      }, 320);
       return () => clearTimeout(t2);
     }, remaining);
 
     return () => clearTimeout(t);
-  }, [ready, done, exiting]);
+  }, [progress, done, exiting]);
 
   if (done) return null;
+
+  const pct = Math.min(100, Math.max(0, Math.round(progress)));
 
   return (
     <div
@@ -186,18 +213,36 @@ export default function Loader({ ready }: { ready: boolean }) {
           </span>
         </div>
 
-        {/* Status label — updates when video is ready */}
+        {/* Status label + live percentage counter */}
         <div
-          className="mt-14 font-mono text-[8px] uppercase tracking-[0.55em] transition-colors duration-500"
+          className="mt-14 flex items-center gap-[18px]"
           style={{
-            color: loadProgress === "complete"
-              ? "oklch(0.63 0.10 75 / 0.55)"
-              : "oklch(0.967 0 0 / 0.18)",
             opacity: entering ? 1 : 0,
-            transition: entering ? "opacity 600ms 550ms ease, color 500ms ease" : "none",
+            transition: entering ? "opacity 600ms 550ms ease" : "none",
           }}
         >
-          {loadProgress === "complete" ? "Archive · Ready" : "Archive · Loading"}
+          <span
+            className="font-mono text-[8px] uppercase tracking-[0.55em] transition-colors duration-500"
+            style={{
+              color: pct >= 100
+                ? "oklch(0.63 0.10 75 / 0.55)"
+                : "oklch(0.967 0 0 / 0.18)",
+            }}
+          >
+            {pct >= 100 ? "Archive · Ready" : "Archive · Loading"}
+          </span>
+          <span
+            className="font-mono text-[10px] tabular-nums transition-colors duration-300"
+            style={{
+              color: pct >= 100
+                ? "oklch(0.80 0.08 76 / 0.55)"
+                : "oklch(0.967 0 0 / 0.30)",
+              minWidth: "3ch",
+              textAlign: "right",
+            }}
+          >
+            {pct}%
+          </span>
         </div>
       </div>
 
@@ -211,14 +256,13 @@ export default function Loader({ ready }: { ready: boolean }) {
           style={{
             background:
               "linear-gradient(90deg, transparent 0%, oklch(0.63 0.10 75 / 0.6) 15%, oklch(0.82 0.08 76 / 0.88) 50%, oklch(0.63 0.10 75 / 0.6) 85%, transparent 100%)",
-            transform:
-              loadProgress === "idle"    ? "scaleX(0)" :
-              loadProgress === "loading" ? "scaleX(0.88)" :
-              "scaleX(1)",
-            transition:
-              loadProgress === "idle"    ? "none" :
-              loadProgress === "loading" ? "transform 10000ms cubic-bezier(0.12, 0, 0.2, 1)" :
-              "transform 380ms cubic-bezier(0.19, 1, 0.22, 1)",
+            transform: `scaleX(${pct / 100})`,
+            // Smooth step-by-step fill while loading; instant snap at 100%.
+            transition: entering
+              ? pct >= 100
+                ? "transform 220ms cubic-bezier(0.19, 1, 0.22, 1)"
+                : "transform 400ms cubic-bezier(0.25, 0, 0.1, 1)"
+              : "none",
             willChange: "transform",
           }}
         />
