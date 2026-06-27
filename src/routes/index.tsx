@@ -88,6 +88,13 @@ function Index() {
     setContentVisible(true);
   }, []);
 
+  // Progress only moves forward. On repeat visits frameProgress starts at 100;
+  // without this guard CanvasLayer's first onProgress(25) call would overwrite
+  // it and flash "25%" briefly even though the session gate should skip the loader.
+  const handleProgress = useCallback((pct: number) => {
+    setFrameProgress(prev => Math.max(prev, pct));
+  }, []);
+
   const lenisRef = useLenis(handleScroll);
 
   // Detect low-power / reduced-motion clients — skip the heaviest layers.
@@ -258,7 +265,7 @@ function Index() {
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
         onReady={() => setVideoReady(true)}
-        onProgress={setFrameProgress}
+        onProgress={handleProgress}
         lenisRef={lenisRef}
       />
 

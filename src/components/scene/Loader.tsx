@@ -24,19 +24,28 @@ export default function Loader({
 }) {
   const [entering,  setEntering]  = useState(false);
   const [exiting,   setExiting]   = useState(false);
-  const [done,      setDone]      = useState(false);
+  // done is initialised to true on the CLIENT for repeat visits so the
+  // component returns null on the very first render — no flash of "0%".
+  // On the server (SSR) we always start false; the effect fixes it up.
+  const [done, setDone] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const navType = performance.getEntriesByType?.("navigation")[0]?.type;
+    const isReload = navType === "reload";
+    return sessionStorage.getItem(LOADER_SESSION_KEY) === "1" && !isReload;
+  });
   const [failsafe,  setFailsafe]  = useState(false);
   const startRef  = useRef(0);
   const exitedRef = useRef(false);
 
-  // Session gate — skip loader on SPA client-side navigations, but always
-  // show it on first visit and on page refreshes (reload clears the intent
-  // to skip, even though sessionStorage survives across F5).
+  // Session gate — notify parent when skipping, and handle first-visit setup.
+  // done is already true for repeat visits from the useState initialiser;
+  // this effect just fires onDone so the parent can confirm contentVisible.
   useEffect(() => {
     const navType = performance.getEntriesByType?.("navigation")[0]?.type;
     const isReload = navType === "reload";
     if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1" && !isReload) {
-      setDone(true);
+      // Loader already hidden (done=true from useState); parent may need onDone
+      // in case the SSR-hydration mismatch left contentVisible=false.
       onDone?.();
       return;
     }

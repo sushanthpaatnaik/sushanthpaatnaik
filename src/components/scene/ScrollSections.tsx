@@ -162,21 +162,26 @@ function OriginContent() {
             <br className="hidden md:inline" />
             Building from India — for the world.
           </p>
-          {/* Credibility strip — inline value+label pairs, dot-separated.
-              Each pair is whitespace-nowrap so wrapping only ever happens
-              between pairs, never mid-pair. */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-2">
+          {/* Credibility strip — value+label pairs separated by · dots.
+              Dot is placed BETWEEN spans (not inside) so spacing is
+              consistent regardless of flex-gap or font-size.
+              Result: 06 Presidential Awards · 23+ Innovations · 05 Ventures · TED · MIT TR · Global Recognition */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2 px-2">
             {[
-              { v: "06", l: "Presidential Awards" },
-              { v: "23+", l: "Innovations" },
-              { v: "05", l: "Ventures" },
-              { v: "TED · MIT TR", l: "Global Recognition" },
+              { v: "06",                  l: "Presidential Awards" },
+              { v: "23+",                 l: "Innovations" },
+              { v: "05",                  l: "Ventures" },
+              { v: "TED",                 l: "" },
+              { v: "MIT TR",              l: "" },
+              { v: "Global Recognition",  l: "" },
             ].map((s, i, arr) => (
-              <span key={s.l} className="inline-flex items-center whitespace-nowrap">
+              <span key={i} className="inline-flex items-center whitespace-nowrap">
+                {i > 0 && (
+                  <span className="mx-2.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
+                )}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
-                <span className="ml-2 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.3em] text-muted-foreground/50">{s.l}</span>
-                {i < arr.length - 1 && (
-                  <span className="ml-2.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
+                {s.l && (
+                  <span className="ml-2 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.3em] text-muted-foreground/50">{s.l}</span>
                 )}
               </span>
             ))}
