@@ -144,10 +144,16 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Now that critical frames are done and the loader is exiting, kick off
-      // group 1. We deferred it until here so group-0 critical frames had the
-      // full HTTP/2 connection budget without competition.
+      // Kick off group 1 (deferred until now so group-0 critical frames had
+      // the full HTTP/2 connection budget without competition).
       loadGroup(1);
+      // Reset lastGroupRef so the next RAF tick re-triggers the group-change
+      // block for whichever group the user has already scrolled into. Without
+      // this, if the user outpaced loading and entered group 2+ before these
+      // critical frames finished, those groups are never started because the
+      // group-change block already ran (with the guard blocking it) and won't
+      // re-run until the group changes again.
+      lastGroupRef.current = -1;
     };
 
     // Hard fallback — dismiss loader if critical frames never arrive.
