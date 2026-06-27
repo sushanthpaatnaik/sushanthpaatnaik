@@ -475,7 +475,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Archive entry
         </span>
       </div>
-      <div className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
+      <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
         <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
         <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/55">
           Studio still
