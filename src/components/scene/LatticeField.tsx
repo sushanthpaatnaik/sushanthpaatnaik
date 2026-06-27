@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 /**
  * LatticeField — graphene-inspired hexagonal lattice rendered as an SVG.
@@ -19,6 +20,13 @@ export default function LatticeField({
   drift?: boolean;
   intensity?: number;
 }) {
+  // Disable drift on coarse-pointer (touch) devices — kills the repeat:Infinity
+  // RAF loop that runs even at near-zero opacity on mobile.
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    setCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+  const activeDrift = drift && !coarse;
   const r = 22 / density; // hex radius
   const w = r * Math.sqrt(3);
   const h = r * 1.5;
@@ -50,8 +58,8 @@ export default function LatticeField({
       preserveAspectRatio="xMidYMid slice"
       className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
       initial={{ opacity: 0 }}
-      animate={drift ? { opacity: [intensity * 0.6, intensity, intensity * 0.6] } : { opacity: intensity }}
-      transition={drift ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 1.4 }}
+      animate={activeDrift ? { opacity: [intensity * 0.6, intensity, intensity * 0.6] } : { opacity: intensity }}
+      transition={activeDrift ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 1.4 }}
     >
       <defs>
         <radialGradient id="lattice-fade" cx="50%" cy="50%" r="60%">
