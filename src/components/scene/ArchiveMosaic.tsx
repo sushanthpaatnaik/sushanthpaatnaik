@@ -189,6 +189,8 @@ export function HallOfFameRibbon({
   const [hovering, setHovering] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
+  const marqueeTrackRef = useRef<HTMLDivElement>(null);
 
   // Pause flags — auto-scroll runs only when all are false
   const pausedRef = useRef({
@@ -203,6 +205,12 @@ export function HallOfFameRibbon({
   // Duplicate items for seamless marquee loop. Captions/data source untouched —
   // this is a render-time clone only.
   const loopItems = [...items, ...items];
+
+  // Detect touch device for CSS marquee fallback
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   // Detect reduced motion preference
   useEffect(() => {
@@ -231,8 +239,9 @@ export function HallOfFameRibbon({
     pausedRef.current.offscreen = !inView;
   }, [inView]);
 
-  // Auto-scroll marquee via rAF — seamless loop using duplicated track
+  // Auto-scroll marquee via rAF — desktop only; touch uses CSS animation
   useEffect(() => {
+    if (isTouch) return;
     const el = scrollerRef.current;
     if (!el) return;
     let raf = 0;
@@ -256,7 +265,7 @@ export function HallOfFameRibbon({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [isTouch]);
 
   // Track scroll for progress indicator
   useEffect(() => {
@@ -314,9 +323,11 @@ export function HallOfFameRibbon({
     };
     const onTouchStart = () => {
       pausedRef.current.touch = true;
+      if (marqueeTrackRef.current) marqueeTrackRef.current.style.animationPlayState = "paused";
     };
     const onTouchEnd = () => {
       pausedRef.current.touch = false;
+      if (marqueeTrackRef.current) marqueeTrackRef.current.style.animationPlayState = "running";
     };
 
     el.addEventListener("pointerdown", onDown);
@@ -406,54 +417,69 @@ export function HallOfFameRibbon({
         onMouseLeave={handleLeave}
       >
         {/* Reel */}
+        {isTouch && (
+          <style>{`@keyframes hof-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+        )}
         <div
           ref={scrollerRef}
           tabIndex={0}
           role="region"
           aria-label="Hall of Fame image reel"
           onKeyDown={onKeyDown}
-          className={`flex gap-px overflow-x-auto bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
+          className={`bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
                      [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
-                     [-webkit-overflow-scrolling:touch] focus:outline-none focus-visible:ring-accent/40
-                     ${dragging ? "cursor-grabbing select-none" : "cursor-grab"}`}
-          style={{ touchAction: "pan-x" }}
+                     focus:outline-none focus-visible:ring-accent/40
+                     ${isTouch ? "overflow-hidden" : `flex gap-px overflow-x-auto [-webkit-overflow-scrolling:touch] ${dragging ? "cursor-grabbing select-none" : "cursor-grab"}`}`}
+          style={{ touchAction: isTouch ? "pan-y" : "pan-x" }}
         >
-          {loopItems.map((item, i) => (
-            <figure
-              key={`${item.src}-${i}`}
-              data-hof-card
-              aria-hidden={i >= items.length ? true : undefined}
-              className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[oklch(0.05_0.006_245)]"
-            >
-              <img
-                src={item.src}
-                alt={i >= items.length ? "" : item.caption}
-                loading="lazy"
-                draggable={false}
-                className="archival-image-soft archival-image-hover absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-[1.04] group-hover:opacity-100 pointer-events-none"
-                style={{ objectPosition: item.focus ?? "center 30%" }}
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 86%, oklch(0.014 0.006 245 / 0.96) 100%)",
-                }}
-              />
-              <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5 pointer-events-none">
-                <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/80">
-                  {item.category}
-                </span>
-                <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
-                  {item.caption}
-                </span>
-                <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
-                  {item.meta}
-                </span>
-              </figcaption>
-            </figure>
-          ))}
+          {/* Touch: CSS transform marquee (iOS reliable); Desktop: scrollLeft RAF */}
+          <div
+            ref={isTouch ? marqueeTrackRef : undefined}
+            style={isTouch ? {
+              display: "flex",
+              gap: "1px",
+              width: "max-content",
+              animation: reducedMotion ? "none" : "hof-marquee 120s linear infinite",
+              willChange: "transform",
+            } : { display: "contents" }}
+          >
+            {loopItems.map((item, i) => (
+              <figure
+                key={`${item.src}-${i}`}
+                data-hof-card
+                aria-hidden={i >= items.length ? true : undefined}
+                className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[oklch(0.05_0.006_245)]"
+              >
+                <img
+                  src={item.src}
+                  alt={i >= items.length ? "" : item.caption}
+                  loading="lazy"
+                  draggable={false}
+                  className="archival-image-soft archival-image-hover absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-[1.04] group-hover:opacity-100 pointer-events-none"
+                  style={{ objectPosition: item.focus ?? "center 30%" }}
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.28) 0%, transparent 35%, oklch(0.02 0.006 245 / 0.78) 86%, oklch(0.014 0.006 245 / 0.96) 100%)",
+                  }}
+                />
+                <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5 pointer-events-none">
+                  <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/80">
+                    {item.category}
+                  </span>
+                  <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
+                    {item.caption}
+                  </span>
+                  <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+                    {item.meta}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
 
         {/* Edge fades — always on for the continuous reel */}
@@ -506,18 +532,20 @@ export function HallOfFameRibbon({
         )}
       </div>
 
-      {/* Progress track — minimal glowing line beneath the reel */}
-      <div className="relative mt-3 h-px w-full bg-foreground/[0.06] overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0"
-          style={{
-            width: `${Math.max(6, progress * 100)}%`,
-            background:
-              "linear-gradient(90deg, transparent 0%, oklch(0.72 0.10 60 / 0.85) 50%, transparent 100%)",
-            boxShadow: "0 0 12px oklch(0.72 0.10 60 / 0.55)",
-          }}
-        />
-      </div>
+      {/* Progress track — desktop only; CSS marquee has no scrollLeft to track */}
+      {!isTouch && (
+        <div className="relative mt-3 h-px w-full bg-foreground/[0.06] overflow-hidden">
+          <div
+            className="absolute inset-y-0 left-0"
+            style={{
+              width: `${Math.max(6, progress * 100)}%`,
+              background:
+                "linear-gradient(90deg, transparent 0%, oklch(0.72 0.10 60 / 0.85) 50%, transparent 100%)",
+              boxShadow: "0 0 12px oklch(0.72 0.10 60 / 0.55)",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Nav from "./Nav";
 import AmbientAtmosphere from "./AmbientAtmosphere";
@@ -38,6 +38,11 @@ export default function CinematicPageShell({
   contentPb = "pb-32 md:pb-40",
   children,
 }: CinematicPageShellProps) {
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
@@ -94,16 +99,16 @@ export default function CinematicPageShell({
               "radial-gradient(70% 55% at 18% 78%, oklch(0.42 0.07 240 / 0.10), transparent 65%)",
           }}
         />
-        {/* Slow breathing center luminance — keeps the page alive even when
-            scrolling stalls. */}
+        {/* Slow breathing center luminance — desktop only (mobile has no room
+            for the extra compositor layer + RAF). */}
         <motion.div
           className="absolute inset-0 mix-blend-screen"
           style={{
             background:
               "radial-gradient(55% 45% at 50% 50%, oklch(0.55 0.05 235 / 0.05), transparent 70%)",
           }}
-          animate={{ opacity: [0.55, 1, 0.55] }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+          animate={isTouch ? undefined : { opacity: [0.55, 1, 0.55] }}
+          transition={isTouch ? undefined : { duration: 26, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* Full vignette — deepened so the archival plate falls off
             cinematically toward the corners. */}
@@ -122,9 +127,10 @@ export default function CinematicPageShell({
         </div>
       </div>
 
-      {/* Ambient micro-life + cursor aura, matching the homepage */}
-      <AmbientAtmosphere />
-      <CursorAura />
+      {/* Ambient micro-life + cursor aura — desktop/fine-pointer only.
+          On touch these are expensive GPU compositor layers with no UX value. */}
+      {!isTouch && <AmbientAtmosphere />}
+      {!isTouch && <CursorAura />}
 
       <Nav />
 

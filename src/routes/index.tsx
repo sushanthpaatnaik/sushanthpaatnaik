@@ -48,16 +48,51 @@ function Index() {
   const [entered, setEntered] = useState(false);
   const [scenesReady, setScenesReady] = useState(false);
   const [isLowPower, setIsLowPower] = useState(false);
+  // contentVisible drives the 500 ms homepage fade-in after the loader exits.
+  // Pre-set to true on SPA navigations (no loader shown, content instant).
+  const [contentVisible, setContentVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return false;
+    return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
+  });
 
-  // videoReady starts true for repeat tab visits (sequences are browser-cached).
-  // For first visits it stays false until CanvasLayer fires onReady().
+  // videoReady starts true only for same-session SPA navigations (sequences
+  // are browser-cached and the loader is skipped). On first visit or refresh
+  // it stays false until CanvasLayer fires onReady().
   const [videoReady, setVideoReady] = useState(() => {
     if (typeof window === "undefined") return false;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return false;
     return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1";
+  });
+
+  // frameProgress (0–100) reflects how many critical group-0 frames have decoded.
+  // SSR must return 0. Reloads also start at 0 even though sessionStorage has
+  // the seen flag — the loader must show again and fill from scratch.
+  const [frameProgress, setFrameProgress] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    const isReload = performance.getEntriesByType?.("navigation")[0]?.type === "reload";
+    if (isReload) return 0;
+    return window.sessionStorage?.getItem(LOADER_SESSION_KEY) === "1" ? 100 : 0;
   });
 
   const handleScroll = useCallback((p: number) => {
     scrollProgress.current = p;
+  }, []);
+
+  // Called by Loader after its fade-out completes — starts the 500 ms content
+  // fade-in and ensures scroll is unlocked (Lenis is already running via
+  // videoReady; CSS lock is released by Loader's cleanup).
+  const handleLoaderDone = useCallback(() => {
+    setContentVisible(true);
+  }, []);
+
+  // Progress only moves forward. On repeat visits frameProgress starts at 100;
+  // without this guard CanvasLayer's first onProgress(25) call would overwrite
+  // it and flash "25%" briefly even though the session gate should skip the loader.
+  const handleProgress = useCallback((pct: number) => {
+    setFrameProgress(prev => Math.max(prev, pct));
   }, []);
 
   const lenisRef = useLenis(handleScroll);
@@ -149,6 +184,21 @@ function Index() {
     };
   }, [lenisRef]);
 
+  // Pause Lenis while the preloader is active; resume once canvas is ready.
+  // Event prevention in Loader handles wheel/touch/keyboard lock — this
+  // stops Lenis's internal RAF from advancing the virtual scroll position.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!videoReady) {
+      const stop = () => lenisRef.current?.stop();
+      stop();
+      // Retry after a tick in case Lenis initialises after this effect fires.
+      const t = window.setTimeout(stop, 80);
+      return () => clearTimeout(t);
+    }
+    lenisRef.current?.start();
+  }, [videoReady, lenisRef]);
+
   // Reveal main content quickly; defer heavy scene layers until idle.
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 300);
@@ -196,8 +246,8 @@ function Index() {
 
   return (
     <div className="relative bg-transparent text-foreground noise">
-      {/* Loader holds the screen until the video is ready to play */}
-      <Loader ready={videoReady} />
+      {/* Loader holds the screen until critical frames are decoded */}
+      <Loader progress={frameProgress} onDone={handleLoaderDone} />
 
       {/*
        * ── Background layer stack (all fixed, z-index 1–5) ──────────────────
@@ -215,6 +265,7 @@ function Index() {
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
         onReady={() => setVideoReady(true)}
+        onProgress={handleProgress}
         lenisRef={lenisRef}
       />
 
@@ -253,18 +304,31 @@ function Index() {
         </Suspense>
       )}
 
-      <Nav />
-      <HUD scrollProgress={scrollProgress} />
-      <MobileCTABar />
       {/*
-       * z-[10]: explicit stacking context ensures ALL section content
-       * renders above every fixed background layer (z-[1]–z-[4]).
-       * Without this, CSS group ordering (z-auto < z-positive) would
-       * place the content BELOW the fixed z-[1] video layer.
+       * Homepage content fades in over 500 ms after the loader exits.
+       * contentVisible is false during loading (opacity 0, pointer-events
+       * none) so accidental clicks can't land on hidden UI.
        */}
-      <main id="main" className="relative z-[10] bg-transparent">
-        <ScrollSections />
-      </main>
+      <div
+        style={{
+          opacity: contentVisible ? 1 : 0,
+          transition: contentVisible ? "opacity 500ms ease" : "none",
+          pointerEvents: contentVisible ? undefined : "none",
+        }}
+      >
+        <Nav />
+        <HUD scrollProgress={scrollProgress} />
+        <MobileCTABar />
+        {/*
+         * z-[10]: explicit stacking context ensures ALL section content
+         * renders above every fixed background layer (z-[1]–z-[4]).
+         * Without this, CSS group ordering (z-auto < z-positive) would
+         * place the content BELOW the fixed z-[1] video layer.
+         */}
+        <main id="main" className="relative z-[10] bg-transparent">
+          <ScrollSections />
+        </main>
+      </div>
     </div>
   );
 }

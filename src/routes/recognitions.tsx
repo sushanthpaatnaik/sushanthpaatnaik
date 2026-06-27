@@ -22,7 +22,7 @@ import futureBackdrop from "@/assets/scene-future-signal.webp";
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
-import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.png";
+import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
 import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
@@ -48,10 +48,10 @@ import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.webp";
 
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
-import honorIntelIris from "@/assets/honor-intel-iris.png";
-import honorPresidentialTrio from "@/assets/honor-presidential-trio.png";
-import honorMitFab from "@/assets/honor-mit-fab.png";
-import honorMitTr35 from "@/assets/honor-mit-tr35.png";
+import honorIntelIris from "@/assets/honor-intel-iris.webp";
+import honorPresidentialTrio from "@/assets/honor-presidential-trio.webp";
+import honorMitFab from "@/assets/honor-mit-fab.webp";
+import honorMitTr35 from "@/assets/honor-mit-tr35.webp";
 
 import honorNasa from "@/assets/hof/honor-nasa-mqf.webp";
 import honorIeema from "@/assets/hof/honor-ieema-finalists.webp";
@@ -635,12 +635,12 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
             transition={{ duration: 1.0, delay: Math.min(gi * 0.05, 0.3), ease: [0.19, 1, 0.22, 1] }}
             className="relative grid grid-cols-[72px_1fr] md:grid-cols-[112px_1fr] gap-x-8 md:gap-x-12"
           >
-            <div className="relative">
+            <div className="relative overflow-visible">
               <div
                 aria-hidden
-                className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]"
+                className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-2 md:ring-4 ring-[oklch(0.045_0.003_245)]"
               />
-              <h4 className="font-display text-xl md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2">
+              <h4 className="font-display text-base md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2 whitespace-nowrap">
                 {group.year}
               </h4>
             </div>
