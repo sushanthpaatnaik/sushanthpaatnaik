@@ -1,250 +1,278 @@
 import { useEffect, useRef, useState } from "react";
-import monogram from "@/assets/sp-monogram.svg";
 
 export const LOADER_SESSION_KEY = "sp_preloader_seen";
 
-const MIN_SHOW_MS = 1_400; // always show for at least this long on first visit
+const MIN_SHOW_MS  = 1_400;
+const FAILSAFE_MS  = 8_000;
+const PAUSE_MS     = 200;
+const FADE_OUT_MS  = 400;
 
 /**
- * CinematicLoader
+ * Cinematic preloader.
  *
- * Holds the screen until `ready` is true (video canplaythrough) AND
- * the minimum display time has elapsed, then fades out.
- *
- * Shows once per session (sessionStorage gate). On subsequent navigations
- * within the same tab the component is a no-op.
+ * Shows once per session (sessionStorage gate).
+ * Accepts real loading progress (0–100) from CanvasLayer.
+ * Calls onDone after the fade-out completes so the parent can start
+ * the homepage fade-in and re-enable scroll.
  */
-export default function Loader({ ready }: { ready: boolean }) {
-  const [entering, setEntering] = useState(false);
-  const [loadProgress, setLoadProgress] = useState<"idle" | "loading" | "complete">("idle");
-  const [exiting, setExiting]   = useState(false);
-  const [done, setDone]         = useState(false);
-  const startRef = useRef(0);
+export default function Loader({
+  progress,
+  onDone,
+}: {
+  progress: number;
+  onDone?: () => void;
+}) {
+  const [entering,  setEntering]  = useState(false);
+  const [exiting,   setExiting]   = useState(false);
+  // done is initialised to true on the CLIENT for repeat visits so the
+  // component returns null on the very first render — no flash of "0%".
+  // On the server (SSR) we always start false; the effect fixes it up.
+  const [done, setDone] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const navType = performance.getEntriesByType?.("navigation")[0]?.type;
+    const isReload = navType === "reload";
+    return sessionStorage.getItem(LOADER_SESSION_KEY) === "1" && !isReload;
+  });
+  const [failsafe,  setFailsafe]  = useState(false);
+  const startRef  = useRef(0);
   const exitedRef = useRef(false);
 
+  // Session gate — notify parent when skipping, and handle first-visit setup.
+  // done is already true for repeat visits from the useState initialiser;
+  // this effect just fires onDone so the parent can confirm contentVisible.
   useEffect(() => {
-    if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1") {
-      setDone(true);
+    const navType = performance.getEntriesByType?.("navigation")[0]?.type;
+    const isReload = navType === "reload";
+    if (sessionStorage.getItem(LOADER_SESSION_KEY) === "1" && !isReload) {
+      // Loader already hidden (done=true from useState); parent may need onDone
+      // in case the SSR-hydration mismatch left contentVisible=false.
+      onDone?.();
       return;
     }
     sessionStorage.setItem(LOADER_SESSION_KEY, "1");
     startRef.current = Date.now();
-
-    const raf = requestAnimationFrame(() => {
-      setEntering(true);
-      // Start the indeterminate progress bar sweep
-      requestAnimationFrame(() => setLoadProgress("loading"));
-    });
+    const raf = requestAnimationFrame(() => setEntering(true));
     return () => cancelAnimationFrame(raf);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // When the video signals ready, complete the bar then begin the exit fade.
+  // CSS scroll lock — primary barrier, active before React event listeners attach.
   useEffect(() => {
-    if (!ready || done || exiting || exitedRef.current) return;
+    if (done) return;
+    const prev = document.body.style.overflow;
+    const prevTA = document.body.style.touchAction;
+    document.body.style.overflow   = "hidden";
+    document.body.style.touchAction = "none";
+    return () => {
+      document.body.style.overflow    = prev;
+      document.body.style.touchAction = prevTA;
+    };
+  }, [done]);
 
-    const elapsed = Date.now() - startRef.current;
+  // Event-based scroll lock — belt-and-suspenders with the CSS lock above.
+  useEffect(() => {
+    if (done) return;
+    const stopWheel = (e: WheelEvent) => e.preventDefault();
+    const stopTouch = (e: TouchEvent) => e.preventDefault();
+    const stopKeys  = (e: KeyboardEvent) => {
+      if ([" ", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"].includes(e.key))
+        e.preventDefault();
+    };
+    window.addEventListener("wheel",     stopWheel, { passive: false });
+    window.addEventListener("touchmove", stopTouch, { passive: false });
+    window.addEventListener("keydown",   stopKeys);
+    return () => {
+      window.removeEventListener("wheel",     stopWheel);
+      window.removeEventListener("touchmove", stopTouch);
+      window.removeEventListener("keydown",   stopKeys);
+    };
+  }, [done]);
+
+  // Failsafe — surface a status message if loading stalls past 8 s.
+  useEffect(() => {
+    const t = setTimeout(() => setFailsafe(true), FAILSAFE_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Exit once progress reaches 100 % and the minimum display time has passed.
+  useEffect(() => {
+    if (progress < 100 || done || exiting || exitedRef.current) return;
+
+    const elapsed   = Date.now() - startRef.current;
     const remaining = Math.max(0, MIN_SHOW_MS - elapsed);
 
     const t = setTimeout(() => {
       if (exitedRef.current) return;
       exitedRef.current = true;
-      setLoadProgress("complete");
-
-      // Let the bar reach 100 % before the overlay fades
+      // Brief pause so the user sees the filled bar, then fade out.
       const t2 = setTimeout(() => {
         setExiting(true);
-        setTimeout(() => setDone(true), 700);
-      }, 380);
+        setTimeout(() => {
+          setDone(true);
+          onDone?.();
+        }, FADE_OUT_MS);
+      }, PAUSE_MS);
       return () => clearTimeout(t2);
     }, remaining);
 
     return () => clearTimeout(t);
-  }, [ready, done, exiting]);
+  }, [progress, done, exiting, onDone]);
 
   if (done) return null;
 
+  const pct = Math.min(100, Math.max(0, Math.round(progress)));
+
   return (
     <div
-      className="fixed inset-0 z-[100] bg-[oklch(0.035_0_0)] flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden select-none"
       style={{
+        backgroundColor: "#050816",
         opacity: exiting ? 0 : 1,
-        transition: exiting ? "opacity 700ms cubic-bezier(0.19, 1, 0.22, 1)" : "none",
+        transition: exiting
+          ? `opacity ${FADE_OUT_MS}ms cubic-bezier(0.19, 1, 0.22, 1)`
+          : "none",
         willChange: "opacity",
         transform: "translateZ(0)",
       }}
     >
-      {/* ── Ambient centrepiece glow ─────────────────────────────────────── */}
+      {/* Subtle radial glow behind text */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 52% 46% at 50% 50%, oklch(0.18 0.04 72 / 0.14), transparent 68%)",
+            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,255,255,0.028) 0%, transparent 70%)",
         }}
       />
 
-      {/* ── Scanlines ────────────────────────────────────────────────────── */}
+      {/* Centre content */}
       <div
-        aria-hidden
-        className="sp-scanlines pointer-events-none absolute inset-0"
+        className="relative flex flex-col items-center"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, oklch(0.967 0 0 / 0.015) 3px, oklch(0.967 0 0 / 0.015) 4px)",
-          opacity: 0.55,
+          opacity: entering ? 1 : 0,
+          transform: entering ? "translateY(0)" : "translateY(14px)",
+          transition: entering
+            ? "opacity 900ms cubic-bezier(0.19, 1, 0.22, 1), transform 1000ms cubic-bezier(0.19, 1, 0.22, 1)"
+            : "none",
+          willChange: "opacity, transform",
         }}
-      />
-
-      {/* ── Grid crosshair ───────────────────────────────────────────────── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(oklch(0.967 0 0 / 0.028) 1px, transparent 1px), linear-gradient(90deg, oklch(0.967 0 0 / 0.028) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-          backgroundPosition: "center center",
-        }}
-      />
-
-      {/* ── Centre content ───────────────────────────────────────────────── */}
-      <div className="relative flex flex-col items-center">
-        {/* SP Monogram */}
-        <div
-          className="relative mb-10 flex items-center justify-center"
-          style={{
-            opacity: entering ? 1 : 0,
-            transform: entering ? "translateY(0) scale(1)" : "translateY(12px) scale(0.86)",
-            transition: entering
-              ? "opacity 900ms cubic-bezier(0.19, 1, 0.22, 1), transform 1000ms cubic-bezier(0.19, 1, 0.22, 1)"
-              : "none",
-            willChange: "opacity, transform",
-          }}
-        >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute rounded-full"
-            style={{
-              inset: "-32px",
-              background:
-                "radial-gradient(circle, oklch(0.63 0.10 75 / 0.28) 0%, oklch(0.63 0.10 75 / 0.08) 48%, transparent 72%)",
-              filter: "blur(18px)",
-            }}
-          />
-          <div
-            aria-hidden
-            className="absolute rounded-full border"
-            style={{ inset: "-18px", borderColor: "oklch(0.63 0.10 75 / 0.12)" }}
-          />
-          <img
-            src={monogram}
-            alt="SP monogram"
-            width={52}
-            height={52}
-            draggable={false}
-            className="relative w-12 h-12 md:w-[52px] md:h-[52px] select-none object-contain"
-            style={{
-              filter:
-                "drop-shadow(0 0 18px oklch(0.78 0.12 78 / 0.55)) drop-shadow(0 0 6px oklch(0.63 0.10 75 / 0.35))",
-            }}
-          />
-        </div>
-
-        {/* Gold accent rule */}
-        <div
-          aria-hidden
-          className="mb-9 h-px"
-          style={{
-            width: 140,
-            background:
-              "linear-gradient(90deg, transparent 0%, oklch(0.63 0.10 75 / 0.7) 28%, oklch(0.80 0.08 76 / 0.9) 50%, oklch(0.63 0.10 75 / 0.7) 72%, transparent 100%)",
-            transform: entering ? "scaleX(1)" : "scaleX(0)",
-            opacity: entering ? 1 : 0,
-            transition: entering
-              ? "transform 750ms 180ms cubic-bezier(0.19, 1, 0.22, 1), opacity 500ms 180ms ease"
-              : "none",
-            willChange: "transform, opacity",
-          }}
-        />
-
-        {/* Brand name + tagline */}
-        <div
-          className="flex flex-col items-center gap-[6px]"
-          style={{
-            opacity: entering ? 1 : 0,
-            transform: entering ? "translateY(0)" : "translateY(10px)",
-            transition: entering
-              ? "opacity 750ms 320ms cubic-bezier(0.19, 1, 0.22, 1), transform 800ms 320ms cubic-bezier(0.19, 1, 0.22, 1)"
-              : "none",
-            willChange: "opacity, transform",
-          }}
-        >
-          <span className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.46em] text-foreground/88 font-light">
-            Sushanth Paatnaik
-          </span>
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.34em] text-foreground/30">
-            Inventor · Deep-Tech Founder
-          </span>
-        </div>
-
-        {/* Status label — updates when video is ready */}
-        <div
-          className="mt-14 font-mono text-[8px] uppercase tracking-[0.55em] transition-colors duration-500"
-          style={{
-            color: loadProgress === "complete"
-              ? "oklch(0.63 0.10 75 / 0.55)"
-              : "oklch(0.967 0 0 / 0.18)",
-            opacity: entering ? 1 : 0,
-            transition: entering ? "opacity 600ms 550ms ease, color 500ms ease" : "none",
-          }}
-        >
-          {loadProgress === "complete" ? "Archive · Ready" : "Archive · Loading"}
-        </div>
-      </div>
-
-      {/* ── Progress filament — bottom edge ──────────────────────────────── */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px"
-        style={{ background: "oklch(0.967 0 0 / 0.06)" }}
       >
-        <div
-          className="h-full origin-left"
+        {/* Name */}
+        <span
           style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, oklch(0.63 0.10 75 / 0.6) 15%, oklch(0.82 0.08 76 / 0.88) 50%, oklch(0.63 0.10 75 / 0.6) 85%, transparent 100%)",
-            transform:
-              loadProgress === "idle"    ? "scaleX(0)" :
-              loadProgress === "loading" ? "scaleX(0.88)" :
-              "scaleX(1)",
-            transition:
-              loadProgress === "idle"    ? "none" :
-              loadProgress === "loading" ? "transform 10000ms cubic-bezier(0.12, 0, 0.2, 1)" :
-              "transform 380ms cubic-bezier(0.19, 1, 0.22, 1)",
-            willChange: "transform",
+            fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif",
+            fontSize: "clamp(13px, 1.9vw, 20px)",
+            letterSpacing: "0.44em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.90)",
+            fontWeight: 300,
+            lineHeight: 1,
+            paddingRight: "0.44em", // compensate letter-spacing on the last glyph
           }}
-        />
+        >
+          Sushanth Paatnaik
+        </span>
+
+        {/* Tagline */}
+        <span
+          style={{
+            marginTop: "10px",
+            fontFamily: "ui-monospace, 'SF Mono', monospace",
+            fontSize: "clamp(7.5px, 0.9vw, 10px)",
+            letterSpacing: "0.30em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.26)",
+            fontWeight: 400,
+            paddingRight: "0.30em",
+          }}
+        >
+          Engineering Intelligent Matter
+        </span>
+
+        {/* Progress area */}
+        <div
+          style={{
+            marginTop: "52px",
+            width: "min(260px, 58vw)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 0,
+          }}
+        >
+          {/* Loading bar track */}
+          <div
+            style={{
+              height: "1px",
+              background: "rgba(255,255,255,0.10)",
+              overflow: "hidden",
+              position: "relative",
+            }}
+          >
+            {/* Fill */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                transformOrigin: "left",
+                transform: `scaleX(${pct / 100})`,
+                background: "rgba(255,255,255,0.70)",
+                transition: pct >= 100
+                  ? `transform 200ms cubic-bezier(0.19, 1, 0.22, 1)`
+                  : `transform 400ms cubic-bezier(0.25, 0, 0.1, 1)`,
+                willChange: "transform",
+              }}
+            />
+          </div>
+
+          {/* Status label + live percentage */}
+          <div
+            style={{
+              marginTop: "11px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "ui-monospace, 'SF Mono', monospace",
+                fontSize: "8.5px",
+                letterSpacing: "0.52em",
+                textTransform: "uppercase",
+                color: failsafe && pct < 100
+                  ? "rgba(255,255,255,0.42)"
+                  : pct >= 100
+                  ? "rgba(255,255,255,0.36)"
+                  : "rgba(255,255,255,0.18)",
+                transition: "color 500ms ease",
+                paddingRight: "0.52em",
+              }}
+            >
+              {failsafe && pct < 100
+                ? "Optimizing Experience…"
+                : pct >= 100
+                ? "Ready"
+                : "Loading"}
+            </span>
+            <span
+              style={{
+                fontFamily: "ui-monospace, 'SF Mono', monospace",
+                fontSize: "10px",
+                letterSpacing: "0.04em",
+                fontVariantNumeric: "tabular-nums",
+                color: pct >= 100
+                  ? "rgba(255,255,255,0.46)"
+                  : "rgba(255,255,255,0.28)",
+                transition: "color 300ms ease",
+                minWidth: "3ch",
+                textAlign: "right",
+              }}
+            >
+              {pct}%
+            </span>
+          </div>
+        </div>
       </div>
-
-      {/* ── Corner registration brackets ─────────────────────────────────── */}
-      <CornerBrackets visible={entering} />
     </div>
-  );
-}
-
-function CornerBrackets({ visible }: { visible: boolean }) {
-  const base: React.CSSProperties = {
-    position: "absolute",
-    width: 20,
-    height: 20,
-    opacity: visible ? 0.4 : 0,
-    transition: visible ? "opacity 600ms 400ms ease" : "none",
-    borderColor: "oklch(0.63 0.10 75 / 0.65)",
-  };
-  return (
-    <>
-      <div style={{ ...base, top: 24, left: 24, borderLeft: "1px solid", borderTop: "1px solid" }} />
-      <div style={{ ...base, top: 24, right: 24, borderRight: "1px solid", borderTop: "1px solid" }} />
-      <div style={{ ...base, bottom: 24, left: 24, borderLeft: "1px solid", borderBottom: "1px solid" }} />
-      <div style={{ ...base, bottom: 24, right: 24, borderRight: "1px solid", borderBottom: "1px solid" }} />
-    </>
   );
 }

@@ -40,6 +40,7 @@ type Bitmaps = (ImageBitmap | null)[][];
 
 interface CanvasLayerProps {
   onReady?: () => void;
+  onProgress?: (pct: number) => void;
   lenisRef?: React.MutableRefObject<Lenis | null>;
 }
 
@@ -56,7 +57,7 @@ interface CanvasLayerProps {
  * Draw: object-fit:cover with DPR-correct canvas buffer.
  * Reduced-motion: static poster, no canvas.
  */
-export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
+export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const gradeRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null]);
   const reduce       = useReducedMotion();
@@ -112,6 +113,15 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
         : createImageBitmap(blob);
     const frameStep = isTouch ? 2 : 1;
 
+    // ── Critical frame threshold ──────────────────────────────────────────────
+    // Scroll is locked until this many group-0 frames are decoded and drawn.
+    // Kept intentionally small: the first 4 frames (desktop) or 2 (mobile)
+    // are enough for smooth initial scroll. Loading more before unblocking
+    // scroll caused visible stalls because group-1 fetches were competing for
+    // bandwidth — see notifyReady/loadGroup for the deferred-group fix.
+    const criticalCount = isTouch ? 2 : 4;
+    let criticalLoaded  = 0;
+
     // Close + drop every retained bitmap for groups outside [lo, hi] and mark
     // them reloadable. Touch only — desktop keeps all groups for instant
     // scroll-back, unchanged.
@@ -130,13 +140,20 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
     const notifyReady = () => {
       if (notifiedRef.current) return;
       notifiedRef.current = true;
+      // Always push to 100 % so the Loader exits — covers the fallback-timer
+      // path where criticalCount frames never fully loaded.
+      onProgress?.(100);
       onReady?.();
+      // Now that critical frames are done and the loader is exiting, kick off
+      // group 1. We deferred it until here so group-0 critical frames had the
+      // full HTTP/2 connection budget without competition.
+      loadGroup(1);
     };
 
-    // Hard fallback — dismiss loader if frame 0 never arrives (slow network).
-    // 6s on mobile (CDN-cached frames typically <1s; 6s covers 3G edge cases).
-    // 10s on desktop where a slow connection is less common.
-    const fallbackMs = isTouch ? 6_000 : 10_000;
+    // Hard fallback — dismiss loader if critical frames never arrive.
+    // 3s on mobile / 4s on desktop: enough for 3G while still being a
+    // reasonable worst-case UX ceiling.
+    const fallbackMs = isTouch ? 3_000 : 4_000;
     const fallback = window.setTimeout(notifyReady, fallbackMs);
 
     // ── Canvas sizing ────────────────────────────────────────────────────────
@@ -174,15 +191,23 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
     const loadGroup = (gi: number) => {
       if (gi < 0 || gi >= N_GROUPS) return;
       if (loadingRef.current[gi]) return;
+      // Defer all non-critical groups until the loader has exited.
+      // Without this, the first RAF tick starts group 1 immediately (96+96
+      // parallel fetches), competing with group-0 critical frames for HTTP/2
+      // streams and causing the progress bar to stall. notifyReady() calls
+      // loadGroup(1) explicitly once the loader clears.
+      if (gi > 0 && !notifiedRef.current) return;
       loadingRef.current[gi] = true;
       const { path } = GROUPS[gi];
       const gen = genRef.current; // capture generation at load-start
 
       const loadFrame = (fi: number): Promise<void> => {
         const pad = String(fi + 1).padStart(4, "0");
-        // Frame 0: high priority so the loader dismisses quickly.
-        // Remaining frames: auto priority so they don't starve other resources.
-        const priority: RequestInit = fi === 0 ? { priority: "high" } as RequestInit : {};
+        // All critical frames get high priority so they aren't queued behind
+        // non-critical requests. Frame 0 was already high; extending to all
+        // group-0 frames below criticalCount closes the 25%-stuck regression.
+        const isCritical = gi === 0 && fi < criticalCount;
+        const priority: RequestInit = (fi === 0 || isCritical) ? { priority: "high" } as RequestInit : {};
         return fetch(`/sequences/${path}/frame_${pad}.webp`, priority)
           .then(r  => r.blob())
           .then(b  => makeBitmap(b))
@@ -194,10 +219,27 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
             const evicted = active >= 0 && (gi < active - 1 || gi > active + 1);
             if (destroyed || genRef.current !== gen || evicted) { bmp.close(); return; }
             bitmapsRef.current[gi][fi] = bmp;
-            if (gi === 0 && fi === 0) notifyReady();
+            // Count critical group-0 frames; fire notifyReady once threshold
+            // is met — not on frame 0 alone — so scroll unlocks only after
+            // the opener can play smoothly without visible gaps.
+            if (gi === 0 && criticalLoaded < criticalCount) {
+              criticalLoaded++;
+              onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
+              if (criticalLoaded >= criticalCount) notifyReady();
+            }
           })
           .catch(() => {
-            if (gi === 0 && fi === 0) notifyReady();
+            // Frame-0 error: unblock immediately rather than hanging.
+            // Other critical-frame errors: count toward threshold AND report
+            // progress so the bar advances even through CDN failures.
+            if (gi === 0) {
+              if (fi === 0) { notifyReady(); return; }
+              if (criticalLoaded < criticalCount) {
+                criticalLoaded++;
+                onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
+                if (criticalLoaded >= criticalCount) notifyReady();
+              }
+            }
           });
       };
 
@@ -252,12 +294,14 @@ export default function CanvasLayer({ onReady, lenisRef }: CanvasLayerProps) {
       const lp  = Math.max(0, Math.min((sp - grp.start) / (grp.end - grp.start), 1));
       const fi  = Math.floor(lp * LAST_FRAME);
 
-      // On group change: preload active ± 1, reset frame tracker, swap color grade.
+      // On group change: preload active ± 1 (and +2 on desktop for wider
+      // lookahead so fast scrollers don't hit an unloaded group).
       if (gi !== lastGroupRef.current) {
         lastGroupRef.current = gi;
         loadGroup(gi);
         loadGroup(gi + 1);
         loadGroup(gi - 1);
+        if (!isTouch) loadGroup(gi + 2); // extra desktop lookahead
         // Touch: free everything outside active±1 to stay under the iOS/Android
         // memory ceiling. Desktop retains all groups (unchanged).
         if (isTouch) evictExcept(gi - 1, gi + 1);

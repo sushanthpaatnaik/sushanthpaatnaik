@@ -106,7 +106,7 @@ export default function CinematicLayer({ onReady }: CinematicLayerProps) {
           ref={videoRef}
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           poster={sceneSpark}
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
