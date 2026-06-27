@@ -294,12 +294,14 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const lp  = Math.max(0, Math.min((sp - grp.start) / (grp.end - grp.start), 1));
       const fi  = Math.floor(lp * LAST_FRAME);
 
-      // On group change: preload active ± 1, reset frame tracker, swap color grade.
+      // On group change: preload active ± 1 (and +2 on desktop for wider
+      // lookahead so fast scrollers don't hit an unloaded group).
       if (gi !== lastGroupRef.current) {
         lastGroupRef.current = gi;
         loadGroup(gi);
         loadGroup(gi + 1);
         loadGroup(gi - 1);
+        if (!isTouch) loadGroup(gi + 2); // extra desktop lookahead
         // Touch: free everything outside active±1 to stay under the iOS/Android
         // memory ceiling. Desktop retains all groups (unchanged).
         if (isTouch) evictExcept(gi - 1, gi + 1);

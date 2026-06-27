@@ -31,12 +31,12 @@ export function useLenis(onScroll?: (progress: number) => void) {
 
     // ── Pointer devices (desktop): Lenis smooth-wheel, unchanged ──────────────
     const lenis = new Lenis({
-      // lerp=0.1: each frame closes 10% of remaining gap — snappier than 0.171,
-      // instant direction reversal, ~16ms latency at 60fps vs ~35ms before.
-      // Canvas reads lenis.targetScroll (raw) so frame updates are decoupled.
-      lerp: 0.1,
+      // lerp=0.12: slightly snappier than 0.1 — content reaches 89% of target
+      // in 10 frames (167ms at 60fps) vs 0.1's 65%. Still smooth, not jerky.
+      // Canvas reads lenis.targetScroll (raw) so canvas updates are immediate.
+      lerp: 0.12,
       smoothWheel: true,
-      wheelMultiplier: 1.4,
+      wheelMultiplier: 1.2,  // was 1.4 — tighter to native feel, less overshoot
       touchMultiplier: 0,
       syncTouch: false,
     });
