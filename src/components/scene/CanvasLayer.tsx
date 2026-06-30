@@ -144,15 +144,15 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Kick off group 1 (deferred until now so group-0 critical frames had
-      // the full HTTP/2 connection budget without competition).
-      loadGroup(1);
+      // Start ALL remaining groups now that the loader has exited and the
+      // full HTTP/2 bandwidth budget is free. Previously only group 1 was
+      // started here, so groups 2–4 only began loading when the user entered
+      // each group — on a cold CDN that caused a visible freeze at each
+      // group boundary. Firing all groups in parallel here means frames are
+      // already in-flight before the user reaches them.
+      for (let g = 1; g < N_GROUPS; g++) loadGroup(g);
       // Reset lastGroupRef so the next RAF tick re-triggers the group-change
-      // block for whichever group the user has already scrolled into. Without
-      // this, if the user outpaced loading and entered group 2+ before these
-      // critical frames finished, those groups are never started because the
-      // group-change block already ran (with the guard blocking it) and won't
-      // re-run until the group changes again.
+      // block for whichever group the user has already scrolled into.
       lastGroupRef.current = -1;
     };
 
@@ -332,7 +332,15 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       }
       if (!bmp) return; // group has zero loaded frames yet — keep previous visible
 
-      lastFrameRef.current = fi;
+      // Only mark the target frame as drawn when it was the exact match.
+      // For fallback frames, keep lastFrameRef at -1 so the next tick retries
+      // the exact frame once it finishes loading — prevents the frame from
+      // being permanently skipped by the fi === lastFrameRef guard.
+      if (bitmapsRef.current[gi][fi] === bmp) {
+        lastFrameRef.current = fi;
+      } else {
+        lastFrameRef.current = -1;
+      }
       drawBitmap(bmp);
     };
 
