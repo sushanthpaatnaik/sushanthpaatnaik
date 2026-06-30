@@ -25,7 +25,7 @@ const gateways = [
   { to: "/ventures",     n: "III",  label: "Ventures",     line: "Five operating companies. One stack." },
   { to: "/recognitions", n: "IV",   label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
   { to: "/voices",       n: "V",    label: "Voices",       line: "Talks, perspectives, and interviews." },
-  { to: "/essays",       n: "VI",   label: "Blogs",        line: "Notes from the workshop." },
+  { to: "/essays",       n: "VI",   label: "Essays",       line: "Notes from the workshop." },
   { to: "/engage",       n: "VII",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
   { to: "/news",         n: "VIII", label: "News",         line: "Editorial archive." },
 ] as const;
@@ -181,7 +181,7 @@ function OriginContent() {
                 )}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
-                  <span className="ml-1.5 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
+                  <span className="hidden sm:inline ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
                 )}
               </span>
             ))}
@@ -349,8 +349,8 @@ function IndustrialContent() {
 function RecognitionContent() {
   return (
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Recognition: dark spotlight setting — moderate center shield */}
-      <ContentShield align="center" strength={0.60} />
+      {/* Recognition: real photo background — stronger center shield for readability */}
+      <ContentShield align="center" strength={0.72} />
       {/* Soft radial gradient bg */}
       <div
         aria-hidden
