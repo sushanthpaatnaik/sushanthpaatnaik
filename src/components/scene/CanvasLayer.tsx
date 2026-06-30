@@ -222,7 +222,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
             // since been evicted from the active±1 window — otherwise a late
             // frame would silently re-bloat memory for an off-screen group.
             const active = lastGroupRef.current;
-            const evicted = active >= 0 && (gi < active - 1 || gi > active + 1);
+            const evicted = isTouch && active >= 0 && (gi < active - 1 || gi > active + 1);
             if (destroyed || genRef.current !== gen || evicted) { bmp.close(); return; }
             bitmapsRef.current[gi][fi] = bmp;
             // Count critical group-0 frames; fire notifyReady once threshold

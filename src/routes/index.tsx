@@ -95,6 +95,8 @@ function Index() {
     setFrameProgress(prev => Math.max(prev, pct));
   }, []);
 
+  const handleVideoReady = useCallback(() => setVideoReady(true), []);
+
   const lenisRef = useLenis(handleScroll);
 
   // Detect low-power / reduced-motion clients — skip the heaviest layers.
@@ -264,7 +266,7 @@ function Index() {
 
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
-        onReady={() => setVideoReady(true)}
+        onReady={handleVideoReady}
         onProgress={handleProgress}
         lenisRef={lenisRef}
       />
