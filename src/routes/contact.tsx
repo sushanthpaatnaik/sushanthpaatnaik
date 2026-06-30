@@ -296,7 +296,7 @@ function AccessAuthority() {
       className="mt-10"
       items={[
         { v: "48h", l: "Typical reply" },
-        { v: "01", l: "Inbox · personally read" },
+        { v: "01", l: "Personally read" },
         { v: "Selective", l: "Engagement policy" },
         { v: "Global", l: "Operating reach" },
       ]}
