@@ -52,9 +52,6 @@ import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.webp";
 
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
-import fellowCeremony from "@/assets/hof/fellowship-ceremony.webp";
-import fellowMashaal from "@/assets/hof/fellowship-mashaal.webp";
-import fellowMitLab from "@/assets/hof/fellowship-mit-lab.webp";
 
 import honorIntelIris from "@/assets/honor-intel-iris.webp";
 import honorPresidentialTrio from "@/assets/honor-presidential-trio.webp";
@@ -467,9 +464,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: awardStpiCert, caption: "STPI Certificate of Merit, National Conclave Winner", meta: "National Conclave · 2022", category: "Award" },
   { src: keynoteMkm, caption: "Monoatom Labs Address", meta: "MKM Foundation · Mashaal", category: "Keynote" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Recognition of record", category: "Fellowship" },
-  { src: fellowCeremony, caption: "Fellowship Ceremony", meta: "Archival Citation · Recognition", category: "Fellowship" },
-  { src: fellowMashaal, caption: "Mashaal Fellowship", meta: "Innovation in Service · National Recognition", category: "Fellowship" },
-  { src: fellowMitLab, caption: "MIT Fabrication Lab", meta: "Center for Bits and Atoms · MIT Cambridge", category: "Fellowship" },
   { src: keynoteDriiv, caption: "Monoatom Labs · DRIIV Showcase", meta: "Graphene Innovation Pavilion", category: "Keynote", focus: "30% center" },
   { src: honorStpi, caption: "ESC–STPI Startup Initiative Winners", meta: "Building the Next Unicorn · 2022", category: "Honor" },
   { src: keynoteGmrFel, caption: "GMR Innovex · Stage Felicitation", meta: "GMRIT Innovation Summit", category: "Keynote", focus: "45% center" },
@@ -487,9 +481,9 @@ const hallOfFame: ArchiveItem[] = [
 // 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 54 || uniqueSrcs.size !== 54) {
+  if (hallOfFame.length !== 51 || uniqueSrcs.size !== 51) {
     console.warn(
-      `[HallOfFame] Expected 54 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 51 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
