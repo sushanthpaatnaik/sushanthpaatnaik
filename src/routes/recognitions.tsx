@@ -55,7 +55,7 @@ import fellowCert from "@/assets/hof/fellowship-certificate.webp";
 import fellowCeremony from "@/assets/hof/fellowship-ceremony.webp";
 import fellowMashaal from "@/assets/hof/fellowship-mashaal.webp";
 import fellowMitLab from "@/assets/hof/fellowship-mit-lab.webp";
-import fellowNasa from "@/assets/hof/fellowship-nasa.webp";
+
 import honorIntelIris from "@/assets/honor-intel-iris.webp";
 import honorPresidentialTrio from "@/assets/honor-presidential-trio.webp";
 import honorMitFab from "@/assets/honor-mit-fab.webp";
@@ -435,7 +435,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorPresidentialTrio, caption: "Three Presidents of India", meta: "Six Presidential Citations · 2008–2013", category: "Honor" },
   { src: honorBricsDiplomat, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor" },
   { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville, Alabama", category: "Honor" },
-  { src: fellowNasa, caption: "NASA Research Visit", meta: "Kennedy Space Center · Huntsville · 2011", category: "Fellowship" },
   { src: honorMitTr35, caption: "MIT TR-35 Recognition", meta: "MIT Technology Review · Cambridge · 2010", category: "Honor" },
   { src: honorMitFab, caption: "MIT Fab-10 & Fab-11 Awardee", meta: "MIT Center for Bits and Atoms · Barcelona / Cambridge · 2013–14", category: "Honor" },
   { src: honorRepublic, caption: "With Mr. Amit Jain, CarDekho", meta: "Founder & CEO · CarDekho Group", category: "Honor" },
@@ -489,9 +488,9 @@ const hallOfFame: ArchiveItem[] = [
 // 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 56 || uniqueSrcs.size !== 56) {
+  if (hallOfFame.length !== 55 || uniqueSrcs.size !== 55) {
     console.warn(
-      `[HallOfFame] Expected 56 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 55 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
