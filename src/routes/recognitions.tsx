@@ -25,7 +25,7 @@ import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
 import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardPranab2 from "@/assets/hof/award-pranab-mukherjee-2.webp";
-import awardPranabDemo2 from "@/assets/hof/award-pranab-demo.webp";
+
 import awardPatil2 from "@/assets/hof/award-pratibha-patil-2.webp";
 
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
@@ -454,7 +454,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: awardIeemaCheque, caption: "IEEMA Award Presentation", meta: "Young Innovator Recognition · 2024", category: "Award" },
   { src: awardPranabDemo, caption: "Demonstrating to President Pranab Mukherjee", meta: "Presidential Showcase", category: "Award", focus: "center 35%" },
   { src: awardPranabTrophy, caption: "Presidential Trophy · President Pranab Mukherjee", meta: "National Innovation Foundation · 2013", category: "Award" },
-  { src: awardPranabDemo2, caption: "Interaction with President Pranab Mukherjee", meta: "Presidential Award Ceremony · New Delhi · 2013", category: "Award" },
   { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote" },
   { src: honorFicci, caption: "FICCI Bharat Summit", meta: "Delegate · 2024", category: "Honor", focus: "center 20%" },
   { src: keynoteIeema, caption: "IEEMA Mainstage Address", meta: "Buildelec · Mumbai · Jan 2024", category: "Keynote" },
@@ -488,9 +487,9 @@ const hallOfFame: ArchiveItem[] = [
 // 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 55 || uniqueSrcs.size !== 55) {
+  if (hallOfFame.length !== 54 || uniqueSrcs.size !== 54) {
     console.warn(
-      `[HallOfFame] Expected 55 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 54 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
