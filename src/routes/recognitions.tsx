@@ -27,7 +27,7 @@ import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
 import awardPranab2 from "@/assets/hof/award-pranab-mukherjee-2.webp";
 import awardPranabDemo2 from "@/assets/hof/award-pranab-demo.webp";
 import awardPatil2 from "@/assets/hof/award-pratibha-patil-2.webp";
-import keynoteConference from "@/assets/hof/keynote-conference.webp";
+
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
 import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
 import awardStpiCert from "@/assets/hof/award-stpi-certificate.webp";
@@ -481,7 +481,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 Shikhar · G20 · Gurugram · Jul 2023", category: "Honor", focus: "center 25%" },
   { src: honorBada, caption: "With Dr. Vivek Bindra", meta: "Bada Business HQ · 2023", category: "Honor", focus: "right 20%" },
   { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote" },
-  { src: keynoteConference, caption: "National Conference Address", meta: "Innovation & Technology Summit", category: "Keynote" },
   { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius High Commission", category: "Honor", focus: "center 30%" },
   { src: honorMonoatomTrophies, caption: "Founder's Desk · Monoatom Labs", meta: "TEDx · Startup Summit · SGSAST Pattros · Trophies on Display", category: "Honor" },
 ];
@@ -490,9 +489,9 @@ const hallOfFame: ArchiveItem[] = [
 // 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 57 || uniqueSrcs.size !== 57) {
+  if (hallOfFame.length !== 56 || uniqueSrcs.size !== 56) {
     console.warn(
-      `[HallOfFame] Expected 57 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 56 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
