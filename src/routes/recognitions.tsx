@@ -429,7 +429,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "PRESIDENTIAL AWARD · 2009", category: "Award" },
   { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "PRESIDENTIAL AWARD · 2013", category: "Award", focus: "left top" },
   { src: awardPranab2, caption: "With President Pranab Mukherjee", meta: "Presidential Ceremony · 2013", category: "Award" },
-  { src: honorPresidentialTrio, caption: "Three Presidents of India", meta: "Six Presidential Citations · 2008–2013", category: "Honor" },
   { src: honorBricsDiplomat, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor" },
   { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville, Alabama", category: "Honor" },
   { src: honorMitTr35, caption: "MIT TR-35 Recognition", meta: "MIT Technology Review · Cambridge · 2010", category: "Honor" },
@@ -481,9 +480,9 @@ const hallOfFame: ArchiveItem[] = [
 // 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 51 || uniqueSrcs.size !== 51) {
+  if (hallOfFame.length !== 50 || uniqueSrcs.size !== 50) {
     console.warn(
-      `[HallOfFame] Expected 51 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 50 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
