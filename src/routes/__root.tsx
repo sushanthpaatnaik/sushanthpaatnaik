@@ -1,14 +1,17 @@
+import { useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { clearGlobalScrollLock } from "../lib/scroll-lock";
 
 function NotFoundComponent() {
   return (
@@ -167,6 +170,20 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // On every client-side route change, drop any scroll lock an overlay on the
+  // previous page may have left on <html>/<body>. The initial mount is skipped
+  // so the homepage preloader's first-load lock is never cleared out from under
+  // it — only genuine navigations trigger the sweep.
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    clearGlobalScrollLock();
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
