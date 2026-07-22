@@ -63,6 +63,16 @@ const innovations = [
   },
   {
     n: "03",
+    year: "2010",
+    category: "HCI",
+    name: "Super Sense",
+    tagline: "Gesture-controlled computing",
+    description:
+      "A system enabling computers to be operated through hand gestures alone — exploring a more natural human-machine interface.",
+    image: supersenseImg,
+  },
+  {
+    n: "04",
     year: "2011",
     category: "OFF-GRID ENERGY",
     name: "Powergen",
@@ -72,7 +82,7 @@ const innovations = [
     image: powergenImg,
   },
   {
-    n: "04",
+    n: "05",
     year: "2012",
     category: "ENERGY HARVESTING",
     name: "Sol-Ka",
@@ -82,7 +92,7 @@ const innovations = [
     image: solkaImg,
   },
   {
-    n: "05",
+    n: "06",
     year: "2013",
     category: "WEARABLES",
     name: "She Watch",
@@ -90,16 +100,6 @@ const innovations = [
     description:
       "A discreet smart-watch form-factor wearable engineered to alert and locate — designed long before the women's safety wearable category became mainstream.",
     image: shewatchImg,
-  },
-  {
-    n: "06",
-    year: "2013",
-    category: "HCI",
-    name: "Super Sense",
-    tagline: "Gesture-controlled computing",
-    description:
-      "A system enabling computers to be operated through hand gestures alone — exploring a more natural human-machine interface.",
-    image: supersenseImg,
   },
 ] as const;
 
