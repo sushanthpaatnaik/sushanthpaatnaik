@@ -366,7 +366,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   return (
     <div
       aria-hidden
-      className="fixed inset-0 z-[1] overflow-hidden pointer-events-none cinematic-stage-overlay"
+      className="fixed inset-0 z-[1] overflow-clip pointer-events-none cinematic-stage-overlay"
       style={{
         backgroundColor: "oklch(0.03 0.006 260)",
         willChange: "transform",
