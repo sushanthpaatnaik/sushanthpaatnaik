@@ -11,7 +11,7 @@ export default function SceneDecorations() {
     <div
       aria-hidden
       className="fixed inset-0 z-[2] overflow-hidden pointer-events-none"
-      style={{ contain: "strict" }}
+      style={{ contain: "layout paint style", touchAction: "pan-y" }}
     >
       <RecognitionAmbient phase={phase} />
       <ParticleField progress={scrollYProgress} phase={phase} />

@@ -116,7 +116,9 @@ function Index() {
     // display ≥768px) slip through and run the full three.js graphene lattice
     // on a phone GPU — the "ecosystem hang". Any coarse pointer = no WebGL.
     const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches;
-    const mobileViewport = window.innerWidth < 768;
+    // < 1024 catches Z Fold 6 unfolded (≈768 px) and other large-screen phones
+    // that slip through the old < 768 threshold.
+    const mobileViewport = window.innerWidth < 1024;
     setIsLowPower(Boolean(reduce || lowMem || slowNet || mobileViewport || coarsePointer));
   }, []);
 
@@ -271,7 +273,7 @@ function Index() {
         lenisRef={lenisRef}
       />
 
-      {scenesReady && entered && (
+      {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <SceneDecorations />
         </Suspense>
