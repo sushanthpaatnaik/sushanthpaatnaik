@@ -371,7 +371,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         backgroundColor: "oklch(0.03 0.006 260)",
         willChange: "transform",
         transform: "translateZ(0)",
-        contain: "strict",
+        contain: "layout paint style",
+        touchAction: "pan-y",
       }}
     >
       {reduce ? (
