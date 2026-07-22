@@ -102,6 +102,11 @@ export function useLenis(onScroll?: (progress: number) => void) {
       ro?.disconnect();
       lenis.destroy();
       lenisRef.current = null;
+      // Belt-and-suspenders: guarantee no Lenis class survives teardown. A
+      // stale `.lenis.lenis-stopped { overflow: hidden }` on <html> would block
+      // scrolling on every page navigated to after leaving the homepage.
+      const html = document.documentElement;
+      html.classList.remove("lenis", "lenis-smooth", "lenis-stopped", "lenis-scrolling");
     };
   }, [onScroll]);
 
