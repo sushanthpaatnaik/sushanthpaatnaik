@@ -43,17 +43,7 @@ const EASE = [0.19, 1, 0.22, 1] as const;
 const innovations = [
   {
     n: "01",
-    year: "2010",
-    category: "ASSISTIVE TECH",
-    name: "Enabler",
-    tagline: "Breath-operated wheelchair",
-    description:
-      "A wheelchair operated entirely through breath patterns — built to empower individuals with severe paralysis to regain independent mobility. The foundational invention that opened every door that followed.",
-    image: enablerImg,
-  },
-  {
-    n: "02",
-    year: "2011",
+    year: "2008",
     category: "MOBILITY SAFETY",
     name: "Rectofit Kit",
     tagline: "Universal vehicle safety retrofit",
@@ -62,14 +52,24 @@ const innovations = [
     image: rectofitImg,
   },
   {
-    n: "03",
-    year: "2012",
-    category: "WEARABLES",
-    name: "She Watch",
-    tagline: "Women's safety wearable",
+    n: "02",
+    year: "2009",
+    category: "ASSISTIVE TECH",
+    name: "Enabler",
+    tagline: "Breath-operated wheelchair",
     description:
-      "A discreet smart-watch form-factor wearable engineered to alert and locate — designed long before the women's safety wearable category became mainstream.",
-    image: shewatchImg,
+      "A wheelchair operated entirely through breath patterns — built to empower individuals with severe paralysis to regain independent mobility. The foundational invention that opened every door that followed.",
+    image: enablerImg,
+  },
+  {
+    n: "03",
+    year: "2011",
+    category: "OFF-GRID ENERGY",
+    name: "Powergen",
+    tagline: "Off-grid electricity for rural India",
+    description:
+      "A high-efficiency, low-cost power generation kit conceived to bring reliable electricity to remote rural communities.",
+    image: powergenImg,
   },
   {
     n: "04",
@@ -84,22 +84,22 @@ const innovations = [
   {
     n: "05",
     year: "2013",
-    category: "SENSORY TECH",
-    name: "Supersense",
-    tagline: "Sensory augmentation wearable",
+    category: "WEARABLES",
+    name: "She Watch",
+    tagline: "Women's safety wearable",
     description:
-      "A wearable sensory-substitution system designed to expand human perception — bridging the gap between physical input and digital cognition for individuals with sensory impairments.",
-    image: supersenseImg,
+      "A discreet smart-watch form-factor wearable engineered to alert and locate — designed long before the women's safety wearable category became mainstream.",
+    image: shewatchImg,
   },
   {
     n: "06",
     year: "2013",
-    category: "ENERGY SYSTEMS",
-    name: "Powergen",
-    tagline: "Mechanical energy harvester",
+    category: "HCI",
+    name: "Super Sense",
+    tagline: "Gesture-controlled computing",
     description:
-      "A compact kinetic energy harvesting unit that converts everyday mechanical motion into usable electrical power — designed for off-grid and assistive applications.",
-    image: powergenImg,
+      "A system enabling computers to be operated through hand gestures alone — exploring a more natural human-machine interface.",
+    image: supersenseImg,
   },
 ] as const;
 
