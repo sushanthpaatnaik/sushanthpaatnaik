@@ -645,7 +645,7 @@ export default function ScrollSections() {
 
       {/* Fixed cinematic content stage — all chapters layered, driven by global scroll */}
       <div
-        className="fixed inset-0 overflow-hidden cinematic-stage-overlay"
+        className="fixed inset-0 overflow-clip cinematic-stage-overlay"
         style={{ pointerEvents: "none" }}
       >
         <ScrollProgressBar progress={scrollYProgress} />

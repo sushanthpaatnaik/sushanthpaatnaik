@@ -10,7 +10,7 @@ export default function SceneDecorations() {
   return (
     <div
       aria-hidden
-      className="fixed inset-0 z-[2] overflow-hidden pointer-events-none"
+      className="fixed inset-0 z-[2] overflow-clip pointer-events-none"
       style={{ contain: "layout paint style", touchAction: "pan-y" }}
     >
       <RecognitionAmbient phase={phase} />
