@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
@@ -426,6 +426,42 @@ function InnovationsPage() {
           </div>
         </div>
       </div>
+      {/* ── Page-ending CTA ── */}
+      <div className="not-prose mt-24 mb-4 flex flex-col items-center gap-10 border-t border-foreground/[0.06] pt-20">
+        <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/40">Continue</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1.0, ease: [0.19, 1, 0.22, 1] }}
+          className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
+        >
+          <Link
+            to="/engage"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+          >
+            <span
+              aria-hidden
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+              style={{ background: "radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, var(--foreground) 3%, transparent) 0%, transparent 55%)" }}
+            />
+            <span className="relative font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/75 group-hover:text-foreground/90 transition-colors duration-700">
+              Discuss an Industrial Application
+            </span>
+            <span className="relative font-mono text-[10px] text-foreground/40 group-hover:text-foreground/60 transition-colors duration-700">→</span>
+          </Link>
+          <Link
+            to="/ventures"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+          >
+            <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
+              Explore the Ventures
+            </span>
+            <span className="font-mono text-[10px] text-foreground/30 group-hover:text-foreground/50 transition-colors duration-700">→</span>
+          </Link>
+        </motion.div>
+      </div>
+
       <Product3DModal item={active} onClose={() => setActive(null)} />
     </CinematicPageShell>
 
