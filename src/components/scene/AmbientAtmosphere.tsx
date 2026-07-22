@@ -5,7 +5,7 @@ export default function AmbientAtmosphere() {
     <div
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[3] overflow-hidden mix-blend-screen"
-      style={{ contain: "strict" }}
+      style={{ contain: "layout paint style", touchAction: "pan-y" }}
     >
       {/* Haze blob A — opacity-only: GPU composites without re-rasterizing */}
       <motion.div
