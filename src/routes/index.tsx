@@ -34,9 +34,9 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/" },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/" }],
   }),
@@ -95,6 +95,8 @@ function Index() {
     setFrameProgress(prev => Math.max(prev, pct));
   }, []);
 
+  const handleVideoReady = useCallback(() => setVideoReady(true), []);
+
   const lenisRef = useLenis(handleScroll);
 
   // Detect low-power / reduced-motion clients — skip the heaviest layers.
@@ -114,7 +116,9 @@ function Index() {
     // display ≥768px) slip through and run the full three.js graphene lattice
     // on a phone GPU — the "ecosystem hang". Any coarse pointer = no WebGL.
     const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches;
-    const mobileViewport = window.innerWidth < 768;
+    // < 1024 catches Z Fold 6 unfolded (≈768 px) and other large-screen phones
+    // that slip through the old < 768 threshold.
+    const mobileViewport = window.innerWidth < 1024;
     setIsLowPower(Boolean(reduce || lowMem || slowNet || mobileViewport || coarsePointer));
   }, []);
 
@@ -264,12 +268,12 @@ function Index() {
 
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
-        onReady={() => setVideoReady(true)}
+        onReady={handleVideoReady}
         onProgress={handleProgress}
         lenisRef={lenisRef}
       />
 
-      {scenesReady && entered && (
+      {scenesReady && entered && !isLowPower && (
         <Suspense fallback={null}>
           <SceneDecorations />
         </Suspense>

@@ -667,8 +667,8 @@ export default function ChapterAtmosphere() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[2] overflow-hidden"
-      style={{ contain: "strict" }}
+      className="pointer-events-none fixed inset-0 z-[2] overflow-clip"
+      style={{ contain: "layout paint style" }}
     >
       <ContinuityFloor />
       <ChapterLayer scrollYProgress={scrollYProgress} idx={0}>

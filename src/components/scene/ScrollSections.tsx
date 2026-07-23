@@ -25,7 +25,7 @@ const gateways = [
   { to: "/ventures",     n: "III",  label: "Ventures",     line: "Five operating companies. One stack." },
   { to: "/recognitions", n: "IV",   label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
   { to: "/voices",       n: "V",    label: "Voices",       line: "Talks, perspectives, and interviews." },
-  { to: "/essays",       n: "VI",   label: "Blogs",        line: "Notes from the workshop." },
+  { to: "/essays",       n: "VI",   label: "Essays",       line: "Notes from the workshop." },
   { to: "/engage",       n: "VII",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
   { to: "/news",         n: "VIII", label: "News",         line: "Editorial archive." },
 ] as const;
@@ -166,7 +166,7 @@ function OriginContent() {
               Dot is placed BETWEEN spans (not inside) so spacing is
               consistent regardless of flex-gap or font-size.
               Result: 06 Presidential Awards · 23+ Innovations · 05 Ventures · TED · MIT TR · Global Recognition */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2 px-2">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
             {[
               { v: "06",                  l: "Presidential Awards" },
               { v: "23+",                 l: "Innovations" },
@@ -174,14 +174,14 @@ function OriginContent() {
               { v: "TED",                 l: "" },
               { v: "MIT TR",              l: "" },
               { v: "Global Recognition",  l: "" },
-            ].map((s, i, arr) => (
+            ].map((s, i) => (
               <span key={i} className="inline-flex items-center whitespace-nowrap">
                 {i > 0 && (
-                  <span className="mx-2.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
+                  <span className="mx-0.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
                 )}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
-                  <span className="ml-2 font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.3em] text-muted-foreground/50">{s.l}</span>
+                  <span className="hidden sm:inline ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
                 )}
               </span>
             ))}
@@ -349,8 +349,8 @@ function IndustrialContent() {
 function RecognitionContent() {
   return (
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Recognition: dark spotlight setting — moderate center shield */}
-      <ContentShield align="center" strength={0.60} />
+      {/* Recognition: real photo background — stronger center shield for readability */}
+      <ContentShield align="center" strength={0.72} />
       {/* Soft radial gradient bg */}
       <div
         aria-hidden
@@ -419,7 +419,7 @@ function EcosystemContent() {
               className="group block border-t border-foreground/[0.08] py-3 md:py-4 lg:py-5 hover:border-foreground/30 transition-colors duration-500"
             >
               <div className="flex items-baseline gap-3 md:gap-5">
-                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/50 w-5 md:w-6 shrink-0">
+                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/50 shrink-0 whitespace-nowrap">
                   {g.n}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -586,6 +586,14 @@ export default function ScrollSections() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
+  // On touch / mobile devices, clearing willChange avoids reserving 2–4 MB of
+  // GPU memory per layer. The CSS @media reset at styles.css:625 can't override
+  // inline styles, so we gate here in JS.
+  const isTouch =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(pointer: coarse)").matches;
+  const wc = reduce || isTouch ? "auto" : "opacity, transform";
+
   const yIn  = reduce ? 0 : 6;
   const yOut = reduce ? 0 : -4;
 
@@ -637,7 +645,7 @@ export default function ScrollSections() {
 
       {/* Fixed cinematic content stage — all chapters layered, driven by global scroll */}
       <div
-        className="fixed inset-0 overflow-hidden cinematic-stage-overlay"
+        className="fixed inset-0 overflow-clip cinematic-stage-overlay"
         style={{ pointerEvents: "none" }}
       >
         <ScrollProgressBar progress={scrollYProgress} />
@@ -645,7 +653,7 @@ export default function ScrollSections() {
         {/* Chapter 0 — Origin */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: "opacity, transform" }}
+          style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: wc }}
         >
           <OriginContent />
         </motion.div>
@@ -653,7 +661,7 @@ export default function ScrollSections() {
         {/* Chapter 1 — Founder */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: "opacity, transform" }}
+          style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: wc }}
         >
           <FounderContent />
         </motion.div>
@@ -661,7 +669,7 @@ export default function ScrollSections() {
         {/* Chapter 2 — Material Intelligence */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: "opacity, transform" }}
+          style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: wc }}
         >
           <MaterialContent />
         </motion.div>
@@ -669,7 +677,7 @@ export default function ScrollSections() {
         {/* Chapter 3 — Industrial Translation */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: "opacity, transform" }}
+          style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: wc }}
         >
           <IndustrialContent />
         </motion.div>
@@ -677,7 +685,7 @@ export default function ScrollSections() {
         {/* Chapter 4 — Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: "opacity, transform" }}
+          style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
         >
           <RecognitionContent />
         </motion.div>
@@ -685,7 +693,7 @@ export default function ScrollSections() {
         {/* Chapter 5 — Ecosystem */}
         <motion.div
           className="absolute inset-0 flex items-center"
-          style={{ opacity: op5, y: y5, pointerEvents: pe5, willChange: "opacity, transform" }}
+          style={{ opacity: op5, y: y5, pointerEvents: pe5, willChange: wc }}
         >
           <EcosystemContent />
         </motion.div>
@@ -693,7 +701,7 @@ export default function ScrollSections() {
         {/* Chapter 6 — Future Systems */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ opacity: op6, y: y6, pointerEvents: pe6, willChange: "opacity, transform" }}
+          style={{ opacity: op6, y: y6, pointerEvents: pe6, willChange: wc }}
         >
           <FutureContent />
         </motion.div>
