@@ -627,10 +627,10 @@
   .will-change-opacity  { will-change: auto; }
 }
 
-/* Belt-and-suspenders: prevent any descendant from causing horizontal scroll.
-   clip (not hidden) avoids creating a scroll container — preserves natural
-   viewport scroll chain on html+body. */
-html, body { overflow-x: clip; max-width: 100%; }
+/* Prevent horizontal scroll. overflow-x:hidden on html only — setting it
+   on body on iOS blocks native momentum scroll entirely. */
+html { overflow-x: hidden; max-width: 100%; }
+body { max-width: 100%; }
 
 /* ── Cinematic preloader ────────────────────────────────────────────────── */
 @keyframes sp-scanlines-drift {
@@ -803,9 +803,12 @@ html.lenis, html.lenis body {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
-  html, body {
+  html {
     max-width: 100%;
-    overflow-x: clip;
+    overflow-x: hidden;
+  }
+  body {
+    max-width: 100%;
   }
   body {
     /* Fluid base typography: scales from 14px @ 320vw to 17px @ 1600vw */

@@ -1,14 +1,17 @@
+import { useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { clearGlobalScrollLock } from "../lib/scroll-lock";
 
 function NotFoundComponent() {
   return (
@@ -100,16 +103,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Graphene, nano-materials, AI, and industrial commercialization — built in India, designed for the world.",
       },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
+      { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [
-      { rel: "preconnect", href: "https://storage.googleapis.com" },
-      { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
     scripts: [
       {
@@ -122,7 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           jobTitle: "Inventor · Deep-Tech Founder",
           description:
             "Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital. CIO at Magppie.",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp",
+          image: "https://sushanthpaatnaik.com/social-preview.webp",
           birthPlace: "Bhubaneswar, Odisha, India",
           alumniOf: [
             { "@type": "CollegeOrUniversity", name: "IISER Bhopal" },
@@ -169,6 +170,20 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // On every client-side route change, drop any scroll lock an overlay on the
+  // previous page may have left on <html>/<body>. The initial mount is skipped
+  // so the homepage preloader's first-load lock is never cleared out from under
+  // it — only genuine navigations trigger the sweep.
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    clearGlobalScrollLock();
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

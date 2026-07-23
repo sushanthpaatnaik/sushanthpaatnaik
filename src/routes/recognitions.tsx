@@ -24,6 +24,10 @@ import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
 import awardPranabDemo from "@/assets/hof/award-pranab-ceremony.webp";
 import awardPranabTrophy from "@/assets/hof/award-pranab-trophy.webp";
+import awardPranab2 from "@/assets/hof/award-pranab-mukherjee-2.webp";
+
+import awardPatil2 from "@/assets/hof/award-pratibha-patil-2.webp";
+
 import awardLeaDiaMirza from "@/assets/hof/award-lea-dia-mirza.webp";
 import awardIeemaCheque from "@/assets/hof/award-ieema-cheque.webp";
 import awardStpiCert from "@/assets/hof/award-stpi-certificate.webp";
@@ -48,6 +52,7 @@ import keynoteGmrFel from "@/assets/hof/keynote-gmr-innovex-felicitation.webp";
 
 
 import fellowCert from "@/assets/hof/fellowship-certificate.webp";
+
 import honorIntelIris from "@/assets/honor-intel-iris.webp";
 import honorPresidentialTrio from "@/assets/honor-presidential-trio.webp";
 import honorMitFab from "@/assets/honor-mit-fab.webp";
@@ -92,9 +97,9 @@ export const Route = createFileRoute("/recognitions")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/recognitions" },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ltIXu6wU6aadaSBkdDy2XzqPo5C3/social-images/social-1779549424976-12345.webp" },
+      { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/recognitions" }],
   }),
@@ -416,22 +421,27 @@ const counters = [
   { value: "14+", label: "Years of industrial research" },
 ];
 
-// Hall of Fame ribbon — full 42-plate archival reel migrated from the
-// legacy site. Original order, captions, year labels and recognition
-// context are preserved verbatim.
+// Hall of Fame ribbon — full 57-plate archival reel. All available HOF
+// images from the complete recognition archive, editorially sequenced.
 const hallOfFame: ArchiveItem[] = [
   { src: honorDriiv, caption: "MoU Signing · DRIIV, PSA, Govt of India", meta: "Delhi Research Implementation & Innovation · New Delhi", category: "Honor" },
   { src: honorIocl, caption: "With Shri Sujoy Choudhury", meta: "Director (P&BD) · Indian Oil Corporation", category: "Honor" },
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "PRESIDENTIAL AWARD · 2009", category: "Award" },
   { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "PRESIDENTIAL AWARD · 2013", category: "Award", focus: "left top" },
+  { src: awardPranab2, caption: "With President Pranab Mukherjee", meta: "Presidential Ceremony · 2013", category: "Award" },
   { src: honorBricsDiplomat, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor" },
   { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville, Alabama", category: "Honor" },
+  { src: honorMitTr35, caption: "MIT TR-35 Recognition", meta: "MIT Technology Review · Cambridge · 2010", category: "Honor" },
+  { src: honorMitFab, caption: "MIT Fab-10 & Fab-11 Awardee", meta: "MIT Center for Bits and Atoms · Barcelona / Cambridge · 2013–14", category: "Honor" },
   { src: honorRepublic, caption: "With Mr. Amit Jain, CarDekho", meta: "Founder & CEO · CarDekho Group", category: "Honor" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Presidential Award · 2010", category: "Award" },
+  { src: awardPatil2, caption: "Presidential Ceremony · Pratibha Patil", meta: "Rashtrapati Bhavan · New Delhi · 2010", category: "Award" },
+  { src: honorIntelIris, caption: "Intel IRIS · Best Popular Invention", meta: "National Science Fair · 2010", category: "Honor" },
   { src: keynoteBritish, caption: "British High Commission", meta: "Address · New Delhi", category: "Keynote" },
   { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote" },
   { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote" },
+  { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: honorGlobal, caption: "Global Forum Delegate", meta: "International Summit · 2023", category: "Honor", focus: "30% center" },
   { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award" },
   { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
@@ -439,6 +449,7 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorIeema, caption: "IEEMA Finalists", meta: "Buildelec · Intelect · Distribuelec · 2024", category: "Honor", focus: "70% center" },
   { src: awardIeemaCheque, caption: "IEEMA Award Presentation", meta: "Young Innovator Recognition · 2024", category: "Award" },
   { src: awardPranabDemo, caption: "Demonstrating to President Pranab Mukherjee", meta: "Presidential Showcase", category: "Award", focus: "center 35%" },
+  { src: awardPranabTrophy, caption: "Presidential Trophy · President Pranab Mukherjee", meta: "National Innovation Foundation · 2013", category: "Award" },
   { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote" },
   { src: honorFicci, caption: "FICCI Bharat Summit", meta: "Delegate · 2024", category: "Honor", focus: "center 20%" },
   { src: keynoteIeema, caption: "IEEMA Mainstage Address", meta: "Buildelec · Mumbai · Jan 2024", category: "Keynote" },
@@ -460,17 +471,18 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorMop, caption: "Ministry of Power · Bureau of Energy Efficiency", meta: "Government of India · New Delhi · 2023", category: "Honor", focus: "center 30%" },
   { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 Shikhar · G20 · Gurugram · Jul 2023", category: "Honor", focus: "center 25%" },
   { src: honorBada, caption: "With Dr. Vivek Bindra", meta: "Bada Business HQ · 2023", category: "Honor", focus: "right 20%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote" },
   { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius High Commission", category: "Honor", focus: "center 30%" },
   { src: honorMonoatomTrophies, caption: "Founder's Desk · Monoatom Labs", meta: "TEDx · Startup Summit · SGSAST Pattros · Trophies on Display", category: "Honor" },
 ];
 
-// Internal integrity check — the migrated Hall of Fame must contain exactly
-// 42 unique images. Logs a warning in development if drift is detected.
+// Internal integrity check — the Hall of Fame must contain exactly
+// 57 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 42 || uniqueSrcs.size !== 42) {
+  if (hallOfFame.length !== 50 || uniqueSrcs.size !== 50) {
     console.warn(
-      `[HallOfFame] Expected 42 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 50 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }

@@ -4,11 +4,12 @@ import spLogo from "@/assets/sp-logo.svg";
 
 const navLinks = [
   { to: "/about", label: "About" },
+  { to: "/early-works", label: "Early Works" },
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
   { to: "/recognitions", label: "Honors" },
   { to: "/voices", label: "Voices" },
-  { to: "/essays", label: "Blogs" },
+  { to: "/essays", label: "Essays" },
   { to: "/news", label: "News" },
   { to: "/engage", label: "Engage" },
 ] as const;
