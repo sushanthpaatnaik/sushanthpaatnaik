@@ -17,7 +17,7 @@ export const Route = createFileRoute("/early-works")({
   component: EarlyWorksPage,
   head: () => ({
     meta: [
-      { title: "Early Works | Sushanth Paatnaik" },
+      { title: "Early Works — Sushanth Paatnaik" },
       {
         name: "description",
         content:

@@ -22,7 +22,7 @@ const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
 const gateways = [
   { to: "/about",        n: "I",    label: "About",        line: "Founder, philosophy, journey." },
   { to: "/innovations",  n: "II",   label: "Innovations",  line: "Graphene, materials, systems." },
-  { to: "/ventures",     n: "III",  label: "Ventures",     line: "Five operating companies. One stack." },
+  { to: "/ventures",     n: "III",  label: "Ventures",     line: "Six operating companies. One stack." },
   { to: "/recognitions", n: "IV",   label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
   { to: "/voices",       n: "V",    label: "Voices",       line: "Talks, perspectives, and interviews." },
   { to: "/essays",       n: "VI",   label: "Essays",       line: "Notes from the workshop." },
@@ -165,12 +165,12 @@ function OriginContent() {
           {/* Credibility strip — value+label pairs separated by · dots.
               Dot is placed BETWEEN spans (not inside) so spacing is
               consistent regardless of flex-gap or font-size.
-              Result: 06 Presidential Awards · 23+ Innovations · 05 Ventures · TED · MIT TR · Global Recognition */}
+              Result: 06 Presidential Awards · 23 Innovations · 06 Ventures · TED · MIT TR · Global Recognition */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
             {[
               { v: "06",                  l: "Presidential Awards" },
-              { v: "23+",                 l: "Innovations" },
-              { v: "05",                  l: "Ventures" },
+              { v: "23",                  l: "Innovations" },
+              { v: "06",                  l: "Ventures" },
               { v: "TED",                 l: "" },
               { v: "MIT TR",              l: "" },
               { v: "Global Recognition",  l: "" },
