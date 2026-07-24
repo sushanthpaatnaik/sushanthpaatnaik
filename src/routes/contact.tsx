@@ -87,14 +87,14 @@ function AccessForm() {
     )}&body=${encodeURIComponent(body)}`;
   }, [intentLabel, name, org, email, context, ask]);
 
-  const ready = name.trim() && email.trim() && context.trim().length > 20;
+  const ready = Boolean(name.trim() && email.trim() && context.trim());
 
   const missingReason = useMemo(() => {
     if (ready) return null;
     const missing: string[] = [];
     if (!name.trim()) missing.push("your name");
     if (!email.trim()) missing.push("your email");
-    if (context.trim().length <= 20) missing.push("a bit more in Context (20+ characters)");
+    if (!context.trim()) missing.push("a note in Context");
     if (!missing.length) return null;
     return `Add ${missing.join(", ")} to open the line.`;
   }, [ready, name, email, context]);
