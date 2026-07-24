@@ -6,7 +6,6 @@ import CinematicPageShell, {
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-about-graphite.webp";
-import founderShowroom from "@/assets/founder-showroom.webp";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -108,12 +107,10 @@ function AboutPage() {
     >
       {/* ── Founder plate ── */}
       <FounderPortrait
-        variant="documentary"
-        src={founderShowroom}
-        alt="Sushanth Paatnaik in the R&D showroom — instrumentation and engineering context"
+        variant="editorial"
         plate
         caption="Inventor, deep-tech founder, and six-time Indian Presidential awardee."
-        meta="Portrait · R&D Facility"
+        meta="Portrait · Bhubaneswar, India"
       />
 
       {/* ── Founder dossier — premium narrative block ── */}
