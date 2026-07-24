@@ -708,6 +708,27 @@ html.lenis, html.lenis body {
   }
 }
 
+/* Desktop scroll fix — collapse to a SINGLE scroll container.
+   A leftover `body { overflow-x: hidden }` (in @layer base) combined with the
+   same on <html> made BOTH elements document scrollers (overflow: hidden auto
+   on each). Chrome desktop mishandles that dual-scroll-container state and
+   stops routing wheel/keyboard/trackpad scroll to the document — the page
+   freezes even though it is tall and content is present. Safari tolerates the
+   dual container, and touch devices are handled by the pointer:coarse block
+   above, which is why the freeze was Chrome-desktop-only and every-page.
+   Scoped to pointer:fine so the working mobile/touch setup is left untouched:
+   <html> becomes the one scroller, <body> is no longer a scroll container. */
+@media (pointer: fine) {
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  body {
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+}
+
 /* Cinematic stage and canvas overlays must not block vertical touch events.
    touch-action: pan-y lets iOS Safari and Chrome Android pass vertical
    swipe gestures through to the document scroll handler so Lenis
