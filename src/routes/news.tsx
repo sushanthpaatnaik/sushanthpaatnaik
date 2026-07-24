@@ -637,7 +637,7 @@ function NewsPage() {
           The press<br className="hidden md:inline" /> of record.
         </>
       }
-      lead="An editorial archive of coverage across fifteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
+      lead="An editorial archive of coverage across fourteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
       overlay={0.68}
     >

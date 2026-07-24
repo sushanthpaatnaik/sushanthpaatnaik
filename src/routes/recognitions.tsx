@@ -153,7 +153,7 @@ const milestones: Milestone[] = [
     year: "2010",
     sortYear: 2010.5,
     title: "Intel IRIS National Recognition",
-    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fifteen-year practice in deep-tech.",
+    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fourteen-year practice in deep-tech.",
     image: honorIntelIris,
     institution: "Intel Foundation · National Science Fair",
     category: "Innovation",
@@ -194,10 +194,9 @@ const milestones: Milestone[] = [
 // under the section index. Read as a museum plaque, not a marketing stat.
 const authoritySignals: Array<{ value: string; label: string }> = [
   { value: "27", label: "Honors of Record" },
-  { value: "42", label: "Hall of Fame Moments" },
+  { value: "50", label: "Hall of Fame Moments" },
   { value: "06", label: "Presidential Recognitions" },
   { value: "03", label: "Presidents of India" },
-  { value: "∞", label: "Global Innovation Citations" },
 ];
 
 
@@ -222,7 +221,6 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2009",
     entries: [
-      { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
       { title: "Former President of India Award", institution: "Dr. A.P.J. Abdul Kalam · NIF", featured: true },
       { title: "KVPY Fellow", institution: "Department of Science & Technology, Govt of India" },
       { title: "NCSC Award", institution: "National Children's Science Congress" },
@@ -231,6 +229,7 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2010",
     entries: [
+      { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
       { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
       { title: "INK Fellow", institution: "INK Talks · TED Partner" },
       { title: "Intel IRIS · Best Popular Invention Award", institution: "Intel Foundation · National Science Fair", featured: true },
@@ -421,7 +420,7 @@ const counters = [
   { value: "14+", label: "Years of industrial research" },
 ];
 
-// Hall of Fame ribbon — full 57-plate archival reel. All available HOF
+// Hall of Fame ribbon — full 50-plate archival reel. All available HOF
 // images from the complete recognition archive, editorially sequenced.
 const hallOfFame: ArchiveItem[] = [
   { src: honorDriiv, caption: "MoU Signing · DRIIV, PSA, Govt of India", meta: "Delhi Research Implementation & Innovation · New Delhi", category: "Honor" },
@@ -477,7 +476,7 @@ const hallOfFame: ArchiveItem[] = [
 ];
 
 // Internal integrity check — the Hall of Fame must contain exactly
-// 57 unique images. Logs a warning in development if drift is detected.
+// 50 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
   if (hallOfFame.length !== 50 || uniqueSrcs.size !== 50) {
@@ -497,7 +496,7 @@ const documentaryMosaic: ArchiveItem[] = [
   { src: keynoteTed, caption: "TED-India Mainstage", meta: "Bangalore · 2012", category: "Keynote" },
   { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
-  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
+  { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2010", category: "Award", shape: "tall" },
   { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award", shape: "wide", focus: "left top" },
   { src: honorG20, caption: "Startup20 · G20 India Presidency", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
   { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide", focus: "center 70%" },
@@ -820,7 +819,7 @@ function RecognitionsPage() {
             }}
           />
         </div>
-        <ul className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-6">
+        <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-6">
           {authoritySignals.map((s, idx) => (
             <motion.li
               key={s.label}
