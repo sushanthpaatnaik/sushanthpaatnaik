@@ -13,7 +13,6 @@ import { Route as VoicesRouteImport } from './routes/voices'
 import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ScrollTestRouteImport } from './routes/scroll-test'
 import { Route as RecognitionsRouteImport } from './routes/recognitions'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as InnovationsRouteImport } from './routes/innovations'
@@ -43,11 +42,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ScrollTestRoute = ScrollTestRouteImport.update({
-  id: '/scroll-test',
-  path: '/scroll-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecognitionsRoute = RecognitionsRouteImport.update({
@@ -111,7 +105,6 @@ export interface FileRoutesByFullPath {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
-  '/scroll-test': typeof ScrollTestRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
@@ -128,7 +121,6 @@ export interface FileRoutesByTo {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
-  '/scroll-test': typeof ScrollTestRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
@@ -146,7 +138,6 @@ export interface FileRoutesById {
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
-  '/scroll-test': typeof ScrollTestRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
@@ -165,7 +156,6 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
-    | '/scroll-test'
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
@@ -182,7 +172,6 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
-    | '/scroll-test'
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
@@ -199,7 +188,6 @@ export interface FileRouteTypes {
     | '/innovations'
     | '/news'
     | '/recognitions'
-    | '/scroll-test'
     | '/services'
     | '/sitemap.xml'
     | '/ventures'
@@ -217,7 +205,6 @@ export interface RootRouteChildren {
   InnovationsRoute: typeof InnovationsRoute
   NewsRoute: typeof NewsRoute
   RecognitionsRoute: typeof RecognitionsRoute
-  ScrollTestRoute: typeof ScrollTestRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VenturesRoute: typeof VenturesRoute
@@ -252,13 +239,6 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/scroll-test': {
-      id: '/scroll-test'
-      path: '/scroll-test'
-      fullPath: '/scroll-test'
-      preLoaderRoute: typeof ScrollTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recognitions': {
@@ -355,7 +335,6 @@ const rootRouteChildren: RootRouteChildren = {
   InnovationsRoute: InnovationsRoute,
   NewsRoute: NewsRoute,
   RecognitionsRoute: RecognitionsRoute,
-  ScrollTestRoute: ScrollTestRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VenturesRoute: VenturesRoute,
