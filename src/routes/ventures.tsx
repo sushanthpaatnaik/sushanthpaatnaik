@@ -139,7 +139,7 @@ const advisories: Advisory[] = [
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  { name: "Sunrooof",   category: "Clean Energy",        logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
+  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
   { name: "Greenomers", category: "Sustainable Materials",logo: greenomersLogo,scale: 1.00, offsetY: 0 },
 ];
 
@@ -278,7 +278,7 @@ function VenturesPage() {
         <p>
           A short ledger of the houses I quietly advise — one mark per layer
           of the industrial network: materials, industrial systems, consumer
-          technology, surface technologies, clean energy, and sustainable
+          technology, surface technologies, wellness lighting, and sustainable
           materials.
         </p>
 
