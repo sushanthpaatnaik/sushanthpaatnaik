@@ -6,6 +6,9 @@ type Variant = "editorial" | "documentary";
 
 interface FounderPortraitProps {
   variant?: Variant;
+  /** Overrides the variant's default image while keeping its aspect ratio + grading treatment. */
+  src?: string;
+  alt?: string;
   caption?: string;
   meta?: string;
   eyebrow?: string;
@@ -26,13 +29,15 @@ interface FounderPortraitProps {
  */
 export default function FounderPortrait({
   variant = "editorial",
+  src: srcOverride,
+  alt,
   caption,
   meta,
   eyebrow,
   narrative,
   plate,
 }: FounderPortraitProps) {
-  const src = variant === "documentary" ? lab : editorial;
+  const src = srcOverride ?? (variant === "documentary" ? lab : editorial);
   const isDoc = variant === "documentary";
 
   return (
@@ -100,9 +105,10 @@ export default function FounderPortrait({
           <img
             src={src}
             alt={
-              isDoc
+              alt ??
+              (isDoc
                 ? "Sushanth Paatnaik in the lab — instrumentation and engineering context"
-                : "Sushanth Paatnaik — editorial portrait"
+                : "Sushanth Paatnaik — editorial portrait")
             }
             loading="lazy"
             decoding="async"

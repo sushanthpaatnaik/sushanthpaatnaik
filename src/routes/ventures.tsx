@@ -138,7 +138,7 @@ const advisories: Advisory[] = [
   { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0,  invert: true },
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
-  { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
+  { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
   { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
   { name: "Greenomers", category: "Sustainable Materials",logo: greenomersLogo,scale: 1.00, offsetY: 0 },
 ];

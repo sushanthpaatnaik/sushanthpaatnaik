@@ -34,7 +34,6 @@ import awardStpiCert from "@/assets/hof/award-stpi-certificate.webp";
 import awardBharatiya from "@/assets/hof/award-bharatiya-knowledge-symposium.webp";
 
 import keynoteTed from "@/assets/hof/keynote-ted.webp";
-import keynoteIit from "@/assets/hof/keynote-iit.webp";
 import keynoteSV from "@/assets/hof/keynote-silicon-valley.webp";
 import keynoteJosh from "@/assets/hof/keynote-josh-talks.webp";
 import keynoteInk from "@/assets/hof/keynote-ink-fellows-retreat.webp";
@@ -194,7 +193,7 @@ const milestones: Milestone[] = [
 // under the section index. Read as a museum plaque, not a marketing stat.
 const authoritySignals: Array<{ value: string; label: string }> = [
   { value: "27", label: "Honors of Record" },
-  { value: "50", label: "Hall of Fame Moments" },
+  { value: "49", label: "Hall of Fame Moments" },
   { value: "06", label: "Presidential Recognitions" },
   { value: "03", label: "Presidents of India" },
 ];
@@ -376,7 +375,6 @@ const eraGlobal: ArchiveItem[] = [
     recognition: "International Recognition · 2011",
     venue: "Kennedy Space Center · Huntsville",
   },
-  { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote", shape: "tall" },
   { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote", shape: "wide" },
 ];
@@ -420,7 +418,7 @@ const counters = [
   { value: "14+", label: "Years of industrial research" },
 ];
 
-// Hall of Fame ribbon — full 50-plate archival reel. All available HOF
+// Hall of Fame ribbon — full 49-plate archival reel. All available HOF
 // images from the complete recognition archive, editorially sequenced.
 const hallOfFame: ArchiveItem[] = [
   { src: honorDriiv, caption: "MoU Signing · DRIIV, PSA, Govt of India", meta: "Delhi Research Implementation & Innovation · New Delhi", category: "Honor" },
@@ -440,7 +438,6 @@ const hallOfFame: ArchiveItem[] = [
   { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote" },
   { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote" },
-  { src: keynoteIit, caption: "IIT Stage Address", meta: "Inter-IIT Forum · early 2010s", category: "Keynote" },
   { src: honorGlobal, caption: "Global Forum Delegate", meta: "International Summit · 2023", category: "Honor", focus: "30% center" },
   { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award" },
   { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
@@ -476,12 +473,12 @@ const hallOfFame: ArchiveItem[] = [
 ];
 
 // Internal integrity check — the Hall of Fame must contain exactly
-// 50 unique images. Logs a warning in development if drift is detected.
+// 49 unique images. Logs a warning in development if drift is detected.
 if (import.meta.env.DEV) {
   const uniqueSrcs = new Set(hallOfFame.map((i) => i.src));
-  if (hallOfFame.length !== 50 || uniqueSrcs.size !== 50) {
+  if (hallOfFame.length !== 49 || uniqueSrcs.size !== 49) {
     console.warn(
-      `[HallOfFame] Expected 50 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
+      `[HallOfFame] Expected 49 unique plates, got ${hallOfFame.length} entries / ${uniqueSrcs.size} unique.`,
     );
   }
 }
