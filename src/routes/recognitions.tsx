@@ -411,7 +411,7 @@ const eraPresent: ArchiveItem[] = [
   { src: honorStpi, caption: "ESC–STPI Startup Initiative Winners", meta: "Building the Next Unicorn · 2022", category: "Honor", shape: "wide" },
   { src: keynoteDriiv, caption: "Monoatom Labs · DRIIV Showcase", meta: "Graphene Innovation Pavilion", category: "Keynote", shape: "wide", focus: "30% center" },
   { src: awardBharatiya, caption: "Bharatiya Knowledge Systems Symposium", meta: "Felicitation · School of IT · 2024", category: "Award", shape: "tall", focus: "center 60%" },
-  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide", focus: "center 90%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide", focus: "center 70%" },
 ];
 
 const counters = [
@@ -471,7 +471,7 @@ const hallOfFame: ArchiveItem[] = [
   { src: honorMop, caption: "Ministry of Power · Bureau of Energy Efficiency", meta: "Government of India · New Delhi · 2023", category: "Honor", focus: "center 30%" },
   { src: honorG20, caption: "With Prince Fahad bin Mansour Al-Saud", meta: "Startup20 Shikhar · G20 · Gurugram · Jul 2023", category: "Honor", focus: "center 25%" },
   { src: honorBada, caption: "With Dr. Vivek Bindra", meta: "Bada Business HQ · 2023", category: "Honor", focus: "right 20%" },
-  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", focus: "center 90%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", focus: "center 70%" },
   { src: honorMauritius, caption: "With H.E. Mrs. Sheilabai Bappoo, G.O.S.K.", meta: "High Commissioner · Mauritius High Commission", category: "Honor", focus: "center 30%" },
   { src: honorMonoatomTrophies, caption: "Founder's Desk · Monoatom Labs", meta: "TEDx · Startup Summit · SGSAST Pattros · Trophies on Display", category: "Honor" },
 ];
@@ -500,7 +500,7 @@ const documentaryMosaic: ArchiveItem[] = [
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2009", category: "Award", shape: "tall" },
   { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award", shape: "wide", focus: "left top" },
   { src: honorG20, caption: "Startup20 · G20 India Presidency", meta: "Gurugram · 2023", category: "Honor", focus: "center 25%" },
-  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide", focus: "center 90%" },
+  { src: keynoteSV, caption: "Silicon Valley Address", meta: "Bay Area · 2024", category: "Keynote", shape: "wide", focus: "center 70%" },
   { src: keynoteBrics, caption: "BRICS Diplomatic Roundtable", meta: "New Delhi · 2022", category: "Keynote", focus: "70% center" },
   { src: awardPranabDemo, caption: "Presidential Demonstration", meta: "New Delhi · 2013", category: "Award", focus: "center 35%" },
   { src: honorItalian, caption: "Italian Embassy", meta: "H.E. Antonio Bartoli", category: "Honor" },
