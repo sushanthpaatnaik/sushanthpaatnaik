@@ -89,6 +89,16 @@ function AccessForm() {
 
   const ready = name.trim() && email.trim() && context.trim().length > 20;
 
+  const missingReason = useMemo(() => {
+    if (ready) return null;
+    const missing: string[] = [];
+    if (!name.trim()) missing.push("your name");
+    if (!email.trim()) missing.push("your email");
+    if (context.trim().length <= 20) missing.push("a bit more in Context (20+ characters)");
+    if (!missing.length) return null;
+    return `Add ${missing.join(", ")} to open the line.`;
+  }, [ready, name, email, context]);
+
   const fieldClasses = (key: string) => {
     const isActive = focused === key;
     return `w-full bg-transparent border-0 border-b ${
@@ -267,20 +277,27 @@ function AccessForm() {
               Or write directly &nbsp;—↗
             </a>
           </div>
-          <button
-            type="submit"
-            disabled={!ready}
-            className={`group relative inline-flex items-center justify-center gap-4 overflow-hidden border px-9 py-5 font-mono text-[10px] uppercase tracking-[0.55em] transition-all duration-700 ${
-              ready
-                ? "border-foreground/85 bg-foreground/95 text-background hover:border-accent hover:bg-accent"
-                : "cursor-not-allowed border-foreground/15 bg-transparent text-foreground/30"
-            }`}
-          >
-            <span className="relative z-10">Open the line</span>
-            <span className="relative z-10 transition-transform duration-700 group-hover:translate-x-1.5">
-              —→
-            </span>
-          </button>
+          <div className="flex flex-col items-stretch gap-3 sm:items-end">
+            <button
+              type="submit"
+              disabled={!ready}
+              className={`group relative inline-flex items-center justify-center gap-4 overflow-hidden border px-9 py-5 font-mono text-[10px] uppercase tracking-[0.55em] transition-all duration-700 ${
+                ready
+                  ? "border-foreground/85 bg-foreground/95 text-background hover:border-accent hover:bg-accent"
+                  : "cursor-not-allowed border-foreground/35 bg-foreground/[0.04] text-foreground/60"
+              }`}
+            >
+              <span className="relative z-10">Open the line</span>
+              <span className="relative z-10 transition-transform duration-700 group-hover:translate-x-1.5">
+                —→
+              </span>
+            </button>
+            {missingReason && (
+              <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/45 sm:max-w-none">
+                {missingReason}
+              </p>
+            )}
+          </div>
         </div>
         <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/40">
           Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site.
