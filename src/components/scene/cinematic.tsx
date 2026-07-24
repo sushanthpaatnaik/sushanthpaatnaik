@@ -142,3 +142,40 @@ export function CinematicImage({
     </div>
   );
 }
+
+/* ── Evidence Badge ───────────────────────────────────────────────────
+   Small, restrained tag that signals how far a claim has been proven —
+   not a "TESTED" stamp, a quiet confidence tier. Tier and label are
+   DERIVED from the item's own stage/status text, never invented: the
+   label is the founder-authored status string verbatim, and only the
+   colour/icon tier is inferred from stage. Commercial reads with a
+   touch of accent (most proven); Pilot is neutral; R&D recedes
+   (least proven) — a hierarchy of confidence, not a badge farm. */
+export type EvidenceStage = "Commercial" | "Pilot" | "R&D";
+
+const EVIDENCE_TIER: Record<EvidenceStage, { icon: string; cls: string }> = {
+  Commercial: { icon: "◆", cls: "border-accent/20 bg-accent/[0.06] text-accent/75" },
+  Pilot: { icon: "◈", cls: "border-foreground/[0.14] bg-transparent text-foreground/60" },
+  "R&D": { icon: "◇", cls: "border-foreground/[0.08] bg-transparent text-foreground/40" },
+};
+
+export function EvidenceBadge({
+  stage,
+  label,
+  className = "",
+}: {
+  stage: EvidenceStage;
+  /** The evidence text shown — pass the item's own status string verbatim. */
+  label: string;
+  className?: string;
+}) {
+  const tier = EVIDENCE_TIER[stage];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-[2px] border px-2 py-1 font-mono text-[8px] uppercase tracking-[0.28em] ${tier.cls} ${className}`}
+    >
+      <span className="opacity-70">{tier.icon}</span>
+      {label}
+    </span>
+  );
+}
