@@ -35,7 +35,7 @@ export const Route = createFileRoute("/about")({
 
 const dossierStats = [
   { v: "27", l: "Honors of record · National + International" },
-  { v: "50+", l: "Featured by news & media outlets" },
+  { v: "18+", l: "Featured by news & media outlets" },
   { v: "2", l: "Academic degrees · IISER & OCT, Bhopal" },
   { v: "TED", l: "Global platform · among the youngest at the time" },
 ];
@@ -147,7 +147,7 @@ function AboutPage() {
         <div className="mt-14 h-px w-12 bg-foreground/20" />
 
         <p className="mt-10 text-[16px] md:text-[17px] leading-[1.85] text-foreground/70">
-          Fifteen years inside the workshop have taught one lesson without
+          Fourteen years inside the workshop have taught one lesson without
           exception: frontier science only matters when it reaches the
           industrial world. The brief is not a paper, not a prototype, not even
           a product — it is the discipline of carrying invention through capital,
@@ -221,7 +221,7 @@ function AboutPage() {
           <p>
             Frontier science only matters when it reaches the industrial world.
             That requires three disciplines held together: invention, capital
-            architecture, and operating systems. I have spent the last fifteen
+            architecture, and operating systems. I have spent the last fourteen
             years learning to hold all three in one hand.
           </p>
           <p className="mt-5">

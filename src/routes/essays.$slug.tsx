@@ -153,11 +153,16 @@ export const Route = createFileRoute("/essays/$slug")({
         { property: "og:title", content: e.title },
         { property: "og:description", content: e.description },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `/essays/${params.slug}` },
+        { property: "og:url", content: `https://sushanthpaatnaik.com/essays/${params.slug}` },
+        { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
         { property: "article:author", content: "Sushanth Paatnaik" },
         { property: "article:published_time", content: e.date },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: e.title },
+        { name: "twitter:description", content: e.description },
+        { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
       ],
-      links: [{ rel: "canonical", href: `/essays/${params.slug}` }],
+      links: [{ rel: "canonical", href: `https://sushanthpaatnaik.com/essays/${params.slug}` }],
       scripts: [
         {
           type: "application/ld+json",
