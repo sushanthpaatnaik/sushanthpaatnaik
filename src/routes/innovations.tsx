@@ -5,6 +5,7 @@ import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
 import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
+import { EvidenceBadge } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-03-material.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -517,15 +518,6 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Studio still
         </span>
       </div>
-      {/* Stage badge — desktop only; mobile has no room alongside the metric */}
-      <div className="absolute bottom-4 right-4 z-10 hidden md:flex flex-col items-end gap-1 border-l border-accent/30 pl-3">
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
-          {item.stage}
-        </span>
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/50">
-          {item.status}
-        </span>
-      </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 md:pr-[5.5rem]">
         <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
@@ -538,6 +530,9 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
             {item.metric}
           </span>
+        </div>
+        <div className="mt-2.5">
+          <EvidenceBadge stage={item.stage} label={item.status} />
         </div>
       </div>
     </motion.article>
@@ -588,6 +583,9 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         <p className="mt-1 line-clamp-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55">
           {item.metric}
         </p>
+        <div className="mt-1.5">
+          <EvidenceBadge stage={item.stage} label={item.status} className="text-[7px] px-1.5 py-0.5" />
+        </div>
       </div>
     </motion.article>
   );
