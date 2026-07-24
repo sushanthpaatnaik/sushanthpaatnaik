@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
@@ -51,6 +51,18 @@ const intents = [
 
 type IntentId = (typeof intents)[number]["id"];
 
+/**
+ * Web3Forms access key — get a free one at https://web3forms.com (enter the
+ * destination inbox, e.g. info@sushanthpaatnaik.com, and copy the key it
+ * emails you). This value is public by design and safe to ship in client code.
+ *
+ * While it's empty, the form gracefully falls back to opening the visitor's
+ * mail client (the previous behaviour) so nothing is ever broken. Once set,
+ * the form submits in-page and shows a "Message sent" confirmation — no email
+ * app required for the visitor.
+ */
+const WEB3FORMS_ACCESS_KEY = "";
+
 /* ---------- Premium founder access form ---------- */
 
 function AccessForm() {
@@ -61,6 +73,7 @@ function AccessForm() {
   const [context, setContext] = useState("");
   const [ask, setAsk] = useState("");
   const [focused, setFocused] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const intentLabel = useMemo(
     () => intents.find((i) => i.id === intent)?.label ?? "Inquiry",
@@ -99,6 +112,44 @@ function AccessForm() {
     return `Add ${missing.join(", ")} to open the line.`;
   }, [ready, name, email, context]);
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!ready || status === "sending") return;
+
+    // No key configured yet → keep the old behaviour so the form never breaks.
+    if (!WEB3FORMS_ACCESS_KEY) {
+      window.location.href = mailto;
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `[${intentLabel}] — ${name}`,
+          from_name: name,
+          Intent: intentLabel,
+          Name: name,
+          Organisation: org || "—",
+          Email: email,
+          Context: context,
+          "Why this conversation": ask || "—",
+        }),
+      });
+      const data = await res.json();
+      if (data?.success) {
+        setStatus("sent");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
   const fieldClasses = (key: string) => {
     const isActive = focused === key;
     return `w-full bg-transparent border-0 border-b ${
@@ -113,11 +164,7 @@ function AccessForm() {
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
       className="not-prose relative mt-16"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!ready) return;
-        window.location.href = mailto;
-      }}
+      onSubmit={handleSubmit}
     >
       {/* Console header — paper tape */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/15 py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
@@ -267,41 +314,78 @@ function AccessForm() {
 
       {/* CTA hierarchy */}
       <div className="mt-20 border-t border-foreground/15 pt-10">
-        <div className="flex flex-col-reverse items-stretch gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-2 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45">
-            <span>Reply window · 48 hours</span>
-            <a
-              href="mailto:info@sushanthpaatnaik.com?subject=Hello"
-              className="text-foreground/65 transition-colors hover:text-accent"
-            >
-              Or write directly &nbsp;—↗
-            </a>
-          </div>
-          <div className="flex flex-col items-stretch gap-3 sm:items-end">
-            <button
-              type="submit"
-              disabled={!ready}
-              className={`group relative inline-flex items-center justify-center gap-4 overflow-hidden border px-9 py-5 font-mono text-[10px] uppercase tracking-[0.55em] transition-all duration-700 ${
-                ready
-                  ? "border-foreground/85 bg-foreground/95 text-background hover:border-accent hover:bg-accent"
-                  : "cursor-not-allowed border-foreground/35 bg-foreground/[0.04] text-foreground/60"
-              }`}
-            >
-              <span className="relative z-10">Open the line</span>
-              <span className="relative z-10 transition-transform duration-700 group-hover:translate-x-1.5">
-                —→
-              </span>
-            </button>
-            {missingReason && (
-              <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/45 sm:max-w-none">
-                {missingReason}
-              </p>
-            )}
-          </div>
-        </div>
-        <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/40">
-          Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site.
-        </p>
+        {status === "sent" ? (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            className="flex flex-col items-center gap-5 py-8 text-center"
+          >
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-accent/40 text-accent">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+            <p className="font-display text-[20px] md:text-[24px] tracking-[-0.015em] text-foreground/92">
+              Message sent.
+            </p>
+            <p className="max-w-md font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55 leading-relaxed">
+              Received directly · a reply typically follows within 48 hours.
+            </p>
+          </motion.div>
+        ) : (
+          <>
+            <div className="flex flex-col-reverse items-stretch gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div className="flex flex-col gap-2 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45">
+                <span>Reply window · 48 hours</span>
+                <a
+                  href="mailto:info@sushanthpaatnaik.com?subject=Hello"
+                  className="text-foreground/65 transition-colors hover:text-accent"
+                >
+                  Or write directly &nbsp;—↗
+                </a>
+              </div>
+              <div className="flex flex-col items-stretch gap-3 sm:items-end">
+                <button
+                  type="submit"
+                  disabled={!ready || status === "sending"}
+                  className={`group relative inline-flex items-center justify-center gap-4 overflow-hidden border px-9 py-5 font-mono text-[10px] uppercase tracking-[0.55em] transition-all duration-700 ${
+                    ready && status !== "sending"
+                      ? "border-foreground/85 bg-foreground/95 text-background hover:border-accent hover:bg-accent"
+                      : "cursor-not-allowed border-foreground/35 bg-foreground/[0.04] text-foreground/60"
+                  }`}
+                >
+                  <span className="relative z-10">
+                    {status === "sending" ? "Sending…" : "Send message"}
+                  </span>
+                  {status !== "sending" && (
+                    <span className="relative z-10 transition-transform duration-700 group-hover:translate-x-1.5">
+                      —→
+                    </span>
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-[oklch(0.72_0.15_25)]/80 sm:max-w-none">
+                    Couldn&apos;t send —{" "}
+                    <a href={mailto} className="underline underline-offset-2 hover:text-accent">
+                      email directly
+                    </a>
+                    .
+                  </p>
+                ) : missingReason ? (
+                  <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/45 sm:max-w-none">
+                    {missingReason}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/40">
+              {WEB3FORMS_ACCESS_KEY
+                ? "Your message goes straight to the founder's inbox — no email app required. Nothing else is stored on this site."
+                : "Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site."}
+            </p>
+          </>
+        )}
       </div>
     </motion.form>
   );
