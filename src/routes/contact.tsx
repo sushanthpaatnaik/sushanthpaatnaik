@@ -70,6 +70,7 @@ function AccessForm() {
   const [name, setName] = useState("");
   const [org, setOrg] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [context, setContext] = useState("");
   const [ask, setAsk] = useState("");
   const [focused, setFocused] = useState<string | null>(null);
@@ -88,6 +89,7 @@ function AccessForm() {
       `Name · ${name || "—"}`,
       `Organisation · ${org || "—"}`,
       `Email · ${email || "—"}`,
+      `Phone · ${phone || "—"}`,
       "",
       `Context`,
       context || "—",
@@ -98,7 +100,7 @@ function AccessForm() {
     return `mailto:info@sushanthpaatnaik.com?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
-  }, [intentLabel, name, org, email, context, ask]);
+  }, [intentLabel, name, org, email, phone, context, ask]);
 
   const ready = Boolean(name.trim() && email.trim() && context.trim());
 
@@ -135,6 +137,7 @@ function AccessForm() {
           Name: name,
           Organisation: org || "—",
           Email: email,
+          Phone: phone || "—",
           Context: context,
           "Why this conversation": ask || "—",
         }),
@@ -178,10 +181,18 @@ function AccessForm() {
       <div className="grid grid-cols-1 gap-x-16 gap-y-14 pt-16 md:pt-20 md:grid-cols-[1fr_2fr]">
         {/* Intent — column 01 */}
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-            01 · Intent
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              01 · Intent
+            </p>
+            <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-accent/70">
+              Select one
+            </span>
+          </div>
+          <p className="mt-2 font-display italic text-[13px] text-foreground/40">
+            Choose the nature of your inquiry — one is pre-selected.
           </p>
-          <ul className="mt-8 flex flex-col">
+          <ul className="mt-6 flex flex-col" role="radiogroup" aria-label="Intent">
             {intents.map((i) => {
               const active = intent === i.id;
               return (
@@ -189,17 +200,29 @@ function AccessForm() {
                   <button
                     type="button"
                     onClick={() => setIntent(i.id)}
-                    aria-pressed={active}
-                    className={`group grid w-full grid-cols-[1.25rem_1fr] items-baseline gap-4 border-t border-foreground/[0.08] py-4 text-left transition-colors duration-500 ${
-                      active ? "text-foreground" : "text-foreground/55 hover:text-foreground/85"
+                    role="radio"
+                    aria-checked={active}
+                    className={`group grid w-full cursor-pointer grid-cols-[1.25rem_1fr] items-center gap-4 border-t border-foreground/[0.08] py-4 text-left transition-colors duration-500 ${
+                      active ? "text-foreground" : "text-foreground/55 hover:text-foreground/90"
                     }`}
                   >
+                    {/* Radio-style dot — a clear single-choice affordance */}
                     <span
                       aria-hidden
-                      className={`relative mt-2 h-px w-3 transition-all duration-500 ${
-                        active ? "w-5 bg-accent" : "bg-foreground/25 group-hover:bg-foreground/55"
+                      className={`relative flex h-4 w-4 items-center justify-center rounded-full border transition-all duration-300 ${
+                        active
+                          ? "border-accent"
+                          : "border-foreground/30 group-hover:border-foreground/60"
                       }`}
-                    />
+                    >
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full transition-transform duration-300 ${
+                          active
+                            ? "scale-100 bg-accent"
+                            : "scale-0 bg-foreground/50 group-hover:scale-75"
+                        }`}
+                      />
+                    </span>
                     <span className="font-display text-[17px] md:text-[18px] tracking-[-0.005em]">
                       {i.label}
                     </span>
@@ -245,26 +268,44 @@ function AccessForm() {
             </div>
           </div>
 
-          <div>
-            <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-              04 · Email
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setFocused("email")}
-              onBlur={() => setFocused(null)}
-              placeholder="you@domain.com"
-              className={`${fieldClasses("email")} mt-5`}
-            />
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+            <div>
+              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                04 · Email
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => setFocused("email")}
+                onBlur={() => setFocused(null)}
+                placeholder="you@domain.com"
+                className={`${fieldClasses("email")} mt-5`}
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+                05 · Phone <span className="text-muted-foreground/30">· optional</span>
+              </label>
+              <input
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                onFocus={() => setFocused("phone")}
+                onBlur={() => setFocused(null)}
+                placeholder="+91 00000 00000"
+                className={`${fieldClasses("phone")} mt-5`}
+              />
+            </div>
           </div>
 
           <div>
             <div className="flex items-baseline justify-between">
               <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-                05 · Context
+                06 · Context
               </label>
               <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
                 {context.length.toString().padStart(3, "0")} / 600
@@ -289,7 +330,7 @@ function AccessForm() {
           <div>
             <div className="flex items-baseline justify-between">
               <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-                06 · Why this conversation
+                07 · Why this conversation
               </label>
               <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
                 {ask.length.toString().padStart(3, "0")} / 400
