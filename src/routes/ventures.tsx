@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
-import { EcosystemMap } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-05-ventures.webp";
 
 import vinroxLogo from "@/assets/clients/vinrox.webp";
@@ -272,18 +271,6 @@ function VenturesPage() {
           Each company is independently viable. Together, they form a closed loop from
           atom to invoice.
         </p>
-
-        <EcosystemMap
-          className="mt-10 md:mt-12"
-          nodes={[
-            { code: "01", name: "Monoatom Labs", role: "Co-Founder & CEO", domain: "Graphene at scale", relation: "feeds" },
-            { code: "02", name: "Grafillium", role: "Co-Founder & CIO", domain: "Eco nano additives", relation: "feeds" },
-            { code: "03", name: "SPI Industries", role: "Founder & CEO", domain: "R&D industrial solutions", relation: "across" },
-            { code: "04", name: "InThinks", role: "Co-Founder", domain: "Ideation & IP transfer", relation: "underneath" },
-            { code: "05", name: "Starunico Capital", role: "Co-Founder", domain: "Materials & energy", relation: "deploys" },
-            { code: "06", name: "Magppie", role: "Chief Innovation Officer", domain: "Stone wellness kitchens" },
-          ]}
-        />
       </EditorialSection>
 
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
