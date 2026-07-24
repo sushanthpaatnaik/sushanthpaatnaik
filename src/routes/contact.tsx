@@ -72,7 +72,6 @@ function AccessForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [context, setContext] = useState("");
-  const [ask, setAsk] = useState("");
   const [focused, setFocused] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -93,14 +92,11 @@ function AccessForm() {
       "",
       `Context`,
       context || "—",
-      "",
-      `What a conversation would change`,
-      ask || "—",
     ].join("\n");
     return `mailto:info@sushanthpaatnaik.com?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
-  }, [intentLabel, name, org, email, phone, context, ask]);
+  }, [intentLabel, name, org, email, phone, context]);
 
   const ready = Boolean(name.trim() && email.trim() && context.trim());
 
@@ -139,7 +135,6 @@ function AccessForm() {
           Email: email,
           Phone: phone || "—",
           Context: context,
-          "Why this conversation": ask || "—",
         }),
       });
       const data = await res.json();
@@ -324,30 +319,6 @@ function AccessForm() {
               onBlur={() => setFocused(null)}
               placeholder="Begin here…"
               className={`${fieldClasses("context")} mt-5 resize-none leading-[1.75]`}
-            />
-          </div>
-
-          <div>
-            <div className="flex items-baseline justify-between">
-              <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-                07 · Why this conversation
-              </label>
-              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
-                {ask.length.toString().padStart(3, "0")} / 400
-              </span>
-            </div>
-            <p className="mt-2 font-display italic text-[13px] text-foreground/40">
-              One paragraph on what a conversation would change.
-            </p>
-            <textarea
-              maxLength={400}
-              rows={3}
-              value={ask}
-              onChange={(e) => setAsk(e.target.value)}
-              onFocus={() => setFocused("ask")}
-              onBlur={() => setFocused(null)}
-              placeholder="Begin here…"
-              className={`${fieldClasses("ask")} mt-5 resize-none leading-[1.75]`}
             />
           </div>
         </div>
