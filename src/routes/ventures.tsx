@@ -9,6 +9,8 @@ import vinroxLogo from "@/assets/clients/vinrox.webp";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia.webp";
 import wehearLogo from "@/assets/clients/wehear.webp";
+import sunrooofLogo from "@/assets/clients/sunrooof.webp";
+import greenomersLogo from "@/assets/clients/greenomers.webp";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
@@ -137,10 +139,8 @@ const advisories: Advisory[] = [
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  // TODO: swap in the real Sunrooof logo asset once uploaded (replaces the former Magppie advisory mark).
-  { name: "Sunrooof",   category: "Clean Energy",        scale: 1.00, offsetY: 0 },
-  // TODO: swap in the real Greenomers logo asset once uploaded.
-  { name: "Greenomers", category: "Sustainable Materials", scale: 1.00, offsetY: 0 },
+  { name: "Sunrooof",   category: "Clean Energy",        logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
+  { name: "Greenomers", category: "Sustainable Materials",logo: greenomersLogo,scale: 1.00, offsetY: 0 },
 ];
 
 
