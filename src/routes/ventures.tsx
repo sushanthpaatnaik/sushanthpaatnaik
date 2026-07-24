@@ -5,7 +5,6 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.webp";
 
-import magppieLogo from "@/assets/clients/magppie.webp";
 import vinroxLogo from "@/assets/clients/vinrox.webp";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia.webp";
@@ -123,7 +122,8 @@ const ventures: Venture[] = [
 type Advisory = {
   name: string;
   category: string;
-  logo: string;
+  /** Undefined until a real logo asset is supplied — renders a text wordmark fallback. */
+  logo?: string;
   /** Optical scale — normalised so every mark reads at the same weight. */
   scale: number;
   /** Px vertical nudge for optical centering. */
@@ -137,7 +137,10 @@ const advisories: Advisory[] = [
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Technologies",logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  { name: "Magppie",    category: "Design + Living",     logo: magppieLogo,    scale: 1.10, offsetY: 1,  invert: true },
+  // TODO: swap in the real Sunrooof logo asset once uploaded (replaces the former Magppie advisory mark).
+  { name: "Sunrooof",   category: "Clean Energy",        scale: 1.00, offsetY: 0 },
+  // TODO: swap in the real Greenomers logo asset once uploaded.
+  { name: "Greenomers", category: "Sustainable Materials", scale: 1.00, offsetY: 0 },
 ];
 
 
@@ -146,7 +149,7 @@ const advisories: Advisory[] = [
 /* ------------------------------------------------------------------ */
 const holdingStats = [
   { value: "06", label: "Operating Vehicles" },
-  { value: "05", label: "Advisory Positions" },
+  { value: "06", label: "Advisory Positions" },
   { value: "03", label: "Material Science Layers" },
   { value: "01", label: "Closed Loop Ecosystem" },
 ];
@@ -159,7 +162,7 @@ function VenturesPage() {
     <CinematicPageShell
       eyebrow="Ventures · Ecosystem Architecture"
       title={<>A portfolio engineered<br className="hidden md:inline" /> for planetary impact.</>}
-      lead="Founder, co-founder and chief innovation officer across six ventures — plus a quietly held advisory roster of five houses shaping industry, materials and climate."
+      lead="Founder, co-founder and chief innovation officer across six ventures — plus a quietly held advisory roster of six houses shaping industry, materials and climate."
       backdrop={backdrop}
       overlay={0.72}
     >
@@ -271,11 +274,12 @@ function VenturesPage() {
       </EditorialSection>
 
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
-      <EditorialSection number="08 · Advisory" heading="Counsel across five industry layers.">
+      <EditorialSection number="08 · Advisory" heading="Counsel across six industry layers.">
         <p>
           A short ledger of the houses I quietly advise — one mark per layer
           of the industrial network: materials, industrial systems, consumer
-          technology, surface technologies, and design + living.
+          technology, surface technologies, clean energy, and sustainable
+          materials.
         </p>
 
         {/* Industry-layer header strip — anchors the wall as one network */}
@@ -288,7 +292,7 @@ function VenturesPage() {
         </div>
 
         {/* Unified glass-dark mark wall — equal cells, optical normalisation */}
-        <div className="not-prose grid grid-cols-2 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] sm:grid-cols-3 md:grid-cols-5 rounded-sm overflow-hidden">
+        <div className="not-prose grid grid-cols-2 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] sm:grid-cols-3 md:grid-cols-6 rounded-sm overflow-hidden">
           {advisories.map((a, i) => (
             <motion.div
               key={a.name}
@@ -344,20 +348,27 @@ function VenturesPage() {
                 className="relative z-10 flex items-center justify-center w-full"
                 style={{ height: "64px" }}
               >
-                <img
-                  src={a.logo}
-                  alt={`${a.name} — ${a.category}`}
-                  loading="lazy"
-                  style={{
-                    maxHeight: `${Math.round(46 * a.scale)}px`,
-                    maxWidth: `${Math.round(74 * a.scale)}%`,
-                    transform: `translateY(${a.offsetY || 0}px)`,
-                    filter: a.invert
-                      ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
-                      : "brightness(1.08) contrast(1.06)",
-                  }}
-                  className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
-                />
+                {a.logo ? (
+                  <img
+                    src={a.logo}
+                    alt={`${a.name} — ${a.category}`}
+                    loading="lazy"
+                    style={{
+                      maxHeight: `${Math.round(46 * a.scale)}px`,
+                      maxWidth: `${Math.round(74 * a.scale)}%`,
+                      transform: `translateY(${a.offsetY || 0}px)`,
+                      filter: a.invert
+                        ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
+                        : "brightness(1.08) contrast(1.06)",
+                    }}
+                    className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
+                  />
+                ) : (
+                  // Text wordmark fallback until the real logo asset is supplied.
+                  <span className="font-display text-[15px] tracking-[0.02em] text-foreground/70 opacity-[0.88] transition-opacity duration-[1100ms] group-hover:opacity-100">
+                    {a.name}
+                  </span>
+                )}
               </div>
 
               {/* ── Editorial caption ── */}
