@@ -179,3 +179,67 @@ export function EvidenceBadge({
     </span>
   );
 }
+
+/* ── Ecosystem Map ────────────────────────────────────────────────────
+   Visualises how a set of ventures relate — sequential (feeds into),
+   or supporting (runs across / underneath). Deliberately a plain
+   vertical stack, not an SVG diagram with connector lines: stays
+   readable at any width, never overflows on mobile, and every relation
+   is a short, literal phrase rather than a drawn arrow that has to be
+   traced. Content is caller-supplied — this component draws nothing
+   it wasn't given. */
+export type EcosystemRelation = "feeds" | "across" | "underneath" | "deploys";
+
+const RELATION_LABEL: Record<EcosystemRelation, string> = {
+  feeds: "feeds",
+  across: "runs across all three",
+  underneath: "sits underneath, as capital",
+  deploys: "field-deploys the thinking",
+};
+
+export interface EcosystemNode {
+  code: string;
+  name: string;
+  /** Short phrase for this venture's role in the flow — reuse existing copy verbatim. */
+  role: string;
+  domain: string;
+  /** How this node connects to the next one. Omit on the final node. */
+  relation?: EcosystemRelation;
+}
+
+export function EcosystemMap({ nodes, className = "" }: { nodes: EcosystemNode[]; className?: string }) {
+  return (
+    <div className={`not-prose overflow-hidden rounded-sm border border-foreground/[0.08] ${className}`}>
+      {nodes.map((node, i) => (
+        <div key={node.code}>
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, delay: i * 0.07, ease: EASE_CINEMATIC }}
+            className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-[oklch(0.05_0.006_245)] px-5 py-4 md:px-6 md:py-5"
+          >
+            <span className="font-mono text-[10px] text-muted-foreground/50">{node.code}</span>
+            <span className="font-display text-[16px] md:text-[17px] tracking-[-0.01em] text-foreground/95">
+              {node.name}
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-foreground/45">
+              {node.role}
+            </span>
+            <span className="ml-auto font-mono text-[9px] uppercase tracking-[0.2em] text-accent/60">
+              {node.domain}
+            </span>
+          </motion.div>
+          {node.relation && (
+            <div className="flex items-center gap-3 border-y border-foreground/[0.06] bg-[oklch(0.035_0_0)] px-5 py-2 md:px-6">
+              <span aria-hidden className="text-foreground/25">↓</span>
+              <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-muted-foreground/45">
+                {RELATION_LABEL[node.relation]}
+              </span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}

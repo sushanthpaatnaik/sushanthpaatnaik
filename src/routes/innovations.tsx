@@ -7,6 +7,7 @@ import LatticeField from "@/components/scene/LatticeField";
 import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import { EvidenceBadge } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-03-material.webp";
+import founderShowroom from "@/assets/founder-showroom.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
 import imgGraffisol from "@/assets/innovations/graffisol.webp";
@@ -250,8 +251,10 @@ function InnovationsPage() {
     >
       <FounderPortrait
         variant="documentary"
-        caption="Calibrating instrumentation in the R&D lab — graphene formulations under bench-scale validation."
-        meta="Field · R&D Bench"
+        src={founderShowroom}
+        alt="Sushanth Paatnaik in the R&D showroom — instrumentation and engineering context"
+        caption="Calibrating instrumentation in the R&D showroom — graphene formulations under bench-scale validation."
+        meta="Field · R&D Facility"
       />
 
       {/* Material Spec Sheet — the substrate behind everything */}
