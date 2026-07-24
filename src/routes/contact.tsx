@@ -61,7 +61,7 @@ type IntentId = (typeof intents)[number]["id"];
  * the form submits in-page and shows a "Message sent" confirmation — no email
  * app required for the visitor.
  */
-const WEB3FORMS_ACCESS_KEY = "";
+const WEB3FORMS_ACCESS_KEY = "d97a576d-542a-4f25-bf19-04ef9df0f7f5";
 
 /* ---------- Premium founder access form ---------- */
 
