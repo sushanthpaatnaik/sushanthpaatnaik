@@ -96,21 +96,24 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     let destroyed = false;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
-    // ── Mobile memory budget ──────────────────────────────────────────────────
+    // ── Mobile memory + bandwidth budget ─────────────────────────────────────
     // Source frames are 1280×720 → ~3.69 MB each as a decoded ImageBitmap.
     // 96 frames × 5 groups = ~1.77 GB if all retained — far past iOS Safari's
     // ~300 MB per-tab ceiling, which crashes the tab ("A problem repeatedly
-    // occurred"). On touch we (1) decode at reduced resolution, (2) load every
-    // 2nd frame, and (3) evict groups outside the active±1 window. The
-    // nearest-loaded-frame search in the render loop covers the skipped frames,
-    // so the sequence still animates in lock-step with scroll.
-    const decodeOpts: ImageBitmapOptions | undefined = isTouch
-      ? { resizeWidth: 854, resizeHeight: 480, resizeQuality: "medium" }
-      : undefined;
-    const makeBitmap = (blob: Blob): Promise<ImageBitmap> =>
-      decodeOpts
-        ? createImageBitmap(blob, decodeOpts).catch(() => createImageBitmap(blob))
-        : createImageBitmap(blob);
+    // occurred"). On touch we (1) fetch pre-sized 854×480 variants, (2) load
+    // every 2nd frame, and (3) evict groups outside the active±1 window. The
+    // nearest-loaded-frame search in the render loop covers the skipped
+    // frames, so the sequence still animates in lock-step with scroll.
+    //
+    // The 854×480 variants under <group>/m/ are generated from the same
+    // masters at WebP q80 and are 48% smaller on the wire (33.8 MB → 17.7 MB
+    // across all 480 frames). This is a pure bandwidth win with no visual
+    // change: mobile previously downloaded the full 1280×720 file and then
+    // immediately threw ~56% of those pixels away via a decode-time
+    // resizeWidth/resizeHeight. Serving the smaller file just skips the
+    // wasted download and the resize work.
+    const framesPath = (path: string) => (isTouch ? `${path}/m` : path);
+    const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = isTouch ? 2 : 1;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
@@ -222,7 +225,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         // decode work naturally staggered. Left explicit so it isn't
         // "optimised" again.
         const priority: RequestInit = (fi === 0 || isCritical) ? { priority: "high" } as RequestInit : {};
-        return fetch(`/sequences/${path}/frame_${pad}.webp`, priority)
+        return fetch(`/sequences/${framesPath(path)}/frame_${pad}.webp`, priority)
           .then(r  => r.blob())
           .then(b  => makeBitmap(b))
           .then(bmp => {
