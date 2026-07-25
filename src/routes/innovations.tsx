@@ -175,6 +175,8 @@ const items: Item[] = [
 const filters = ["All", "Commercial", "Pilot", "R&D"] as const;
 type Filter = (typeof filters)[number];
 
+const domainOptions = Array.from(new Set(items.map((it) => it.domain))).sort();
+
 const materialSpec = [
   { k: "Atomic Layers", v: "1", note: "Monolayer carbon" },
   { k: "Tensile Strength", v: "130 GPa", note: "≈ 200× steel" },
@@ -187,14 +189,33 @@ const STAGE_RANK: Record<Stage, number> = { Commercial: 0, Pilot: 1, "R&D": 2 };
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
+  const [domainFilter, setDomainFilter] = useState<string>("All");
+  const [patentOnly, setPatentOnly] = useState(false);
+  const [featuredOnly, setFeaturedOnly] = useState(false);
   const [view, setView] = useState<"gallery" | "table">("gallery");
   const [sortKey, setSortKey] = useState<SortableKey>("stage");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [active, setActive] = useState<Product3DModalData | null>(null);
+
+  const matchesFilters = (it: Item, opts: { stage?: Filter } = {}) => {
+    const stage = opts.stage ?? filter;
+    if (stage !== "All" && it.stage !== stage) return false;
+    if (domainFilter !== "All" && it.domain !== domainFilter) return false;
+    if (patentOnly && !it.status.includes("Patent")) return false;
+    if (featuredOnly && !it.featured) return false;
+    return true;
+  };
+
   const visible = useMemo(
-    () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
-    [filter],
+    () => items.filter((it) => matchesFilters(it)),
+    [filter, domainFilter, patentOnly, featuredOnly],
   );
+  const refinementActive = domainFilter !== "All" || patentOnly || featuredOnly;
+  const resetRefinements = () => {
+    setDomainFilter("All");
+    setPatentOnly(false);
+    setFeaturedOnly(false);
+  };
   const sortedVisible = useMemo(() => {
     const list = [...visible];
     list.sort((a, b) => {
@@ -328,7 +349,7 @@ function InnovationsPage() {
         <div className="grid grid-cols-2 sm:flex sm:divide-x sm:divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
           {filters.map((f) => {
             const isActive = f === filter;
-            const count = f === "All" ? items.length : items.filter((i) => i.stage === f).length;
+            const count = items.filter((it) => matchesFilters(it, { stage: f })).length;
             return (
               <button
                 key={f}
@@ -356,6 +377,63 @@ function InnovationsPage() {
             );
           })}
         </div>
+      </div>
+
+      {/* Refine bar — domain, patent-association, and featured facets. All
+          combine with the stage filter above; every control updates the
+          catalogue instantly, no page reload. */}
+      <div className="not-prose mt-4 flex flex-wrap items-center gap-3">
+        <label className="relative inline-flex items-center">
+          <span className="sr-only">Filter by domain</span>
+          <select
+            value={domainFilter}
+            onChange={(e) => setDomainFilter(e.target.value)}
+            className="appearance-none rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] py-2.5 pl-4 pr-9 font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70 transition-colors duration-500 hover:border-foreground/20 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+          >
+            <option value="All">All Domains</option>
+            {domainOptions.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+          <span aria-hidden className="pointer-events-none absolute right-3 font-mono text-[9px] text-foreground/40">
+            ▾
+          </span>
+        </label>
+
+        <button
+          onClick={() => setPatentOnly((v) => !v)}
+          aria-pressed={patentOnly}
+          className={`rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-500 ${
+            patentOnly
+              ? "border-accent/40 bg-accent/[0.06] text-accent/85"
+              : "border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] text-foreground/45 hover:text-foreground/70"
+          }`}
+        >
+          Patent-associated only
+        </button>
+
+        <button
+          onClick={() => setFeaturedOnly((v) => !v)}
+          aria-pressed={featuredOnly}
+          className={`rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-500 ${
+            featuredOnly
+              ? "border-accent/40 bg-accent/[0.06] text-accent/85"
+              : "border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] text-foreground/45 hover:text-foreground/70"
+          }`}
+        >
+          Featured only
+        </button>
+
+        {refinementActive && (
+          <button
+            onClick={resetRefinements}
+            className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40 underline-offset-4 transition-colors duration-500 hover:text-accent/85 hover:underline"
+          >
+            Reset refinements
+          </button>
+        )}
       </div>
 
       {/* Glossary link + view toggle — gallery for browsing, table for comparison */}
@@ -389,7 +467,19 @@ function InnovationsPage() {
       </div>
 
       {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
-      {view === "table" ? (
+      {visible.length === 0 ? (
+        <div className="not-prose mt-12 flex flex-col items-center gap-4 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] px-6 py-16 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+            No programs match this combination
+          </p>
+          <button
+            onClick={resetRefinements}
+            className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent/75 underline-offset-4 hover:underline"
+          >
+            Reset refinements
+          </button>
+        </div>
+      ) : view === "table" ? (
         <InnovationsTable
           items={sortedVisible}
           sortKey={sortKey}
