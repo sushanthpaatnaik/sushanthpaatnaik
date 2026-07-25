@@ -114,7 +114,7 @@ export default function FounderPortrait({
             decoding="async"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.42)_contrast(1.1)_saturate(0.4)_brightness(0.7)]"
+                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.32)_contrast(1.04)_saturate(0.58)_brightness(0.94)]"
                 : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
             }
           />
@@ -125,7 +125,7 @@ export default function FounderPortrait({
             className="absolute inset-0 mix-blend-multiply"
             style={{
               background: isDoc
-                ? "linear-gradient(180deg, oklch(0.05 0.01 240 / 0.56) 0%, oklch(0.04 0.005 240 / 0.34) 50%, oklch(0.03 0 0 / 0.66) 100%)"
+                ? "linear-gradient(180deg, oklch(0.06 0.01 240 / 0.32) 0%, oklch(0.05 0.005 240 / 0.16) 50%, oklch(0.04 0 0 / 0.46) 100%)"
                 : "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.22) 45%, oklch(0.02 0 0 / 0.60) 100%)",
             }}
           />
