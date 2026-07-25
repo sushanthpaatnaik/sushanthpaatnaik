@@ -114,7 +114,7 @@ export default function FounderPortrait({
             decoding="async"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.32)_contrast(1.04)_saturate(0.58)_brightness(0.94)]"
+                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.22)_contrast(1.02)_saturate(0.66)_brightness(1.02)]"
                 : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
             }
           />
@@ -169,7 +169,7 @@ export default function FounderPortrait({
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(125% 100% at 50% 50%, transparent 55%, oklch(0.015 0.004 240 / 0.55) 100%)",
+                  "radial-gradient(125% 100% at 50% 50%, transparent 62%, oklch(0.015 0.004 240 / 0.26) 100%)",
               }}
             />
           )}
