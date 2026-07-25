@@ -201,7 +201,7 @@ function AboutPage() {
             discipline of asking questions matter cannot easily answer.
           </p>
           <p className="mt-5">
-            <span className="text-foreground/90">BEd.</span> in ETE from{" "}
+            <span className="text-foreground/90">B.E.</span> in ETE from{" "}
             <span className="text-foreground/90">OCT, Bhopal</span>, under the
             Special Achiever category — a quiet conviction that an inventor who
             cannot teach has not really finished the invention.

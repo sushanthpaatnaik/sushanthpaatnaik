@@ -557,9 +557,9 @@ function EraAccordion({
             <p className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55 mb-3">
               Era · {era}
             </p>
-            <h3 className="font-display text-[26px] md:text-[34px] leading-[1.1] tracking-[-0.03em] text-foreground/95">
+            <h2 className="font-display text-[26px] md:text-[34px] leading-[1.1] tracking-[-0.03em] text-foreground/95">
               {title}
-            </h3>
+            </h2>
             <p className="mt-4 max-w-[58ch] text-[13.5px] md:text-[14px] leading-[1.75] text-foreground/60">
               {description}
             </p>
@@ -654,9 +654,9 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                 aria-hidden
                 className="absolute right-[-7px] top-[14px] h-1.5 w-1.5 rounded-full bg-foreground/30 ring-2 md:ring-4 ring-[oklch(0.045_0.003_245)]"
               />
-              <h4 className="font-display text-base md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2 whitespace-nowrap">
+              <h3 className="font-display text-base md:text-3xl tracking-[-0.04em] text-foreground/80 leading-none pt-2 whitespace-nowrap">
                 {group.year}
-              </h4>
+              </h3>
             </div>
             <ul className="flex flex-col">
               {group.entries.map((e, ei) => (
@@ -676,9 +676,9 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                         ◆
                       </span>
                       <div>
-                        <h5 className="font-display text-[16px] md:text-[18px] tracking-[-0.018em] text-foreground/95 leading-snug">
+                        <h4 className="font-display text-[16px] md:text-[18px] tracking-[-0.018em] text-foreground/95 leading-snug">
                           {e.title}
-                        </h5>
+                        </h4>
                         {e.institution && (
                           <p className="mt-1 text-[12px] leading-relaxed text-foreground/55">
                             {e.institution}
@@ -1020,7 +1020,7 @@ function RecognitionsPage() {
                       }`}>
                         {m.institution}
                       </span>
-                      <h3
+                      <h2
                         className={`font-display leading-[1.15] tracking-[-0.025em] text-foreground/95 max-w-[18ch] ${
                           m.major
                             ? "text-[24px] md:text-[30px] lg:text-[36px]"
@@ -1028,7 +1028,7 @@ function RecognitionsPage() {
                         }`}
                       >
                         {m.title}
-                      </h3>
+                      </h2>
                       <p className="mt-6 text-[14px] md:text-[14.5px] leading-[1.8] text-foreground/65 max-w-[46ch]">
                         {m.body}
                       </p>

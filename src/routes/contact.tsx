@@ -193,11 +193,11 @@ function AccessForm() {
           <p className="mt-2 font-display italic text-[13px] text-foreground/40">
             Choose the nature of your inquiry — one is pre-selected.
           </p>
-          <ul className="mt-6 flex flex-col" role="radiogroup" aria-label="Intent">
+          <div className="mt-6 flex flex-col" role="radiogroup" aria-label="Intent">
             {intents.map((i) => {
               const active = intent === i.id;
               return (
-                <li key={i.id}>
+                <div key={i.id}>
                   <button
                     type="button"
                     onClick={() => setIntent(i.id)}
@@ -228,11 +228,11 @@ function AccessForm() {
                       {i.label}
                     </span>
                   </button>
-                </li>
+                </div>
               );
             })}
-            <li className="border-t border-foreground/[0.08]" />
-          </ul>
+            <div className="border-t border-foreground/[0.08]" />
+          </div>
         </div>
 
         {/* Fields — column 02 */}
