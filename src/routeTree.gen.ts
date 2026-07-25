@@ -16,6 +16,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RecognitionsRouteImport } from './routes/recognitions'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as InnovationsRouteImport } from './routes/innovations'
+import { Route as EvidenceStandardsRouteImport } from './routes/evidence-standards'
 import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as EngageRouteImport } from './routes/engage'
 import { Route as EarlyWorksRouteImport } from './routes/early-works'
@@ -57,6 +58,11 @@ const NewsRoute = NewsRouteImport.update({
 const InnovationsRoute = InnovationsRouteImport.update({
   id: '/innovations',
   path: '/innovations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvidenceStandardsRoute = EvidenceStandardsRouteImport.update({
+  id: '/evidence-standards',
+  path: '/evidence-standards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EssaysRoute = EssaysRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
   '/essays': typeof EssaysRouteWithChildren
+  '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
   '/essays': typeof EssaysRouteWithChildren
+  '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
   '/essays': typeof EssaysRouteWithChildren
+  '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
   '/recognitions': typeof RecognitionsRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/early-works'
     | '/engage'
     | '/essays'
+    | '/evidence-standards'
     | '/innovations'
     | '/news'
     | '/recognitions'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/early-works'
     | '/engage'
     | '/essays'
+    | '/evidence-standards'
     | '/innovations'
     | '/news'
     | '/recognitions'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/early-works'
     | '/engage'
     | '/essays'
+    | '/evidence-standards'
     | '/innovations'
     | '/news'
     | '/recognitions'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   EarlyWorksRoute: typeof EarlyWorksRoute
   EngageRoute: typeof EngageRoute
   EssaysRoute: typeof EssaysRouteWithChildren
+  EvidenceStandardsRoute: typeof EvidenceStandardsRoute
   InnovationsRoute: typeof InnovationsRoute
   NewsRoute: typeof NewsRoute
   RecognitionsRoute: typeof RecognitionsRoute
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/innovations'
       fullPath: '/innovations'
       preLoaderRoute: typeof InnovationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence-standards': {
+      id: '/evidence-standards'
+      path: '/evidence-standards'
+      fullPath: '/evidence-standards'
+      preLoaderRoute: typeof EvidenceStandardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/essays': {
@@ -332,6 +352,7 @@ const rootRouteChildren: RootRouteChildren = {
   EarlyWorksRoute: EarlyWorksRoute,
   EngageRoute: EngageRoute,
   EssaysRoute: EssaysRouteWithChildren,
+  EvidenceStandardsRoute: EvidenceStandardsRoute,
   InnovationsRoute: InnovationsRoute,
   NewsRoute: NewsRoute,
   RecognitionsRoute: RecognitionsRoute,

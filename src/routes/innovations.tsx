@@ -6,6 +6,7 @@ import FounderPortrait from "@/components/scene/FounderPortrait";
 import LatticeField from "@/components/scene/LatticeField";
 import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import { EvidenceBadge } from "@/components/scene/cinematic";
+import { type Stage, stageMeta } from "@/lib/evidenceStandards";
 import backdrop from "@/assets/story-03-material.webp";
 import founderShowroom from "@/assets/founder-showroom.webp";
 
@@ -110,8 +111,6 @@ export const Route = createFileRoute("/innovations")({
   }),
 });
 
-type Stage = "Commercial" | "Pilot" | "R&D";
-
 type Spec = { k: string; v: string; note: string };
 
 type Item = {
@@ -183,19 +182,37 @@ const materialSpec = [
   { k: "Thermal Conductivity", v: "5,000 W/mK", note: "≈ 13× copper" },
 ];
 
-const stageMeta: Record<Stage, { label: string; sub: string; tone: string }> = {
-  Commercial: { label: "Field-Deployed", sub: "Manufacturing · Market", tone: "Stage I" },
-  Pilot: { label: "Plant & Field Pilots", sub: "Validation · Scale-up", tone: "Stage II" },
-  "R&D": { label: "R&D · Bench", sub: "Formulation · Prototyping", tone: "Stage III" },
-};
+type SortableKey = "title" | "domain" | "stage" | "metric" | "status";
+const STAGE_RANK: Record<Stage, number> = { Commercial: 0, Pilot: 1, "R&D": 2 };
 
 function InnovationsPage() {
   const [filter, setFilter] = useState<Filter>("All");
+  const [view, setView] = useState<"gallery" | "table">("gallery");
+  const [sortKey, setSortKey] = useState<SortableKey>("stage");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [active, setActive] = useState<Product3DModalData | null>(null);
   const visible = useMemo(
     () => (filter === "All" ? items : items.filter((it) => it.stage === filter)),
     [filter],
   );
+  const sortedVisible = useMemo(() => {
+    const list = [...visible];
+    list.sort((a, b) => {
+      const cmp =
+        sortKey === "stage"
+          ? STAGE_RANK[a.stage] - STAGE_RANK[b.stage]
+          : a[sortKey].localeCompare(b[sortKey]);
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+    return list;
+  }, [visible, sortKey, sortDir]);
+  const toggleSort = (key: SortableKey) => {
+    if (key === sortKey) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
   const openProduct = (it: Item) => {
     const largeFrameTitles = new Set([
       "Graphacrete",
@@ -341,8 +358,46 @@ function InnovationsPage() {
         </div>
       </div>
 
+      {/* Glossary link + view toggle — gallery for browsing, table for comparison */}
+      <div className="not-prose mt-6 flex flex-wrap items-center justify-between gap-4">
+        <Link
+          to="/evidence-standards"
+          className="inline-flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45 transition-colors duration-500 hover:text-accent/85"
+        >
+          What do these labels mean? <span aria-hidden>→</span>
+        </Link>
+        <div className="inline-flex overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+          <button
+            onClick={() => setView("gallery")}
+            aria-pressed={view === "gallery"}
+            className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+              view === "gallery" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
+            }`}
+          >
+            Gallery
+          </button>
+          <button
+            onClick={() => setView("table")}
+            aria-pressed={view === "table"}
+            className={`border-l border-foreground/[0.08] px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+              view === "table" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
+            }`}
+          >
+            Compare Table
+          </button>
+        </div>
+      </div>
 
       {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
+      {view === "table" ? (
+        <InnovationsTable
+          items={sortedVisible}
+          sortKey={sortKey}
+          sortDir={sortDir}
+          onSort={toggleSort}
+          onOpen={openProduct}
+        />
+      ) : (
       <div className="not-prose mt-12 space-y-20">
         {grouped.map((group) => {
           const meta = stageMeta[group.stage];
@@ -386,6 +441,7 @@ function InnovationsPage() {
           );
         })}
       </div>
+      )}
 
       {/* Patent · IP Register — closing institutional ledger */}
       <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
@@ -591,6 +647,110 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         </div>
       </div>
     </motion.article>
+  );
+}
+
+function SortHeader({
+  label,
+  active,
+  dir,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  dir: "asc" | "desc";
+  onClick: () => void;
+}) {
+  return (
+    <th scope="col" className="whitespace-nowrap px-4 py-3 text-left md:px-5">
+      <button
+        onClick={onClick}
+        aria-sort={active ? (dir === "asc" ? "ascending" : "descending") : "none"}
+        className={`inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+          active ? "text-accent/85" : "text-foreground/45 hover:text-foreground/70"
+        }`}
+      >
+        {label}
+        <span aria-hidden className={`transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`}>
+          {dir === "asc" ? "↑" : "↓"}
+        </span>
+      </button>
+    </th>
+  );
+}
+
+/**
+ * Comparison table — an alternative to the gallery cards for scanning the
+ * full filtered catalogue at once (e.g. "which items are Commercial in
+ * Water") rather than opening cards one at a time. Wrapped in its own
+ * horizontal scroll container so a wide table never forces the page itself
+ * to scroll sideways on mobile.
+ */
+function InnovationsTable({
+  items,
+  sortKey,
+  sortDir,
+  onSort,
+  onOpen,
+}: {
+  items: Item[];
+  sortKey: SortableKey;
+  sortDir: "asc" | "desc";
+  onSort: (key: SortableKey) => void;
+  onOpen: (item: Item) => void;
+}) {
+  return (
+    <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.08]">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px] border-collapse text-left">
+          <thead>
+            <tr className="border-b border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+              <SortHeader label="Technology" active={sortKey === "title"} dir={sortDir} onClick={() => onSort("title")} />
+              <SortHeader label="Domain" active={sortKey === "domain"} dir={sortDir} onClick={() => onSort("domain")} />
+              <SortHeader label="Stage" active={sortKey === "stage"} dir={sortDir} onClick={() => onSort("stage")} />
+              <SortHeader label="Metric" active={sortKey === "metric"} dir={sortDir} onClick={() => onSort("metric")} />
+              <SortHeader label="Status" active={sortKey === "status"} dir={sortDir} onClick={() => onSort("status")} />
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((it, i) => (
+              <tr
+                key={it.title}
+                role="button"
+                tabIndex={0}
+                onClick={() => onOpen(it)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onOpen(it);
+                  }
+                }}
+                aria-label={`Open product inspection for ${it.title}`}
+                className={`cursor-pointer transition-colors duration-300 hover:bg-foreground/[0.03] focus:outline-none focus-visible:bg-foreground/[0.04] ${
+                  i !== items.length - 1 ? "border-b border-foreground/[0.06]" : ""
+                }`}
+              >
+                <td className="px-4 py-4 md:px-5">
+                  <span className="font-display text-[15px] tracking-[-0.01em] text-foreground/95">{it.title}</span>
+                </td>
+                <td className="px-4 py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/60 md:px-5">
+                  {it.domain}
+                </td>
+                <td className="px-4 py-4 md:px-5">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/70">{it.stage}</span>
+                </td>
+                <td className="px-4 py-4 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/60 md:px-5">
+                  {it.metric}
+                </td>
+                <td className="px-4 py-4 md:px-5">
+                  <EvidenceBadge stage={it.stage} label={it.status} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 
