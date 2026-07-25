@@ -10,6 +10,7 @@ Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Cap
 - [About](/about): Founder philosophy, journey, and mission.
 - [Early Works](/early-works): Six original inventions from the workshop years.
 - [Innovations](/innovations): 23 graphene products across commercial, pilot, and R&D stages.
+- [Evidence & Development-Stage Standards](/evidence-standards): How development stage and evidence labels are graded across the Innovations catalogue.
 - [Ventures](/ventures): Operating group across materials, industrial products, AI, and capital.
 - [Recognitions](/recognitions): Six Presidential awards, TED, MIT TR-35, NASA, NIF-India IGNITE.
 - [Voices](/voices): On-record testimonials from institutions, press, and industry leaders.

@@ -6,17 +6,17 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-07-future.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "Direct line to Sushanth Paatnaik. Selective access for partnerships, capital, research collaboration, advisory, and press — read and triaged personally.";
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
   head: () => ({
     meta: [
       { title: "Contact — Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "Direct line to Sushanth Paatnaik. Selective access for partnerships, capital, research collaboration, advisory, and press — read and triaged personally.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Contact — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -30,6 +30,12 @@ export const Route = createFileRoute("/contact")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/contact" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "ContactPage", name: "Contact — Sushanth Paatnaik", description, path: "/contact" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])),
+    ],
   }),
 });
 

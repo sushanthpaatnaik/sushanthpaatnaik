@@ -47,17 +47,17 @@ import wikipediaLogo from "@/assets/outlets/wikipedia.svg";
 import thePrintLogo from "@/assets/outlets/theprint.webp";
 import newIndianExpressLogo from "@/assets/outlets/new-indian-express.webp";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "Editorial archive of press coverage across MIT Technology Review, India Today, Times of India, Business Standard, ThePrint and more.";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
   head: () => ({
     meta: [
       { title: "News & Media — Editorial Archive · Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "Editorial archive of press coverage across MIT Technology Review, India Today, Times of India, Business Standard, ThePrint and more.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "News — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -71,6 +71,12 @@ export const Route = createFileRoute("/news")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/news" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "News & Media — Sushanth Paatnaik", description, path: "/news" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "News", path: "/news" }])),
+    ],
   }),
 });
 

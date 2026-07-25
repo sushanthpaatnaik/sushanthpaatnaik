@@ -6,17 +6,17 @@ import CinematicPageShell, {
 import FounderPortrait from "@/components/scene/FounderPortrait";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-about-graphite.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "The philosophy, journey, and mission of Sushanth Paatnaik — inventor and six-time Indian Presidential awardee building from India.";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
       { title: "About — Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
-      {
-        name: "description",
-        content:
-          "The philosophy, journey, and mission of Sushanth Paatnaik — inventor and six-time Indian Presidential awardee building from India.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "About — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -30,6 +30,10 @@ export const Route = createFileRoute("/about")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/about" }],
+    scripts: [
+      ldJsonScript(webPageSchema({ name: "About — Sushanth Paatnaik", description, path: "/about" })),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])),
+    ],
   }),
 });
 

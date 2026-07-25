@@ -4,17 +4,17 @@ import CinematicPageShell, { EditorialSection } from "@/components/scene/Cinemat
 import { EvidenceBadge } from "@/components/scene/cinematic";
 import { stageMeta, stageExplainer, evidenceGroups, type Stage } from "@/lib/evidenceStandards";
 import backdrop from "@/assets/story-03-material.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "How every claim across the Innovations catalogue is graded — development stage, evidence labels, and patent status explained, so a claim's confidence level is never left to guesswork.";
 
 export const Route = createFileRoute("/evidence-standards")({
   component: EvidenceStandardsPage,
   head: () => ({
     meta: [
       { title: "Evidence & Development-Stage Standards — Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "How every claim across the Innovations catalogue is graded — development stage, evidence labels, and patent status explained, so a claim's confidence level is never left to guesswork.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Evidence & Development-Stage Standards — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -28,6 +28,18 @@ export const Route = createFileRoute("/evidence-standards")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/evidence-standards" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ name: "Evidence & Development-Stage Standards", description, path: "/evidence-standards" }),
+      ),
+      ldJsonScript(
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Innovations", path: "/innovations" },
+          { name: "Evidence & Development-Stage Standards", path: "/evidence-standards" },
+        ]),
+      ),
+    ],
   }),
 });
 

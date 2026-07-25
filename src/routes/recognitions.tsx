@@ -18,6 +18,7 @@ import ArchiveMosaic, {
 import backdrop from "@/assets/scene-recognition-archive.webp";
 import closureBackdrop from "@/assets/scene-legacy-closure.webp";
 import futureBackdrop from "@/assets/scene-future-signal.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 import awardKalam from "@/assets/hof/award-kalam.webp";
 import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
@@ -78,16 +79,15 @@ import honorUk from "@/assets/hof/honor-uk-envoy-trophy.webp";
 import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.webp";
 
 
+const description =
+  "Archival journey of recognition: six Indian Presidential awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
+
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
   head: () => ({
     meta: [
       { title: "Recognitions — Six Presidential Awards · TED · MIT · NASA" },
-      {
-        name: "description",
-        content:
-          "Archival journey of recognition: six Indian Presidential awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Recognitions — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -101,6 +101,12 @@ export const Route = createFileRoute("/recognitions")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/recognitions" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Recognitions — Sushanth Paatnaik", description, path: "/recognitions" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Recognitions", path: "/recognitions" }])),
+    ],
   }),
 });
 

@@ -12,17 +12,17 @@ import nifLogo from "@/assets/outlets/nif-color.webp";
 import ioclLogo from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "What institutions, founders, journalists, and global platforms say about the work — on record testimonials from MIT Technology Review, NIF, Deloitte, TED, INK, and more.";
 
 export const Route = createFileRoute("/voices")({
   component: VoicesPage,
   head: () => ({
     meta: [
       { title: "Voices — Testimonials & On-Record Recognition" },
-      {
-        name: "description",
-        content:
-          "What institutions, founders, journalists, and global platforms say about the work — on record testimonials from MIT Technology Review, NIF, Deloitte, TED, INK, and more.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Voices — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -36,6 +36,12 @@ export const Route = createFileRoute("/voices")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/voices" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Voices — Sushanth Paatnaik", description, path: "/voices" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Voices", path: "/voices" }])),
+    ],
   }),
 });
 

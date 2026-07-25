@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import Nav from "@/components/scene/Nav";
 import { AtmosphericWash } from "@/components/scene/cinematic";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 interface EssayMeta {
   slug: string;
@@ -46,16 +47,15 @@ export const essays: EssayMeta[] = [
   },
 ];
 
+const description =
+  "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.";
+
 export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
       { title: "Essays — Sushanth Paatnaik · Deep-Tech & Invention" },
-      {
-        name: "description",
-        content:
-          "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Essays — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -69,6 +69,12 @@ export const Route = createFileRoute("/essays")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/essays" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Essays — Sushanth Paatnaik", description, path: "/essays" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Essays", path: "/essays" }])),
+    ],
   }),
 });
 

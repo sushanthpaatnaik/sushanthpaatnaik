@@ -11,17 +11,17 @@ import tileopediaLogo from "@/assets/clients/tileopedia.webp";
 import wehearLogo from "@/assets/clients/wehear.webp";
 import sunrooofLogo from "@/assets/clients/sunrooof.webp";
 import greenomersLogo from "@/assets/clients/greenomers.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "Six operating vehicles across advanced materials, industrial products, AI, and capital — and a five-mark advisory roster.";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
   head: () => ({
     meta: [
       { title: "Ventures — Operating Group · Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "Six operating vehicles across advanced materials, industrial products, AI, and capital — and a five-mark advisory roster.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Ventures — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -35,6 +35,12 @@ export const Route = createFileRoute("/ventures")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/ventures" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Ventures — Sushanth Paatnaik", description, path: "/ventures" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Ventures", path: "/ventures" }])),
+    ],
   }),
 });
 

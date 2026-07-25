@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ldJsonScript, webPageSchema } from "@/lib/seo";
 import { useRef, useCallback, useEffect, useState, lazy, Suspense } from "react";
 import ScrollSections from "@/components/scene/ScrollSections";
 import Nav from "@/components/scene/Nav";
@@ -16,16 +17,15 @@ const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmospher
 const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumetric"));
 const CursorAura = lazy(() => import("@/components/scene/CursorAura"));
 
+const description =
+  "Inventor and six-time Indian Presidential awardee building graphene, nano-materials, and industrial deep-tech ventures from India.";
+
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
       { title: "Sushanth Paatnaik — Inventor & Deep-Tech Founder" },
-      {
-        name: "description",
-        content:
-          "Inventor and six-time Indian Presidential awardee building graphene, nano-materials, and industrial deep-tech ventures from India.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
       {
         property: "og:description",
@@ -39,6 +39,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "WebSite", name: "Sushanth Paatnaik", description, path: "/" }),
+      ),
+    ],
   }),
 });
 

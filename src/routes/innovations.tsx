@@ -7,6 +7,7 @@ import LatticeField from "@/components/scene/LatticeField";
 import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/components/scene/Product3DView";
 import { EvidenceBadge } from "@/components/scene/cinematic";
 import { type Stage, stageMeta } from "@/lib/evidenceStandards";
+import { breadcrumbSchema, ldJsonScript, webPageSchema, SITE_URL } from "@/lib/seo";
 import backdrop from "@/assets/story-03-material.webp";
 import founderShowroom from "@/assets/founder-showroom.webp";
 
@@ -85,16 +86,15 @@ import appAerophenter from "@/assets/innovations/applications/aerophenter.webp";
 import appFibrasphene from "@/assets/innovations/applications/fibrasphene.webp";
 import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
 
+const description =
+  "23 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour — from commercial to pilot to R&D.";
+
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
     meta: [
       { title: "Innovations — 23 Graphene Products · Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "23 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour — from commercial to pilot to R&D.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Innovations — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -108,6 +108,24 @@ export const Route = createFileRoute("/innovations")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/innovations" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Innovations — Sushanth Paatnaik", description, path: "/innovations" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Innovations", path: "/innovations" }])),
+      ldJsonScript({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Innovations Catalogue",
+        url: `${SITE_URL}/innovations`,
+        numberOfItems: items.length,
+        itemListElement: items.map((it, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: { "@type": "Thing", name: it.title, description: `${it.domain} — ${it.body}` },
+        })),
+      }),
+    ],
   }),
 });
 

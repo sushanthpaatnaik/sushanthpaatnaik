@@ -12,17 +12,17 @@ import rectofitImg from "@/assets/early/rectofit.webp";
 import shewatchImg from "@/assets/early/shewatch.webp";
 import solkaImg from "@/assets/early/solka.webp";
 import supersenseImg from "@/assets/early/supersense.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "Six original inventions built between 2008 and 2013 — the teenage innovations that earned six Presidential Awards and became the foundation for today's deep-tech ventures.";
 
 export const Route = createFileRoute("/early-works")({
   component: EarlyWorksPage,
   head: () => ({
     meta: [
       { title: "Early Works — Sushanth Paatnaik" },
-      {
-        name: "description",
-        content:
-          "Six original inventions built between 2008 and 2013 — the teenage innovations that earned six Presidential Awards and became the foundation for today's deep-tech ventures.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Early Works — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -36,6 +36,12 @@ export const Route = createFileRoute("/early-works")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/early-works" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ type: "CollectionPage", name: "Early Works — Sushanth Paatnaik", description, path: "/early-works" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Early Works", path: "/early-works" }])),
+    ],
   }),
 });
 

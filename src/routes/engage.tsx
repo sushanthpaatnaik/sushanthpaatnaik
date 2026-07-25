@@ -5,6 +5,10 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-06-india.webp";
+import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+
+const description =
+  "A single, selective desk for industrial collaboration, deep-tech research, venture and strategic advisory, speaking, and global partnerships across the operating group.";
 
 export const Route = createFileRoute("/engage")({
   component: EngagePage,
@@ -14,11 +18,7 @@ export const Route = createFileRoute("/engage")({
         title:
           "Engage — Collaboration, Advisory, Research & Speaking · Sushanth Paatnaik",
       },
-      {
-        name: "description",
-        content:
-          "A single, selective desk for industrial collaboration, deep-tech research, venture and strategic advisory, speaking, and global partnerships across the operating group.",
-      },
+      { name: "description", content: description },
       { property: "og:title", content: "Engage — Sushanth Paatnaik" },
       {
         property: "og:description",
@@ -32,6 +32,12 @@ export const Route = createFileRoute("/engage")({
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/engage" }],
+    scripts: [
+      ldJsonScript(
+        webPageSchema({ name: "Engage — Sushanth Paatnaik", description, path: "/engage" }),
+      ),
+      ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Engage", path: "/engage" }])),
+    ],
   }),
 });
 
