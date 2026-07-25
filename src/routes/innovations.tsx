@@ -599,7 +599,7 @@ function InnovationsPage() {
 
               {/* Supporting cards */}
               {rest.length > 0 && (
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
                   {rest.map((it) => (
                     <CompactCard key={it.title} item={it} onOpen={() => openProduct(it)} />
                   ))}
@@ -810,20 +810,32 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
       aria-label={`Open product inspection for ${item.title}`}
-      className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+      /* aspect-[3/2] on mobile keeps a full-width card from becoming very tall
+         now that these stack in a single column; 4/3 returns from sm up where
+         two or three sit side by side. */
+      className="group relative aspect-[3/2] sm:aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
+      {/* -translate-y on mobile lifts the product clear of the caption block.
+          In a single-column card the product sits dead-centre and used to
+          overlap the domain and metric lines; from sm up the cards are
+          narrower and the default centring is correct again. */}
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+        imgClassName="-translate-y-[11%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34))" }}
       />
+      {/* Reading scrim. Ramps to near-opaque higher up the card (~55% rather
+          than ~84%) so the product still reads as a lit object in the upper
+          two-thirds while the caption block below always sits on a solid
+          base — previously the centred product bled through the domain and
+          metric lines and both fought each other. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.12) 0%, transparent 34%, oklch(0.02 0.006 245 / 0.78) 84%, oklch(0.014 0.006 245 / 0.94) 100%)",
+            "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%)",
         }}
       />
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
@@ -843,7 +855,11 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           {item.metric}
         </p>
         <div className="mt-1.5">
-          <EvidenceBadge stage={item.stage} label={item.status} className="text-[7px] px-1.5 py-0.5" />
+          <EvidenceBadge
+            stage={item.stage}
+            label={item.status}
+            className="whitespace-nowrap text-[7px] px-1.5 py-0.5"
+          />
         </div>
       </div>
     </motion.article>

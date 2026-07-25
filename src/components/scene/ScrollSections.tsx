@@ -19,15 +19,19 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
 
+// Order mirrors the primary nav so the ecosystem grid and the header agree.
+// Every nav destination must appear here — Early Works was previously absent,
+// which left the grid one short of the nav and made the heading count wrong.
 const gateways = [
   { to: "/about",        n: "I",    label: "About",        line: "Founder, philosophy, journey." },
-  { to: "/innovations",  n: "II",   label: "Innovations",  line: "Graphene, materials, systems." },
-  { to: "/ventures",     n: "III",  label: "Ventures",     line: "Six operating companies. One stack." },
-  { to: "/recognitions", n: "IV",   label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
-  { to: "/voices",       n: "V",    label: "Voices",       line: "Talks, perspectives, and interviews." },
-  { to: "/essays",       n: "VI",   label: "Essays",       line: "Notes from the workshop." },
-  { to: "/engage",       n: "VII",  label: "Engage",       line: "Partnerships, advisory, and origin archive." },
+  { to: "/early-works",  n: "II",   label: "Early Works",  line: "Six inventions. The origin archive." },
+  { to: "/innovations",  n: "III",  label: "Innovations",  line: "Graphene, materials, systems." },
+  { to: "/ventures",     n: "IV",   label: "Ventures",     line: "Six operating companies. One stack." },
+  { to: "/recognitions", n: "V",    label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
+  { to: "/voices",       n: "VI",   label: "Voices",       line: "Talks, perspectives, and interviews." },
+  { to: "/essays",       n: "VII",  label: "Essays",       line: "Notes from the workshop." },
   { to: "/news",         n: "VIII", label: "News",         line: "Editorial archive." },
+  { to: "/engage",       n: "IX",   label: "Engage",       line: "Partnerships, advisory, and collaboration." },
 ] as const;
 
 /* ──────────────────────────────────────────────────────────────────
@@ -404,7 +408,7 @@ function EcosystemContent() {
         </p>
         {/* H2 — smaller clamp floor on mobile so it doesn't eat too much height */}
         <h2 className="font-display text-[clamp(1.75rem,6.5vw,4.75rem)] leading-[1.02] tracking-[-0.04em] text-gradient [text-wrap:balance]">
-          Eight thresholds into the work.
+          Nine thresholds into the work.
         </h2>
         {/* Body */}
         <p className="mt-4 md:mt-8 max-w-xl text-sm text-muted-foreground/85">
