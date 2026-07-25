@@ -184,6 +184,21 @@ const materialSpec = [
   { k: "Thermal Conductivity", v: "5,000 W/mK", note: "≈ 13× copper" },
 ];
 
+const grantedPatents = [
+  {
+    title: "Production of graphene oxide from graphite",
+    number: "564322",
+    jurisdiction: undefined as string | undefined,
+    issued: "March 28, 2025",
+  },
+  {
+    title: "Process for producing graphene from graphite",
+    number: "559803",
+    jurisdiction: "India",
+    issued: "February 10, 2025",
+  },
+];
+
 type SortableKey = "title" | "domain" | "stage" | "metric" | "status";
 const STAGE_RANK: Record<Stage, number> = { Commercial: 0, Pilot: 1, "R&D": 2 };
 
@@ -196,6 +211,7 @@ function InnovationsPage() {
   const [sortKey, setSortKey] = useState<SortableKey>("stage");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [active, setActive] = useState<Product3DModalData | null>(null);
+  const [showPatents, setShowPatents] = useState(false);
 
   const matchesFilters = (it: Item, opts: { stage?: Filter } = {}) => {
     const stage = opts.stage ?? filter;
@@ -391,17 +407,17 @@ function InnovationsPage() {
           <span className="h-px flex-1 bg-foreground/[0.08]" />
         </div>
         <div className="flex flex-wrap items-center gap-3">
-        <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] py-2.5 pl-4 pr-9 transition-colors duration-500 hover:border-accent/30 focus-within:border-accent/40">
-          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/35">
+        <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] py-2.5 pl-4 pr-9 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] transition-colors duration-300 hover:border-accent/50 focus-within:border-accent/60">
+          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/45">
             Domain
           </span>
-          <span className="pointer-events-none h-3 w-px bg-foreground/[0.1]" />
+          <span className="pointer-events-none h-3 w-px bg-foreground/[0.14]" />
           <select
             value={domainFilter}
             onChange={(e) => setDomainFilter(e.target.value)}
-            aria-label="Filter by domain"
-            className={`appearance-none bg-transparent font-mono text-[9px] uppercase tracking-[0.28em] transition-colors duration-500 focus:outline-none ${
-              domainFilter === "All" ? "text-foreground/60" : "text-accent/85"
+            aria-label="Filter by domain — click to choose an industry category"
+            className={`appearance-none bg-transparent font-mono text-[9px] uppercase tracking-[0.28em] transition-colors duration-300 focus:outline-none ${
+              domainFilter === "All" ? "text-foreground/80" : "text-accent/90"
             }`}
           >
             <option value="All">All Domains</option>
@@ -413,7 +429,7 @@ function InnovationsPage() {
           </select>
           <span
             aria-hidden
-            className="pointer-events-none absolute right-3.5 font-mono text-[10px] text-foreground/45 transition-colors duration-500 group-hover:text-accent/70"
+            className="pointer-events-none absolute right-3.5 font-mono text-[12px] text-accent/75 transition-colors duration-300 group-hover:text-accent"
           >
             ▾
           </span>
@@ -422,24 +438,36 @@ function InnovationsPage() {
         <button
           onClick={() => setPatentOnly((v) => !v)}
           aria-pressed={patentOnly}
-          className={`rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-500 ${
+          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             patentOnly
-              ? "border-accent/40 bg-accent/[0.06] text-accent/85"
-              : "border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] text-foreground/45 hover:text-foreground/70"
+              ? "border-accent/50 bg-accent/[0.08] text-accent/90"
+              : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
           }`}
         >
+          <span
+            aria-hidden
+            className={`h-1.5 w-1.5 rounded-full border transition-colors duration-300 ${
+              patentOnly ? "border-accent bg-accent" : "border-foreground/40 bg-transparent"
+            }`}
+          />
           Patent-associated only
         </button>
 
         <button
           onClick={() => setFeaturedOnly((v) => !v)}
           aria-pressed={featuredOnly}
-          className={`rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-500 ${
+          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             featuredOnly
-              ? "border-accent/40 bg-accent/[0.06] text-accent/85"
-              : "border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] text-foreground/45 hover:text-foreground/70"
+              ? "border-accent/50 bg-accent/[0.08] text-accent/90"
+              : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
           }`}
         >
+          <span
+            aria-hidden
+            className={`h-1.5 w-1.5 rounded-full border transition-colors duration-300 ${
+              featuredOnly ? "border-accent bg-accent" : "border-foreground/40 bg-transparent"
+            }`}
+          />
           Featured only
         </button>
 
@@ -464,19 +492,21 @@ function InnovationsPage() {
         </Link>
         <div
           role="group"
-          aria-label="Catalogue view"
-          className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] pl-4"
+          aria-label="Catalogue view — click to switch between a visual gallery and a sortable table"
+          className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] pl-4"
         >
-          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/35">
+          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/45">
             View
           </span>
-          <span className="mx-3 h-3 w-px bg-foreground/[0.1]" />
+          <span className="mx-3 h-3 w-px bg-foreground/[0.14]" />
           <button
             onClick={() => setView("gallery")}
             aria-pressed={view === "gallery"}
             title="Browse as a visual gallery of cards"
-            className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
-              view === "gallery" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
+            className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-300 ${
+              view === "gallery"
+                ? "bg-accent/[0.1] text-accent/90"
+                : "text-foreground/60 hover:bg-foreground/[0.04] hover:text-foreground/85"
             }`}
           >
             Gallery
@@ -485,8 +515,10 @@ function InnovationsPage() {
             onClick={() => setView("table")}
             aria-pressed={view === "table"}
             title="Switch to a sortable side-by-side comparison table"
-            className={`border-l border-foreground/[0.08] px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
-              view === "table" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
+            className={`border-l border-foreground/20 px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-300 ${
+              view === "table"
+                ? "bg-accent/[0.1] text-accent/90"
+                : "text-foreground/60 hover:bg-foreground/[0.04] hover:text-foreground/85"
             }`}
           >
             Compare Table
@@ -601,6 +633,38 @@ function InnovationsPage() {
                 </span>
               </motion.div>
             ))}
+          </div>
+
+          {/* Granted patents — verified per-patent detail, disclosed on demand */}
+          <div className="mt-9 border-t border-foreground/[0.06] pt-7">
+            <button
+              onClick={() => setShowPatents((v) => !v)}
+              aria-expanded={showPatents}
+              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/55 transition-colors duration-500 hover:text-accent/85"
+            >
+              <span>{showPatents ? "Hide" : "Show"} granted patents</span>
+              <span
+                aria-hidden
+                className={`transition-transform duration-300 ${showPatents ? "rotate-180" : ""}`}
+              >
+                ▾
+              </span>
+            </button>
+            {showPatents && (
+              <div className="mt-6 space-y-6">
+                {grantedPatents.map((p) => (
+                  <div key={p.number} className="border-t border-foreground/[0.06] pt-6 first:border-t-0 first:pt-0">
+                    <p className="font-display text-base md:text-lg text-foreground/95">{p.title}</p>
+                    <p className="mt-1.5 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/50">
+                      {p.jurisdiction ? `${p.jurisdiction} Patent · ` : ""}No. {p.number} · Issued {p.issued}
+                    </p>
+                  </div>
+                ))}
+                <p className="pt-1 text-[12.5px] leading-relaxed text-foreground/50">
+                  Foundational process patents underlying the graphene production platform — not tied to a single catalogued product. Full records available via Engage.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
