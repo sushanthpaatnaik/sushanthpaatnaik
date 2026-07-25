@@ -382,13 +382,27 @@ function InnovationsPage() {
       {/* Refine bar — domain, patent-association, and featured facets. All
           combine with the stage filter above; every control updates the
           catalogue instantly, no page reload. */}
-      <div className="not-prose mt-4 flex flex-wrap items-center gap-3">
-        <label className="relative inline-flex items-center">
-          <span className="sr-only">Filter by domain</span>
+      <div className="not-prose mt-8">
+        <div className="mb-4 flex items-center gap-3">
+          <span className="h-px w-8 bg-foreground/[0.12]" />
+          <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/45">
+            Refine · Domain · Patent Status · Featured
+          </span>
+          <span className="h-px flex-1 bg-foreground/[0.08]" />
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+        <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] py-2.5 pl-4 pr-9 transition-colors duration-500 hover:border-accent/30 focus-within:border-accent/40">
+          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/35">
+            Domain
+          </span>
+          <span className="pointer-events-none h-3 w-px bg-foreground/[0.1]" />
           <select
             value={domainFilter}
             onChange={(e) => setDomainFilter(e.target.value)}
-            className="appearance-none rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] py-2.5 pl-4 pr-9 font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70 transition-colors duration-500 hover:border-foreground/20 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+            aria-label="Filter by domain"
+            className={`appearance-none bg-transparent font-mono text-[9px] uppercase tracking-[0.28em] transition-colors duration-500 focus:outline-none ${
+              domainFilter === "All" ? "text-foreground/60" : "text-accent/85"
+            }`}
           >
             <option value="All">All Domains</option>
             {domainOptions.map((d) => (
@@ -397,7 +411,10 @@ function InnovationsPage() {
               </option>
             ))}
           </select>
-          <span aria-hidden className="pointer-events-none absolute right-3 font-mono text-[9px] text-foreground/40">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-3.5 font-mono text-[10px] text-foreground/45 transition-colors duration-500 group-hover:text-accent/70"
+          >
             ▾
           </span>
         </label>
@@ -434,6 +451,7 @@ function InnovationsPage() {
             Reset refinements
           </button>
         )}
+        </div>
       </div>
 
       {/* Glossary link + view toggle — gallery for browsing, table for comparison */}
@@ -444,10 +462,19 @@ function InnovationsPage() {
         >
           What do these labels mean? <span aria-hidden>→</span>
         </Link>
-        <div className="inline-flex overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+        <div
+          role="group"
+          aria-label="Catalogue view"
+          className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] pl-4"
+        >
+          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/35">
+            View
+          </span>
+          <span className="mx-3 h-3 w-px bg-foreground/[0.1]" />
           <button
             onClick={() => setView("gallery")}
             aria-pressed={view === "gallery"}
+            title="Browse as a visual gallery of cards"
             className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
               view === "gallery" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
             }`}
@@ -457,6 +484,7 @@ function InnovationsPage() {
           <button
             onClick={() => setView("table")}
             aria-pressed={view === "table"}
+            title="Switch to a sortable side-by-side comparison table"
             className={`border-l border-foreground/[0.08] px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
               view === "table" ? "bg-foreground/[0.06] text-accent/85" : "text-foreground/45 hover:text-foreground/70"
             }`}
