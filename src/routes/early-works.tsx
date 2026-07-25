@@ -55,6 +55,8 @@ interface Innovation {
   image: string;
   videoUrl?: string;
   badges: string[];
+  /** Historical filing reference — not a status badge, since it may not reflect an active/granted patent. */
+  patentNote?: string;
   layout: "split-right" | "split-left" | "feature";
 }
 
@@ -92,6 +94,7 @@ const innovations: Innovation[] = [
     image: enablerImg,
     videoUrl: "https://youtu.be/n-JiX6vmwOI",
     badges: ["Presidential Recognition", "National Innovation Award"],
+    patentNote: "International Patent Application · WO2011138794A1 · Filed 2011",
     layout: "feature",
   },
   {
@@ -375,6 +378,11 @@ function ChapterSplit({
         <div className="flex flex-wrap items-center gap-3">
           {inv.badges.map((b) => <RecognitionBadge key={b} label={b} />)}
         </div>
+        {inv.patentNote && (
+          <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-foreground/35">
+            {inv.patentNote}
+          </p>
+        )}
         <div className="mt-5">
           <DemoButton onWatch={onWatch} />
         </div>
@@ -480,6 +488,11 @@ function ChapterFeature({
           <div className="mt-5 flex flex-wrap gap-2">
             {inv.badges.map((b) => <RecognitionBadge key={b} label={b} />)}
           </div>
+          {inv.patentNote && (
+            <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-foreground/35">
+              {inv.patentNote}
+            </p>
+          )}
           <div className="mt-4">
             <DemoButton onWatch={onWatch} />
           </div>
