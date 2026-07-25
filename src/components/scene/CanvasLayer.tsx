@@ -147,13 +147,20 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Start ALL remaining groups now that the loader has exited and the
-      // full HTTP/2 bandwidth budget is free. Previously only group 1 was
+      // Desktop: start ALL remaining groups now that the loader has exited and
+      // the full HTTP/2 bandwidth budget is free. Previously only group 1 was
       // started here, so groups 2–4 only began loading when the user entered
       // each group — on a cold CDN that caused a visible freeze at each
       // group boundary. Firing all groups in parallel here means frames are
       // already in-flight before the user reaches them.
-      for (let g = 1; g < N_GROUPS; g++) loadGroup(g);
+      //
+      // Touch: only prefetch as far as the eviction window will actually
+      // retain. Groups beyond active±1 are discarded on arrival by design, so
+      // fetching all five here burned mobile bandwidth downloading frames that
+      // were guaranteed to be thrown away. The render loop's group-change
+      // handler already pulls in gi±1 as the user advances.
+      const prefetchTo = isTouch ? 1 : N_GROUPS - 1;
+      for (let g = 1; g <= prefetchTo; g++) loadGroup(g);
       // Reset lastGroupRef so the next RAF tick re-triggers the group-change
       // block for whichever group the user has already scrolled into.
       lastGroupRef.current = -1;
@@ -229,12 +236,27 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           .then(r  => r.blob())
           .then(b  => makeBitmap(b))
           .then(bmp => {
-            // Discard if cleaned up (StrictMode/unmount), OR if this group has
-            // since been evicted from the active±1 window — otherwise a late
-            // frame would silently re-bloat memory for an off-screen group.
+            if (destroyed || genRef.current !== gen) { bmp.close(); return; }
+            // Discard if this group has since fallen outside the active±1
+            // window — otherwise a late frame would re-bloat memory for an
+            // off-screen group.
+            //
+            // CRITICAL: clear the group's loading flag when we discard. Without
+            // this the group was permanently poisoned — loadGroup() early-returns
+            // on `loadingRef.current[gi]`, so a group whose frames were all
+            // discarded in flight could never be re-fetched, and it stayed empty
+            // forever. The render loop then found zero bitmaps for that group,
+            // hit its `if (!bmp) return` guard, and simply kept the previous
+            // chapter's last frame on screen. That was the mobile "scroll gets
+            // stuck / no longer cinematic" bug: measured on a throttled iPhone
+            // profile the canvas froze for 27 of 41 scroll samples, beginning
+            // exactly at the industrial-translation boundary.
             const active = lastGroupRef.current;
-            const evicted = isTouch && active >= 0 && (gi < active - 1 || gi > active + 1);
-            if (destroyed || genRef.current !== gen || evicted) { bmp.close(); return; }
+            if (isTouch && active >= 0 && (gi < active - 1 || gi > active + 1)) {
+              bmp.close();
+              loadingRef.current[gi] = false; // allow a retry once in range
+              return;
+            }
             bitmapsRef.current[gi][fi] = bmp;
             // Count critical group-0 frames; fire notifyReady once threshold
             // is met — not on frame 0 alone — so scroll unlocks only after
@@ -268,16 +290,44 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // HTTP/2 multiplexing on fast connections makes this fastest.
       loadFrame(0).then(() => {
         if (isTouch) {
-          // Serial batches of 6, stepping by frameStep (every 2nd frame) so we
-          // load ~48 frames/group instead of 96 — half the memory and decodes.
-          const loadBatch = async (start: number): Promise<void> => {
-            const batch: Promise<void>[] = [];
-            let i = start;
-            for (let c = 0; c < 6 && i < FRAME_COUNT; c++, i += frameStep) batch.push(loadFrame(i));
-            await Promise.all(batch);
-            if (i < FRAME_COUNT && !destroyed) await loadBatch(i);
+          // COVERAGE-FIRST ordering. Previously this walked the group front to
+          // back in serial batches, so a group was only watchable once most of
+          // it had arrived. With five groups sharing ~6 mobile connections the
+          // later chapters lost that race, and the render loop — which bails
+          // via `if (!bmp) return` when the active group has no frames at all —
+          // just held the previous chapter's final frame. Measured on a
+          // throttled iPhone profile: the canvas froze for 27 of 41 scroll
+          // samples, starting exactly at the industrial-translation boundary.
+          //
+          // Pass 1 spreads ANCHOR_COUNT frames evenly across the whole group,
+          // so after a handful of requests every chapter can already draw
+          // something from its own footage at any scroll position (the
+          // nearest-loaded-frame search below snaps to the closest anchor).
+          // Pass 2 then fills in the in-between frames for smoothness. Motion
+          // gets progressively finer instead of the chapter being blank.
+          const ANCHOR_COUNT = 8;
+          const anchorStride = Math.max(
+            frameStep,
+            Math.floor(FRAME_COUNT / ANCHOR_COUNT / frameStep) * frameStep,
+          );
+          const anchors = new Set<number>();
+          for (let i = frameStep; i < FRAME_COUNT; i += anchorStride) anchors.add(i);
+
+          const runBatches = async (frames: number[], size: number) => {
+            for (let i = 0; i < frames.length; i += size) {
+              if (destroyed) return;
+              await Promise.all(frames.slice(i, i + size).map(loadFrame));
+            }
           };
-          loadBatch(frameStep);
+
+          const rest: number[] = [];
+          for (let i = frameStep; i < FRAME_COUNT; i += frameStep) {
+            if (!anchors.has(i)) rest.push(i);
+          }
+
+          // Anchors in one shot (small set, worth the concurrency), then
+          // density in serial batches so we still don't swamp the pool.
+          runBatches([...anchors], anchors.size).then(() => runBatches(rest, 6));
         } else {
           for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
         }
