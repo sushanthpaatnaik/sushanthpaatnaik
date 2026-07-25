@@ -702,7 +702,7 @@ function InnovationsTable({
   return (
     <div className="not-prose mt-12 overflow-hidden rounded-sm border border-foreground/[0.08]">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[720px] border-collapse text-left">
+        <table className="w-full min-w-[880px] border-collapse text-left">
           <thead>
             <tr className="border-b border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
               <SortHeader label="Technology" active={sortKey === "title"} dir={sortDir} onClick={() => onSort("title")} />
@@ -730,19 +730,19 @@ function InnovationsTable({
                   i !== items.length - 1 ? "border-b border-foreground/[0.06]" : ""
                 }`}
               >
-                <td className="px-4 py-4 md:px-5">
+                <td className="whitespace-nowrap px-4 py-4 md:px-5">
                   <span className="font-display text-[15px] tracking-[-0.01em] text-foreground/95">{it.title}</span>
                 </td>
-                <td className="px-4 py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/60 md:px-5">
+                <td className="whitespace-nowrap px-4 py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/60 md:px-5">
                   {it.domain}
                 </td>
-                <td className="px-4 py-4 md:px-5">
+                <td className="whitespace-nowrap px-4 py-4 md:px-5">
                   <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/70">{it.stage}</span>
                 </td>
-                <td className="px-4 py-4 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/60 md:px-5">
+                <td className="whitespace-nowrap px-4 py-4 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/60 md:px-5">
                   {it.metric}
                 </td>
-                <td className="px-4 py-4 md:px-5">
+                <td className="whitespace-nowrap px-4 py-4 md:px-5">
                   <EvidenceBadge stage={it.stage} label={it.status} />
                 </td>
               </tr>
