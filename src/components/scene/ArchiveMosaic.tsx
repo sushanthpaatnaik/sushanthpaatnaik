@@ -416,33 +416,39 @@ export function HallOfFameRibbon({
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        {/* Reel */}
-        {isTouch && (
-          <style>{`@keyframes hof-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
-        )}
+        {/* Reel — touch vs. desktop layout is decided entirely by CSS
+            @media (pointer:) rules below, never by JS state. The DOM/class
+            output is identical on server and client, so there is nothing
+            for hydration to change after first paint (no layout shift). */}
+        <style>{`
+          @keyframes hof-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+          .hof-track { display: contents; }
+          @media (pointer: coarse) {
+            .hof-scroller { overflow: hidden; }
+            .hof-track { display: flex; gap: 1px; width: max-content; animation: hof-marquee 120s linear infinite; will-change: transform; }
+            .hof-progress { display: none; }
+          }
+          @media (pointer: fine) {
+            .hof-scroller { display: flex; gap: 1px; overflow-x: auto; -webkit-overflow-scrolling: touch; cursor: grab; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .hof-track { animation: none !important; }
+          }
+        `}</style>
         <div
           ref={scrollerRef}
           tabIndex={0}
           role="region"
           aria-label="Hall of Fame image reel"
           onKeyDown={onKeyDown}
-          className={`bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
+          className={`hof-scroller bg-foreground/[0.04] ring-1 ring-foreground/[0.05] rounded-sm
                      [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden
                      focus:outline-none focus-visible:ring-accent/40
-                     ${isTouch ? "overflow-hidden" : `flex gap-px overflow-x-auto [-webkit-overflow-scrolling:touch] ${dragging ? "cursor-grabbing select-none" : "cursor-grab"}`}`}
+                     ${dragging ? "cursor-grabbing select-none" : ""}`}
           style={{ touchAction: isTouch ? "pan-y" : "pan-x" }}
         >
           {/* Touch: CSS transform marquee (iOS reliable); Desktop: scrollLeft RAF */}
-          <div
-            ref={isTouch ? marqueeTrackRef : undefined}
-            style={isTouch ? {
-              display: "flex",
-              gap: "1px",
-              width: "max-content",
-              animation: reducedMotion ? "none" : "hof-marquee 120s linear infinite",
-              willChange: "transform",
-            } : { display: "contents" }}
-          >
+          <div ref={marqueeTrackRef} className="hof-track">
             {loopItems.map((item, i) => (
               <figure
                 key={`${item.src}-${i}`}
@@ -532,20 +538,21 @@ export function HallOfFameRibbon({
         )}
       </div>
 
-      {/* Progress track — desktop only; CSS marquee has no scrollLeft to track */}
-      {!isTouch && (
-        <div className="relative mt-3 h-px w-full bg-foreground/[0.06] overflow-hidden">
-          <div
-            className="absolute inset-y-0 left-0"
-            style={{
-              width: `${Math.max(6, progress * 100)}%`,
-              background:
-                "linear-gradient(90deg, transparent 0%, oklch(0.72 0.10 60 / 0.85) 50%, transparent 100%)",
-              boxShadow: "0 0 12px oklch(0.72 0.10 60 / 0.55)",
-            }}
-          />
-        </div>
-      )}
+      {/* Progress track — desktop only; CSS marquee has no scrollLeft to
+          track. Always rendered (hidden via the .hof-progress media query
+          above, not JS) so hydration can't remove it and shift the layout
+          below. */}
+      <div className="hof-progress relative mt-3 h-px w-full bg-foreground/[0.06] overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0"
+          style={{
+            width: `${Math.max(6, progress * 100)}%`,
+            background:
+              "linear-gradient(90deg, transparent 0%, oklch(0.72 0.10 60 / 0.85) 50%, transparent 100%)",
+            boxShadow: "0 0 12px oklch(0.72 0.10 60 / 0.55)",
+          }}
+        />
+      </div>
     </div>
   );
 }

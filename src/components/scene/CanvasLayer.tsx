@@ -213,6 +213,14 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         // non-critical requests. Frame 0 was already high; extending to all
         // group-0 frames below criticalCount closes the 25%-stuck regression.
         const isCritical = gi === 0 && fi < criticalCount;
+        // NOTE: do NOT mark non-critical frames `priority: "low"`. Measured
+        // 2026-07: doing so regressed the homepage from Perf 71 → 39, with
+        // Total Blocking Time 210 ms → 8,160 ms and LCP 6.3 s → 15.4 s.
+        // Deprioritising the fetches bunches their completion, so the
+        // createImageBitmap decodes all land on the main thread at once
+        // instead of arriving spread out. Browser-default priority keeps the
+        // decode work naturally staggered. Left explicit so it isn't
+        // "optimised" again.
         const priority: RequestInit = (fi === 0 || isCritical) ? { priority: "high" } as RequestInit : {};
         return fetch(`/sequences/${path}/frame_${pad}.webp`, priority)
           .then(r  => r.blob())
