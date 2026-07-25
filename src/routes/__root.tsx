@@ -135,7 +135,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "https://www.youtube.com/@Susantinventions",
             "https://www.instagram.com/sushanthpaatnaik/",
             "https://www.facebook.com/sushanthpaatnaik",
-            "https://en.wikipedia.org/wiki/Sushanth_Paatnaik",
+            "https://or.wikipedia.org/wiki/%E0%AC%B8%E0%AD%81%E0%AC%B6%E0%AC%BE%E0%AC%A8%E0%AD%8D%E0%AC%A4_%E0%AC%AA%E0%AC%9F%E0%AD%8D%E0%AC%9F%E0%AC%A8%E0%AC%BE%E0%AD%9F%E0%AC%95",
           ],
           knowsAbout: [
             "Graphene",
