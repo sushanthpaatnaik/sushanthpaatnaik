@@ -1,14 +1,14 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import type Lenis from "lenis";
 import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
+// Order and length must match CHAPTER_BANDS.
 const chapters = [
   { id: "spark", label: "Origin" },
-  { id: "founder", label: "Founder" },
   { id: "carbon-intelligence", label: "Material Intelligence" },
   { id: "industrial", label: "Industrial Translation" },
-  { id: "recognition", label: "Recognition" },
-  { id: "ecosystem", label: "Ecosystem" },
+  { id: "recognition", label: "Recognition & Ecosystem" },
   { id: "future", label: "Future Systems" },
 ];
 
@@ -25,8 +25,10 @@ function getChapterFromProgress(sp: number): number {
 
 export default function HUD({
   scrollProgress: _scrollProgress,
+  lenisRef,
 }: {
   scrollProgress: React.MutableRefObject<number>;
+  lenisRef?: React.MutableRefObject<Lenis | null>;
 }) {
   const [idx, setIdx] = useState(0);
   const lastIdx = useRef(0);
@@ -40,7 +42,21 @@ export default function HUD({
     }
   });
 
-
+  // Jump to a chapter's band midpoint. Routed through Lenis when it is
+  // driving the page: the canvas sequence reads lenis.targetScroll, and a
+  // bare window.scrollTo moves the document without updating that, which
+  // would leave the background frozen on the old frame after a rail click.
+  // Native scroll (touch devices, reduced-motion) has no Lenis instance and
+  // falls through to window.scrollTo.
+  const goToChapter = (i: number) => {
+    if (typeof window === "undefined") return;
+    const [bIn, bOut] = CHAPTER_BANDS[i];
+    const limit = document.documentElement.scrollHeight - window.innerHeight;
+    const target = Math.round(((bIn + bOut) / 2) * limit);
+    const lenis = lenisRef?.current;
+    if (lenis) lenis.scrollTo(target, { duration: 1.1 });
+    else window.scrollTo({ top: target, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -74,6 +90,7 @@ export default function HUD({
                 active={active}
                 distance={distance}
                 visible={isNear}
+                onSelect={() => goToChapter(i)}
               />
             );
           })}
@@ -110,20 +127,31 @@ function ChapterMarker({
   chapter,
   active,
   visible,
+  onSelect,
 }: {
   chapter: { id: string; label: string };
   active: boolean;
   distance: number;
   visible: boolean;
+  onSelect: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
-  const showLabel = active || hovered;
+  const [focused, setFocused] = useState(false);
+  // Reveal the label on keyboard focus too, otherwise a keyboard user tabbing
+  // the rail sees only an unlabelled dot.
+  const showLabel = active || hovered || focused;
 
   return (
-    <div
-      className="relative flex items-center gap-3 pointer-events-auto cursor-default"
+    <button
+      type="button"
+      aria-label={`Go to ${chapter.label}`}
+      aria-current={active ? "true" : undefined}
+      onClick={onSelect}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      className="relative flex items-center gap-3 pointer-events-auto cursor-pointer bg-transparent border-0 p-0 text-left rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
     >
       {/* Active backdrop glow — soft documentary spotlight, breathes when active */}
       <motion.div
@@ -213,6 +241,6 @@ function ChapterMarker({
           {chapter.label}
         </motion.span>
       </motion.div>
-    </div>
+    </button>
   );
 }

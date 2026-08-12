@@ -326,7 +326,7 @@ function Index() {
         }}
       >
         <Nav />
-        <HUD scrollProgress={scrollProgress} />
+        <HUD scrollProgress={scrollProgress} lenisRef={lenisRef} />
         <MobileCTABar />
         {/*
          * z-[10]: explicit stacking context ensures ALL section content

@@ -10,13 +10,13 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
  * is SVG, gradient, or CSS, kept at ultra-low opacity so it is **felt**
  * rather than seen.
  *
- *   0 Origin       → neural particles + soft cool ink wash
- *   1 Founder      → faint volumetric beam + grain
- *   2 Material     → graphene hex micro-grid + cool diffusion
- *   3 Industrial   → engineering grid + measurement marks
- *   4 Recognition  → warm archival sepia + faint paper grain
- *   5 Ecosystem    → infrastructure grid + connecting orbital lines
- *   6 Future       → planetary curvature arc + orbital rings + far glow
+ *   0 Origin                 → cool ink wash + faint volumetric beam
+ *                              (absorbs the former standalone Founder layer)
+ *   1 Material               → graphene hex micro-grid + cool diffusion
+ *   2 Industrial             → engineering grid + measurement marks
+ *   3 Recognition & Ecosystem → archival spotlights + infrastructure haze
+ *                              (the two former layers, composited)
+ *   4 Future                 → planetary curvature arc + orbital rings + far glow
  *
  * Cross-fades are strict (only neighbouring chapters overlap) and driven by
  * the shared `useChapterPhase` motion value, so the rail, photographic
@@ -303,6 +303,11 @@ function ConnectingLines() {
 
 /* ──────────────────────── Chapter compositions ──────────────────────── */
 
+// Origin now spans the planetary opening *and* the founder's lab, so its
+// atmosphere carries both: the cool cosmic wash for the first beat and the
+// twin volumetric beams that used to be the standalone Founder layer. Both
+// are near-invisible washes, so compositing them costs nothing and avoids a
+// hard swap mid-chapter.
 function OriginAtmosphere() {
   return (
     <>
@@ -314,19 +319,14 @@ function OriginAtmosphere() {
         }}
       />
       <HexLattice opacity={0.03} />
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 40% 80% at 22% 50%, oklch(0.52 0.04 232 / 0.05), transparent 70%), radial-gradient(ellipse 30% 70% at 78% 50%, oklch(0.50 0.05 50 / 0.04), transparent 75%)",
+        }}
+      />
     </>
-  );
-}
-
-function FounderAtmosphere() {
-  return (
-    <div
-      className="absolute inset-0 mix-blend-screen"
-      style={{
-        background:
-          "radial-gradient(ellipse 40% 80% at 22% 50%, oklch(0.52 0.04 232 / 0.05), transparent 70%), radial-gradient(ellipse 30% 70% at 78% 50%, oklch(0.50 0.05 50 / 0.04), transparent 75%)",
-      }}
-    />
   );
 }
 
@@ -413,9 +413,30 @@ function IndustrialAtmosphere() {
   );
 }
 
-function RecognitionAtmosphere() {
+// Recognition & Ecosystem share one layer now: the archival spotlight
+// treatment, then the ecosystem's atmospheric haze composited beneath it.
+function RecognitionEcosystemAtmosphere() {
+  const reduce = useReducedMotion();
   return (
     <>
+      {/* Ecosystem haze — sits under the archival treatment */}
+      <motion.div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 58% 50% at 65% 52%, oklch(0.28 0.018 232 / 0.07), transparent 72%), radial-gradient(ellipse 36% 56% at 80% 36%, oklch(0.22 0.012 240 / 0.05), transparent 68%)",
+        }}
+        animate={reduce ? undefined : { opacity: [0.68, 1, 0.68] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 42% 34% at 70% 56%, oklch(0.18 0.014 236 / 0.06), transparent 70%)",
+          filter: "blur(42px)",
+        }}
+      />
       {/* Subtle dark surround — luxury edge, eased to avoid crushed shadows */}
       <div
         className="absolute inset-0"
@@ -454,34 +475,6 @@ function RecognitionAtmosphere() {
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.60  0 0 0 0 0.66  0 0 0 0 0.78  0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>\")",
-        }}
-      />
-    </>
-  );
-}
-
-function EcosystemAtmosphere() {
-  const reduce = useReducedMotion();
-  return (
-    <>
-      {/* Atmospheric glow — opacity-only, GPU-composited */}
-      <motion.div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background:
-            "radial-gradient(ellipse 58% 50% at 65% 52%, oklch(0.28 0.018 232 / 0.07), transparent 72%), radial-gradient(ellipse 36% 56% at 80% 36%, oklch(0.22 0.012 240 / 0.05), transparent 68%)",
-        }}
-        animate={reduce ? undefined : { opacity: [0.68, 1, 0.68] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Volumetric haze — blur on static element, no animation (cached rasterization) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 42% 34% at 70% 56%, oklch(0.18 0.014 236 / 0.06), transparent 70%)",
-          filter: "blur(42px)",
         }}
       />
     </>
@@ -675,21 +668,15 @@ export default function ChapterAtmosphere() {
         <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={1}>
-        <FounderAtmosphere />
-      </ChapterLayer>
-      <ChapterLayer scrollYProgress={scrollYProgress} idx={2}>
         <MaterialAtmosphere />
       </ChapterLayer>
-      <ChapterLayer scrollYProgress={scrollYProgress} idx={3}>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={2}>
         <IndustrialAtmosphere />
       </ChapterLayer>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={3}>
+        <RecognitionEcosystemAtmosphere />
+      </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={4}>
-        <RecognitionAtmosphere />
-      </ChapterLayer>
-      <ChapterLayer scrollYProgress={scrollYProgress} idx={5}>
-        <EcosystemAtmosphere />
-      </ChapterLayer>
-      <ChapterLayer scrollYProgress={scrollYProgress} idx={6}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>

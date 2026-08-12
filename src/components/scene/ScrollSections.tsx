@@ -19,19 +19,41 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
 
 const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
 
-// Order mirrors the primary nav so the ecosystem grid and the header agree.
-// Every nav destination must appear here — Early Works was previously absent,
-// which left the grid one short of the nav and made the heading count wrong.
+// Ecosystem directory — every primary-nav destination still reachable, but
+// grouped into six entries instead of nine so the closing chapter reads as a
+// compact index rather than a wall. Grouped rows link to their primary route
+// and expose the companions as secondary links, so no page lost an entrance.
 const gateways = [
-  { to: "/about",        n: "I",    label: "About",        line: "Founder, philosophy, journey." },
-  { to: "/early-works",  n: "II",   label: "Early Works",  line: "Six inventions. The origin archive." },
-  { to: "/innovations",  n: "III",  label: "Innovations",  line: "Graphene, materials, systems." },
-  { to: "/ventures",     n: "IV",   label: "Ventures",     line: "Six operating companies. One stack." },
-  { to: "/recognitions", n: "V",    label: "Honors",       line: "Six Presidential awards. TED. MIT TR." },
-  { to: "/voices",       n: "VI",   label: "Voices",       line: "Talks, perspectives, and interviews." },
-  { to: "/essays",       n: "VII",  label: "Essays",       line: "Notes from the workshop." },
-  { to: "/news",         n: "VIII", label: "News",         line: "Editorial archive." },
-  { to: "/engage",       n: "IX",   label: "Engage",       line: "Partnerships, advisory, and collaboration." },
+  {
+    to: "/about", n: "I", label: "About",
+    line: "Founder, philosophy, journey.",
+    also: [],
+  },
+  {
+    to: "/early-works", n: "II", label: "Early Works",
+    line: "Inventions and the origin archive.",
+    also: [],
+  },
+  {
+    to: "/innovations", n: "III", label: "Innovations",
+    line: "Graphene, materials, systems.",
+    also: [],
+  },
+  {
+    to: "/ventures", n: "IV", label: "Ventures",
+    line: "Operating companies. Industrial translation.",
+    also: [],
+  },
+  {
+    to: "/recognitions", n: "V", label: "Honors & Voices",
+    line: "Recognition, talks, perspectives.",
+    also: [{ to: "/voices", label: "Voices" }],
+  },
+  {
+    to: "/essays", n: "VI", label: "Essays, News & Engage",
+    line: "Workshop notes, editorial archive, collaboration.",
+    also: [{ to: "/news", label: "News" }, { to: "/engage", label: "Engage" }],
+  },
 ] as const;
 
 /* ──────────────────────────────────────────────────────────────────
@@ -131,8 +153,45 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
 
 /* ──────────────────────────────────────────────────────────────────
    Chapter 0 — Origin (id="spark")
+
+   Two beats inside one chapter, not two chapters. Beat A is the hero over
+   the planetary opening; beat B is the founder's voice once the canvas has
+   dissolved into the lab. They cross-fade against each other on local band
+   progress, and are laid out in different columns (centred vs right) so the
+   overlap reads as a dissolve rather than as two texts stacked in the same
+   place. Founder was previously its own full-screen chapter with its own
+   rail entry.
    ────────────────────────────────────────────────────────────────── */
-function OriginContent() {
+function OriginContent({
+  beatA,
+  beatB,
+  peA,
+  peB,
+}: {
+  beatA: MotionValue<number>;
+  beatB: MotionValue<number>;
+  peA: MotionValue<"auto" | "none">;
+  peB: MotionValue<"auto" | "none">;
+}) {
+  return (
+    <div className="relative w-full h-full">
+      <motion.div
+        className="absolute inset-0"
+        style={{ opacity: beatA, pointerEvents: peA }}
+      >
+        <OriginHero />
+      </motion.div>
+      <motion.div
+        className="absolute inset-0"
+        style={{ opacity: beatB, pointerEvents: peB }}
+      >
+        <FounderVoice />
+      </motion.div>
+    </div>
+  );
+}
+
+function OriginHero() {
   return (
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6">
       {/* Origin: dark cosmic background — moderate center shield */}
@@ -254,9 +313,9 @@ function OriginContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 1 — Founder (id="founder")
+   Origin, beat B — the founder's voice (no separate chapter id)
    ────────────────────────────────────────────────────────────────── */
-function FounderContent() {
+function FounderVoice() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
       {/* Founder: dark footage, text on right — right-side shield */}
@@ -342,105 +401,123 @@ function IndustrialContent() {
         </h2>
         {/* Body */}
         <p className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md ml-auto">
-          Solar coatings, batteries that charge in minutes, polymer additives, climate infrastructure — each a downstream of the same material platform.
+          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each a downstream of the same material platform.
         </p>
+        {/* Ventures — the commercial expression of the platform */}
+        <p className="mt-5 text-sm md:text-base text-muted-foreground/70 leading-relaxed max-w-md ml-auto">
+          Six operating companies carry that platform into industry.
+        </p>
+        {/* Link row */}
+        <div className="mt-9 flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-3">
+          <Link
+            to="/innovations"
+            className="text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
+          >
+            Explore Innovations →
+          </Link>
+          <Link
+            to="/ventures"
+            className="text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
+          >
+            View Ventures →
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 4 — Recognition (id="recognition")
-   ────────────────────────────────────────────────────────────────── */
-function RecognitionContent() {
-  return (
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Recognition: real photo background — stronger center shield for readability */}
-      <ContentShield align="center" strength={0.72} />
-      {/* Soft radial gradient bg */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse_55%_50%_at_50%_50%,oklch(0.18_0.012_232/0.10),transparent_72%)",
-        }}
-      />
-      <div className="relative z-10 max-w-4xl text-center">
-        {/* Eyebrow */}
-        <p className="text-[10px] uppercase tracking-[0.5em] text-primary/80 mb-8">
-          Recognition
-        </p>
-        {/* H2 */}
-        <h2 className="font-display text-[clamp(2rem,7vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-gradient">
-          Recognised early.<br className="hidden md:inline" /> Responsible forever.
-        </h2>
-        {/* Body */}
-        <p className="mx-auto mt-10 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground">
-          Six Indian Presidential awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today. The record exists. The next prototype matters more.
-        </p>
-        {/* Link */}
-        <Link
-          to="/recognitions"
-          className="mt-12 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.42em] text-foreground/75 hover:text-foreground transition-colors"
-        >
-          Open the archive →
-        </Link>
-      </div>
-    </div>
-  );
-}
+   Chapter 3 — Recognition & Ecosystem (id="recognition")
 
-/* ──────────────────────────────────────────────────────────────────
-   Chapter 5 — Ecosystem (id="ecosystem")
+   Recognition and Ecosystem were separate chapters. Merged: the record
+   states the context, the directory is where the reader goes next. One
+   background, one shield, one column — the two never cross-fade against
+   each other, so no duplicated plate and no overlapping text.
    ────────────────────────────────────────────────────────────────── */
-function EcosystemContent() {
+function RecognitionEcosystemContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Ecosystem: sunset-lit corridor walk — brighter than the old dark
-          infrastructure plate, so the shield needs more strength here to
-          keep the nav grid legible against direct window light. */}
-      <ContentShield align="left" strength={0.76} />
+      {/* Bright product/industrial plate. The directory spans nearly the full
+          width in its two-column form, so a left-weighted scrim would leave
+          the right column sitting on the brightest part of the frame — this
+          chapter needs the centre shield, not the left one. */}
+      <ContentShield align="center" strength={0.80} />
       {/* overflow-y-auto on the inner scroller, not the flex container, so iOS
           doesn't fight the fixed parent's overflow-hidden on the scroll chain.
           max-height uses dvh so it's constrained to the actual viewport height
           and overflow-y actually triggers (100% in flex items-center doesn't). */}
-      <div className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain" style={{ maxHeight: "calc(100dvh - 5rem)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+      <div
+        className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain"
+        style={{ maxHeight: "calc(100dvh - 5rem)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      >
         {/* Eyebrow */}
         <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-          Ecosystem
+          Recognition &amp; Ecosystem
         </p>
-        {/* H2 — smaller clamp floor on mobile so it doesn't eat too much height */}
-        <h2 className="font-display text-[clamp(1.75rem,6.5vw,4.75rem)] leading-[1.02] tracking-[-0.04em] text-gradient [text-wrap:balance]">
-          Nine thresholds into the work.
+        {/* H2 */}
+        <h2 className="font-display text-[clamp(1.75rem,6.2vw,4.4rem)] leading-[1.02] tracking-[-0.04em] text-gradient [text-wrap:balance]">
+          Recognised early. Building continuously.
         </h2>
-        {/* Body */}
-        <p className="mt-4 md:mt-8 max-w-xl text-sm text-muted-foreground/85">
-          The homepage is the opening sequence. The ecosystem lives behind these doors — each one its own cinematic world.
+        {/* The record, then the philosophy that outranks it */}
+        <p className="mt-4 md:mt-7 max-w-2xl text-sm md:text-[15px] leading-relaxed text-muted-foreground/85">
+          Six Indian Presidential awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today.
         </p>
-        {/* Gateway list — 2-col on mobile so all 8 fit without scrolling */}
-        <div className="mt-6 md:mt-12 lg:mt-16 grid grid-cols-2 gap-x-4 sm:gap-x-10 gap-y-0">
+        <p className="mt-3 max-w-2xl text-sm md:text-[15px] leading-relaxed text-foreground/70">
+          The record exists. The next prototype matters more.
+        </p>
+        <Link
+          to="/recognitions"
+          className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.42em] text-foreground/75 hover:text-foreground transition-colors"
+        >
+          Open the archive →
+        </Link>
+
+        {/* Ecosystem directory — restrained editorial index. Single column on
+            mobile, two on md+. Roman numerals retained for archive character. */}
+        <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 gap-y-0">
           {gateways.map((g) => (
-            <Link
+            <div
               key={g.to}
-              to={g.to}
-              className="group block border-t border-foreground/[0.08] py-3 md:py-4 lg:py-5 hover:border-foreground/30 transition-colors duration-500"
+              className="group border-t border-foreground/[0.08] py-3 md:py-4 hover:border-foreground/25 transition-colors duration-500"
             >
               <div className="flex items-baseline gap-3 md:gap-5">
-                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/50 shrink-0 whitespace-nowrap">
+                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45 shrink-0 whitespace-nowrap">
                   {g.n}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-display text-sm sm:text-base md:text-xl lg:text-2xl tracking-[-0.015em] text-foreground/90 group-hover:text-gradient transition-colors duration-500">
+                  <Link
+                    to={g.to}
+                    className="font-display text-base md:text-lg lg:text-xl tracking-[-0.015em] text-foreground/90 hover:text-gradient transition-colors duration-500"
+                    style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.65)" }}
+                  >
                     {g.label}
-                  </div>
-                  <p className="text-[10px] md:text-[13px] text-muted-foreground/70 truncate">{g.line}</p>
+                  </Link>
+                  {/* Sub-line sits over the brightest part of the plate on
+                      narrow screens, so it carries its own shadow rather than
+                      relying on the shield alone. */}
+                  <p
+                    className="mt-0.5 text-[11px] md:text-[12.5px] text-muted-foreground/80 [text-wrap:balance]"
+                    style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.7)" }}
+                  >
+                    {g.line}
+                  </p>
+                  {g.also.length > 0 && (
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+                      {g.also.map((s) => (
+                        <Link
+                          key={s.to}
+                          to={s.to}
+                          className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-muted-foreground/50 hover:text-foreground/80 transition-colors"
+                        >
+                          {s.label} →
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <span className="hidden sm:block text-foreground/40 group-hover:text-foreground/80 group-hover:translate-x-1 transition-all duration-500">
-                  →
-                </span>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
@@ -449,7 +526,7 @@ function EcosystemContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 6 — Future Systems (id="future")
+   Chapter 4 — Future Systems (id="future")
    ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
   return (
@@ -612,8 +689,6 @@ export default function ScrollSections() {
   const op2 = useTransform(scrollYProgress, (sp) => chapOp(sp, 2));
   const op3 = useTransform(scrollYProgress, (sp) => chapOp(sp, 3));
   const op4 = useTransform(scrollYProgress, (sp) => chapOp(sp, 4));
-  const op5 = useTransform(scrollYProgress, (sp) => chapOp(sp, 5));
-  const op6 = useTransform(scrollYProgress, (sp) => chapOp(sp, 6));
 
   // Gate pointer events to whichever chapter is currently visible.
   // Without this, zero-opacity chapters sitting above in DOM order
@@ -623,22 +698,38 @@ export default function ScrollSections() {
   const pe2 = useTransform(op2, (v) => v > 0.05 ? "auto" : "none");
   const pe3 = useTransform(op3, (v) => v > 0.05 ? "auto" : "none");
   const pe4 = useTransform(op4, (v) => v > 0.05 ? "auto" : "none");
-  const pe5 = useTransform(op5, (v) => v > 0.05 ? "auto" : "none");
-  const pe6 = useTransform(op6, (v) => v > 0.05 ? "auto" : "none");
 
   const y0 = useTransform(scrollYProgress, (sp) => chapY(sp, 0, yIn, yOut));
   const y1 = useTransform(scrollYProgress, (sp) => chapY(sp, 1, yIn, yOut));
   const y2 = useTransform(scrollYProgress, (sp) => chapY(sp, 2, yIn, yOut));
   const y3 = useTransform(scrollYProgress, (sp) => chapY(sp, 3, yIn, yOut));
   const y4 = useTransform(scrollYProgress, (sp) => chapY(sp, 4, yIn, yOut));
-  const y5 = useTransform(scrollYProgress, (sp) => chapY(sp, 5, yIn, yOut));
-  const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
+
+  // ── Origin's internal two-beat cross-fade ────────────────────────────────
+  // Local progress inside chapter 0's band, then a single dissolve from the
+  // hero (beat A) to the founder's voice (beat B). Reduced motion skips the
+  // dissolve entirely and holds the hero, so nothing animates and no text is
+  // ever mid-fade.
+  const BEAT_FROM = 0.46;
+  const BEAT_TO   = 0.60;
+  const lp0 = useTransform(scrollYProgress, (sp) => {
+    const [bIn, bOut] = CHAPTER_BANDS[0];
+    return c01((sp - bIn) / (bOut - bIn));
+  });
+  const beatA = useTransform(lp0, (v) =>
+    reduce ? 1 : 1 - eoo(c01((v - BEAT_FROM) / (BEAT_TO - BEAT_FROM))),
+  );
+  const beatB = useTransform(lp0, (v) =>
+    reduce ? 0 : eoo(c01((v - BEAT_FROM) / (BEAT_TO - BEAT_FROM))),
+  );
+  const peA = useTransform(beatA, (v) => (v > 0.5 ? "auto" : "none"));
+  const peB = useTransform(beatB, (v) => (v > 0.5 ? "auto" : "none"));
 
   return (
     <>
       {/* Ghost scroll track — provides TOTAL_VH of scroll travel and chapter anchor points */}
       <div className="relative" style={{ height: `${TOTAL_VH}vh` }}>
-        {(["spark", "founder", "carbon-intelligence", "industrial", "recognition", "ecosystem", "future"] as const).map((id, i) => (
+        {(["spark", "carbon-intelligence", "industrial", "recognition", "future"] as const).map((id, i) => (
           <div
             key={id}
             id={id}
@@ -660,58 +751,42 @@ export default function ScrollSections() {
       >
         <ScrollProgressBar progress={scrollYProgress} />
 
-        {/* Chapter 0 — Origin */}
+        {/* Chapter 0 — Origin (hero → founder voice, one chapter, two beats) */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
+          className="absolute inset-0"
           style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: wc }}
         >
-          <OriginContent />
+          <OriginContent beatA={beatA} beatB={beatB} peA={peA} peB={peB} />
         </motion.div>
 
-        {/* Chapter 1 — Founder */}
+        {/* Chapter 1 — Material Intelligence */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: wc }}
         >
-          <FounderContent />
+          <MaterialContent />
         </motion.div>
 
-        {/* Chapter 2 — Material Intelligence */}
+        {/* Chapter 2 — Industrial Translation */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: wc }}
         >
-          <MaterialContent />
+          <IndustrialContent />
         </motion.div>
 
-        {/* Chapter 3 — Industrial Translation */}
+        {/* Chapter 3 — Recognition & Ecosystem */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: wc }}
         >
-          <IndustrialContent />
+          <RecognitionEcosystemContent />
         </motion.div>
 
-        {/* Chapter 4 — Recognition */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
-        >
-          <RecognitionContent />
-        </motion.div>
-
-        {/* Chapter 5 — Ecosystem */}
-        <motion.div
-          className="absolute inset-0 flex items-center"
-          style={{ opacity: op5, y: y5, pointerEvents: pe5, willChange: wc }}
-        >
-          <EcosystemContent />
-        </motion.div>
-
-        {/* Chapter 6 — Future Systems */}
+        {/* Chapter 4 — Future Systems */}
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ opacity: op6, y: y6, pointerEvents: pe6, willChange: wc }}
+          style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
         >
           <FutureContent />
         </motion.div>

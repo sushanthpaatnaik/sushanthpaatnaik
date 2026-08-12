@@ -109,12 +109,13 @@ export function useChapterPhase(ids: readonly string[]): MotionValue<number> {
   return phase;
 }
 
+// Must stay in the same order as CHAPTER_BANDS — index i here is chapter i
+// there. Founder merged into Origin ("spark") and Ecosystem into Recognition,
+// so those two ids no longer exist as standalone anchors.
 export const HOME_CHAPTER_IDS = [
   "spark",
-  "founder",
   "carbon-intelligence",
   "industrial",
   "recognition",
-  "ecosystem",
   "future",
 ] as const;

@@ -73,19 +73,15 @@ function getChapterFromProgress(sp: number): number {
 // CSS transition below (unchanged mechanism, now keyed to text chapter
 // instead of video group since there's only one video group now).
 const CHAPTER_GRADES = [
-  // Origin — cold blue atmosphere, warm gold horizon
-  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.16 },
-  // Founder — soft neutral warm-gray, lab practical lighting
-  { bg: "oklch(0.55 0.03 70)", opacity: 0.13 },
+  // Origin — cold blue atmosphere, warm gold horizon. Holds through the
+  // in-chapter dissolve into the lab, so it stays neutral enough for both.
+  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.15 },
   // Material Intelligence — graphene blue: deep, cool, metallic
   { bg: "oklch(0.36 0.14 218)", opacity: 0.18 },
   // Industrial Translation — warm industrial amber
   { bg: "oklch(0.58 0.15 50)", opacity: 0.17 },
-  // Recognition — prestige white-gold
+  // Recognition & Ecosystem — prestige white-gold
   { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.14 },
-  // Ecosystem — cool platinum-blue, distinguishes it from Recognition despite
-  // both drawing on the same closing shot
-  { bg: "oklch(0.62 0.05 230)", opacity: 0.13 },
   // Future Systems — electric blue-cyan
   { bg: "oklch(0.48 0.24 242)", opacity: 0.21 },
 ] as const;

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 
-const RECOG = 4;
+// Chapter index of Recognition & Ecosystem in CHAPTER_BANDS (was 4 when
+// Recognition was its own chapter among seven).
+const RECOG = 3;
 
 /**
  * Cinematic institutional archive atmosphere for the Recognition chapter.
