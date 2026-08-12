@@ -2,41 +2,90 @@ import React, { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import type Lenis from "lenis";
 import sceneSpark from "@/assets/story-01-spark.webp";
+import { CHAPTER_BANDS, N_CHAPTERS } from "./chapterBands";
 
-// ─── Sequence groups ────────────────────────────────────────────────────────
-// Each entry spans one or two CHAPTER_BANDS and owns a 96-frame WebP sequence.
-// start/end must exactly match the combined chapter band boundaries so that
-// all scroll layers (content, atmosphere, HUD, canvas) share one timeline.
-const GROUPS = [
-  { path: "origin-founder",         start: 0.000, end: 0.240 },
-  { path: "material-intelligence",  start: 0.240, end: 0.360 },
-  { path: "industrial-translation", start: 0.360, end: 0.580 },
-  { path: "recognition-ecosystem",  start: 0.580, end: 0.810 },
-  { path: "future-systems",         start: 0.810, end: 1.000 },
-] as const;
+// ─── Single continuous sequence ─────────────────────────────────────────────
+// The homepage now plays one continuous film across the whole scroll instead
+// of five independently-cut chapter clips. FRAME_MAP pairs each scroll
+// breakpoint (from CHAPTER_BANDS) with the frame in the film that best
+// matches that chapter's content, so — e.g. — "Origin" always shows the
+// Earth/India opening and "Industrial Translation" always shows the
+// manufacturing sequence, regardless of how the raw footage's own timing
+// lines up with the (unrelated) scroll-band widths.
+//
+// SCROLL_BREAKS has N_CHAPTERS+1 points (the shared start/end of every band);
+// FRAME_BREAKS gives the source frame at each of those points. Between two
+// breakpoints the frame advances linearly with scroll — exactly like the
+// old per-group local-progress math, just without the hard cut at group
+// boundaries, since there are no group boundaries anymore.
+const SEQUENCE_PATH = "founder-film";
+const FRAME_COUNT   = 476;                 // total frames in the film, ~59.5fps × 8s
+const LAST_FRAME    = FRAME_COUNT - 1;
 
-const N_GROUPS    = GROUPS.length;        // 5
-const FRAME_COUNT = 96;                   // frames per sequence
-const LAST_FRAME  = FRAME_COUNT - 1;      // 95
+const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
+const FRAME_BREAKS  = [0, 54, 131, 256, 375, 411, 440, LAST_FRAME];
+
+// Frame range owned by each text chapter — just FRAME_BREAKS read pairwise.
+// This is the "group" of the old per-chapter-clip system, redefined as a
+// slice of the one continuous sequence instead of a separate file: loading
+// is still triggered by chapter boundary crossings (proven to work), it
+// just no longer needs a boundary-aligned hard cut in the asset itself.
+const CHAPTER_FRAME_RANGES: ReadonlyArray<readonly [number, number]> =
+  FRAME_BREAKS.slice(0, -1).map((f, i) => [f, FRAME_BREAKS[i + 1]] as const);
+
+function getFrameIndex(sp: number): number {
+  const s = Math.max(0, Math.min(sp, 1));
+  for (let i = 0; i < SCROLL_BREAKS.length - 1; i++) {
+    const bIn = SCROLL_BREAKS[i];
+    const bOut = SCROLL_BREAKS[i + 1];
+    if (s <= bOut || i === SCROLL_BREAKS.length - 2) {
+      const lp = bOut > bIn ? (s - bIn) / (bOut - bIn) : 0;
+      const fIn = FRAME_BREAKS[i];
+      const fOut = FRAME_BREAKS[i + 1];
+      return Math.round(fIn + Math.max(0, Math.min(1, lp)) * (fOut - fIn));
+    }
+  }
+  return LAST_FRAME;
+}
+
+// Same threshold HUD.tsx uses to decide the active chapter from scroll
+// progress — duplicated here (rather than imported) because it's three
+// lines and pulling in HUD's module would drag its motion-value wiring
+// into the canvas's hot RAF path for no reason.
+function getChapterFromProgress(sp: number): number {
+  for (let i = N_CHAPTERS - 1; i >= 0; i--) {
+    const [bIn, bOut] = CHAPTER_BANDS[i];
+    const threshold = i === 0 ? 0 : bIn + (bOut - bIn) * 0.05;
+    if (sp >= threshold) return i;
+  }
+  return 0;
+}
 
 // ─── Per-chapter color grades ────────────────────────────────────────────────
 // Applied as mix-blend-mode:color overlays — replaces hue+saturation of the
 // canvas frames while preserving luminance, matching a film LUT grade.
-// opacity is the active strength; divs fade in/out on group transition.
+// opacity is the active strength; divs cross-fade on chapter change via the
+// CSS transition below (unchanged mechanism, now keyed to text chapter
+// instead of video group since there's only one video group now).
 const CHAPTER_GRADES = [
-  // origin-founder — cold blue atmosphere, warm gold horizon
+  // Origin — cold blue atmosphere, warm gold horizon
   { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.16 },
-  // material-intelligence — graphene blue: deep, cool, metallic
+  // Founder — soft neutral warm-gray, lab practical lighting
+  { bg: "oklch(0.55 0.03 70)", opacity: 0.13 },
+  // Material Intelligence — graphene blue: deep, cool, metallic
   { bg: "oklch(0.36 0.14 218)", opacity: 0.18 },
-  // industrial-translation — warm industrial amber
+  // Industrial Translation — warm industrial amber
   { bg: "oklch(0.58 0.15 50)", opacity: 0.17 },
-  // recognition-ecosystem — prestige white-gold
+  // Recognition — prestige white-gold
   { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.14 },
-  // future-systems — electric blue-cyan
+  // Ecosystem — cool platinum-blue, distinguishes it from Recognition despite
+  // both drawing on the same closing shot
+  { bg: "oklch(0.62 0.05 230)", opacity: 0.13 },
+  // Future Systems — electric blue-cyan
   { bg: "oklch(0.48 0.24 242)", opacity: 0.21 },
 ] as const;
 
-type Bitmaps = (ImageBitmap | null)[][];
+type Bitmaps = (ImageBitmap | null)[];
 
 interface CanvasLayerProps {
   onReady?: () => void;
@@ -45,37 +94,47 @@ interface CanvasLayerProps {
 }
 
 /**
- * Chapter-based image-sequence canvas background.
+ * Single-sequence image canvas background.
  *
  * Master timeline: scrollYProgress [0, 1]
- *   → active group
- *   → group-local progress [0, 1]
- *   → frameIndex = floor(localProgress * 95)
+ *   → getFrameIndex(sp), a piecewise-linear map through FRAME_BREAKS
+ *   → nearest-loaded-frame search
  *
- * Preload policy: active group + one ahead + one behind.
+ * Preload policy: a window of frames around the current index (desktop
+ * keeps everything once loaded; touch evicts outside the window to respect
+ * the iOS ~300 MB/tab budget — see EVICT_WINDOW below).
  * Decode: createImageBitmap — GPU-ready, zero latency at draw time.
  * Draw: object-fit:cover with DPR-correct canvas buffer.
  * Reduced-motion: static poster, no canvas.
  */
 export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
-  const gradeRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null]);
+  const gradeRefs    = useRef<(HTMLDivElement | null)[]>(new Array(N_CHAPTERS).fill(null));
   const reduce       = useReducedMotion();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
   const lastFrameRef = useRef(-1);
-  const lastGroupRef = useRef(-1);
+  const lastChapterRef = useRef(-1);
 
-  // bitmaps[groupIdx][frameIdx] — populated lazily as frames decode
-  const bitmapsRef  = useRef<Bitmaps>(
-    Array.from({ length: N_GROUPS }, () => Array(FRAME_COUNT).fill(null))
-  );
-  // loading[groupIdx] — true once fetch for that group has started
-  const loadingRef  = useRef<boolean[]>(Array(N_GROUPS).fill(false));
-  // Generation counter — incremented on cleanup so in-flight fetches from
-  // a previous effect run (React StrictMode double-invoke) are discarded
+  // bitmaps[frameIdx] — populated lazily as frames decode.
+  const bitmapsRef = useRef<Bitmaps>(Array(FRAME_COUNT).fill(null));
+  // loading[frameIdx] — true once fetch for that frame has started.
+  const loadingRef = useRef<boolean[]>(Array(FRAME_COUNT).fill(false));
+  // chapterLoading[chapterIdx] — true once a load pass for that chapter's
+  // frame region has started. Mirrors the old per-group loadingRef exactly,
+  // just keyed to a slice of the single sequence instead of a separate file.
+  const chapterLoadingRef = useRef<boolean[]>(Array(N_CHAPTERS).fill(false));
+  // In-flight fetch() controllers, keyed by frame index — lets eviction
+  // actually cancel a request instead of only discarding it once it
+  // finishes. See the note above evictExcept for why this matters under
+  // heavy throttling: without it, stale fetches for frames the user has
+  // already scrolled past keep consuming the connection pool and the
+  // throttled bandwidth budget, starving the frames actually on screen.
+  const abortControllersRef = useRef<Map<number, AbortController>>(new Map());
+  // Generation counter — incremented on cleanup so in-flight fetches from a
+  // previous effect run (React StrictMode double-invoke) are discarded
   // without duplicating the bitmap array into memory.
-  const genRef      = useRef(0);
+  const genRef = useRef(0);
 
   // Reduced-motion path — no canvas, signal ready immediately.
   useEffect(() => {
@@ -98,45 +157,57 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
 
     // ── Mobile memory + bandwidth budget ─────────────────────────────────────
     // Source frames are 1280×720 → ~3.69 MB each as a decoded ImageBitmap.
-    // 96 frames × 5 groups = ~1.77 GB if all retained — far past iOS Safari's
-    // ~300 MB per-tab ceiling, which crashes the tab ("A problem repeatedly
-    // occurred"). On touch we (1) fetch pre-sized 854×480 variants, (2) load
-    // every 2nd frame, and (3) evict groups outside the active±1 window. The
-    // nearest-loaded-frame search in the render loop covers the skipped
-    // frames, so the sequence still animates in lock-step with scroll.
-    //
-    // The 854×480 variants under <group>/m/ are generated from the same
-    // masters at WebP q80 and are 48% smaller on the wire (33.8 MB → 17.7 MB
-    // across all 480 frames). This is a pure bandwidth win with no visual
-    // change: mobile previously downloaded the full 1280×720 file and then
-    // immediately threw ~56% of those pixels away via a decode-time
-    // resizeWidth/resizeHeight. Serving the smaller file just skips the
-    // wasted download and the resize work.
+    // All 480 retained would be ~1.77 GB — far past iOS Safari's ~300 MB
+    // per-tab ceiling, which crashes the tab. On touch we (1) fetch
+    // pre-sized 854×480 variants, (2) load every 2nd frame, and (3) evict
+    // frames outside a window around the current index. The
+    // nearest-loaded-frame search in the render loop covers skipped frames,
+    // so the sequence still animates in lock-step with scroll.
     const framesPath = (path: string) => (isTouch ? `${path}/m` : path);
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = isTouch ? 2 : 1;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
-    // Scroll is locked until this many group-0 frames are decoded and drawn.
+    // Scroll is locked until this many opening frames are decoded and drawn.
     // Kept intentionally small: the first 4 frames (desktop) or 2 (mobile)
-    // are enough for smooth initial scroll. Loading more before unblocking
-    // scroll caused visible stalls because group-1 fetches were competing for
-    // bandwidth — see notifyReady/loadGroup for the deferred-group fix.
+    // are enough for smooth initial scroll.
     const criticalCount = isTouch ? 2 : 4;
     let criticalLoaded  = 0;
 
-    // Close + drop every retained bitmap for groups outside [lo, hi] and mark
-    // them reloadable. Touch only — desktop keeps all groups for instant
-    // scroll-back, unchanged.
+    // The frame range to keep resident for a given active chapter: that
+    // chapter's own region plus its neighbours on each side. Chapter frame
+    // ranges are contiguous (CHAPTER_FRAME_RANGES[i][1] ===
+    // CHAPTER_FRAME_RANGES[i+1][0]), so active±1 collapses to one span.
+    const getRetainedRange = (chapter: number): [number, number] => [
+      CHAPTER_FRAME_RANGES[Math.max(0, chapter - 1)][0],
+      CHAPTER_FRAME_RANGES[Math.min(N_CHAPTERS - 1, chapter + 1)][1],
+    ];
+
+    // Close + drop every retained bitmap outside [lo, hi] and mark it
+    // reloadable; ABORT anything still in-flight for those frames instead
+    // of letting the throttled connection finish downloading bytes for a
+    // frame that's already been decided to be unneeded. Touch only —
+    // desktop keeps everything for instant scroll-back, unchanged.
+    //
+    // Without the abort, a fast scroll through several chapters leaves a
+    // backlog of stale fetches from chapters already passed sitting in the
+    // browser's (bandwidth- and connection-limited) queue ahead of the
+    // frames the user is actually looking at now — measured as loadedCount
+    // stuck near 0 while loadingCount climbed to 50 and the canvas froze on
+    // a stale frame for the remaining ~40% of the scroll.
     const evictExcept = (lo: number, hi: number) => {
-      for (let g = 0; g < N_GROUPS; g++) {
-        if (g >= lo && g <= hi) continue;
-        const grp = bitmapsRef.current[g];
-        let freed = false;
-        for (let f = 0; f < FRAME_COUNT; f++) {
-          if (grp[f]) { grp[f]!.close(); grp[f] = null; freed = true; }
+      for (let f = 0; f < FRAME_COUNT; f++) {
+        if (f >= lo && f <= hi) continue;
+        if (loadingRef.current[f] && !bitmapsRef.current[f]) {
+          abortControllersRef.current.get(f)?.abort();
+          abortControllersRef.current.delete(f);
+          loadingRef.current[f] = false;
         }
-        if (freed) loadingRef.current[g] = false;
+        if (bitmapsRef.current[f]) {
+          bitmapsRef.current[f]!.close();
+          bitmapsRef.current[f] = null;
+          loadingRef.current[f] = false;
+        }
       }
     };
 
@@ -147,23 +218,16 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Desktop: start ALL remaining groups now that the loader has exited and
-      // the full HTTP/2 bandwidth budget is free. Previously only group 1 was
-      // started here, so groups 2–4 only began loading when the user entered
-      // each group — on a cold CDN that caused a visible freeze at each
-      // group boundary. Firing all groups in parallel here means frames are
-      // already in-flight before the user reaches them.
-      //
-      // Touch: only prefetch as far as the eviction window will actually
-      // retain. Groups beyond active±1 are discarded on arrival by design, so
-      // fetching all five here burned mobile bandwidth downloading frames that
-      // were guaranteed to be thrown away. The render loop's group-change
-      // handler already pulls in gi±1 as the user advances.
-      const prefetchTo = isTouch ? 1 : N_GROUPS - 1;
-      for (let g = 1; g <= prefetchTo; g++) loadGroup(g);
-      // Reset lastGroupRef so the next RAF tick re-triggers the group-change
-      // block for whichever group the user has already scrolled into.
-      lastGroupRef.current = -1;
+      // Desktop: start every remaining chapter now that the loader has
+      // exited and the full HTTP/2 bandwidth budget is free.
+      // Touch: only prefetch chapter 1 — the eviction window only retains
+      // active±1, so fetching further ahead here would burn mobile
+      // bandwidth on frames guaranteed to be discarded before they're
+      // reached. The tick's chapter-change handler pulls in idx±1 as the
+      // user advances.
+      const prefetchTo = isTouch ? 1 : N_CHAPTERS - 1;
+      for (let c = 1; c <= prefetchTo; c++) loadChapterRegion(c);
+      lastChapterRef.current = -1; // re-trigger the chapter-change block on next tick
     };
 
     // Hard fallback — dismiss loader if critical frames never arrive.
@@ -203,143 +267,171 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
     };
 
-    // ── Group loader ─────────────────────────────────────────────────────────
-    const loadGroup = (gi: number) => {
-      if (gi < 0 || gi >= N_GROUPS) return;
-      if (loadingRef.current[gi]) return;
-      // Defer all non-critical groups until the loader has exited.
-      // Without this, the first RAF tick starts group 1 immediately (96+96
-      // parallel fetches), competing with group-0 critical frames for HTTP/2
-      // streams and causing the progress bar to stall. notifyReady() calls
-      // loadGroup(1) explicitly once the loader clears.
-      if (gi > 0 && !notifiedRef.current) return;
-      loadingRef.current[gi] = true;
-      const { path } = GROUPS[gi];
+    // ── Frame loader ─────────────────────────────────────────────────────────
+    const loadFrame = (fi: number): Promise<void> => {
+      if (fi < 0 || fi >= FRAME_COUNT) return Promise.resolve();
+      if (loadingRef.current[fi] || bitmapsRef.current[fi]) return Promise.resolve();
+      loadingRef.current[fi] = true;
       const gen = genRef.current; // capture generation at load-start
-
-      const loadFrame = (fi: number): Promise<void> => {
-        const pad = String(fi + 1).padStart(4, "0");
-        // All critical frames get high priority so they aren't queued behind
-        // non-critical requests. Frame 0 was already high; extending to all
-        // group-0 frames below criticalCount closes the 25%-stuck regression.
-        const isCritical = gi === 0 && fi < criticalCount;
-        // NOTE: do NOT mark non-critical frames `priority: "low"`. Measured
-        // 2026-07: doing so regressed the homepage from Perf 71 → 39, with
-        // Total Blocking Time 210 ms → 8,160 ms and LCP 6.3 s → 15.4 s.
-        // Deprioritising the fetches bunches their completion, so the
-        // createImageBitmap decodes all land on the main thread at once
-        // instead of arriving spread out. Browser-default priority keeps the
-        // decode work naturally staggered. Left explicit so it isn't
-        // "optimised" again.
-        const priority: RequestInit = (fi === 0 || isCritical) ? { priority: "high" } as RequestInit : {};
-        return fetch(`/sequences/${framesPath(path)}/frame_${pad}.webp`, priority)
-          .then(r  => r.blob())
-          .then(b  => makeBitmap(b))
-          .then(bmp => {
-            if (destroyed || genRef.current !== gen) { bmp.close(); return; }
-            // Discard if this group has since fallen outside the active±1
-            // window — otherwise a late frame would re-bloat memory for an
-            // off-screen group.
-            //
-            // CRITICAL: clear the group's loading flag when we discard. Without
-            // this the group was permanently poisoned — loadGroup() early-returns
-            // on `loadingRef.current[gi]`, so a group whose frames were all
-            // discarded in flight could never be re-fetched, and it stayed empty
-            // forever. The render loop then found zero bitmaps for that group,
-            // hit its `if (!bmp) return` guard, and simply kept the previous
-            // chapter's last frame on screen. That was the mobile "scroll gets
-            // stuck / no longer cinematic" bug: measured on a throttled iPhone
-            // profile the canvas froze for 27 of 41 scroll samples, beginning
-            // exactly at the industrial-translation boundary.
-            const active = lastGroupRef.current;
-            if (isTouch && active >= 0 && (gi < active - 1 || gi > active + 1)) {
+      const pad = String(fi + 1).padStart(4, "0");
+      const isCritical = fi < criticalCount;
+      // NOTE: do NOT mark non-critical frames `priority: "low"`. Measured
+      // 2026-07 on the old per-group loader: doing so regressed the
+      // homepage from Perf 71 → 39, with Total Blocking Time 210 ms →
+      // 8,160 ms and LCP 6.3 s → 15.4 s. Deprioritising the fetches bunches
+      // their completion, so the createImageBitmap decodes all land on the
+      // main thread at once instead of arriving spread out. Browser-default
+      // priority keeps the decode work naturally staggered. Left explicit
+      // so it isn't "optimised" again.
+      const controller = isTouch ? new AbortController() : undefined;
+      if (controller) abortControllersRef.current.set(fi, controller);
+      const opts: RequestInit = {
+        ...(fi === 0 || isCritical ? { priority: "high" as const } : {}),
+        ...(controller ? { signal: controller.signal } : {}),
+      };
+      return fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.webp`, opts)
+        .then(r  => r.blob())
+        .then(b  => makeBitmap(b))
+        .then(bmp => {
+          abortControllersRef.current.delete(fi);
+          if (destroyed || genRef.current !== gen) { bmp.close(); return; }
+          // Discard if this frame has since fallen outside the active
+          // chapter's retained range — otherwise a late frame would re-bloat
+          // memory for a now-offscreen part of the sequence. In practice
+          // evictExcept's abort() catches most of these before they even
+          // get this far; this is the fallback for a fetch that was already
+          // past its network round-trip when eviction ran.
+          //
+          // CRITICAL: clear the frame's loading flag when we discard.
+          // Without this the frame was permanently poisoned — loadFrame()
+          // early-returns on `loadingRef.current[fi]`, so a frame whose
+          // bitmap was discarded in flight could never be re-fetched. This
+          // exact bug (at group granularity) was the mobile "scroll gets
+          // stuck / no longer cinematic" freeze: measured on a throttled
+          // iPhone profile the canvas froze for 27 of 41 scroll samples.
+          if (isTouch && lastChapterRef.current >= 0) {
+            const [lo, hi] = getRetainedRange(lastChapterRef.current);
+            if (fi < lo || fi > hi) {
               bmp.close();
-              loadingRef.current[gi] = false; // allow a retry once in range
+              loadingRef.current[fi] = false; // allow a retry once in range
               return;
             }
-            bitmapsRef.current[gi][fi] = bmp;
-            // Count critical group-0 frames; fire notifyReady once threshold
-            // is met — not on frame 0 alone — so scroll unlocks only after
-            // the opener can play smoothly without visible gaps.
-            if (gi === 0 && criticalLoaded < criticalCount) {
-              criticalLoaded++;
-              onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
-              if (criticalLoaded >= criticalCount) notifyReady();
-            }
-          })
-          .catch(() => {
-            // Frame-0 error: unblock immediately rather than hanging.
-            // Other critical-frame errors: count toward threshold AND report
-            // progress so the bar advances even through CDN failures.
-            if (gi === 0) {
-              if (fi === 0) { notifyReady(); return; }
-              if (criticalLoaded < criticalCount) {
-                criticalLoaded++;
-                onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
-                if (criticalLoaded >= criticalCount) notifyReady();
-              }
-            }
-          });
-      };
-
-      // Frame 0 loads first so notifyReady fires promptly and the canvas
-      // always has something to draw before the rest of the group arrives.
-      // Mobile: load remaining frames in serial batches of 6 so we never
-      // saturate the browser's HTTP/2 connection pool (6 concurrent streams
-      // per origin on Chrome/Safari mobile). Desktop: fire all in parallel —
-      // HTTP/2 multiplexing on fast connections makes this fastest.
-      loadFrame(0).then(() => {
-        if (isTouch) {
-          // COVERAGE-FIRST ordering. Previously this walked the group front to
-          // back in serial batches, so a group was only watchable once most of
-          // it had arrived. With five groups sharing ~6 mobile connections the
-          // later chapters lost that race, and the render loop — which bails
-          // via `if (!bmp) return` when the active group has no frames at all —
-          // just held the previous chapter's final frame. Measured on a
-          // throttled iPhone profile: the canvas froze for 27 of 41 scroll
-          // samples, starting exactly at the industrial-translation boundary.
-          //
-          // Pass 1 spreads ANCHOR_COUNT frames evenly across the whole group,
-          // so after a handful of requests every chapter can already draw
-          // something from its own footage at any scroll position (the
-          // nearest-loaded-frame search below snaps to the closest anchor).
-          // Pass 2 then fills in the in-between frames for smoothness. Motion
-          // gets progressively finer instead of the chapter being blank.
-          const ANCHOR_COUNT = 8;
-          const anchorStride = Math.max(
-            frameStep,
-            Math.floor(FRAME_COUNT / ANCHOR_COUNT / frameStep) * frameStep,
-          );
-          const anchors = new Set<number>();
-          for (let i = frameStep; i < FRAME_COUNT; i += anchorStride) anchors.add(i);
-
-          const runBatches = async (frames: number[], size: number) => {
-            for (let i = 0; i < frames.length; i += size) {
-              if (destroyed) return;
-              await Promise.all(frames.slice(i, i + size).map(loadFrame));
-            }
-          };
-
-          const rest: number[] = [];
-          for (let i = frameStep; i < FRAME_COUNT; i += frameStep) {
-            if (!anchors.has(i)) rest.push(i);
           }
-
-          // Anchors in one shot (small set, worth the concurrency), then
-          // density in serial batches so we still don't swamp the pool.
-          runBatches([...anchors], anchors.size).then(() => runBatches(rest, 6));
-        } else {
-          for (let i = 1; i < FRAME_COUNT; i++) loadFrame(i);
-        }
-      });
+          bitmapsRef.current[fi] = bmp;
+          if (fi < criticalCount && criticalLoaded < criticalCount) {
+            criticalLoaded++;
+            onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
+            if (criticalLoaded >= criticalCount) notifyReady();
+          }
+        })
+        .catch(() => {
+          abortControllersRef.current.delete(fi);
+          loadingRef.current[fi] = false;
+          // Includes the expected AbortError from evictExcept() cancelling
+          // this exact fetch — resetting loadingRef is the correct outcome
+          // either way (a genuine network error or a deliberate cancel),
+          // since it just means "eligible for a fresh loadFrame() call
+          // later if this frame becomes relevant again."
+          //
+          // Frame-0 error: unblock immediately rather than hanging.
+          // Other critical-frame errors: count toward threshold AND report
+          // progress so the bar advances even through CDN failures.
+          if (fi === 0) { notifyReady(); return; }
+          if (fi < criticalCount && criticalLoaded < criticalCount) {
+            criticalLoaded++;
+            onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
+            if (criticalLoaded >= criticalCount) notifyReady();
+          }
+        });
     };
 
-    // ── Group lookup from global scroll progress ─────────────────────────────
-    const getGroupIdx = (sp: number): number => {
-      for (let i = N_GROUPS - 1; i >= 0; i--) {
-        if (sp >= GROUPS[i].start) return i;
+    // ── Bulk loaders ─────────────────────────────────────────────────────────
+    // shouldContinue is checked before every batch so a chapter's own load
+    // sequence can self-terminate once it's no longer relevant, instead of
+    // grinding through its full frame list regardless. Without this, a
+    // chapter's async batch loop kept running after the user scrolled well
+    // past it — each batch spawning fresh fetches for frames that were
+    // immediately stale, contending for the same throttled bandwidth the
+    // *current* chapter needed. evictExcept's abort() only cancels frames
+    // already in flight at the moment it runs; it can't stop a loop from
+    // starting new ones a moment later.
+    const runBatches = async (frames: number[], size: number, shouldContinue?: () => boolean) => {
+      for (let i = 0; i < frames.length; i += size) {
+        if (destroyed) return;
+        if (shouldContinue && !shouldContinue()) return;
+        await Promise.all(frames.slice(i, i + size).map(loadFrame));
       }
-      return 0;
+    };
+
+    // ── Chapter-region loader ────────────────────────────────────────────────
+    // Loads one chapter's slice of the sequence — the direct equivalent of
+    // the old per-file loadGroup(), just operating on a range within the one
+    // shared frame array instead of a separate folder. Same guard shape
+    // (loadingRef → chapterLoadingRef), same "defer until unblocked" rule,
+    // same coverage-first ordering on touch. Triggered by chapter-boundary
+    // crossings in tick() below, exactly like the old group system was
+    // triggered by group-boundary crossings — that trigger shape is what
+    // was actually proven robust under throttling; a generic scroll-position
+    // sliding window (tried first here) was not, because sparse anchors
+    // spread across the *whole* 476-frame sequence kept getting evicted the
+    // instant they fell outside a window sized for local density, measured
+    // as an 18-of-41-sample freeze.
+    const loadChapterRegion = (idx: number) => {
+      if (idx < 0 || idx >= N_CHAPTERS) return;
+      if (chapterLoadingRef.current[idx]) return;
+      // Defer all non-critical chapters until the loader has exited.
+      // Without this the first RAF tick would start every chapter's
+      // fetches at once, competing with chapter-0's critical frames for
+      // HTTP/2 streams. notifyReady() explicitly loads the next chapter(s)
+      // once the loader clears.
+      if (idx > 0 && !notifiedRef.current) return;
+      chapterLoadingRef.current[idx] = true;
+      const [fIn, fOut] = CHAPTER_FRAME_RANGES[idx];
+
+      // True while idx is still within active±1 of wherever the user
+      // actually is *now* (not wherever they were when this region load
+      // started). Touch only — desktop never abandons a region early.
+      const stillRelevant = () =>
+        !isTouch || lastChapterRef.current < 0 || Math.abs(idx - lastChapterRef.current) <= 1;
+
+      const frames: number[] = [];
+      for (let f = fIn; f < fOut; f += frameStep) frames.push(f);
+      if (frames[frames.length - 1] !== fOut) frames.push(fOut);
+
+      // First frame of the region loads alone so the canvas has *something*
+      // from this chapter the moment it's reachable, before the rest of the
+      // region arrives.
+      loadFrame(frames[0]).then(() => {
+        if (!stillRelevant()) { chapterLoadingRef.current[idx] = false; return; }
+        const rest = frames.slice(1);
+        if (isTouch) {
+          // COVERAGE-FIRST within the region: a handful of anchors spread
+          // across just this chapter's own (much smaller) range, then fill.
+          // Serial batches of 6 so we never saturate the browser's HTTP/2
+          // connection pool (6 concurrent streams per origin on mobile).
+          // shouldContinue lets either pass bail out early once the region
+          // stops being relevant — see the runBatches comment above.
+          const ANCHOR_COUNT = 8;
+          const stride = Math.max(1, Math.floor(rest.length / ANCHOR_COUNT)) || 1;
+          const anchors: number[] = [];
+          for (let i = 0; i < rest.length; i += stride) anchors.push(rest[i]);
+          const anchorSet = new Set(anchors);
+          const fill = rest.filter(f => !anchorSet.has(f));
+          runBatches(anchors, 6, stillRelevant).then(() => {
+            if (!stillRelevant()) { chapterLoadingRef.current[idx] = false; return; }
+            return runBatches(fill, 6, stillRelevant);
+          }).then(() => {
+            // Abandoned mid-way — clear the flag so a later re-entry (e.g.
+            // scrolling back) restarts the load instead of permanently
+            // no-op'ing on a chapter that never finished.
+            if (!stillRelevant()) chapterLoadingRef.current[idx] = false;
+          });
+        } else {
+          // Desktop: fire the whole region in parallel — HTTP/2
+          // multiplexing on fast connections makes this fastest.
+          rest.forEach(loadFrame);
+        }
+      });
     };
 
     // ── RAF render loop ──────────────────────────────────────────────────────
@@ -353,60 +445,57 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const rawSp = lenis && lenis.limit > 0
         ? lenis.targetScroll / lenis.limit
         : window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const sp  = Math.max(0, Math.min(rawSp, 1));
-      const gi  = getGroupIdx(sp);
-      const grp = GROUPS[gi];
+      const sp = Math.max(0, Math.min(rawSp, 1));
+      const fi = getFrameIndex(sp);
+      const chapter = getChapterFromProgress(sp);
 
-      // Local progress within this group, clamped to [0, 1].
-      const lp  = Math.max(0, Math.min((sp - grp.start) / (grp.end - grp.start), 1));
-      const fi  = Math.floor(lp * LAST_FRAME);
-
-      // On group change: preload active ± 1 (and +2 on desktop for wider
-      // lookahead so fast scrollers don't hit an unloaded group).
-      if (gi !== lastGroupRef.current) {
-        lastGroupRef.current = gi;
-        loadGroup(gi);
-        loadGroup(gi + 1);
-        loadGroup(gi - 1);
-        if (!isTouch) loadGroup(gi + 2); // extra desktop lookahead
-        // Touch: free everything outside active±1 to stay under the iOS/Android
-        // memory ceiling. Desktop retains all groups (unchanged).
-        if (isTouch) evictExcept(gi - 1, gi + 1);
-        lastFrameRef.current = -1; // force redraw for new group
+      // On chapter change: swap the color-grade overlay (cross-fades via the
+      // div's own CSS transition, unchanged mechanism), and preload
+      // active±1's frame regions — the direct equivalent of the old
+      // on-group-change `loadGroup(gi); loadGroup(gi±1)` trigger.
+      if (chapter !== lastChapterRef.current) {
+        lastChapterRef.current = chapter;
         gradeRefs.current.forEach((el, i) => {
-          if (el) el.style.opacity = i === gi ? String(CHAPTER_GRADES[i].opacity) : "0";
+          if (el) el.style.opacity = i === chapter ? String(CHAPTER_GRADES[i].opacity) : "0";
         });
+        loadChapterRegion(chapter);
+        loadChapterRegion(chapter + 1);
+        loadChapterRegion(chapter - 1);
+        // Touch: free everything outside active±1 to stay under the
+        // iOS/Android memory ceiling. Desktop retains everything (unchanged).
+        if (isTouch) {
+          const [lo, hi] = getRetainedRange(chapter);
+          evictExcept(lo, hi);
+        }
       }
 
       // Skip draw if frame unchanged — avoids redundant canvas writes.
       if (fi === lastFrameRef.current) return;
 
       // Find the nearest loaded frame: try exact match, then search outward.
-      // This prevents frozen canvas when reversing to a group mid-load.
-      let bmp = bitmapsRef.current[gi][fi];
+      // This prevents a frozen canvas when scrolling into a not-yet-loaded
+      // stretch of the sequence.
+      let bmp = bitmapsRef.current[fi];
       if (!bmp) {
         for (let d = 1; d < FRAME_COUNT; d++) {
           const lo = fi - d, hi = fi + d;
-          if (lo >= 0 && bitmapsRef.current[gi][lo]) { bmp = bitmapsRef.current[gi][lo]!; break; }
-          if (hi < FRAME_COUNT && bitmapsRef.current[gi][hi]) { bmp = bitmapsRef.current[gi][hi]!; break; }
+          if (lo >= 0 && bitmapsRef.current[lo]) { bmp = bitmapsRef.current[lo]!; break; }
+          if (hi < FRAME_COUNT && bitmapsRef.current[hi]) { bmp = bitmapsRef.current[hi]!; break; }
         }
       }
-      if (!bmp) return; // group has zero loaded frames yet — keep previous visible
+      if (!bmp) return; // nothing loaded yet anywhere nearby — keep previous visible
 
       // Only mark the target frame as drawn when it was the exact match.
-      // For fallback frames, keep lastFrameRef at -1 so the next tick retries
-      // the exact frame once it finishes loading — prevents the frame from
-      // being permanently skipped by the fi === lastFrameRef guard.
-      if (bitmapsRef.current[gi][fi] === bmp) {
-        lastFrameRef.current = fi;
-      } else {
-        lastFrameRef.current = -1;
-      }
+      // For fallback frames, keep lastFrameRef at -1 so the next tick
+      // retries the exact frame once it finishes loading.
+      lastFrameRef.current = bitmapsRef.current[fi] === bmp ? fi : -1;
       drawBitmap(bmp);
     };
 
-    // Kick off: load group 0 immediately, start RAF.
-    loadGroup(0);
+    // Kick off: load chapter 0's region (frame 0 first, so notifyReady fires
+    // promptly and the canvas always has something to draw) and start the
+    // RAF loop.
+    loadChapterRegion(0);
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
@@ -415,12 +504,15 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
       ro?.disconnect();
-      bitmapsRef.current.forEach(grp => grp.forEach(bmp => bmp?.close()));
-      bitmapsRef.current = Array.from({ length: N_GROUPS }, () => Array(FRAME_COUNT).fill(null));
-      loadingRef.current = Array(N_GROUPS).fill(false);
+      abortControllersRef.current.forEach(c => c.abort());
+      abortControllersRef.current.clear();
+      bitmapsRef.current.forEach(bmp => bmp?.close());
+      bitmapsRef.current = Array(FRAME_COUNT).fill(null);
+      loadingRef.current = Array(FRAME_COUNT).fill(false);
+      chapterLoadingRef.current = Array(N_CHAPTERS).fill(false);
       notifiedRef.current  = false;
       lastFrameRef.current = -1;
-      lastGroupRef.current = -1;
+      lastChapterRef.current = -1;
     };
   }, [reduce, lenisRef, onReady]);
 
@@ -457,7 +549,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         />
       )}
 
-      {/* Chapter color grades — mix-blend-mode:color tints each sequence */}
+      {/* Chapter color grades — mix-blend-mode:color tints, one per text
+          chapter (was one per video group; now there's a single video). */}
       {CHAPTER_GRADES.map((grade, i) => (
         <div
           key={i}
@@ -491,7 +584,10 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         }}
       />
 
-      {/* Bottom-right corner deepener — cinematic diagonal shadow covers watermark zone */}
+      {/* Bottom-right corner deepener — cinematic diagonal shadow. Originally
+          added to cover a provenance mark baked into the old per-chapter
+          source clips; left in place as a second line of defense while the
+          new film's own mark is confirmed fully gone, not as the fix itself. */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

@@ -297,8 +297,10 @@ function FounderContent() {
 function MaterialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
-      {/* Material: bright metallic footage — strongest shield, left column */}
-      <ContentShield align="left" strength={0.82} />
+      {/* Material: dim lab footage (founder examining graphene) — moderate
+          shield, left column. Was 0.82 for the old bright-metallic plate;
+          the new footage is already dark, so the old strength crushed it. */}
+      <ContentShield align="left" strength={0.62} />
       <div className="relative z-10 mr-auto text-left max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-7 bg-gradient-to-r from-primary via-accent to-transparent" />
@@ -395,8 +397,10 @@ function RecognitionContent() {
 function EcosystemContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Ecosystem: dark infrastructure footage, left-aligned content */}
-      <ContentShield align="left" strength={0.66} />
+      {/* Ecosystem: sunset-lit corridor walk — brighter than the old dark
+          infrastructure plate, so the shield needs more strength here to
+          keep the nav grid legible against direct window light. */}
+      <ContentShield align="left" strength={0.76} />
       {/* overflow-y-auto on the inner scroller, not the flex container, so iOS
           doesn't fight the fixed parent's overflow-hidden on the scroll chain.
           max-height uses dvh so it's constrained to the actual viewport height
@@ -450,8 +454,10 @@ function EcosystemContent() {
 function FutureContent() {
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden">
-      {/* Future: dark space, centered text — light center shield */}
-      <ContentShield align="center" strength={0.54} />
+      {/* Future: closing shot is a bright sunset corridor, not dark space —
+          needs meaningfully more shield than the old plate did to keep the
+          headline legible against direct sun through the windows. */}
+      <ContentShield align="center" strength={0.68} />
       {/* Atmospheric volumetric glow */}
       <motion.div
         aria-hidden
