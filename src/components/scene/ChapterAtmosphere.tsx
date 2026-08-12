@@ -16,7 +16,8 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
  *   2 Industrial             → engineering grid + measurement marks
  *   3 Recognition & Ecosystem → archival spotlights + infrastructure haze
  *                              (the two former layers, composited)
- *   4 Future                 → planetary curvature arc + orbital rings + far glow
+ *   4 Future                 → horizon haze + atmospheric lift (the closing
+ *                              plate is a daylit city, not deep space)
  *
  * Cross-fades are strict (only neighbouring chapters overlap) and driven by
  * the shared `useChapterPhase` motion value, so the rail, photographic
@@ -83,103 +84,6 @@ function ChapterLayer({
 }
 
 /* ─────────── Reusable atmospheric primitives (no images) ─────────── */
-
-function OrbitalRings({
-  cx = "50%",
-  cy = "118%",
-  radii = [70, 86, 104, 124],
-  stroke = "oklch(0.78 0.02 232 / 0.10)",
-}: {
-  cx?: string;
-  cy?: string;
-  radii?: number[];
-  stroke?: string;
-}) {
-  return (
-    <svg
-      className="absolute inset-0 h-full w-full"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <radialGradient id="orbital-fade" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="white" stopOpacity="1" />
-          <stop offset="55%" stopColor="white" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </radialGradient>
-        <mask id="orbital-mask">
-          <rect width="100" height="100" fill="url(#orbital-fade)" />
-        </mask>
-      </defs>
-      <g mask="url(#orbital-mask)" fill="none" stroke={stroke} strokeWidth="0.08">
-        {radii.map((r) => (
-          <ellipse key={r} cx={cx} cy={cy} rx={r} ry={r * 0.46} />
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-function PlanetaryArc() {
-  return (
-    <svg
-      className="absolute inset-x-0 bottom-[-12%] h-[62%] w-full opacity-[0.7]"
-      viewBox="0 0 100 60"
-      preserveAspectRatio="xMidYMax slice"
-    >
-      <defs>
-        <radialGradient id="planet-glow" cx="50%" cy="100%" r="82%">
-          <stop offset="0%" stopColor="oklch(0.54 0.05 232 / 0.18)" />
-          <stop offset="48%" stopColor="oklch(0.34 0.04 232 / 0.09)" />
-          <stop offset="100%" stopColor="transparent" />
-        </radialGradient>
-        {/* Thin atmospheric halo hugging the limb — volumetric diffusion */}
-        <radialGradient id="planet-halo" cx="50%" cy="93%" r="60%">
-          <stop offset="0%" stopColor="transparent" />
-          <stop offset="62%" stopColor="oklch(0.72 0.045 232 / 0.10)" />
-          <stop offset="78%" stopColor="oklch(0.62 0.04 232 / 0.05)" />
-          <stop offset="100%" stopColor="transparent" />
-        </radialGradient>
-        <linearGradient id="planet-limb" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="oklch(0.84 0.035 232 / 0.24)" />
-          <stop offset="60%" stopColor="oklch(0.50 0.04 232 / 0.06)" />
-          <stop offset="100%" stopColor="transparent" />
-        </linearGradient>
-        {/* Edge fade so the limb dissolves into atmosphere at screen edges
-            instead of reading as a graphic overlay crossing the viewport. */}
-        <linearGradient id="planet-limb-fade" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="white" stopOpacity="0" />
-          <stop offset="18%" stopColor="white" stopOpacity="0.55" />
-          <stop offset="50%" stopColor="white" stopOpacity="1" />
-          <stop offset="82%" stopColor="white" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </linearGradient>
-        <mask id="planet-limb-mask">
-          <rect x="0" y="0" width="100" height="60" fill="url(#planet-limb-fade)" />
-        </mask>
-      </defs>
-      {/* Volumetric atmospheric diffusion above the limb */}
-      <ellipse cx="50" cy="80" rx="82" ry="48" fill="url(#planet-glow)" />
-      {/* Thin atmospheric halo — soft volumetric breath kissing the horizon */}
-      <ellipse cx="50" cy="56" rx="64" ry="14" fill="url(#planet-halo)" />
-      {/* The limb itself — hairline arc, softened and edge-faded */}
-      <g mask="url(#planet-limb-mask)">
-        <path
-          d="M -10 56 Q 50 6 110 56"
-          fill="none"
-          stroke="url(#planet-limb)"
-          strokeWidth="0.12"
-        />
-        <path
-          d="M -10 56 Q 50 10 110 56"
-          fill="none"
-          stroke="oklch(0.96 0.01 232 / 0.05)"
-          strokeWidth="0.04"
-        />
-      </g>
-    </svg>
-  );
-}
 
 
 function EngineeringGrid({
@@ -481,135 +385,54 @@ function RecognitionEcosystemAtmosphere() {
   );
 }
 
-// Pre-computed star field — deterministic positions, 4 luminosity classes + navigational stars.
-// Module-level constant so it is never re-allocated on re-renders.
-// Density: ~120 faint + 20 mid + 12 bright + 4 super + 2 navigational.
-const STAR_FIELD_SVG =
-  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='700'>" +
-  "<g fill='white'>" +
-  // Faint background stars — dense field, 0.6r
-  "<g fill-opacity='0.38'>" +
-  "<circle cx='22' cy='15' r='0.6'/><circle cx='163' cy='9' r='0.6'/><circle cx='318' cy='22' r='0.6'/><circle cx='461' cy='14' r='0.6'/><circle cx='614' cy='81' r='0.6'/><circle cx='751' cy='62' r='0.6'/><circle cx='918' cy='74' r='0.6'/>" +
-  "<circle cx='78' cy='138' r='0.6'/><circle cx='228' cy='132' r='0.6'/><circle cx='384' cy='109' r='0.6'/><circle cx='524' cy='176' r='0.6'/><circle cx='672' cy='162' r='0.6'/><circle cx='814' cy='145' r='0.6'/><circle cx='962' cy='112' r='0.6'/>" +
-  "<circle cx='58' cy='218' r='0.6'/><circle cx='209' cy='236' r='0.6'/><circle cx='364' cy='245' r='0.6'/><circle cx='518' cy='221' r='0.6'/><circle cx='669' cy='290' r='0.6'/><circle cx='808' cy='268' r='0.6'/><circle cx='944' cy='194' r='0.6'/>" +
-  "<circle cx='42' cy='312' r='0.6'/><circle cx='194' cy='328' r='0.6'/><circle cx='349' cy='338' r='0.6'/><circle cx='502' cy='352' r='0.6'/><circle cx='654' cy='318' r='0.6'/><circle cx='794' cy='342' r='0.6'/><circle cx='878' cy='298' r='0.6'/>" +
-  "<circle cx='65' cy='418' r='0.6'/><circle cx='216' cy='434' r='0.6'/><circle cx='370' cy='443' r='0.6'/><circle cx='526' cy='412' r='0.6'/><circle cx='679' cy='483' r='0.6'/><circle cx='828' cy='464' r='0.6'/><circle cx='934' cy='436' r='0.6'/>" +
-  "<circle cx='34' cy='518' r='0.6'/><circle cx='186' cy='536' r='0.6'/><circle cx='342' cy='548' r='0.6'/><circle cx='497' cy='522' r='0.6'/><circle cx='648' cy='594' r='0.6'/><circle cx='798' cy='572' r='0.6'/><circle cx='912' cy='548' r='0.6'/>" +
-  "<circle cx='52' cy='628' r='0.6'/><circle cx='205' cy='644' r='0.6'/><circle cx='361' cy='654' r='0.6'/><circle cx='517' cy='634' r='0.6'/><circle cx='671' cy='648' r='0.6'/><circle cx='824' cy='656' r='0.6'/><circle cx='968' cy='632' r='0.6'/>" +
-  // Extra faint scatter — fills gaps for deep-space density
-  "<circle cx='130' cy='52' r='0.5'/><circle cx='255' cy='68' r='0.5'/><circle cx='400' cy='46' r='0.5'/><circle cx='542' cy='58' r='0.5'/><circle cx='840' cy='28' r='0.5'/><circle cx='980' cy='42' r='0.5'/>" +
-  "<circle cx='106' cy='172' r='0.5'/><circle cx='296' cy='158' r='0.5'/><circle cx='456' cy='148' r='0.5'/><circle cx='608' cy='122' r='0.5'/><circle cx='762' cy='106' r='0.5'/><circle cx='888' cy='136' r='0.5'/>" +
-  "<circle cx='148' cy='282' r='0.5'/><circle cx='308' cy='274' r='0.5'/><circle cx='468' cy='306' r='0.5'/><circle cx='626' cy='378' r='0.5'/><circle cx='786' cy='394' r='0.5'/><circle cx='922' cy='366' r='0.5'/>" +
-  "<circle cx='172' cy='394' r='0.5'/><circle cx='332' cy='456' r='0.5'/><circle cx='484' cy='468' r='0.5'/><circle cx='642' cy='436' r='0.5'/><circle cx='854' cy='514' r='0.5'/><circle cx='976' cy='494' r='0.5'/>" +
-  "<circle cx='118' cy='484' r='0.5'/><circle cx='272' cy='498' r='0.5'/><circle cx='428' cy='514' r='0.5'/><circle cx='588' cy='526' r='0.5'/><circle cx='738' cy='496' r='0.5'/><circle cx='896' cy='508' r='0.5'/>" +
-  "</g>" +
-  // Mid-brightness stars
-  "<g fill-opacity='0.70'>" +
-  "<circle cx='89' cy='47' r='1'/><circle cx='688' cy='35' r='1'/><circle cx='149' cy='94' r='1'/><circle cx='738' cy='188' r='1'/><circle cx='438' cy='284' r='1'/><circle cx='744' cy='232' r='1'/><circle cx='116' cy='348' r='1'/><circle cx='578' cy='387' r='1'/><circle cx='447' cy='478' r='1'/><circle cx='574' cy='558' r='1'/><circle cx='108' cy='554' r='1'/><circle cx='283' cy='678' r='1'/><circle cx='749' cy='686' r='1'/><circle cx='958' cy='158' r='1'/><circle cx='952' cy='276' r='1'/>" +
-  "<circle cx='336' cy='72' r='1'/><circle cx='536' cy='128' r='1'/><circle cx='836' cy='92' r='1'/><circle cx='248' cy='462' r='1'/><circle cx='862' cy='582' r='1'/>" +
-  "</g>" +
-  // Bright stars
-  "<g fill-opacity='0.88'>" +
-  "<circle cx='301' cy='131' r='1.5'/><circle cx='489' cy='184' r='1.5'/><circle cx='91' cy='278' r='1.5'/><circle cx='627' cy='93' r='1.5'/><circle cx='198' cy='341' r='1.5'/><circle cx='566' cy='267' r='1.5'/><circle cx='755' cy='211' r='1.5'/><circle cx='423' cy='482' r='1.5'/>" +
-  "<circle cx='182' cy='56' r='1.5'/><circle cx='872' cy='144' r='1.5'/><circle cx='692' cy='454' r='1.5'/><circle cx='344' cy='596' r='1.5'/>" +
-  "</g>" +
-  // Super-bright stars
-  "<g fill-opacity='0.96'>" +
-  "<circle cx='312' cy='244' r='2'/><circle cx='664' cy='358' r='2'/><circle cx='138' cy='178' r='2'/><circle cx='826' cy='316' r='2'/>" +
-  "</g>" +
-  // Navigational / focal stars — largest, with subtle diffraction feel
-  "<g fill-opacity='1'>" +
-  "<circle cx='468' cy='112' r='2.4'/><circle cx='722' cy='486' r='2.2'/>" +
-  "</g>" +
-  "</g></svg>";
-
 function FutureAtmosphere() {
   const reduce = useReducedMotion();
+  // The closing plate used to be deep space, so this layer was a star field,
+  // Milky Way band, planetary limb, orbital rings and nebula. The film now
+  // closes on a daylit industrial city seen through glass, where all of that
+  // read as white speckle scattered over the buildings. Replaced with haze
+  // and horizon light that belong to the shot: an atmospheric lift toward
+  // the horizon line and a soft vignette that seats the silhouette.
   return (
     <>
-      {/* Deep space ceiling — cool blue-black grounds the upper frame */}
+      {/* Upper atmospheric gradient — depth without darkening the skyline */}
       <div
-        className="absolute inset-x-0 top-0 h-[68%]"
+        className="absolute inset-x-0 top-0 h-[55%]"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.03 0.012 262 / 0.55) 0%, oklch(0.04 0.010 260 / 0.22) 55%, transparent 100%)",
+            "linear-gradient(180deg, oklch(0.06 0.014 250 / 0.42) 0%, oklch(0.06 0.012 246 / 0.16) 60%, transparent 100%)",
         }}
       />
 
-      {/* CSS star field — pre-computed SVG data URI, covers full frame */}
-      <div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          backgroundImage: `url("${STAR_FIELD_SVG}")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundRepeat: "no-repeat",
-          opacity: 1.0,
-        }}
-      />
-
-      {/* Milky Way band — faint tilted diffusion haze crossing the field */}
+      {/* Horizon haze — the distance glow the city sits in */}
       <div
         className="absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "linear-gradient(148deg, transparent 18%, oklch(0.58 0.020 260 / 0.070) 34%, oklch(0.70 0.024 248 / 0.110) 50%, oklch(0.58 0.020 260 / 0.070) 66%, transparent 82%)",
-          filter: "blur(24px)",
+            "linear-gradient(180deg, transparent 26%, oklch(0.62 0.030 232 / 0.09) 44%, oklch(0.58 0.026 228 / 0.05) 56%, transparent 72%)",
+          filter: "blur(28px)",
         }}
       />
 
-      {/* Planetary arc — horizon curvature at the bottom of the frame */}
-      <PlanetaryArc />
-
-      {/* Orbital rings — concentric ellipses rising from the limb */}
-      <OrbitalRings
-        cx="50%"
-        cy="112%"
-        radii={[68, 84, 102, 122, 144]}
-        stroke="oklch(0.80 0.024 232 / 0.12)"
-      />
-
-      {/* Earth rim lighting — stronger atmospheric glow for depth */}
-      <div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background:
-            "radial-gradient(ellipse 88% 52% at 50% 100%, oklch(0.50 0.048 232 / 0.20), transparent 65%)",
-        }}
-      />
-      {/* Secondary warm inner-limb highlight */}
-      <div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 22% at 50% 100%, oklch(0.68 0.032 210 / 0.12), transparent 70%)",
-        }}
-      />
-
-      {/* Nebula depth pair — blur on outer static div (cached), opacity-only on inner */}
+      {/* Slow atmospheric breath — opacity only, GPU-composited */}
       {!reduce && (
-        <div
+        <motion.div
           className="absolute inset-0 mix-blend-screen"
-          style={{ filter: "blur(32px)" }}
-        >
-          <motion.div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 40% 28% at 74% 20%, oklch(0.44 0.030 280 / 0.062), transparent 80%), radial-gradient(ellipse 32% 24% at 20% 34%, oklch(0.38 0.024 210 / 0.052), transparent 80%)",
-            }}
-            animate={{ opacity: [0.40, 1, 0.40] }}
-            transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 40% at 50% 46%, oklch(0.60 0.028 226 / 0.06), transparent 74%)",
+          }}
+          animate={{ opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
+        />
       )}
 
-      {/* Soft far-depth vignette — increases perceived planetary scale */}
+      {/* Perimeter seat — keeps the silhouette anchored in frame */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 90% 85% at 50% 30%, transparent 42%, oklch(0.02 0.008 260 / 0.28) 100%)",
+            "radial-gradient(ellipse 88% 82% at 50% 44%, transparent 46%, oklch(0.02 0.008 258 / 0.30) 100%)",
         }}
       />
     </>

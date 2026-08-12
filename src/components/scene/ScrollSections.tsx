@@ -456,7 +456,7 @@ function RecognitionEcosystemContent() {
           such that the eyebrow tucked under the header and the last directory
           rows sat behind the CTA bar. */}
       <div
-        className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
+        className="relative z-10 w-full max-w-6xl xl:max-w-7xl overflow-y-auto overflow-x-hidden overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Eyebrow */}
@@ -492,7 +492,7 @@ function RecognitionEcosystemContent() {
         <div className="relative mt-3.5 md:mt-12">
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 bottom-0 -left-6 -right-6 md:-left-10 md:-right-10"
+            className="pointer-events-none absolute inset-0"
             style={{
               background:
                 "radial-gradient(ellipse 62% 70% at 42% 50%, oklch(0.02 0.006 260 / 0.62) 0%, oklch(0.02 0.006 260 / 0.42) 45%, oklch(0.02 0.006 260 / 0.12) 78%, transparent 100%)",
@@ -584,7 +584,7 @@ function FutureContent() {
       />
 
       {/* Text zone */}
-      <div className="relative z-10 max-w-3xl px-5 sm:px-6">
+      <div className="relative z-10 max-w-3xl px-5 sm:px-6 -translate-y-[4%] md:-translate-y-[6%]">
         {/* Eyebrow */}
         <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
@@ -595,7 +595,7 @@ function FutureContent() {
         </p>
         {/* H2 */}
         <h2
-          className="font-display text-[clamp(1.75rem,5.4vw,4.2rem)] leading-[1.05] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
+          className="mx-auto max-w-[30ch] font-display text-[clamp(1.75rem,4.8vw,3.8rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
           style={{
             textShadow:
               "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
@@ -617,7 +617,7 @@ function FutureContent() {
           </Link>
         </div>
         {/* Tag row */}
-        <p className="mt-6 md:mt-8 font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.4em] text-muted-foreground/45 [text-wrap:balance]">
+        <p className="mt-7 md:mt-9 font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.4em] text-muted-foreground/60 [text-wrap:balance]">
           Advanced Materials · Energy Systems · Planetary Infrastructure
         </p>
       </div>
