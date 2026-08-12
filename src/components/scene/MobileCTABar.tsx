@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { CHAPTER_BANDS, N_CHAPTERS } from "./chapterBands";
 
 export default function MobileCTABar() {
   const [visible, setVisible] = useState(false);
@@ -17,15 +18,18 @@ export default function MobileCTABar() {
     if (!isMobile) return;
 
     const SHOW_THRESHOLD = 1500;
-    // Hide when the closing Future section CTA is scrolled into view (~600px from bottom)
-    const HIDE_NEAR_BOTTOM = 650;
 
     const onScroll = () => {
       const scrollY = window.scrollY;
-      const pageH = document.body.scrollHeight;
-      const viewH = window.innerHeight;
-      const nearBottom = scrollY > pageH - viewH - HIDE_NEAR_BOTTOM;
-      setVisible(scrollY > SHOW_THRESHOLD && !nearBottom);
+      const travel = document.body.scrollHeight - window.innerHeight;
+      // Retire the persistent rail the moment the closing chapter opens.
+      // Future Systems ends on its own "Begin a conversation" — showing
+      // both means two conversion actions on one phone screen, which is
+      // what this threshold exists to prevent. CHAPTER_BANDS[4][0] is the
+      // single source of truth for where that chapter starts.
+      const progress = travel > 0 ? scrollY / travel : 0;
+      const inFinalChapter = progress >= CHAPTER_BANDS[N_CHAPTERS - 1][0];
+      setVisible(scrollY > SHOW_THRESHOLD && !inFinalChapter);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -58,10 +62,13 @@ export default function MobileCTABar() {
           borderTop: "1px solid oklch(1 0 0 / 0.08)",
         }}
       >
+        {/* 44 px: a restrained action rail, not a footer bar. Android's
+            gesture / 3-button area is added on top via the safe-area inset so
+            the label never sits under system navigation. */}
         <Link
           to="/contact"
           className="flex w-full items-center justify-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/85 hover:text-foreground active:text-foreground transition-colors"
-          style={{ height: "calc(52px + env(safe-area-inset-bottom, 0px))", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+          style={{ height: "calc(44px + env(safe-area-inset-bottom, 0px))", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         >
           <span>Begin a conversation</span>
           <span className="text-primary/80 text-[13px]">→</span>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   motion,
@@ -7,6 +8,31 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE } from "./chapterBands";
+
+/* ──────────────────────────────────────────────────────────────────
+   Mobile stage gate.
+
+   Phones get a different *composition* of the same chapters, not a
+   different site: where a laptop can hold a headline, a paragraph, an
+   index and a CTA in one frame, a 360 px portrait viewport cannot. On
+   mobile each chapter is broken into successive states — one thought
+   per frame — driven by the chapter's own scroll band. Desktop never
+   enters this path and its layout, copy and timing are untouched.
+
+   Breakpoint matches Tailwind's `md`, so the JS gate and the `md:`
+   utilities in the markup always agree.
+   ────────────────────────────────────────────────────────────────── */
+function useIsMobileStage(): boolean {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return mobile;
+}
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = single sticky cinematic stage.
@@ -371,10 +397,20 @@ function MaterialContent() {
         <h2 className="font-display text-[clamp(1.9rem,6.2vw,4.4rem)] leading-[1.04] tracking-[-0.025em] font-medium text-gradient mb-7 [text-wrap:balance]">
           Engineering intelligent matter.
         </h2>
-        {/* Body */}
-        <p className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md">
+        {/* Body — the full argument is a laptop-sized paragraph. On a phone
+            it lands as eight lines of 14 px over lab footage, so the frame
+            carries the material list instead and the paragraph stays in the
+            document for search and screen readers. */}
+        <p className="hidden md:block text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md">
           Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, manufactured cleanly and at scale, is the most under-priced strategic asset on the table this decade.
         </p>
+        <div
+          className="md:hidden flex flex-col gap-2 font-mono text-[10.5px] uppercase tracking-[0.26em] text-foreground/80"
+          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
+        >
+          <span>Graphene · Nano-materials</span>
+          <span>Coatings · Composites</span>
+        </div>
       </div>
     </div>
   );
@@ -401,8 +437,16 @@ function IndustrialContent() {
         </h2>
         {/* Body — narrower measure than the heading so the two read as
             separate steps rather than one dense block at laptop widths. */}
-        <p className="text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
+        <p className="hidden md:block text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
           Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each a downstream of the same material platform.
+        </p>
+        {/* Phone: the enumeration is the paragraph's whole point, so it is
+            shown as a list and the sentence stays in the document. */}
+        <p
+          className="md:hidden font-mono text-[10.5px] uppercase tracking-[0.24em] leading-[2] text-foreground/80"
+          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
+        >
+          Solar coatings · Batteries<br />Additives · Composites<br />Climate infrastructure
         </p>
         {/* Ventures — the commercial expression of the platform. Given more
             air above it than the body copy's own line spacing so it reads as
@@ -550,6 +594,114 @@ function RecognitionEcosystemContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
+   Chapter 3 — Recognition & Ecosystem, phone composition.
+
+   Desktop can carry the record and the directory in one frame because
+   the directory runs two columns beside the copy. On a phone the same
+   markup collapses into a single column and the whole chapter becomes
+   a wall of 10 px type — the record, six destinations and six
+   descriptions competing at once.
+
+   So the merge is kept (one background, one shield, one chapter) but
+   the two halves are separated in *time*: the record holds first, the
+   directory replaces it. Descriptions stay in the document for search
+   and screen readers; visually the phone index is labels only, and
+   every destination remains one tap away in the header menu.
+   ────────────────────────────────────────────────────────────────── */
+const RECORD = [
+  "Six Indian Presidential Awards",
+  "NIF-India · IGNITE",
+  "TED India",
+  "MIT Technology Review",
+] as const;
+
+function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
+  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.40));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.46, 1, true));
+  const peA = useTransform(opA, (v) => (v > 0.5 ? "auto" : "none"));
+  const peB = useTransform(opB, (v) => (v > 0.5 ? "auto" : "none"));
+
+  return (
+    <div className="relative w-full h-full overflow-hidden px-6">
+      <ContentShield align="center" strength={0.72} />
+
+      {/* A — the record. Read as an evidence list, not a run-on sentence. */}
+      <motion.div
+        className="absolute inset-x-6 top-[22%] z-10"
+        style={{ opacity: opA, pointerEvents: peA }}
+      >
+        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-primary/80">
+          Recognition
+        </p>
+        <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
+          Recognised early.<br />Building continuously.
+        </h2>
+        <ul className="mt-8 space-y-2.5">
+          {RECORD.map((r) => (
+            <li
+              key={r}
+              className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-foreground/70"
+              style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.7)" }}
+            >
+              {r}
+            </li>
+          ))}
+        </ul>
+        <p
+          className="mt-8 max-w-[26ch] text-[15px] leading-[1.55] text-foreground/80"
+          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.8)" }}
+        >
+          The record exists. The next prototype matters more.
+        </p>
+        <Link
+          to="/recognitions"
+          className="mt-6 inline-flex items-center gap-3 text-[12px] uppercase tracking-[0.32em] text-foreground/90 transition-colors hover:text-foreground"
+          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.8)" }}
+        >
+          Open the archive →
+        </Link>
+      </motion.div>
+
+      {/* B — the directory, in its own frame. Labels only. */}
+      <motion.div
+        className="absolute inset-x-6 top-[19%] z-10"
+        style={{ opacity: opB, pointerEvents: peB }}
+      >
+        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-primary/80">
+          Ecosystem
+        </p>
+        <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
+          The work<br />continues outward.
+        </h2>
+        <div className="mt-7">
+          {gateways.map((g) => (
+            <Link
+              key={g.to}
+              to={g.to}
+              className="flex items-baseline gap-4 border-t border-foreground/[0.1] py-3.5 transition-colors active:border-foreground/30"
+            >
+              <span
+                className="font-mono text-[9px] tracking-[0.3em] text-foreground/45 w-6 shrink-0"
+                style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.8)" }}
+              >
+                {g.n}
+              </span>
+              <span
+                className="font-display text-[17px] tracking-[-0.015em] text-foreground/90"
+                style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.65)" }}
+              >
+                {g.label}
+              </span>
+              <span className="sr-only">— {g.line}</span>
+            </Link>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────
    Chapter 4 — Future Systems (id="future")
    ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
@@ -626,6 +778,146 @@ function FutureContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
+   Chapter 4 — Future Systems, phone composition.
+
+   The desktop frame above holds eyebrow, hypothesis, headline,
+   paragraph, two buttons and a domain row at once. On a 360 px
+   portrait screen that stack buries the silhouette it is sitting on,
+   so the phone gets the same thought delivered in five successive
+   states instead of one dense one:
+
+     A  Not a forecast. A working hypothesis.
+     B  Energy as infrastructure.
+     C  Industry at planetary scale.
+     D  Advanced Materials · Energy Systems · Planetary Infrastructure
+     E  The next century will be engineered. → Begin a conversation
+
+   The long paragraph is kept in the document for search and screen
+   readers but is never painted over the frame. The eyebrow persists
+   across every state so the chapter never loses its label, and text
+   is held in the upper band of the frame so the silhouette and the
+   industrial landscape below it stay uncovered.
+   ────────────────────────────────────────────────────────────────── */
+function FutureMobile({ lp }: { lp: MotionValue<number> }) {
+  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.14));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.20, 0.36));
+  const opC = useTransform(lp, (v) => stageOp(v, 0.42, 0.56));
+  const opD = useTransform(lp, (v) => stageOp(v, 0.62, 0.72));
+  const opE = useTransform(lp, (v) => stageOp(v, 0.78, 1, true));
+  const peE = useTransform(opE, (v) => (v > 0.5 ? "auto" : "none"));
+
+  // Upper text band: clear of the subject's head at the top and of the
+  // silhouette's body below. Every transient state lands in this box.
+  const band = "absolute inset-x-0 top-[26%] px-6 text-center";
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      {/* Lighter than the desktop shield: on a phone the frame is the
+          argument, so it is lifted for contrast rather than covered. */}
+      <ContentShield align="center" strength={0.46} />
+
+      {/* Persistent chapter label */}
+      <p className="absolute inset-x-0 top-[17%] z-10 text-center text-[10px] uppercase tracking-[0.32em] text-foreground/70">
+        Future Systems
+      </p>
+
+      {/* Full copy preserved for search and assistive tech, never painted */}
+      <p className="sr-only">
+        The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
+      </p>
+
+      {/* A — the premise */}
+      <motion.p
+        className={`${band} z-10 font-display italic text-[16px] leading-[1.6] text-foreground/75`}
+        style={{ opacity: opA }}
+      >
+        Not a forecast.<br />A working hypothesis.
+      </motion.p>
+
+      {/* B / C — the two statements, each with its own reading hold */}
+      <motion.h2
+        className={`${band} z-10 font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
+        style={{ opacity: opB, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
+      >
+        Energy as<br />infrastructure.
+      </motion.h2>
+      <motion.p
+        className={`${band} z-10 font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
+        style={{ opacity: opC, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
+      >
+        Industry at<br />planetary scale.
+      </motion.p>
+
+      {/* D — the domains, stacked so they read rather than wrap */}
+      <motion.div
+        className={`${band} z-10 flex flex-col items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/80`}
+        style={{ opacity: opD }}
+      >
+        <span>Advanced Materials</span>
+        <span className="h-px w-6 bg-foreground/20" aria-hidden />
+        <span>Energy Systems</span>
+        <span className="h-px w-6 bg-foreground/20" aria-hidden />
+        <span>Planetary Infrastructure</span>
+      </motion.div>
+
+      {/* E — closing state. Statement in the text band, the single CTA and
+          the page's ending anchored to the bottom, clear of Android's
+          navigation area and Chrome's controls. */}
+      <motion.div
+        className="absolute inset-0 z-10"
+        style={{ opacity: opE, pointerEvents: peE }}
+      >
+        <p
+          className={`${band} font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
+          style={{ textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
+        >
+          The next century<br />will be engineered.
+        </p>
+
+        {/* The closing block sits over the brightest part of the plate —
+            the lit industrial landscape. It carries its own bottom lift so
+            the CTA and the page's ending stay legible without darkening the
+            whole frame. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.02 0.006 260 / 0.34) 34%, oklch(0.02 0.006 260 / 0.72) 72%, oklch(0.02 0.006 260 / 0.88) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-5 px-6"
+          style={{ paddingBottom: "max(1.75rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem))" }}
+        >
+          {/* Editorial CTA — a rule, not a pill. The arrow is the affordance. */}
+          <Link
+            to="/contact"
+            className="group inline-flex items-center gap-3 border-b border-foreground/35 pb-2 text-[13px] uppercase tracking-[0.34em] text-foreground/95 transition-colors hover:border-foreground/70 active:border-foreground/70"
+          >
+            <span>Begin a conversation</span>
+            <span className="transition-transform duration-300 group-active:translate-x-1" aria-hidden>→</span>
+          </Link>
+
+          <div className="flex flex-col items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.3em]">
+            <span className="text-foreground/75">Sushanth Paatnaik</span>
+            <span className="text-foreground/45">© 2026</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
+          >
+            Back to top ↑
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────
    Cinematic dissolve math — Enter / Active / Exit model
    ─────────────────────────────────────────────────────────────────
 
@@ -642,6 +934,20 @@ const c01 = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
 // t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %
 const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 5);
+
+/* Mobile staged reveal ────────────────────────────────────────────
+   `v` is local progress inside a chapter band (0–1). A stage is fully
+   opaque across [from, to] and dissolves over STAGE_FADE either side.
+   Windows are authored so one stage's fade-out and the next stage's
+   fade-in occupy the same interval (next.from === prev.to + STAGE_FADE)
+   — a true cross-dissolve, never a blank frame. `hold` pins the final
+   stage on so the closing composition is also the page's last state. */
+const STAGE_FADE = 0.06;
+function stageOp(v: number, from: number, to: number, hold = false): number {
+  const fadeIn = eoo(c01((v - from + STAGE_FADE) / STAGE_FADE));
+  if (hold) return fadeIn;
+  return Math.min(fadeIn, 1 - eoo(c01((v - to) / STAGE_FADE)));
+}
 
 function chapOp(sp: number, n: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
@@ -695,6 +1001,7 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
    ────────────────────────────────────────────────────────────────── */
 export default function ScrollSections() {
   const reduce = useReducedMotion();
+  const mobile = useIsMobileStage();
   const { scrollYProgress } = useScroll();
 
   // On touch / mobile devices, clearing willChange avoids reserving 2–4 MB of
@@ -748,6 +1055,18 @@ export default function ScrollSections() {
   );
   const peA = useTransform(beatA, (v) => (v > 0.5 ? "auto" : "none"));
   const peB = useTransform(beatB, (v) => (v > 0.5 ? "auto" : "none"));
+
+  // Local progress inside chapters 3 and 4 — the timeline the phone's
+  // staged compositions run on. Computed unconditionally (hooks cannot be
+  // conditional); desktop simply never reads them.
+  const lp3 = useTransform(scrollYProgress, (sp) => {
+    const [bIn, bOut] = CHAPTER_BANDS[3];
+    return c01((sp - bIn) / (bOut - bIn));
+  });
+  const lp4 = useTransform(scrollYProgress, (sp) => {
+    const [bIn, bOut] = CHAPTER_BANDS[4];
+    return c01((sp - bIn) / (bOut - bIn));
+  });
 
   return (
     <>
@@ -804,7 +1123,7 @@ export default function ScrollSections() {
           className="absolute inset-0 flex items-center"
           style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: wc }}
         >
-          <RecognitionEcosystemContent />
+          {mobile ? <RecognitionMobile lp={lp3} /> : <RecognitionEcosystemContent />}
         </motion.div>
 
         {/* Chapter 4 — Future Systems */}
@@ -812,7 +1131,7 @@ export default function ScrollSections() {
           className="absolute inset-0 flex flex-col items-center justify-center"
           style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
         >
-          <FutureContent />
+          {mobile ? <FutureMobile lp={lp4} /> : <FutureContent />}
         </motion.div>
       </div>
     </>

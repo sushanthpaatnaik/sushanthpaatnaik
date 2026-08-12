@@ -46,7 +46,7 @@ export default function Nav() {
       />
       <header
         className={`fixed top-0 left-0 right-0 z-50 px-5 md:px-10 flex items-center justify-between pointer-events-none transition-[padding-top,padding-bottom] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
-          scrolled ? "py-3 md:py-3.5" : "py-5 md:py-6"
+          scrolled ? "py-2 md:py-3.5" : "py-4 md:py-6"
         }`}
       >
         <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik — Home">
