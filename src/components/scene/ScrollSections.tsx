@@ -450,30 +450,35 @@ function RecognitionEcosystemContent() {
           doesn't fight the fixed parent's overflow-hidden on the scroll chain.
           max-height uses dvh so it's constrained to the actual viewport height
           and overflow-y actually triggers (100% in flex items-center doesn't). */}
+      {/* The scroll box has to clear the page chrome, not just the viewport:
+          the fixed header sits at the top and MobileCTABar at the bottom on
+          touch widths. Sizing this to the bare viewport centred the content
+          such that the eyebrow tucked under the header and the last directory
+          rows sat behind the CTA bar. */}
       <div
-        className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain"
-        style={{ maxHeight: "calc(100dvh - 5rem)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        className="relative z-10 w-full max-w-6xl overflow-y-auto overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Eyebrow */}
-        <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+        <p className="mb-2 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
           Recognition &amp; Ecosystem
         </p>
         {/* H2 — ~9% smaller ceiling than the other chapter headings and
             capped in width. At full size this line nearly spans a laptop
             viewport, which reads as a banner rather than a headline. */}
-        <h2 className="font-display text-[clamp(1.6rem,5.4vw,4rem)] leading-[1.04] tracking-[-0.04em] text-gradient [text-wrap:balance] max-w-[20ch]">
+        <h2 className="font-display text-[clamp(1.35rem,5.4vw,4rem)] leading-[1.02] md:leading-[1.04] tracking-[-0.04em] text-gradient [text-wrap:balance] max-w-[20ch]">
           Recognised early. Building continuously.
         </h2>
         {/* The record, then the philosophy that outranks it */}
-        <p className="mt-4 md:mt-7 max-w-2xl text-sm md:text-[15px] leading-relaxed text-muted-foreground/85">
+        <p className="mt-2.5 md:mt-7 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-muted-foreground/85">
           Six Indian Presidential awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today.
         </p>
-        <p className="mt-3 max-w-2xl text-sm md:text-[15px] leading-relaxed text-foreground/70">
+        <p className="mt-1.5 md:mt-3 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-foreground/70">
           The record exists. The next prototype matters more.
         </p>
         <Link
           to="/recognitions"
-          className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.42em] text-foreground/75 hover:text-foreground transition-colors"
+          className="mt-3 md:mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.42em] text-foreground/75 hover:text-foreground transition-colors"
         >
           Open the archive →
         </Link>
@@ -484,10 +489,10 @@ function RecognitionEcosystemContent() {
             behind it, which is the busiest part of this plate; it carries its
             own soft scrim rather than pushing the global shield darker and
             flattening the whole frame. Gradient only — no card, no border. */}
-        <div className="relative mt-8 md:mt-12">
+        <div className="relative mt-3.5 md:mt-12">
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-x-6 -top-4 -bottom-4 md:-inset-x-10"
+            className="pointer-events-none absolute top-0 bottom-0 -left-6 -right-6 md:-left-10 md:-right-10"
             style={{
               background:
                 "radial-gradient(ellipse 62% 70% at 42% 50%, oklch(0.02 0.006 260 / 0.62) 0%, oklch(0.02 0.006 260 / 0.42) 45%, oklch(0.02 0.006 260 / 0.12) 78%, transparent 100%)",
@@ -497,7 +502,7 @@ function RecognitionEcosystemContent() {
           {gateways.map((g) => (
             <div
               key={g.to}
-              className="group border-t border-foreground/[0.08] py-3 md:py-4 hover:border-foreground/25 transition-colors duration-500"
+              className="group border-t border-foreground/[0.08] py-1 md:py-4 hover:border-foreground/25 transition-colors duration-500"
             >
               <div className="flex items-baseline gap-3 md:gap-5">
                 <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45 shrink-0 whitespace-nowrap">
@@ -515,13 +520,13 @@ function RecognitionEcosystemContent() {
                       narrow screens, so it carries its own shadow rather than
                       relying on the shield alone. */}
                   <p
-                    className="mt-0.5 text-[11px] md:text-[12.5px] text-muted-foreground/80 [text-wrap:balance]"
+                    className="mt-0.5 text-[10.5px] md:text-[12.5px] leading-snug text-muted-foreground/80 [text-wrap:balance]"
                     style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.7)" }}
                   >
                     {g.line}
                   </p>
                   {g.also.length > 0 && (
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
                       {g.also.map((s) => (
                         <Link
                           key={s.to}
