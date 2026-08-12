@@ -5,47 +5,52 @@ import sceneSpark from "@/assets/story-01-spark.webp";
 import { CHAPTER_BANDS, N_CHAPTERS } from "./chapterBands";
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
-// The homepage now plays one continuous film across the whole scroll instead
-// of five independently-cut chapter clips. FRAME_MAP pairs each scroll
-// breakpoint (from CHAPTER_BANDS) with the frame in the film that best
-// matches that chapter's content, so — e.g. — "Origin" always shows the
-// Earth/India opening and "Industrial Translation" always shows the
-// manufacturing sequence, regardless of how the raw footage's own timing
-// lines up with the (unrelated) scroll-band widths.
+// The homepage plays one continuous film across the whole scroll instead of
+// five independently-cut chapter clips.
 //
-// SCROLL_BREAKS has N_CHAPTERS+1 points (the shared start/end of every band);
-// FRAME_BREAKS gives the source frame at each of those points. Between two
-// breakpoints the frame advances linearly with scroll — exactly like the
-// old per-group local-progress math, just without the hard cut at group
-// boundaries, since there are no group boundaries anymore.
+// The frame advances LINEARLY with scroll — constant frames-per-pixel across
+// the entire page. This is a smoothness requirement, not a stylistic choice:
+// playback smoothness is governed by the sparsest stretch of the timeline,
+// since that is where the image visibly steps.
+//
+// An earlier version mapped each chapter band to the frame range whose
+// content best matched that chapter's copy, which stretched some stretches
+// and compressed others. Measured result was a 5.7:1 density spread —
+// Material advanced a frame every 1.5vh while Ecosystem and Future Systems
+// went 6.3vh and 8.3vh between frames. The closing third of the page
+// visibly stuttered on desktop. For reference the old five-clip system's
+// worst case was 3.8vh/frame, so that mapping was ~2x coarser than what it
+// replaced. Uniform mapping puts every chapter at 3.2vh/frame — better than
+// the old system everywhere.
+//
+// Content still lands where it should because the film's own arc already
+// follows the page's: Earth/India opening under Origin, the lab and graphene
+// sheet under Founder/Material, the lattice under Industrial Translation
+// ("One lattice. Many industries."), and the sunset facility walk under
+// Future Systems. Verify frame-to-chapter alignment before changing
+// CHAPTER_BANDS or the frame count — but do not reintroduce a non-uniform
+// map to "fix" alignment; that trades a visible stutter for a subtlety.
 const SEQUENCE_PATH = "founder-film";
 const FRAME_COUNT   = 476;                 // total frames in the film, ~59.5fps × 8s
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
-const FRAME_BREAKS  = [0, 54, 131, 256, 375, 411, 440, LAST_FRAME];
 
-// Frame range owned by each text chapter — just FRAME_BREAKS read pairwise.
-// This is the "group" of the old per-chapter-clip system, redefined as a
-// slice of the one continuous sequence instead of a separate file: loading
-// is still triggered by chapter boundary crossings (proven to work), it
-// just no longer needs a boundary-aligned hard cut in the asset itself.
+// Frame range owned by each text chapter, derived from the linear mapping so
+// it stays in lock-step with getFrameIndex by construction. This is the
+// "group" of the old per-chapter-clip system, redefined as a slice of the one
+// continuous sequence instead of a separate file: loading is still triggered
+// by chapter boundary crossings (proven to work under throttling), it just no
+// longer needs a boundary-aligned hard cut in the asset itself.
 const CHAPTER_FRAME_RANGES: ReadonlyArray<readonly [number, number]> =
-  FRAME_BREAKS.slice(0, -1).map((f, i) => [f, FRAME_BREAKS[i + 1]] as const);
+  SCROLL_BREAKS.slice(0, -1).map((s, i) => [
+    Math.round(LAST_FRAME * s),
+    Math.round(LAST_FRAME * SCROLL_BREAKS[i + 1]),
+  ] as const);
 
 function getFrameIndex(sp: number): number {
   const s = Math.max(0, Math.min(sp, 1));
-  for (let i = 0; i < SCROLL_BREAKS.length - 1; i++) {
-    const bIn = SCROLL_BREAKS[i];
-    const bOut = SCROLL_BREAKS[i + 1];
-    if (s <= bOut || i === SCROLL_BREAKS.length - 2) {
-      const lp = bOut > bIn ? (s - bIn) / (bOut - bIn) : 0;
-      const fIn = FRAME_BREAKS[i];
-      const fOut = FRAME_BREAKS[i + 1];
-      return Math.round(fIn + Math.max(0, Math.min(1, lp)) * (fOut - fIn));
-    }
-  }
-  return LAST_FRAME;
+  return Math.round(s * LAST_FRAME);
 }
 
 // Same threshold HUD.tsx uses to decide the active chapter from scroll
