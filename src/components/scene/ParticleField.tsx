@@ -19,6 +19,26 @@ const PHASE_INDICES = [0, 1, 2, 3, 4, 5, 6];
 const HUE_BY_PHASE = [0, 28, -18, -8, 38, -22, 22];
 const SAT_BY_PHASE = [1.0, 0.78, 1.05, 1.0, 0.6, 0.95, 1.05];
 
+// Chapter copy is centered in a max-w-3xl column, vertically centered in the
+// viewport — roughly this box, across every chapter. Particles are ambient
+// background dust; they should never spawn where they'd sit behind headline
+// text and read as a stray dot "on" a letter. Reject-and-resample around the
+// box instead of a hard exclude, so distribution still feels organic.
+const SAFE_ZONE = { left: 22, right: 78, top: 22, bottom: 78 };
+
+function randomOutsideSafeZone(): { left: number; top: number } {
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const left = Math.random() * 100;
+    const top = Math.random() * 100;
+    const inSafeZone =
+      left > SAFE_ZONE.left && left < SAFE_ZONE.right && top > SAFE_ZONE.top && top < SAFE_ZONE.bottom;
+    if (!inSafeZone) return { left, top };
+  }
+  // Fallback (astronomically unlikely after 12 tries): pin to the nearest margin.
+  const left = Math.random() < 0.5 ? Math.random() * SAFE_ZONE.left : SAFE_ZONE.right + Math.random() * (100 - SAFE_ZONE.right);
+  return { left, top: Math.random() * 100 };
+}
+
 /**
  * Drifting particle layer used inside the cinematic background.
  * Mobile renders a lighter, slower field to preserve battery and smoothness.
@@ -50,16 +70,19 @@ export default function ParticleField({
 
   const particles = useMemo(
     () =>
-      Array.from({ length: effectiveCount }, (_, index) => ({
-        id: index,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        size: 1 + Math.random() * 2,
-        blur: 1 + Math.random() * 2.5,
-        delay: Math.random() * 14,
-        duration: (isMobile ? 36 : 24) + Math.random() * (isMobile ? 28 : 30),
-        accent: index % 3 === 0,
-      })),
+      Array.from({ length: effectiveCount }, (_, index) => {
+        const { left, top } = randomOutsideSafeZone();
+        return {
+          id: index,
+          left,
+          top,
+          size: 1 + Math.random() * 2,
+          blur: 1 + Math.random() * 2.5,
+          delay: Math.random() * 14,
+          duration: (isMobile ? 36 : 24) + Math.random() * (isMobile ? 28 : 30),
+          accent: index % 3 === 0,
+        };
+      }),
     [effectiveCount, isMobile],
   );
 
@@ -68,7 +91,12 @@ export default function ParticleField({
     [opacityStops.length],
   );
 
-  const y = useTransform(progress, [0, 1], [0, -260]);
+  // Was -260: on shorter viewports that's enough vertical travel to carry a
+  // particle spawned just below the text safe zone up into it by the final
+  // chapters (e.g. Future Systems), producing a stray dot behind the copy.
+  // 80px keeps the same slow-drift ambience while staying inside the safe
+  // zone's own margin at any realistic viewport height.
+  const y = useTransform(progress, [0, 1], [0, -80]);
   const opacity = useTransform(progress, stops, opacityStops);
 
   // Always create both motion values to keep hook order stable.
