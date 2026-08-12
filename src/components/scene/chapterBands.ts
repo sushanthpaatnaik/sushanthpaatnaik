@@ -31,3 +31,33 @@ export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
   [0.580, 0.810],
   [0.810, 1.000],
 ];
+
+/**
+ * Width of the content cross-fade, as a fraction of a chapter's band.
+ * ScrollSections fades chapter n in over [bIn - OV*width, bIn] while the
+ * previous one fades out across the same span, so the two are equal at the
+ * midpoint of that window.
+ */
+export const CONTENT_FADE = 0.057;
+
+/**
+ * Which chapter owns the frame at scroll progress `sp`.
+ *
+ * Shared by the chapter rail (HUD) and the canvas colour grade so the label,
+ * the grade and the content can never disagree.
+ *
+ * The threshold is the cross-fade midpoint — the moment the incoming chapter
+ * becomes the dominant thing on screen — not a point inside its band. An
+ * earlier version used `bIn + 5% of band`, which switched roughly 2% of total
+ * scroll *after* the new chapter had already reached full opacity: entering
+ * Future Systems, the rail still read "Recognition & Ecosystem" for about
+ * 30vh of scrolling, and the colour grade lagged with it.
+ */
+export function getChapterFromProgress(sp: number): number {
+  for (let i = CHAPTER_BANDS.length - 1; i >= 0; i--) {
+    const [bIn, bOut] = CHAPTER_BANDS[i];
+    const threshold = i === 0 ? 0 : bIn - (CONTENT_FADE * (bOut - bIn)) / 2;
+    if (sp >= threshold) return i;
+  }
+  return 0;
+}

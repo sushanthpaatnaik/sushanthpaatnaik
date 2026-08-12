@@ -6,7 +6,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
+import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE } from "./chapterBands";
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = single sticky cinematic stage.
@@ -399,16 +399,19 @@ function IndustrialContent() {
         <h2 className="font-display text-[clamp(1.9rem,6.2vw,4.4rem)] leading-[1.04] tracking-[-0.025em] font-medium text-gradient mb-7 [text-wrap:balance]">
           One lattice. Many industries.
         </h2>
-        {/* Body */}
-        <p className="text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md ml-auto">
+        {/* Body — narrower measure than the heading so the two read as
+            separate steps rather than one dense block at laptop widths. */}
+        <p className="text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
           Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each a downstream of the same material platform.
         </p>
-        {/* Ventures — the commercial expression of the platform */}
-        <p className="mt-5 text-sm md:text-base text-muted-foreground/70 leading-relaxed max-w-md ml-auto">
+        {/* Ventures — the commercial expression of the platform. Given more
+            air above it than the body copy's own line spacing so it reads as
+            its own beat, not a trailing sentence. */}
+        <p className="mt-7 text-sm md:text-[15px] text-foreground/65 leading-relaxed max-w-[26rem] ml-auto">
           Six operating companies carry that platform into industry.
         </p>
         {/* Link row */}
-        <div className="mt-9 flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-3">
+        <div className="mt-10 flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-3">
           <Link
             to="/innovations"
             className="text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
@@ -455,8 +458,10 @@ function RecognitionEcosystemContent() {
         <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
           Recognition &amp; Ecosystem
         </p>
-        {/* H2 */}
-        <h2 className="font-display text-[clamp(1.75rem,6.2vw,4.4rem)] leading-[1.02] tracking-[-0.04em] text-gradient [text-wrap:balance]">
+        {/* H2 — ~9% smaller ceiling than the other chapter headings and
+            capped in width. At full size this line nearly spans a laptop
+            viewport, which reads as a banner rather than a headline. */}
+        <h2 className="font-display text-[clamp(1.6rem,5.4vw,4rem)] leading-[1.04] tracking-[-0.04em] text-gradient [text-wrap:balance] max-w-[20ch]">
           Recognised early. Building continuously.
         </h2>
         {/* The record, then the philosophy that outranks it */}
@@ -474,8 +479,21 @@ function RecognitionEcosystemContent() {
         </Link>
 
         {/* Ecosystem directory — restrained editorial index. Single column on
-            mobile, two on md+. Roman numerals retained for archive character. */}
-        <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 gap-y-0">
+            mobile, two on md+. Roman numerals retained for archive character.
+            The directory sits over the founder silhouette and the lit works
+            behind it, which is the busiest part of this plate; it carries its
+            own soft scrim rather than pushing the global shield darker and
+            flattening the whole frame. Gradient only — no card, no border. */}
+        <div className="relative mt-8 md:mt-12">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-6 -top-4 -bottom-4 md:-inset-x-10"
+            style={{
+              background:
+                "radial-gradient(ellipse 62% 70% at 42% 50%, oklch(0.02 0.006 260 / 0.62) 0%, oklch(0.02 0.006 260 / 0.42) 45%, oklch(0.02 0.006 260 / 0.12) 78%, transparent 100%)",
+            }}
+          />
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 gap-y-0">
           {gateways.map((g) => (
             <div
               key={g.to}
@@ -519,6 +537,7 @@ function RecognitionEcosystemContent() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </div>
@@ -613,7 +632,7 @@ function FutureContent() {
    This makes chapters feel they snap into place instantly and leave cleanly.
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
-const OV  = 0.057;
+const OV  = CONTENT_FADE;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 // easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
 // t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %

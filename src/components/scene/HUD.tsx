@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import type Lenis from "lenis";
-import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
+import { N_CHAPTERS, CHAPTER_BANDS, getChapterFromProgress } from "./chapterBands";
 
 // Order and length must match CHAPTER_BANDS.
 const chapters = [
@@ -11,17 +11,6 @@ const chapters = [
   { id: "recognition", label: "Recognition & Ecosystem" },
   { id: "future", label: "Future Systems" },
 ];
-
-function getChapterFromProgress(sp: number): number {
-  // Use band midpoints as chapter centers — chapter is active once scroll
-  // crosses 55 % of its band start (earlier = feels laggy, later = snappy).
-  for (let i = N_CHAPTERS - 1; i >= 0; i--) {
-    const [bIn, bOut] = CHAPTER_BANDS[i];
-    const threshold = i === 0 ? 0 : bIn + (bOut - bIn) * 0.05;
-    if (sp >= threshold) return i;
-  }
-  return 0;
-}
 
 export default function HUD({
   scrollProgress: _scrollProgress,
