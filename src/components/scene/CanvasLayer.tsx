@@ -31,10 +31,11 @@ import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress } from "./chapterBand
 // CHAPTER_BANDS or the frame count — but do not reintroduce a non-uniform
 // map to "fix" alignment; that trades a visible stutter for a subtlety.
 const SEQUENCE_PATH = "founder-film";
-// 472 frames: a 24fps/13.1s master interpolated to 36fps so the frame-per-
-// scroll-distance density stays at ~3.2vh/frame (see the linear-mapping note
-// above). Desktop frames are 1920x1080; the /m/ variants are 854x480.
-const FRAME_COUNT   = 472;
+// 476 frames: a native-1080p 24fps/8s master interpolated to 60fps so the
+// frame-per-scroll-distance density stays at ~3.2vh/frame (see the
+// linear-mapping note above). Desktop frames are the source's own 1920x1080
+// with no rescaling; the /m/ variants are 854x480.
+const FRAME_COUNT   = 476;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
