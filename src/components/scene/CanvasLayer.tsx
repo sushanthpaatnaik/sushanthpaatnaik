@@ -31,7 +31,10 @@ import { CHAPTER_BANDS, N_CHAPTERS } from "./chapterBands";
 // CHAPTER_BANDS or the frame count — but do not reintroduce a non-uniform
 // map to "fix" alignment; that trades a visible stutter for a subtlety.
 const SEQUENCE_PATH = "founder-film";
-const FRAME_COUNT   = 476;                 // total frames in the film, ~59.5fps × 8s
+// 472 frames: a 24fps/13.1s master interpolated to 36fps so the frame-per-
+// scroll-distance density stays at ~3.2vh/frame (see the linear-mapping note
+// above). Desktop frames are 1920x1080; the /m/ variants are 854x480.
+const FRAME_COUNT   = 472;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
@@ -101,9 +104,9 @@ interface CanvasLayerProps {
  *   → getFrameIndex(sp), a piecewise-linear map through FRAME_BREAKS
  *   → nearest-loaded-frame search
  *
- * Preload policy: a window of frames around the current index (desktop
- * keeps everything once loaded; touch evicts outside the window to respect
- * the iOS ~300 MB/tab budget — see EVICT_WINDOW below).
+ * Preload policy: a sliding window of frames around the current index on
+ * both desktop and touch — see the memory-budget note in the effect for the
+ * measured reason desktop can no longer retain the whole sequence.
  * Decode: createImageBitmap — GPU-ready, zero latency at draw time.
  * Draw: object-fit:cover with DPR-correct canvas buffer.
  * Reduced-motion: static poster, no canvas.
@@ -116,6 +119,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   const notifiedRef  = useRef(false);
   const lastFrameRef = useRef(-1);
   const lastChapterRef = useRef(-1);
+  // Frame index the desktop retention window was last recentred on.
+  const lastEvictAtRef = useRef(-1);
 
   // bitmaps[frameIdx] — populated lazily as frames decode.
   const bitmapsRef = useRef<Bitmaps>(Array(FRAME_COUNT).fill(null));
@@ -156,17 +161,27 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     let destroyed = false;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
-    // ── Mobile memory + bandwidth budget ─────────────────────────────────────
-    // Source frames are 1280×720 → ~3.69 MB each as a decoded ImageBitmap.
-    // All 480 retained would be ~1.77 GB — far past iOS Safari's ~300 MB
-    // per-tab ceiling, which crashes the tab. On touch we (1) fetch
-    // pre-sized 854×480 variants, (2) load every 2nd frame, and (3) evict
-    // frames outside a window around the current index. The
-    // nearest-loaded-frame search in the render loop covers skipped frames,
-    // so the sequence still animates in lock-step with scroll.
+    // ── Memory budget ────────────────────────────────────────────────────────
+    // A decoded ImageBitmap costs width×height×4 bytes, so the masters at
+    // 1920×1080 are ~8.3 MB each and the 854×480 mobile variants ~1.6 MB.
+    //
+    // Touch: fetch the /m/ variants, load every 2nd frame, and retain only
+    // the active chapter ±1. iOS Safari's per-tab ceiling is ~300 MB and
+    // exceeding it kills the tab outright.
+    //
+    // Desktop: retain a sliding window of frames around the current index.
+    // Retaining the whole sequence (the previous behaviour, which was
+    // survivable at 720p) costs 472 × 8.3 MB ≈ 3.9 GB of bitmaps at 1080p —
+    // measured at 5.2 GB process RSS against a 0.7 GB baseline, enough to
+    // thrash or kill the tab on an 8 GB machine. A ±70 window holds ~140
+    // frames ≈ 1.2 GB, which is lower than the pre-1080p build actually
+    // used. Evicted frames re-fetch from the HTTP cache (30-day
+    // Cache-Control on /sequences/) so scrolling back costs a decode, not a
+    // download.
     const framesPath = (path: string) => (isTouch ? `${path}/m` : path);
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = isTouch ? 2 : 1;
+    const DESKTOP_RETAIN_RADIUS = 70;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
@@ -219,15 +234,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Desktop: start every remaining chapter now that the loader has
-      // exited and the full HTTP/2 bandwidth budget is free.
-      // Touch: only prefetch chapter 1 — the eviction window only retains
-      // active±1, so fetching further ahead here would burn mobile
-      // bandwidth on frames guaranteed to be discarded before they're
-      // reached. The tick's chapter-change handler pulls in idx±1 as the
-      // user advances.
-      const prefetchTo = isTouch ? 1 : N_CHAPTERS - 1;
-      for (let c = 1; c <= prefetchTo; c++) loadChapterRegion(c);
+      // Prefetch only as far ahead as the retention window will actually
+      // keep. Desktop used to start every chapter here, which was right
+      // when it retained the whole sequence; with a sliding window those
+      // far frames would be discarded on arrival and re-fetched later, so
+      // it now pulls one chapter ahead like touch does. The tick's
+      // chapter-change handler brings in idx±1 as the reader advances.
+      loadChapterRegion(1);
       lastChapterRef.current = -1; // re-trigger the chapter-change block on next tick
     };
 
@@ -313,6 +326,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           if (isTouch && lastChapterRef.current >= 0) {
             const [lo, hi] = getRetainedRange(lastChapterRef.current);
             if (fi < lo || fi > hi) {
+              bmp.close();
+              loadingRef.current[fi] = false; // allow a retry once in range
+              return;
+            }
+          } else if (!isTouch && lastFrameRef.current >= 0) {
+            const cur = lastFrameRef.current;
+            if (fi < cur - DESKTOP_RETAIN_RADIUS || fi > cur + DESKTOP_RETAIN_RADIUS) {
               bmp.close();
               loadingRef.current[fi] = false; // allow a retry once in range
               return;
@@ -463,11 +483,32 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         loadChapterRegion(chapter + 1);
         loadChapterRegion(chapter - 1);
         // Touch: free everything outside active±1 to stay under the
-        // iOS/Android memory ceiling. Desktop retains everything (unchanged).
+        // iOS/Android memory ceiling.
         if (isTouch) {
           const [lo, hi] = getRetainedRange(chapter);
           evictExcept(lo, hi);
         }
+      }
+
+      // Desktop: slide the retained window with the playhead, and top it up.
+      // Runs off the frame index rather than the chapter so the budget is a
+      // fixed number of bitmaps regardless of how wide a chapter's band is.
+      //
+      // The top-up is not optional. Retention here is frame-based while
+      // loading is chapter-based and one-shot, so a chapter whose frames
+      // arrive while the playhead is still far away has them discarded on
+      // arrival — and chapterLoadingRef is already set, so the region loader
+      // will never ask for them again. Without this loop the window empties
+      // out behind the reader: measured 6% frame-change through Future
+      // Systems with static runs of 19 samples. loadFrame() no-ops on
+      // anything already loaded or in flight, so this is an array check per
+      // frame, not a fetch.
+      if (!isTouch && fi !== lastEvictAtRef.current) {
+        lastEvictAtRef.current = fi;
+        const lo = Math.max(0, fi - DESKTOP_RETAIN_RADIUS);
+        const hi = Math.min(LAST_FRAME, fi + DESKTOP_RETAIN_RADIUS);
+        evictExcept(lo, hi);
+        for (let f = lo; f <= hi; f++) loadFrame(f);
       }
 
       // Skip draw if frame unchanged — avoids redundant canvas writes.
