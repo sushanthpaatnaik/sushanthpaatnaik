@@ -30,7 +30,32 @@
 import { chromium } from "playwright";
 
 const URL = process.argv[2] ?? "http://127.0.0.1:4321/";
-const SETTLE = 2800; // Lenis eases; give it time to land before measuring.
+
+/**
+ * Wait for scrolling to actually stop, rather than for a fixed timeout.
+ *
+ * Lenis eases, and how long that takes depends on the distance: Home from the
+ * bottom of the page travels the full 9000px and can still be moving after
+ * three seconds. A fixed wait made the suite flaky in a way that looked like a
+ * product bug — a keypress issued mid-animation gets swallowed, so the next
+ * measurement read a delta of 0 and the run failed on "PageDown after Home".
+ */
+const settle = async (page, timeout = 8000) => {
+  const start = Date.now();
+  let last = -1;
+  let still = 0;
+  while (Date.now() - start < timeout) {
+    await page.waitForTimeout(120);
+    const y = await page.evaluate(() => Math.round(window.scrollY));
+    if (y === last) {
+      if (++still >= 3) return y;
+    } else {
+      still = 0;
+      last = y;
+    }
+  }
+  return last;
+};
 
 const VIEWPORTS = [
   { w: 1440, h: 900 },
@@ -41,6 +66,10 @@ const VIEWPORTS = [
   { w: 360, h: 800 },
 ];
 const SAMPLES = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.78, 0.8, 0.82, 0.85, 0.9, 1];
+// Chapter boundaries and the hand-over width, from chapterBands.ts. Kept in
+// sync by hand: this script runs against a built bundle, not the source.
+const BOUNDARIES = [0.24, 0.42, 0.61, 0.81];
+const FADE = 0.06;
 const NAMES = [
   "Origin",
   "Material Intelligence",
@@ -90,8 +119,7 @@ const limitOf = (p) => p.evaluate(() => document.body.scrollHeight - window.inne
 
   const press = async (k) => {
     await page.keyboard.press(k);
-    await page.waitForTimeout(SETTLE);
-    return scrollY(page);
+    return settle(page);
   };
   const nearMid = (y) => Math.abs(y - mid) < limit * 0.12;
 
@@ -133,8 +161,7 @@ const limitOf = (p) => p.evaluate(() => document.body.scrollHeight - window.inne
     await page.waitForTimeout(1400);
     await btn.first().focus();
     await page.keyboard.press("Enter");
-    await page.waitForTimeout(SETTLE);
-    const y = await scrollY(page);
+    const y = await settle(page);
     if (i === 0) chk(y === 0, `"Go to Origin" lands at the very top (${y})`);
     else chk(y > 0 && y < limit, `"Go to ${NAMES[i]}" lands in range (${y})`);
   }
@@ -196,13 +223,20 @@ for (const vp of VIEWPORTS) {
   for (const r of rows.out) {
     const peak = Math.max(...r.op);
     const live = r.pe.map((v, i) => (v === "auto" ? i : -1)).filter((i) => i >= 0);
-    // At an exact dissolve midpoint smoothstep puts both neighbours at 0.5.
-    // Either is a defensible dominant, so accept whichever the page picked.
+    // Inside a hand-over the layers are near-equal (and briefly all zero, see
+    // BOUNDARIES below), so any of them is a defensible dominant — accept
+    // whichever the page picked rather than argmax-ing between equal floats.
     const tied = r.op.map((v, i) => (peak - v < 0.02 ? i : -1)).filter((i) => i >= 0);
     const dom = tied.includes(live[0]) ? live[0] : r.op.indexOf(peak);
     const painted = r.op.map((v, i) => (v > 0.05 ? i : -1)).filter((i) => i >= 0);
 
-    if (peak < 0.5) note(`sp=${r.sp} every chapter below 0.5 (peak ${peak})`);
+    // Chapters hand over in sequence: the outgoing text leaves, the frame
+    // plays alone for a beat, the incoming text arrives. So "no text" is
+    // expected close to a boundary and a defect anywhere else. Check 6 above
+    // bounds how long that beat may last.
+    const nearBoundary = BOUNDARIES.some((b) => Math.abs(r.sp - b) <= FADE);
+    if (peak < 0.5 && !nearBoundary)
+      note(`sp=${r.sp} every chapter below 0.5 away from a hand-over (peak ${peak})`);
     if (live.length !== 1)
       note(`sp=${r.sp} ${live.length} interactive chapters ${JSON.stringify(live)}`);
     if (live[0] !== dom) note(`sp=${r.sp} interactive ${live[0]} ≠ dominant ${dom}`);
@@ -225,14 +259,56 @@ for (const vp of VIEWPORTS) {
 
   if (clean)
     console.log(
-      `   ok    15 samples clean — dominant sequence ${rows.out.map((r) => r.op.indexOf(Math.max(...r.op))).join("")}`,
+      // Printed from pointer-events, not argmax: during a hand-over beat every
+      // opacity is 0 and argmax would report chapter 0 for any of them.
+      `   ok    15 samples clean — dominant sequence ${rows.out
+        .map((r) => r.pe.findIndex((v) => v === "auto"))
+        .join("")}`,
     );
   await ctx.close();
 }
 
-/* ── 5. Reduced motion ──────────────────────────────────────────────────── */
+/* ── 5. The image-only beat between chapters stays brief ────────────────── */
 {
-  console.log("\n[5] reduced motion");
+  console.log("\n[5] hand-over beat");
+  const { ctx, page } = await open(1440, 900);
+  const r = await page.evaluate(async () => {
+    const stage = document.querySelector("#main .cinematic-stage-overlay");
+    const layers = [...stage.children].filter((e) => e.tagName === "DIV" && e.style.opacity !== "");
+    const travel = document.body.scrollHeight - window.innerHeight;
+    const STEP = 0.002;
+    let run = 0,
+      longest = 0,
+      overlaps = 0;
+    for (let sp = 0; sp <= 1.0001; sp += STEP) {
+      window.scrollTo(0, Math.round(sp * travel));
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const op = layers.map((e) => parseFloat(e.style.opacity || 1));
+      if (op.filter((v) => v > 0.05).length > 1) overlaps++;
+      if (Math.max(...op) < 0.02) {
+        run++;
+        longest = Math.max(longest, run);
+      } else run = 0;
+    }
+    return {
+      longestPx: Math.round(longest * STEP * travel),
+      overlaps,
+      travel,
+      vh: window.innerHeight,
+    };
+  });
+  const vhOfBeat = (r.longestPx / r.vh) * 100;
+  chk(r.overlaps === 0, `no sample paints two chapters at once (${r.overlaps} found)`);
+  chk(
+    vhOfBeat < 15,
+    `longest image-only beat ${r.longestPx}px = ${vhOfBeat.toFixed(1)}vh (limit 15vh)`,
+  );
+  await ctx.close();
+}
+
+/* ── 6. Reduced motion ──────────────────────────────────────────────────── */
+{
+  console.log("\n[6] reduced motion");
   const errs = [];
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 },

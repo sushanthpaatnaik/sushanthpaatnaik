@@ -970,14 +970,40 @@ const OV  = CONTENT_FADE;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /* smoothstep — symmetric S-curve. t=0.25 → 16 %, t=0.5 → 50 %, t=0.75 → 84 %.
-   This replaced easeOutQuint, which reached 67 % by t=0.20 and 97 % by t=0.50.
-   That curve was chosen when the dissolve was ~10vh wide and the snap read as
-   decisiveness. Stretched to a readable length it stops working: two layers
-   cross-dissolving on the same window would both sit at 97 % through the
-   middle of the transition, showing the old and new headings at full strength
-   at once. Smoothstep crosses at exactly 0.5/0.5, so the pair always sums to
-   1 — a true dissolve, with neither a double exposure nor a gap. */
+   Replaced easeOutQuint, which reached 97 % by t=0.50: fine for a 10vh snap,
+   wrong once the hand-over is long enough to read. */
 const eoo = (t: number): number => { const x = c01(t); return x * x * (3 - 2 * x); };
+
+/* Chapters hand over in sequence, not by cross-dissolving.
+   ─────────────────────────────────────────────────────────────────
+   Film dissolves images. It does not dissolve one title card into
+   another, because superimposed text is unreadable — and these
+   chapters are text over a continuous film.
+
+   Both layers used to share the fade window, each passing through 50 %
+   at its midpoint. Measured at the Recognition → Future hand-over on a
+   1440×900 desktop: 27 text nodes above 25 % opacity at once, against 7
+   with Future settled. Recognition's desktop composition is a heading, an
+   awards line, the record line, an archive link and a six-row directory
+   with a description per row; Future's is a full centred block. Mid-
+   dissolve every one of them was painted over every other. Widening the
+   dissolve to a readable length is what exposed it — at 10vh the overlap
+   lasted a wheel notch and nobody could catch it.
+
+   So the outgoing chapter now finishes leaving before the incoming one
+   starts arriving: out across the first 46 % of the window, a beat of
+   nothing across 8 %, in across the last 46 %. The two are never both
+   painted — not at 50 %, not at 5 %.
+
+   That 8 % beat is ~5vh, about 43px of scrolling on a 900px viewport.
+   The cinematic frame is still there and still moving; it is the text
+   that steps aside for a moment, which is exactly the grammar a title
+   card follows. It also means each chapter stays legible right up to the
+   instant it goes, instead of degrading through a smear. */
+const HANDOVER_OUT = 0.46;
+const HANDOVER_IN  = 0.54;
+const fadeOutAt = (t: number) => eoo(1 - c01(t / HANDOVER_OUT));
+const fadeInAt  = (t: number) => eoo(c01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
 
 /* Mobile staged reveal ────────────────────────────────────────────
    `v` is local progress inside a chapter band (0–1). A stage is fully
@@ -1003,21 +1029,26 @@ function chapOp(sp: number, n: number): number {
   const fadeW  = OV; // absolute — see CONTENT_FADE in chapterBands.ts
   const fiStart = bIn - fadeW;
   const foStart = bOut - fadeW;
+  // t is position within a hand-over window, 0 at its start, 1 at its end.
+  // bOut of chapter n is bIn of chapter n+1, so both read the same t and
+  // fadeOutAt/fadeInAt carve it into leave / beat / arrive.
+  const tOut = (sp - foStart) / fadeW;
+  const tIn  = (sp - fiStart) / fadeW;
 
   if (n === 0) {
     if (sp <= foStart) return 1;
-    if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
+    if (sp <= bOut)    return fadeOutAt(tOut);
     return 0;
   }
   if (n === N_CHAPTERS - 1) {
     if (sp <= fiStart) return 0;
-    if (sp <= bIn)     return eoo((sp - fiStart) / fadeW);
+    if (sp <= bIn)     return fadeInAt(tIn);
     return 1;
   }
   if (sp <= fiStart) return 0;
-  if (sp <= bIn)     return eoo((sp - fiStart) / fadeW);
+  if (sp <= bIn)     return fadeInAt(tIn);
   if (sp <= foStart) return 1;
-  if (sp <= bOut)    return eoo(1 - (sp - foStart) / fadeW);
+  if (sp <= bOut)    return fadeOutAt(tOut);
   return 0;
 }
 
@@ -1027,20 +1058,23 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
   const fiStart = bIn - fadeW;
   const foStart = bOut - fadeW;
 
+  const tOut = (sp - foStart) / fadeW;
+  const tIn  = (sp - fiStart) / fadeW;
+
   if (n === 0) {
     if (sp <= foStart) return 0;
-    if (sp <= bOut)    return eoo((sp - foStart) / fadeW) * yOut;
+    if (sp <= bOut)    return (1 - fadeOutAt(tOut)) * yOut;
     return yOut;
   }
   if (n === N_CHAPTERS - 1) {
     if (sp <= fiStart) return yIn;
-    if (sp <= bIn)     return yIn * (1 - eoo((sp - fiStart) / fadeW));
+    if (sp <= bIn)     return yIn * (1 - fadeInAt(tIn));
     return 0;
   }
   if (sp <= fiStart) return yIn;
-  if (sp <= bIn)     return yIn * (1 - eoo((sp - fiStart) / fadeW));
+  if (sp <= bIn)     return yIn * (1 - fadeInAt(tIn));
   if (sp <= foStart) return 0;
-  if (sp <= bOut)    return eoo((sp - foStart) / fadeW) * yOut;
+  if (sp <= bOut)    return (1 - fadeOutAt(tOut)) * yOut;
   return yOut;
 }
 
