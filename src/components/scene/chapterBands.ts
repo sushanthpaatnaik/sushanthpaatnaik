@@ -6,33 +6,39 @@
  * sequence (CanvasLayer) and the chapter rail (HUD) all import this, so
  * their bands are always identical.
  *
- *  0  Origin                 0.000 – 0.240  (0.240 — opens on Earth, dissolves
+ *  0  Origin                 0.000 – 0.210  (0.210 — opens on Earth, dissolves
  *                                            into the founder's lab; carries
  *                                            the hero and the founder voice)
- *  1  Material Intelligence  0.240 – 0.420  (0.180)
- *  2  Industrial Translation 0.420 – 0.610  (0.190)
- *  3  Recognition & Ecosystem 0.610 – 0.810 (0.200 — record, then the directory)
- *  4  Future Systems         0.810 – 1.000  (0.190 — extended close)
+ *  1  Material Intelligence  0.210 – 0.390  (0.180)
+ *  2  Industrial Translation 0.390 – 0.550  (0.160)
+ *  3  Recognition & Ecosystem 0.550 – 0.750 (0.200 — record, then the directory)
+ *  4  Future Systems         0.750 – 1.000  (0.250 — five staged phone states)
  *
- * Sum = 0.240 + 0.180 + 0.190 + 0.200 + 0.190 = 1.000 ✓
+ * Sum = 0.210 + 0.180 + 0.160 + 0.200 + 0.250 = 1.000 ✓
  *
- * Material has been widened twice, both times because a fixed-length dissolve
- * costs a narrow band proportionally more than a wide one.
+ * Bands are sized by how many *states* a chapter renders on a phone, not by
+ * how much desktop copy it holds. Counting mobile states — Origin has two
+ * beats, Recognition two, Material and Industrial one each, Future five — the
+ * old split gave Industrial 190vh for a single composition while Future had
+ * 190vh to divide five ways, 38vh apiece.
  *
- * First 0.120 → 0.150, when the cross-fade was widened to a readable length:
- * at 0.120 Material spent half its span dissolving (23 % in, 52 % hold, 25 %
- * out) while every other chapter held for ~70 %, and Industrial — then the
- * widest — lent the 0.030.
+ * Future's 0.060 comes half from Industrial and half from Origin. Taking the
+ * whole of it from Industrial was measured first and over-corrected: at 0.130
+ * Industrial's desktop hold fell to 70vh — 0.7 of a screen for a heading, a
+ * paragraph, a venture line and two links, tighter than Material had been
+ * before it was widened. Origin, holding 1.8 screens, was the chapter with
+ * slack to give.
  *
- * Then 0.150 → 0.180, after the page was shortened to 1100vh. Even at 0.150,
- * Material held at full opacity for only 0.96 of a phone screen — one thumb
- * flick end to end, against Origin's 1.83. Recognition lends this 0.030: it
- * was the longest hold at 1.75 screens and drops to ~1.5, which it can carry.
- * Industrial keeps its width and simply starts 0.030 later.
+ * Material widened twice for the same reason — a fixed-length hand-over costs
+ * a narrow band proportionally more than a wide one. 0.120 → 0.150 when the
+ * hand-over was first widened to a readable length (at 0.120 it spent half its
+ * span in transition while every other chapter held for ~70 %), then 0.150 →
+ * 0.180 after the page was shortened to 1100vh, where it was still holding for
+ * only 0.96 of a phone screen against Origin's 1.83. It is now 1.26 screens.
  *
- * Both boundaries this moves sit inside continuous footage — the founder over
- * the lattice runs unbroken from ~0.32 to ~0.46, and the Industrial/
- * Recognition hand-over stays inside the same interior sequence — so no
+ * Every boundary moved so far sits inside continuous footage — the founder
+ * over the lattice runs unbroken from ~0.32 to ~0.46, and the interior
+ * sequence carries the Industrial → Recognition → Future hand-overs — so no
  * text/frame pairing is disturbed. Verify that before moving them again.
  *
  * Previously seven bands: Founder was its own chapter between Origin and
@@ -44,11 +50,11 @@
 export const N_CHAPTERS = 5;
 
 export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
-  [0.000, 0.240],
-  [0.240, 0.420],
-  [0.420, 0.610],
-  [0.610, 0.810],
-  [0.810, 1.000],
+  [0.000, 0.210],
+  [0.210, 0.390],
+  [0.390, 0.550],
+  [0.550, 0.750],
+  [0.750, 1.000],
 ];
 
 /**

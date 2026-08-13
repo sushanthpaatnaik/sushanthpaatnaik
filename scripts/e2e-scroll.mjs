@@ -96,7 +96,7 @@ const VIEWPORTS = [
 const SAMPLES = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.78, 0.8, 0.82, 0.85, 0.9, 1];
 // Chapter boundaries and the hand-over width, from chapterBands.ts. Kept in
 // sync by hand: this script runs against a built bundle, not the source.
-const BOUNDARIES = [0.24, 0.42, 0.61, 0.81];
+const BOUNDARIES = [0.21, 0.39, 0.55, 0.75];
 const FADE = 0.06;
 const NAMES = [
   "Origin",
@@ -346,19 +346,26 @@ for (const vp of VIEWPORTS) {
   page.on("pageerror", (e) => errs.push(String(e).slice(0, 120)));
   await page.goto(URL, { waitUntil: "domcontentloaded", timeout: 60000 });
   await page.waitForTimeout(4200);
-  const r = await page.evaluate(async () => {
+  const r = await page.evaluate(async (BOUNDS) => {
     const stage = document.querySelector("#main .cinematic-stage-overlay");
     const layers = [...stage.children].filter((e) => e.tagName === "DIV" && e.style.opacity !== "");
     const travel = document.body.scrollHeight - window.innerHeight;
     const doms = [];
-    for (const sp of [0, 0.25, 0.5, 0.75, 1]) {
+    // Sample the centre of each chapter's own band rather than fixed
+    // quarters. Fixed points silently stop testing what they claim the moment
+    // a boundary moves: 0.75 became exactly Future Systems' start, so the
+    // check reported Recognition unreachable when it was simply not being
+    // looked at.
+    const edges = [0, ...BOUNDS, 1];
+    const centres = edges.slice(0, -1).map((a, i) => (a + edges[i + 1]) / 2);
+    for (const sp of centres) {
       window.scrollTo(0, Math.round(sp * travel));
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       const op = layers.map((e) => +parseFloat(e.style.opacity || 1).toFixed(2));
       doms.push(op.indexOf(Math.max(...op)));
     }
     return { lenis: document.documentElement.classList.contains("lenis"), doms };
-  });
+  }, BOUNDARIES);
   chk(!r.lenis, `Lenis is not initialised`);
   chk(errs.length === 0, `no page errors${errs.length ? " — " + errs[0] : ""}`);
   chk(r.doms.join("") === "01234", `all five chapters reachable (${r.doms.join("")})`);

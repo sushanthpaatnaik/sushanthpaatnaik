@@ -650,8 +650,8 @@ const RECORD = [
 ] as const;
 
 function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
-  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.40));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.48, 1, true));
+  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.420));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.475, 1, true));
   const peA = useTransform(opA, (v) => (v > 0.5 ? "auto" : "none"));
   const peB = useTransform(opB, (v) => (v > 0.5 ? "auto" : "none"));
 
@@ -833,14 +833,15 @@ function FutureContent() {
    industrial landscape below it stay uncovered.
    ────────────────────────────────────────────────────────────────── */
 function FutureMobile({ lp }: { lp: MotionValue<number> }) {
-  // Even holds: each transient state gets 0.12 of the band (~35vh), the
-  // closing state 0.20 (~58vh). Gaps are exactly STAGE_FADE wide so each
-  // hand-over is one clean dissolve.
-  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.12));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.20, 0.32));
-  const opC = useTransform(lp, (v) => stageOp(v, 0.40, 0.52));
-  const opD = useTransform(lp, (v) => stageOp(v, 0.60, 0.72));
-  const opE = useTransform(lp, (v) => stageOp(v, 0.80, 1, true));
+  // Even holds across a 250vh band: 0.155 each (~39vh) for the four
+  // transient states, 0.16 (~40vh, then pinned) for the close. Gaps are
+  // exactly STAGE_FADE wide so each hand-over is one clean leave/arrive.
+  // 4 x 0.155 + 0.16 + 4 x 0.055 = 1.000.
+  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.155));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.210, 0.365));
+  const opC = useTransform(lp, (v) => stageOp(v, 0.420, 0.575));
+  const opD = useTransform(lp, (v) => stageOp(v, 0.630, 0.785));
+  const opE = useTransform(lp, (v) => stageOp(v, 0.840, 1, true));
   const peE = useTransform(opE, (v) => (v > 0.5 ? "auto" : "none"));
 
   // Upper text band: clear of the subject's head at the top and of the
@@ -1006,22 +1007,27 @@ const fadeOutAt = (t: number) => eoo(1 - c01(t / HANDOVER_OUT));
 const fadeInAt  = (t: number) => eoo(c01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
 
 /* Mobile staged reveal ────────────────────────────────────────────
-   `v` is local progress inside a chapter band (0–1). A stage is fully
-   opaque across [from, to] and dissolves over STAGE_FADE either side.
-   Windows are authored so one stage's fade-out and the next stage's
-   fade-in occupy the same interval (next.from === prev.to + STAGE_FADE)
-   — a true cross-dissolve, never a blank frame. `hold` pins the final
-   stage on so the closing composition is also the page's last state.
+   `v` is local progress inside a chapter band (0–1). A stage holds at
+   full opacity across [from, to]; the STAGE_FADE-wide window between
+   one stage's `to` and the next stage's `from` is its hand-over.
 
-   0.08 of Future Systems' 289vh band ≈ 23vh per dissolve, against ~35vh
-   of hold per state. Widened from 0.06 alongside the chapter dissolve
-   so a phone's within-chapter handovers read at the same tempo as its
-   chapter-to-chapter ones rather than snapping between them. */
-const STAGE_FADE = 0.08;
+   These hand over in sequence, exactly as chapters do, and for exactly
+   the same reason: every phone state in Future Systems is painted in
+   the same text band at top-26 %, so a cross-dissolve put "Energy as
+   infrastructure." and "Industry at planetary scale." on top of each
+   other at 50 % apiece. That was the same defect as the desktop
+   Recognition → Future overlap, one level down, and it was shipping.
+   fadeOutAt/fadeInAt carve the window into leave / beat / arrive, so
+   only ever one of them is painted.
+
+   `hold` pins the final stage on so the closing composition is also the
+   page's last state. `from <= 0` pins the first stage on from the start
+   of the chapter, since it has nothing to arrive from. */
+const STAGE_FADE = 0.055;
 function stageOp(v: number, from: number, to: number, hold = false): number {
-  const fadeIn = eoo(c01((v - from + STAGE_FADE) / STAGE_FADE));
-  if (hold) return fadeIn;
-  return Math.min(fadeIn, 1 - eoo(c01((v - to) / STAGE_FADE)));
+  const arrive = from <= 0 ? 1 : fadeInAt((v - from + STAGE_FADE) / STAGE_FADE);
+  if (hold) return arrive;
+  return Math.min(arrive, fadeOutAt((v - to) / STAGE_FADE));
 }
 
 function chapOp(sp: number, n: number): number {
