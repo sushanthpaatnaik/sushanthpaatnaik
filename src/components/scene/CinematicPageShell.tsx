@@ -134,7 +134,7 @@ export default function CinematicPageShell({
 
       <Nav />
 
-      <main className="relative z-10">
+      <main id="main" className="relative z-10">
         {/* Hero block */}
         <section className="px-5 sm:px-6 pt-36 md:pt-44 pb-14 md:pb-20">
           <div className="mx-auto max-w-4xl">

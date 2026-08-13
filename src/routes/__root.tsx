@@ -162,6 +162,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        {/* Skip link. The homepage puts a fixed nav and a full-screen
+            cinematic stage ahead of the content in tab order; without this a
+            keyboard visitor walks the entire header on every page. Visually
+            hidden until focused, then it lands in the top-left corner. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-sm focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:text-foreground focus:outline-none focus:ring-2 focus:ring-accent/70"
+        >
+          Skip to content
+        </a>
         {children}
         <Scripts />
       </body>

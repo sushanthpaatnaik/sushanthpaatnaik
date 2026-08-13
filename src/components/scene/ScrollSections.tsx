@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "framer-motion";
 import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE } from "./chapterBands";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 
 /* ──────────────────────────────────────────────────────────────────
    Mobile stage gate.
@@ -1015,7 +1015,7 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
    Main export — single sticky cinematic stage
    ────────────────────────────────────────────────────────────────── */
 export default function ScrollSections() {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const mobile = useIsMobileStage();
   const { scrollYProgress } = useScroll();
 
@@ -1036,14 +1036,48 @@ export default function ScrollSections() {
   const op3 = useTransform(scrollYProgress, (sp) => chapOp(sp, 3));
   const op4 = useTransform(scrollYProgress, (sp) => chapOp(sp, 4));
 
-  // Gate pointer events to whichever chapter is currently visible.
-  // Without this, zero-opacity chapters sitting above in DOM order
-  // silently absorb clicks intended for the visible chapter.
-  const pe0 = useTransform(op0, (v) => v > 0.05 ? "auto" : "none");
-  const pe1 = useTransform(op1, (v) => v > 0.05 ? "auto" : "none");
-  const pe2 = useTransform(op2, (v) => v > 0.05 ? "auto" : "none");
-  const pe3 = useTransform(op3, (v) => v > 0.05 ? "auto" : "none");
-  const pe4 = useTransform(op4, (v) => v > 0.05 ? "auto" : "none");
+  /* Exactly one chapter is interactive at a time — the dominant one.
+     ─────────────────────────────────────────────────────────────────
+     This was `opacity > 0.05 ? "auto" : "none"` per chapter, which is
+     correct only while chapters are disjoint. Through a cross-dissolve
+     both neighbours clear 0.05, so both were live: the outgoing chapter
+     sits above the incoming one in DOM order and swallows taps meant
+     for it. Widening the dissolve to a readable length turned that from
+     a sliver into ~65vh of ambiguity.
+
+     Dominance is a strict comparison of the same opacities the layers
+     render with, so the interactive chapter is by construction the one
+     the eye reads as foremost, and the handover is a single switch at
+     the dissolve midpoint rather than an overlap. */
+  const dominant = useTransform(scrollYProgress, (sp) => {
+    let best = 0;
+    let bestOp = -1;
+    for (let i = 0; i < N_CHAPTERS; i++) {
+      const o = chapOp(sp, i);
+      if (o > bestOp) { bestOp = o; best = i; }
+    }
+    return best;
+  });
+
+  const pe0 = useTransform(dominant, (d) => (d === 0 ? "auto" : "none"));
+  const pe1 = useTransform(dominant, (d) => (d === 1 ? "auto" : "none"));
+  const pe2 = useTransform(dominant, (d) => (d === 2 ? "auto" : "none"));
+  const pe3 = useTransform(dominant, (d) => (d === 3 ? "auto" : "none"));
+  const pe4 = useTransform(dominant, (d) => (d === 4 ? "auto" : "none"));
+
+  /* `aria-hidden` and `inert` are attributes, not styles, so they cannot ride
+     a MotionValue — they need a render. This is the only per-scroll React
+     state on the page and it changes five times over 1520vh, not per frame.
+
+     Without it a screen reader reads all five chapters as one continuous
+     document and keyboard focus tabs into links sitting at opacity 0. `inert`
+     covers the focus half, `aria-hidden` the announcement half; React 19
+     passes both straight through. */
+  const [activeChapter, setActiveChapter] = useState(0);
+  useEffect(() => {
+    setActiveChapter(dominant.get());
+    return dominant.on("change", (d) => setActiveChapter(d));
+  }, [dominant]);
 
   const y0 = useTransform(scrollYProgress, (sp) => chapY(sp, 0, yIn, yOut));
   const y1 = useTransform(scrollYProgress, (sp) => chapY(sp, 1, yIn, yOut));
@@ -1113,6 +1147,8 @@ export default function ScrollSections() {
         <motion.div
           className="absolute inset-0"
           style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: wc }}
+          aria-hidden={activeChapter !== 0}
+          inert={activeChapter !== 0}
         >
           <OriginContent beatA={beatA} beatB={beatB} peA={peA} peB={peB} />
         </motion.div>
@@ -1121,6 +1157,8 @@ export default function ScrollSections() {
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: wc }}
+          aria-hidden={activeChapter !== 1}
+          inert={activeChapter !== 1}
         >
           <MaterialContent />
         </motion.div>
@@ -1129,6 +1167,8 @@ export default function ScrollSections() {
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: wc }}
+          aria-hidden={activeChapter !== 2}
+          inert={activeChapter !== 2}
         >
           <IndustrialContent />
         </motion.div>
@@ -1137,6 +1177,8 @@ export default function ScrollSections() {
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: wc }}
+          aria-hidden={activeChapter !== 3}
+          inert={activeChapter !== 3}
         >
           {mobile ? <RecognitionMobile lp={lp3} /> : <RecognitionEcosystemContent />}
         </motion.div>
@@ -1145,6 +1187,8 @@ export default function ScrollSections() {
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center"
           style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
+          aria-hidden={activeChapter !== 4}
+          inert={activeChapter !== 4}
         >
           {mobile ? <FutureMobile lp={lp4} /> : <FutureContent />}
         </motion.div>

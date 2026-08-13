@@ -212,7 +212,7 @@ function EssayPage() {
 
       <Nav />
 
-      <main className="relative z-10 mx-auto max-w-[40rem] px-6 sm:px-8 pt-40 md:pt-52 pb-28 md:pb-40">
+      <main id="main" className="relative z-10 mx-auto max-w-[40rem] px-6 sm:px-8 pt-40 md:pt-52 pb-28 md:pb-40">
         {/* Folio crumb */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}

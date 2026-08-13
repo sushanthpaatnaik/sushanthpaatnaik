@@ -832,7 +832,7 @@ function EarlyWorksPage() {
 
         <Nav />
 
-        <main className="relative z-10">
+        <main id="main" className="relative z-10">
           {/* Hero */}
           <HeroSection />
 

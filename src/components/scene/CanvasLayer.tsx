@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import type Lenis from "lenis";
 import sceneSpark from "@/assets/story-01-spark.webp";
 import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress } from "./chapterBands";
@@ -103,7 +103,7 @@ interface CanvasLayerProps {
 export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const gradeRefs    = useRef<(HTMLDivElement | null)[]>(new Array(N_CHAPTERS).fill(null));
-  const reduce       = useReducedMotion();
+  const reduce       = useReducedMotionSafe();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
   const lastFrameRef = useRef(-1);
@@ -448,12 +448,22 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const tick = () => {
       if (!destroyed) rafRef.current = requestAnimationFrame(tick);
 
-      // Read lenis.targetScroll (raw user intent, no smoothing applied) so
-      // frame updates are decoupled from Lenis easing — under-16ms latency.
-      // Falls back to window.scrollY when Lenis isn't ready yet.
+      // Read lenis.scroll — the *animated* position, the one Lenis has written
+      // to the document and the one the visitor is actually looking at.
+      //
+      // This used to read lenis.targetScroll, the un-eased destination, on the
+      // theory that it made frame updates feel instant. It did, but it made
+      // them instant relative to the wrong clock: the text layer runs on
+      // framer-motion's useScroll, which reads window.scrollY, so the footage
+      // ran a whole lerp ahead of the headings. At lerp 0.12 that is a couple
+      // of hundred pixels of scroll — the film reaching the next chapter's
+      // imagery while its heading was still arriving. One clock for both.
+      //
+      // Falls back to window.scrollY when Lenis isn't ready, and on touch,
+      // where Lenis is never constructed and window.scrollY *is* the position.
       const lenis = lenisRef?.current;
       const rawSp = lenis && lenis.limit > 0
-        ? lenis.targetScroll / lenis.limit
+        ? lenis.scroll / lenis.limit
         : window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const sp = Math.max(0, Math.min(rawSp, 1));
       const fi = getFrameIndex(sp);

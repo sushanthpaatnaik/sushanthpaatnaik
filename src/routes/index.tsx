@@ -154,7 +154,23 @@ function Index() {
     const hasIntentionalHash = Boolean(window.location.hash && window.location.hash.length > 1);
     const shouldForceTop = !hasIntentionalHash || navEntry?.type === "reload";
 
+    // Once the visitor has touched the page, it is theirs. Every snap below is
+    // gated on this.
+    //
+    // These snaps exist to defeat the browser's own scroll restoration, which
+    // lands before the 1620vh track has laid out. The ladder ran unguarded all
+    // the way out to the `load` event — and `load` waits on every stylesheet
+    // and in-document image, so on a cold cache it can fire seconds in. Anyone
+    // who started scrolling in that window was dragged back to the top:
+    // measured, a scroll to 3000px was sitting at 0 four seconds later. That
+    // is the "scrolling is unstable / snaps back" behaviour, and it is worst
+    // on exactly the slow connections where the ladder was meant to help.
+    let engaged = false;
+    const engage = () => { engaged = true; };
+    const ENGAGE_EVENTS = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+
     const snapTop = () => {
+      if (engaged) return;
       const lenis = lenisRef.current;
       if (lenis) {
         lenis.scrollTo(0, { immediate: true, force: true, lock: true });
@@ -164,12 +180,19 @@ function Index() {
     };
 
     if (shouldForceTop) {
+      for (const t of ENGAGE_EVENTS) {
+        window.addEventListener(t, engage, { passive: true });
+      }
+
       snapTop();
       const r1 = requestAnimationFrame(snapTop);
       const t1 = window.setTimeout(snapTop, 60);
       const t2 = window.setTimeout(snapTop, 300);
-      const onLoad = () => snapTop();
-      window.addEventListener("load", onLoad, { once: true });
+      // No `load`-event snap. Browser restoration has already landed by 300ms,
+      // but `load` waits on every stylesheet and in-document image and so has
+      // no upper bound — on a cold cache it fires well after the preloader has
+      // handed the page over. A snap that late is not defeating restoration,
+      // it is overruling the visitor.
 
       const onPageShow = (e: PageTransitionEvent) => {
         if (e.persisted && !window.location.hash) snapTop();
@@ -180,7 +203,7 @@ function Index() {
         cancelAnimationFrame(r1);
         clearTimeout(t1);
         clearTimeout(t2);
-        window.removeEventListener("load", onLoad);
+        for (const t of ENGAGE_EVENTS) window.removeEventListener(t, engage);
         window.removeEventListener("pageshow", onPageShow);
         try {
           window.history.scrollRestoration = prev;

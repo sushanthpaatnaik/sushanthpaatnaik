@@ -14,8 +14,15 @@ export function useLenis(onScroll?: (progress: number) => void) {
     // present, so the cinematic image-sequence still animates in lock-step.
     // We only attach a passive scroll listener so HUD progress keeps updating.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    // Reduced motion takes the same path. Lenis's whole job is to interpolate
+    // between where the visitor scrolled to and where the page is drawn — that
+    // easing *is* motion, applied to the entire page, and someone who has asked
+    // the OS for less of it should get the browser's own scrolling. Native
+    // scroll is also the more accessible target: no virtual position to fall
+    // out of sync with assistive tech or with the browser's find-on-page.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (isTouch) {
+    if (isTouch || reduceMotion) {
       const onNativeScroll = () => {
         const limit = document.documentElement.scrollHeight - window.innerHeight;
         const progress = limit > 0 ? Math.min(Math.max(window.scrollY / limit, 0), 1) : 0;
@@ -55,8 +62,22 @@ export function useLenis(onScroll?: (progress: number) => void) {
 
     // Recompute layout-dependent scroll math once images, fonts, and late layout settle.
     const resize = () => lenis.resize();
+
+    // snapState re-seats Lenis's virtual position on the document's real one
+    // after a layout shift. Two guards, both load-bearing:
+    //
+    //   isScrolling — `scrollTo(..., immediate, force)` cancels whatever
+    //     animation is in flight. Firing it mid-gesture kills the visitor's
+    //     momentum and yanks Lenis back onto window.scrollY, which lags the
+    //     animated position by up to a lerp's worth of travel. That reads as
+    //     a backwards jump.
+    //   dead zone — after the scroll settles, Lenis and the document already
+    //     agree to within a pixel. Re-seating on a delta of 0 is a no-op that
+    //     can still stomp a gesture starting in the same frame.
     const snapState = () => {
+      if (lenis.isScrolling) return;
       const current = window.scrollY || window.pageYOffset || 0;
+      if (Math.abs(current - lenis.scroll) < 2) return;
       lenis.scrollTo(current, { immediate: true, force: true });
     };
     const onLoad = () => {

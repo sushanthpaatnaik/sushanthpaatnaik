@@ -87,7 +87,7 @@ function EssaysIndex() {
 
       <Nav />
 
-      <main className="relative z-10 mx-auto max-w-[44rem] px-6 sm:px-8 pt-40 md:pt-56 pb-32 md:pb-44">
+      <main id="main" className="relative z-10 mx-auto max-w-[44rem] px-6 sm:px-8 pt-40 md:pt-56 pb-32 md:pb-44">
         {/* Folio */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
