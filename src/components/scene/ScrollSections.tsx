@@ -6,7 +6,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE } from "./chapterBands";
+import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE, getChapterFromProgress } from "./chapterBands";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 
 /* ──────────────────────────────────────────────────────────────────
@@ -43,7 +43,25 @@ function useIsMobileStage(): boolean {
    Future Systems holds at full opacity to close the documentary.
    ────────────────────────────────────────────────────────────────── */
 
-const TOTAL_VH = 1620; // ghost-track height; scrollable = 1520 vh
+// Ghost-track height; scrollable travel = TOTAL_VH - 100.
+//
+// 1620 → 1100 (travel 1520vh → 1000vh), a 34% shorter page.
+//
+// CONTENT_FADE moves with it. The dissolve is a fraction of total progress, so
+// leaving it at 0.043 would have shrunk every hand-over from 65vh to 43vh and
+// undone the pacing work this shortening sits on top of. Raised to 0.060 the
+// dissolve stays at ~60vh of scrolling on a shorter page.
+//
+// What actually pays for the cut is the holds. Measured after: Origin ~210vh,
+// Recognition ~170vh, Future ~160vh, Industrial ~130vh, Material ~90vh.
+// Material is the pinch — its band is the narrowest, so a fixed-length
+// dissolve eats proportionally most of it, and 90vh is just under one screen
+// of scrolling at full opacity. Readable, but it is the first thing to feel
+// rushed if this page is ever shortened further.
+//
+// Frame density improves: 476 frames over 1000vh is 2.1vh/frame against the
+// old 3.2, so the sequence steps less, not more.
+const TOTAL_VH = 1100;
 
 // Ecosystem directory — every primary-nav destination still reachable, but
 // grouped into six entries instead of nine so the closing chapter reads as a
@@ -1045,19 +1063,21 @@ export default function ScrollSections() {
      for it. Widening the dissolve to a readable length turned that from
      a sliver into ~65vh of ambiguity.
 
-     Dominance is a strict comparison of the same opacities the layers
-     render with, so the interactive chapter is by construction the one
-     the eye reads as foremost, and the handover is a single switch at
-     the dissolve midpoint rather than an overlap. */
-  const dominant = useTransform(scrollYProgress, (sp) => {
-    let best = 0;
-    let bestOp = -1;
-    for (let i = 0; i < N_CHAPTERS; i++) {
-      const o = chapOp(sp, i);
-      if (o > bestOp) { bestOp = o; best = i; }
-    }
-    return best;
-  });
+     Dominance comes from getChapterFromProgress — the same function the
+     chapter rail and the canvas colour grade already run on — rather than an
+     argmax over the opacities. Both answer identically everywhere that
+     matters, because that function switches at the dissolve midpoint, which
+     is where the two curves cross. The difference is only at the crossing
+     itself, and it is the whole point: smoothstep puts both chapters at
+     exactly 0.5 there, so an argmax is deciding between equal floats and can
+     flip on a rounding difference between the frame that wrote the opacity
+     and the frame that read it. Measured, that showed up at 360x800 as the
+     interactive chapter and the aria state disagreeing at sp=0.78.
+
+     Reading position instead of opacity makes the handover a single
+     deterministic switch, and makes rail, grade, pointer events and
+     accessibility state agree by construction rather than by coincidence. */
+  const dominant = useTransform(scrollYProgress, getChapterFromProgress);
 
   const pe0 = useTransform(dominant, (d) => (d === 0 ? "auto" : "none"));
   const pe1 = useTransform(dominant, (d) => (d === 1 ? "auto" : "none"));
@@ -1067,7 +1087,7 @@ export default function ScrollSections() {
 
   /* `aria-hidden` and `inert` are attributes, not styles, so they cannot ride
      a MotionValue — they need a render. This is the only per-scroll React
-     state on the page and it changes five times over 1520vh, not per frame.
+     state on the page and it changes five times over the whole page, not per frame.
 
      Without it a screen reader reads all five chapters as one continuous
      document and keyboard focus tabs into links sitting at opacity 0. `inert`

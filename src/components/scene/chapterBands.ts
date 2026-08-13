@@ -44,8 +44,10 @@ export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
 /**
  * Width of the content cross-fade, in absolute scroll progress.
  *
- * 0.043 of a 1520vh page ≈ 65vh — roughly two thirds of a screen of scrolling
- * for one chapter to hand over to the next.
+ * 0.060 of a 1000vh page ≈ 60vh — roughly two thirds of a screen of scrolling
+ * for one chapter to hand over to the next. It was 0.043 while travel was
+ * 1520vh; both numbers describe the same ~60–65vh dissolve, because this is a
+ * fraction of total progress and the page got shorter (see TOTAL_VH).
  *
  * This used to be a *fraction of the band* (0.057), which made the dissolve
  * 0.057 × band wide: 10vh for Material, 19vh for Recognition. At 10vh a single
@@ -61,7 +63,7 @@ export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
  * this length they would drift apart and leave a stretch where one chapter has
  * started fading and the next has not begun — a visible dip to no text.
  */
-export const CONTENT_FADE = 0.043;
+export const CONTENT_FADE = 0.060;
 
 /**
  * Which chapter owns the frame at scroll progress `sp`.

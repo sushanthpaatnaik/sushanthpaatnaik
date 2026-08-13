@@ -31,17 +31,30 @@ export default function HUD({
     }
   });
 
-  // Jump to a chapter's band midpoint. Routed through Lenis when it is
-  // driving the page: the canvas sequence reads lenis.targetScroll, and a
-  // bare window.scrollTo moves the document without updating that, which
-  // would leave the background frozen on the old frame after a rail click.
-  // Native scroll (touch devices, reduced-motion) has no Lenis instance and
-  // falls through to window.scrollTo.
+  // Jump to where a chapter *begins holding* — bIn, the point its content
+  // reaches full opacity — not the middle of its band.
+  //
+  // The midpoint was the bug behind "one keypress from the top jumps to the
+  // middle of the page and activates section 3". These markers are buttons, so
+  // they take focus and activate on Space or Enter like any button; with
+  // Industrial's band at [0.39, 0.58] its midpoint is 0.485 of the page, and
+  // Space on a focused "Go to Industrial Translation" lands you at ~6900px.
+  // That is correct button behaviour reaching a wrong destination.
+  //
+  // Midpoints were wrong on their own terms too: "Go to Origin" scrolled to
+  // 1707px — past the hero, into the founder beat — when Origin plainly means
+  // the top of the page. Chapter 0 is pinned to exactly 0 for that reason, and
+  // every other chapter lands where its heading has just settled rather than
+  // half a chapter into copy the visitor has not seen arrive.
+  //
+  // Routed through Lenis when it is driving the page: a bare window.scrollTo
+  // moves the document without telling Lenis, leaving its virtual position
+  // stale. Native scroll (touch, reduced motion) has no instance and falls
+  // through.
   const goToChapter = (i: number) => {
     if (typeof window === "undefined") return;
-    const [bIn, bOut] = CHAPTER_BANDS[i];
-    const limit = document.documentElement.scrollHeight - window.innerHeight;
-    const target = Math.round(((bIn + bOut) / 2) * limit);
+    const limit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const target = i === 0 ? 0 : Math.round(CHAPTER_BANDS[i][0] * limit);
     const lenis = lenisRef?.current;
     if (lenis) lenis.scrollTo(target, { duration: 1.1 });
     else window.scrollTo({ top: target, behavior: "smooth" });
