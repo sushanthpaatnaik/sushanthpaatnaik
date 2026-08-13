@@ -833,16 +833,19 @@ function FutureContent() {
    industrial landscape below it stay uncovered.
    ────────────────────────────────────────────────────────────────── */
 function FutureMobile({ lp }: { lp: MotionValue<number> }) {
-  // Even holds across a 250vh band: 0.155 each (~39vh) for the four
-  // transient states, 0.16 (~40vh, then pinned) for the close. Gaps are
-  // exactly STAGE_FADE wide so each hand-over is one clean leave/arrive.
-  // 4 x 0.155 + 0.16 + 4 x 0.055 = 1.000.
-  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.155));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.210, 0.365));
-  const opC = useTransform(lp, (v) => stageOp(v, 0.420, 0.575));
-  const opD = useTransform(lp, (v) => stageOp(v, 0.630, 0.785));
-  const opE = useTransform(lp, (v) => stageOp(v, 0.840, 1, true));
-  const peE = useTransform(opE, (v) => (v > 0.5 ? "auto" : "none"));
+  // Four states, not five. The thesis is one sentence pair — desktop sets
+  // it as a single h2 with a line break — and splitting it across two
+  // scroll states was buying a hand-over with reading time. Five states
+  // in a 250vh band could only afford 0.38 of a phone screen each, about
+  // one gentle swipe; four afford half a screen, and the pair now reads
+  // as the single thought it is.
+  //
+  // 0.20 + 0.22 + 0.20 + 0.215 hold, 3 x 0.055 hand-over = 1.000.
+  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.200));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.255, 0.475));
+  const opC = useTransform(lp, (v) => stageOp(v, 0.530, 0.730));
+  const opD = useTransform(lp, (v) => stageOp(v, 0.785, 1, true));
+  const peD = useTransform(opD, (v) => (v > 0.5 ? "auto" : "none"));
 
   // Upper text band: clear of the subject's head at the top and of the
   // silhouette's body below. Every transient state lands in this box.
@@ -872,24 +875,23 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         Not a forecast.<br />A working hypothesis.
       </motion.p>
 
-      {/* B / C — the two statements, each with its own reading hold */}
+      {/* B — the thesis, both halves together. Four lines at this size, so
+          it is set a step smaller than the single-sentence states were and
+          the two sentences are separated by leading rather than by scroll. */}
       <motion.h2
-        className={`${band} z-10 font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
+        className={`${band} z-10 font-display text-[clamp(1.75rem,8.0vw,2.25rem)] leading-[1.12] tracking-[-0.03em] font-medium text-gradient`}
         style={{ opacity: opB, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
       >
         Energy as<br />infrastructure.
+        <span className="mt-3 block">
+          Industry at<br />planetary scale.
+        </span>
       </motion.h2>
-      <motion.p
-        className={`${band} z-10 font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
-        style={{ opacity: opC, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
-      >
-        Industry at<br />planetary scale.
-      </motion.p>
 
-      {/* D — the domains, stacked so they read rather than wrap */}
+      {/* C — the domains, stacked so they read rather than wrap */}
       <motion.div
         className={`${band} z-10 flex flex-col items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/80`}
-        style={{ opacity: opD }}
+        style={{ opacity: opC }}
       >
         <span>Advanced Materials</span>
         <span className="h-px w-6 bg-foreground/20" aria-hidden />
@@ -898,12 +900,12 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         <span>Planetary Infrastructure</span>
       </motion.div>
 
-      {/* E — closing state. Statement in the text band, the single CTA and
+      {/* D — closing state. Statement in the text band, the single CTA and
           the page's ending anchored to the bottom, clear of Android's
           navigation area and Chrome's controls. */}
       <motion.div
         className="absolute inset-0 z-10"
-        style={{ opacity: opE, pointerEvents: peE }}
+        style={{ opacity: opD, pointerEvents: peD }}
       >
         <p
           className={`${band} font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}

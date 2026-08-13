@@ -165,9 +165,20 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // A decoded ImageBitmap costs width×height×4 bytes, so the masters at
     // 1920×1080 are ~8.3 MB each and the 854×480 mobile variants ~1.6 MB.
     //
-    // Touch: fetch the /m/ variants, load every 2nd frame, and retain only
-    // the active chapter ±1. iOS Safari's per-tab ceiling is ~300 MB and
-    // exceeding it kills the tab outright.
+    // Touch: fetch the /m/ variants and retain a sliding window, same
+    // mechanism as desktop, just a smaller radius. iOS Safari's per-tab
+    // ceiling is ~300 MB and exceeding it kills the tab outright; a ±55
+    // window holds 111 frames ≈ 182 MB of bitmaps, comfortably inside it.
+    //
+    // Touch used to load every 2nd frame and retain the active chapter ±1
+    // instead. Retaining a whole chapter-triple at full density would be
+    // ~260 frames ≈ 430 MB — over the ceiling — so density was what got
+    // traded away, and the phone played the film at half the frame rate:
+    // measured 238 distinct frames across the page, one frame change per
+    // 4.2vh against desktop's 2.1. That stepping is what reads as "not
+    // smooth" on a phone, most of all through the slow holds where the
+    // image is the only thing moving. Capping *residency* rather than
+    // density buys the frames back at a third of the memory.
     //
     // Desktop: retain a sliding window of frames around the current index.
     // Retaining the whole sequence (the previous behaviour, which was
@@ -180,8 +191,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // download.
     const framesPath = (path: string) => (isTouch ? `${path}/m` : path);
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
-    const frameStep = isTouch ? 2 : 1;
-    const DESKTOP_RETAIN_RADIUS = 70;
+    const frameStep = 1;
+    const RETAIN_RADIUS = isTouch ? 55 : 70;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
@@ -190,14 +201,6 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const criticalCount = isTouch ? 2 : 4;
     let criticalLoaded  = 0;
 
-    // The frame range to keep resident for a given active chapter: that
-    // chapter's own region plus its neighbours on each side. Chapter frame
-    // ranges are contiguous (CHAPTER_FRAME_RANGES[i][1] ===
-    // CHAPTER_FRAME_RANGES[i+1][0]), so active±1 collapses to one span.
-    const getRetainedRange = (chapter: number): [number, number] => [
-      CHAPTER_FRAME_RANGES[Math.max(0, chapter - 1)][0],
-      CHAPTER_FRAME_RANGES[Math.min(N_CHAPTERS - 1, chapter + 1)][1],
-    ];
 
     // Close + drop every retained bitmap outside [lo, hi] and mark it
     // reloadable; ABORT anything still in-flight for those frames instead
@@ -323,16 +326,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           // exact bug (at group granularity) was the mobile "scroll gets
           // stuck / no longer cinematic" freeze: measured on a throttled
           // iPhone profile the canvas froze for 27 of 41 scroll samples.
-          if (isTouch && lastChapterRef.current >= 0) {
-            const [lo, hi] = getRetainedRange(lastChapterRef.current);
-            if (fi < lo || fi > hi) {
-              bmp.close();
-              loadingRef.current[fi] = false; // allow a retry once in range
-              return;
-            }
-          } else if (!isTouch && lastFrameRef.current >= 0) {
+          if (lastFrameRef.current >= 0) {
             const cur = lastFrameRef.current;
-            if (fi < cur - DESKTOP_RETAIN_RADIUS || fi > cur + DESKTOP_RETAIN_RADIUS) {
+            if (fi < cur - RETAIN_RADIUS || fi > cur + RETAIN_RADIUS) {
               bmp.close();
               loadingRef.current[fi] = false; // allow a retry once in range
               return;
@@ -489,31 +485,20 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         gradeRefs.current.forEach((el, i) => {
           if (el) el.style.opacity = i === chapter ? String(CHAPTER_GRADES[i].opacity) : "0";
         });
-        loadChapterRegion(chapter);
-        loadChapterRegion(chapter + 1);
-        loadChapterRegion(chapter - 1);
-        // Touch: free everything outside active±1 to stay under the
-        // iOS/Android memory ceiling.
-        if (isTouch) {
-          const [lo, hi] = getRetainedRange(chapter);
-          evictExcept(lo, hi);
-          // Releasing a chapter's frames has to release its load flag too.
-          // chapterLoadingRef is what makes region loading one-shot; left set
-          // on a chapter whose bitmaps were just freed, loadChapterRegion()
-          // early-returns forever and those frames never come back. Coverage
-          // then decays every time the reader scrolls away and back —
-          // measured over three passes on an iPhone 13 profile at 4 Mbps:
-          // 43/50 distinct frames, then 36/50, then 23/50, with the longest
-          // static run growing 2 -> 12 -> 19.
-          for (let c = 0; c < N_CHAPTERS; c++) {
-            if (c < chapter - 1 || c > chapter + 1) chapterLoadingRef.current[c] = false;
-          }
+        // Region preloading is desktop-only now. On touch the sliding window
+        // both loads and evicts, and a chapter-triple region load would queue
+        // ~260 full-density frames the window is about to throw away.
+        if (!isTouch) {
+          loadChapterRegion(chapter);
+          loadChapterRegion(chapter + 1);
+          loadChapterRegion(chapter - 1);
         }
       }
 
-      // Desktop: slide the retained window with the playhead, and top it up.
-      // Runs off the frame index rather than the chapter so the budget is a
-      // fixed number of bitmaps regardless of how wide a chapter's band is.
+      // Slide the retained window with the playhead, and top it up. Runs off
+      // the frame index rather than the chapter so the budget is a fixed
+      // number of bitmaps regardless of how wide a chapter's band is — which
+      // is what lets touch carry every frame instead of every second one.
       //
       // The top-up is not optional. Retention here is frame-based while
       // loading is chapter-based and one-shot, so a chapter whose frames
@@ -524,12 +509,33 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // Systems with static runs of 19 samples. loadFrame() no-ops on
       // anything already loaded or in flight, so this is an array check per
       // frame, not a fetch.
-      if (!isTouch && fi !== lastEvictAtRef.current) {
+      // Re-centre in steps, not on every frame. The window is 55 frames wide
+      // on touch, so recentring every 8 keeps at least 47 frames of runway in
+      // the scroll direction while doing an eighth of the work.
+      //
+      // Doing it per frame is what made full mobile density expensive: each
+      // recentre walks the whole window queueing loadFrame, and during a fast
+      // flick that ran ~110 array scans per frame change. Measured on a phone
+      // profile it pushed p95 frame time from 33ms to 50ms and the worst
+      // frame to 133ms — trading the stepping this change removed for a
+      // hitch, which is not a trade worth making.
+      const RECENTRE_EVERY = 8;
+      if (Math.abs(fi - lastEvictAtRef.current) >= RECENTRE_EVERY || lastEvictAtRef.current < 0) {
         lastEvictAtRef.current = fi;
-        const lo = Math.max(0, fi - DESKTOP_RETAIN_RADIUS);
-        const hi = Math.min(LAST_FRAME, fi + DESKTOP_RETAIN_RADIUS);
+        const lo = Math.max(0, fi - RETAIN_RADIUS);
+        const hi = Math.min(LAST_FRAME, fi + RETAIN_RADIUS);
         evictExcept(lo, hi);
-        for (let f = lo; f <= hi; f++) loadFrame(f);
+        // Queue outward from the playhead, not lo → hi. loadFrame fires a
+        // fetch per call and the decodes land in order, so filling linearly
+        // means the frames furthest behind the reader are requested before
+        // the ones they are about to scroll into. Walking outward puts the
+        // next frame first and the far edges of the window last, so a
+        // backed-up queue still delivers what is on screen.
+        loadFrame(fi);
+        for (let d = 1; d <= RETAIN_RADIUS; d++) {
+          if (fi + d <= hi) loadFrame(fi + d);
+          if (fi - d >= lo) loadFrame(fi - d);
+        }
       }
 
       // Skip draw if frame unchanged — avoids redundant canvas writes.
