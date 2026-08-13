@@ -7,6 +7,7 @@ import Loader, { LOADER_SESSION_KEY } from "@/components/scene/Loader";
 import HUD from "@/components/scene/HUD";
 import MobileCTABar from "@/components/scene/MobileCTABar";
 import { useLenis } from "@/components/scene/useLenis";
+import { WebGLBoundary, webglSupported } from "@/components/scene/WebGLGate";
 
 // CanvasLayer is imported directly (not lazy) so sequence preloading starts
 // on the very first render — the Loader overlay holds the screen until ready.
@@ -284,10 +285,12 @@ function Index() {
         </Suspense>
       )}
 
-      {scenesReady && entered && !isLowPower && (
-        <Suspense fallback={null}>
-          <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />
-        </Suspense>
+      {scenesReady && entered && !isLowPower && webglSupported() && (
+        <WebGLBoundary>
+          <Suspense fallback={null}>
+            <GrapheneVolumetric scrollProgress={scrollProgress} mouse={mouse} />
+          </Suspense>
+        </WebGLBoundary>
       )}
 
       {/* Heavy compositor layers (full-screen mix-blend-screen + large blur
