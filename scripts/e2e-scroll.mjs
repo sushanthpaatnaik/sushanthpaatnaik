@@ -32,23 +32,51 @@ import { chromium } from "playwright";
 const URL = process.argv[2] ?? "http://127.0.0.1:4321/";
 
 /**
- * Wait for scrolling to actually stop, rather than for a fixed timeout.
+ * Wait for a scroll to start, then finish. Two phases, both necessary.
  *
- * Lenis eases, and how long that takes depends on the distance: Home from the
- * bottom of the page travels the full 9000px and can still be moving after
- * three seconds. A fixed wait made the suite flaky in a way that looked like a
- * product bug — a keypress issued mid-animation gets swallowed, so the next
- * measurement read a delta of 0 and the run failed on "PageDown after Home".
+ * Lenis eases, and the duration depends on distance: Home from the bottom
+ * travels the full page and is still moving after three seconds. A fixed wait
+ * made the suite flaky in a way that read as a product bug — a keypress issued
+ * mid-animation gets swallowed, so the next measurement saw a delta of 0.
+ *
+ * Waiting for stillness alone is not enough either. Between the keypress and
+ * Lenis picking it up there is a beat where the position has not changed yet,
+ * and a stillness-only check calls that "settled" and measures the position
+ * from *before* the key. That is what produced `End reaches the exact limit
+ * (827/9000)` — End had not started moving, so the old value was read, and
+ * every later assertion in the block was measuring one keypress behind.
+ *
+ * So: wait up to `grace` for movement to begin, and if none does, treat the key
+ * as a legitimate no-op (ArrowUp at the top) rather than hanging.
  */
-const settle = async (page, timeout = 8000) => {
-  const start = Date.now();
+// grace is generous on purpose: under container load Lenis has taken well over
+// a second to pick up a keypress, and a short grace reports the pre-keypress
+// position as the result.
+const settle = async (page, { grace = 3500, timeout = 12000 } = {}) => {
+  const y0 = await page.evaluate(() => Math.round(window.scrollY));
+  const startedAt = Date.now();
+  let moved = false;
+  while (Date.now() - startedAt < grace) {
+    await page.waitForTimeout(80);
+    if ((await page.evaluate(() => Math.round(window.scrollY))) !== y0) {
+      moved = true;
+      break;
+    }
+  }
+  if (!moved) return y0;
+
+  const deadline = Date.now() + timeout;
   let last = -1;
   let still = 0;
-  while (Date.now() - start < timeout) {
+  while (Date.now() < deadline) {
     await page.waitForTimeout(120);
     const y = await page.evaluate(() => Math.round(window.scrollY));
+    // Five consecutive stable reads, not three. Under load this container
+    // stalls rAF long enough that a mid-flight animation can look still for a
+    // couple of polls — which returned a half-finished position for the rail
+    // jumps (5939 where 7290 was expected).
     if (y === last) {
-      if (++still >= 3) return y;
+      if (++still >= 5) return y;
     } else {
       still = 0;
       last = y;
