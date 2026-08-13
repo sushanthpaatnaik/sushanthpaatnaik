@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test:e2e": "node scripts/e2e-scroll.mjs"
+    "test:e2e": "node scripts/e2e-scroll.mjs",
+    "qa:sweep": "node scripts/qa-sweep.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
