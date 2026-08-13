@@ -361,7 +361,23 @@ function OriginHero() {
    ────────────────────────────────────────────────────────────────── */
 function FounderVoice() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
+    /* Anchored to the upper third on phones, centred from md up.
+       ─────────────────────────────────────────────────────────────
+       On a laptop this beat lives in grid columns 7-12 and Material
+       Intelligence is left-aligned, so the dissolve between them reads
+       as a hand-off across the frame. On a phone the grid collapses to
+       one column and both land in the same place: measured at 393x873,
+       "The future is not imagined." occupied y=368-425 and "Engineering
+       intelligent matter." y=408-471, so at the dissolve midpoint the
+       two headlines interleaved at 50% each — the second line of one
+       running through the first line of the other, with "Read the
+       journey" landing on top of "Coatings · Composites".
+
+       Raising this beat to the upper third opens ~140px between them,
+       so the same cross-dissolve reads as one text handing over to
+       another rather than as two texts sharing a space. It also lifts
+       the quote off the founder's mouth, where it had been sitting. */
+    <div className="relative w-full h-full flex items-start pt-[11vh] md:items-center md:pt-0 px-5 sm:px-6 lg:pl-32 xl:pl-36">
       {/* Founder: dark footage, text on right — right-side shield */}
       <ContentShield align="right" strength={0.68} />
       {/* Founder label top left */}
@@ -372,19 +388,19 @@ function FounderVoice() {
       {/* 12-col grid, content in cols 7-12 */}
       <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12">
         <div className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
-          <p className="mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
+          <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
             Founder · Voice
           </p>
           <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem] whitespace-pre-line">
             {"The future is not imagined.\nIt is engineered quietly."}
           </blockquote>
-          <div className="mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
+          <div className="mt-5 md:mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
             <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
             <span>Sushanth Paatnaik</span>
           </div>
           <Link
             to="/about"
-            className="mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
+            className="mt-6 md:mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
           >
             Read the journey →
           </Link>
