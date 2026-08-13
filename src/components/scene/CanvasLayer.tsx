@@ -64,18 +64,29 @@ function getFrameIndex(sp: number): number {
 // opacity is the active strength; divs cross-fade on chapter change via the
 // CSS transition below (unchanged mechanism, now keyed to text chapter
 // instead of video group since there's only one video group now).
+//
+// Strengths halved from 0.14–0.21 to 0.07–0.105.
+//
+// The hues are unchanged — the grade still tints each chapter — but at the old
+// strength the swing between neighbours was reading as a fault rather than as
+// grading. Material Intelligence is a cool blue and Industrial Translation a
+// warm amber, and the two sit on *one continuous shot*: the founder over the
+// lattice runs unbroken from ~0.32 to ~0.46. So the same physical footage
+// visibly changed colour as the reader scrolled past a boundary, with no cut
+// to justify it. Halving keeps the chapter identity and lets the footage's own
+// colour carry the frame.
 const CHAPTER_GRADES = [
   // Origin — cold blue atmosphere, warm gold horizon. Holds through the
   // in-chapter dissolve into the lab, so it stays neutral enough for both.
-  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.15 },
+  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.075 },
   // Material Intelligence — graphene blue: deep, cool, metallic
-  { bg: "oklch(0.36 0.14 218)", opacity: 0.18 },
+  { bg: "oklch(0.36 0.14 218)", opacity: 0.09 },
   // Industrial Translation — warm industrial amber
-  { bg: "oklch(0.58 0.15 50)", opacity: 0.17 },
+  { bg: "oklch(0.58 0.15 50)", opacity: 0.085 },
   // Recognition & Ecosystem — prestige white-gold
-  { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.14 },
+  { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.07 },
   // Future Systems — electric blue-cyan
-  { bg: "oklch(0.48 0.24 242)", opacity: 0.21 },
+  { bg: "oklch(0.48 0.24 242)", opacity: 0.105 },
 ] as const;
 
 type Bitmaps = (ImageBitmap | null)[];
