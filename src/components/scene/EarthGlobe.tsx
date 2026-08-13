@@ -508,12 +508,24 @@ export default function EarthGlobe({
     const dpr  = Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5);
 
     // ── Renderer ────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: !isMobile,
-      alpha: true,
-      powerPreference: isMobile ? "low-power" : "high-performance",
-    });
+    // Two WebGL surfaces share this page — the graphene lattice and this
+    // globe. A browser already at its context limit, running a blocklisted
+    // driver, or with WebGL disabled throws here, and an exception raised
+    // inside an effect takes the React tree down with it. The globe is
+    // atmosphere, not content: log it, leave the canvas blank, and return
+    // without scheduling a retry so the page keeps scrolling and rendering.
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: !isMobile,
+        alpha: true,
+        powerPreference: isMobile ? "low-power" : "high-performance",
+      });
+    } catch (err) {
+      console.warn("EarthGlobe: WebGL unavailable — globe skipped.", err);
+      return;
+    }
     renderer.setPixelRatio(dpr);
     renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.toneMapping         = THREE.ACESFilmicToneMapping;

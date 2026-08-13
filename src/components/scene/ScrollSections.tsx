@@ -617,7 +617,7 @@ const RECORD = [
 
 function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
   const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.40));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.46, 1, true));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.48, 1, true));
   const peA = useTransform(opA, (v) => (v > 0.5 ? "auto" : "none"));
   const peB = useTransform(opB, (v) => (v > 0.5 ? "auto" : "none"));
 
@@ -799,11 +799,14 @@ function FutureContent() {
    industrial landscape below it stay uncovered.
    ────────────────────────────────────────────────────────────────── */
 function FutureMobile({ lp }: { lp: MotionValue<number> }) {
-  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.14));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.20, 0.36));
-  const opC = useTransform(lp, (v) => stageOp(v, 0.42, 0.56));
-  const opD = useTransform(lp, (v) => stageOp(v, 0.62, 0.72));
-  const opE = useTransform(lp, (v) => stageOp(v, 0.78, 1, true));
+  // Even holds: each transient state gets 0.12 of the band (~35vh), the
+  // closing state 0.20 (~58vh). Gaps are exactly STAGE_FADE wide so each
+  // hand-over is one clean dissolve.
+  const opA = useTransform(lp, (v) => stageOp(v, 0.00, 0.12));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.20, 0.32));
+  const opC = useTransform(lp, (v) => stageOp(v, 0.40, 0.52));
+  const opD = useTransform(lp, (v) => stageOp(v, 0.60, 0.72));
+  const opE = useTransform(lp, (v) => stageOp(v, 0.80, 1, true));
   const peE = useTransform(opE, (v) => (v > 0.5 ? "auto" : "none"));
 
   // Upper text band: clear of the subject's head at the top and of the
@@ -931,9 +934,16 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 const OV  = CONTENT_FADE;
 const c01 = (v: number) => Math.max(0, Math.min(1, v));
-// easeOutQuint — fast initial rise, ultra-smooth tail: premium cinematic feel
-// t=0.20 → 67 %, t=0.40 → 92 %, t=0.50 → 97 %
-const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 5);
+
+/* smoothstep — symmetric S-curve. t=0.25 → 16 %, t=0.5 → 50 %, t=0.75 → 84 %.
+   This replaced easeOutQuint, which reached 67 % by t=0.20 and 97 % by t=0.50.
+   That curve was chosen when the dissolve was ~10vh wide and the snap read as
+   decisiveness. Stretched to a readable length it stops working: two layers
+   cross-dissolving on the same window would both sit at 97 % through the
+   middle of the transition, showing the old and new headings at full strength
+   at once. Smoothstep crosses at exactly 0.5/0.5, so the pair always sums to
+   1 — a true dissolve, with neither a double exposure nor a gap. */
+const eoo = (t: number): number => { const x = c01(t); return x * x * (3 - 2 * x); };
 
 /* Mobile staged reveal ────────────────────────────────────────────
    `v` is local progress inside a chapter band (0–1). A stage is fully
@@ -941,8 +951,13 @@ const eoo = (t: number): number => 1 - Math.pow(1 - c01(t), 5);
    Windows are authored so one stage's fade-out and the next stage's
    fade-in occupy the same interval (next.from === prev.to + STAGE_FADE)
    — a true cross-dissolve, never a blank frame. `hold` pins the final
-   stage on so the closing composition is also the page's last state. */
-const STAGE_FADE = 0.06;
+   stage on so the closing composition is also the page's last state.
+
+   0.08 of Future Systems' 289vh band ≈ 23vh per dissolve, against ~35vh
+   of hold per state. Widened from 0.06 alongside the chapter dissolve
+   so a phone's within-chapter handovers read at the same tempo as its
+   chapter-to-chapter ones rather than snapping between them. */
+const STAGE_FADE = 0.08;
 function stageOp(v: number, from: number, to: number, hold = false): number {
   const fadeIn = eoo(c01((v - from + STAGE_FADE) / STAGE_FADE));
   if (hold) return fadeIn;
@@ -951,7 +966,7 @@ function stageOp(v: number, from: number, to: number, hold = false): number {
 
 function chapOp(sp: number, n: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
-  const fadeW  = OV * (bOut - bIn);
+  const fadeW  = OV; // absolute — see CONTENT_FADE in chapterBands.ts
   const fiStart = bIn - fadeW;
   const foStart = bOut - fadeW;
 
@@ -974,7 +989,7 @@ function chapOp(sp: number, n: number): number {
 
 function chapY(sp: number, n: number, yIn: number, yOut: number): number {
   const [bIn, bOut] = CHAPTER_BANDS[n];
-  const fadeW  = OV * (bOut - bIn);
+  const fadeW  = OV; // absolute — see CONTENT_FADE in chapterBands.ts
   const fiStart = bIn - fadeW;
   const foStart = bOut - fadeW;
 
