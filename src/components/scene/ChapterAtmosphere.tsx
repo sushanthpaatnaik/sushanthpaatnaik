@@ -13,9 +13,16 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
  *   0 Origin                 → cool ink wash + faint volumetric beam
  *                              (absorbs the former standalone Founder layer)
  *   1 Material               → graphene hex micro-grid + cool diffusion
- *   2 Industrial             → engineering grid + measurement marks
+ *   2 Industrial             → measurement marks
  *   3 Recognition & Ecosystem → archival spotlights + infrastructure haze
  *                              (the two former layers, composited)
+ *
+ * No ruled geometry anywhere. Industrial carried a 72px engineering grid and
+ * Recognition three hairline column rules; both drew straight lines across the
+ * whole photograph, and because the atmosphere layers hold ~2 pp longer than
+ * content, Industrial's grid was still ruled over Recognition's frame after
+ * its own chapter had gone. The footage already carries a graphene lattice —
+ * adding a CSS grid on top read as a rendering fault rather than as texture.
  *   4 Future                 → horizon haze + atmospheric lift (the closing
  *                              plate is a daylit city, not deep space)
  *
@@ -85,28 +92,6 @@ function ChapterLayer({
 
 /* ─────────── Reusable atmospheric primitives (no images) ─────────── */
 
-
-function EngineeringGrid({
-  cell = 64,
-  color = "oklch(0.78 0.02 232 / 0.045)",
-}: {
-  cell?: number;
-  color?: string;
-}) {
-  return (
-    <div
-      className="absolute inset-0"
-      style={{
-        backgroundImage: `linear-gradient(${color} 1px, transparent 1px), linear-gradient(90deg, ${color} 1px, transparent 1px)`,
-        backgroundSize: `${cell}px ${cell}px`,
-        maskImage:
-          "radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 85%)",
-        WebkitMaskImage:
-          "radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 85%)",
-      }}
-    />
-  );
-}
 
 function HexLattice({ opacity = 0.05 }: { opacity?: number }) {
   // Pure CSS hex micro-grid via SVG data URI — single tiny tile, very low alpha.
@@ -253,7 +238,6 @@ function IndustrialAtmosphere() {
   const reduce = useReducedMotion();
   return (
     <>
-      <EngineeringGrid cell={72} color="oklch(0.78 0.02 232 / 0.060)" />
       <MeasurementRail side="right" />
 
       {/* Warm amber floor wash */}
@@ -356,21 +340,6 @@ function RecognitionEcosystemAtmosphere() {
         style={{
           background:
             "radial-gradient(ellipse 44% 38% at 50% 52%, oklch(0.52 0.018 45 / 0.045), transparent 70%)",
-        }}
-      />
-      {/* Hairline column markers — near-invisible guide lines aligning to spotlight beams */}
-      <div
-        className="absolute inset-0 opacity-[0.10]"
-        style={{
-          backgroundImage: [
-            "linear-gradient(90deg, transparent 29.6%, oklch(0.72 0.010 220 / 0.18) 30%, transparent 30.4%)",
-            "linear-gradient(90deg, transparent 49.6%, oklch(0.72 0.010 220 / 0.22) 50%, transparent 50.4%)",
-            "linear-gradient(90deg, transparent 69.6%, oklch(0.72 0.010 220 / 0.18) 70%, transparent 70.4%)",
-          ].join(", "),
-          maskImage:
-            "linear-gradient(180deg, transparent 8%, #000 22%, #000 74%, transparent 92%)",
-          WebkitMaskImage:
-            "linear-gradient(180deg, transparent 8%, #000 22%, #000 74%, transparent 92%)",
         }}
       />
       {/* Cool platinum micro-grain — ultra-low amplitude archival texture */}
