@@ -36,3 +36,7 @@ public/sequence-12fps/
 public/sequence-24fps/
 public/sequences/*.zip
 # WebP frames under public/sequences/ are tracked — served as static assets
+
+# Throwaway measurement probes written at the repo root during debugging.
+# Two of these have been committed by accident via `git add -A`.
+/.*.mjs
