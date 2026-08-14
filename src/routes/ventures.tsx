@@ -269,7 +269,7 @@ function VenturesPage() {
       </ul>
 
       {/* ---------- Architecture editorial ---------- */}
-      <EditorialSection number="07 · Architecture" heading="One stack, four layers.">
+      <EditorialSection number="01 · Architecture" heading="One stack, four layers.">
         <p>
           <span className="text-foreground/95">Research</span> at Monoatom feeds{" "}
           <span className="text-foreground/95">materials</span> at Grafillium, which feed{" "}
@@ -285,7 +285,7 @@ function VenturesPage() {
       </EditorialSection>
 
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
-      <EditorialSection number="08 · Advisory" heading="Counsel across six industry layers.">
+      <EditorialSection number="02 · Advisory" heading="Counsel across six industry layers.">
         <p>
           A short ledger of the houses I quietly advise — one mark per layer
           of the industrial network: materials, industrial systems, consumer
