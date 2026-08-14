@@ -40,10 +40,18 @@ export function useLenis(onScroll?: (progress: number) => void) {
     const lenis = new Lenis({
       // lerp=0.12: slightly snappier than 0.1 — content reaches 89% of target
       // in 10 frames (167ms at 60fps) vs 0.1's 65%. Still smooth, not jerky.
-      // Canvas reads lenis.targetScroll (raw) so canvas updates are immediate.
+      // The canvas reads lenis.scroll — the eased position, the same clock the
+      // text runs on — so the film and the copy move together. It used to read
+      // targetScroll; see the note on the RAF loop in CanvasLayer.
       lerp: 0.12,
       smoothWheel: true,
-      wheelMultiplier: 1.2,  // was 1.4 — tighter to native feel, less overshoot
+      // 1.0, i.e. one wheel notch travels exactly as far as it would with
+      // Lenis absent. 1.4 and then 1.2 both over-travelled: the reference for
+      // "fine" scrolling is the browser's own step, and multiplying it makes
+      // every notch cover more of the film than the visitor asked for. Lenis
+      // still earns its place here by easing between notches — that is the
+      // smoothing — but the distance is the OS's to decide, not ours.
+      wheelMultiplier: 1.0,
       touchMultiplier: 0,
       syncTouch: false,
     });

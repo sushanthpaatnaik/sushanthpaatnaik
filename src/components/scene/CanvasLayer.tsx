@@ -74,6 +74,37 @@ function getFrameIndex(sp: number): number {
   return Math.round(s * LAST_FRAME);
 }
 
+/** Where the playhead really is, before rounding to a frame. */
+function getFramePosition(sp: number): number {
+  const s = Math.max(0, Math.min(sp, 1));
+  return s * LAST_FRAME;
+}
+
+/**
+ * Sub-frame blend levels.
+ *
+ * 381 frames spread over 1000vh of travel is one frame per ~24px of scroll at
+ * a 900px viewport. Scroll slowly — a trackpad, or the tail of a wheel lerp —
+ * and the film visibly holds an image for several rendered frames and then
+ * steps to the next. That step is the whole of what reads as "not smooth"
+ * about the background: everything else on the page is a continuous function
+ * of scroll, and the footage was the one thing quantised.
+ *
+ * So the playhead's fractional part cross-dissolves frame n into frame n+1.
+ * 12 levels puts a visual step every ~2px of scroll, an order of magnitude
+ * below what the eye resolves as a jump, and caps the redraw rate at roughly
+ * what the film already cost — the alpha is quantised for the same reason the
+ * colour grade is, so a stationary page stops redrawing rather than dithering
+ * against a continuously-varying alpha.
+ *
+ * The blend is desktop-only. Touch carries half-density frames through a
+ * sliding window that is already the tightest part of the memory budget, and
+ * a second full-size drawImage per redraw is not a cost worth paying on the
+ * device that has the least headroom for it — a phone's shorter travel per
+ * frame also makes the stepping far less visible.
+ */
+const BLEND_STEPS = 12;
+
 
 // ─── Per-chapter color grades ────────────────────────────────────────────────
 // Applied as mix-blend-mode:color overlays — replaces hue+saturation of the
@@ -155,6 +186,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   // redraw when neither the film nor the tint has moved.
   const lastGradeIdxRef   = useRef(-1);
   const lastGradeAlphaRef = useRef(-1);
+  // Sub-frame dissolve state, on the same skip-the-redraw contract.
+  const lastBlendToRef    = useRef(-1);
+  const lastBlendAlphaRef = useRef(-1);
   const reduce       = useReducedMotionSafe();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
@@ -349,15 +383,31 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // The chapter grade is composited into the same canvas, in the same pass,
     // rather than by a mix-blend-mode div stacked over it. See the note on the
     // tick's redraw condition for why.
-    const drawBitmap = (bmp: ImageBitmap, gradeIdx: number, gradeAlpha: number) => {
-      const cW    = canvas.width;
-      const cH    = canvas.height;
+    const cover = (bmp: ImageBitmap, cW: number, cH: number, alpha: number) => {
       const scale = Math.max(cW / bmp.width, cH / bmp.height);
       const dW    = bmp.width  * scale;
       const dH    = bmp.height * scale;
-      ctx.globalCompositeOperation = "source-over";
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = alpha;
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
+    };
+
+    const drawBitmap = (
+      bmp: ImageBitmap,
+      gradeIdx: number,
+      gradeAlpha: number,
+      blendBmp: ImageBitmap | null = null,
+      blendAlpha = 0,
+    ) => {
+      const cW = canvas.width;
+      const cH = canvas.height;
+      ctx.globalCompositeOperation = "source-over";
+      cover(bmp, cW, cH, 1);
+      // The partner frame lands on top at the fractional alpha. Both frames
+      // are opaque and temporally adjacent, so source-over at alpha a is a
+      // true linear cross-dissolve between them — the grade below then reads
+      // the dissolved result, exactly as it would read a real intermediate.
+      if (blendBmp && blendAlpha > 0) cover(blendBmp, cW, cH, blendAlpha);
+      ctx.globalAlpha = 1;
       if (gradeIdx >= 0 && gradeAlpha > 0) {
         // `color` takes hue+chroma from the fill and keeps the frame's own
         // luminance — the same operator as CSS mix-blend-mode: color, so the
@@ -563,6 +613,22 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const fi = getFrameIndex(sp);
       const chapter = getChapterFromProgress(sp);
 
+      // Sub-frame position, quantised. `fi` stays the rounded index — every
+      // loader, evictor and fallback path below is keyed on it and must not
+      // change — while `blendTo`/`blendAlpha` describe the dissolve painted on
+      // top of it. Rounding means the partner is fi-1 below the midpoint and
+      // fi+1 above it, and the alpha runs 0 → 0.5 in both directions.
+      let blendTo = -1;
+      let blendAlpha = 0;
+      if (!isTouch) {
+        const frac = getFramePosition(sp) - fi;   // -0.5 .. +0.5
+        const partner = frac >= 0 ? fi + 1 : fi - 1;
+        if (partner >= 0 && partner < FRAME_COUNT) {
+          const a = Math.round(Math.abs(frac) * BLEND_STEPS) / BLEND_STEPS;
+          if (a > 0) { blendTo = partner; blendAlpha = a; }
+        }
+      }
+
       // Colour grade — a pure function of scroll position, written every frame.
       //
       // It used to be a CSS `transition: opacity 1.4s ease` fired inside the
@@ -669,7 +735,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // into the same canvas now, so either changing invalidates it.
       const gradeSame = gradeIdx === lastGradeIdxRef.current
         && gradeAlpha === lastGradeAlphaRef.current;
-      if (fi === lastFrameRef.current && gradeSame) return;
+      const blendSame = blendTo === lastBlendToRef.current
+        && blendAlpha === lastBlendAlphaRef.current;
+      if (fi === lastFrameRef.current && gradeSame && blendSame) return;
 
       // Find the nearest loaded frame: exact match, then search outward — but
       // only as far as FALLBACK_RADIUS.
@@ -708,10 +776,18 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // Only mark the target frame as drawn when it was the exact match.
       // For fallback frames, keep lastFrameRef at -1 so the next tick
       // retries the exact frame once it finishes loading.
-      lastFrameRef.current = bitmapsRef.current[fi] === bmp ? fi : -1;
+      // Blend only against a frame that is already resident. The dissolve is
+      // a refinement, never a reason to fetch — an absent partner simply
+      // renders the frame as it did before.
+      const exact = bitmapsRef.current[fi] === bmp;
+      const partnerBmp = exact && blendTo >= 0 ? bitmapsRef.current[blendTo] : null;
+
+      lastFrameRef.current = exact ? fi : -1;
       lastGradeIdxRef.current = gradeIdx;
       lastGradeAlphaRef.current = gradeAlpha;
-      drawBitmap(bmp, gradeIdx, gradeAlpha);
+      lastBlendToRef.current = partnerBmp ? blendTo : -1;
+      lastBlendAlphaRef.current = partnerBmp ? blendAlpha : 0;
+      drawBitmap(bmp, gradeIdx, gradeAlpha, partnerBmp, blendAlpha);
     };
 
     // Kick off: load chapter 0's region (frame 0 first, so notifyReady fires
@@ -735,6 +811,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       notifiedRef.current  = false;
       lastFrameRef.current = -1;
       lastChapterRef.current = -1;
+      lastBlendToRef.current = -1;
+      lastBlendAlphaRef.current = -1;
     };
   }, [reduce, lenisRef, onReady]);
 

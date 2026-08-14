@@ -541,7 +541,28 @@ function IndustrialContent() {
    ────────────────────────────────────────────────────────────────── */
 function RecognitionEcosystemContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36">
+    /* Symmetric gutters, not a left-only inset.
+
+       This used to be `px-5 sm:px-6 lg:pl-32 xl:pl-36` — padding on the left
+       to clear the chapter rail, and nothing to match it on the right. At
+       1440 that measured 144px of margin on the left and 24px on the right:
+       the whole chapter visibly shunted right and jammed against the edge,
+       which is the composition being complained about.
+
+       So the clearance stays but becomes a gutter on both sides, sized to the
+       rail rather than to a round number. The rail's resting footprint is the
+       68px backing panel in HUD; lg:px-24 (96px) and xl:px-28 (112px) clear it
+       with room while keeping the block centred at every width. Sizing by
+       max-width alone does not work here: max-w-7xl centred at 1366 leaves
+       43px a side, which the rail would sit on top of. */
+    /* pt matches the fixed header (measured 67px at every desktop width), so
+       this chapter centres in the frame *below* the chrome rather than in the
+       raw viewport. It is the one chapter whose block nearly fills the screen
+       — 618px of it — so at 1366x768 pure viewport centring put the eyebrow's
+       box top at exactly 67px, flush against the header with no gap at all.
+       Future Systems needs no equivalent: its block is 540px and clears the
+       header by 47px even at that height. */
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:px-24 xl:px-28 md:pt-[68px]">
       {/* Bright product/industrial plate. The directory spans nearly the full
           width in its two-column form, so a left-weighted scrim would leave
           the right column sitting on the brightest part of the frame — this
@@ -557,7 +578,7 @@ function RecognitionEcosystemContent() {
           such that the eyebrow tucked under the header and the last directory
           rows sat behind the CTA bar. */}
       <div
-        className="relative z-10 w-full max-w-6xl xl:max-w-7xl overflow-y-auto overflow-x-hidden overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
+        className="relative z-10 mx-auto w-full max-w-6xl xl:max-w-7xl overflow-y-auto overflow-x-hidden overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Eyebrow */}
@@ -805,11 +826,19 @@ function FutureContent() {
         }}
       />
 
-      {/* Text zone — held in the left column so it clears the subject.
+      {/* Text zone — centred on the viewport, both axes.
           max-w is in ch/rem rather than a fraction of the viewport so the
           measure stays constant and the gap to the figure grows with the
-          screen instead of shrinking. */}
-      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[3%] md:-translate-y-[5%]">
+          screen instead of shrinking.
+
+          The block used to carry -translate-y-[3%] md:-translate-y-[5%], a
+          lift off its own height rather than the frame's. At 1440x900 that
+          measured 153px of clearance above the eyebrow against 207px below the
+          domain row — 27px high of the frame it is supposed to be centred in,
+          and the imbalance grows with the block, so it read as "not centred"
+          at exactly the widths where the copy is tallest. Flex centring alone
+          puts it on the frame's axis at every viewport. */}
+      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6">
         {/* Eyebrow */}
         <p className="mb-5 md:mb-7 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
