@@ -6,7 +6,16 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { N_CHAPTERS, CHAPTER_BANDS, CONTENT_FADE, getChapterFromProgress } from "./chapterBands";
+import {
+  N_CHAPTERS,
+  CHAPTER_BANDS,
+  CONTENT_FADE,
+  getChapterFromProgress,
+  clamp01 as c01,
+  smoothstep as eoo,
+  fadeOutAt,
+  fadeInAt,
+} from "./chapterBands";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 
 /* ──────────────────────────────────────────────────────────────────
@@ -984,12 +993,6 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
    No filter on outer wrappers (GPU compositing artefacts).
    ────────────────────────────────────────────────────────────────── */
 const OV  = CONTENT_FADE;
-const c01 = (v: number) => Math.max(0, Math.min(1, v));
-
-/* smoothstep — symmetric S-curve. t=0.25 → 16 %, t=0.5 → 50 %, t=0.75 → 84 %.
-   Replaced easeOutQuint, which reached 97 % by t=0.50: fine for a 10vh snap,
-   wrong once the hand-over is long enough to read. */
-const eoo = (t: number): number => { const x = c01(t); return x * x * (3 - 2 * x); };
 
 /* Chapters hand over in sequence, not by cross-dissolving.
    ─────────────────────────────────────────────────────────────────
@@ -1016,11 +1019,11 @@ const eoo = (t: number): number => { const x = c01(t); return x * x * (3 - 2 * x
    The cinematic frame is still there and still moving; it is the text
    that steps aside for a moment, which is exactly the grammar a title
    card follows. It also means each chapter stays legible right up to the
-   instant it goes, instead of degrading through a smear. */
-const HANDOVER_OUT = 0.46;
-const HANDOVER_IN  = 0.54;
-const fadeOutAt = (t: number) => eoo(1 - c01(t / HANDOVER_OUT));
-const fadeInAt  = (t: number) => eoo(c01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
+   instant it goes, instead of degrading through a smear.
+
+   HANDOVER_OUT/IN, fadeOutAt/fadeInAt and smoothstep live in chapterBands.ts
+   with the bands they are timed against, because the canvas colour grade is
+   sequenced on the same curve — see gradeOpacityAt. */
 
 /* Mobile staged reveal ────────────────────────────────────────────
    `v` is local progress inside a chapter band (0–1). A stage holds at

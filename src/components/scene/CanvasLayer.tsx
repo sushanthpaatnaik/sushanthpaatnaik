@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import type Lenis from "lenis";
 import sceneSpark from "@/assets/story-01-spark.webp";
-import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress } from "./chapterBands";
+import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBands";
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
 // The homepage plays one continuous film across the whole scroll instead of
@@ -114,6 +114,8 @@ interface CanvasLayerProps {
 export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const gradeRefs    = useRef<(HTMLDivElement | null)[]>(new Array(N_CHAPTERS).fill(null));
+  // Last opacity written to each grade, so the tick can skip no-op style writes.
+  const lastGradeRef = useRef<number[]>(new Array(N_CHAPTERS).fill(-1));
   const reduce       = useReducedMotionSafe();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
@@ -476,15 +478,44 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const fi = getFrameIndex(sp);
       const chapter = getChapterFromProgress(sp);
 
-      // On chapter change: swap the color-grade overlay (cross-fades via the
-      // div's own CSS transition, unchanged mechanism), and preload
-      // active±1's frame regions — the direct equivalent of the old
-      // on-group-change `loadGroup(gi); loadGroup(gi±1)` trigger.
+      // Colour grade — a pure function of scroll position, written every frame.
+      //
+      // It used to be a CSS `transition: opacity 1.4s ease` fired inside the
+      // `chapter !== last` branch below: a wall-clock tween triggered by a
+      // discrete step, on a page where every other moving thing is scroll-
+      // linked. Stop mid-hand-over and the frame kept re-tinting for two more
+      // seconds; scrub and the tint trailed the footage it was grading. See
+      // GRADE_FADE in chapterBands.ts for the measurements.
+      //
+      // Five style writes per frame would be five style recalcs, so skip the
+      // ones below the threshold at which a 0.07-opacity `color` blend can
+      // possibly change a pixel. In practice at most two of the five are moving
+      // at any moment and the rest are pinned at 0.
+      //
+      // The endpoints snap rather than easing into the dead band, because a
+      // dead band alone never writes the last step: a grade would settle at
+      // ~0.0015 instead of 0 and stay there for the rest of the page, so two
+      // `color` layers were live at once — the exact stacking the sequencing
+      // exists to avoid, reintroduced by the optimisation meant to be free.
+      for (let i = 0; i < N_CHAPTERS; i++) {
+        const el = gradeRefs.current[i];
+        if (!el) continue;
+        const peak = CHAPTER_GRADES[i].opacity;
+        let v = gradeOpacityAt(sp, i) * peak;
+        if (v < 0.002) v = 0;
+        else if (v > peak - 0.002) v = peak;
+        const last = lastGradeRef.current[i];
+        // Endpoints always write; only mid-ramp values may be skipped.
+        if (v === last || (v !== 0 && v !== peak && Math.abs(v - last) < 0.0015)) continue;
+        lastGradeRef.current[i] = v;
+        el.style.opacity = v.toFixed(4);
+      }
+
+      // On chapter change: preload active±1's frame regions — the direct
+      // equivalent of the old on-group-change `loadGroup(gi); loadGroup(gi±1)`
+      // trigger.
       if (chapter !== lastChapterRef.current) {
         lastChapterRef.current = chapter;
-        gradeRefs.current.forEach((el, i) => {
-          if (el) el.style.opacity = i === chapter ? String(CHAPTER_GRADES[i].opacity) : "0";
-        });
         // Region preloading is desktop-only now. On touch the sliding window
         // both loads and evicts, and a chapter-triple region load would queue
         // ~260 full-density frames the window is about to throw away.
@@ -619,7 +650,12 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       )}
 
       {/* Chapter color grades — mix-blend-mode:color tints, one per text
-          chapter (was one per video group; now there's a single video). */}
+          chapter (was one per video group; now there's a single video).
+
+          No CSS transition: opacity is written every frame from scroll
+          position by the tick above, so a transition here would fight it.
+          The initial value is the top-of-page state, which the first tick
+          then owns. */}
       {CHAPTER_GRADES.map((grade, i) => (
         <div
           key={i}
@@ -630,7 +666,6 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
             mixBlendMode: "color",
             background: grade.bg,
             opacity: i === 0 ? grade.opacity : 0,
-            transition: "opacity 1.4s ease",
           }}
         />
       ))}

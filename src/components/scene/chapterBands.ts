@@ -102,3 +102,82 @@ export function getChapterFromProgress(sp: number): number {
   }
   return 0;
 }
+
+export const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+
+/**
+ * smoothstep — symmetric S-curve. t=0.25 → 16 %, t=0.5 → 50 %, t=0.75 → 84 %.
+ *
+ * Replaced easeOutQuint, which reached 97 % by t=0.50: fine for a 10vh snap,
+ * wrong once the hand-over is long enough to read.
+ */
+export const smoothstep = (t: number): number => {
+  const x = clamp01(t);
+  return x * x * (3 - 2 * x);
+};
+
+/**
+ * Sequenced hand-over: leave across the first 46 % of a window, a beat of
+ * nothing across 8 %, arrive across the last 46 %.
+ *
+ * Both halves read the same `t`, so wherever an outgoing element's window and
+ * an incoming element's window are the same interval, the two are never both
+ * painted — not at 50 %, not at 5 %. See the long note in ScrollSections for
+ * why chapters sequence rather than cross-dissolve.
+ */
+export const HANDOVER_OUT = 0.46;
+export const HANDOVER_IN = 0.54;
+export const fadeOutAt = (t: number) => smoothstep(1 - clamp01(t / HANDOVER_OUT));
+export const fadeInAt = (t: number) => smoothstep(clamp01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
+
+/**
+ * Width of the colour-grade hand-over, in absolute scroll progress, centred on
+ * the band edge.
+ *
+ * Deliberately wider than CONTENT_FADE and centred differently. The text
+ * hand-over sits entirely in the 60vh *before* an edge; the grade straddles it,
+ * ±50vh. Two reasons:
+ *
+ *  - The tint change no longer peaks inside the image-only beat. That beat is
+ *    the one moment on the page with no text on it, so anything that changes
+ *    there changes in full view with nothing to mask it. Recognition is
+ *    white-gold (hue ~85°) and Future is electric blue (hue 242°) — the largest
+ *    hue step in the sequence, and it was landing exactly there.
+ *  - Spread over ~100vh at opacities of 0.07–0.105, the per-frame delta is
+ *    below the noise floor of the footage, so the grade reads as a property of
+ *    the image rather than as an event.
+ *
+ * This used to be a CSS `transition: opacity 1.4s ease` fired by the discrete
+ * `getChapterFromProgress` step — a wall-clock tween on a scroll-driven page.
+ * Measured: jump the scroll across the Recognition → Future edge and hold
+ * perfectly still, and the whole frame kept changing colour for two more
+ * seconds (0.07/0 → 0.053/0.026 at 900 ms → 0.006/0.096 at 1400 ms → 0/0.105
+ * at 2000 ms). Scrubbing dragged the tint up to 1.4s behind the frame it was
+ * grading. Everything else on this page is a pure function of scroll position;
+ * the grade is now too.
+ */
+export const GRADE_FADE = 0.10;
+
+/**
+ * Opacity multiplier for chapter `n`'s colour grade at scroll progress `sp`,
+ * as a fraction of that grade's own peak opacity (0 → 1).
+ *
+ * Sequenced rather than cross-dissolved, like the text — but here the reason is
+ * compositing, not legibility. The grades are `mix-blend-mode: color` layers
+ * stacked in the same parent, so while two are simultaneously non-zero the
+ * upper one re-tints the already-tinted result. That is not a point on the path
+ * between the two colours, and it was visible as a muddy ~1s intermediate every
+ * time the chapter changed. Sequencing means only ever one is on.
+ */
+export function gradeOpacityAt(sp: number, n: number): number {
+  const [bIn, bOut] = CHAPTER_BANDS[n];
+  const half = GRADE_FADE / 2;
+
+  // Arrive across [bIn - half, bIn + half]; the first chapter has nothing to
+  // arrive from and is pinned on from the top of the page.
+  const arrive = n === 0 ? 1 : fadeInAt((sp - (bIn - half)) / GRADE_FADE);
+  // Leave across [bOut - half, bOut + half]; the last chapter never leaves.
+  const leave = n === N_CHAPTERS - 1 ? 1 : fadeOutAt((sp - (bOut - half)) / GRADE_FADE);
+
+  return Math.min(arrive, leave);
+}
