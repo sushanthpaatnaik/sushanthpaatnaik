@@ -763,26 +763,24 @@ function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
   return (
-    <div className="relative w-full h-full flex flex-col items-end justify-center text-right overflow-hidden">
-      {/* Right-weighted, not centred, and the scrim follows the copy.
-          The closing shot is a bright corridor with a figure standing centre
-          frame, and this chapter is the only one that used to set its copy
-          centred — directly over him. The CTAs landed on his torso and the
-          domain row crossed his body, at whichever scroll positions the film
-          had him mid-frame. He is inside the footage, so nothing about him can
-          be moved; the copy is what moves.
+    <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden">
+      {/* Centred, and the separation is bought with the scrim rather than
+          with position.
 
-          Right rather than left. Left cleared the figure but put the copy under
-          the chapter rail, which is anchored to the left edge and whose labels
-          vary in width per chapter — a collision you can only tune against,
-          never solve. Nothing is anchored right, so moving the copy there
-          settles it by construction.
+          The closing shot has a figure standing centre frame, so centred copy
+          sits over him. Moving the copy left put it under the chapter rail;
+          moving it right forced a ragged left margin on four lines of body
+          text and orphaned "scale." onto its own headline line. Both traded a
+          composition problem for a reading problem.
 
-          The cost is legibility: the right of this frame is the sunlit city,
-          the brightest region in the sequence, so the shield goes to 0.82 —
-          inside the 0.78–0.84 band its own notes prescribe for bright
-          industrial plates, against 0.72 for the left side. */}
-      <ContentShield align="right" strength={0.82} />
+          A title card over a subject is normal film grammar — what makes it
+          read as deliberate rather than accidental is contrast. So the shield
+          goes to 0.84, the top of the 0.78-0.84 band its own notes prescribe
+          for bright plates and well above the 0.68 this chapter carried when
+          the CTAs first disappeared into his torso, and the headline's shadow
+          roughly doubles in radius and opacity so the type holds its edge
+          wherever it crosses him. */}
+      <ContentShield align="center" strength={0.84} />
       {/* Atmospheric volumetric glow */}
       <motion.div
         aria-hidden
@@ -811,31 +809,31 @@ function FutureContent() {
           max-w is in ch/rem rather than a fraction of the viewport so the
           measure stays constant and the gap to the figure grows with the
           screen instead of shrinking. */}
-      <div className="relative z-10 w-full max-w-[34rem] lg:max-w-[38rem] pr-6 pl-5 sm:pr-10 md:pr-14 lg:pr-20 xl:pr-28 -translate-y-[4%] md:-translate-y-[6%]">
+      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[4%] md:-translate-y-[6%]">
         {/* Eyebrow */}
         <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
         </p>
         {/* Italic intro */}
-        <p className="mb-8 ml-auto max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+        <p className="mx-auto mb-8 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
           Not a forecast. A working hypothesis — built one industrial system at a time.
         </p>
         {/* H2 */}
         <h2
-          className="ml-auto max-w-[16ch] font-display text-[clamp(1.6rem,3.4vw,3rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
+          className="mx-auto max-w-[24ch] font-display text-[clamp(1.7rem,4.2vw,3.4rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
           style={{
             textShadow:
-              "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
+              "0 2px 26px oklch(0.04 0.010 240 / 0.72), 0 1px 10px oklch(0.04 0.010 240 / 0.55), 0 0 0.5px oklch(0.98 0.008 232 / 0.34)",
           }}
         >
           Energy as infrastructure.<br /> Industry at planetary scale.
         </h2>
         {/* Body */}
-        <p className="mb-8 ml-auto max-w-[46ch] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+        <p className="mx-auto mb-8 max-w-[46ch] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
           The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
         </p>
         {/* CTA row */}
-        <div className="flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:gap-5">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:items-center sm:gap-5">
           <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
             Begin a conversation
           </Link>
