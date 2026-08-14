@@ -80,7 +80,7 @@ import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.web
 
 
 const description =
-  "Archival journey of recognition: six Indian Presidential awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
+  "Archival journey of recognition: six Indian Presidential Awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
@@ -200,7 +200,7 @@ const milestones: Milestone[] = [
 const authoritySignals: Array<{ value: string; label: string }> = [
   { value: "27", label: "Honors of Record" },
   { value: "49", label: "Hall of Fame Moments" },
-  { value: "06", label: "Presidential Recognitions" },
+  { value: "06", label: "Presidential Awards" },
   { value: "03", label: "Presidents of India" },
 ];
 
@@ -322,7 +322,7 @@ const eraPresidential: ArchiveItem[] = [
     shape: "hero",
     focus: "center 28%",
     institution: "National Innovation Foundation",
-    recognition: "Presidential Recognition · 2008",
+    recognition: "Presidential Award · 2008",
     presenter: "Presented by Dr. A.P.J. Abdul Kalam",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
@@ -333,7 +333,7 @@ const eraPresidential: ArchiveItem[] = [
     category: "Award",
     shape: "tall",
     institution: "National Innovation Foundation",
-    recognition: "Presidential Recognition · 2009",
+    recognition: "Presidential Award · 2009",
     presenter: "Presented by Smt. Pratibha Devisingh Patil",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
@@ -344,7 +344,7 @@ const eraPresidential: ArchiveItem[] = [
     category: "Award",
     focus: "38% top",
     institution: "National Innovation Foundation",
-    recognition: "Presidential Recognition · 2013",
+    recognition: "Presidential Award · 2013",
     presenter: "Presented by Shri Pranab Mukherjee",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
@@ -419,7 +419,7 @@ const eraPresent: ArchiveItem[] = [
 
 const counters = [
   { value: "27", label: "Honors of record" },
-  { value: "6", label: "Presidential recognitions" },
+  { value: "6", label: "Presidential Awards" },
   { value: "60+", label: "Keynotes since 2010" },
   { value: "14+", label: "Years of industrial research" },
 ];

@@ -196,6 +196,11 @@ function VenturesPage() {
       </motion.div>
 
       {/* ---------- Operating companies list ---------- */}
+      {/* The cards are h3, and the page's only other heading above them is the
+          shell's h1, so the outline jumped a level. This names the list for
+          assistive tech and restores h1 > h2 > h3 without changing the design —
+          the section is identified visually by the cards themselves. */}
+      <h2 className="sr-only">Operating companies</h2>
       <ul className="not-prose flex flex-col">
         {ventures.map((v, i) => (
           <motion.li

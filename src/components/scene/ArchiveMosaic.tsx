@@ -14,7 +14,7 @@ export type ArchiveItem = {
   fit?: "cover" | "contain";
   /** Issuing institution, e.g. "National Innovation Foundation". */
   institution?: string;
-  /** Recognition + year, e.g. "Presidential Recognition · 2008". */
+  /** Recognition + year, e.g. "Presidential Award · 2008". */
   recognition?: string;
   /** Presenter, e.g. "Presented by Dr. A.P.J. Abdul Kalam". */
   presenter?: string;
@@ -793,7 +793,7 @@ export function ArchivePlateSeries({
  */
 export function PresidentialTriptych({
   items,
-  eyebrow = "Presidential Recognitions · Three Sitting Presidents of India",
+  eyebrow = "Presidential Awards · Three Sitting Presidents of India",
 }: {
   items: ArchiveItem[];
   eyebrow?: string;

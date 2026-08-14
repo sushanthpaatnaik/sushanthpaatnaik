@@ -247,9 +247,13 @@ function PhilosophyBlock() {
           <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/75">
             {t.n}
           </p>
-          <h4 className="mt-4 font-display text-lg md:text-xl tracking-[-0.015em] text-foreground/95">
+          {/* h3, not h4: these sit directly under "How the desk thinks about
+              collaboration." (h2) and are peers of the page's other h3 groups.
+              Level is outline position, not type size — the styling is
+              unchanged. */}
+          <h3 className="mt-4 font-display text-lg md:text-xl tracking-[-0.015em] text-foreground/95">
             {t.t}
-          </h4>
+          </h3>
           <p className="mt-3 text-[14px] leading-[1.7] text-foreground/70">
             {t.b}
           </p>

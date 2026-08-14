@@ -82,7 +82,7 @@ const innovations: Innovation[] = [
     impact:
       "Recognized by the President of India at age 14. Proved that life-saving engineering could emerge from constrained resources and genuine intent.",
     image: rectofitImg,
-    badges: ["Presidential Recognition"],
+    badges: ["Presidential Award"],
     layout: "split-right",
   },
   {
@@ -99,7 +99,7 @@ const innovations: Innovation[] = [
       "Won the National Innovation Award. Recognized by the President of India. The foundation invention that opened every door that followed — and the one that made everything else inevitable.",
     image: enablerImg,
     videoUrl: "https://youtu.be/n-JiX6vmwOI",
-    badges: ["Presidential Recognition", "National Innovation Award"],
+    badges: ["Presidential Award", "National Innovation Award"],
     patentNote: "International Patent Application · WO2011138794A1 · Filed 2011",
     layout: "feature",
   },
@@ -117,7 +117,7 @@ const innovations: Innovation[] = [
       "Recognized by the President at the Intel IRIS National Science Fair. Explored a computing paradigm that mainstream technology would adopt nearly a decade later.",
     image: supersenseImg,
     videoUrl: "https://youtu.be/YuNwD71F3tA",
-    badges: ["Presidential Recognition", "Intel IRIS"],
+    badges: ["Presidential Award", "Intel IRIS"],
     layout: "split-left",
   },
   {
@@ -134,7 +134,7 @@ const innovations: Innovation[] = [
       "Recognized by the President. Shortlisted by the National Innovation Foundation. Addressed one of India's most pressing humanitarian engineering challenges of the era.",
     image: powergenImg,
     videoUrl: "https://vimeo.com/57665099",
-    badges: ["Presidential Recognition", "National Innovation Foundation"],
+    badges: ["Presidential Award", "National Innovation Foundation"],
     layout: "split-right",
   },
   {
@@ -148,10 +148,10 @@ const innovations: Innovation[] = [
     solution:
       "A power bank case that harvests ambient indoor light — not direct sunlight — to continuously trickle-charge connected devices. Quietly self-sufficient. Invisible in its operation.",
     impact:
-      "Presidential recognition for ambient energy harvesting as a practical portable product, at a time when the concept existed primarily in academic literature.",
+      "Presidential Award for ambient energy harvesting as a practical portable product, at a time when the concept existed primarily in academic literature.",
     image: solkaImg,
     videoUrl: "https://youtu.be/LDdIsTrE_Uw",
-    badges: ["Presidential Recognition"],
+    badges: ["Presidential Award"],
     layout: "split-left",
   },
   {
@@ -165,10 +165,10 @@ const innovations: Innovation[] = [
     solution:
       "A discreet smart-watch wearable with silent alert and real-time location capabilities — engineered years before the women's safety wearable category reached mainstream product awareness.",
     impact:
-      "Presidential recognition for the sixth consecutive year. The invention that closed this chapter and confirmed that hardware innovation would define the decade ahead.",
+      "Presidential Award for the sixth consecutive year. The invention that closed this chapter and confirmed that hardware innovation would define the decade ahead.",
     image: shewatchImg,
     videoUrl: "https://youtu.be/o8nir3oFzXg",
-    badges: ["Presidential Recognition"],
+    badges: ["Presidential Award"],
     layout: "feature",
   },
 ];
@@ -287,7 +287,7 @@ function DemoButton({ onWatch }: { onWatch?: () => void }) {
 
 function RecognitionBadge({ label }: { label: string }) {
   const icons: Record<string, string> = {
-    "Presidential Recognition": "✦",
+    "Presidential Award": "✦",
     "National Innovation Award": "◈",
     "Intel IRIS": "◆",
     "National Innovation Foundation": "◇",
@@ -696,7 +696,7 @@ function EndingSection() {
       </blockquote>
 
       <p className="max-w-2xl text-[15px] md:text-base leading-relaxed text-foreground/60 mb-14">
-        Six problems. Six hardware solutions. Six presidential recognitions across five years.
+        Six problems. Six hardware solutions. Six Presidential Awards across six years.
         Recognition from NASA, MIT, and TED followed — not for a single invention, but for the
         consistent belief that real engineering could solve real human problems. That belief became
         the only constant across every venture that followed.

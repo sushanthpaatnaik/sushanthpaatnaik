@@ -272,12 +272,23 @@ function OriginHero() {
           {/* Credibility strip — value+label pairs separated by · dots.
               Dot is placed BETWEEN spans (not inside) so spacing is
               consistent regardless of flex-gap or font-size.
-              Result: 06 Presidential Awards · 23 Innovations · 06 Ventures · TED · MIT TR · Global Recognition */}
+              Result: 06 Presidential Awards · 23 Innovations · 06 Ventures · TED · MIT TR · Global Recognition
+
+              The labels used to be `hidden sm:inline`, so on every phone this
+              read as "06 · 23 · 06 · TED · MIT TR · Global Recognition" —
+              three bare numbers with nothing saying what they counted. A
+              number without its noun is not a shorter version of the claim,
+              it is not the claim at all, and it is unreadable to a screen
+              reader and to search on any width.
+
+              They are always shown now. Phones get a shorter label for the
+              two that would otherwise wrap awkwardly at 360px, and the row
+              wraps rather than scrolls. */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
             {[
-              { v: "06",                  l: "Presidential Awards" },
-              { v: "23",                  l: "Innovations" },
-              { v: "06",                  l: "Ventures" },
+              { v: "06",                  l: "Presidential Awards", short: "Presidential" },
+              { v: "23",                  l: "Innovations",         short: "Innovations" },
+              { v: "06",                  l: "Ventures",            short: "Ventures" },
               { v: "TED",                 l: "" },
               { v: "MIT TR",              l: "" },
               { v: "Global Recognition",  l: "" },
@@ -288,7 +299,10 @@ function OriginHero() {
                 )}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
-                  <span className="hidden sm:inline ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
+                  <>
+                    <span className="sm:hidden ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted-foreground/55">{s.short}</span>
+                    <span className="hidden sm:inline ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
+                  </>
                 )}
               </span>
             ))}
@@ -549,7 +563,7 @@ function RecognitionEcosystemContent() {
         </h2>
         {/* The record, then the philosophy that outranks it */}
         <p className="mt-2.5 md:mt-7 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-muted-foreground/85">
-          Six Indian Presidential awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today.
+          Six Indian Presidential Awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today.
         </p>
         <p className="mt-1.5 md:mt-3 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-foreground/70">
           The record exists. The next prototype matters more.
