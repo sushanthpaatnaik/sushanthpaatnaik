@@ -141,7 +141,15 @@ function ChapterMarker({
   const [focused, setFocused] = useState(false);
   // Reveal the label on keyboard focus too, otherwise a keyboard user tabbing
   // the rail sees only an unlabelled dot.
-  const showLabel = active || hovered || focused;
+  //
+  // `active` used to be in here as well, so the current chapter's name was
+  // painted permanently. The ladder's backing panel is 68px wide but a label
+  // is not: "Recognition & Ecosystem" measures 275px at 1440, far past any
+  // gutter a full-width chapter can afford, and it printed straight through
+  // that chapter's "Open the archive →" link. Nothing is lost by dropping it —
+  // the enlarged lit dot still marks position, and every chapter already names
+  // itself in its own eyebrow, so the persistent label was saying it twice.
+  const showLabel = hovered || focused;
 
   return (
     <button

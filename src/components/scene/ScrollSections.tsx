@@ -627,7 +627,12 @@ function RecognitionEcosystemContent() {
               className="group border-t border-foreground/[0.08] py-1 md:py-4 hover:border-foreground/25 transition-colors duration-500"
             >
               <div className="flex items-baseline gap-3 md:gap-5">
-                <span className="font-mono text-[10px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45 shrink-0 whitespace-nowrap">
+                {/* Fixed column, so all six labels start on the same x. The
+                    numerals are I through VI and this is a baseline flex row,
+                    so an auto width let "III" push Innovations 20px right of
+                    About and Recognitions — a ragged left edge on what is
+                    meant to read as an index. */}
+                <span className="w-6 md:w-8 shrink-0 whitespace-nowrap font-mono text-[10px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45">
                   {g.n}
                 </span>
                 <div className="flex-1 min-w-0">

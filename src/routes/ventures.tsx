@@ -84,7 +84,7 @@ const ventures: Venture[] = [
       "An innovative, scalable and economical method to manufacture graphene — and the applications that turn it into real-world performance gains.",
     href: "https://monoatomlabs.com/",
     logo: monoatomLogo,
-    logoScale: 0.86,
+    logoScale: 1.06,
     invert: true,
   },
   {
@@ -112,7 +112,7 @@ const ventures: Venture[] = [
       "Innovative R&D-led industrial solutions in nanomaterial engineering — translating advanced materials science into deployable systems that move the needle for industry.",
     href: "https://spiindustries.co/",
     logo: spiLogo,
-    logoScale: 0.88,
+    logoScale: 0.98,
   },
   {
     code: "04",
@@ -151,6 +151,18 @@ const ventures: Venture[] = [
     invert: true,
   },
 ];
+
+/**
+ * Two-letter monogram for a company with no reachable mark.
+ *
+ * Capitals first, so "InThinks" gives IT rather than the bare "I" that
+ * splitting on spaces produces for a single-word name — the plate needs two
+ * characters to sit at the same optical weight as a logo.
+ */
+function monogram(name: string): string {
+  const caps = name.match(/[A-Z]/g) ?? [];
+  return (caps.length >= 2 ? caps.slice(0, 2).join("") : name.slice(0, 2)).toUpperCase();
+}
 
 /* ------------------------------------------------------------------ */
 /*  Advisory roster — five marks, five industry layers                */
@@ -253,7 +265,7 @@ function VenturesPage() {
               }}
             />
 
-            <div className="relative grid grid-cols-1 gap-y-6 py-9 transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[2px] md:grid-cols-[104px_1fr] md:gap-x-10 md:gap-y-0 md:py-11">
+            <div className="relative grid grid-cols-1 gap-y-6 py-9 transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[2px] md:grid-cols-[112px_1fr] md:gap-x-10 md:gap-y-0 md:py-11">
               {/* ── Mark plate ──────────────────────────────────────────────
                   A fixed 104px gutter rather than an inline logo, so six marks
                   of wildly different aspect ratios (a 5:1 wordmark next to a
@@ -261,7 +273,7 @@ function VenturesPage() {
                   plate is the constant; the mark is normalised into it by
                   logoScale. */}
               <div className="flex items-center justify-start md:justify-center md:pt-1.5">
-                <div className="relative grid h-[68px] w-[68px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
+                <div className="relative grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
                   {v.logo ? (
                     <img
                       src={v.logo}
@@ -269,8 +281,8 @@ function VenturesPage() {
                       loading="lazy"
                       decoding="async"
                       style={{
-                        maxHeight: `${Math.round(40 * (v.logoScale ?? 1))}px`,
-                        maxWidth: `${Math.round(76 * (v.logoScale ?? 1))}%`,
+                        maxHeight: `${Math.round(48 * (v.logoScale ?? 1))}px`,
+                        maxWidth: `${Math.round(74 * (v.logoScale ?? 1))}%`,
                         filter: v.invert
                           ? "invert(1) saturate(0) brightness(1.06) contrast(1.04)"
                           : "brightness(1.06) contrast(1.04)",
@@ -283,14 +295,9 @@ function VenturesPage() {
                        weight, so a missing file does not read as a hole. */
                     <span
                       aria-hidden
-                      className="font-display text-[19px] tracking-[0.06em] text-foreground/45 transition-colors duration-[1100ms] group-hover:text-foreground/65"
+                      className="font-display text-[21px] tracking-[0.06em] text-foreground/45 transition-colors duration-[1100ms] group-hover:text-foreground/65"
                     >
-                      {v.name
-                        .split(" ")
-                        .map((w) => w[0])
-                        .join("")
-                        .slice(0, 2)
-                        .toUpperCase()}
+                      {monogram(v.name)}
                     </span>
                   )}
                   <div
