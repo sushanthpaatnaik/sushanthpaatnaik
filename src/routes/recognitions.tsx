@@ -317,12 +317,12 @@ const eraPresidential: ArchiveItem[] = [
   {
     src: awardKalam,
     caption: "With Dr. A.P.J. Abdul Kalam",
-    meta: "Presidential Award · NIF · 2008",
+    meta: "Presidential Award · NIF · 2009",
     category: "Award",
     shape: "hero",
     focus: "center 28%",
     institution: "National Innovation Foundation",
-    recognition: "Presidential Award · 2008",
+    recognition: "Presidential Award · 2009",
     presenter: "Presented by Dr. A.P.J. Abdul Kalam",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
@@ -495,7 +495,7 @@ if (import.meta.env.DEV) {
 // fellowship certificates and mainstage photography. Restores archival
 // realism and historical scale without expanding the chronological registry.
 const documentaryMosaic: ArchiveItem[] = [
-  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
+  { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2009", category: "Award", shape: "hero", focus: "center 28%" },
   { src: keynoteTed, caption: "TED@Bangalore Mainstage", meta: "TED · 2012", category: "Keynote" },
   { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
