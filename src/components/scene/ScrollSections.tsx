@@ -763,15 +763,26 @@ function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
    ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
   return (
-    <div className="relative w-full h-full flex flex-col items-start justify-center text-left overflow-hidden">
-      {/* Left-weighted, not centred, and the scrim follows the copy.
+    <div className="relative w-full h-full flex flex-col items-end justify-center text-right overflow-hidden">
+      {/* Right-weighted, not centred, and the scrim follows the copy.
           The closing shot is a bright corridor with a figure standing centre
           frame, and this chapter is the only one that used to set its copy
           centred — directly over him. The CTAs landed on his torso and the
           domain row crossed his body, at whichever scroll positions the film
           had him mid-frame. He is inside the footage, so nothing about him can
-          be moved; the copy is what moves. See the note above the text zone. */}
-      <ContentShield align="left" strength={0.72} />
+          be moved; the copy is what moves.
+
+          Right rather than left. Left cleared the figure but put the copy under
+          the chapter rail, which is anchored to the left edge and whose labels
+          vary in width per chapter — a collision you can only tune against,
+          never solve. Nothing is anchored right, so moving the copy there
+          settles it by construction.
+
+          The cost is legibility: the right of this frame is the sunlit city,
+          the brightest region in the sequence, so the shield goes to 0.82 —
+          inside the 0.78–0.84 band its own notes prescribe for bright
+          industrial plates, against 0.72 for the left side. */}
+      <ContentShield align="right" strength={0.82} />
       {/* Atmospheric volumetric glow */}
       <motion.div
         aria-hidden
@@ -800,18 +811,18 @@ function FutureContent() {
           max-w is in ch/rem rather than a fraction of the viewport so the
           measure stays constant and the gap to the figure grows with the
           screen instead of shrinking. */}
-      <div className="relative z-10 w-full max-w-[34rem] lg:max-w-[38rem] pl-6 pr-5 sm:pl-10 md:pl-14 lg:pl-20 xl:pl-28 -translate-y-[4%] md:-translate-y-[6%]">
+      <div className="relative z-10 w-full max-w-[34rem] lg:max-w-[38rem] pr-6 pl-5 sm:pr-10 md:pr-14 lg:pr-20 xl:pr-28 -translate-y-[4%] md:-translate-y-[6%]">
         {/* Eyebrow */}
         <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
         </p>
         {/* Italic intro */}
-        <p className="mb-8 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+        <p className="mb-8 ml-auto max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
           Not a forecast. A working hypothesis — built one industrial system at a time.
         </p>
         {/* H2 */}
         <h2
-          className="max-w-[16ch] font-display text-[clamp(1.6rem,3.4vw,3rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
+          className="ml-auto max-w-[16ch] font-display text-[clamp(1.6rem,3.4vw,3rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
           style={{
             textShadow:
               "0 1px 14px oklch(0.05 0.012 240 / 0.45), 0 0 0.5px oklch(0.98 0.008 232 / 0.32)",
@@ -820,11 +831,11 @@ function FutureContent() {
           Energy as infrastructure.<br /> Industry at planetary scale.
         </h2>
         {/* Body */}
-        <p className="mb-8 max-w-[46ch] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+        <p className="mb-8 ml-auto max-w-[46ch] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
           The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
         </p>
         {/* CTA row */}
-        <div className="flex flex-col items-start justify-start gap-4 sm:flex-row sm:items-center sm:gap-5">
+        <div className="flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:gap-5">
           <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
             Begin a conversation
           </Link>
