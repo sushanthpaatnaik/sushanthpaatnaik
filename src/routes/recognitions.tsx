@@ -1065,10 +1065,14 @@ function RecognitionsPage() {
       <div id="presidential" className="scroll-mt-24">
         <EditorialSection number="04 · Centerpiece" heading="Three Presidents of India. Six citations.">
           <p>
-            The defining plate of the archive — felicitated by three sitting
-            Presidents of India across six separate citations between 2008 and
-            2013. The gravitational centre around which the rest of the
-            recognitions orbit.
+            {/* Not "three sitting Presidents": Dr. Kalam's term ended in July
+                2007, so the 2008 and 2009 awards came from him as a former
+                President — which is exactly how the ledger below labels them.
+                Patil (2010) and Mukherjee (2013) were in office. */}
+            The defining plate of the archive — felicitated by three Presidents
+            of India across six separate citations between 2008 and 2013. The
+            gravitational centre around which the rest of the recognitions
+            orbit.
           </p>
         </EditorialSection>
         <PresidentialTriptych
