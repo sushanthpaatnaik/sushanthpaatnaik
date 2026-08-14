@@ -31,11 +31,28 @@ import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } fro
 // CHAPTER_BANDS or the frame count — but do not reintroduce a non-uniform
 // map to "fix" alignment; that trades a visible stutter for a subtlety.
 const SEQUENCE_PATH = "founder-film";
-// 476 frames: a native-1080p 24fps/8s master interpolated to 60fps so the
-// frame-per-scroll-distance density stays at ~3.2vh/frame (see the
-// linear-mapping note above). Desktop frames are the source's own 1920x1080
-// with no rescaling; the /m/ variants are 854x480.
-const FRAME_COUNT   = 476;
+// 381 frames: the native-1080p 24fps/8s master (192 frames) interpolated to
+// 48fps — exactly 2x — so every synthesised frame sits at the midpoint of two
+// real ones. Desktop frames are the source's own 1920x1080 with no rescaling;
+// the /m/ variants are 854x480.
+//
+// It was 476, a 2.479x resample of the same master, and the non-integer ratio
+// is what made it shake. A fractional resample cannot place every synthesised
+// frame evenly between two real ones, so the sequence steps unevenly on a
+// repeating period. Measured on the served frames: the worst per-frame changes
+// in step size fell at frames 19, 24, 29, 34 and 68, 73, 78 — a regular 5-frame
+// beat. Scrolling through that reads as judder rather than motion, and it is
+// baked into the images, which is why every renderer-side fix left it alone.
+//
+// At 2x the beat is gone: median jerk 0.390 -> 0.060, worst 1.33 -> 0.95, and
+// the remaining worst frames are irregular and content-driven rather than
+// periodic. Density is 2.6vh/frame against the old 2.1 — slightly coarser
+// steps, but even ones, and the sequence is 88MB against 122MB.
+//
+// If this is ever regenerated, keep the frame count an integer multiple of the
+// master's 192. 381 is 192 real + 189 synthesised; ffmpeg drops the trailing
+// interpolation, which is harmless because the spacing stays uniform.
+const FRAME_COUNT   = 381;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
