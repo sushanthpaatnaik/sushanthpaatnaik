@@ -77,18 +77,24 @@ function getFrameIndex(sp: number): number {
 // visibly changed colour as the reader scrolled past a boundary, with no cut
 // to justify it. Halving keeps the chapter identity and lets the footage's own
 // colour carry the frame.
-const CHAPTER_GRADES = [
+const CHAPTER_GRADES: ReadonlyArray<{
+  /** sRGB stops as [offset 0-1, "#rrggbb"]. One stop = a flat fill. */
+  stops: ReadonlyArray<readonly [number, string]>;
+  /** CSS gradient angle in degrees (0 = bottom-to-top, clockwise). */
+  angle: number;
+  opacity: number;
+}> = [
   // Origin — cold blue atmosphere, warm gold horizon. Holds through the
   // in-chapter dissolve into the lab, so it stays neutral enough for both.
-  { bg: "linear-gradient(155deg, oklch(0.40 0.18 238) 50%, oklch(0.65 0.16 80) 100%)", opacity: 0.075 },
+  { stops: [[0.5, "#004c9b"], [1, "#c18100"]], angle: 155, opacity: 0.075 },
   // Material Intelligence — graphene blue: deep, cool, metallic
-  { bg: "oklch(0.36 0.14 218)", opacity: 0.09 },
+  { stops: [[0, "#004a6d"]], angle: 0, opacity: 0.09 },
   // Industrial Translation — warm industrial amber
-  { bg: "oklch(0.58 0.15 50)", opacity: 0.085 },
+  { stops: [[0, "#be5a0a"]], angle: 0, opacity: 0.085 },
   // Recognition & Ecosystem — prestige white-gold
-  { bg: "linear-gradient(160deg, oklch(0.88 0.04 88) 30%, oklch(0.76 0.10 82) 100%)", opacity: 0.07 },
+  { stops: [[0.3, "#e2d7ba"], [1, "#d1ab64"]], angle: 160, opacity: 0.07 },
   // Future Systems — electric blue-cyan
-  { bg: "oklch(0.48 0.24 242)", opacity: 0.105 },
+  { stops: [[0, "#005dd6"]], angle: 0, opacity: 0.105 },
 ] as const;
 
 /* How many discrete opacity levels each chapter grade ramps through.
@@ -122,9 +128,10 @@ interface CanvasLayerProps {
  */
 export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLayerProps) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
-  const gradeRefs    = useRef<(HTMLDivElement | null)[]>(new Array(N_CHAPTERS).fill(null));
-  // Last opacity written to each grade, so the tick can skip no-op style writes.
-  const lastGradeRef = useRef<number[]>(new Array(N_CHAPTERS).fill(-1));
+  // Grade state the canvas was last painted with, so the tick can skip a
+  // redraw when neither the film nor the tint has moved.
+  const lastGradeIdxRef   = useRef(-1);
+  const lastGradeAlphaRef = useRef(-1);
   const reduce       = useReducedMotionSafe();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
@@ -285,14 +292,60 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       : null;
     if (ro) ro.observe(document.documentElement);
 
+    // ── Grade fill styles, built once per canvas size ────────────────────────
+    // A CSS `Ndeg` gradient runs clockwise from "to top", and its line is
+    // sized so the box corners land on 0 % and 100 %. Canvas wants two points,
+    // so project the direction vector out from the centre by half that length.
+    const gradeStyleCache: (string | CanvasGradient | null)[] = new Array(N_CHAPTERS).fill(null);
+    let gradeStyleFor = 0; // canvas.width the cache was built against
+    const gradeStyle = (i: number): string | CanvasGradient => {
+      const cW = canvas.width, cH = canvas.height;
+      if (gradeStyleFor !== cW) { gradeStyleCache.fill(null); gradeStyleFor = cW; }
+      const cached = gradeStyleCache[i];
+      if (cached) return cached;
+      const g = CHAPTER_GRADES[i];
+      let style: string | CanvasGradient;
+      if (g.stops.length === 1) {
+        style = g.stops[0][1];
+      } else {
+        const rad = (g.angle * Math.PI) / 180;
+        const dx = Math.sin(rad), dy = -Math.cos(rad);
+        const len = Math.abs(cW * dx) + Math.abs(cH * dy);
+        const grad = ctx.createLinearGradient(
+          cW / 2 - (dx * len) / 2, cH / 2 - (dy * len) / 2,
+          cW / 2 + (dx * len) / 2, cH / 2 + (dy * len) / 2,
+        );
+        for (const [off, col] of g.stops) grad.addColorStop(off, col);
+        style = grad;
+      }
+      gradeStyleCache[i] = style;
+      return style;
+    };
+
     // ── object-fit:cover draw in physical-pixel space ────────────────────────
-    const drawBitmap = (bmp: ImageBitmap) => {
+    // The chapter grade is composited into the same canvas, in the same pass,
+    // rather than by a mix-blend-mode div stacked over it. See the note on the
+    // tick's redraw condition for why.
+    const drawBitmap = (bmp: ImageBitmap, gradeIdx: number, gradeAlpha: number) => {
       const cW    = canvas.width;
       const cH    = canvas.height;
       const scale = Math.max(cW / bmp.width, cH / bmp.height);
       const dW    = bmp.width  * scale;
       const dH    = bmp.height * scale;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
+      if (gradeIdx >= 0 && gradeAlpha > 0) {
+        // `color` takes hue+chroma from the fill and keeps the frame's own
+        // luminance — the same operator as CSS mix-blend-mode: color, so the
+        // result is identical to the overlay it replaces.
+        ctx.globalCompositeOperation = "color";
+        ctx.globalAlpha = gradeAlpha;
+        ctx.fillStyle = gradeStyle(gradeIdx);
+        ctx.fillRect(0, 0, cW, cH);
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+      }
     };
 
     // ── Frame loader ─────────────────────────────────────────────────────────
@@ -496,38 +549,39 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // seconds; scrub and the tint trailed the footage it was grading. See
       // GRADE_FADE in chapterBands.ts for the measurements.
       //
-      // Quantised, because these are the most expensive layers on the page to
-      // touch. A full-viewport `mix-blend-mode: color` div cannot have its
-      // opacity composited on the GPU alone — the blend is defined against its
-      // backdrop, so every write re-blends and recomposites the whole frame,
-      // on top of the canvas already drawing a new bitmap that frame.
+      // Which grade is live, and how strong — quantised.
       //
-      // Measured across the Recognition -> Future hand-over at 1440x900, the
-      // continuous version wrote on 56 % of frames, against 0 % once the grade
-      // settled. Quantising to GRADE_STEPS levels of the layer's own peak makes
-      // each step ~0.005 of alpha at peak 0.105 — below what a colour blend at
-      // that strength can render as a visible edge — while cutting the writes
-      // to roughly one frame in eight. The ramp still reads as continuous
-      // because it is still a pure function of scroll position; it just stops
-      // asking the compositor to prove it 60 times a second.
+      // The grades used to be five full-viewport mix-blend-mode:color divs
+      // stacked over the canvas. That is the most expensive thing on the page
+      // to animate: the blend is defined against the backdrop, so an opacity
+      // change cannot be composited on the GPU alone — it re-blends and
+      // recomposites the whole viewport, on top of the canvas already drawing
+      // a new 1920x1080 bitmap that same frame. Measured at 1440x900 across
+      // the Recognition -> Future hand-over, 56 % of frames triggered one.
+      // On an iPhone that was visible as the frame juddering through the
+      // transition.
       //
-      // The endpoints snap rather than quantising into them, because rounding
-      // alone never lands the last step: a grade would settle near 0.0015
-      // instead of 0 and stay there for the rest of the page, leaving two
-      // `color` layers live at once — the exact stacking the sequencing exists
-      // to avoid, reintroduced by the optimisation meant to be free.
+      // Now the tint is drawn into the canvas in the same pass as the bitmap
+      // (see drawBitmap), so it costs one extra fillRect on a surface that was
+      // being redrawn anyway and no DOM blending at all.
+      //
+      // Still quantised, because the grade now shares the frame's redraw
+      // condition: a continuously-varying alpha would force a redraw on every
+      // frame even where the film itself has not advanced. At a peak of 0.105
+      // one of GRADE_STEPS levels is ~0.005 of alpha on a colour blend, which
+      // cannot render as a visible edge. Endpoints snap so a grade lands on a
+      // true 0 and a true peak rather than drifting near them.
+      let gradeIdx = -1;
+      let gradeAlpha = 0;
       for (let i = 0; i < N_CHAPTERS; i++) {
-        const el = gradeRefs.current[i];
-        if (!el) continue;
         const peak = CHAPTER_GRADES[i].opacity;
         const raw = gradeOpacityAt(sp, i) * peak;
-        let v: number;
-        if (raw < 0.002) v = 0;
-        else if (raw > peak - 0.002) v = peak;
-        else v = Math.round(raw / (peak / GRADE_STEPS)) * (peak / GRADE_STEPS);
-        if (v === lastGradeRef.current[i]) continue;
-        lastGradeRef.current[i] = v;
-        el.style.opacity = v.toFixed(4);
+        if (raw <= 0.002) continue;
+        gradeIdx = i;
+        gradeAlpha = raw >= peak - 0.002
+          ? peak
+          : Math.round(raw / (peak / GRADE_STEPS)) * (peak / GRADE_STEPS);
+        break; // sequenced — at most one grade is ever live
       }
 
       // On chapter change: preload active±1's frame regions — the direct
@@ -588,8 +642,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         }
       }
 
-      // Skip draw if frame unchanged — avoids redundant canvas writes.
-      if (fi === lastFrameRef.current) return;
+      // Redraw when the film advances *or* the grade steps. Both are baked
+      // into the same canvas now, so either changing invalidates it.
+      const gradeSame = gradeIdx === lastGradeIdxRef.current
+        && gradeAlpha === lastGradeAlphaRef.current;
+      if (fi === lastFrameRef.current && gradeSame) return;
 
       // Find the nearest loaded frame: try exact match, then search outward.
       // This prevents a frozen canvas when scrolling into a not-yet-loaded
@@ -608,7 +665,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // For fallback frames, keep lastFrameRef at -1 so the next tick
       // retries the exact frame once it finishes loading.
       lastFrameRef.current = bitmapsRef.current[fi] === bmp ? fi : -1;
-      drawBitmap(bmp);
+      lastGradeIdxRef.current = gradeIdx;
+      lastGradeAlphaRef.current = gradeAlpha;
+      drawBitmap(bmp, gradeIdx, gradeAlpha);
     };
 
     // Kick off: load chapter 0's region (frame 0 first, so notifyReady fires
@@ -668,26 +727,28 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         />
       )}
 
-      {/* Chapter color grades — mix-blend-mode:color tints, one per text
-          chapter (was one per video group; now there's a single video).
+      {/* The chapter colour grades used to live here as five stacked
+          mix-blend-mode:color divs. They are now composited into the canvas
+          itself, in the same pass as the frame — see drawBitmap. Nothing
+          blends over the canvas any more, which is the point.
 
-          No CSS transition: opacity is written every frame from scroll
-          position by the tick above, so a transition here would fight it.
-          The initial value is the top-of-page state, which the first tick
-          then owns. */}
-      {CHAPTER_GRADES.map((grade, i) => (
+          Reduced motion keeps one static tint, because that path renders an
+          <img> rather than the canvas and so has nothing to composite into.
+          It never animates, so it costs one blend at paint time and nothing
+          after. */}
+      {reduce && (
         <div
-          key={i}
-          ref={el => { gradeRefs.current[i] = el; }}
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
             mixBlendMode: "color",
-            background: grade.bg,
-            opacity: i === 0 ? grade.opacity : 0,
+            background: `linear-gradient(${CHAPTER_GRADES[0].angle}deg, ${
+              CHAPTER_GRADES[0].stops.map(([o, c]) => `${c} ${o * 100}%`).join(", ")
+            })`,
+            opacity: CHAPTER_GRADES[0].opacity,
           }}
         />
-      ))}
+      )}
 
       {/* Text readability — darkens sky/highlights without crushing blacks */}
       <div
