@@ -39,6 +39,8 @@ import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
 // Transparent product cut-outs — identity-preserved studio product staging
 import cutGraphacrete from "@/assets/innovations/cutouts/graphacrete.webp";
+import cutThermalPaste from "@/assets/innovations/cutouts/thermal-paste.webp";
+import cutGrapheneFabric from "@/assets/innovations/cutouts/graphene-fabric.webp";
 import cutGraffisol from "@/assets/innovations/cutouts/graffisol.webp";
 import cutCeraphene from "@/assets/innovations/cutouts/ceraphene.webp";
 import cutHdgpe from "@/assets/innovations/cutouts/hdgpe.webp";
@@ -65,6 +67,8 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // Application / use-case imagery — shown as the secondary still in the
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
+import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
+import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
 import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
 import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
@@ -141,6 +145,8 @@ type Item = {
   img: string;
   cutout: string;
   application: string;
+  /** Application still is a bench capture, not a field deployment. */
+  benchOnly?: boolean;
   domain: string;
   status: string;
   featured?: boolean;
@@ -156,12 +162,16 @@ const items: Item[] = [
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
   { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
   /* Both co-developed with Monoatom Labs and published on the SPI Industries
-     portfolio. One photograph each — SPI has a single image per programme, so
-     img/cutout/application share it rather than inventing a cutout or a
-     context shot that does not exist. Replace the latter two when real assets
-     are shot. */
-  { title: "Graphene Thermal Paste", stage: "Commercial", domain: "Thermal · Interface Materials", status: "Co-developed · Monoatom Labs", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: imgThermalPaste, application: imgThermalPaste },
-  { title: "Graphene-Infused Fabric", stage: "Commercial", domain: "Textiles · Functional Materials", status: "Co-developed · Monoatom Labs", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: imgGrapheneFabric, application: imgGrapheneFabric },
+     portfolio, which carries exactly one photograph per programme. Every other
+     entry here has three separately-shot images; these two are derived from
+     their single frame — the cutout is the specimen matted off the bench, the
+     application still is the same bench capture graded to the page. Distinct
+     frames, but both are lab captures: neither is a field deployment, so they
+     carry `benchOnly` and the panel labels itself honestly rather than
+     claiming a site photograph that does not exist. Drop that flag when a real
+     deployment shot is taken. */
+  { title: "Graphene Thermal Paste", stage: "Commercial", domain: "Thermal · Interface Materials", status: "Co-developed · Monoatom Labs", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste, benchOnly: true },
+  { title: "Graphene-Infused Fabric", stage: "Commercial", domain: "Textiles · Functional Materials", status: "Co-developed · Monoatom Labs", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric, benchOnly: true },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
     { k: "Emissions", v: "20%", note: "Reduced emissions output" },
@@ -311,6 +321,7 @@ function InnovationsPage() {
       applicationContext: it.applicationContext,
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
+      benchOnly: it.benchOnly,
       aquamaxSimulation: it.title === "Aquamax",
     });
   };

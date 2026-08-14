@@ -11,6 +11,15 @@ import tileopediaLogo from "@/assets/clients/tileopedia.webp";
 import wehearLogo from "@/assets/clients/wehear.webp";
 import sunrooofLogo from "@/assets/clients/sunrooof.webp";
 import greenomersLogo from "@/assets/clients/greenomers.webp";
+
+/* Operating-company marks, pulled from each company's own site. Two are
+   missing on purpose rather than by oversight: inthinks.com answers 500 and
+   starunico.com does not resolve, so there is no first-party mark to take.
+   Those two render the monogram plate below until a real file is supplied. */
+import monoatomLogo from "@/assets/ventures/monoatom-labs.webp";
+import grafilliumLogo from "@/assets/ventures/grafillium.webp";
+import spiLogo from "@/assets/ventures/spi-industries.webp";
+import magppieLogo from "@/assets/ventures/magppie.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
@@ -53,6 +62,14 @@ type Venture = {
   domain: string;
   thesis: string;
   href: string;
+  /** First-party mark. Undefined → the monogram plate takes its place. */
+  logo?: string;
+  /** Optical normalisation: marks differ wildly in how much of their own
+      bounding box they fill, so each gets a scale against the plate rather
+      than every plate getting the same max-height. */
+  logoScale?: number;
+  /** Mark is black-on-transparent → invert so it reads on the dark plate. */
+  invert?: boolean;
 };
 
 const ventures: Venture[] = [
@@ -66,6 +83,9 @@ const ventures: Venture[] = [
     thesis:
       "An innovative, scalable and economical method to manufacture graphene — and the applications that turn it into real-world performance gains.",
     href: "https://monoatomlabs.com/",
+    logo: monoatomLogo,
+    logoScale: 0.86,
+    invert: true,
   },
   {
     code: "02",
@@ -77,6 +97,9 @@ const ventures: Venture[] = [
     thesis:
       "Deep-tech nanomaterial additive technologies that boost efficiency and cut carbon emissions across power, logistics and heavy industry.",
     href: "https://grafillium.com/",
+    logo: grafilliumLogo,
+    logoScale: 1.00,
+    invert: true,
   },
   {
     code: "03",
@@ -88,6 +111,8 @@ const ventures: Venture[] = [
     thesis:
       "Innovative R&D-led industrial solutions in nanomaterial engineering — translating advanced materials science into deployable systems that move the needle for industry.",
     href: "https://spiindustries.co/",
+    logo: spiLogo,
+    logoScale: 0.88,
   },
   {
     code: "04",
@@ -121,6 +146,9 @@ const ventures: Venture[] = [
     thesis:
       "Pioneering the world's first 100% stone-built modular kitchen — transforming ordinary homes into wellness homes that protect family and planet.",
     href: "https://magppie.com/",
+    logo: magppieLogo,
+    logoScale: 1.00,
+    invert: true,
   },
 ];
 
@@ -146,7 +174,7 @@ const advisories: Advisory[] = [
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
   { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
-  { name: "Greenomers", category: "Sustainable Materials",logo: greenomersLogo,scale: 1.00, offsetY: 0 },
+  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.00, offsetY: 0 },
 ];
 
 
@@ -225,7 +253,58 @@ function VenturesPage() {
               }}
             />
 
-            <div className="relative py-9 md:py-11 transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[2px]">
+            <div className="relative grid grid-cols-1 gap-y-6 py-9 transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[2px] md:grid-cols-[104px_1fr] md:gap-x-10 md:gap-y-0 md:py-11">
+              {/* ── Mark plate ──────────────────────────────────────────────
+                  A fixed 104px gutter rather than an inline logo, so six marks
+                  of wildly different aspect ratios (a 5:1 wordmark next to a
+                  1.6:1 lattice glyph) all start their copy on the same x. The
+                  plate is the constant; the mark is normalised into it by
+                  logoScale. */}
+              <div className="flex items-center justify-start md:justify-center md:pt-1.5">
+                <div className="relative grid h-[68px] w-[68px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
+                  {v.logo ? (
+                    <img
+                      src={v.logo}
+                      alt={`${v.name} logo`}
+                      loading="lazy"
+                      decoding="async"
+                      style={{
+                        maxHeight: `${Math.round(40 * (v.logoScale ?? 1))}px`,
+                        maxWidth: `${Math.round(76 * (v.logoScale ?? 1))}%`,
+                        filter: v.invert
+                          ? "invert(1) saturate(0) brightness(1.06) contrast(1.04)"
+                          : "brightness(1.06) contrast(1.04)",
+                      }}
+                      className="h-auto w-auto object-contain opacity-[0.86] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.05]"
+                    />
+                  ) : (
+                    /* Monogram stands in only where the company has no
+                       reachable first-party mark. Same plate, same optical
+                       weight, so a missing file does not read as a hole. */
+                    <span
+                      aria-hidden
+                      className="font-display text-[19px] tracking-[0.06em] text-foreground/45 transition-colors duration-[1100ms] group-hover:text-foreground/65"
+                    >
+                      {v.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()}
+                    </span>
+                  )}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[1100ms] group-hover:opacity-100"
+                    style={{
+                      background:
+                        "radial-gradient(70% 60% at 50% 22%, oklch(0.78 0.02 232 / 0.12), transparent 74%)",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
               {/* Code · Year · Industry layer */}
               <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50">
                 <span>{v.code} · {v.year}</span>
@@ -268,6 +347,7 @@ function VenturesPage() {
                 </span>
                 <span className="transition-transform duration-700 group-hover:translate-x-0.5">↗</span>
               </a>
+              </div>
             </div>
           </motion.li>
         ))}

@@ -494,6 +494,9 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
+  /** The application still is a bench capture, not a site photograph — the
+      frame labels itself accordingly instead of claiming a deployment. */
+  benchOnly?: boolean;
   /** Aquamax-only: render the interactive chimney hood / HV-LC recovery
    *  simulation as the right-side panel of the inspection view. */
   aquamaxSimulation?: boolean;
@@ -851,7 +854,7 @@ export function Product3DModal({
                       <motion.img
                         key={(item.detailImg ?? item.img) + "-app"}
                         src={item.detailImg ?? item.img}
-                        alt={`${item.title} — application`}
+                        alt={`${item.title} — ${item.benchOnly ? "bench capture" : "application"}`}
                         initial={{ opacity: 0, scale: 1.02 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
@@ -871,7 +874,11 @@ export function Product3DModal({
                     <FilmGrain opacity={0.07} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
-                        {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
+                        {item.applicationVideo
+                          ? "Application · Field capture"
+                          : item.benchOnly
+                            ? "Application · Bench capture"
+                            : "Application · Field"}
                       </p>
                     </div>
                     {item.applicationVideo && (
