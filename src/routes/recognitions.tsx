@@ -563,8 +563,12 @@ function EraAccordion({
             <p className="mt-4 max-w-[58ch] text-[13.5px] md:text-[14px] leading-[1.75] text-foreground/60">
               {description}
             </p>
+            {/* Both counts are data-driven and legitimately reach 1 — the
+                2021–2023 era carries a single ledger entry — so neither noun
+                can be hardcoded plural. It read "1 citations". */}
             <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45">
-              {plateCount} plates · {registryCount} citations
+              {plateCount} {plateCount === 1 ? "plate" : "plates"} · {registryCount}{" "}
+              {registryCount === 1 ? "citation" : "citations"}
             </p>
           </div>
           <span
