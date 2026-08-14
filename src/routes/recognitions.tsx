@@ -329,11 +329,11 @@ const eraPresidential: ArchiveItem[] = [
   {
     src: awardPatil,
     caption: "With President Pratibha Patil",
-    meta: "Presidential Award · 2009",
+    meta: "Presidential Award · 2010",
     category: "Award",
     shape: "tall",
     institution: "National Innovation Foundation",
-    recognition: "Presidential Award · 2009",
+    recognition: "Presidential Award · 2010",
     presenter: "Presented by Smt. Pratibha Devisingh Patil",
     venue: "Rashtrapati Bhavan · New Delhi",
   },
