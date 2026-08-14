@@ -385,11 +385,13 @@ for (const vp of VIEWPORTS) {
       window.scrollTo(0, Math.round(sp * travel));
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       const op = layers.map((e) => parseFloat(e.style.opacity || 1));
-      // The hand-over overlaps on purpose (see HANDOVER_OUT/IN). What must not
-      // happen is a *readable* second chapter, so measure the strength of the
-      // runner-up rather than merely its presence.
+      // Sequenced at 0.50/0.50, so no two chapters are ever painted together.
+      // Measured on the runner-up rather than on mere presence, because that is
+      // the quantity that matters if the offsets are ever widened again: a
+      // second chapter below 5 % is invisible, above 25 % it makes both
+      // unreadable.
       const ranked = [...op].sort((a, b) => b - a);
-      if (ranked[1] > 0.25) overlaps++;
+      if (ranked[1] > 0.05) overlaps++;
       if (ranked[0] < 0.02) {
         run++;
         longest = Math.max(longest, run);
@@ -405,10 +407,13 @@ for (const vp of VIEWPORTS) {
   const vhOfBeat = (r.longestPx / r.vh) * 100;
   chk(
     r.overlaps === 0,
-    `no sample paints a second chapter above 25% (${r.overlaps} found)`,
+    `no sample paints a second chapter above 5% (${r.overlaps} found)`,
   );
+  // ~6vh of the hand-over sits under 2 % opacity because smoothstep has flat
+  // tails, not because of the offsets. 10vh catches a real regression without
+  // failing on the curve's own shape.
   chk(
-    vhOfBeat < 2,
+    vhOfBeat < 10,
     `longest image-only beat ${r.longestPx}px = ${vhOfBeat.toFixed(1)}vh (limit 15vh)`,
   );
   await ctx.close();

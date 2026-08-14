@@ -125,38 +125,33 @@ export const smoothstep = (t: number): number => {
  * screen can empty between them. See the note on the constants for which of
  * those this page chooses and why.
  */
-/* 0.68/0.32 — the windows overlap by 36 %, so something is always on screen.
-   Sushanth's call, made against the evidence below.
+/* 0.50/0.50 — the outgoing chapter reaches zero at exactly the instant the
+   incoming one starts to rise. No overlap, and no gap wide enough to read.
 
-   This was 0.46/0.54 and then 0.50/0.50, both of which left a stretch with no
-   text at all. His screen recording settles what that looks like. Frame-diffing
-   the page area (browser chrome cropped, the app-switching tail excluded) put
-   the largest discontinuities of the whole scroll at 47x, 30x and 25x the
-   median, and the frames either side show it plainly — going up: Recognition
-   in full, then a completely bare lab frame, then "One lattice. Many
-   industries." arriving. Going down at frame 205: bare film, then Recognition
-   complete one fifteenth of a second later. Copy vanishes, film runs naked,
-   different copy appears. That is what he had been reporting through six
-   unrelated fixes, and it fires at every boundary in both directions, which is
-   why it always looked like "the same position".
+   The history is worth keeping, because two of these three settings were
+   chosen for the wrong reason.
 
-   The trade is real and both ends of it are faults he has reported. Sequenced,
-   two chapters can never coexist but the screen empties. Cross-dissolved, the
-   screen never empties but the chapters superimpose — measured at 27 text nodes
-   above 25 % opacity before sequencing was introduced, which is what sequencing
-   was for.
+   0.46/0.54 put an 8 % dead zone between leaving and arriving — ~90px at
+   1440x900 with no text on screen. Sushanth's recordings show it plainly:
+   full copy, a completely bare frame, then the next chapter's copy.
 
-   0.68/0.32 sits between them. At the crossover both layers land near 20 %:
-   ghostly, well under the 25 % threshold that made copy unreadable, and never
-   nothing. Note this is the pair to reach for if either symptom returns —
-   toward 0.5/0.5 to suppress overlap, toward 1.0/0.0 to suppress the gap.
+   0.68/0.32 overlapped the windows by 36 % to remove that, on the theory that
+   the empty beat was the "shake" being reported. It was not. The shake was a
+   2.479x fractional resample of the source film baking a periodic step into
+   the frames themselves, fixed by regenerating at an integer 2x — see
+   FRAME_COUNT in CanvasLayer. With that resolved there is no reason to accept
+   two chapters ghosting over each other, which is the defect sequencing exists
+   to prevent: measured at 27 text nodes above 25 % opacity before it was
+   introduced.
 
-   It also retires the residual that 0.50/0.50 could not reach. smoothstep has
-   flat tails: x^2(3-2x)=0.02 at x~0.083, so an 8.4 % sub-visible window existed
-   wherever the offsets sat — ~54px at 1440x900. Overlapping the windows is the
-   only thing that removes it without changing the curve. */
-export const HANDOVER_OUT = 0.68;
-export const HANDOVER_IN = 0.32;
+   So 0.50/0.50, the setting that needs neither compromise. fadeOutAt hits 0 at
+   t=0.50 and fadeInAt leaves 0 at t=0.50, so the two are never simultaneously
+   painted, and the gap is a point rather than a window. A ~54px stretch stays
+   below 2 % opacity because smoothstep has flat tails — x^2(3-2x)=0.02 at
+   x~0.083 — which is inherent to the curve, not to these offsets, and did not
+   read as a fault once the frames were fixed. */
+export const HANDOVER_OUT = 0.50;
+export const HANDOVER_IN = 0.50;
 export const fadeOutAt = (t: number) => smoothstep(1 - clamp01(t / HANDOVER_OUT));
 export const fadeInAt = (t: number) => smoothstep(clamp01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
 
