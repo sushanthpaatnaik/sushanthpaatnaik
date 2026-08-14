@@ -104,6 +104,12 @@ const CHAPTER_GRADES: ReadonlyArray<{
    write into roughly one frame in eight. */
 const GRADE_STEPS = 20;
 
+/* How far the draw loop may search for a substitute when the exact frame is
+   not resident. 14 of 476 frames is under 3 % of the sequence — the same shot,
+   a few hundredths of a second of footage. Past that a substitution stops
+   being a substitution and becomes a cut to a different scene. */
+const FALLBACK_RADIUS = 14;
+
 type Bitmaps = (ImageBitmap | null)[];
 
 interface CanvasLayerProps {
@@ -648,18 +654,39 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         && gradeAlpha === lastGradeAlphaRef.current;
       if (fi === lastFrameRef.current && gradeSame) return;
 
-      // Find the nearest loaded frame: try exact match, then search outward.
-      // This prevents a frozen canvas when scrolling into a not-yet-loaded
-      // stretch of the sequence.
+      // Find the nearest loaded frame: exact match, then search outward — but
+      // only as far as FALLBACK_RADIUS.
+      //
+      // This search used to run to FRAME_COUNT, i.e. the whole film. That made
+      // the page non-deterministic, because which frames are resident depends
+      // on scroll *history*: the retention window slides with the playhead and
+      // evicts behind it. Arrive at a given scroll position from the top and a
+      // different set of frames is loaded than if you arrive from the bottom,
+      // so an unbounded search resolved the same position to different images —
+      // and not merely a neighbouring one. With nothing resident nearby it
+      // would happily reach hundreds of frames away and draw the planetary
+      // opening underneath the Future Systems copy.
+      //
+      // That is the reported glitch, and every symptom follows from it: scenes
+      // "reappearing", background and foreground belonging to different stages,
+      // the figure jumping position, the same position looking different on the
+      // way back up. The chapter layers were never at fault — their opacities
+      // are a pure function of scroll and measure identical from both
+      // directions.
+      //
+      // Bounded, the worst case is a frame ~14 out of 476 away: same shot, a
+      // fraction of a second of footage, invisible as a substitution. Beyond
+      // that we keep whatever is already on the canvas, which is temporally
+      // adjacent by construction, rather than cutting to an unrelated scene.
       let bmp = bitmapsRef.current[fi];
       if (!bmp) {
-        for (let d = 1; d < FRAME_COUNT; d++) {
+        for (let d = 1; d <= FALLBACK_RADIUS; d++) {
           const lo = fi - d, hi = fi + d;
           if (lo >= 0 && bitmapsRef.current[lo]) { bmp = bitmapsRef.current[lo]!; break; }
           if (hi < FRAME_COUNT && bitmapsRef.current[hi]) { bmp = bitmapsRef.current[hi]!; break; }
         }
       }
-      if (!bmp) return; // nothing loaded yet anywhere nearby — keep previous visible
+      if (!bmp) return; // nothing loaded within reach — hold the current frame
 
       // Only mark the target frame as drawn when it was the exact match.
       // For fallback frames, keep lastFrameRef at -1 so the next tick
