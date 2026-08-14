@@ -809,7 +809,7 @@ function FutureContent() {
           max-w is in ch/rem rather than a fraction of the viewport so the
           measure stays constant and the gap to the figure grows with the
           screen instead of shrinking. */}
-      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[4%] md:-translate-y-[6%]">
+      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[9%] md:-translate-y-[13%]">
         {/* Eyebrow */}
         <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
@@ -829,7 +829,7 @@ function FutureContent() {
           Energy as infrastructure.<br /> Industry at planetary scale.
         </h2>
         {/* Body */}
-        <p className="mx-auto mb-8 max-w-[46ch] text-[14px] md:text-[15.5px] leading-[1.7] text-foreground/75">
+        <p className="mx-auto mb-9 max-w-[38ch] text-[14px] md:text-[15px] leading-[1.75] text-foreground/70">
           The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
         </p>
         {/* CTA row */}
@@ -842,7 +842,7 @@ function FutureContent() {
           </Link>
         </div>
         {/* Tag row */}
-        <p className="mt-7 md:mt-9 font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.4em] text-muted-foreground/60 [text-wrap:balance]">
+        <p className="mt-8 md:mt-10 font-mono text-[10px] uppercase tracking-[0.24em] sm:tracking-[0.32em] text-foreground/45 [text-wrap:balance]">
           Advanced Materials · Energy Systems · Planetary Infrastructure
         </p>
       </div>
