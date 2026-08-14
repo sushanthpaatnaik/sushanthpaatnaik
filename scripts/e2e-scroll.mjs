@@ -385,8 +385,12 @@ for (const vp of VIEWPORTS) {
       window.scrollTo(0, Math.round(sp * travel));
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       const op = layers.map((e) => parseFloat(e.style.opacity || 1));
-      if (op.filter((v) => v > 0.05).length > 1) overlaps++;
-      if (Math.max(...op) < 0.02) {
+      // The hand-over overlaps on purpose (see HANDOVER_OUT/IN). What must not
+      // happen is a *readable* second chapter, so measure the strength of the
+      // runner-up rather than merely its presence.
+      const ranked = [...op].sort((a, b) => b - a);
+      if (ranked[1] > 0.25) overlaps++;
+      if (ranked[0] < 0.02) {
         run++;
         longest = Math.max(longest, run);
       } else run = 0;
@@ -399,9 +403,12 @@ for (const vp of VIEWPORTS) {
     };
   });
   const vhOfBeat = (r.longestPx / r.vh) * 100;
-  chk(r.overlaps === 0, `no sample paints two chapters at once (${r.overlaps} found)`);
   chk(
-    vhOfBeat < 15,
+    r.overlaps === 0,
+    `no sample paints a second chapter above 25% (${r.overlaps} found)`,
+  );
+  chk(
+    vhOfBeat < 2,
     `longest image-only beat ${r.longestPx}px = ${vhOfBeat.toFixed(1)}vh (limit 15vh)`,
   );
   await ctx.close();

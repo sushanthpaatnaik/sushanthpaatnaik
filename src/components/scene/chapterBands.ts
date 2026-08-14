@@ -117,33 +117,46 @@ export const smoothstep = (t: number): number => {
 };
 
 /**
- * Sequenced hand-over: leave across the first half of a window, arrive across
- * the second, meeting at a point.
+ * Hand-over curves: the outgoing element leaves across [0, HANDOVER_OUT] and
+ * the incoming one arrives across [HANDOVER_IN, 1] of the same window.
  *
- * Both halves read the same `t`, so wherever an outgoing element's window and
- * an incoming element's window are the same interval, the two are never both
- * painted — not at 50 %, not at 5 %. See the long note in ScrollSections for
- * why chapters sequence rather than cross-dissolve.
+ * Both halves read the same `t`. Where OUT > IN the windows overlap and the two
+ * briefly coexist at low opacity; where OUT <= IN they never coexist but the
+ * screen can empty between them. See the note on the constants for which of
+ * those this page chooses and why.
  */
-/* 0.50/0.50 — the outgoing chapter reaches zero at exactly the instant the
-   incoming one starts to rise. No overlap, and no gap either.
+/* 0.68/0.32 — the windows overlap by 36 %, so something is always on screen.
+   Sushanth's call, made against the evidence below.
 
-   These were 0.46/0.54, which put an 8 % dead zone between them: measured on a
-   1440x900 desktop, ~90px of scrolling at the Recognition -> Future edge with
-   no text on screen at all. That was deliberate — it guarantees two chapters
-   can never be painted at once — but it is also what Sushanth kept reporting
-   as a glitch at that exact position, through four unrelated fixes. Watching
-   it as a reader rather than as a test: the copy vanishes, the bare film runs
-   for a beat, then different copy appears. That reads as a fault, not a cut,
-   and the denser the two compositions either side, the more it reads that way.
-   Recognition and Future are the two densest on the page.
+   This was 0.46/0.54 and then 0.50/0.50, both of which left a stretch with no
+   text at all. His screen recording settles what that looks like. Frame-diffing
+   the page area (browser chrome cropped, the app-switching tail excluded) put
+   the largest discontinuities of the whole scroll at 47x, 30x and 25x the
+   median, and the frames either side show it plainly — going up: Recognition
+   in full, then a completely bare lab frame, then "One lattice. Many
+   industries." arriving. Going down at frame 205: bare film, then Recognition
+   complete one fifteenth of a second later. Copy vanishes, film runs naked,
+   different copy appears. That is what he had been reporting through six
+   unrelated fixes, and it fires at every boundary in both directions, which is
+   why it always looked like "the same position".
 
-   Touching at 0.50 keeps the property the gap existed to protect. fadeOutAt
-   hits 0 at t=0.50 and fadeInAt leaves 0 at t=0.50, so the two are still never
-   simultaneously painted — the overlap is a single point of zero width rather
-   than an 8 % window. The hand-over becomes continuous instead of punctuated. */
-export const HANDOVER_OUT = 0.50;
-export const HANDOVER_IN = 0.50;
+   The trade is real and both ends of it are faults he has reported. Sequenced,
+   two chapters can never coexist but the screen empties. Cross-dissolved, the
+   screen never empties but the chapters superimpose — measured at 27 text nodes
+   above 25 % opacity before sequencing was introduced, which is what sequencing
+   was for.
+
+   0.68/0.32 sits between them. At the crossover both layers land near 20 %:
+   ghostly, well under the 25 % threshold that made copy unreadable, and never
+   nothing. Note this is the pair to reach for if either symptom returns —
+   toward 0.5/0.5 to suppress overlap, toward 1.0/0.0 to suppress the gap.
+
+   It also retires the residual that 0.50/0.50 could not reach. smoothstep has
+   flat tails: x^2(3-2x)=0.02 at x~0.083, so an 8.4 % sub-visible window existed
+   wherever the offsets sat — ~54px at 1440x900. Overlapping the windows is the
+   only thing that removes it without changing the curve. */
+export const HANDOVER_OUT = 0.68;
+export const HANDOVER_IN = 0.32;
 export const fadeOutAt = (t: number) => smoothstep(1 - clamp01(t / HANDOVER_OUT));
 export const fadeInAt = (t: number) => smoothstep(clamp01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
 

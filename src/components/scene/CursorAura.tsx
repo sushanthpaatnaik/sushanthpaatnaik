@@ -41,21 +41,52 @@ export default function CursorAura() {
     };
 
     let raf = 0;
+    let wx = NaN, wy = NaN, wo = NaN;   // last values actually written to the DOM
+
+    /* This is a 640px mix-blend-screen layer. A blend layer cannot be
+       composited from its own texture alone — the browser has to re-blend it
+       against whatever is underneath — so every style write here costs a
+       recomposite of that region, on top of whatever else the frame is doing.
+       During a chapter hand-over that is the canvas uploading a new bitmap and
+       the chapter layers cross-fading, all at once, in the 640px around the
+       pointer. Reported as the area near the mouse shaking through transitions.
+
+       The loop used to write transform and opacity unconditionally on every
+       frame and never stop, because a lerp approaches its target
+       asymptotically and never arrives. Two changes: only write when a value
+       has moved enough to change a pixel, and park the loop entirely once the
+       aura has settled and faded out, restarting it on the next pointermove. */
     const loop = () => {
       // Heavy lerp so the aura trails the cursor like a slow film light.
       x += (tx - x) * 0.045;
       y += (ty - y) * 0.045;
       active += (targetActive - active) * 0.04;
-      el.style.transform = `translate3d(${x - 320}px, ${y - 320}px, 0)`;
-      el.style.opacity = String(active * 0.85);
+
+      if (!(Math.abs(x - wx) < 0.5 && Math.abs(y - wy) < 0.5)) {
+        wx = x; wy = y;
+        el.style.transform = `translate3d(${Math.round(x) - 320}px, ${Math.round(y) - 320}px, 0)`;
+      }
+      const o = active * 0.85;
+      if (!(Math.abs(o - wo) < 0.004)) {
+        wo = o;
+        el.style.opacity = o.toFixed(3);
+      }
+
+      // Settled and invisible — stop burning frames until the pointer moves.
+      if (targetActive === 0 && active < 0.004 && Math.abs(tx - x) < 0.5 && Math.abs(ty - y) < 0.5) {
+        if (wo !== 0) { wo = 0; el.style.opacity = "0"; }
+        raf = 0;
+        return;
+      }
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+    const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
+    kick();
 
-    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointermove", (e) => { onMove(e as PointerEvent); kick(); }, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointermove", onMove as EventListener);
       if (idleTimer) window.clearTimeout(idleTimer);
     };
   }, []);
