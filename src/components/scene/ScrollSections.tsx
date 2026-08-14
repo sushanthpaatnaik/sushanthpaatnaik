@@ -837,7 +837,7 @@ function FutureContent() {
           <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
             Begin a conversation
           </Link>
-          <Link to="/engage" className="btn-cinematic-secondary">
+          <Link to="/engage" className="btn-cinematic-ghost">
             Engage →
           </Link>
         </div>

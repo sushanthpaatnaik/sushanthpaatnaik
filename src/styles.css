@@ -409,6 +409,58 @@
     will-change: transform, box-shadow;
   }
 
+  /* Ghost twin of .btn-cinematic — identical geometry, lighter fill.
+     ---------------------------------------------------------------
+     The closing frame pairs a primary CTA with a secondary one, and the
+     secondary used to be .btn-cinematic-secondary: a text link with an
+     underline, no border, and 1.5rem of horizontal padding against the
+     primary's 2.25rem. Geometrically the row was centred to the pixel;
+     optically it was not, because a filled pill next to bare text puts the
+     pair's centre of mass well left of its bounding-box centre. Sushanth
+     read it as off-centre, and he was right about the perception even
+     though the measurement said 0px offset.
+
+     Matching the padding, radius and border makes the two read as a pair.
+     The hierarchy still holds — the primary keeps its backdrop blur, inner
+     highlight and drop shadow; the ghost is transparent with a single
+     hairline — but neither out-weighs the other enough to drag the row. */
+  .btn-cinematic-ghost {
+    position: relative;
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2.25rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: oklch(0.80 0.005 250);
+    background: transparent;
+    border: 0.5px solid oklch(0.42 0.005 250 / 0.22);
+    border-radius: 9999px;
+    overflow: hidden;
+    transition:
+      color 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+      border-color 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+      background 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+      letter-spacing 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: pointer;
+  }
+
+  .btn-cinematic-ghost:hover {
+    color: oklch(0.97 0 0);
+    border-color: oklch(0.55 0.005 250 / 0.42);
+    background: oklch(1 0 0 / 0.02);
+    letter-spacing: 0.11em;
+  }
+
+  .btn-cinematic-ghost:focus-visible {
+    outline: 2px solid oklch(0.71 0.13 240 / 0.7);
+    outline-offset: 3px;
+  }
+
   /* Volumetric ambient glow — soft halo bloom behind the button */
   .btn-cinematic::before {
     content: "";
