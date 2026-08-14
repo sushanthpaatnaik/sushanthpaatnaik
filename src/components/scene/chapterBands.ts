@@ -117,16 +117,33 @@ export const smoothstep = (t: number): number => {
 };
 
 /**
- * Sequenced hand-over: leave across the first 46 % of a window, a beat of
- * nothing across 8 %, arrive across the last 46 %.
+ * Sequenced hand-over: leave across the first half of a window, arrive across
+ * the second, meeting at a point.
  *
  * Both halves read the same `t`, so wherever an outgoing element's window and
  * an incoming element's window are the same interval, the two are never both
  * painted — not at 50 %, not at 5 %. See the long note in ScrollSections for
  * why chapters sequence rather than cross-dissolve.
  */
-export const HANDOVER_OUT = 0.46;
-export const HANDOVER_IN = 0.54;
+/* 0.50/0.50 — the outgoing chapter reaches zero at exactly the instant the
+   incoming one starts to rise. No overlap, and no gap either.
+
+   These were 0.46/0.54, which put an 8 % dead zone between them: measured on a
+   1440x900 desktop, ~90px of scrolling at the Recognition -> Future edge with
+   no text on screen at all. That was deliberate — it guarantees two chapters
+   can never be painted at once — but it is also what Sushanth kept reporting
+   as a glitch at that exact position, through four unrelated fixes. Watching
+   it as a reader rather than as a test: the copy vanishes, the bare film runs
+   for a beat, then different copy appears. That reads as a fault, not a cut,
+   and the denser the two compositions either side, the more it reads that way.
+   Recognition and Future are the two densest on the page.
+
+   Touching at 0.50 keeps the property the gap existed to protect. fadeOutAt
+   hits 0 at t=0.50 and fadeInAt leaves 0 at t=0.50, so the two are still never
+   simultaneously painted — the overlap is a single point of zero width rather
+   than an 8 % window. The hand-over becomes continuous instead of punctuated. */
+export const HANDOVER_OUT = 0.50;
+export const HANDOVER_IN = 0.50;
 export const fadeOutAt = (t: number) => smoothstep(1 - clamp01(t / HANDOVER_OUT));
 export const fadeInAt = (t: number) => smoothstep(clamp01((t - HANDOVER_IN) / (1 - HANDOVER_IN)));
 
