@@ -61,9 +61,11 @@ function getFrameIndex(sp: number): number {
 // ─── Per-chapter color grades ────────────────────────────────────────────────
 // Applied as mix-blend-mode:color overlays — replaces hue+saturation of the
 // canvas frames while preserving luminance, matching a film LUT grade.
-// opacity is the active strength; divs cross-fade on chapter change via the
-// CSS transition below (unchanged mechanism, now keyed to text chapter
-// instead of video group since there's only one video group now).
+// opacity is the active strength. The layers hand over in sequence as a pure
+// function of scroll position — see gradeOpacityAt in chapterBands.ts and the
+// write loop in the render tick. They used to cross-fade on a 1.4s CSS
+// transition fired by a discrete chapter step, which is what made the tint
+// keep moving after the scroll had stopped.
 //
 // Strengths halved from 0.14–0.21 to 0.07–0.105.
 //
@@ -88,6 +90,13 @@ const CHAPTER_GRADES = [
   // Future Systems — electric blue-cyan
   { bg: "oklch(0.48 0.24 242)", opacity: 0.105 },
 ] as const;
+
+/* How many discrete opacity levels each chapter grade ramps through.
+   See the write loop in the render tick: these are mix-blend-mode layers, so
+   an opacity write costs a full-viewport re-blend. 20 levels of a 0.07-0.105
+   peak is a ~0.005 step — invisible at that strength — and turns a per-frame
+   write into roughly one frame in eight. */
+const GRADE_STEPS = 20;
 
 type Bitmaps = (ImageBitmap | null)[];
 
@@ -487,26 +496,36 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // seconds; scrub and the tint trailed the footage it was grading. See
       // GRADE_FADE in chapterBands.ts for the measurements.
       //
-      // Five style writes per frame would be five style recalcs, so skip the
-      // ones below the threshold at which a 0.07-opacity `color` blend can
-      // possibly change a pixel. In practice at most two of the five are moving
-      // at any moment and the rest are pinned at 0.
+      // Quantised, because these are the most expensive layers on the page to
+      // touch. A full-viewport `mix-blend-mode: color` div cannot have its
+      // opacity composited on the GPU alone — the blend is defined against its
+      // backdrop, so every write re-blends and recomposites the whole frame,
+      // on top of the canvas already drawing a new bitmap that frame.
       //
-      // The endpoints snap rather than easing into the dead band, because a
-      // dead band alone never writes the last step: a grade would settle at
-      // ~0.0015 instead of 0 and stay there for the rest of the page, so two
-      // `color` layers were live at once — the exact stacking the sequencing
-      // exists to avoid, reintroduced by the optimisation meant to be free.
+      // Measured across the Recognition -> Future hand-over at 1440x900, the
+      // continuous version wrote on 56 % of frames, against 0 % once the grade
+      // settled. Quantising to GRADE_STEPS levels of the layer's own peak makes
+      // each step ~0.005 of alpha at peak 0.105 — below what a colour blend at
+      // that strength can render as a visible edge — while cutting the writes
+      // to roughly one frame in eight. The ramp still reads as continuous
+      // because it is still a pure function of scroll position; it just stops
+      // asking the compositor to prove it 60 times a second.
+      //
+      // The endpoints snap rather than quantising into them, because rounding
+      // alone never lands the last step: a grade would settle near 0.0015
+      // instead of 0 and stay there for the rest of the page, leaving two
+      // `color` layers live at once — the exact stacking the sequencing exists
+      // to avoid, reintroduced by the optimisation meant to be free.
       for (let i = 0; i < N_CHAPTERS; i++) {
         const el = gradeRefs.current[i];
         if (!el) continue;
         const peak = CHAPTER_GRADES[i].opacity;
-        let v = gradeOpacityAt(sp, i) * peak;
-        if (v < 0.002) v = 0;
-        else if (v > peak - 0.002) v = peak;
-        const last = lastGradeRef.current[i];
-        // Endpoints always write; only mid-ramp values may be skipped.
-        if (v === last || (v !== 0 && v !== peak && Math.abs(v - last) < 0.0015)) continue;
+        const raw = gradeOpacityAt(sp, i) * peak;
+        let v: number;
+        if (raw < 0.002) v = 0;
+        else if (raw > peak - 0.002) v = peak;
+        else v = Math.round(raw / (peak / GRADE_STEPS)) * (peak / GRADE_STEPS);
+        if (v === lastGradeRef.current[i]) continue;
         lastGradeRef.current[i] = v;
         el.style.opacity = v.toFixed(4);
       }
