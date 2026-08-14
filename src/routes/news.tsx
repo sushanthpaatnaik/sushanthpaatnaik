@@ -125,7 +125,7 @@ const CATEGORIES: { id: Category; code: string; blurb: string }[] = [
   {
     id: "Public Speaking & Thought Leadership",
     code: "V",
-    blurb: "The stage record — TED, INK Talks, FAB10 and the global conference circuit.",
+    blurb: "The stage record — TED@Bangalore, TEDx, INK Talks, FAB10 and the global conference circuit.",
   },
 ];
 
@@ -194,7 +194,7 @@ const coverage: PressItem[] = [
     date: "2010",
     tag: "Innovation",
     title: "Breathing sensor apparatus to assist physically challenged",
-    body: "NIF-India recognises the IGNITE awardee whose work has led to ten working prototypes, four companies, an MIT Technology Review feature and a TED India talk.",
+    body: "NIF-India recognises the IGNITE awardee whose work has led to ten working prototypes, four companies, an MIT Technology Review feature and a TED@Bangalore talk.",
     href: "https://nif.org.in/innovation/breathing-sensor-apparatus-to-assist-physically-challenged/398",
     image: nifChairImg,
     category: "Awards & Recognition",
@@ -348,7 +348,7 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "The Telegraph",          logo: telegraphLogo,         lighten: true, scale: 1.18 },
   { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 0.72 },
   { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
-  { name: "TED India",              logo: tedLogo,               scale: 0.78, tone: "muted" },
+  { name: "TED@Bangalore",          logo: tedLogo,               scale: 0.78, tone: "muted" },
   { name: "NIF India",              logo: nifLogo,               lighten: true, scale: 1.46, tone: "lift" },
   { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.34 },
   { name: "Rediff · PTI",           logo: rediffLogo,            lighten: true, scale: 1.14 },

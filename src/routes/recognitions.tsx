@@ -80,7 +80,7 @@ import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.web
 
 
 const description =
-  "Archival journey of recognition: six Indian Presidential Awards, MIT TR-35, TED-India, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
+  "Archival journey of recognition: six Indian Presidential Awards, MIT TR-35, TED@Bangalore, TEDx, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
@@ -176,10 +176,10 @@ const milestones: Milestone[] = [
   {
     year: "2012",
     sortYear: 2012,
-    title: "TED-India Speaker",
-    body: "Invited to TED-India as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
+    title: "TED@Bangalore Speaker",
+    body: "Invited to TED@Bangalore as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
     image: keynoteTed,
-    institution: "TED · Bangalore",
+    institution: "TED@Bangalore",
     category: "Global",
     major: true,
   },
@@ -252,7 +252,7 @@ const ledgerByYear: LedgerYear[] = [
     year: "2012",
     entries: [
       { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
-      { title: "TED-India Speaker", institution: "TED · Bangalore", featured: true },
+      { title: "TED@Bangalore Speaker", institution: "TED@Bangalore", featured: true },
       { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest Award", institution: "E-Cell · IIT Kanpur" },
       { title: "Judge · SELL-X Exodia · IIT-Mandi Business Plan Contest", institution: "IIT Mandi" },
       { title: "Innovio-12 · KIIT Business Plan Contest Award", institution: "KIIT University" },
@@ -362,11 +362,11 @@ const eraPresidential: ArchiveItem[] = [
 const eraGlobal: ArchiveItem[] = [
   {
     src: keynoteTed,
-    caption: "TED-India Speaker",
+    caption: "TED@Bangalore Speaker",
     meta: "Youngest at the time · 2012",
     category: "Keynote",
     shape: "hero",
-    institution: "TED-India",
+    institution: "TED@Bangalore",
     recognition: "Featured Speaker · 2012",
     presenter: "Among the youngest speakers ever featured",
     venue: "Bangalore · India",
@@ -443,7 +443,7 @@ const hallOfFame: ArchiveItem[] = [
   { src: keynoteBritish, caption: "British High Commission", meta: "Address · New Delhi", category: "Keynote" },
   { src: keynoteStage, caption: "Main stage INK Talks", meta: "60+ keynotes since 2010", category: "Keynote", focus: "25% 40%" },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote" },
-  { src: keynoteTed, caption: "TED-India Speaker", meta: "Youngest at the time · 2012", category: "Keynote" },
+  { src: keynoteTed, caption: "TED@Bangalore Speaker", meta: "Youngest at the time · 2012", category: "Keynote" },
   { src: honorGlobal, caption: "Global Forum Delegate", meta: "International Summit · 2023", category: "Honor", focus: "30% center" },
   { src: awardLeaDiaMirza, caption: "LEA Excellence Award with Dia Mirza", meta: "Mumbai · July 2022", category: "Award" },
   { src: keynoteTiecon, caption: "TiECON Mumbai", meta: "India Unicorn Summit · 2022", category: "Keynote" },
@@ -496,7 +496,7 @@ if (import.meta.env.DEV) {
 // realism and historical scale without expanding the chronological registry.
 const documentaryMosaic: ArchiveItem[] = [
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2008", category: "Award", shape: "hero", focus: "center 28%" },
-  { src: keynoteTed, caption: "TED-India Mainstage", meta: "Bangalore · 2012", category: "Keynote" },
+  { src: keynoteTed, caption: "TED@Bangalore Mainstage", meta: "TED · 2012", category: "Keynote" },
   { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2010", category: "Award", shape: "tall" },
@@ -1119,7 +1119,7 @@ function RecognitionsPage() {
           number="II"
           era="2010 – 2014"
           title="Global stages."
-          description="TED-India, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
+          description="TED@Bangalore, TEDx, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraGlobal}

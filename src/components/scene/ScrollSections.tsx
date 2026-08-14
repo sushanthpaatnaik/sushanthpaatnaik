@@ -572,7 +572,7 @@ function RecognitionEcosystemContent() {
         </h2>
         {/* The record, then the philosophy that outranks it */}
         <p className="mt-2.5 md:mt-7 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-muted-foreground/85">
-          Six Indian Presidential Awards. NIF-India IGNITE. TED-India. MIT Technology Review. India Today.
+          Six Indian Presidential Awards. NIF-India IGNITE. TED@Bangalore. MIT Technology Review. India Today.
         </p>
         <p className="mt-1.5 md:mt-3 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-foreground/70">
           The record exists. The next prototype matters more.
@@ -668,7 +668,7 @@ function RecognitionEcosystemContent() {
 const RECORD = [
   "Six Indian Presidential Awards",
   "NIF-India · IGNITE",
-  "TED India",
+  "TED@Bangalore",
   "MIT Technology Review",
 ] as const;
 

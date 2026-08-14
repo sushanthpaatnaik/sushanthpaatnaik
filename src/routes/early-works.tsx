@@ -293,7 +293,7 @@ function RecognitionBadge({ label }: { label: string }) {
     "National Innovation Foundation": "◇",
     "NASA": "⬡",
     "MIT TR35": "◉",
-    "TED India": "◎",
+    "TED@Bangalore": "◎",
   };
   return (
     <span className="inline-flex items-center gap-1.5 border border-accent/20 rounded-[2px] bg-accent/[0.06] px-2.5 py-1 font-mono text-[8px] uppercase tracking-[0.32em] text-accent/70">
@@ -577,7 +577,7 @@ function HeroSection() {
             { icon: "✦", label: "6× Presidential" },
             { icon: "⬡", label: "NASA" },
             { icon: "◈", label: "MIT TR35" },
-            { icon: "◎", label: "TED India" },
+            { icon: "◎", label: "TED@Bangalore" },
             { icon: "◆", label: "Intel IRIS" },
           ].map((badge) => (
             <span
