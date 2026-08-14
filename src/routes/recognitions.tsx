@@ -778,14 +778,14 @@ function RecognitionsPage() {
         aria-label="Recognitions sections"
         className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-10 backdrop-blur-xl bg-[oklch(0.04_0.003_245)]/75 border-y border-foreground/[0.08] scroll-mt-2"
       >
-        <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-3.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {sectionNav.map((s) => {
             const isActive = activeSection === s.id;
             return (
               <li key={s.id} className="flex-shrink-0">
                 <a
                   href={`#${s.id}`}
-                  className={`relative font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+                  className={`relative inline-flex min-h-6 items-center font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-500 ${
                     isActive ? "text-foreground" : "text-foreground/55 hover:text-foreground/95"
                   }`}
                   aria-current={isActive ? "true" : undefined}
@@ -793,7 +793,7 @@ function RecognitionsPage() {
                   {s.label}
                   <span
                     aria-hidden
-                    className={`absolute left-0 right-0 -bottom-2 h-px origin-left transition-transform duration-700 ease-out ${
+                    className={`absolute left-0 right-0 bottom-0 h-px origin-left transition-transform duration-700 ease-out ${
                       isActive ? "scale-x-100 bg-foreground/60" : "scale-x-0 bg-foreground/0"
                     }`}
                   />

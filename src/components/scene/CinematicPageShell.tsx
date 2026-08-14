@@ -176,9 +176,11 @@ export default function CinematicPageShell({
         <footer className="relative z-10 border-t border-foreground/[0.06] px-5 sm:px-6 py-10">
           <div className="mx-auto max-w-4xl flex flex-wrap items-center justify-between gap-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground/50">
             <span>Sushanth Paatnaik · India → World</span>
+            {/* min-h-6 = 24px, WCAG 2.2 SC 2.5.8. The type is 10px, so the
+                anchor's own box was 16px tall on every page of the site. */}
             <a
               href="mailto:info@sushanthpaatnaik.com"
-              className="hover:text-foreground/80 transition-colors"
+              className="inline-flex min-h-6 items-center hover:text-foreground/80 transition-colors"
             >
               info@sushanthpaatnaik.com
             </a>

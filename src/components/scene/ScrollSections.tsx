@@ -970,7 +970,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
+            className="inline-flex min-h-6 items-center font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
           >
             Back to top ↑
           </button>

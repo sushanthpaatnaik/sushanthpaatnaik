@@ -369,14 +369,14 @@ function EngagePage() {
         <p>
           <Link
             to="/contact"
-            className="text-foreground underline-offset-4 hover:underline"
+            className="inline-flex min-h-6 items-center text-foreground underline-offset-4 hover:underline"
           >
             Open the inquiry form →
           </Link>
           {" · "}
           <a
             href="mailto:info@sushanthpaatnaik.com?subject=Strategic Inquiry"
-            className="text-foreground underline-offset-4 hover:underline"
+            className="inline-flex min-h-6 items-center text-foreground underline-offset-4 hover:underline"
           >
             info@sushanthpaatnaik.com
           </a>
@@ -385,7 +385,7 @@ function EngagePage() {
             href="https://www.linkedin.com/in/sushanthpaatnaik/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-foreground underline-offset-4 hover:underline"
+            className="inline-flex min-h-6 items-center text-foreground underline-offset-4 hover:underline"
           >
             LinkedIn ↗
           </a>

@@ -153,7 +153,7 @@ function ChapterMarker({
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      className="relative flex items-center gap-3 pointer-events-auto cursor-pointer bg-transparent border-0 p-0 text-left rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+      className="relative flex min-h-6 items-center gap-3 pointer-events-auto cursor-pointer bg-transparent border-0 p-0 text-left rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
     >
       {/* Active backdrop glow — soft documentary spotlight, breathes when active */}
       <motion.div

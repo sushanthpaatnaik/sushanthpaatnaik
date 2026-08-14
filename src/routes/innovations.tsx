@@ -504,7 +504,7 @@ function InnovationsPage() {
       <div className="not-prose mt-6 flex flex-wrap items-center justify-between gap-4">
         <Link
           to="/evidence-standards"
-          className="inline-flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45 transition-colors duration-500 hover:text-accent/85"
+          className="inline-flex min-h-6 items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45 transition-colors duration-500 hover:text-accent/85"
         >
           What do these labels mean? <span aria-hidden>→</span>
         </Link>
@@ -658,7 +658,7 @@ function InnovationsPage() {
             <button
               onClick={() => setShowPatents((v) => !v)}
               aria-expanded={showPatents}
-              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/55 transition-colors duration-500 hover:text-accent/85"
+              className="inline-flex min-h-6 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/55 transition-colors duration-500 hover:text-accent/85"
             >
               <span>{showPatents ? "Hide" : "Show"} granted patents</span>
               <span

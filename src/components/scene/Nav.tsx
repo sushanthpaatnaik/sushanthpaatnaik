@@ -77,7 +77,7 @@ export default function Nav() {
             <Link
               key={l.to}
               to={l.to}
-              className="whitespace-nowrap hover:text-foreground transition-colors duration-300 relative after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:bg-foreground/30 after:transition-all after:duration-500 hover:after:w-full"
+              className="inline-flex min-h-6 items-center whitespace-nowrap hover:text-foreground transition-colors duration-300 relative after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:bg-foreground/30 after:transition-all after:duration-500 hover:after:w-full"
               activeProps={{ className: "text-foreground after:!w-full after:!bg-primary/60" }}
             >
               {l.label}

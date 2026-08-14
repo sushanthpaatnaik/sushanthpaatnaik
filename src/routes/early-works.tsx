@@ -270,7 +270,7 @@ function DemoButton({ onWatch }: { onWatch?: () => void }) {
     <button
       type="button"
       onClick={onWatch}
-      className="group/btn flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-accent/60 transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50"
+      className="group/btn flex min-h-6 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-accent/60 transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50"
     >
       <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border border-accent/30 transition-all duration-300 group-hover/btn:border-accent/70 group-hover/btn:bg-accent/[0.12]">
         <svg width="5" height="6" viewBox="0 0 5 6" fill="currentColor" aria-hidden>
@@ -712,7 +712,7 @@ function EndingSection() {
         </Link>
         <Link
           to="/about"
-          className="font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/40 hover:text-foreground/70 transition-colors duration-300"
+          className="inline-flex min-h-6 items-center font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/40 hover:text-foreground/70 transition-colors duration-300"
         >
           Continue the Journey →
         </Link>
@@ -907,7 +907,7 @@ function EarlyWorksPage() {
               <span>Sushanth Paatnaik · India → World</span>
               <a
                 href="mailto:info@sushanthpaatnaik.com"
-                className="hover:text-foreground/80 transition-colors"
+                className="inline-flex min-h-6 items-center hover:text-foreground/80 transition-colors"
               >
                 info@sushanthpaatnaik.com
               </a>

@@ -358,7 +358,7 @@ function AccessForm() {
                 <span>Reply window · 48 hours</span>
                 <a
                   href="mailto:info@sushanthpaatnaik.com?subject=Hello"
-                  className="text-foreground/65 transition-colors hover:text-accent"
+                  className="inline-flex min-h-6 items-center text-foreground/65 transition-colors hover:text-accent"
                 >
                   Or write directly &nbsp;—↗
                 </a>
@@ -462,7 +462,7 @@ function ContactPage() {
         <p>
           <a
             href="mailto:info@sushanthpaatnaik.com?subject=Hello"
-            className="text-foreground underline-offset-4 hover:underline"
+            className="inline-flex min-h-6 items-center text-foreground underline-offset-4 hover:underline"
           >
             info@sushanthpaatnaik.com
           </a>
@@ -488,7 +488,7 @@ function ContactPage() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground/70 hover:text-accent transition-colors"
+                className="inline-flex min-h-6 items-center text-foreground/70 hover:text-accent transition-colors"
               >
                 {s.label} <span className="opacity-60">↗</span>
               </a>

@@ -255,7 +255,7 @@ function VenturesPage() {
                 href={v.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55 hover:text-foreground/90 transition-colors duration-700"
+                className="mt-5 inline-flex min-h-6 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55 hover:text-foreground/90 transition-colors duration-700"
               >
                 <span className="relative">
                   Visit {v.href.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}

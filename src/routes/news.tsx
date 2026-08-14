@@ -890,7 +890,7 @@ function NewsPage() {
         <p className="not-prose mt-10">
           <Link
             to="/voices"
-            className="group inline-flex items-center gap-3 border-b border-foreground/20 pb-1 font-mono text-[11px] uppercase tracking-[0.38em] text-foreground/75 transition-colors duration-500 hover:border-foreground/60 hover:text-foreground"
+            className="group inline-flex min-h-6 items-center gap-3 border-b border-foreground/20 pb-1 font-mono text-[11px] uppercase tracking-[0.38em] text-foreground/75 transition-colors duration-500 hover:border-foreground/60 hover:text-foreground"
           >
             <span>Institutional voices · on-record</span>
             <span className="text-foreground/45 transition-transform duration-500 group-hover:translate-x-1">→</span>
