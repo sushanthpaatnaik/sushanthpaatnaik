@@ -62,7 +62,7 @@ function ManifestoBlock({
     >
       <div className="flex items-center gap-3">
         <span className="h-px w-6 bg-foreground/[0.08]" />
-        <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/40">
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/40">
           {label}
         </span>
         <span className="h-px w-6 bg-foreground/[0.08]" />

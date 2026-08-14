@@ -897,7 +897,7 @@ export function Product3DModal({
                   />
                   <div className="relative z-10 flex h-full flex-col justify-between gap-5">
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.34em] text-accent/75">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
                         {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
                       </p>
                       <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
@@ -1032,7 +1032,7 @@ export function Product3DModal({
                       <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
                         {spec.v}
                       </p>
-                      <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.24em] text-foreground/45">
+                      <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/45">
                         {spec.note}
                       </p>
                     </div>

@@ -189,13 +189,13 @@ function LanesList() {
 
             <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-foreground/[0.06] pt-5 md:grid-cols-2">
               <div>
-                <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
+                <dt className="font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground/55">
                   Fit
                 </dt>
                 <dd className="mt-1 text-[13px] text-foreground/75">{l.fit}</dd>
               </div>
               <div>
-                <dt className="font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/55">
+                <dt className="font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground/55">
                   Horizon
                 </dt>
                 <dd className="mt-1 text-[13px] text-foreground/75">{l.horizon}</dd>

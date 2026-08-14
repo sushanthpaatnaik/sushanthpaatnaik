@@ -81,7 +81,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
       {isHero && (
         <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
           <span className="h-px w-6 bg-accent/70" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+          <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
             Hallmark
           </span>
         </div>
@@ -93,7 +93,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
           className={`block font-mono uppercase text-accent/80 ${
             isHero
               ? "text-[10px] tracking-[0.42em]"
-              : "text-[9px] tracking-[0.38em]"
+              : "text-[10px] tracking-[0.38em]"
           }`}
         >
           {item.category}
@@ -133,7 +133,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
             {item.venue && (
               <span
                 className={`mt-1 block font-mono uppercase text-foreground/50 ${
-                  isHero ? "text-[9.5px] tracking-[0.28em]" : "text-[9px] tracking-[0.24em] line-clamp-1"
+                  isHero ? "text-[9.5px] tracking-[0.28em]" : "text-[10px] tracking-[0.24em] line-clamp-1"
                 }`}
               >
                 {item.venue}
@@ -473,13 +473,13 @@ export function HallOfFameRibbon({
                   }}
                 />
                 <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5 pointer-events-none">
-                  <span className="block font-mono text-[9px] uppercase tracking-[0.38em] text-accent/80">
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.38em] text-accent/80">
                     {item.category}
                   </span>
                   <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
                     {item.caption}
                   </span>
-                  <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+                  <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
                     {item.meta}
                   </span>
                 </figcaption>
@@ -701,7 +701,7 @@ export function ArchivePlate({
         {/* Archival corner mark */}
         <div className="absolute left-5 top-5 z-10 flex items-center gap-2">
           <span className="h-px w-6 bg-accent/70" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-accent/85">
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
             Plate {plateNumber}
           </span>
         </div>
@@ -847,7 +847,7 @@ export function PresidentialTriptych({
                     "linear-gradient(180deg, oklch(0.03 0.006 245 / 0.32) 0%, transparent 40%, oklch(0.02 0.006 245 / 0.78) 88%, oklch(0.014 0.006 245 / 0.96) 100%)",
                 }}
               />
-              <span className="absolute left-4 top-4 font-mono text-[9px] uppercase tracking-[0.42em] text-accent/85">
+              <span className="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
                 № {String(i + 1).padStart(2, "0")}
               </span>
             </div>

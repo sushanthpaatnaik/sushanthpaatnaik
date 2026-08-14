@@ -582,7 +582,7 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
             {isMajor && <span className="mr-1 text-accent/80">★</span>}
             {folio}
           </p>
-          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/55">
+          <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55">
             {item.date}
           </p>
         </div>
@@ -606,7 +606,7 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
             <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
               {item.outlet}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/55">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/55">
               · {item.tag}
             </span>
           </div>
@@ -693,7 +693,7 @@ function NewsPage() {
                 <p className="mt-3 font-display text-[15px] leading-[1.25] tracking-[-0.015em] text-foreground/92 group-hover:text-foreground">
                   {c.id}
                 </p>
-                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/50">
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50">
                   {String(count).padStart(2, "0")} dispatches
                 </p>
               </a>
@@ -744,7 +744,7 @@ function NewsPage() {
                         <p className="font-display text-3xl md:text-[2.4rem] font-extralight tracking-[-0.025em] text-foreground/40">
                           {c.code}
                         </p>
-                        <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
                           {String(items.length).padStart(2, "0")} Entr
                           {items.length === 1 ? "y" : "ies"}
                         </p>

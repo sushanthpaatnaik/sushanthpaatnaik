@@ -218,7 +218,7 @@ export default function FounderPortrait({
                   </p>
                 )}
                 {meta && (
-                  <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/45">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
                     {meta}
                   </p>
                 )}

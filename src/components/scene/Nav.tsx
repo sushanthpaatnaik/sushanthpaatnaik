@@ -64,7 +64,7 @@ export default function Nav() {
           <span
             className={`uppercase font-medium leading-none whitespace-nowrap transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
               scrolled
-                ? "text-[9px] md:text-[11px] tracking-[0.14em] md:tracking-[0.26em]"
+                ? "text-[10px] md:text-[11px] tracking-[0.14em] md:tracking-[0.26em]"
                 : "text-[10px] md:text-sm tracking-[0.16em] md:tracking-[0.3em]"
             }`}
           >

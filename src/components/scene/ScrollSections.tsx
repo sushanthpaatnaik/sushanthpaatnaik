@@ -304,7 +304,7 @@ function OriginHero() {
             ].map((s, i) => (
               <span key={i} className="inline-flex items-center whitespace-nowrap">
                 {i > 0 && (
-                  <span className="mx-0.5 font-mono text-[9px] text-foreground/25" aria-hidden>·</span>
+                  <span className="mx-0.5 font-mono text-[10px] text-foreground/25" aria-hidden>·</span>
                 )}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
@@ -606,7 +606,7 @@ function RecognitionEcosystemContent() {
               className="group border-t border-foreground/[0.08] py-1 md:py-4 hover:border-foreground/25 transition-colors duration-500"
             >
               <div className="flex items-baseline gap-3 md:gap-5">
-                <span className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45 shrink-0 whitespace-nowrap">
+                <span className="font-mono text-[10px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45 shrink-0 whitespace-nowrap">
                   {g.n}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -738,7 +738,7 @@ function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
               className="flex items-baseline gap-4 border-t border-foreground/[0.1] py-3.5 transition-colors active:border-foreground/30"
             >
               <span
-                className="font-mono text-[9px] tracking-[0.3em] text-foreground/45 w-6 shrink-0"
+                className="font-mono text-[10px] tracking-[0.3em] text-foreground/45 w-6 shrink-0"
                 style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.8)" }}
               >
                 {g.n}

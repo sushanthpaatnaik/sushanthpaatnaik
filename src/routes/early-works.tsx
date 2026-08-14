@@ -261,7 +261,7 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
 function DemoButton({ onWatch }: { onWatch?: () => void }) {
   if (!onWatch) {
     return (
-      <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/22 select-none">
+      <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/22 select-none">
         Demo unavailable
       </span>
     );
@@ -270,7 +270,7 @@ function DemoButton({ onWatch }: { onWatch?: () => void }) {
     <button
       type="button"
       onClick={onWatch}
-      className="group/btn flex min-h-6 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-accent/60 transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50"
+      className="group/btn flex min-h-6 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-accent/60 transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50"
     >
       <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border border-accent/30 transition-all duration-300 group-hover/btn:border-accent/70 group-hover/btn:bg-accent/[0.12]">
         <svg width="5" height="6" viewBox="0 0 5 6" fill="currentColor" aria-hidden>
@@ -297,7 +297,7 @@ function RecognitionBadge({ label }: { label: string }) {
   };
   return (
     <span className="inline-flex items-center gap-1.5 border border-accent/20 rounded-[2px] bg-accent/[0.06] px-2.5 py-1 font-mono text-[8px] uppercase tracking-[0.32em] text-accent/70">
-      <span className="text-accent/50 text-[9px]">{icons[label] ?? "✦"}</span>
+      <span className="text-accent/50 text-[10px]">{icons[label] ?? "✦"}</span>
       {label}
     </span>
   );
@@ -348,15 +348,15 @@ function ChapterSplit({
       <div className={`flex flex-col justify-center py-12 lg:py-20 ${reversed ? "lg:pl-12 xl:pl-16" : "lg:pr-12 xl:pr-16"}`}>
         {/* Chapter label */}
         <div className="flex items-center gap-4 mb-8">
-          <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-foreground/30">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/30">
             {String(index + 1).padStart(2, "0")}
           </span>
           <div className="flex-1 h-px bg-foreground/[0.08]" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-accent/50">{inv.year}</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/50">{inv.year}</span>
         </div>
 
         {/* Category */}
-        <p className="font-mono text-[9px] uppercase tracking-[0.46em] text-accent/60 mb-4">{inv.category}</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.46em] text-accent/60 mb-4">{inv.category}</p>
 
         {/* Name */}
         <h2 className="font-display text-[clamp(1.8rem,4vw,3rem)] leading-[0.96] tracking-[-0.03em] text-foreground/95 mb-3">
@@ -455,7 +455,7 @@ function ChapterFeature({
         />
         {/* Chapter label on image */}
         <div className="absolute top-5 left-5 flex items-center gap-3">
-          <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-foreground/50 bg-background/30 backdrop-blur-sm px-2 py-1 rounded-[2px]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/50 bg-background/30 backdrop-blur-sm px-2 py-1 rounded-[2px]">
             {String(index + 1).padStart(2, "0")}
           </span>
         </div>
@@ -465,7 +465,7 @@ function ChapterFeature({
         </span>
         {/* Name on image bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-10">
-          <p className="font-mono text-[9px] uppercase tracking-[0.46em] text-accent/70 mb-2">{inv.category}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.46em] text-accent/70 mb-2">{inv.category}</p>
           <h2 className="font-display text-[clamp(2rem,5vw,3.8rem)] leading-[0.94] tracking-[-0.035em] text-gradient">
             {inv.name}
           </h2>
@@ -522,7 +522,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: EASE }}
-          className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.52em] text-foreground/40 mb-10"
+          className="font-mono text-[10px] sm:text-[10px] uppercase tracking-[0.52em] text-foreground/40 mb-10"
         >
           Early Works · Origin · 2008–2013
         </motion.p>
@@ -558,7 +558,7 @@ function HeroSection() {
           {["2008", "2009", "2010", "2011", "2012", "2013"].map((yr, i) => (
             <div key={yr} className="flex items-center shrink-0">
               {i > 0 && <div className="w-6 sm:w-10 md:w-14 h-px bg-foreground/[0.12]" />}
-              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.3em] text-accent/60 whitespace-nowrap">
+              <span className="font-mono text-[10px] sm:text-[10px] tracking-[0.3em] text-accent/60 whitespace-nowrap">
                 {yr}
               </span>
             </div>
@@ -582,7 +582,7 @@ function HeroSection() {
           ].map((badge) => (
             <span
               key={badge.label}
-              className="flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-foreground/50"
+              className="flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/50"
             >
               <span className="text-accent/55">{badge.icon}</span>
               {badge.label}
@@ -632,10 +632,10 @@ function ChapterDivider({ index, year, category }: { index: number; year: string
       transition={{ duration: 0.9, ease: EASE }}
       className="flex items-baseline gap-5 py-4 border-t border-foreground/[0.07]"
     >
-      <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-foreground/28">
+      <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/28">
         Chapter {String(index + 1).padStart(2, "0")}
       </span>
-      <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/50">{year}</span>
+      <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/50">{year}</span>
       <div className="flex-1 h-px bg-foreground/[0.06]" />
       <span className="font-mono text-[8px] uppercase tracking-[0.36em] text-foreground/28">{category}</span>
     </motion.div>
@@ -685,7 +685,7 @@ function EndingSection() {
       className="border-t border-foreground/[0.07] pt-16 md:pt-24 pb-24 md:pb-32"
     >
       {/* Eyebrow */}
-      <p className="font-mono text-[9px] uppercase tracking-[0.5em] text-foreground/35 mb-8">
+      <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/35 mb-8">
         2008 — 2013 · The Foundation
       </p>
 
@@ -730,7 +730,7 @@ function EndingSection() {
             <div className="font-display text-2xl md:text-3xl text-gradient leading-none tracking-tight mb-1.5">
               {s.n}
             </div>
-            <div className="font-mono text-[9px] uppercase tracking-[0.4em] text-foreground/40">{s.label}</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/40">{s.label}</div>
           </div>
         ))}
       </div>
@@ -845,15 +845,15 @@ function EarlyWorksPage() {
             className="px-5 sm:px-8 py-10 md:py-14"
           >
             <div className="mx-auto max-w-5xl flex flex-wrap items-center gap-4 border-y border-foreground/[0.07] py-6">
-              <span className="font-mono text-[9px] uppercase tracking-[0.46em] text-foreground/30">
+              <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Inventions
               </span>
               <div className="flex-1 h-px bg-foreground/[0.06]" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.46em] text-foreground/30">
+              <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Years
               </span>
               <div className="flex-1 h-px bg-foreground/[0.06]" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.46em] text-foreground/30">
+              <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Presidential Awards
               </span>
             </div>

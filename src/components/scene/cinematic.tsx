@@ -76,7 +76,7 @@ export function StatsStrip({
             <p className="font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">
               {s.v}
             </p>
-            <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.34em] text-muted-foreground/60">
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.34em] text-muted-foreground/60">
               {s.l}
             </p>
           </motion.div>
@@ -223,10 +223,10 @@ export function EcosystemMap({ nodes, className = "" }: { nodes: EcosystemNode[]
             <span className="font-display text-[16px] md:text-[17px] tracking-[-0.01em] text-foreground/95">
               {node.name}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-foreground/45">
+            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/45">
               {node.role}
             </span>
-            <span className="ml-auto font-mono text-[9px] uppercase tracking-[0.2em] text-accent/60">
+            <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-accent/60">
               {node.domain}
             </span>
           </motion.div>

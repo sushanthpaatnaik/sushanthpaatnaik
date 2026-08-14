@@ -200,7 +200,7 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           {/* RIGHT col — full content */}
           <div>
             {/* Category eyebrow */}
-            <p className="font-mono text-[9px] uppercase tracking-[0.48em] text-primary/70 mb-5 md:mb-6">
+            <p className="font-mono text-[10px] uppercase tracking-[0.48em] text-primary/70 mb-5 md:mb-6">
               {v.category}
             </p>
 
@@ -220,7 +220,7 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
                   {v.personTitle}
                 </p>
                 {/* Institution shown inline on mobile (hidden on desktop where it's in left col) */}
-                <p className="md:hidden mt-0.5 font-mono text-[9px] uppercase tracking-[0.28em] text-muted-foreground/38 leading-snug">
+                <p className="md:hidden mt-0.5 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/38 leading-snug">
                   {v.organization}
                 </p>
               </div>

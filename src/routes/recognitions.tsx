@@ -672,7 +672,7 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                 >
                   {e.featured ? (
                     <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                      <span className={`font-mono text-[9px] uppercase tracking-[0.42em] pt-1 ${
+                      <span className={`font-mono text-[10px] uppercase tracking-[0.42em] pt-1 ${
                         e.institution?.includes("President") || e.institution?.includes("NIF")
                           ? "text-[oklch(0.75_0.12_65/0.80)]"
                           : "text-foreground/55"
@@ -692,7 +692,7 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                     </div>
                   ) : (
                     <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
                         ·
                       </span>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -1001,7 +1001,7 @@ function RecognitionsPage() {
                           Milestone {String(i + 1).padStart(2, "0")}
                         </span>
                         {/* Category chip — archival classification */}
-                        <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[9px] uppercase tracking-[0.3em] ${
+                        <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[10px] uppercase tracking-[0.3em] ${
                           m.category === "Presidential"
                             ? "border border-[oklch(0.62_0.12_65/0.45)] bg-[oklch(0.62_0.12_65/0.08)] text-[oklch(0.80_0.12_65)]"
                             : "border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 text-foreground/70"
@@ -1013,13 +1013,13 @@ function RecognitionsPage() {
                           {m.category}
                         </span>
                         {m.major && (
-                          <span className={`font-mono text-[9px] uppercase tracking-[0.26em] ${m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.6)]" : "text-foreground/45"}`}>
+                          <span className={`font-mono text-[10px] uppercase tracking-[0.26em] ${m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.6)]" : "text-foreground/45"}`}>
                             · Anchor
                           </span>
                         )}
                       </div>
 
-                      <span className={`block font-mono text-[9px] uppercase tracking-[0.32em] mb-3 ${
+                      <span className={`block font-mono text-[10px] uppercase tracking-[0.32em] mb-3 ${
                         m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.85)]" : "text-accent/70"
                       }`}>
                         {m.institution}
@@ -1052,7 +1052,7 @@ function RecognitionsPage() {
           className="absolute left-6 md:left-1/2 bottom-0 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <div className="h-2 w-2 rounded-full bg-foreground/30 ring-4 ring-[oklch(0.045_0.003_245)]" />
-          <span className="hidden md:block font-mono text-[9px] uppercase tracking-[0.42em] text-muted-foreground/40 mt-1">
+          <span className="hidden md:block font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/40 mt-1">
             The chronology continues
           </span>
         </div>
@@ -1391,7 +1391,7 @@ function RecognitionsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.7 }}
             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-            className="font-mono text-[9px] uppercase tracking-[0.55em] text-muted-foreground/30 mb-10 md:mb-12"
+            className="font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/30 mb-10 md:mb-12"
           >
             07 · Future Signal
           </motion.p>

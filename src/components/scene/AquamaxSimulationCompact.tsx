@@ -62,7 +62,7 @@ export default function AquamaxSimulationCompact() {
         >
           Aquamax — Vapor Recovery
         </h3>
-        <span className="ml-auto font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/45">
+        <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/45">
           HV · LC · Closed-loop
         </span>
       </div>
@@ -165,7 +165,7 @@ export default function AquamaxSimulationCompact() {
                 {p.code}
               </span>
               <span
-                className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.26em] ${active ? "text-foreground/85" : "text-foreground/55"}`}
+                className={`mt-1 block font-mono text-[10px] uppercase tracking-[0.26em] ${active ? "text-foreground/85" : "text-foreground/55"}`}
               >
                 {p.tag}
               </span>

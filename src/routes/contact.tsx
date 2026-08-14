@@ -186,7 +186,7 @@ function AccessForm() {
             <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
               01 · Intent
             </p>
-            <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-accent/70">
+            <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/70">
               Select one
             </span>
           </div>
@@ -308,7 +308,7 @@ function AccessForm() {
               <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 06 · Context
               </label>
-              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-muted-foreground/35">
+              <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/35">
                 {context.length.toString().padStart(3, "0")} / 600
               </span>
             </div>
@@ -397,7 +397,7 @@ function AccessForm() {
                 ) : null}
               </div>
             </div>
-            <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.45em] text-muted-foreground/40">
+            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               {WEB3FORMS_ACCESS_KEY
                 ? "Your message goes straight to the founder's inbox — no email app required. Nothing else is stored on this site."
                 : "Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site."}

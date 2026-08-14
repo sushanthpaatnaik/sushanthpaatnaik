@@ -188,7 +188,7 @@ function VenturesPage() {
             <span className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
               {s.value}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-muted-foreground/60">
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/60">
               {s.label}
             </span>
           </div>
@@ -355,7 +355,7 @@ function VenturesPage() {
               />
 
               {/* ── Industry layer eyebrow ── */}
-              <span className="relative z-10 font-mono text-[9px] uppercase tracking-[0.42em] text-accent/70">
+              <span className="relative z-10 font-mono text-[10px] uppercase tracking-[0.42em] text-accent/70">
                 {a.category}
               </span>
 

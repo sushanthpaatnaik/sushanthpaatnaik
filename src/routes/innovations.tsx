@@ -398,13 +398,13 @@ function InnovationsPage() {
                     isActive ? "bg-accent/70" : "bg-transparent group-hover:bg-foreground/15"
                   }`}
                 />
-                <span className={`block font-mono text-[9px] uppercase tracking-[0.38em] transition-colors duration-500 ${isActive ? "text-accent/85" : "text-foreground/45"}`}>
+                <span className={`block font-mono text-[10px] uppercase tracking-[0.38em] transition-colors duration-500 ${isActive ? "text-accent/85" : "text-foreground/45"}`}>
                   {f === "All" ? "All Stages" : f === "R&D" ? "Stage III" : f === "Pilot" ? "Stage II" : "Stage I"}
                 </span>
                 <span className={`mt-2 block font-display text-[15px] tracking-[-0.01em] transition-colors duration-500 ${isActive ? "text-foreground/95" : "text-foreground/70"}`}>
                   {f}
                 </span>
-                <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/40">
+                <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/40">
                   {String(count).padStart(2, "0")} · Programs
                 </span>
               </button>
@@ -434,7 +434,7 @@ function InnovationsPage() {
             value={domainFilter}
             onChange={(e) => setDomainFilter(e.target.value)}
             aria-label="Filter by domain — click to choose an industry category"
-            className={`appearance-none bg-transparent font-mono text-[9px] uppercase tracking-[0.28em] transition-colors duration-300 focus:outline-none ${
+            className={`appearance-none bg-transparent font-mono text-[10px] uppercase tracking-[0.28em] transition-colors duration-300 focus:outline-none ${
               domainFilter === "All" ? "text-foreground/80" : "text-accent/90"
             }`}
           >
@@ -456,7 +456,7 @@ function InnovationsPage() {
         <button
           onClick={() => setPatentOnly((v) => !v)}
           aria-pressed={patentOnly}
-          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-300 ${
+          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             patentOnly
               ? "border-accent/50 bg-accent/[0.08] text-accent/90"
               : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
@@ -474,7 +474,7 @@ function InnovationsPage() {
         <button
           onClick={() => setFeaturedOnly((v) => !v)}
           aria-pressed={featuredOnly}
-          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.3em] transition-colors duration-300 ${
+          className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             featuredOnly
               ? "border-accent/50 bg-accent/[0.08] text-accent/90"
               : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
@@ -492,7 +492,7 @@ function InnovationsPage() {
         {refinementActive && (
           <button
             onClick={resetRefinements}
-            className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/40 underline-offset-4 transition-colors duration-500 hover:text-accent/85 hover:underline"
+            className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/40 underline-offset-4 transition-colors duration-500 hover:text-accent/85 hover:underline"
           >
             Reset refinements
           </button>
@@ -521,7 +521,7 @@ function InnovationsPage() {
             onClick={() => setView("gallery")}
             aria-pressed={view === "gallery"}
             title="Browse as a visual gallery of cards"
-            className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-300 ${
+            className={`px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-300 ${
               view === "gallery"
                 ? "bg-accent/[0.1] text-accent/90"
                 : "text-foreground/60 hover:bg-foreground/[0.04] hover:text-foreground/85"
@@ -533,7 +533,7 @@ function InnovationsPage() {
             onClick={() => setView("table")}
             aria-pressed={view === "table"}
             title="Switch to a sortable side-by-side comparison table"
-            className={`border-l border-foreground/20 px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-300 ${
+            className={`border-l border-foreground/20 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-300 ${
               view === "table"
                 ? "bg-accent/[0.1] text-accent/90"
                 : "text-foreground/60 hover:bg-foreground/[0.04] hover:text-foreground/85"
@@ -552,7 +552,7 @@ function InnovationsPage() {
           </p>
           <button
             onClick={resetRefinements}
-            className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent/75 underline-offset-4 hover:underline"
+            className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent/75 underline-offset-4 hover:underline"
           >
             Reset refinements
           </button>
@@ -658,7 +658,7 @@ function InnovationsPage() {
             <button
               onClick={() => setShowPatents((v) => !v)}
               aria-expanded={showPatents}
-              className="inline-flex min-h-6 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.32em] text-foreground/55 transition-colors duration-500 hover:text-accent/85"
+              className="inline-flex min-h-6 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55 transition-colors duration-500 hover:text-accent/85"
             >
               <span>{showPatents ? "Hide" : "Show"} granted patents</span>
               <span
@@ -767,7 +767,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       />
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
-        <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-accent/85">
+        <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
           Archive entry
         </span>
       </div>
@@ -845,7 +845,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
-        <p className="truncate font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/55">
+        <p className="truncate font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
         <h3 className="mt-1 font-display text-base leading-tight tracking-[-0.01em] text-foreground/95 md:text-lg">
@@ -882,7 +882,7 @@ function SortHeader({
       <button
         onClick={onClick}
         aria-sort={active ? (dir === "asc" ? "ascending" : "descending") : "none"}
-        className={`inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.32em] transition-colors duration-500 ${
+        className={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.32em] transition-colors duration-500 ${
           active ? "text-accent/85" : "text-foreground/45 hover:text-foreground/70"
         }`}
       >

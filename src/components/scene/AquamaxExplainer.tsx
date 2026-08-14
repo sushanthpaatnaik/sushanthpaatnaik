@@ -120,7 +120,7 @@ export default function AquamaxExplainer() {
                       }`}
                     >
                       <span
-                        className={`block font-mono text-[9px] uppercase tracking-[0.32em] ${
+                        className={`block font-mono text-[10px] uppercase tracking-[0.32em] ${
                           active ? "text-accent/85" : "text-foreground/50"
                         }`}
                       >
@@ -138,7 +138,7 @@ export default function AquamaxExplainer() {
                 })}
               </div>
 
-              <span className="ml-auto font-mono text-[9px] uppercase tracking-[0.28em] text-foreground/45">
+              <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/45">
                 {sm.note}
               </span>
             </div>
