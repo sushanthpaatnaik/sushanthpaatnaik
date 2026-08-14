@@ -809,13 +809,13 @@ function FutureContent() {
           max-w is in ch/rem rather than a fraction of the viewport so the
           measure stays constant and the gap to the figure grows with the
           screen instead of shrinking. */}
-      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[9%] md:-translate-y-[13%]">
+      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6 -translate-y-[3%] md:-translate-y-[5%]">
         {/* Eyebrow */}
-        <p className="mb-4 md:mb-5 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
+        <p className="mb-5 md:mb-7 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
           Future Systems
         </p>
         {/* Italic intro */}
-        <p className="mx-auto mb-8 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
+        <p className="mx-auto mb-10 md:mb-14 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
           Not a forecast. A working hypothesis — built one industrial system at a time.
         </p>
         {/* H2 */}
@@ -829,7 +829,7 @@ function FutureContent() {
           Energy as infrastructure.<br /> Industry at planetary scale.
         </h2>
         {/* Body */}
-        <p className="mx-auto mb-9 max-w-[38ch] text-[14px] md:text-[15px] leading-[1.75] text-foreground/70">
+        <p className="mx-auto mt-7 md:mt-9 mb-10 md:mb-12 max-w-[52ch] text-[14px] md:text-[15px] leading-[1.8] text-foreground/70">
           The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
         </p>
         {/* CTA row */}
