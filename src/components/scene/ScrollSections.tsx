@@ -281,10 +281,10 @@ function OriginHero() {
           {/* Credibility strip — value+label pairs separated by · dots.
               Dot is placed BETWEEN spans (not inside) so spacing is
               consistent regardless of flex-gap or font-size.
-              Result: 06 Presidential Awards · 23 Innovations · 06 Ventures · TED · MIT TR · Global Recognition
+              Result: 06 Presidential Awards · 25 Innovations · 06 Ventures · TED · MIT TR · Global Recognition
 
               The labels used to be `hidden sm:inline`, so on every phone this
-              read as "06 · 23 · 06 · TED · MIT TR · Global Recognition" —
+              read as "06 · 25 · 06 · TED · MIT TR · Global Recognition" —
               three bare numbers with nothing saying what they counted. A
               number without its noun is not a shorter version of the claim,
               it is not the claim at all, and it is unreadable to a screen
@@ -296,7 +296,7 @@ function OriginHero() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
             {[
               { v: "06",                  l: "Presidential Awards", short: "Presidential" },
-              { v: "23",                  l: "Innovations",         short: "Innovations" },
+              { v: "25",                  l: "Innovations",         short: "Innovations" },
               { v: "06",                  l: "Ventures",            short: "Ventures" },
               { v: "TED",                 l: "" },
               { v: "MIT TR",              l: "" },

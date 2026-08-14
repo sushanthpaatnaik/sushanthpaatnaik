@@ -12,6 +12,8 @@ import backdrop from "@/assets/story-03-material.webp";
 import founderShowroom from "@/assets/founder-showroom.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
+import imgThermalPaste from "@/assets/innovations/thermal-paste.webp";
+import imgGrapheneFabric from "@/assets/innovations/graphene-fabric.webp";
 import imgGraffisol from "@/assets/innovations/graffisol.webp";
 import imgCeraphene from "@/assets/innovations/ceraphene.webp";
 import imgHdgpe from "@/assets/innovations/hdgpe.webp";
@@ -87,19 +89,19 @@ import appFibrasphene from "@/assets/innovations/applications/fibrasphene.webp";
 import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
 
 const description =
-  "23 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour — from commercial to pilot to R&D.";
+  "25 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour — from commercial to pilot to R&D.";
 
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
     meta: [
-      { title: "Innovations — 23 Graphene Products · Sushanth Paatnaik" },
+      { title: "Innovations — 25 Graphene Products · Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Innovations — Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "From Graphacrete and Graffisol to Voltaphene and Armophene — 23 graphene innovations across commercial, pilot, and R&D stages.",
+          "From Graphacrete and Graffisol to Voltaphene and Armophene — 25 graphene innovations across commercial, pilot, and R&D stages.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/innovations" },
@@ -153,6 +155,13 @@ const items: Item[] = [
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
   { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
+  /* Both co-developed with Monoatom Labs and published on the SPI Industries
+     portfolio. One photograph each — SPI has a single image per programme, so
+     img/cutout/application share it rather than inventing a cutout or a
+     context shot that does not exist. Replace the latter two when real assets
+     are shot. */
+  { title: "Graphene Thermal Paste", stage: "Commercial", domain: "Thermal · Interface Materials", status: "Co-developed · Monoatom Labs", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: imgThermalPaste, application: imgThermalPaste },
+  { title: "Graphene-Infused Fabric", stage: "Commercial", domain: "Textiles · Functional Materials", status: "Co-developed · Monoatom Labs", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: imgGrapheneFabric, application: imgGrapheneFabric },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
     { k: "Emissions", v: "20%", note: "Reduced emissions output" },
