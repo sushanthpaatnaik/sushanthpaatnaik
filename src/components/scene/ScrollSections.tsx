@@ -98,7 +98,7 @@ const gateways = [
     also: [],
   },
   {
-    to: "/recognitions", n: "V", label: "Honors & Voices",
+    to: "/recognitions", n: "V", label: "Recognitions & Voices",
     line: "Recognition, talks, perspectives.",
     also: [{ to: "/voices", label: "Voices" }],
   },

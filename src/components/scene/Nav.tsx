@@ -7,7 +7,7 @@ const navLinks = [
   { to: "/early-works", label: "Early Works" },
   { to: "/innovations", label: "Innovations" },
   { to: "/ventures", label: "Ventures" },
-  { to: "/recognitions", label: "Honors" },
+  { to: "/recognitions", label: "Recognitions" },
   { to: "/voices", label: "Voices" },
   { to: "/essays", label: "Essays" },
   { to: "/news", label: "News" },

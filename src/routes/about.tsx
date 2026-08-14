@@ -38,7 +38,7 @@ export const Route = createFileRoute("/about")({
 });
 
 const dossierStats = [
-  { v: "27", l: "Honors of record · National + International" },
+  { v: "27", l: "Recognitions of record · National + International" },
   { v: "18+", l: "Featured by news & media outlets" },
   { v: "2", l: "Academic degrees · IISER & OCT, Bhopal" },
   { v: "TED", l: "Global platform · among the youngest at the time" },

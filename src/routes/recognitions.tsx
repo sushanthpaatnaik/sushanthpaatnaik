@@ -92,7 +92,7 @@ export const Route = createFileRoute("/recognitions")({
       {
         property: "og:description",
         content:
-          "Archival record of twenty-seven honors and sixty-plus keynotes across research, deep-tech and public stages.",
+          "Archival record of twenty-seven recognitions and sixty-plus keynotes across research, deep-tech and public stages.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/recognitions" },
@@ -198,7 +198,7 @@ const milestones: Milestone[] = [
 // Archival authority strip — the small register of numbers shown directly
 // under the section index. Read as a museum plaque, not a marketing stat.
 const authoritySignals: Array<{ value: string; label: string }> = [
-  { value: "27", label: "Honors of Record" },
+  { value: "27", label: "Recognitions of Record" },
   { value: "49", label: "Hall of Fame Moments" },
   { value: "06", label: "Presidential Awards" },
   { value: "03", label: "Presidents of India" },
@@ -298,7 +298,7 @@ const ledgerByYear: LedgerYear[] = [
   },
 ];
 
-// Internal integrity check — the canonical Ledger of Honors of Record holds
+// Internal integrity check — the canonical Ledger of Recognitions of Record holds
 // exactly 27 unique entries. Logs a warning in development if drift is detected.
 const recognitionMilestones = ledgerByYear.flatMap((y) =>
   y.entries.map((e) => ({ ...e, year: y.year })),
@@ -306,7 +306,7 @@ const recognitionMilestones = ledgerByYear.flatMap((y) =>
 if (import.meta.env.DEV) {
   if (recognitionMilestones.length !== 27) {
     console.warn(
-      `[RecognitionsLedger] Expected 27 honors of record, got ${recognitionMilestones.length}.`,
+      `[RecognitionsLedger] Expected 27 recognitions of record, got ${recognitionMilestones.length}.`,
     );
   }
 }
@@ -418,7 +418,7 @@ const eraPresent: ArchiveItem[] = [
 ];
 
 const counters = [
-  { value: "27", label: "Honors of record" },
+  { value: "27", label: "Recognitions of record" },
   { value: "6", label: "Presidential Awards" },
   { value: "60+", label: "Keynotes since 2010" },
   { value: "14+", label: "Years of industrial research" },
@@ -761,7 +761,7 @@ function RecognitionsPage() {
 
   return (
     <CinematicPageShell
-      eyebrow="Recognitions · Twenty-Seven Honors of Record"
+      eyebrow="Twenty-Seven Recognitions of Record"
       title={
         <>
           An archival journey<br className="hidden md:inline" /> of recognition.
@@ -1174,7 +1174,7 @@ function RecognitionsPage() {
         </EraAccordion>
       </div>
 
-      {/* 07 · Achievement Ledger — full 27 honors, always visible */}
+      {/* 07 · Achievement Ledger — full 27 recognitions, always visible */}
       <div id="ledger" className="scroll-mt-24 mt-20 md:mt-28">
         <EditorialSection number="07 · Register" heading="Achievement ledger · 27 of record.">
           <p>
