@@ -240,7 +240,12 @@ function VenturesPage() {
               {/* Role · Domain */}
               <p className="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-foreground/55">
                 <span className="text-accent/75">{v.role}</span>
-                <span className="mx-2 text-foreground/25">·</span>
+                {/* The separator carries real spaces rather than mx-2 margins.
+                    Margins are invisible to the text stream, so the accessible
+                    name, copy-paste and every text extractor read
+                    "Co-Founder & CEO·Graphene at scale" as one token even
+                    though it looked correctly spaced on screen. */}
+                <span className="mx-[2.5px] text-foreground/25">{" · "}</span>
                 <span>{v.domain}</span>
               </p>
 

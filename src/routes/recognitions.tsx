@@ -243,7 +243,7 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2011",
     entries: [
-      { title: "NASA Award", institution: "Kennedy Space Center · Huntsville", featured: true },
+      { title: "NASA Award", institution: "NASA · Kennedy Space Center", featured: true },
       { title: "DLF–Pramerica Spirit of Community Award", institution: "Prudential · DLF Foundation" },
       { title: "Eureka-11 · IIT-Bombay Business Plan Contest Award", institution: "E-Cell · IIT Bombay" },
     ],
@@ -379,7 +379,7 @@ const eraGlobal: ArchiveItem[] = [
     shape: "wide",
     institution: "NASA",
     recognition: "International Recognition · 2011",
-    venue: "Kennedy Space Center · Huntsville",
+    venue: "U.S. Space & Rocket Center · Huntsville, Alabama",
   },
   { src: keynoteJosh, caption: "Josh Talks × Facebook", meta: "Empowering Youth & Entrepreneurs", category: "Keynote", shape: "tall" },
   { src: keynoteInk, caption: "INK Fellows Retreat", meta: "Bengaluru · 2022", category: "Keynote", shape: "wide" },
@@ -497,7 +497,7 @@ if (import.meta.env.DEV) {
 const documentaryMosaic: ArchiveItem[] = [
   { src: awardKalam, caption: "With Dr. A.P.J. Abdul Kalam", meta: "Presidential Award · 2009", category: "Award", shape: "hero", focus: "center 28%" },
   { src: keynoteTed, caption: "TED@Bangalore Mainstage", meta: "TED · 2012", category: "Keynote" },
-  { src: honorNasa, caption: "NASA · Kennedy Space Center", meta: "Huntsville · 2011", category: "Honor", shape: "wide" },
+  { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville · 2011", category: "Honor", shape: "wide" },
   { src: fellowCert, caption: "Honour Certificate", meta: "Archival Citation", category: "Fellowship" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Rashtrapati Bhavan · 2010", category: "Award", shape: "tall" },
   { src: awardPranab, caption: "With President Pranab Mukherjee", meta: "Rashtrapati Bhavan · 2013", category: "Award", shape: "wide", focus: "left top" },

@@ -495,7 +495,7 @@ function IndustrialContent() {
         {/* Body — narrower measure than the heading so the two read as
             separate steps rather than one dense block at laptop widths. */}
         <p className="hidden md:block text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
-          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each a downstream of the same material platform.
+          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each downstream of the same material platform.
         </p>
         {/* Phone: the enumeration is the paragraph's whole point, so it is
             shown as a list and the sentence stays in the document. */}
