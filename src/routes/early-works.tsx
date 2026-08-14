@@ -224,7 +224,7 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
       >
         <div className="mb-3 flex items-start justify-between gap-4">
           <div>
-            <p className="font-mono text-[8px] uppercase tracking-[0.44em] text-foreground/40">Demo</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.44em] text-foreground/40">Demo</p>
             <h2 className="font-display text-base md:text-lg tracking-[-0.02em] text-foreground/88 leading-tight">{title}</h2>
           </div>
           <button
@@ -248,7 +248,7 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
             className="h-full w-full"
           />
         </div>
-        <p className="mt-3 text-center font-mono text-[8px] uppercase tracking-[0.36em] text-foreground/25">
+        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/25">
           Press Esc or click outside to close
         </p>
       </motion.div>
@@ -296,7 +296,7 @@ function RecognitionBadge({ label }: { label: string }) {
     "TED@Bangalore": "◎",
   };
   return (
-    <span className="inline-flex items-center gap-1.5 border border-accent/20 rounded-[2px] bg-accent/[0.06] px-2.5 py-1 font-mono text-[8px] uppercase tracking-[0.32em] text-accent/70">
+    <span className="inline-flex items-center gap-1.5 border border-accent/20 rounded-[2px] bg-accent/[0.06] px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.32em] text-accent/70">
       <span className="text-accent/50 text-[10px]">{icons[label] ?? "✦"}</span>
       {label}
     </span>
@@ -367,15 +367,15 @@ function ChapterSplit({
         {/* Three-part content */}
         <div className="space-y-6 mb-8">
           <div>
-            <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Problem</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Problem</p>
             <p className="text-[14px] md:text-[15px] leading-relaxed text-foreground/65">{inv.problem}</p>
           </div>
           <div className="border-l border-accent/20 pl-4">
-            <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-accent/50 mb-2">The Innovation</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/50 mb-2">The Innovation</p>
             <p className="text-[14px] md:text-[15px] leading-relaxed text-foreground/80">{inv.solution}</p>
           </div>
           <div>
-            <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Impact</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Impact</p>
             <p className="text-[14px] md:text-[15px] leading-relaxed text-foreground/65">{inv.impact}</p>
           </div>
         </div>
@@ -385,7 +385,7 @@ function ChapterSplit({
           {inv.badges.map((b) => <RecognitionBadge key={b} label={b} />)}
         </div>
         {inv.patentNote && (
-          <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-foreground/35">
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/35">
             {inv.patentNote}
           </p>
         )}
@@ -481,21 +481,21 @@ function ChapterFeature({
       {/* Content below image */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pt-8 md:pt-10">
         <div>
-          <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Problem</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Problem</p>
           <p className="text-[14px] leading-relaxed text-foreground/65">{inv.problem}</p>
         </div>
         <div className="border-l border-accent/15 pl-6 md:pl-8">
-          <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-accent/50 mb-2">The Innovation</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/50 mb-2">The Innovation</p>
           <p className="text-[14px] leading-relaxed text-foreground/80">{inv.solution}</p>
         </div>
         <div>
-          <p className="font-mono text-[8px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Impact</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/35 mb-2">The Impact</p>
           <p className="text-[14px] leading-relaxed text-foreground/65">{inv.impact}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {inv.badges.map((b) => <RecognitionBadge key={b} label={b} />)}
           </div>
           {inv.patentNote && (
-            <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-foreground/35">
+            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/35">
               {inv.patentNote}
             </p>
           )}
@@ -582,7 +582,7 @@ function HeroSection() {
           ].map((badge) => (
             <span
               key={badge.label}
-              className="flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/50"
+              className="flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[10px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/50"
             >
               <span className="text-accent/55">{badge.icon}</span>
               {badge.label}
@@ -598,7 +598,7 @@ function HeroSection() {
           className="flex flex-col items-start gap-3"
           aria-hidden
         >
-          <span className="font-mono text-[8px] uppercase tracking-[0.46em] text-foreground/28">
+          <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/28">
             Scroll to explore
           </span>
           <motion.div
@@ -637,7 +637,7 @@ function ChapterDivider({ index, year, category }: { index: number; year: string
       </span>
       <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/50">{year}</span>
       <div className="flex-1 h-px bg-foreground/[0.06]" />
-      <span className="font-mono text-[8px] uppercase tracking-[0.36em] text-foreground/28">{category}</span>
+      <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/28">{category}</span>
     </motion.div>
   );
 }

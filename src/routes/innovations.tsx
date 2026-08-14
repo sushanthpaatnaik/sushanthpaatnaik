@@ -339,7 +339,7 @@ function InnovationsPage() {
               Material · Substrate Specification
             </span>
             <span className="h-px flex-1 bg-foreground/[0.08]" />
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
               C · sp² · 0.142 nm
             </span>
           </div>
@@ -353,13 +353,13 @@ function InnovationsPage() {
                 transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
                 className="flex flex-col gap-1.5"
               >
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/50">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
                   {s.k}
                 </span>
                 <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
                   {s.v}
                 </span>
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/45">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
                   {s.note}
                 </span>
               </motion.div>
@@ -376,7 +376,7 @@ function InnovationsPage() {
             Catalogue · Filter by readiness stage
           </span>
           <span className="h-px flex-1 bg-foreground/[0.08]" />
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/40">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
             TRL · I — III
           </span>
         </div>
@@ -419,14 +419,14 @@ function InnovationsPage() {
       <div className="not-prose mt-8">
         <div className="mb-4 flex items-center gap-3">
           <span className="h-px w-8 bg-foreground/[0.12]" />
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/45">
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/45">
             Refine · Domain · Patent Status · Featured
           </span>
           <span className="h-px flex-1 bg-foreground/[0.08]" />
         </div>
         <div className="flex flex-wrap items-center gap-3">
         <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] py-2.5 pl-4 pr-9 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] transition-colors duration-300 hover:border-accent/50 focus-within:border-accent/60">
-          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/45">
+          <span className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.26em] text-foreground/45">
             Domain
           </span>
           <span className="pointer-events-none h-3 w-px bg-foreground/[0.14]" />
@@ -504,7 +504,7 @@ function InnovationsPage() {
       <div className="not-prose mt-6 flex flex-wrap items-center justify-between gap-4">
         <Link
           to="/evidence-standards"
-          className="inline-flex min-h-6 items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45 transition-colors duration-500 hover:text-accent/85"
+          className="inline-flex min-h-6 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45 transition-colors duration-500 hover:text-accent/85"
         >
           What do these labels mean? <span aria-hidden>→</span>
         </Link>
@@ -513,7 +513,7 @@ function InnovationsPage() {
           aria-label="Catalogue view — click to switch between a visual gallery and a sortable table"
           className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] pl-4"
         >
-          <span className="pointer-events-none font-mono text-[8px] uppercase tracking-[0.26em] text-foreground/45">
+          <span className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.26em] text-foreground/45">
             View
           </span>
           <span className="mx-3 h-3 w-px bg-foreground/[0.14]" />
@@ -621,7 +621,7 @@ function InnovationsPage() {
               Patent · IP Register
             </span>
             <span className="h-px flex-1 bg-foreground/[0.08]" />
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
               Filed · Pending · In-Drafting
             </span>
           </div>
@@ -640,13 +640,13 @@ function InnovationsPage() {
                 transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
                 className="flex flex-col gap-1.5"
               >
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/50">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
                   {s.k}
                 </span>
                 <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
                   {s.v}
                 </span>
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/45">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
                   {s.note}
                 </span>
               </motion.div>
@@ -673,7 +673,7 @@ function InnovationsPage() {
                 {grantedPatents.map((p) => (
                   <div key={p.number} className="border-t border-foreground/[0.06] pt-6 first:border-t-0 first:pt-0">
                     <p className="font-display text-base md:text-lg text-foreground/95">{p.title}</p>
-                    <p className="mt-1.5 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/50">
+                    <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/50">
                       {p.jurisdiction ? `${p.jurisdiction} Patent · ` : ""}No. {p.number} · Issued {p.issued}
                     </p>
                   </div>
@@ -773,12 +773,12 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       </div>
       <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
         <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/55">
+        <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
           Studio still
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 md:pr-[5.5rem]">
-        <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/55">
+        <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
         </p>
         <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
@@ -840,7 +840,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       />
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
         <span className="h-px w-5 bg-accent/60" />
-        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+        <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent/75">
           Still
         </span>
       </div>
@@ -851,14 +851,14 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         <h3 className="mt-1 font-display text-base leading-tight tracking-[-0.01em] text-foreground/95 md:text-lg">
           {item.title}
         </h3>
-        <p className="mt-1 line-clamp-1 font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55">
+        <p className="mt-1 line-clamp-1 font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55">
           {item.metric}
         </p>
         <div className="mt-1.5">
           <EvidenceBadge
             stage={item.stage}
             label={item.status}
-            className="whitespace-nowrap text-[7px] px-1.5 py-0.5"
+            className="whitespace-nowrap text-[10px] px-1.5 py-0.5"
           />
         </div>
       </div>

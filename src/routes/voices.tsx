@@ -192,7 +192,7 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           <div className="flex md:flex-col items-center md:items-start gap-4 md:gap-4">
             <LogoPlate v={v} />
             {/* Institution name below logo on desktop */}
-            <p className="hidden md:block font-mono text-[9.5px] uppercase tracking-[0.32em] text-muted-foreground/45 leading-relaxed mt-1">
+            <p className="hidden md:block font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/45 leading-relaxed mt-1">
               {v.organization}
             </p>
           </div>
@@ -216,7 +216,7 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
                 <p className="font-display text-[14px] md:text-[15px] tracking-[-0.01em] text-foreground/88 leading-snug">
                   {v.personName}
                 </p>
-                <p className="mt-0.5 font-mono text-[9.5px] uppercase tracking-[0.32em] text-muted-foreground/50 leading-snug">
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50 leading-snug">
                   {v.personTitle}
                 </p>
                 {/* Institution shown inline on mobile (hidden on desktop where it's in left col) */}

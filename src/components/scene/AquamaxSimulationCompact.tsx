@@ -53,7 +53,7 @@ export default function AquamaxSimulationCompact() {
       className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]"
     >
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-b border-foreground/[0.07] px-5 py-3.5">
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-accent/85">
+        <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/85">
           Inspection · System Schematic
         </span>
         <h3
@@ -78,7 +78,7 @@ export default function AquamaxSimulationCompact() {
           <span
             className={`h-1.5 w-1.5 rounded-full transition-colors ${detached ? "bg-accent/90" : "bg-foreground/40"}`}
           />
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/85">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/85">
             {detached ? "Attach Hood" : "Detach Hood"}
           </span>
         </button>
@@ -95,7 +95,7 @@ export default function AquamaxSimulationCompact() {
                 className={`px-2.5 py-1.5 transition-colors ${active ? "bg-foreground/[0.06]" : "hover:bg-foreground/[0.03]"}`}
               >
                 <span
-                  className={`block font-mono text-[8.5px] uppercase tracking-[0.32em] ${active ? "text-accent/90" : "text-foreground/55"}`}
+                  className={`block font-mono text-[10px] uppercase tracking-[0.32em] ${active ? "text-accent/90" : "text-foreground/55"}`}
                 >
                   {sizeMeta[s].label}
                 </span>
@@ -104,7 +104,7 @@ export default function AquamaxSimulationCompact() {
           })}
         </div>
 
-        <span className="ml-auto font-mono text-[8.5px] uppercase tracking-[0.3em] text-foreground/50">
+        <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/50">
           {sm.note}
         </span>
       </div>
@@ -124,20 +124,20 @@ export default function AquamaxSimulationCompact() {
 
         <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1 backdrop-blur-sm">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/85" />
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70">
             Live · Schematic
           </span>
         </div>
         <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1 backdrop-blur-sm">
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70">
             {detached ? "Hood · Released" : "Hood · Engaged"}
           </span>
         </div>
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
             Cycle {String(phaseIdx + 1).padStart(2, "0")} / {String(phases.length).padStart(2, "0")}
           </span>
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/75">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent/75">
             {phase.tag}
           </span>
         </div>
@@ -160,7 +160,7 @@ export default function AquamaxSimulationCompact() {
                 className={`absolute left-0 top-0 h-full w-px transition-colors ${active ? "bg-accent/80" : "bg-transparent"}`}
               />
               <span
-                className={`block font-mono text-[8.5px] uppercase tracking-[0.32em] ${active ? "text-accent/90" : "text-foreground/45"}`}
+                className={`block font-mono text-[10px] uppercase tracking-[0.32em] ${active ? "text-accent/90" : "text-foreground/45"}`}
               >
                 {p.code}
               </span>

@@ -401,7 +401,7 @@ function HeroVideo({
           ) : (
             <Play className="h-3.5 w-3.5 text-accent/95 transition-colors" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
             {isPlaying ? "Pause" : "Play"}
           </span>
         </button>
@@ -430,7 +430,7 @@ function HeroVideo({
           ) : (
             <Volume2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
             {muted ? "Sound" : "Mute"}
           </span>
         </button>
@@ -448,7 +448,7 @@ function HeroVideo({
           ) : (
             <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
             {isFullscreen ? "Exit" : "Full View"}
           </span>
         </button>
@@ -464,7 +464,7 @@ function HeroVideo({
             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             className="pointer-events-none absolute bottom-16 right-4 z-20 rounded-sm border border-accent/25 bg-[oklch(0.05_0.01_245/0.8)] px-2.5 py-1 backdrop-blur-md"
           >
-            <span className="font-mono text-[8.5px] uppercase tracking-[0.34em] text-accent/85">
+            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/85">
               Sound Available
             </span>
           </motion.div>
@@ -613,14 +613,14 @@ export function Product3DModal({
                 <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
                 <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
-                  <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/72">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/72">
                     HV-LC Recovery System · Archive
                   </span>
                 </div>
-                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
+                <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/70">
                   Aquamax · Studio capture
                 </div>
-                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
+                <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/45">
                   ƒ/2.0 · 85mm · cinema
                 </div>
               </div>
@@ -654,7 +654,7 @@ export function Product3DModal({
                   <FilmGrain opacity={0.06} />
                   <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-80">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
-                    <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/72">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/72">
                       Field Deployment
                     </span>
                   </div>
@@ -687,7 +687,7 @@ export function Product3DModal({
 
               <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
                 <div className="bg-background/50 px-4 py-4">
-                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                     Performance
                   </p>
                   <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
@@ -695,7 +695,7 @@ export function Product3DModal({
                   </p>
                 </div>
                 <div className="bg-background/50 px-4 py-4">
-                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                     Program Status
                   </p>
                   <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/75">
@@ -764,7 +764,7 @@ export function Product3DModal({
                   <FilmGrain opacity={0.06} />
                   <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-70 transition-opacity duration-500 group-hover:opacity-100">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
-                    <span className="font-mono text-[9.5px] uppercase tracking-[0.4em] text-foreground/70">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/70">
                       Field Deployment
                     </span>
                   </div>
@@ -796,10 +796,10 @@ export function Product3DModal({
                     }}
                   />
                   <FilmGrain opacity={0.05} />
-                  <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/70">
+                  <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/70">
                     Archive · Studio capture
                   </div>
-                  <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[9.5px] uppercase tracking-[0.34em] text-foreground/45">
+                  <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/45">
                     ƒ/2.0 · 85mm · cinema
                   </div>
                 </div>
@@ -833,7 +833,7 @@ export function Product3DModal({
                     <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
                     <FilmGrain opacity={0.06} />
                     <div className="absolute bottom-3 left-3 z-10">
-                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                         Field · In-situ context
                       </p>
                     </div>
@@ -870,14 +870,14 @@ export function Product3DModal({
                     <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
                     <FilmGrain opacity={0.07} />
                     <div className="absolute bottom-3 left-3 z-10">
-                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                         {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
                       </p>
                     </div>
                     {item.applicationVideo && (
                       <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
                         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
-                        <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/80">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
                           Live · Loop
                         </span>
                       </div>
@@ -907,10 +907,10 @@ export function Product3DModal({
                       </p>
                     </div>
                     <div className="border-t border-foreground/[0.08] pt-3">
-                      <p className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                         {item.largeApplicationFrame ? "Capture context" : "Optical treatment"}
                       </p>
-                      <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/62">
+                      <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/62">
                         {item.largeApplicationFrame
                           ? "Field deployment · in-situ documentation"
                           : "Cinema lens · shallow DOF · 16mm grain"}
@@ -1003,15 +1003,15 @@ export function Product3DModal({
                   <FilmGrain opacity={0.05} />
                   <div className="pointer-events-none absolute left-4 top-3.5 z-10 flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/80" />
-                    <span className="font-mono text-[9.5px] uppercase tracking-[0.36em] text-foreground/72">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-foreground/72">
                       Engineered Artifact · Studio
                     </span>
                   </div>
                   <div className="pointer-events-none absolute bottom-3.5 left-4 right-4 z-10 flex items-end justify-between gap-4">
-                    <p className="font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/72">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/72">
                       {item.title}
                     </p>
-                    <p className="font-mono text-[8.5px] uppercase tracking-[0.34em] text-foreground/40">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/40">
                       ƒ/2.0 · 85mm · cinema
                     </p>
                   </div>
@@ -1026,7 +1026,7 @@ export function Product3DModal({
                 <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
                   {item.specs.map((spec) => (
                     <div key={spec.k} className="bg-background/50 px-4 py-4">
-                      <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                         {spec.k}
                       </p>
                       <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
@@ -1042,7 +1042,7 @@ export function Product3DModal({
 
               {item.applicationContext && (
                 <div className="overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-4 py-4">
-                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                     Application Context
                   </p>
                   <ul className="mt-2.5 space-y-1.5">
@@ -1061,7 +1061,7 @@ export function Product3DModal({
               <div className="grid gap-px overflow-hidden rounded-sm border border-foreground/[0.08] bg-foreground/[0.08]">
                 {!item.specs && (
                   <div className="bg-background/50 px-4 py-4">
-                    <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                       Performance
                     </p>
                     <p className="mt-1.5 font-display text-xl tracking-[-0.015em] text-foreground/95">
@@ -1070,7 +1070,7 @@ export function Product3DModal({
                   </div>
                 )}
                 <div className="bg-background/50 px-4 py-4">
-                  <p className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/45">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                     Program Status
                   </p>
                   <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/75">

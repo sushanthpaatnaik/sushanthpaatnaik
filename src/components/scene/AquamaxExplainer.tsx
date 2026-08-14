@@ -127,7 +127,7 @@ export default function AquamaxExplainer() {
                         {sizeMeta[s].label}
                       </span>
                       <span
-                        className={`block font-mono text-[8.5px] uppercase tracking-[0.28em] ${
+                        className={`block font-mono text-[10px] uppercase tracking-[0.28em] ${
                           active ? "text-foreground/75" : "text-foreground/40"
                         }`}
                       >
@@ -161,20 +161,20 @@ export default function AquamaxExplainer() {
 
               <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1.5 backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent/80" />
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                   Live · Schematic
                 </span>
               </div>
               <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1.5 backdrop-blur-sm">
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/65">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                   {detached ? "Hood · Released" : "Hood · Engaged"}
                 </span>
               </div>
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-foreground/45">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                   Flow · Cycle {String(phaseIdx + 1).padStart(2, "0")} / {String(phases.length).padStart(2, "0")}
                 </span>
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.32em] text-accent/70">
+                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent/70">
                   {phases[phaseIdx].tag}
                 </span>
               </div>

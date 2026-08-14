@@ -172,7 +172,7 @@ export function EvidenceBadge({
   const tier = EVIDENCE_TIER[stage];
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-[2px] border px-2 py-1 font-mono text-[8px] uppercase tracking-[0.28em] ${tier.cls} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-[2px] border px-2 py-1 font-mono text-[10px] uppercase tracking-[0.28em] ${tier.cls} ${className}`}
     >
       <span className="opacity-70">{tier.icon}</span>
       {label}
@@ -233,7 +233,7 @@ export function EcosystemMap({ nodes, className = "" }: { nodes: EcosystemNode[]
           {node.relation && (
             <div className="flex items-center gap-3 border-y border-foreground/[0.06] bg-[oklch(0.035_0_0)] px-5 py-2 md:px-6">
               <span aria-hidden className="text-foreground/25">↓</span>
-              <span className="font-mono text-[8.5px] uppercase tracking-[0.28em] text-muted-foreground/45">
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/45">
                 {RELATION_LABEL[node.relation]}
               </span>
             </div>

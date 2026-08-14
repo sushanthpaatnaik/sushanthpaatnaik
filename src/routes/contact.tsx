@@ -383,7 +383,7 @@ function AccessForm() {
                   )}
                 </button>
                 {status === "error" ? (
-                  <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-[oklch(0.72_0.15_25)]/80 sm:max-w-none">
+                  <p className="max-w-[280px] text-right font-mono text-[10px] uppercase tracking-[0.3em] text-[oklch(0.72_0.15_25)]/80 sm:max-w-none">
                     Couldn&apos;t send —{" "}
                     <a href={mailto} className="underline underline-offset-2 hover:text-accent">
                       email directly
@@ -391,7 +391,7 @@ function AccessForm() {
                     .
                   </p>
                 ) : missingReason ? (
-                  <p className="max-w-[280px] text-right font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/45 sm:max-w-none">
+                  <p className="max-w-[280px] text-right font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/45 sm:max-w-none">
                     {missingReason}
                   </p>
                 ) : null}

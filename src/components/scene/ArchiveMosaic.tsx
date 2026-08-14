@@ -115,7 +115,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
             {item.recognition && (
               <span
                 className={`mt-1 block font-mono uppercase text-foreground/65 ${
-                  isHero ? "text-[10px] tracking-[0.26em]" : "text-[9.5px] tracking-[0.22em] line-clamp-1"
+                  isHero ? "text-[10px] tracking-[0.26em]" : "text-[10px] tracking-[0.22em] line-clamp-1"
                 }`}
               >
                 {item.recognition}
@@ -133,7 +133,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
             {item.venue && (
               <span
                 className={`mt-1 block font-mono uppercase text-foreground/50 ${
-                  isHero ? "text-[9.5px] tracking-[0.28em]" : "text-[10px] tracking-[0.24em] line-clamp-1"
+                  isHero ? "text-[10px] tracking-[0.28em]" : "text-[10px] tracking-[0.24em] line-clamp-1"
                 }`}
               >
                 {item.venue}
@@ -145,7 +145,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
             <span className="mt-1.5 block font-display text-[12.5px] md:text-[13.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
               {item.caption}
             </span>
-            <span className="mt-1 block font-mono text-[9.5px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+            <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
               {item.meta}
             </span>
           </>
@@ -531,7 +531,7 @@ export function HallOfFameRibbon({
         {/* Reduced-motion notice — quietly invites manual exploration */}
         {reducedMotion && (
           <div className="pointer-events-none absolute right-4 bottom-4 z-20 rounded-full bg-[oklch(0.04_0.006_245/0.75)] px-3 py-1.5 ring-1 ring-foreground/15 backdrop-blur-sm">
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.32em] text-foreground/80">
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
               Scroll to explore
             </span>
           </div>
@@ -599,7 +599,7 @@ export function LegacyTimeline({
             <span className="font-display text-[14px] md:text-[15px] leading-snug text-foreground/95 tracking-[-0.005em]">
               {it.title}
             </span>
-            <span className="mt-auto font-mono text-[9.5px] uppercase tracking-[0.24em] text-foreground/55 line-clamp-2">
+            <span className="mt-auto font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/55 line-clamp-2">
               {it.institution}
             </span>
             <span className="absolute left-0 right-0 top-1/2 h-px bg-foreground/[0.04]" aria-hidden />
@@ -729,12 +729,12 @@ export function ArchivePlate({
             </p>
           )}
           {item.venue && (
-            <p className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55">
               {item.venue}
             </p>
           )}
           {!item.presenter && !item.venue && (
-            <p className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55">
               {item.meta}
             </p>
           )}
@@ -852,14 +852,14 @@ export function PresidentialTriptych({
               </span>
             </div>
             <figcaption className="flex flex-col gap-2 p-6">
-              <span className="font-mono text-[9.5px] uppercase tracking-[0.34em] text-accent/75">
+              <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
                 {item.recognition ?? item.meta}
               </span>
               <span className="font-display text-[18px] leading-[1.18] tracking-[-0.01em] text-foreground/95">
                 {item.presenter ?? item.caption}
               </span>
               <span className="mt-1 h-px w-8 bg-accent/40" />
-              <span className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/55">
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55">
                 {item.venue ?? item.institution}
               </span>
             </figcaption>

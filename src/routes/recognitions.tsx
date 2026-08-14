@@ -608,7 +608,7 @@ function EraAccordion({
                         "linear-gradient(180deg, transparent 45%, oklch(0.02 0.006 245 / 0.82) 100%)",
                     }}
                   />
-                  <figcaption className="absolute inset-x-0 bottom-0 px-2.5 py-2 font-mono text-[8.5px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
+                  <figcaption className="absolute inset-x-0 bottom-0 px-2.5 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55 line-clamp-1">
                     {p.category}
                   </figcaption>
                 </figure>
@@ -839,7 +839,7 @@ function RecognitionsPage() {
               <span className="font-display text-[26px] md:text-[36px] leading-none tracking-[-0.04em] text-foreground/92">
                 {s.value}
               </span>
-              <span className="mt-2.5 font-mono text-[9.5px] uppercase tracking-[0.36em] text-muted-foreground/60">
+              <span className="mt-2.5 font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground/60">
                 {s.label}
               </span>
             </motion.li>

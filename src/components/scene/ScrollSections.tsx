@@ -309,8 +309,8 @@ function OriginHero() {
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
                   <>
-                    <span className="sm:hidden ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted-foreground/55">{s.short}</span>
-                    <span className="hidden sm:inline ml-1.5 font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
+                    <span className="sm:hidden ml-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground/55">{s.short}</span>
+                    <span className="hidden sm:inline ml-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
                   </>
                 )}
               </span>
@@ -632,7 +632,7 @@ function RecognitionEcosystemContent() {
                         <Link
                           key={s.to}
                           to={s.to}
-                          className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-muted-foreground/50 hover:text-foreground/80 transition-colors"
+                          className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/50 hover:text-foreground/80 transition-colors"
                         >
                           {s.label} →
                         </Link>
@@ -962,7 +962,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
             <span className="transition-transform duration-300 group-active:translate-x-1" aria-hidden>→</span>
           </Link>
 
-          <div className="flex flex-col items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.3em]">
+          <div className="flex flex-col items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.3em]">
             <span className="text-foreground/75">Sushanth Paatnaik</span>
             <span className="text-foreground/45">© 2026</span>
           </div>
@@ -970,7 +970,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex min-h-6 items-center font-mono text-[9.5px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
+            className="inline-flex min-h-6 items-center font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
           >
             Back to top ↑
           </button>

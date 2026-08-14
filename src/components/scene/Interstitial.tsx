@@ -46,7 +46,7 @@ export default function Interstitial({
         {!pause && (
           <div className="mb-6 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-foreground/15" />
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.5em] text-muted-foreground/45">
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/45">
               Interlude
             </span>
             <span className="h-px w-8 bg-foreground/15" />
@@ -63,7 +63,7 @@ export default function Interstitial({
           <span className="whitespace-pre-line">{line}</span>
         </p>
         {pause && (
-          <div className="mt-12 flex items-center justify-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.5em] text-muted-foreground/35">
+          <div className="mt-12 flex items-center justify-center gap-4 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/35">
             <span className="h-px w-10 bg-foreground/10" />
             <span>Pause</span>
             <span className="h-px w-10 bg-foreground/10" />
