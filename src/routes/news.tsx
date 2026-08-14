@@ -135,7 +135,7 @@ const featured: PressItem = {
   tag: "★ Lead Story",
   title:
     "Six times President awardee Sushant Pattnaik is making a difference with groundbreaking innovations",
-  body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar — from a breath-controlled wheelchair built at 14 to founding multiple deep-tech ventures.",
+  body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar — from a breath-controlled wheelchair built as a teenager to founding multiple deep-tech ventures.",
   href: "https://www.globalindian.com/story/global-indian-exclusive/six-times-president-awardee-sushant-pattnaiks-ground-breaking-innovations/",
   image: globalImg,
   category: "Global Features & Interviews",

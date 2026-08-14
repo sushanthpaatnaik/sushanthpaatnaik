@@ -177,7 +177,7 @@ function AboutPage() {
       <EditorialSection number="01 · Origin" heading="A workshop, a wheelchair, and a question.">
         <NarrativePassage indent>
           <p>
-            At fourteen, in a workshop borrowed for a weekend, I built a
+            At sixteen, in a workshop borrowed for a weekend, I built a
             breath-powered wheelchair for a man with locked-in syndrome who could
             no longer ask for water. That afternoon rewrote what engineering
             meant to me: not optimisation, but agency. Performance is the means.

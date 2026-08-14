@@ -23,7 +23,7 @@ export const essays: EssayMeta[] = [
     title: "On engineering with empathy",
     pull: "The most important specification on any drawing I make is the human being it is meant for.",
     description:
-      "Why the wheelchair I built at fourteen taught me about deep-tech, dignity, and building for someone — not an audience.",
+      "Why the wheelchair I built at sixteen taught me about deep-tech, dignity, and building for someone — not an audience.",
   },
   {
     slug: "graphene-and-the-next-century",
