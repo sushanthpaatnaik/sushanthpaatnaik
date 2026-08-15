@@ -33,8 +33,10 @@ import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBan
 const SEQUENCE_PATH = "founder-film";
 // 381 frames: the native-1080p 24fps/8s master (192 frames) interpolated to
 // 48fps — exactly 2x — so every synthesised frame sits at the midpoint of two
-// real ones. Desktop frames are the source's own 1920x1080 with no rescaling;
-// the /m/ variants are 854x480.
+// real ones. Desktop frames are the source's own 1920x1080 with no rescaling.
+// Touch has two sets: /p/ is a 500x1080 centre crop of the same master, for
+// portrait phones, and /m/ is a 854x480 downscale, for landscape. See
+// framesPath for which goes where and why.
 //
 // It was 476, a 2.479x resample of the same master, and the non-integer ratio
 // is what made it shake. A fractional resample cannot place every synthesised
@@ -254,7 +256,34 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // used. Evicted frames re-fetch from the HTTP cache (30-day
     // Cache-Control on /sequences/) so scrolling back costs a decode, not a
     // download.
-    const framesPath = (path: string) => (isTouch ? `${path}/m` : path);
+    // Touch gets one of two sets, chosen by what the viewport actually needs.
+    //
+    // /m/ is 854x480 — a landscape frame. Cover-fitting that into a portrait
+    // phone canvas scales by height: at 390x844 the canvas is 585x1266, so the
+    // 480-tall frame is blown up 2.64x and only 26% of the file's pixels ever
+    // reach the screen. The other 74% is downloaded and cropped away.
+    //
+    // /p/ is 500x1080, a pure centre crop of the 1920x1080 master — no
+    // resampling, so these are the master's own pixels. 0.463 is the aspect
+    // every current phone lands on (390x844, 430x932 and 375x812 are all
+    // 0.461-0.462), which puts the draw scale at 1.17x and the on-screen share
+    // at 100%. The centre is safe: measured across the sequence, the detail
+    // centroid stays between 0.394 and 0.531 of the frame width, and this crop
+    // spans 0.370-0.630.
+    //
+    // Measured: 20.2 MB against /m/'s 21.1 MB, and PSNR 42.1 dB against the
+    // master where /m/ manages 37.8 dB against its own ideal downscale. Sharper
+    // and slightly smaller, which is why this is a resolution fix rather than a
+    // quality trade.
+    //
+    // Landscape touch — a tablet, or a rotated phone — keeps /m/, where the
+    // reasoning runs the other way. The choice is made once at mount; rotating
+    // mid-visit keeps the set it started with rather than re-fetching the film.
+    const isPortrait = window.innerHeight >= window.innerWidth;
+    const framesPath = (path: string) =>
+      isTouch ? `${path}/${isPortrait ? "p" : "m"}` : path;
+    /** Native height of whichever set this device is fetching. */
+    const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
     const RETAIN_RADIUS = isTouch ? 55 : 70;
@@ -329,7 +358,17 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // 585×1266: sharp at phone viewing distance, ~4× faster draws.
     const syncSize = () => {
       const rawDpr = window.devicePixelRatio || 1;
-      const dpr = isTouch ? Math.min(rawDpr, 1.5) : Math.min(rawDpr, 2);
+      // The canvas carries the film and nothing else — no text, no UI — so its
+      // resolution should follow the footage rather than the screen. Past a
+      // canvas taller than the source there is no detail left to reveal; the
+      // extra pixels are the GPU upscaling harder and compositing more area for
+      // an identical picture. Capping at the source height makes the portrait
+      // set land 1:1 (390x844 -> 499x1080 against a 500x1080 frame) and cuts
+      // the buffer 27% against the flat 1.5 cap.
+      const fit = SOURCE_H / Math.max(1, window.innerHeight);
+      const dpr = isTouch
+        ? Math.max(1, Math.min(rawDpr, 1.5, fit))
+        : Math.min(rawDpr, 2);
       const nW  = Math.round(window.innerWidth  * dpr);
       const nH  = Math.round(window.innerHeight * dpr);
       if (canvas.width !== nW || canvas.height !== nH) {
