@@ -160,6 +160,33 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Without JavaScript the pages render but read as blank.
+            framer-motion serialises every `initial` prop into an inline style,
+            so the server HTML ships the copy already faded out — measured 21
+            elements on /early-works, 92 on /innovations, 63 on /recognitions,
+            26 on the homepage, all at `opacity:0`. The text is genuinely there
+            in the document, which is what crawlers read, but nothing ever
+            animates it back to 1 because the animation needs JS.
+
+            This only applies when scripts do not run, so it cannot affect the
+            cinematic behaviour at all. It has to be `!important` to beat an
+            inline style, and the `:not` guard matters: the attribute selector
+            matches substrings, so a bare `opacity:0` test would also catch
+            `opacity:0.07` and `opacity:0.85` — real decorative values that
+            should stay exactly as they are. Excluding `opacity:0.` leaves only
+            the true zeros. The transform/filter resets clear the paired
+            translateY and blur that come with the same `initial`. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `<style>
+              [style*="opacity:0"]:not([style*="opacity:0."]) {
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+              }
+            </style>`,
+          }}
+        />
       </head>
       <body>
         {/* Skip link. The homepage puts a fixed nav and a full-screen
