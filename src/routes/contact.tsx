@@ -172,10 +172,10 @@ function AccessForm() {
     >
       {/* Console header — paper tape */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/15 py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/80">Access Protocol</span>
+        <span className="text-accent/80">Access Protocol</span>{" "}
         <span className="hidden md:inline text-muted-foreground/40">
           Form № 01 · Single inbox
-        </span>
+        </span>{" "}
         <span className="text-primary/70">Triaged personally</span>
       </div>
 
@@ -449,7 +449,9 @@ function ContactPage() {
           Closing Statement
         </p>
         <p className="mt-6 max-w-2xl font-display text-[19px] md:text-[22px] leading-[1.5] tracking-[-0.015em] text-foreground/85">
-          Building systems for industrial futures and material intelligence.
+          {/* Trailing {" "} keeps the two sentences apart in the text stream;
+              `block` only separates them visually. See the twin on /engage. */}
+          Building systems for industrial futures and material intelligence.{" "}
           <span className="block mt-3 text-foreground/55 italic">
             The desk is small on purpose — opened only for work that deserves a multi-year horizon.
           </span>

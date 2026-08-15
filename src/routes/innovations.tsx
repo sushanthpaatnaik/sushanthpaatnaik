@@ -424,10 +424,13 @@ function InnovationsPage() {
                 />
                 <span className={`block font-mono text-[10px] uppercase tracking-[0.38em] transition-colors duration-500 ${isActive ? "text-accent/85" : "text-foreground/45"}`}>
                   {f === "All" ? "All Stages" : f === "R&D" ? "Stage III" : f === "Pilot" ? "Stage II" : "Stage I"}
-                </span>
+                </span>{" "}
+                {/* `block` stacks these three on screen; the spaces are what
+                    keep them apart for anything reading the text stream, which
+                    otherwise gets "All StagesAll25 · Programs". */}
                 <span className={`mt-2 block font-display text-[15px] tracking-[-0.01em] transition-colors duration-500 ${isActive ? "text-foreground/95" : "text-foreground/70"}`}>
                   {f}
-                </span>
+                </span>{" "}
                 <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/40">
                   {String(count).padStart(2, "0")} · Programs
                 </span>
@@ -643,7 +646,7 @@ function InnovationsPage() {
             <span className="h-px w-8 bg-accent/60" />
             <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
               Patent · IP Register
-            </span>
+            </span>{" "}
             <span className="h-px flex-1 bg-foreground/[0.08]" />
             <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
               Filed · Pending · In-Drafting

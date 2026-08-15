@@ -526,7 +526,7 @@ function IndustrialContent() {
           className="md:hidden font-mono text-[10.5px] uppercase tracking-[0.24em] leading-[2] text-foreground/80"
           style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
         >
-          Solar coatings · Batteries<br />Additives · Composites<br />Climate infrastructure
+          Solar coatings · Batteries{" "}<br />Additives · Composites{" "}<br />Climate infrastructure
         </p>
         {/* Ventures — the commercial expression of the platform. Given more
             air above it than the body copy's own line spacing so it reads as

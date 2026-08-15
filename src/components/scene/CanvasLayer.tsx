@@ -282,7 +282,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const isPortrait = window.innerHeight >= window.innerWidth;
     const framesPath = (path: string) =>
       isTouch ? `${path}/${isPortrait ? "p" : "m"}` : path;
-    /** Native height of whichever set this device is fetching. */
+    /** Native size of whichever set this device is fetching. */
+    const SOURCE_W = isTouch ? (isPortrait ? 500 : 854) : 1920;
     const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
@@ -360,15 +361,32 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const rawDpr = window.devicePixelRatio || 1;
       // The canvas carries the film and nothing else — no text, no UI — so its
       // resolution should follow the footage rather than the screen. Past a
-      // canvas taller than the source there is no detail left to reveal; the
+      // canvas bigger than the source there is no detail left to reveal; the
       // extra pixels are the GPU upscaling harder and compositing more area for
-      // an identical picture. Capping at the source height makes the portrait
+      // an identical picture. Capping at the source size makes the portrait
       // set land 1:1 (390x844 -> 499x1080 against a 500x1080 frame) and cuts
       // the buffer 27% against the flat 1.5 cap.
-      const fit = SOURCE_H / Math.max(1, window.innerHeight);
-      const dpr = isTouch
-        ? Math.max(1, Math.min(rawDpr, 1.5, fit))
-        : Math.min(rawDpr, 2);
+      //
+      // The cap now applies to desktop too, and reads both axes rather than
+      // height alone. Measured before: a Retina laptop at 1440x900 built a
+      // 2880x1800 backing store and drew the 1920x1080 frame into it at 1.67x,
+      // and a Retina 1920x1080 display drew at 2.00x — 20.7 MB and 33.2 MB of
+      // canvas for a picture whose detail ceiling is 1080p either way. Both
+      // now land at 1.00x. Nothing is resampled down; the source is still the
+      // limit, and the limit is what the canvas is now sized to.
+      //
+      // Both axes, because the draw is object-fit cover: the applied scale is
+      // max(w/SOURCE_W, h/SOURCE_H), so keeping it at or below 1 needs the
+      // smaller of the two ratios. Height alone left landscape touch at 1.22x.
+      const fit = Math.min(
+        SOURCE_W / Math.max(1, window.innerWidth),
+        SOURCE_H / Math.max(1, window.innerHeight),
+      );
+      // Floored at 1: on a monitor wider than the film, dropping below 1 would
+      // trade real on-screen pixels for memory, which is under-resolving.
+      const dpr = Math.max(1, isTouch
+        ? Math.min(rawDpr, 1.5, fit)
+        : Math.min(rawDpr, 2, fit));
       const nW  = Math.round(window.innerWidth  * dpr);
       const nH  = Math.round(window.innerHeight * dpr);
       if (canvas.width !== nW || canvas.height !== nH) {

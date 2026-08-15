@@ -853,11 +853,14 @@ function EarlyWorksPage() {
             <div className="mx-auto max-w-5xl flex flex-wrap items-center gap-4 border-y border-foreground/[0.07] py-6">
               <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Inventions
-              </span>
+              </span>{" "}
+              {/* The rules between these labels are empty divs, so they add no
+                  whitespace of their own — without these spaces the strip reads
+                  back as "Six InventionsSix YearsSix Presidential Awards". */}
               <div className="flex-1 h-px bg-foreground/[0.06]" />
               <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Years
-              </span>
+              </span>{" "}
               <div className="flex-1 h-px bg-foreground/[0.06]" />
               <span className="font-mono text-[10px] uppercase tracking-[0.46em] text-foreground/30">
                 Six Presidential Awards

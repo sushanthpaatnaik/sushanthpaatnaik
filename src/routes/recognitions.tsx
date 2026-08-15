@@ -720,6 +720,12 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                         <span className="text-[13px] leading-relaxed text-foreground/72">
                           {e.title}
                         </span>
+                        {/* A flex container drops whitespace-only text nodes
+                            from layout but keeps them in the DOM, so this space
+                            costs nothing on screen and stops the row extracting
+                            as "...Exhibition AwardCentral Board of Secondary
+                            Education". The gap-x-3 still does the spacing. */}
+                        {" "}
                         {e.institution && (
                           <span className="text-[11px] text-muted-foreground/55">
                             {e.institution}
@@ -1432,7 +1438,9 @@ function RecognitionsPage() {
             transition={{ duration: 1.4, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
             className="font-display text-[36px] md:text-[56px] lg:text-[72px] leading-[1.06] tracking-[-0.04em] text-foreground/[0.82] max-w-[14ch]"
           >
-            The archive closes here.
+            {/* A <br> breaks the line but contributes no whitespace, so the
+                two sentences need an explicit space between them. */}
+            The archive closes here.{" "}
             <br />
             The work does not.
           </motion.h2>

@@ -77,7 +77,10 @@ export default function FounderPortrait({
             <div className="flex items-center gap-4 md:gap-5">
               <span className="font-display text-[15px] md:text-[16px] tracking-[-0.012em] text-foreground/90">
                 Sushanth Paatnaik
-              </span>
+              </span>{" "}
+              {/* The divider between them is an empty span, so it contributes
+                  no text — without this space the plate reads back as
+                  "Sushanth PaatnaikFounder & Inventor". */}
               <span className="h-3 w-px bg-foreground/15" />
               <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/60">
                 Founder &amp; Inventor

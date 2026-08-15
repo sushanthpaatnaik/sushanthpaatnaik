@@ -273,14 +273,19 @@ function CTABlock() {
       className="not-prose relative mt-20 border-y border-foreground/15 py-14 md:py-20"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/80">Open The Dialogue</span>
+        <span className="text-accent/80">Open The Dialogue</span>{" "}
         <span className="hidden md:inline text-muted-foreground/40">
           Invitation-based · By Appointment
         </span>
       </div>
 
       <p className="mt-10 max-w-2xl font-display text-[18px] md:text-[21px] leading-[1.5] tracking-[-0.015em] text-foreground/80">
-        Building systems for industrial futures and material intelligence.
+        {/* The trailing {" "} is load-bearing. JSX drops whitespace between a
+            text node and an element when it spans a newline, so without it the
+            two sentences weld into "...material intelligence.When the work is
+            right" for anything reading the text stream. `block` separates them
+            on screen only, which is CSS, which readers and crawlers ignore. */}
+        Building systems for industrial futures and material intelligence.{" "}
         <span className="block mt-3 text-foreground/55 italic text-[15px] md:text-[16px]">
           When the work is right, the desk opens.
         </span>
@@ -288,7 +293,9 @@ function CTABlock() {
 
       <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr] md:items-end md:gap-16">
         <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.15] tracking-[-0.025em] text-foreground/95">
-          One paragraph on context.
+          {/* Same reason as above — a <br> is a line break, not a word break,
+              so it contributes no whitespace to the text stream. */}
+          One paragraph on context.{" "}
           <br />
           <em className="not-italic font-display italic text-foreground/65">
             One on why a conversation would change the trajectory.

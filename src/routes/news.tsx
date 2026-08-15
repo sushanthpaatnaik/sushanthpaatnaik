@@ -663,15 +663,15 @@ function NewsPage() {
       {/* Newspaper nameplate */}
       <div className="mt-8 border-y border-foreground/20 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/60">
-          <span className="text-primary/80">Press of Record</span>
+          <span className="text-primary/80">Press of Record</span>{" "}
           <span className="hidden sm:inline text-muted-foreground/40">
             Volume XV · MMXXVI
-          </span>
+          </span>{" "}
           <span>Folio 01 — 18</span>
         </div>
         <div className="mt-2.5 flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/40">
-          <span>Bhubaneswar · Delhi · Boston</span>
-          <span className="hidden md:inline">Curated, not complete</span>
+          <span>Bhubaneswar · Delhi · Boston</span>{" "}
+          <span className="hidden md:inline">Curated, not complete</span>{" "}
           <span>English · ଓଡ଼ିଆ</span>
         </div>
       </div>
@@ -680,7 +680,7 @@ function NewsPage() {
           to the desk they care about before the flagship feature lands. */}
       <div className="mt-7">
         <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-          <span className="text-accent/80">06 · Desks</span>
+          <span className="text-accent/80">06 · Desks</span>{" "}
           <span className="hidden md:inline text-muted-foreground/40">
             Five desks · eighteen dispatches
           </span>
@@ -730,7 +730,7 @@ function NewsPage() {
         <div className="not-prose mt-5 flex items-center gap-3 border-t border-foreground/[0.12] pt-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-accent/80">
             ▸ Dispatches
-          </span>
+          </span>{" "}
           <span className="h-px flex-1 bg-foreground/[0.08]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/45 hidden md:inline">
             Filed chronologically · most recent first
