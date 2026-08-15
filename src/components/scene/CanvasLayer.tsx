@@ -189,6 +189,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   // Sub-frame dissolve state, on the same skip-the-redraw contract.
   const lastBlendToRef    = useRef(-1);
   const lastBlendAlphaRef = useRef(-1);
+  // Frame index the playhead is on right now, written every tick before any
+  // early return. Distinct from lastFrameRef, which is the last frame actually
+  // *painted* — the two diverge exactly when the renderer is stuck, which is
+  // when the difference matters most.
+  const playheadRef       = useRef(-1);
   const reduce       = useReducedMotionSafe();
   const rafRef       = useRef(0);
   const notifiedRef  = useRef(false);
@@ -463,9 +468,36 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           // exact bug (at group granularity) was the mobile "scroll gets
           // stuck / no longer cinematic" freeze: measured on a throttled
           // iPhone profile the canvas froze for 27 of 41 scroll samples.
-          if (lastFrameRef.current >= 0) {
-            const cur = lastFrameRef.current;
-            if (fi < cur - RETAIN_RADIUS || fi > cur + RETAIN_RADIUS) {
+          // Range-check against the PLAYHEAD, not against the last frame that
+          // was painted. Those are the same thing while the film is keeping
+          // up, and they are catastrophically different when it is not.
+          //
+          // This used to read lastFrameRef, which only advances on a
+          // successful draw. Jump the scroll forward — a scrollbar drag, a
+          // hash link, the browser restoring position on reload — and the
+          // playhead lands at, say, frame 160 while the last painted frame is
+          // still 0. The loader correctly requests 160 and its neighbours;
+          // every one of them then arrives here, fails `160 > 0 + 70`, and is
+          // thrown away. The flag is cleared, so it is requested again, and
+          // discarded again. The canvas can never paint a frame near the
+          // playhead, so lastFrameRef can never advance, so the window can
+          // never move: a livelock, not a slow load.
+          //
+          // Measured at 1440x900 on the local build: park at 42% of the page
+          // by wheeling there and the canvas fingerprints 80 and keeps moving;
+          // arrive at the same scrollY by one window.scrollTo and it
+          // fingerprints 34 — Origin's opening, under Recognition's copy — and
+          // stays 34 through twelve further wheel notches and fifteen seconds.
+          // This is the "same position looks different depending on how you
+          // got there" report, and the reason forward scrollbar jumps never
+          // recovered while backward ones into resident frames took 500ms.
+          //
+          // The playhead is also the centre evictExcept uses, so the discard
+          // test and the retention window now describe the same range instead
+          // of drifting apart.
+          const centre = playheadRef.current >= 0 ? playheadRef.current : lastFrameRef.current;
+          if (centre >= 0) {
+            if (fi < centre - RETAIN_RADIUS || fi > centre + RETAIN_RADIUS) {
               bmp.close();
               loadingRef.current[fi] = false; // allow a retry once in range
               return;
@@ -611,6 +643,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         : window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const sp = Math.max(0, Math.min(rawSp, 1));
       const fi = getFrameIndex(sp);
+      playheadRef.current = fi;
       const chapter = getChapterFromProgress(sp);
 
       // Sub-frame position, quantised. `fi` stays the rounded index — every
