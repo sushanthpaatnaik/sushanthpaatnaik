@@ -5,12 +5,12 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.webp";
 
-import vinroxLogo from "@/assets/clients/mono/vinrox.webp";
-import vprplLogo from "@/assets/clients/mono/vprpl.webp";
-import tileopediaLogo from "@/assets/clients/mono/tileopedia.webp";
-import wehearLogo from "@/assets/clients/mono/wehear.webp";
-import sunrooofLogo from "@/assets/clients/mono/sunrooof.webp";
-import greenomersLogo from "@/assets/clients/mono/greenomers.webp";
+import vinroxLogo from "@/assets/clients/vinrox.webp";
+import vprplLogo from "@/assets/clients/vprpl.webp";
+import tileopediaLogo from "@/assets/clients/tileopedia-mark.webp";
+import wehearLogo from "@/assets/clients/wehear.webp";
+import sunrooofLogo from "@/assets/clients/sunrooof.webp";
+import greenomersLogo from "@/assets/clients/greenomers.webp";
 
 /* Operating-company marks. Four came from each company's own site; InThinks
    and Starunico were supplied directly, their sites being unreachable
@@ -200,19 +200,19 @@ type Advisory = {
   scale: number;
   /** Px vertical nudge for optical centering. */
   offsetY?: number;
+  /** Mark is dark-on-transparent → invert so it reads on the dark plate. */
+  invert?: boolean;
 };
 
-/* Every mark is served from clients/mono: greyscaled and luminance-normalised
-   onto a common 120-248 range, keeping alpha. Not a flat white fill — several
-   carry internal structure (an aperture glyph inside a shield, a waveform)
-   that a fill would collapse to a silhouette. Six brand palettes at 40px read
-   as a clip-art pile; one tonal range reads as a set. It also retires the
-   per-logo `invert` flag, since a dark mark and a light one now normalise to
-   the same place.
+/* Brand colour, deliberately. These were briefly normalised to one greyscale
+   range on the theory that six palettes at 40px read as a clip-art pile; they
+   do not — they read as six real companies, which is the point of an advisory
+   wall. Each mark keeps the colour its owner uses.
 
    Tileopedia's file was a two-brand lockup — EUROGRES sat beside it behind a
-   divider — which is why that cell carried two logos' worth of 4px type. It is
-   cropped to the Tileopedia mark alone.
+   divider at x=275 of 800 — which is why that cell carried two companies'
+   worth of 4px type. tileopedia-mark.webp is the same file cut at 272, in
+   colour.
 
    The scales are computed, not eyeballed: each is sqrt(target / ink-at-scale-1)
    where ink is the mark's opaque pixel area as it renders in the measured
@@ -226,7 +226,7 @@ type Advisory = {
    the ceiling every other mark is matched down to. Aim higher and Sunrooof
    overflows the cell. */
 const advisories: Advisory[] = [
-  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0 },
+  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0, invert: true },
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.85, offsetY: -1 },
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.78, offsetY: 0 },
   { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
@@ -515,10 +515,9 @@ function VenturesPage() {
                       maxHeight: `${Math.round(58 * a.scale)}px`,
                       maxWidth: `${Math.round(88 * a.scale)}%`,
                       transform: `translateY(${a.offsetY || 0}px)`,
-                      // One treatment for all six. The assets are already
-                      // normalised to a common tonal range, so there is nothing
-                      // left for a per-logo invert to correct.
-                      filter: "brightness(1.04) contrast(1.02)",
+                      filter: a.invert
+                        ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
+                        : "brightness(1.08) contrast(1.06)",
                     }}
                     className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
                   />
