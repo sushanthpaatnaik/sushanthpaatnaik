@@ -145,12 +145,15 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
           </div>
         ) : (
           <>
-            <span className="mt-1.5 block font-display text-[12.5px] md:text-[13.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
+            {/* divs, not `block` spans: the break here is CSS, so without it a
+                caption ending in initials welded to the line under it —
+                "…Sheilabai Bappoo, G.O.S.K.High Commissioner · Mauritius". */}
+            <div className="mt-1.5 font-display text-[12.5px] md:text-[13.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
               {item.caption}
-            </span>
-            <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+            </div>
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
               {item.meta}
-            </span>
+            </div>
           </>
         )}
       </div>
@@ -476,15 +479,15 @@ export function HallOfFameRibbon({
                   }}
                 />
                 <figcaption className="absolute inset-x-0 bottom-0 z-10 p-3.5 pointer-events-none">
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.38em] text-accent/80">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/80">
                     {item.category}
-                  </span>
-                  <span className="mt-1.5 block font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
+                  </div>
+                  <div className="mt-1.5 font-display text-[12.5px] leading-snug text-foreground/95 tracking-[-0.005em] line-clamp-2">
                     {item.caption}
-                  </span>
-                  <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
+                  </div>
+                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/55 line-clamp-1">
                     {item.meta}
-                  </span>
+                  </div>
                 </figcaption>
               </figure>
             ))}
@@ -718,16 +721,16 @@ export function ArchivePlate({
 
       <figcaption className="relative col-span-1 flex flex-col justify-between gap-8 bg-[oklch(0.045_0.006_245)] p-7 md:col-span-4 md:p-9">
         <div>
-          <span className="block font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
+          <div className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
             {item.category}
-          </span>
-          <span className="mt-5 block font-display text-[22px] leading-[1.18] tracking-[-0.012em] text-foreground/95 md:text-[26px]">
+          </div>
+          <div className="mt-5 font-display text-[22px] leading-[1.18] tracking-[-0.012em] text-foreground/95 md:text-[26px]">
             {item.institution ?? item.caption}
-          </span>
+          </div>
           {item.recognition && (
-            <span className="mt-3 block font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/65">
+            <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/65">
               {item.recognition}
-            </span>
+            </div>
           )}
         </div>
 
