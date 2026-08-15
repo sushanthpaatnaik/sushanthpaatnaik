@@ -1,0 +1,46 @@
+# Cache-Control for static assets.
+#
+# Without this file, Cloudflare Workers Assets serves EVERYTHING as
+# `public, max-age=0, must-revalidate` — including the content-hashed JS
+# bundles and all 381 film frames. Measured on production before adding it:
+# every frame re-fetch cost a network round-trip (174ms even when it answered
+# 304), and a repeat visit had to revalidate all 381 frames before it could
+# draw a single one from cache.
+#
+# That directly broke the canvas loader's central assumption. Its own note
+# reads "Evicted frames re-fetch from the HTTP cache (30-day Cache-Control on
+# /sequences/) so scrolling back costs a decode, not a download." There was no
+# such header. Retention, eviction and scroll-back were all designed against a
+# cache that did not exist.
+
+# Vite content-hashes these — the filename changes whenever the bytes do — so
+# they can never go stale and never need revalidating.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The film is NOT content-addressed: frame_0001.webp keeps its URL across a
+# regeneration, and this sequence has already been regenerated once (476
+# frames at a 2.479x resample, then 381 at an integer 2x). So no `immutable`
+# here — a year of unbustable stale frames is a worse failure than a monthly
+# revalidation. 30 days matches the loader's documented intent.
+#
+# If the sequence is ever regenerated again, bump SEQUENCE_PATH in
+# CanvasLayer.tsx (or rename the directory) rather than relying on this
+# window to expire.
+/sequences/*
+  Cache-Control: public, max-age=2592000
+
+/videos/*
+  Cache-Control: public, max-age=2592000
+
+# Small, rarely-changed, and not hashed. A week is long enough to help and
+# short enough to correct.
+/favicon.svg
+  Cache-Control: public, max-age=604800
+/favicon.png
+  Cache-Control: public, max-age=604800
+/social-preview.webp
+  Cache-Control: public, max-age=604800
+
+# HTML deliberately keeps the default must-revalidate, so a deploy is picked
+# up on the next navigation rather than after a cache window.
