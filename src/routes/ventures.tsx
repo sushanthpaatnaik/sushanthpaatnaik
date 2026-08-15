@@ -12,13 +12,20 @@ import wehearLogo from "@/assets/clients/wehear.webp";
 import sunrooofLogo from "@/assets/clients/sunrooof.webp";
 import greenomersLogo from "@/assets/clients/greenomers.webp";
 
-/* Operating-company marks, pulled from each company's own site. Two are
-   missing on purpose rather than by oversight: inthinks.com answers 500 and
-   starunico.com does not resolve, so there is no first-party mark to take.
-   Those two render the monogram plate below until a real file is supplied. */
+/* Operating-company marks. Four came from each company's own site; InThinks
+   and Starunico were supplied directly, their sites being unreachable
+   (inthinks.com answers 500, starunico.com does not resolve).
+
+   Where a company has a distinct symbol, the plate carries the symbol and not
+   the full lockup — Monoatom's lattice, Grafillium's bulb, Starunico's hand —
+   because the row already prints the name beside it, and a lockup with a
+   wordmark is wide, which in a square plate binds on width and renders short.
+   Magppie has no separate symbol, so its wordmark stands as the mark. */
 import monoatomLogo from "@/assets/ventures/monoatom-labs.webp";
 import grafilliumLogo from "@/assets/ventures/grafillium.webp";
 import spiLogo from "@/assets/ventures/spi-industries.webp";
+import inthinksLogo from "@/assets/ventures/inthinks.webp";
+import starunicoLogo from "@/assets/ventures/starunico.webp";
 import magppieLogo from "@/assets/ventures/magppie.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
@@ -124,6 +131,12 @@ const ventures: Venture[] = [
     thesis:
       "An ideation and innovation studio that shapes early-stage thinking into products, then transfers or licenses the technology to partner organisations.",
     href: "https://inthinks.com/",
+    // Supplied as a blue line drawing on an opaque white field. The knockout
+    // takes alpha from distance-from-white rather than a hard threshold, so
+    // the anti-aliased strokes stay soft instead of stair-stepping. No invert
+    // — the blue reads on the dark plate as drawn.
+    logo: inthinksLogo,
+    logoScale: 1.06,
   },
   {
     code: "05",
@@ -131,10 +144,16 @@ const ventures: Venture[] = [
     year: "2026",
     role: "Co-Founder",
     category: "Deep-Tech Capital",
-    domain: "Materials & energy",
+    domain: "Strategic deep-tech investment",
     thesis:
-      "Backing founders building the materials and energy layer of the next century.",
+      "Strategic investment into deep-tech ventures — backing the companies turning frontier research into industrial systems.",
     href: "https://starunico.com/",
+    // The hand-and-shoot symbol, cropped off the left of the supplied lockup.
+    // Its navy stems and leaf outlines are lifted toward slate the same way the
+    // IOCL ring is on /voices — the green is the brand's own and untouched, but
+    // the navy half of the mark vanished against near-black.
+    logo: starunicoLogo,
+    logoScale: 1.06,
   },
   {
     code: "06",
@@ -148,10 +167,12 @@ const ventures: Venture[] = [
     href: "https://magppie.com/",
     logo: magppieLogo,
     logoScale: 1.00,
-    // No invert. The file Magppie serves is the WHITE wordmark — measured, its
-    // opaque pixels are pure 255,255,255 — meant for dark headers. Inverting it
-    // produced black type on a near-black plate, which is why this one rendered
-    // as an empty box.
+    // Inverted, because the supplied file is the BLACK wordmark — measured,
+    // its opaque pixels are 0,0,0. The version Magppie's own site serves is
+    // the white one, and building from that while still inverting is what
+    // rendered this plate as an empty box: white type inverted to black, on
+    // near-black. Check which one a replacement file is before changing this.
+    invert: true,
   },
 ];
 
