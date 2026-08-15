@@ -137,7 +137,12 @@ const milestones: Milestone[] = [
     year: "2008–2013",
     sortYear: 2008,
     title: "Six-Time Indian Presidential Awardee",
-    body: "Recognized by three Presidents of India across six national innovation honours — Dr. A.P.J. Abdul Kalam (2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
+    // Kalam's citations are 2008 AND 2009 — both are in the ledger below, and
+    // naming only 2009 made the sentence read as one honour per President.
+    // The six are not one-per-year either, so the wording says "across" rather
+    // than pairing a year to each name. Note the ledger itemises four of the
+    // six; see the note above the ledger.
+    body: "Recognized by three Presidents of India across six national innovation honours between 2008 and 2013 — Dr. A.P.J. Abdul Kalam (2008, 2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
     image: honorPresidentialTrio,
     imageFocus: "center center",
     institution: "President of India · National Innovation Foundation",
@@ -167,9 +172,16 @@ const milestones: Milestone[] = [
     year: "2011",
     sortYear: 2011,
     title: "NASA recognition",
-    body: "International recognition at NASA Kennedy Space Center — including a research visit to the Mobile Quarantine Facility at the U.S. Space & Rocket Center, Huntsville — for breakthrough engineering in human–machine interfaces.",
+    // Two different places, and the copy has to keep them apart. Kennedy Space
+    // Center is in Florida; the Mobile Quarantine Facility photographed for
+    // this entry is at the U.S. Space & Rocket Center in Huntsville, Alabama.
+    // Because the archive plate for the same year is captioned with Huntsville
+    // while this milestone was captioned "NASA · Kennedy Space Center", the two
+    // read as one venue and put Kennedy Space Center in Alabama. The institution
+    // line no longer names a site, so the body is the only thing that does.
+    body: "International recognition from NASA for breakthrough engineering in human–machine interfaces, received at Kennedy Space Center in Florida. The visit also took in the Apollo-era Mobile Quarantine Facility held at the U.S. Space & Rocket Center in Huntsville, Alabama — a separate site, and the one photographed here.",
     image: honorNasa,
-    institution: "NASA · Kennedy Space Center",
+    institution: "NASA · United States",
     category: "Research",
     major: true,
   },
@@ -205,6 +217,15 @@ const authoritySignals: Array<{ value: string; label: string }> = [
 ];
 
 
+// UNRESOLVED, and deliberately left as-is: this ledger itemises FOUR
+// Presidential citations — Kalam 2008, Kalam 2009 (both as former President;
+// he left office in 2007), Patil 2010, Mukherjee 2013 — while the site claims
+// six throughout, and the counter above says 06. Every other date on this page
+// is internally consistent: no Patil-2009 row exists anywhere, contrary to one
+// report. The gap is two missing rows, not a wrong year, so nothing here can
+// be corrected without the two citations themselves. Add them here rather than
+// adjusting the count, which is sourced from Sushanth directly.
+//
 // Archival ledger — chronologically grouped, with featured milestones
 // marked for cinematic hierarchy (Presidential, MIT TR-35, NASA, TED,
 // Intel IRIS, MIT Fab-10/11, BRICS, G20, Silicon Valley). Featured
@@ -243,7 +264,7 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2011",
     entries: [
-      { title: "NASA Award", institution: "NASA · Kennedy Space Center", featured: true },
+      { title: "NASA Award", institution: "NASA · Kennedy Space Center, Florida", featured: true },
       { title: "DLF–Pramerica Spirit of Community Award", institution: "Prudential · DLF Foundation" },
       { title: "Eureka-11 · IIT-Bombay Business Plan Contest Award", institution: "E-Cell · IIT Bombay" },
     ],
@@ -836,12 +857,16 @@ function RecognitionsPage() {
               transition={{ duration: 1.1, delay: 0.1 + idx * 0.08, ease: [0.19, 1, 0.22, 1] }}
               className="flex flex-col items-start md:items-center text-left md:text-center"
             >
-              <span className="font-display text-[26px] md:text-[36px] leading-none tracking-[-0.04em] text-foreground/92">
+              {/* div, not span — see the note in StatsAuthorityBlock. Flex
+                  blockifies these either way, so nothing moves; as spans they
+                  extracted as "27Recognitions of Record", "06Presidential
+                  Awards", "03Presidents of India". */}
+              <div className="font-display text-[26px] md:text-[36px] leading-none tracking-[-0.04em] text-foreground/92">
                 {s.value}
-              </span>
-              <span className="mt-2.5 font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground/60">
+              </div>
+              <div className="mt-2.5 font-mono text-[10px] uppercase tracking-[0.36em] text-muted-foreground/60">
                 {s.label}
-              </span>
+              </div>
             </motion.li>
           ))}
         </ul>
@@ -997,9 +1022,12 @@ function RecognitionsPage() {
                       }`}
                     >
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 mb-6">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/55">
+                        {/* div, not span — a flex child either way, so nothing
+                            moves; as a span it welded to the category chip and
+                            read "Milestone 01Presidential". */}
+                        <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/55">
                           Milestone {String(i + 1).padStart(2, "0")}
-                        </span>
+                        </div>
                         {/* Category chip — archival classification */}
                         <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[10px] uppercase tracking-[0.3em] ${
                           m.category === "Presidential"

@@ -279,9 +279,8 @@ function OriginHero() {
             Building from India — for the world.
           </p>
           {/* Credibility strip — value+label pairs separated by · dots.
-              Dot is placed BETWEEN spans (not inside) so spacing is
-              consistent regardless of flex-gap or font-size.
-              Result: 06 Presidential Awards · 25 Innovations · 06 Ventures · TED · MIT TR · Global Recognition
+              Renders as: 06 Presidential Awards · 25 Innovations · 06 Ventures
+              · TED · MIT TR · Global Recognition
 
               The labels used to be `hidden sm:inline`, so on every phone this
               read as "06 · 25 · 06 · TED · MIT TR · Global Recognition" —
@@ -290,28 +289,52 @@ function OriginHero() {
               it is not the claim at all, and it is unreadable to a screen
               reader and to search on any width.
 
-              They are always shown now. Phones get a shorter label for the
-              two that would otherwise wrap awkwardly at 360px, and the row
-              wraps rather than scrolls. */}
+              The fix for that was a second, shorter label behind a media
+              query, which put BOTH strings in the document and had CSS hide
+              one. On screen that worked; in the text stream every label
+              appeared twice. One label now, at one length, and the row wraps
+              rather than truncating — `flex-wrap` with `gap-y-2` is what pays
+              for that at 360px.
+
+              "Presidential Awards" is the site's umbrella term, matching the
+              ledger's own formal titles (President of India Award / Former
+              President of India Award, NIF) rather than paraphrasing them. */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
             {[
-              { v: "06",                  l: "Presidential Awards", short: "Presidential" },
-              { v: "25",                  l: "Innovations",         short: "Innovations" },
-              { v: "06",                  l: "Ventures",            short: "Ventures" },
+              { v: "06",                  l: "Presidential Awards" },
+              { v: "25",                  l: "Innovations" },
+              { v: "06",                  l: "Ventures" },
               { v: "TED",                 l: "" },
               { v: "MIT TR",              l: "" },
               { v: "Global Recognition",  l: "" },
-            ].map((s, i) => (
+            ].map((s, i, arr) => (
               <span key={i} className="inline-flex items-center whitespace-nowrap">
-                {i > 0 && (
-                  <span className="mx-0.5 font-mono text-[10px] text-foreground/25" aria-hidden>·</span>
-                )}
+                {/* Both a margin AND a literal space, because they fix two
+                    different things and neither covers the other. The margin is
+                    what you see: these are flex items, so a leading space in an
+                    item's own text is trimmed and renders as nothing. The
+                    literal space is what extractors read, and margins are
+                    invisible to the text
+                    stream: with mx-0.5 and ml-1.5 doing the spacing, the strip
+                    looked correct on screen but extracted as
+                    "06PresidentialPresidential Awards·25InnovationsInnovations·…"
+                    — no word boundaries at all, and every label twice, because
+                    the short and long forms were both in the DOM with CSS
+                    hiding one. That is what copy-paste, search engines and any
+                    reader that does not run CSS receive. Same defect, and same
+                    fix, as the role separator on /ventures. */}
                 <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
                 {s.l && (
-                  <>
-                    <span className="sm:hidden ml-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground/55">{s.short}</span>
-                    <span className="hidden sm:inline ml-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/50">{s.l}</span>
-                  </>
+                  <span className="ml-1.5 font-mono text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.18em] text-muted-foreground/55">
+                    {" "}{s.l}
+                  </span>
+                )}
+                {/* Separator trails its item rather than leading the next one.
+                    Leading it meant a wrap put the dot at the start of the
+                    second line — "· 06 Ventures · TED …" — which reads as a
+                    bullet list rather than a continued run. */}
+                {i < arr.length - 1 && (
+                  <span className="mx-2 sm:mx-2.5 font-mono text-[10px] text-foreground/25">{" · "}</span>
                 )}
               </span>
             ))}

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/evidence-standards")({
       {
         property: "og:description",
         content:
-          "A plain-language reference for how development stage and evidence labels are applied across the 23-technology Innovations catalogue.",
+          "A plain-language reference for how development stage and evidence labels are applied across the 25-technology Innovations catalogue.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/evidence-standards" },

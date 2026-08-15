@@ -225,12 +225,15 @@ function VenturesPage() {
             key={s.label}
             className="relative flex flex-col items-center gap-1.5 px-4 py-6 md:py-8 bg-[oklch(0.055_0.006_240)]"
           >
-            <span className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
+            {/* div, not span — flex blockifies them, so this is a no-op on
+                screen and a real word boundary in the text stream. As spans
+                these read "06Operating Vehicles", "01Closed Loop Ecosystem". */}
+            <div className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
               {s.value}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/60">
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/60">
               {s.label}
-            </span>
+            </div>
           </div>
         ))}
       </motion.div>
@@ -314,8 +317,10 @@ function VenturesPage() {
               <div>
               {/* Code · Year · Industry layer */}
               <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/50">
-                <span>{v.code} · {v.year}</span>
-                <span className="text-accent/70">{v.category}</span>
+                {/* divs — flex children, so unchanged on screen; as spans the
+                    row read "01 · 2025Materials". */}
+                <div>{v.code} · {v.year}</div>
+                <div className="text-accent/70">{v.category}</div>
               </div>
 
               {/* Name */}

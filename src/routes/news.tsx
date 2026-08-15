@@ -434,11 +434,13 @@ function LeadFeature({ item }: { item: PressItem }) {
     >
       {/* Dateline strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.18] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/60">
-        <span className="text-accent/90">★ Featured Story</span>
-        <span className="hidden md:inline text-muted-foreground/45">
+        {/* divs — flex children, identical on screen; as spans the dateline
+            welded into "…June 11, 2022The Global Indian". */}
+        <div className="text-accent/90">★ Featured Story</div>
+        <div className="hidden md:block text-muted-foreground/45">
           {item.category} · {item.date}
-        </span>
-        <span className="text-primary/80">{item.outlet}</span>
+        </div>
+        <div className="text-primary/80">{item.outlet}</div>
       </div>
 
       <a
@@ -501,11 +503,11 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       className="group not-prose mt-7 block"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-foreground/[0.1] py-3 font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
-        <span className="text-accent/70">Latest Dispatch</span>
-        <span className="text-muted-foreground/40 hidden md:inline">
+        <div className="text-accent/70">Latest Dispatch</div>
+        <div className="text-muted-foreground/40 hidden md:block">
           {item.category} · {item.date}
-        </span>
-        <span className="text-primary/70">{item.outlet}</span>
+        </div>
+        <div className="text-primary/70">{item.outlet}</div>
       </div>
       <div className="mt-5 grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
         <MediaPlate
@@ -603,12 +605,15 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
             className="md:hidden mb-3 aspect-[16/9] rounded-sm border border-foreground/[0.08]"
           />
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
+            {/* divs, and the separator keeps a real leading space. The gap
+                between these was gap-x-3 alone, so the line extracted as
+                "ProductNation · iSPIRT· Profile" — no boundary before the dot. */}
+            <div className="font-mono text-[10px] uppercase tracking-[0.36em] text-primary/85">
               {item.outlet}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/55">
-              · {item.tag}
-            </span>
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground/55">
+              {" · "}{item.tag}
+            </div>
           </div>
           <h3
             className={`mt-2 font-display leading-[1.18] tracking-[-0.015em] text-foreground/92 transition-colors duration-500 group-hover:text-gradient ${
@@ -635,6 +640,11 @@ function dateOrder(d: string): number {
 }
 
 function NewsPage() {
+  // The lead says "sixteen years", derived rather than chosen: the dispatches
+  // in this file run 2010 to 2026, so the elapsed span is 16 — the same number
+  // the counter strip carries. It read "fourteen", which matched neither the
+  // data nor the counter beside it. Recompute both if the earliest or latest
+  // entry ever changes.
   return (
     <CinematicPageShell
       eyebrow="News · Media Intelligence · Vol. XV"
@@ -643,7 +653,7 @@ function NewsPage() {
           The press<br className="hidden md:inline" /> of record.
         </>
       }
-      lead="An editorial archive of coverage across fourteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
+      lead="An editorial archive of coverage across sixteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
       overlay={0.68}
     >

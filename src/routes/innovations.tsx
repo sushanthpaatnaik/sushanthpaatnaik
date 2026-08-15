@@ -373,15 +373,19 @@ function InnovationsPage() {
                 transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
                 className="flex flex-col gap-1.5"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+                {/* div, not span. Flex blockifies these so the layout is
+                    identical, but as spans the three lines extracted with no
+                    word boundaries: "Atomic Layers1Monolayer carbon",
+                    "Programs of Record25Catalogued formulations". */}
+                <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
                   {s.k}
-                </span>
-                <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
+                </div>
+                <div className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
                   {s.v}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
+                </div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
                   {s.note}
-                </span>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -660,15 +664,19 @@ function InnovationsPage() {
                 transition={{ duration: 0.8, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
                 className="flex flex-col gap-1.5"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
+                {/* div, not span. Flex blockifies these so the layout is
+                    identical, but as spans the three lines extracted with no
+                    word boundaries: "Atomic Layers1Monolayer carbon",
+                    "Programs of Record25Catalogued formulations". */}
+                <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
                   {s.k}
-                </span>
-                <span className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
+                </div>
+                <div className="font-display text-3xl md:text-4xl tracking-[-0.03em] text-foreground/95">
                   {s.v}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
+                </div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
                   {s.note}
-                </span>
+                </div>
               </motion.div>
             ))}
           </div>

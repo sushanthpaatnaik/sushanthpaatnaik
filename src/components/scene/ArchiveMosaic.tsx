@@ -121,14 +121,17 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
                 {item.recognition}
               </span>
             )}
+            {/* div, not a `block` span. The break here is CSS, so without it
+                the caption ran together: "Presidential Award · 2009Presented by
+                Dr. A.P.J. Abdul Kalam". */}
             {item.presenter && (
-              <span
-                className={`mt-2 block text-foreground/75 tracking-[-0.005em] ${
+              <div
+                className={`mt-2 text-foreground/75 tracking-[-0.005em] ${
                   isHero ? "text-[13.5px] md:text-[14.5px] leading-snug" : "text-[11.5px] leading-snug line-clamp-1"
                 } font-display italic`}
               >
                 {item.presenter}
-              </span>
+              </div>
             )}
             {item.venue && (
               <span
@@ -640,13 +643,19 @@ export function StatsAuthorityBlock({
             transition={{ duration: 0.8, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
             className="flex flex-col items-center justify-center gap-2 bg-[oklch(0.05_0.006_245)] px-4 py-10"
           >
-            <span className="font-display text-4xl md:text-6xl tracking-[-0.035em] text-foreground/95">
+            {/* div, not span. These are flex children so CSS blockifies them
+                either way and nothing moves on screen — but a <span> is inline
+                in the document, so every reader that does not run CSS gets the
+                value welded to its noun: "60+Keynotes since 2010",
+                "14+Years of industrial research", "6Presidential Awards".
+                That is what copy-paste and search engines receive. */}
+            <div className="font-display text-4xl md:text-6xl tracking-[-0.035em] text-foreground/95">
               {c.value}
-            </span>
-            <span className="h-px w-6 bg-accent/40" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/60 text-center">
+            </div>
+            <span className="h-px w-6 bg-accent/40" aria-hidden />
+            <div className="font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/60 text-center">
               {c.label}
-            </span>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -851,17 +860,20 @@ export function PresidentialTriptych({
                 № {String(i + 1).padStart(2, "0")}
               </span>
             </div>
+            {/* divs — flex children, so identical on screen. As spans the three
+                lines welded: "Presidential Award · 2009Presented by Dr. A.P.J.
+                Abdul KalamRashtrapati Bhavan · New Delhi". */}
             <figcaption className="flex flex-col gap-2 p-6">
-              <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
+              <div className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
                 {item.recognition ?? item.meta}
-              </span>
-              <span className="font-display text-[18px] leading-[1.18] tracking-[-0.01em] text-foreground/95">
+              </div>
+              <div className="font-display text-[18px] leading-[1.18] tracking-[-0.01em] text-foreground/95">
                 {item.presenter ?? item.caption}
-              </span>
-              <span className="mt-1 h-px w-8 bg-accent/40" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55">
+              </div>
+              <span className="mt-1 h-px w-8 bg-accent/40" aria-hidden />
+              <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/55">
                 {item.venue ?? item.institution}
-              </span>
+              </div>
             </figcaption>
           </motion.figure>
         ))}

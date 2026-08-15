@@ -22,7 +22,7 @@ export const stageExplainer: Record<Stage, string> = {
 
 /**
  * Evidence-label groups — every distinct `status` string used across the
- * 23-item catalogue, grouped by what kind of claim it makes. Each `example`
+ * 25-item catalogue, grouped by what kind of claim it makes. Each `example`
  * is a verbatim status string that actually appears on an Innovations card;
  * nothing here is invented vocabulary the site doesn't otherwise use.
  */

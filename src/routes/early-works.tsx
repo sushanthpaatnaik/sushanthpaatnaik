@@ -534,14 +534,20 @@ function HeroSection() {
           transition={{ duration: 1.5, delay: 0.08, ease: EASE }}
           className="font-display leading-[0.91] tracking-[-0.04em] mb-10"
         >
+          {/* Each line carries a trailing {" "}. These have to stay <span>s —
+              an <h1> takes phrasing content only, so the line breaks come from
+              `block`, which is CSS. Without CSS the four lines run together and
+              the headline extracts as "Before Graphene.Before Deep Tech.There
+              were ideas that solvedreal human problems." A trailing space
+              collapses at the end of a rendered line, so nothing moves. */}
           <span className="block text-[clamp(2.6rem,8.5vw,6.5rem)] text-gradient">
-            Before Graphene.
+            Before Graphene.{" "}
           </span>
           <span className="block text-[clamp(2.6rem,8.5vw,6.5rem)] text-gradient">
-            Before Deep Tech.
+            Before Deep Tech.{" "}
           </span>
           <span className="block text-[clamp(2rem,6vw,4.8rem)] text-foreground/55 mt-2">
-            There were ideas that solved
+            There were ideas that solved{" "}
           </span>
           <span className="block text-[clamp(2rem,6vw,4.8rem)] text-foreground/55">
             real human problems.
