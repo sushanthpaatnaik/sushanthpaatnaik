@@ -9,7 +9,12 @@ import backdrop from "@/assets/scene-media-wall.webp";
 
 import mitTrLogo from "@/assets/outlets/mit-tr-color.webp";
 import nifLogo from "@/assets/outlets/nif-color.webp";
-import ioclLogo from "@/assets/outlets/iocl.webp";
+/* Reversed lockup: the stock mark's navy ring and wordmark all but vanish on
+   the near-black plate every other logo here sits on, which is why this one
+   alone was on a white card. The roundel keeps its own colours untouched — it
+   already reads on dark — and only the ring and wordmark are lifted to a pale
+   blue-white, the way a brand's own reversed lockup would be. */
+import ioclLogo from "@/assets/outlets/iocl-reversed.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
@@ -100,8 +105,7 @@ const voices: Voice[] = [
     personTitle: "Eastern Zone",
     organization: "Indian Oil Corporation (IOCL)",
     logo: ioclLogo,
-    logoWhiteBg: true,
-    logoScale: 0.92,
+    logoScale: 1.0,
   },
   {
     category: "Media · Entrepreneurship",
