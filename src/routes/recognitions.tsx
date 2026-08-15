@@ -172,14 +172,14 @@ const milestones: Milestone[] = [
     year: "2011",
     sortYear: 2011,
     title: "NASA recognition",
-    // Two different places, and the copy has to keep them apart. Kennedy Space
-    // Center is in Florida; the Mobile Quarantine Facility photographed for
-    // this entry is at the U.S. Space & Rocket Center in Huntsville, Alabama.
-    // Because the archive plate for the same year is captioned with Huntsville
-    // while this milestone was captioned "NASA · Kennedy Space Center", the two
-    // read as one venue and put Kennedy Space Center in Alabama. The institution
-    // line no longer names a site, so the body is the only thing that does.
-    body: "International recognition from NASA for breakthrough engineering in human–machine interfaces, received at Kennedy Space Center in Florida. The visit also took in the Apollo-era Mobile Quarantine Facility held at the U.S. Space & Rocket Center in Huntsville, Alabama — a separate site, and the one photographed here.",
+    // One place, not two. This entry used to name Kennedy Space Center, which
+    // is in Florida, while the archive plate for the same year is captioned
+    // Huntsville — the two read as one venue and effectively put Kennedy Space
+    // Center in Alabama. Confirmed with the source: it was Huntsville, Alabama.
+    // Kennedy Space Center is not part of this entry; the Mobile Quarantine
+    // Facility photographed here is at the U.S. Space & Rocket Center, which is
+    // the Huntsville site. Every reference on the page now names Huntsville.
+    body: "International recognition from NASA for breakthrough engineering in human–machine interfaces, received in Huntsville, Alabama — home of the Apollo-era Mobile Quarantine Facility held at the U.S. Space & Rocket Center, photographed here.",
     image: honorNasa,
     institution: "NASA · United States",
     category: "Research",
@@ -264,7 +264,7 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2011",
     entries: [
-      { title: "NASA Award", institution: "NASA · Kennedy Space Center, Florida", featured: true },
+      { title: "NASA Award", institution: "NASA · Huntsville, Alabama", featured: true },
       { title: "DLF–Pramerica Spirit of Community Award", institution: "Prudential · DLF Foundation" },
       { title: "Eureka-11 · IIT-Bombay Business Plan Contest Award", institution: "E-Cell · IIT Bombay" },
     ],
@@ -1155,7 +1155,7 @@ function RecognitionsPage() {
           number="II"
           era="2010 – 2014"
           title="Global stages."
-          description="TED@Bangalore, TEDx, NASA Kennedy Space Center, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
+          description="TED@Bangalore, TEDx, NASA Huntsville, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraGlobal}
