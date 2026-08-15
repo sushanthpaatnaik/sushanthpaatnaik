@@ -1031,7 +1031,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
             to="/contact"
             className="group inline-flex items-center gap-3 border-b border-foreground/35 pb-2 text-[13px] uppercase tracking-[0.34em] text-foreground/95 transition-colors hover:border-foreground/70 active:border-foreground/70"
           >
-            <span>Begin a conversation</span>
+            <span>Begin a conversation</span>{" "}
             <span className="transition-transform duration-300 group-active:translate-x-1" aria-hidden>→</span>
           </Link>
 
