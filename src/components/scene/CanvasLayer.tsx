@@ -678,14 +678,25 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // trigger.
       if (chapter !== lastChapterRef.current) {
         lastChapterRef.current = chapter;
-        // Region preloading is desktop-only now. On touch the sliding window
-        // both loads and evicts, and a chapter-triple region load would queue
-        // ~260 full-density frames the window is about to throw away.
-        if (!isTouch) {
-          loadChapterRegion(chapter);
-          loadChapterRegion(chapter + 1);
-          loadChapterRegion(chapter - 1);
-        }
+        // Chapter-region preloading is gone on both platforms now. The
+        // argument that removed it for touch — "a chapter-triple region load
+        // would queue ~260 full-density frames the window is about to throw
+        // away" — was always true of desktop as well, and the numbers say so:
+        // a chapter triple spans ~228 of the 381 frames while the retention
+        // window is 141 wide, so the loader was guaranteed to evict its own
+        // work before the playhead reached it and then re-queue it at the next
+        // chapter change.
+        //
+        // Measured at 1440x900, scrolling 0 → 4500px of a 9000px page: 471
+        // frame requests against ~190 frames actually crossed, i.e. 2.5x
+        // redundant. Every one of those is a fetch and a createImageBitmap
+        // decode, which is where the blocking on this page lives — 19 long
+        // tasks totalling 2128ms during a 3s wheel gesture, against 1 task of
+        // 85ms with the sequence stubbed out.
+        //
+        // Nothing is lost. The frame window below already tops up outward from
+        // the playhead every 8 frames with a radius of 70, which is most of a
+        // chapter of runway in the scroll direction — more than a fetch needs.
       }
 
       // Slide the retained window with the playhead, and top it up. Runs off
