@@ -148,7 +148,10 @@ const ventures: Venture[] = [
     href: "https://magppie.com/",
     logo: magppieLogo,
     logoScale: 1.00,
-    invert: true,
+    // No invert. The file Magppie serves is the WHITE wordmark — measured, its
+    // opaque pixels are pure 255,255,255 — meant for dark headers. Inverting it
+    // produced black type on a near-black plate, which is why this one rendered
+    // as an empty box.
   },
 ];
 

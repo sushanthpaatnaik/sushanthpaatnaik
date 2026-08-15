@@ -105,7 +105,12 @@ const voices: Voice[] = [
     personTitle: "Eastern Zone",
     organization: "Indian Oil Corporation (IOCL)",
     logo: ioclLogo,
-    logoScale: 1.0,
+    // 1.6, not 1.0. Every other mark here is a wide wordmark bound by
+    // maxWidth; this one is taller than it is wide, so maxHeight bound first
+    // and it rendered 43x52 in a 108px plate — visibly the smallest thing on
+    // the page, with the Devanagari band collapsing into a smudge. At 1.6 it
+    // renders 69x83 and the band resolves.
+    logoScale: 1.6,
   },
   {
     category: "Media · Entrepreneurship",

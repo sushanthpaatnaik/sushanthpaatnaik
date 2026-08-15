@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import type Lenis from "lenis";
 import sceneSpark from "@/assets/story-01-spark.webp";
-import { CHAPTER_BANDS, N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBands";
+import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBands";
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
 // The homepage plays one continuous film across the whole scroll instead of
@@ -54,20 +54,6 @@ const SEQUENCE_PATH = "founder-film";
 // interpolation, which is harmless because the spacing stays uniform.
 const FRAME_COUNT   = 381;
 const LAST_FRAME    = FRAME_COUNT - 1;
-
-const SCROLL_BREAKS: number[] = [CHAPTER_BANDS[0][0], ...CHAPTER_BANDS.map(b => b[1])];
-
-// Frame range owned by each text chapter, derived from the linear mapping so
-// it stays in lock-step with getFrameIndex by construction. This is the
-// "group" of the old per-chapter-clip system, redefined as a slice of the one
-// continuous sequence instead of a separate file: loading is still triggered
-// by chapter boundary crossings (proven to work under throttling), it just no
-// longer needs a boundary-aligned hard cut in the asset itself.
-const CHAPTER_FRAME_RANGES: ReadonlyArray<readonly [number, number]> =
-  SCROLL_BREAKS.slice(0, -1).map((s, i) => [
-    Math.round(LAST_FRAME * s),
-    Math.round(LAST_FRAME * SCROLL_BREAKS[i + 1]),
-  ] as const);
 
 function getFrameIndex(sp: number): number {
   const s = Math.max(0, Math.min(sp, 1));
@@ -209,7 +195,6 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   // chapterLoading[chapterIdx] — true once a load pass for that chapter's
   // frame region has started. Mirrors the old per-group loadingRef exactly,
   // just keyed to a slice of the single sequence instead of a separate file.
-  const chapterLoadingRef = useRef<boolean[]>(Array(N_CHAPTERS).fill(false));
   // In-flight fetch() controllers, keyed by frame index — lets eviction
   // actually cancel a request instead of only discarding it once it
   // finishes. See the note above evictExcept for why this matters under
@@ -297,6 +282,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const evictExcept = (lo: number, hi: number) => {
       for (let f = 0; f < FRAME_COUNT; f++) {
         if (f >= lo && f <= hi) continue;
+        // Drop queued-but-unstarted work for this frame too. Without it the
+        // pump would happily go on fetching frames the window has already
+        // ruled out, which is the same wasted bandwidth the abort below
+        // exists to prevent — just one stage earlier.
+        pending.delete(f);
         if (loadingRef.current[f] && !bitmapsRef.current[f]) {
           abortControllersRef.current.get(f)?.abort();
           abortControllersRef.current.delete(f);
@@ -317,14 +307,14 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // path where criticalCount frames never fully loaded.
       onProgress?.(100);
       onReady?.();
-      // Prefetch only as far ahead as the retention window will actually
-      // keep. Desktop used to start every chapter here, which was right
-      // when it retained the whole sequence; with a sliding window those
-      // far frames would be discarded on arrival and re-fetched later, so
-      // it now pulls one chapter ahead like touch does. The tick's
-      // chapter-change handler brings in idx±1 as the reader advances.
-      loadChapterRegion(1);
-      lastChapterRef.current = -1; // re-trigger the chapter-change block on next tick
+      // No second-chapter prefetch. This used to call loadChapterRegion(1),
+      // which is where 76 of the 149 pre-scroll frames came from. The
+      // retention window already queues +/-RETAIN_RADIUS around the playhead
+      // on its first tick and keeps refilling as the reader moves, so a whole
+      // extra chapter bought nothing that the window would not fetch anyway —
+      // it only bought it sooner, at the cost of saturating the connection
+      // before the first gesture.
+      lastChapterRef.current = -1;
     };
 
     // Hard fallback — dismiss loader if critical frames never arrive.
@@ -427,6 +417,90 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     };
 
     // ── Frame loader ─────────────────────────────────────────────────────────
+    // ── Bounded, playhead-prioritised fetch queue ────────────────────────────
+    //
+    // Everything below used to call loadFrame directly, which fires a fetch
+    // per call with no ceiling. Measured before this: 132 concurrent frame
+    // requests on desktop and 56 on mobile, against the 6-ish the chapter
+    // loader's serial batching was written to enforce. The batching was real
+    // but the retention top-up defeated it — on each recentre it walked the
+    // whole +/-70 window in one tick, up to 141 loadFrame calls.
+    //
+    // On a fast link unbounded concurrency is merely wasteful. On a slow one
+    // it is the whole problem: with 76 requests sharing 1.6 Mbit, the frame
+    // the reader is looking at completes no sooner than the 76th, because
+    // they all progress together. Measured on a Slow 4G profile, six frames
+    // arrived in ten seconds.
+    //
+    // So: a pending set plus a pump that keeps at most MAX_INFLIGHT fetches
+    // alive. Priority is not stored — it is computed at dequeue time as
+    // distance from wherever the playhead is *now*. That means a scrollbar
+    // jump reprioritises the entire backlog for free, with no queue to
+    // rebuild and no requests to cancel: whatever is nearest the new position
+    // simply goes next.
+    // The cap adapts to measured throughput, because a fixed one cannot serve
+    // both links. Capping at 12 fixed the desktop waste but barely moved Slow
+    // 4G: at ~200 KB/s and 176 KB a frame, twelve in parallel means all twelve
+    // finish together at ~10s rather than the first finishing at 0.9s.
+    // Measured on that profile, the fourth frame — the one that dismisses the
+    // preloader — landed at 7.5s.
+    //
+    // Throughput is measured here rather than read from
+    // navigator.connection.effectiveType, which is unevenly implemented, absent
+    // on desktop Safari and Firefox, and reports the network *class* rather
+    // than the bandwidth actually available to this tab. An EWMA over frames
+    // this page has really fetched needs no API and adapts to a link that
+    // degrades mid-visit.
+    const MAX_INFLIGHT = isTouch ? 6 : 12;
+    // Ramp UP from a small cap rather than down from a large one. Starting
+    // optimistic made the adaptation useless: the very first burst is the one
+    // that decides how long the preloader sits there, and it goes out before
+    // any sample exists. Measured on Slow 4G, starting at 12 put the fourth
+    // frame — the one that dismisses the loader — at 7.5s, and the cap only
+    // dropped afterwards, when it no longer mattered.
+    //
+    // Starting small costs a fast link almost nothing: four frames at ~40ms
+    // each is one extra round-trip before the first sample raises the cap.
+    const START_INFLIGHT = isTouch ? 3 : 4;
+    let kbps = 0;                        // 0 = unmeasured
+    const noteThroughput = (bytes: number, ms: number) => {
+      if (ms <= 0 || bytes <= 0) return;
+      const sample = bytes / 1024 / (ms / 1000);
+      kbps = kbps === 0 ? sample : kbps * 0.7 + sample * 0.3;
+    };
+    // Few enough slots that the frames the reader needs first complete first,
+    // instead of every frame progressing together and none arriving.
+    const capNow = () =>
+      kbps === 0 ? START_INFLIGHT
+      : kbps < 350 ? 2
+      : kbps < 900 ? 4
+      : MAX_INFLIGHT;
+
+    const pending = new Set<number>();
+    let inFlight = 0;
+
+    const enqueue = (fi: number) => {
+      if (fi < 0 || fi >= FRAME_COUNT) return;
+      if (bitmapsRef.current[fi] || loadingRef.current[fi]) return;
+      pending.add(fi);
+    };
+
+    const pump = () => {
+      while (inFlight < capNow() && pending.size > 0) {
+        const head = playheadRef.current >= 0 ? playheadRef.current : 0;
+        let best = -1, bestD = Infinity;
+        for (const f of pending) {
+          const d = Math.abs(f - head);
+          if (d < bestD) { bestD = d; best = f; }
+        }
+        if (best < 0) return;
+        pending.delete(best);
+        if (bitmapsRef.current[best] || loadingRef.current[best]) continue;
+        inFlight++;
+        loadFrame(best).finally(() => { inFlight--; pump(); });
+      }
+    };
+
     const loadFrame = (fi: number): Promise<void> => {
       if (fi < 0 || fi >= FRAME_COUNT) return Promise.resolve();
       if (loadingRef.current[fi] || bitmapsRef.current[fi]) return Promise.resolve();
@@ -448,9 +522,16 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         ...(fi === 0 || isCritical ? { priority: "high" as const } : {}),
         ...(controller ? { signal: controller.signal } : {}),
       };
+      const startedAt = performance.now();
       return fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.webp`, opts)
         .then(r  => r.blob())
-        .then(b  => makeBitmap(b))
+        .then(b  => {
+          // Timed at the blob, not after decode: this is meant to measure the
+          // link, and folding decode time in would shrink the queue on a slow
+          // CPU, which is the opposite of what helps there.
+          noteThroughput(b.size, performance.now() - startedAt);
+          return makeBitmap(b);
+        })
         .then(bmp => {
           abortControllersRef.current.delete(fi);
           if (destroyed || genRef.current !== gen) { bmp.close(); return; }
@@ -530,95 +611,12 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           }
         });
     };
-
-    // ── Bulk loaders ─────────────────────────────────────────────────────────
-    // shouldContinue is checked before every batch so a chapter's own load
-    // sequence can self-terminate once it's no longer relevant, instead of
-    // grinding through its full frame list regardless. Without this, a
-    // chapter's async batch loop kept running after the user scrolled well
-    // past it — each batch spawning fresh fetches for frames that were
-    // immediately stale, contending for the same throttled bandwidth the
-    // *current* chapter needed. evictExcept's abort() only cancels frames
-    // already in flight at the moment it runs; it can't stop a loop from
-    // starting new ones a moment later.
-    const runBatches = async (frames: number[], size: number, shouldContinue?: () => boolean) => {
-      for (let i = 0; i < frames.length; i += size) {
-        if (destroyed) return;
-        if (shouldContinue && !shouldContinue()) return;
-        await Promise.all(frames.slice(i, i + size).map(loadFrame));
-      }
-    };
-
-    // ── Chapter-region loader ────────────────────────────────────────────────
-    // Loads one chapter's slice of the sequence — the direct equivalent of
-    // the old per-file loadGroup(), just operating on a range within the one
-    // shared frame array instead of a separate folder. Same guard shape
-    // (loadingRef → chapterLoadingRef), same "defer until unblocked" rule,
-    // same coverage-first ordering on touch. Triggered by chapter-boundary
-    // crossings in tick() below, exactly like the old group system was
-    // triggered by group-boundary crossings — that trigger shape is what
-    // was actually proven robust under throttling; a generic scroll-position
-    // sliding window (tried first here) was not, because sparse anchors
-    // spread across the *whole* 476-frame sequence kept getting evicted the
-    // instant they fell outside a window sized for local density, measured
-    // as an 18-of-41-sample freeze.
-    const loadChapterRegion = (idx: number) => {
-      if (idx < 0 || idx >= N_CHAPTERS) return;
-      if (chapterLoadingRef.current[idx]) return;
-      // Defer all non-critical chapters until the loader has exited.
-      // Without this the first RAF tick would start every chapter's
-      // fetches at once, competing with chapter-0's critical frames for
-      // HTTP/2 streams. notifyReady() explicitly loads the next chapter(s)
-      // once the loader clears.
-      if (idx > 0 && !notifiedRef.current) return;
-      chapterLoadingRef.current[idx] = true;
-      const [fIn, fOut] = CHAPTER_FRAME_RANGES[idx];
-
-      // True while idx is still within active±1 of wherever the user
-      // actually is *now* (not wherever they were when this region load
-      // started). Touch only — desktop never abandons a region early.
-      const stillRelevant = () =>
-        !isTouch || lastChapterRef.current < 0 || Math.abs(idx - lastChapterRef.current) <= 1;
-
-      const frames: number[] = [];
-      for (let f = fIn; f < fOut; f += frameStep) frames.push(f);
-      if (frames[frames.length - 1] !== fOut) frames.push(fOut);
-
-      // First frame of the region loads alone so the canvas has *something*
-      // from this chapter the moment it's reachable, before the rest of the
-      // region arrives.
-      loadFrame(frames[0]).then(() => {
-        if (!stillRelevant()) { chapterLoadingRef.current[idx] = false; return; }
-        const rest = frames.slice(1);
-        if (isTouch) {
-          // COVERAGE-FIRST within the region: a handful of anchors spread
-          // across just this chapter's own (much smaller) range, then fill.
-          // Serial batches of 6 so we never saturate the browser's HTTP/2
-          // connection pool (6 concurrent streams per origin on mobile).
-          // shouldContinue lets either pass bail out early once the region
-          // stops being relevant — see the runBatches comment above.
-          const ANCHOR_COUNT = 8;
-          const stride = Math.max(1, Math.floor(rest.length / ANCHOR_COUNT)) || 1;
-          const anchors: number[] = [];
-          for (let i = 0; i < rest.length; i += stride) anchors.push(rest[i]);
-          const anchorSet = new Set(anchors);
-          const fill = rest.filter(f => !anchorSet.has(f));
-          runBatches(anchors, 6, stillRelevant).then(() => {
-            if (!stillRelevant()) { chapterLoadingRef.current[idx] = false; return; }
-            return runBatches(fill, 6, stillRelevant);
-          }).then(() => {
-            // Abandoned mid-way — clear the flag so a later re-entry (e.g.
-            // scrolling back) restarts the load instead of permanently
-            // no-op'ing on a chapter that never finished.
-            if (!stillRelevant()) chapterLoadingRef.current[idx] = false;
-          });
-        } else {
-          // Desktop: fire the whole region in parallel — HTTP/2
-          // multiplexing on fast connections makes this fastest.
-          rest.forEach(loadFrame);
-        }
-      });
-    };
+    // The chapter-region loader that used to live here is gone. It batched
+    // touch fetches in serial groups of six, which was the right instinct,
+    // but the retention top-up walked the whole window in one tick and
+    // defeated it — measured at 132 concurrent requests on desktop. The
+    // bounded queue above now owns every fetch, so a second loader with its
+    // own pacing rules would only be able to disagree with it.
 
     // ── RAF render loop ──────────────────────────────────────────────────────
     const tick = () => {
@@ -740,8 +738,8 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // The top-up is not optional. Retention here is frame-based while
       // loading is chapter-based and one-shot, so a chapter whose frames
       // arrive while the playhead is still far away has them discarded on
-      // arrival — and chapterLoadingRef is already set, so the region loader
-      // will never ask for them again. Without this loop the window empties
+      // arrival, and nothing would ask for them again. Without this loop the
+      // window empties
       // out behind the reader: measured 6% frame-change through Future
       // Systems with static runs of 19 samples. loadFrame() no-ops on
       // anything already loaded or in flight, so this is an array check per
@@ -768,11 +766,12 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         // the ones they are about to scroll into. Walking outward puts the
         // next frame first and the far edges of the window last, so a
         // backed-up queue still delivers what is on screen.
-        loadFrame(fi);
+        enqueue(fi);
         for (let d = 1; d <= RETAIN_RADIUS; d++) {
-          if (fi + d <= hi) loadFrame(fi + d);
-          if (fi - d >= lo) loadFrame(fi - d);
+          if (fi + d <= hi) enqueue(fi + d);
+          if (fi - d >= lo) enqueue(fi - d);
         }
+        pump();
       }
 
       // Redraw when the film advances *or* the grade steps. Both are baked
@@ -834,10 +833,19 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       drawBitmap(bmp, gradeIdx, gradeAlpha, partnerBmp, blendAlpha);
     };
 
-    // Kick off: load chapter 0's region (frame 0 first, so notifyReady fires
-    // promptly and the canvas always has something to draw) and start the
-    // RAF loop.
-    loadChapterRegion(0);
+    // Kick off with a bounded buffer around the opening frame, not a whole
+    // chapter. loadChapterRegion(0) queued 76 frames and notifyReady queued
+    // chapter 1's 76 more, so 149 frames — about 26 MB on desktop — were
+    // downloading before the visitor had scrolled a single pixel, for a first
+    // screen that needs four of them.
+    //
+    // INITIAL_AHEAD is sized to the runway a reader can consume before the
+    // pump refills: the retention top-up runs every 8 frames of travel, and at
+    // 2.6vh per frame 32 frames is most of a screen of scrolling. The window
+    // takes over from there, so this is a head start, not a budget.
+    const INITIAL_AHEAD = isTouch ? 24 : 32;
+    for (let f = 0; f <= INITIAL_AHEAD; f++) enqueue(f);
+    pump();
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
@@ -851,7 +859,6 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       bitmapsRef.current.forEach(bmp => bmp?.close());
       bitmapsRef.current = Array(FRAME_COUNT).fill(null);
       loadingRef.current = Array(FRAME_COUNT).fill(false);
-      chapterLoadingRef.current = Array(N_CHAPTERS).fill(false);
       notifiedRef.current  = false;
       lastFrameRef.current = -1;
       lastChapterRef.current = -1;
