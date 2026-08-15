@@ -5,12 +5,12 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.webp";
 
-import vinroxLogo from "@/assets/clients/vinrox.webp";
-import vprplLogo from "@/assets/clients/vprpl.webp";
-import tileopediaLogo from "@/assets/clients/tileopedia.webp";
-import wehearLogo from "@/assets/clients/wehear.webp";
-import sunrooofLogo from "@/assets/clients/sunrooof.webp";
-import greenomersLogo from "@/assets/clients/greenomers.webp";
+import vinroxLogo from "@/assets/clients/mono/vinrox.webp";
+import vprplLogo from "@/assets/clients/mono/vprpl.webp";
+import tileopediaLogo from "@/assets/clients/mono/tileopedia.webp";
+import wehearLogo from "@/assets/clients/mono/wehear.webp";
+import sunrooofLogo from "@/assets/clients/mono/sunrooof.webp";
+import greenomersLogo from "@/assets/clients/mono/greenomers.webp";
 
 /* Operating-company marks. Four came from each company's own site; InThinks
    and Starunico were supplied directly, their sites being unreachable
@@ -200,17 +200,38 @@ type Advisory = {
   scale: number;
   /** Px vertical nudge for optical centering. */
   offsetY?: number;
-  /** Logo is dark/black on transparent → invert for dark-bg visibility. */
-  invert?: boolean;
 };
 
+/* Every mark is served from clients/mono: greyscaled and luminance-normalised
+   onto a common 120-248 range, keeping alpha. Not a flat white fill — several
+   carry internal structure (an aperture glyph inside a shield, a waveform)
+   that a fill would collapse to a silhouette. Six brand palettes at 40px read
+   as a clip-art pile; one tonal range reads as a set. It also retires the
+   per-logo `invert` flag, since a dark mark and a light one now normalise to
+   the same place.
+
+   Tileopedia's file was a two-brand lockup — EUROGRES sat beside it behind a
+   divider — which is why that cell carried two logos' worth of 4px type. It is
+   cropped to the Tileopedia mark alone.
+
+   The scales are computed, not eyeballed: each is sqrt(target / ink-at-scale-1)
+   where ink is the mark's opaque pixel area as it renders in the measured
+   109x80 plate, so all six carry the same optical mass rather than the same
+   bounding box. That is the fix for Greenomers reading smaller than Sunrooof —
+   the box was capped at 74% for one and 100% for the other, which is a
+   difference in aspect ratio masquerading as a difference in size.
+
+   The target is 800 px2 of ink, which is not arbitrary: a 7.96:1 wordmark
+   spanning the full plate width carries 817 and cannot carry more, so it sets
+   the ceiling every other mark is matched down to. Aim higher and Sunrooof
+   overflows the cell. */
 const advisories: Advisory[] = [
-  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 1.00, offsetY: 0,  invert: true },
-  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.84, offsetY: -1 },
-  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.88, offsetY: 0 },
-  { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 1.06, offsetY: 2 },
-  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.35, offsetY: 0 },
-  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.00, offsetY: 0 },
+  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0 },
+  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.85, offsetY: -1 },
+  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.78, offsetY: 0 },
+  { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
+  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0 },
+  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.10, offsetY: 0 },
 ];
 
 
@@ -478,7 +499,12 @@ function VenturesPage() {
               {/* ── Logo plate — fixed canvas for optical normalisation ── */}
               <div
                 className="relative z-10 flex items-center justify-center w-full"
-                style={{ height: "64px" }}
+                /* 80px, not 64. Equal optical mass is unreachable in a short
+                   plate: a 0.99:1 icon can only ever be as tall as the plate,
+                   while a 7.96:1 wordmark spends its budget on width. Opening
+                   the plate lets the icon-shaped marks grow into the same mass
+                   instead of the wordmarks having to shrink to theirs. */
+                style={{ height: "80px" }}
               >
                 {a.logo ? (
                   <img
@@ -486,12 +512,13 @@ function VenturesPage() {
                     alt={`${a.name} — ${a.category}`}
                     loading="lazy"
                     style={{
-                      maxHeight: `${Math.round(46 * a.scale)}px`,
-                      maxWidth: `${Math.round(74 * a.scale)}%`,
+                      maxHeight: `${Math.round(58 * a.scale)}px`,
+                      maxWidth: `${Math.round(88 * a.scale)}%`,
                       transform: `translateY(${a.offsetY || 0}px)`,
-                      filter: a.invert
-                        ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
-                        : "brightness(1.08) contrast(1.06)",
+                      // One treatment for all six. The assets are already
+                      // normalised to a common tonal range, so there is nothing
+                      // left for a per-logo invert to correct.
+                      filter: "brightness(1.04) contrast(1.02)",
                     }}
                     className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
                   />
