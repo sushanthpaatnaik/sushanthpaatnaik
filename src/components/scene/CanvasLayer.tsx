@@ -287,7 +287,38 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
-    const RETAIN_RADIUS = isTouch ? 55 : 70;
+    // How many decoded frames are kept either side of the playhead. This is
+    // both the eviction window and the prefetch runway — the retention loop
+    // below enqueues out to the same radius — so it trades memory against how
+    // far ahead the film is already resident.
+    //
+    // Desktop was 70, a 141-frame window. Measured as real process RSS above an
+    // about:blank baseline, that cost ~1.9 GB parked mid-film and ~2.2 GB after
+    // a full traversal, which is more than the 141 x 1920x1080x4 = 1.17 GB the
+    // arithmetic predicts and more than is comfortable on an 8 GB machine with
+    // other tabs open. 40 gives an 81-frame window, still ~960px of runway at
+    // ~24px of scroll per frame, and evicted frames come back from the 30-day
+    // HTTP cache on /sequences/ as a decode rather than a download.
+    //
+    // The obvious worry is scroll-back, since this is the runway behind the
+    // playhead as well as ahead of it. Measured, it is not one. A downward
+    // sweep followed by an upward sweep at ~58 frames/s, 71 samples, same
+    // harness, 70 against 40:
+    //
+    //          cache off                    cache on
+    //   70     3/71 stale, drift p95 14     3/71 stale, p95 13
+    //   40     3/71 stale, drift p95 14     4/71 stale, p95 15
+    //
+    // The two are inside each other's run-to-run variance, and the worst
+    // offenders in both sit in the near-static tail around frames 355-380,
+    // where consecutive frames are not distinguishable anyway. Memory is the
+    // only thing that actually moved: 1863 -> 1361 MB parked mid-film, a delta
+    // of 8.37 MB per frame dropped against 1920x1080x4 = 8.29 MB.
+    //
+    // Touch stays at 55: a portrait frame is 500x1080 against the desktop
+    // 1920x1080, so the same window costs a quarter as much, and it measured
+    // at 402 MB — well inside what mobile Safari tolerates.
+    const RETAIN_RADIUS = isTouch ? 55 : 40;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
