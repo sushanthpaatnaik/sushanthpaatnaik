@@ -210,13 +210,26 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
   const genRef = useRef(0);
 
   // Reduced-motion path — no canvas, signal ready immediately.
+  //
+  // onProgress(100) is not optional here, and leaving it out was a hard
+  // accessibility bug rather than a cosmetic one. The Loader exits on
+  // `progress >= 100` alone — onReady does not dismiss it — and while it is up
+  // it holds a scroll lock: overflow:hidden on the body plus preventDefault on
+  // wheel, touchmove and the scrolling keys. Its 8s failsafe only swaps the
+  // status message; it never exits. So a visitor with prefers-reduced-motion
+  // got a permanently blank, permanently unscrollable homepage, measured
+  // stuck at "OPTIMIZING EXPERIENCE... 0%" at every scroll position.
+  //
+  // This mirrors notifyReady() on the normal path, which has always called
+  // onProgress(100) before onReady().
   useEffect(() => {
     if (!reduce) return;
     if (!notifiedRef.current) {
       notifiedRef.current = true;
+      onProgress?.(100);
       onReady?.();
     }
-  }, [reduce, onReady]);
+  }, [reduce, onReady, onProgress]);
 
   useEffect(() => {
     if (reduce) return;
