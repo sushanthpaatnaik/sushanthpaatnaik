@@ -84,3 +84,139 @@ input that reproduces it, the measurement showing it, and the measurement
 showing the fix — with enough runs that the effect exceeds run-to-run variance.
 Reverse-scroll blocking time varies by ±30ms on a mean of ~70ms; three samples
 cannot resolve a real change there.
+
+# /innovations product panel — FROZEN
+
+The 25-product catalogue and its inspection panel are frozen as of `cfe49eba`.
+Do not change the imagery contract, the title type scale, the header layout or
+the caption row without first reproducing a specific, measurable defect.
+
+Everything below was fixed in response to a reported defect and verified on the
+deployed build. Three of the four fixes exist because an earlier pass changed
+one of these things without measuring.
+
+## The imagery contract
+
+Every product carries exactly three images. This is the whole point of the page
+and the thing that broke:
+
+| Slot | Directory | Renders as |
+|---|---|---|
+| `img` | `assets/innovations/` | card thumbnail |
+| `cutout` | `assets/innovations/cutouts/` | panel hero, "Archive · Studio capture" |
+| `application` | `assets/innovations/applications/` | second frame, "Application · Field" |
+
+25 files in each directory, no gaps. `application` is **optional in the type on
+purpose**: an entry without a genuine field frame must leave it off, and the
+panel drops the slot and lets the capture note take the row.
+
+**Never fall back to `img` for the application slot.** A `detailImg ?? img`
+fallback is exactly what shipped the product photograph twice, the second time
+captioned "Application", and it is the defect this whole section exists to
+prevent. A re-crop or regrade of the product photo is the same defect wearing a
+different filename — `applications/thermal-paste.webp` was a 1024² re-encode of
+its own bench macro and `applications/graphene-fabric.webp` was a 16 KB
+near-featureless crop, and both were deleted rather than kept.
+
+New application frames: 1024px on the long edge, quality 84, native aspect. Do
+not square them — the slot is `aspect-[1.15/1]` with `object-cover`, so it trims
+the sides and the subject stays centred. Aquamax is 1264×848, so non-square
+already matches the set. The two most recent are 72 KB and 58 KB.
+
+## Asset filenames follow the product, unless they are descriptive
+
+A file named after a product moves when the product is renamed —
+`fibrasphene.webp` → `vitraphene.webp`, all three directories, plus the import
+identifiers. A descriptive filename stays: `thermal-paste.webp` and
+`graphene-fabric.webp` belong to Thermene and Texaphene and did not move,
+because the name still describes the photograph.
+
+This rule is not cosmetic. Leaving `thermaphene.webp` bound to a product no
+longer called that, while a *different* product on the same page was called
+Thermaphene, is how a future edit picks the wrong file.
+
+## Names
+
+25 products, 25 unique titles, verified against both the rendered grid and the
+JSON-LD `ItemList`. Two pairs used to collide or near-collide and no longer do:
+Thermene / Thermaphene are different programmes (thermal interface compound,
+Commercial · Thermal · Interfaces; smart thermal fabric, R&D · Smart Textiles),
+and Texaphene / Vitraphene replaced Fibraphene / Fibrasphene, which sat one
+letter apart in the same catalogue.
+
+Titles are Title Case and carry no trademark symbol. The panel prints the title
+verbatim, so one all-caps or one ™ among twenty-five reads as a typo.
+
+## Title type scale — do not restore `md:text-5xl`
+
+`text-3xl sm:text-4xl xl:text-5xl`, and the header is a plain block, not
+`grid-cols-[1fr_auto]` with a thumbnail beside it.
+
+`styles.css` sets `overflow-wrap: anywhere` on every heading. That does more
+than permit a break — it collapses a heading's min-content width to one
+character, so the `1fr` title track shrank to whatever was left and Chrome split
+the word. "Thermaphene" rendered as "Thermaphe / ne" from 1024px up, and nine of
+eleven sampled titles broke at 1024–1100.
+
+Measured at 48px in the display face: Thermaphene 335px, Graphenodes 322px,
+Graphacrete 300px, Aerophenter 299px, Fibrasphene 292px. Track was 280px at 1440
+and 204px at 1024, because a 96px thumbnail and a 16px gap sat beside it.
+
+Both changes are load-bearing; neither closes the gap alone. Dropping the
+aria-hidden thumbnail (which repeated the hero image, and which the five
+hero-frame products never rendered) gives 316px at 1024 and 392px at 1280.
+Moving 48px from `md` to `xl` sets the 1024–1279 band at 36px, where the longest
+title is 251px. Re-measured at 768/900/1024/1100/1280/1440: every title clears
+its track, tightest 251px in 316px.
+
+## Studio-frame captions are one flex row
+
+`absolute inset-x-5 bottom-5 flex flex-wrap justify-between`. As an independent
+bottom-left and bottom-right box they ran through each other below ~430px — on a
+390px phone "ARCHIVE · STUDIO CAPTURE" and "ƒ/2.0 · 85MM · CINEMA" interleaved
+into one unreadable line. Sharing a row they wrap instead of collide.
+
+## Panel variants — leave the routing alone
+
+- `largeApplicationFrame`: Graphacrete, Graffisol, Ceraphene, Ignitron D,
+  Lubritron. Field media takes the hero, studio photo moves below, and the
+  decorative thumbnail was already absent.
+- `applicationVideo`: Graphacrete, Graffisol, Ceraphene, from `/videos/`.
+  Caption becomes "Application · Field capture".
+- `aquamaxSimulation`: Aquamax only, replaces the right panel entirely.
+- `specs`: 4 products.
+
+## Measured baselines
+
+Re-measure against these before claiming an improvement.
+
+- Names: 25 cards, 25 unique, 0 duplicates, and the JSON-LD ItemList agrees.
+- Imagery: for all 25, the application frame's resolved asset hash differs from
+  the hero's. This is the duplicate defect measured directly rather than
+  eyeballed — assert on hashes, not on appearance.
+- Mobile, live build, touch profile (`isMobile`, `hasTouch`, DPR 3, tap): 430×932,
+  390×844, 375×812, 360×800 — page overflow 0px, panel-open overflow 0px, titles
+  single-line, captions non-overlapping, 0 console errors.
+- Desktop: horizontal overflow 0px at 390, 1024 and 1440, panel open and closed.
+
+## Measuring this panel without tripping over it
+
+The modal is a portal with **no `role="dialog"`**, and the page behind it keeps
+its own visible `<h2>`s. Two instruments gave confident wrong answers here:
+
+- `[...document.querySelectorAll('h2')].filter(visible)[0]` returned a 30px
+  heading on the page underneath, not the 48px panel title, and reported "all
+  single-line" for a defect visible in any screenshot. Match the title by name
+  inside a `position: fixed` ancestor, and assert its font-size.
+- `element.getClientRects().length` returns 1 for a block whatever it does.
+  Count rendered lines with a `Range` over the text node instead.
+
+Assert the expected font-size and abort rather than report a pass. Both of the
+above passed a naive control check.
+
+## Unfreeze rule
+
+Change this page only when you can state: the defect, the viewport that
+reproduces it, the measurement showing it, and the measurement showing the fix.
+Screenshot the panel as well — twice in this work a numeric instrument reported
+a clean pass for something plainly visible on screen.
