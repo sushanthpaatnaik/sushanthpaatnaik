@@ -161,6 +161,24 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Plausible — pageviews plus the custom events wired in lib/analytics.
+            Cookieless and no personal data, so no consent banner is required.
+            ~1 KB, deferred, and on its own domain, so it cannot block render;
+            if it fails to load the site is unaffected.
+
+            The stub below is Plausible's documented pattern and is genuinely
+            load-bearing: `script.js` is deferred, so it defines window.plausible
+            only after the document parses. Any event fired before that — and
+            engage_click can fire the moment a visitor clicks the nav — would
+            hit an undefined function and be lost. The stub queues them on
+            window.plausible.q and the real script drains it on arrival. */}
+        <script defer data-domain="sushanthpaatnaik.com" src="https://plausible.io/js/script.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}",
+          }}
+        />
         {/* Without JavaScript the pages render but read as blank.
             framer-motion serialises every `initial` prop into an inline style,
             so the server HTML ships the copy already faded out — measured 21
