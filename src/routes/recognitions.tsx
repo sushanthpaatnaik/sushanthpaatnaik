@@ -130,6 +130,13 @@ type Milestone = {
   institution: string;
   category: RecognitionCategory;
   major?: boolean;
+  /**
+   * A public record a reader can check for themselves. Only ever a source that
+   * genuinely documents THIS entry — an official registry, a government
+   * record, the awarding body, or named press. Entries without one carry no
+   * link rather than a weak one; an unsupported citation is worse than none.
+   */
+  source?: { href: string; label: string };
 };
 
 const milestones: Milestone[] = [
@@ -137,6 +144,13 @@ const milestones: Milestone[] = [
     year: "2008–2013",
     sortYear: 2008,
     title: "Six-Time Indian Presidential Awardee",
+    // Named press stating the six-award claim independently. This is
+    // corroboration, not a primary record — the certificates themselves would
+    // be stronger, and the ledger below still itemises four of the six.
+    source: {
+      href: "https://www.globalindian.com/story/global-indian-exclusive/six-times-president-awardee-sushant-pattnaiks-ground-breaking-innovations/",
+      label: "The Global Indian",
+    },
     // Kalam's citations are 2008 AND 2009 — both are in the ledger below, and
     // naming only 2009 made the sentence read as one honour per President.
     // The six are not one-per-year either, so the wording says "across" rather
@@ -231,7 +245,12 @@ const authoritySignals: Array<{ value: string; label: string }> = [
 // Intel IRIS, MIT Fab-10/11, BRICS, G20, Silicon Valley). Featured
 // entries get a foregrounded archival marker; the rest sit as supporting
 // register lines beneath the year anchor.
-type LedgerEntry = { title: string; institution?: string; featured?: boolean };
+type LedgerEntry = {
+  title: string;
+  institution?: string;
+  featured?: boolean;
+  source?: { href: string; label: string };
+};
 type LedgerYear = { year: string; entries: LedgerEntry[] };
 
 const ledgerByYear: LedgerYear[] = [
@@ -257,8 +276,25 @@ const ledgerByYear: LedgerYear[] = [
     entries: [
       { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
       { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
-      { title: "INK Fellow", institution: "INK Talks · TED Partner" },
-      { title: "Intel IRIS · Best Popular Invention Award", institution: "Intel Foundation · National Science Fair", featured: true },
+      {
+        title: "INK Fellow",
+        institution: "INK Talks · TED Partner",
+        // The awarding organisation's own profile page.
+        source: { href: "https://inktalks.com/people/susant-pattnaik/", label: "INK Talks" },
+      },
+      {
+        title: "Intel IRIS · Best Popular Invention Award",
+        institution: "Intel Foundation · National Science Fair",
+        featured: true,
+        // The National Innovation Foundation is an autonomous body of the
+        // Department of Science & Technology, so this is a government record
+        // of the breath-operated wheelchair this award was given for — the
+        // strongest evidence available anywhere on the page.
+        source: {
+          href: "https://nif.org.in/innovation/breathing-sensor-apparatus-to-assist-physically-challenged/398",
+          label: "National Innovation Foundation",
+        },
+      },
     ],
   },
   {
@@ -272,7 +308,15 @@ const ledgerByYear: LedgerYear[] = [
   {
     year: "2012",
     entries: [
-      { title: "Golden Book of World Record Holder", institution: "World Record Citation" },
+      {
+        title: "Golden Book of World Record Holder",
+        institution: "World Record Citation",
+        // The registry's own citation.
+        source: {
+          href: "https://goldenbookofworldrecords.com/youngest-inventor-and-social-interpreneur/",
+          label: "Golden Book of World Records",
+        },
+      },
       { title: "TED@Bangalore Speaker", institution: "TED@Bangalore", featured: true },
       { title: "IDEAS-12 · IIT-Kanpur Business Plan Contest Award", institution: "E-Cell · IIT Kanpur" },
       { title: "Judge · SELL-X Exodia · IIT-Mandi Business Plan Contest", institution: "IIT Mandi" },
@@ -709,6 +753,17 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                             {e.institution}
                           </p>
                         )}
+                        {e.source && (
+                          <a
+                            href={e.source.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-flex items-baseline gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/40 underline decoration-foreground/15 underline-offset-4 transition-colors hover:text-accent/90 hover:decoration-accent/50"
+                          >
+                            Source · {e.source.label}{" "}
+                            <span aria-hidden>↗</span>
+                          </a>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -730,6 +785,19 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                           <span className="text-[11px] text-muted-foreground/55">
                             {e.institution}
                           </span>
+                        )}
+                        {e.source && (
+                          <>
+                            {" "}
+                            <a
+                              href={e.source.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-[9.5px] uppercase tracking-[0.28em] text-foreground/40 underline decoration-foreground/15 underline-offset-4 transition-colors hover:text-accent/90 hover:decoration-accent/50"
+                            >
+                              Source · {e.source.label} ↗
+                            </a>
+                          </>
                         )}
                       </div>
                     </div>
@@ -1070,6 +1138,22 @@ function RecognitionsPage() {
                       <p className="mt-6 text-[14px] md:text-[14.5px] leading-[1.8] text-foreground/65 max-w-[46ch]">
                         {m.body}
                       </p>
+                      {/* Evidence, when a public record genuinely documents
+                          this entry. Deliberately quiet — a reader who wants
+                          to verify finds it, and one who does not is not sold
+                          to. Entries without a source render nothing at all
+                          rather than a placeholder. */}
+                      {m.source && (
+                        <a
+                          href={m.source.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-5 inline-flex items-baseline gap-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45 underline decoration-foreground/20 underline-offset-4 transition-colors hover:text-accent/90 hover:decoration-accent/50"
+                        >
+                          Source · {m.source.label}{" "}
+                          <span aria-hidden>↗</span>
+                        </a>
+                      )}
                       <div
                         aria-hidden
                         className="mt-10 h-px w-12 bg-foreground/20 group-hover:w-24 transition-all duration-700"
