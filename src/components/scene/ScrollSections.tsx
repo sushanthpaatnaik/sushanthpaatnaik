@@ -489,6 +489,14 @@ function MaterialContent() {
           style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
         >
           <span>Graphene · Nano-materials</span>
+          {/* The two lines are a deliberate break on a phone, but a line break
+              contributes nothing to the text stream, so this read back as
+              "Graphene · Nano-materialsCoatings · Composites". A plain text
+              node here would become an anonymous flex item and paint as a
+              third row; sr-only is position:absolute, so it stays out of the
+              flex flow and out of the gap-2 spacing while still carrying the
+              separator for anything reading the document. */}
+          <span className="sr-only"> · </span>
           <span>Coatings · Composites</span>
         </div>
       </div>
