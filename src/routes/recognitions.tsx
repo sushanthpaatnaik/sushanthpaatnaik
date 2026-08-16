@@ -768,9 +768,19 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                     </div>
                   ) : (
                     <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5">
+                      {/* Decorative row marker. aria-hidden keeps it out of the
+                          accessibility tree, and the trailing space keeps it
+                          out of the entry title in extracted text — without it
+                          the row reads "·35th Jawaharlal Nehru National Science
+                          Exhibition Award". A grid container drops a
+                          whitespace-only text node from layout exactly as flex
+                          does, so the space costs nothing on screen. */}
+                      <span
+                        aria-hidden
+                        className="font-mono text-[10px] uppercase tracking-[0.42em] text-muted-foreground/35 pt-0.5"
+                      >
                         ·
-                      </span>
+                      </span>{" "}
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <span className="text-[13px] leading-relaxed text-foreground/72">
                           {e.title}

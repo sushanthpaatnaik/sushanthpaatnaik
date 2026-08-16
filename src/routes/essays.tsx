@@ -117,7 +117,9 @@ function EssaysIndex() {
             transition={{ duration: 1.5, delay: 0.18, ease: [0.19, 1, 0.22, 1] }}
             className="mt-10 font-display text-[clamp(3rem,9vw,6rem)] leading-[0.96] tracking-[-0.045em] text-foreground/95"
           >
-            Notes from
+            {/* The <br> is a visual line break only; without an explicit space
+                the heading extracts as "Notes fromthe workshop." */}
+            Notes from{" "}
             <br />
             <em className="not-italic font-display italic text-foreground/70">the workshop.</em>
           </motion.h1>

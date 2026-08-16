@@ -265,9 +265,14 @@ function OriginHero() {
         </div>
 
         {/* H1 */}
+        {/* The three lines are `block` spans, so JSX drops the whitespace
+            between them and textContent reads "I buildwhat does notyet exist."
+            — the site's primary H1, welded, for anything that does not run CSS.
+            An explicit space restores the boundary; the spans are block-level,
+            so it collapses and costs nothing on screen. */}
         <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
-          <span className="block py-1 text-gradient">I build</span>
-          <span className="block py-1 text-gradient">what does not</span>
+          <span className="block py-1 text-gradient">I build</span>{" "}
+          <span className="block py-1 text-gradient">what does not</span>{" "}
           <span className="block py-1 text-foreground/95">yet exist.</span>
         </h1>
 
@@ -748,7 +753,9 @@ function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
           Recognition
         </p>
         <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
-          Recognised early.<br />Building continuously.
+          {/* A <br> is a visual break only — without the space the heading
+              extracts as "Recognised early.Building continuously." */}
+          Recognised early.{" "}<br />Building continuously.
         </h2>
         <ul className="mt-8 space-y-2.5">
           {RECORD.map((r) => (
@@ -785,7 +792,7 @@ function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
           Ecosystem
         </p>
         <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
-          The work<br />continues outward.
+          The work{" "}<br />continues outward.
         </h2>
         <div className="mt-7">
           {gateways.map((g) => (
@@ -976,7 +983,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         className={`${band} z-10 font-display italic text-[16px] leading-[1.6] text-foreground/75`}
         style={{ opacity: opA }}
       >
-        Not a forecast.<br />A working hypothesis.
+        Not a forecast.{" "}<br />A working hypothesis.
       </motion.p>
 
       {/* B — the thesis, both halves together. Four lines at this size, so
@@ -986,9 +993,9 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         className={`${band} z-10 font-display text-[clamp(1.75rem,8.0vw,2.25rem)] leading-[1.12] tracking-[-0.03em] font-medium text-gradient`}
         style={{ opacity: opB, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
       >
-        Energy as<br />infrastructure.
+        Energy as{" "}<br />infrastructure.{" "}
         <span className="mt-3 block">
-          Industry at<br />planetary scale.
+          Industry at{" "}<br />planetary scale.
         </span>
       </motion.h2>
 
@@ -1015,7 +1022,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
           className={`${band} font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
           style={{ textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
         >
-          The next century<br />will be engineered.
+          The next century{" "}<br />will be engineered.
         </p>
 
         {/* The closing block sits over the brightest part of the plate —
