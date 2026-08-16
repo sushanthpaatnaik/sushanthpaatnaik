@@ -28,7 +28,7 @@ import imgRustene from "@/assets/innovations/rustene.webp";
 import imgPyronex from "@/assets/innovations/pyronex.webp";
 import imgGraphyre from "@/assets/innovations/graphyre.webp";
 import imgGraphosite from "@/assets/innovations/graphosite.webp";
-import imgThermene from "@/assets/innovations/thermene.webp";
+import imgThermaphene from "@/assets/innovations/thermaphene.webp";
 import imgArmophene from "@/assets/innovations/armophene.webp";
 import imgGryogen from "@/assets/innovations/gryogen.webp";
 import imgHydrocell from "@/assets/innovations/hydrocell.webp";
@@ -55,7 +55,7 @@ import cutRustene from "@/assets/innovations/cutouts/rustene.webp";
 import cutPyronex from "@/assets/innovations/cutouts/pyronex.webp";
 import cutGraphyre from "@/assets/innovations/cutouts/graphyre.webp";
 import cutGraphosite from "@/assets/innovations/cutouts/graphosite.webp";
-import cutThermene from "@/assets/innovations/cutouts/thermene.webp";
+import cutThermaphene from "@/assets/innovations/cutouts/thermaphene.webp";
 import cutArmophene from "@/assets/innovations/cutouts/armophene.webp";
 import cutGryogen from "@/assets/innovations/cutouts/gryogen.webp";
 import cutHydrocell from "@/assets/innovations/cutouts/hydrocell.webp";
@@ -83,7 +83,7 @@ import appRustene from "@/assets/innovations/applications/rustene.webp";
 import appPyronex from "@/assets/innovations/applications/pyronex.webp";
 import appGraphyre from "@/assets/innovations/applications/graphyre.webp";
 import appGraphosite from "@/assets/innovations/applications/graphosite.webp";
-import appThermene from "@/assets/innovations/applications/thermene.webp";
+import appThermaphene from "@/assets/innovations/applications/thermaphene.webp";
 import appArmophene from "@/assets/innovations/applications/armophene.webp";
 import appGryogen from "@/assets/innovations/applications/gryogen.webp";
 import appHydrocell from "@/assets/innovations/applications/hydrocell.webp";
@@ -175,7 +175,7 @@ const items: Item[] = [
      on each. If a future entry arrives without one, leave `application` off and
      let the panel drop the frame. Do not reach for `img`: that is what produced
      the duplicate. */
-  { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
+  { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
   { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
@@ -211,7 +211,7 @@ const items: Item[] = [
   { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
   { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre },
   { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite },
-  { title: "Thermene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermene, cutout: cutThermene, application: appThermene },
+  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene },
 ];
 
 const filters = ["All", "Commercial", "Pilot", "R&D"] as const;
