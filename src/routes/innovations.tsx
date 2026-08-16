@@ -68,6 +68,7 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
 import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
+import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
 import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
 import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
@@ -168,13 +169,14 @@ const items: Item[] = [
      mislabelled "Application". Both fakes were deleted and the slot left empty
      rather than papered over.
 
-     Thermaphene's real field frame has since been supplied — the compound
-     spread on a cold plate being seated onto a power-module assembly — so its
-     application slot is back. Texaphene is still waiting for one; leave
-     `application` off until the frame exists rather than reaching for
-     `img` again. */
+     Both now have a real field frame — Thermaphene's compound spread on a cold
+     plate as it is seated onto a power-module assembly, Texaphene's treated
+     cloth running the rollers on a textile finishing line — so the slot is back
+     on each. If a future entry arrives without one, leave `application` off and
+     let the panel drop the frame. Do not reach for `img`: that is what produced
+     the duplicate. */
   { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
-  { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric },
+  { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
     { k: "Emissions", v: "20%", note: "Reduced emissions output" },
