@@ -17,7 +17,11 @@ export const Route = createFileRoute("/services")({
       },
       { name: "robots", content: "noindex" },
     ],
-    links: [{ rel: "canonical", href: "/engage" }],
+    // Absolute, like every other route. A relative canonical is spec-valid and
+    // Google resolves it, but this is the one page whose whole job is telling
+    // crawlers "the real URL is elsewhere" — the least useful place to rely on
+    // a resolver behaving well.
+    links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/engage" }],
   }),
 });
 
