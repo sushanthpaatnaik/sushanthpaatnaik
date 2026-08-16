@@ -67,6 +67,7 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // Application / use-case imagery — shown as the secondary still in the
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
+import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
 import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
 import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
@@ -160,16 +161,19 @@ const items: Item[] = [
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
   { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
-  /* Both co-developed with Monoatom Labs, and the only two programmes on this
-     page that arrived with a single photograph instead of three. The other
-     twenty-three each ship a separately-shot field frame for the application
-     slot; these two had one bench macro, and an earlier pass filled the slot by
-     re-cropping and regrading that same macro. On screen that reads as the
-     product photograph shown twice, once mislabelled "Application" — which is
-     exactly the defect reported. No `application` here, so the panel says the
-     field documentation is pending. Add the frame to
-     assets/innovations/applications/ and wire it back the moment one is shot. */
-  { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste },
+  /* Both co-developed with Monoatom Labs, and the only two programmes here that
+     arrived with a single photograph instead of three. An earlier pass filled
+     their application slot by re-cropping and regrading that one bench macro,
+     so the panel showed the product photograph twice, the second time
+     mislabelled "Application". Both fakes were deleted and the slot left empty
+     rather than papered over.
+
+     Thermaphene's real field frame has since been supplied — the compound
+     spread on a cold plate being seated onto a power-module assembly — so its
+     application slot is back. Texaphene is still waiting for one; leave
+     `application` off until the frame exists rather than reaching for
+     `img` again. */
+  { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
   { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
