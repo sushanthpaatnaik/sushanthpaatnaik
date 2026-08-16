@@ -1,3 +1,117 @@
+# Site — FROZEN
+
+The whole site is frozen as of `14e2d33e`. Two subsystems carry their own
+detailed records below — the homepage motion system and the /innovations
+product panel — and everything in this first section applies site-wide.
+
+Change nothing here without a specific, reproducible defect and a measurement
+of it. Every rule below was written after something shipped broken, and most of
+them were broken by a well-meant edit that looked obviously correct.
+
+## The routes
+
+13: `/`, `/about`, `/early-works`, `/innovations`, `/ventures`, `/recognitions`,
+`/voices`, `/essays`, `/news`, `/engage`, `/contact`, `/evidence-standards`,
+`/services`. `/services` is a deliberate `<Navigate>` to `/engage` carrying
+noindex plus a canonical, so it serves byte-identical HTML on purpose — that is
+not duplicate content to "fix".
+
+## Text must survive without CSS
+
+`block` spans, `<br>` and flex/grid items look right on screen while their
+`textContent` runs together, so anything that does not execute CSS reads the
+words joined. This shipped on the site's primary H1 — three block spans reading
+"I buildwhat does notyet exist." — and on ten other runs across five routes.
+
+Put an explicit space at each join. It collapses at a line end and beside a
+block, and both flex and grid drop a whitespace-only text node from layout, so
+it is free. A decorative glyph that sits beside real copy also takes
+`aria-hidden`, but note that `aria-hidden` does **not** remove it from
+`textContent`; the space is still required.
+
+Detect it by comparing an element's `innerText` against its `textContent` and
+flagging gaps that are whitespace in one and absent in the other. Scope that to
+prose — `p`, headings, `li`, `blockquote`, `figcaption`. A first version walked
+every adjacent text node in `<body>` and reported 502 welds on /recognitions
+whose top hits were "About|Early Works": two separate nav links, which
+concatenate in `body.textContent` too but are not a defect.
+
+## No-JS rendering
+
+framer-motion serialises every `initial` prop into an inline style, so the
+server HTML ships copy already faded out — 21 elements on /early-works, 92 on
+/innovations, 63 on /recognitions, 26 on the homepage. The `<noscript>` block in
+`__root.tsx` overrides them. Its `:not([style*="opacity:0."])` guard is
+load-bearing: the attribute selector matches substrings, so a bare `opacity:0`
+test would also catch `opacity:0.07` and `opacity:0.85`, which are real
+decorative values.
+
+## Contact form
+
+Five visible labels once had no `htmlFor`/`id` pair — labelled to the eye,
+unlabelled to everything else. Keep the pairs and the autocomplete tokens.
+`track("contact_submit")` fires with `outcome: sent | rejected | network_error`.
+
+When asserting on the error state, match the literal rendered copy
+`"Couldn't send"`. A regex for `try` matched the word "industry" elsewhere on
+the page and reported a pass that had not happened.
+
+## Analytics
+
+`lib/analytics.ts` fans out to Plausible, umami, PostHog and dataLayer, and
+swallows every error — analytics must never break a click or a submission. Two
+events: `contact_submit` and `engage_click`, the latter from one delegated
+listener mounted once in the root, because seven links point at /engage across
+the nav and five routes and the nav builds its own from a list.
+
+The Plausible queue stub in `__root.tsx` is not boilerplate. `script.js` is
+deferred, so `window.plausible` does not exist until the document parses, and
+an engage click before that would be lost. The stub queues to
+`window.plausible.q` and the real script drains it.
+
+## SEO
+
+Every route carries an absolute canonical on `https://sushanthpaatnaik.com`. A
+relative one shipped on /services. JSON-LD: Person in the root, plus WebPage,
+BreadcrumbList and an ItemList on /innovations that must agree with the
+rendered grid.
+
+## Facts that were wrong once
+
+NASA is Huntsville, Alabama — not Kennedy Space Center. Four recognitions carry
+evidence links (The Global Indian, NIF/nif.org.in, Golden Book of World
+Records, INK Talks) and the renderer emits nothing when a source is absent, so
+do not invent one to fill the slot.
+
+**Open, unresolved:** the Presidential ledger itemises four citations (Kalam
+2008, Kalam 2009, Patil 2010, Mukherjee 2013) against a stated six. The two
+missing rows need source documents before the claim is safe.
+
+## Measured baselines
+
+- All 13 routes, desktop 1440x900 and phone 390x844 with a touch profile:
+  HTTP 200, 0px horizontal overflow, scroll lock released, absolute canonical,
+  0 welds, 0 console errors.
+- Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
+  from above and below give an identical canvas pixel hash. 6750 and 7920 share
+  a chapter heading and that is correct — with a 9000px scroll range they are
+  0.75 and 0.88, both inside the last band.
+- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1881
+  characters of copy, 6 engage/contact links.
+
+## Verifying a change to any of this
+
+Screenshot as well as measure. Numeric instruments returned confident wrong
+answers four separate times in this work — `getClientRects()` on a block always
+returns 1, `h2s[0]` matched a heading behind a portal, a naive weld walker
+counted nav links, and an error-state regex matched a substring of unrelated
+copy. Each passed a control check.
+
+For an edit that should be invisible, prove it: screenshot the same scroll
+positions before and after and compare pixels. Run the comparison against the
+*same* build first to learn the noise floor — the homepage scroll cue is
+animated and differs by ~1000 pixels in a 30x104 box between any two loads.
+
 # Homepage motion system — FROZEN
 
 The cinematic scroll system on `/` is frozen as of `17d221c8`. Do not retune
