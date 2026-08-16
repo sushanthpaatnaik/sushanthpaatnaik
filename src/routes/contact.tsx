@@ -7,6 +7,7 @@ import CinematicPageShell, {
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-07-future.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
+import { track } from "@/lib/analytics";
 
 const description =
   "Direct line to Sushanth Paatnaik. Selective access for partnerships, capital, research collaboration, advisory, and press — read and triaged personally.";
@@ -146,11 +147,17 @@ function AccessForm() {
       const data = await res.json();
       if (data?.success) {
         setStatus("sent");
+        track("contact_submit", { intent: intentLabel, outcome: "sent" });
       } else {
         setStatus("error");
+        // Tracked too: a form that silently fails is exactly the thing you
+        // want to see in the numbers, and without this the funnel would show
+        // the failures as people who simply never submitted.
+        track("contact_submit", { intent: intentLabel, outcome: "rejected" });
       }
     } catch {
       setStatus("error");
+      track("contact_submit", { intent: intentLabel, outcome: "network_error" });
     }
   }
 

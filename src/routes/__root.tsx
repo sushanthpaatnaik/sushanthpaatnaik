@@ -12,6 +12,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { clearGlobalScrollLock } from "../lib/scroll-lock";
+import { installEngageTracking } from "../lib/analytics";
 
 function NotFoundComponent() {
   return (
@@ -222,6 +223,12 @@ function RootComponent() {
     }
     clearGlobalScrollLock();
   }, [pathname]);
+
+  // One delegated listener for engage_click, mounted once for the whole app.
+  // Seven links point at /engage across the nav and five routes, and the nav
+  // builds its own from a list — wiring each would be seven edits an eighth
+  // link could silently miss.
+  useEffect(() => installEngageTracking(), []);
 
   return (
     <QueryClientProvider client={queryClient}>
