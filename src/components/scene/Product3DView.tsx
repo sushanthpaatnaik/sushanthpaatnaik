@@ -800,11 +800,15 @@ export function Product3DModal({
                     }}
                   />
                   <FilmGrain opacity={0.05} />
-                  <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/70">
-                    Archive · Studio capture
-                  </div>
-                  <div className="pointer-events-none absolute bottom-5 right-5 z-10 font-mono text-[10px] uppercase tracking-[0.34em] text-foreground/45">
-                    ƒ/2.0 · 85mm · cinema
+                  {/* One flex row rather than a bottom-left and a bottom-right
+                      box. Independently positioned, the two captions ran into
+                      each other below about 430px — on a 390px phone they
+                      interleaved into "ARCHIVE · STU D/I2O. C8A5PMTM URE ·
+                      CINEMA". Sharing a row they wrap instead of collide, at
+                      any width. */}
+                  <div className="pointer-events-none absolute inset-x-5 bottom-5 z-10 flex flex-wrap items-end justify-between gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-[0.34em]">
+                    <span className="text-foreground/70">Archive · Studio capture</span>
+                    <span className="text-foreground/45">ƒ/2.0 · 85mm · cinema</span>
                   </div>
                 </div>
               )}
@@ -937,40 +941,43 @@ export function Product3DModal({
             </div>
 
             <div className="flex flex-col gap-6">
-              <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-foreground/[0.08] pb-6">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-px w-6 bg-accent/70" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
-                      {item.stage}
-                    </span>
-                  </div>
-                  <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-foreground/98 md:text-5xl">
-                    {item.title}
-                  </h2>
-                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
-                    {item.domain}
-                  </p>
+              {/* Product titles are single words, and the longest of them do
+                  not fit this column at 48px. styles.css sets `overflow-wrap:
+                  anywhere` on every heading as an overflow guard, which does
+                  not just permit a break — it collapses the heading's
+                  min-content width to one character, so the 1fr track shrank
+                  and Chrome split the word. "Thermaphene" rendered as
+                  "Thermaphe / ne" from 1024px up.
+
+                  Measured at 48px in the display face: the widest titles are
+                  Thermaphene 335px, Graphenodes 322px, Graphacrete 300px,
+                  Aerophenter 299px, Fibrasphene 292px. The track was 280px at
+                  1440 and 204px at 1024, because a 96px decorative thumbnail
+                  and its 16px gap sat beside it.
+
+                  Two changes, and both are needed — neither closes the gap on
+                  its own. The thumbnail is gone: it was aria-hidden decoration
+                  showing the same product image already on screen beside it,
+                  and the five hero-frame products never rendered it at all, so
+                  its absence is already the established look. That gives the
+                  title 316px at 1024 and 392px at 1280. And 48px now waits for
+                  xl rather than md, so the 1024–1279 band — where the two
+                  column layout is at its narrowest — sets at 36px, where the
+                  longest title is 251px. Every title clears its track at every
+                  width with room to spare. */}
+              <div className="border-b border-foreground/[0.08] pb-6">
+                <div className="flex items-center gap-2">
+                  <span className="h-px w-6 bg-accent/70" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
+                    {item.stage}
+                  </span>
                 </div>
-                {!item.largeApplicationFrame && (
-                  <div className="hidden sm:block aspect-square w-24 overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.07_0.008_245)]">
-                    <div
-                      className="h-full w-full"
-                      style={{
-                        background:
-                          "radial-gradient(circle at 42% 26%, oklch(0.82 0.02 235 / 0.18), transparent 30%), linear-gradient(180deg, oklch(0.1 0.008 245), oklch(0.05 0.008 245))",
-                      }}
-                    >
-                      <img
-                        src={item.img}
-                        alt=""
-                        aria-hidden
-                        className="h-full w-full object-contain p-2.5"
-                        style={{ filter: "drop-shadow(0 14px 18px oklch(0 0 0 / 0.62))" }}
-                      />
-                    </div>
-                  </div>
-                )}
+                <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-foreground/98 xl:text-5xl">
+                  {item.title}
+                </h2>
+                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
+                  {item.domain}
+                </p>
               </div>
 
               {item.largeApplicationFrame && (
