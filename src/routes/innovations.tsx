@@ -34,7 +34,7 @@ import imgGryogen from "@/assets/innovations/gryogen.webp";
 import imgHydrocell from "@/assets/innovations/hydrocell.webp";
 import imgMariphene from "@/assets/innovations/mariphene.webp";
 import imgAerophenter from "@/assets/innovations/aerophenter.webp";
-import imgFibrasphene from "@/assets/innovations/fibrasphene.webp";
+import imgVitraphene from "@/assets/innovations/vitraphene.webp";
 import imgVoltaphene from "@/assets/innovations/voltaphene.webp";
 
 // Transparent product cut-outs — identity-preserved studio product staging
@@ -61,7 +61,7 @@ import cutGryogen from "@/assets/innovations/cutouts/gryogen.webp";
 import cutHydrocell from "@/assets/innovations/cutouts/hydrocell.webp";
 import cutMariphene from "@/assets/innovations/cutouts/mariphene.webp";
 import cutAerophenter from "@/assets/innovations/cutouts/aerophenter.webp";
-import cutFibrasphene from "@/assets/innovations/cutouts/fibrasphene.webp";
+import cutVitraphene from "@/assets/innovations/cutouts/vitraphene.webp";
 import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 
 // Application / use-case imagery — shown as the secondary still in the
@@ -87,7 +87,7 @@ import appGryogen from "@/assets/innovations/applications/gryogen.webp";
 import appHydrocell from "@/assets/innovations/applications/hydrocell.webp";
 import appMariphene from "@/assets/innovations/applications/mariphene.webp";
 import appAerophenter from "@/assets/innovations/applications/aerophenter.webp";
-import appFibrasphene from "@/assets/innovations/applications/fibrasphene.webp";
+import appVitraphene from "@/assets/innovations/applications/vitraphene.webp";
 import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
 
 const description =
@@ -197,7 +197,7 @@ const items: Item[] = [
   { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen, application: appGryogen },
   { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene },
   { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter },
-  { title: "Fibrasphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgFibrasphene, cutout: cutFibrasphene, application: appFibrasphene },
+  { title: "Vitraphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgVitraphene, cutout: cutVitraphene, application: appVitraphene },
   { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
   { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, featured: true },
   { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, featured: true },
