@@ -239,12 +239,14 @@ function AccessForm() {
         <div className="flex flex-col gap-12">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             <div>
-              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              <label htmlFor="contact-name" className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 02 · Name
               </label>
               <input
+                id="contact-name"
                 type="text"
                 required
+                autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 onFocus={() => setFocused("name")}
@@ -254,11 +256,13 @@ function AccessForm() {
               />
             </div>
             <div>
-              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              <label htmlFor="contact-org" className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 03 · Organisation
               </label>
               <input
+                id="contact-org"
                 type="text"
+                autoComplete="organization"
                 value={org}
                 onChange={(e) => setOrg(e.target.value)}
                 onFocus={() => setFocused("org")}
@@ -271,12 +275,14 @@ function AccessForm() {
 
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             <div>
-              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              <label htmlFor="contact-email" className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 04 · Email
               </label>
               <input
+                id="contact-email"
                 type="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setFocused("email")}
@@ -286,10 +292,11 @@ function AccessForm() {
               />
             </div>
             <div>
-              <label className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              <label htmlFor="contact-phone" className="block font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 05 · Phone <span className="text-muted-foreground/30">· optional</span>
               </label>
               <input
+                id="contact-phone"
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel"
@@ -305,7 +312,7 @@ function AccessForm() {
 
           <div>
             <div className="flex items-baseline justify-between">
-              <label className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
+              <label htmlFor="contact-context" className="font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55">
                 06 · Context
               </label>
               <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/35">
@@ -316,6 +323,7 @@ function AccessForm() {
               One paragraph on what you are building, or considering.
             </p>
             <textarea
+              id="contact-context"
               required
               maxLength={600}
               rows={4}
