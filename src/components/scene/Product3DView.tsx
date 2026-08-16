@@ -494,9 +494,6 @@ export interface Product3DModalData {
   largeApplicationFrame?: boolean;
   /** Short caption shown inside the large application frame. */
   applicationCaption?: string;
-  /** The application still is a bench capture, not a site photograph — the
-      frame labels itself accordingly instead of claiming a deployment. */
-  benchOnly?: boolean;
   /** Aquamax-only: render the interactive chimney hood / HV-LC recovery
    *  simulation as the right-side panel of the inspection view. */
   aquamaxSimulation?: boolean;
@@ -511,6 +508,10 @@ export function Product3DModal({
 }) {
   const [mounted, setMounted] = useState(false);
   const reduced = useReducedMotion();
+
+  // Two Monoatom co-developments arrived with a single photograph instead of
+  // the three every other programme ships, so they have no field frame at all.
+  const hasApplicationMedia = Boolean(item?.detailImg || item?.applicationVideo);
 
   useEffect(() => setMounted(true), []);
 
@@ -808,11 +809,22 @@ export function Product3DModal({
                 </div>
               )}
 
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1.35fr_1fr]">
+              <div
+                className={
+                  hasApplicationMedia
+                    ? "grid grid-cols-1 gap-5 sm:grid-cols-[1.35fr_1fr]"
+                    : "grid grid-cols-1 gap-5"
+                }
+              >
                 {/* SECONDARY FRAME.
                     Default: application media. When the hero is the
-                    application, this slot becomes the studio product artifact. */}
-                {item.largeApplicationFrame ? (
+                    application, this slot becomes the studio product artifact.
+                    With no application media at all the frame is dropped and
+                    the note beside it takes the row — rather than falling back
+                    to `item.img`, which puts the studio photograph on screen a
+                    second time under an "Application" label it has not
+                    earned. */}
+                {!hasApplicationMedia ? null : item.largeApplicationFrame ? (
                   <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
@@ -854,7 +866,7 @@ export function Product3DModal({
                       <motion.img
                         key={(item.detailImg ?? item.img) + "-app"}
                         src={item.detailImg ?? item.img}
-                        alt={`${item.title} — ${item.benchOnly ? "bench capture" : "application"}`}
+                        alt={`${item.title} — application`}
                         initial={{ opacity: 0, scale: 1.02 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
@@ -874,11 +886,7 @@ export function Product3DModal({
                     <FilmGrain opacity={0.07} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
-                        {item.applicationVideo
-                          ? "Application · Field capture"
-                          : item.benchOnly
-                            ? "Application · Bench capture"
-                            : "Application · Field"}
+                        {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
                       </p>
                     </div>
                     {item.applicationVideo && (

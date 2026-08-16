@@ -67,8 +67,6 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // Application / use-case imagery — shown as the secondary still in the
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
-import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
-import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
 import appCeraphene from "@/assets/innovations/applications/ceraphene.webp";
 import appHdgpe from "@/assets/innovations/applications/hdgpe.webp";
@@ -144,9 +142,10 @@ type Item = {
   body: string;
   img: string;
   cutout: string;
-  application: string;
-  /** Application still is a bench capture, not a field deployment. */
-  benchOnly?: boolean;
+  /** Field-context frame for the application slot. Omit when none exists —
+      the panel then states the documentation is pending rather than
+      re-showing the studio photograph under an "Application" label. */
+  application?: string;
   domain: string;
   status: string;
   featured?: boolean;
@@ -161,17 +160,17 @@ const items: Item[] = [
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
   { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
-  /* Both co-developed with Monoatom Labs and published on the SPI Industries
-     portfolio, which carries exactly one photograph per programme. Every other
-     entry here has three separately-shot images; these two are derived from
-     their single frame — the cutout is the specimen matted off the bench, the
-     application still is the same bench capture graded to the page. Distinct
-     frames, but both are lab captures: neither is a field deployment, so they
-     carry `benchOnly` and the panel labels itself honestly rather than
-     claiming a site photograph that does not exist. Drop that flag when a real
-     deployment shot is taken. */
-  { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste, benchOnly: true },
-  { title: "Fibraphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric, benchOnly: true },
+  /* Both co-developed with Monoatom Labs, and the only two programmes on this
+     page that arrived with a single photograph instead of three. The other
+     twenty-three each ship a separately-shot field frame for the application
+     slot; these two had one bench macro, and an earlier pass filled the slot by
+     re-cropping and regrading that same macro. On screen that reads as the
+     product photograph shown twice, once mislabelled "Application" — which is
+     exactly the defect reported. No `application` here, so the panel says the
+     field documentation is pending. Add the frame to
+     assets/innovations/applications/ and wire it back the moment one is shot. */
+  { title: "Thermaphene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste },
+  { title: "Fibraphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
     { k: "Emissions", v: "20%", note: "Reduced emissions output" },
@@ -321,7 +320,6 @@ function InnovationsPage() {
       applicationContext: it.applicationContext,
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
-      benchOnly: it.benchOnly,
       aquamaxSimulation: it.title === "Aquamax",
     });
   };
