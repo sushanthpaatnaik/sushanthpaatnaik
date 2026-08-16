@@ -25,6 +25,18 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Escape closes the overlay. The listener is only attached while it is open,
+  // so Escape keeps whatever meaning it has elsewhere on the page the rest of
+  // the time — the /innovations product panel binds its own.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <>
       {/* Cinematic backdrop fade — tightens on scroll */}
