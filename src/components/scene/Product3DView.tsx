@@ -199,7 +199,13 @@ export function Tilt3DSurface({
  * interactive unmute on click/tap or via the sound toggle. Volume ramps
  * smoothly via requestAnimationFrame for a non-jarring audio fade-in.
  */
-function HeroVideo({
+/**
+ * Cinematic video frame with an unmute control, play/pause and fullscreen.
+ * Exported because /about reuses it for the identity film — it takes only a
+ * src and styling, and references no product state, so there is no reason for
+ * a second implementation to exist.
+ */
+export function HeroVideo({
   src,
   className,
   style,

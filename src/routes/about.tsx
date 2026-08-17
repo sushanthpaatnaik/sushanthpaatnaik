@@ -4,6 +4,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
+import { HeroVideo } from "@/components/scene/Product3DView";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-about-graphite.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
@@ -109,6 +110,44 @@ function AboutPage() {
       backdrop={backdrop}
       overlay={0.82}
     >
+      {/* ── Identity film ──
+          Its own 16/9 frame rather than the portrait plate below. The plate is
+          aspect-[4/5] on mobile through aspect-[4/4.6] at md, so object-cover
+          on a 16:9 source would keep only 42-49% of the film's width — and the
+          title cards sit at the left and right edges, so they would be the
+          first thing lost. Content column is max-w-4xl (896px), which is 1792
+          device px at DPR 2, so the source's native 1920x1080 covers it. */}
+      <motion.figure
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose relative mx-auto mt-16 md:mt-24 mb-4"
+      >
+        <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.035_0.008_245)]">
+          <HeroVideo
+            src="/videos/identity-film.mp4"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at 50% 46%, transparent 58%, oklch(0.02 0.006 245 / 0.34) 92%)",
+            }}
+          />
+        </div>
+        <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/55">
+          {/* Flex drops a whitespace-only text node from layout but keeps it
+              in textContent, so this space costs nothing on screen and stops
+              the caption extracting as "Identity filmInventor · Deep-tech
+              founder". */}
+          <span>Identity film</span>{" "}
+          <span>Inventor · Deep-tech founder</span>
+        </figcaption>
+      </motion.figure>
+
       {/* ── Founder plate ── */}
       <FounderPortrait
         variant="editorial"
