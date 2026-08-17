@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `14e2d33e`. Two subsystems carry their own
+The whole site is frozen as of `30f91190`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -35,6 +35,19 @@ prose — `p`, headings, `li`, `blockquote`, `figcaption`. A first version walke
 every adjacent text node in `<body>` and reported 502 welds on /recognitions
 whose top hits were "About|Early Works": two separate nav links, which
 concatenate in `body.textContent` too but are not a defect.
+
+## Mobile navigation
+
+The overlay in `Nav.tsx` closes on Escape, via a `keydown` listener attached
+only while it is open. Keep that condition: `/innovations` binds its own Escape
+for the product panel, and an always-on listener here would take the key from
+it. `aria-expanded` and the `aria-label` ("Open menu" / "Close menu") both
+track state.
+
+The menu does not lock body scroll and does not need to — a touch swipe over
+the open overlay leaves the page behind it unmoved. Do not "fix" that on the
+basis of `window.scrollTo()` appearing to scroll through: programmatic
+scrolling bypasses touch handling entirely and says nothing about a finger.
 
 ## No-JS rendering
 
@@ -201,13 +214,14 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `cfe49eba`.
-Do not change the imagery contract, the title type scale, the header layout or
-the caption row without first reproducing a specific, measurable defect.
+The 25-product catalogue and its inspection panel are frozen as of `30f91190`.
+Do not change the imagery contract, the provenance labelling, the title type
+scale, the header layout or the caption row without first reproducing a
+specific, measurable defect.
 
 Everything below was fixed in response to a reported defect and verified on the
-deployed build. Three of the four fixes exist because an earlier pass changed
-one of these things without measuring.
+deployed build. Most of these fixes exist because an earlier pass changed one of
+these things without measuring.
 
 ## The imagery contract
 
@@ -232,10 +246,14 @@ different filename — `applications/thermal-paste.webp` was a 1024² re-encode 
 its own bench macro and `applications/graphene-fabric.webp` was a 16 KB
 near-featureless crop, and both were deleted rather than kept.
 
-New application frames: 1024px on the long edge, quality 84, native aspect. Do
-not square them — the slot is `aspect-[1.15/1]` with `object-cover`, so it trims
-the sides and the subject stays centred. Aquamax is 1264×848, so non-square
-already matches the set. The two most recent are 72 KB and 58 KB.
+New application frames: export at the source's native size and aspect, quality
+84. Do not square them — the slot is `aspect-[1.15/1]` with `object-cover`, so
+it trims the sides and the subject stays centred, and Aquamax is already
+1264×848. Do not downscale to 1024 either: the panel paints this frame up to
+459 CSS px wide, which is ~1380 device px on a DPR-3 phone, so a 1024 source was
+upscaling 1.21× at 390 and 1.34× at 430. The two most recent are 1448×1086 at
+114 KB and 109 KB, measuring 0.85× and 0.95× — no upscaling at any tested
+viewport.
 
 ## Asset filenames follow the product, unless they are descriptive
 
@@ -252,14 +270,60 @@ Thermaphene, is how a future edit picks the wrong file.
 ## Names
 
 25 products, 25 unique titles, verified against both the rendered grid and the
-JSON-LD `ItemList`. Two pairs used to collide or near-collide and no longer do:
-Thermene / Thermaphene are different programmes (thermal interface compound,
-Commercial · Thermal · Interfaces; smart thermal fabric, R&D · Smart Textiles),
-and Texaphene / Vitraphene replaced Fibraphene / Fibrasphene, which sat one
-letter apart in the same catalogue.
+JSON-LD `ItemList`. The thermal/fibre group went through several renames and
+one swap; the settled assignment is:
+
+| Title | Stage · Domain | Assets |
+|---|---|---|
+| Thermene | Commercial · Thermal · Interfaces | `thermal-paste.webp` |
+| Texaphene | Commercial · Textiles · Functional | `graphene-fabric.webp` |
+| Thermaphene | R&D · Smart Textiles | `thermaphene.webp` |
+| Vitraphene | Pilot · Composites · Fibres | `vitraphene.webp` |
+
+Thermene and Thermaphene are one letter apart and are genuinely different
+programmes — a thermal interface compound and a smart thermal fabric — so check
+the domain, not just the name, before touching either. Texaphene and Vitraphene
+replaced Fibraphene and Fibrasphene, which sat one letter apart in the same
+catalogue.
+
+The hero title spells the count out — "Twenty-five industrial expressions" —
+rather than deriving it, so it must be updated by hand when the catalogue
+changes. It read twenty-three against 25 products while the eyebrow beside it,
+which is derived from `items.length`, already read "25 of 25". Everything else
+that states a count is derived: the eyebrow, the JSON-LD `numberOfItems`, the
+filter counts.
 
 Titles are Title Case and carry no trademark symbol. The panel prints the title
 verbatim, so one all-caps or one ™ among twenty-five reads as a typo.
+
+## The application slot is illustrative — do not label it as documentary
+
+The application imagery is illustrative. The two most recent frames were
+generated rather than photographed on a site, and the rest of the set is
+consistent with them. The panel used to say otherwise: the caption read
+"Application · Field", the hero-frame variant was badged "Field Deployment", and
+the note beside it asserted "material behaviour observed in situ within real
+operating environments". A visitor reads that as evidence of a deployment that
+happened.
+
+The wording is now neutral and says what it is:
+
+| Element | Text |
+|---|---|
+| Application frame caption | `Application · Deployment context` |
+| Hero badge, `largeApplicationFrame` | `Deployment Context` |
+| Note heading | `Application Note` (was "Deployment Note") |
+| Note status line | `Application context · illustrative` |
+
+Do not restore "field", "in-situ", "documentation" or "observed" to this slot
+unless the image genuinely is documentary photography of a real deployment, and
+do not name a customer, manufacturer or facility. The archive side is untouched
+and is where genuine sample photography lives — keep the two distinct.
+
+Note the JSX trap here: replacing an expression like
+`{cond ? "A" : "B"}` with a bare `"A"` leaves the quotes as literal text, and
+the caption shipped locally reading `"Application · Deployment context"` with
+visible quote marks. Children are text, not a JS string.
 
 ## Title type scale — do not restore `md:text-5xl`
 
@@ -312,6 +376,18 @@ Re-measure against these before claiming an improvement.
   390×844, 375×812, 360×800 — page overflow 0px, panel-open overflow 0px, titles
   single-line, captions non-overlapping, 0 console errors.
 - Desktop: horizontal overflow 0px at 390, 1024 and 1440, panel open and closed.
+- Image scale, measured against PAINTED pixels rather than the element box —
+  `getBoundingClientRect()` returns the box, and with `object-contain` the
+  painted area is smaller, which overstated the hero at 1.4× when it is 1.33×.
+  Compute the painted size from `object-fit` and the natural aspect ratio.
+  Application frames: 0.32× at 1920/1520/1366, 0.64× at 1440 DPR 2, 0.95× at
+  430 DPR 3, 0.85× at 390 DPR 3. No upscaling anywhere.
+- Zero layout shift when the panel opens; document height is unchanged.
+
+**Known, not fixed:** the studio cutouts are 1024 square across all 25 products
+and upscale 1.33× at 1440 DPR 2 and 1.10× at 430 DPR 3. Fixing that means
+re-exporting the whole set from originals that are not in the repository. It is
+mild and uniform, so do not fix it for one product and leave the rest.
 
 ## Measuring this panel without tripping over it
 
