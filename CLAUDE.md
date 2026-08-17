@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `5cdd321a`. Two subsystems carry their own
+The whole site is frozen as of `867ef72a`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -214,7 +214,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `5cdd321a`.
+The 25-product catalogue and its inspection panel are frozen as of `867ef72a`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.
@@ -368,27 +368,35 @@ into one unreadable line. Sharing a row they wrap instead of collide.
 - `largeApplicationFrame`: Graphacrete, Graffisol, Ceraphene, Ignitron D,
   Lubritron. Field media takes the hero, studio photo moves below, and the
   decorative thumbnail was already absent.
-- `applicationVideo`: Graphacrete, Graffisol, Ceraphene, Ignitron D, from
-  `/videos/`. Combined with `largeApplicationFrame` the video takes the hero
-  and the studio still drops below it, which is why all four are in both lists.
+- `applicationVideo`: all five of them, from `/videos/`. Every product with
+  `largeApplicationFrame` now has one, so the two lists are currently
+  identical — that is a coincidence of the catalogue, not a rule. The video
+  takes the hero and the studio still drops below it.
 - `aquamaxSimulation`: Aquamax only, replaces the right panel entirely.
 - `specs`: 4 products.
 
 ## Application video — encode before shipping, and check it on real hardware
 
-Four products carry one. `HeroVideo` exposes an unmute control, so keep the
-audio track; the element is muted on load and loops.
+All five hero-frame products carry one. `HeroVideo` exposes an unmute control,
+so keep the audio track; the element is muted on load and loops.
 
 Encode rather than shipping the delivered file. Ignitron D arrived 1920x1080 at
 14.5 Mbps — 18.2 MB for ten seconds. The hero frame paints 718 CSS px wide,
 which is 1436 device px at DPR 2, so 1440x810 covers it exactly with nothing
 wasted: H.264 high, CRF 23, AAC 96k, `-movflags +faststart`. That gave 4.05 MB
-at 35.4 dB against the source. For scale, `graphacrete.mp4` has been live at
-25.8 MB, and the three older files are 480x854 portrait at ~2 Mbps.
+at 35.4 dB against the source, and Lubritron 3.88 MB at 36.5 dB from a near
+identical 17.9 MB source. For scale, `graphacrete.mp4` has been live at 25.8 MB,
+and the three older files are 480x854 portrait at ~2 Mbps — the two newest are
+the lightest on the page despite being the highest resolution.
 
 `faststart` matters — `moov` must precede `mdat` or the browser buffers the
 whole file before the first frame. Check with a top-level atom dump rather than
 trusting the flag was applied.
+
+A newly added video 404s on production for a few minutes after the push — the
+page bundle and the static asset do not land together. Lubritron returned 404
+for about three minutes before appearing. Poll for it rather than concluding the
+deploy failed.
 
 **Playback cannot be verified in this container.** Its Chromium is built
 without an H.264 decoder: `canPlayType('video/mp4; codecs="avc1.42E01E"')`
