@@ -321,11 +321,12 @@ function InnovationsPage() {
         Graphacrete: "/videos/graphacrete.mp4",
         Graffisol: "/videos/graffisol.mp4",
         Ceraphene: "/videos/ceraphene.mp4",
-        // Ignitron D is already in largeFrameTitles, so this video takes the
-        // hero slot and the studio still drops below it, same as the other
-        // three. Unlike the application stills, this is genuine first-party
-        // product footage rather than an illustrative render.
+        // Ignitron D and Lubritron are already in largeFrameTitles, so these
+        // videos take the hero slot and the studio still drops below, same as
+        // the other three. Unlike the application stills, both are genuine
+        // first-party product footage rather than illustrative renders.
         "Ignitron D": "/videos/ignitron-d.mp4",
+        Lubritron: "/videos/lubritron.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
