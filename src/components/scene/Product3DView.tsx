@@ -951,9 +951,11 @@ export function Product3DModal({
 
                   Measured at 48px in the display face: the widest titles are
                   Thermaphene 335px, Graphenodes 322px, Graphacrete 300px,
-                  Aerophenter 299px, Fibrasphene 292px. The track was 280px at
-                  1440 and 204px at 1024, because a 96px decorative thumbnail
-                  and its 16px gap sat beside it.
+                  Aerophenter 299px, and what was then Fibrasphene at 292px —
+                  since renamed Vitraphene, which is a character shorter and so
+                  still inside the envelope. The track was 280px at 1440 and
+                  204px at 1024, because a 96px decorative thumbnail and its
+                  16px gap sat beside it.
 
                   Two changes, and both are needed — neither closes the gap on
                   its own. The thumbnail is gone: it was aria-hidden decoration

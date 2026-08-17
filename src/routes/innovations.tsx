@@ -169,10 +169,12 @@ const items: Item[] = [
      mislabelled "Application". Both fakes were deleted and the slot left empty
      rather than papered over.
 
-     Both now have a real field frame — Thermaphene's compound spread on a cold
+     Both now have a real field frame — Thermene's compound spread on a cold
      plate as it is seated onto a power-module assembly, Texaphene's treated
      cloth running the rollers on a textile finishing line — so the slot is back
-     on each. If a future entry arrives without one, leave `application` off and
+     on each. (Thermene, not Thermaphene: the names were swapped after this
+     comment was first written, and Thermaphene is now the R&D smart textile
+     further down.) If a future entry arrives without one, leave `application` off and
      let the panel drop the frame. Do not reach for `img`: that is what produced
      the duplicate. */
   { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
