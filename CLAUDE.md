@@ -214,7 +214,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `b7825782`.
+The 25-product catalogue and its inspection panel are frozen as of `5cdd321a`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.
@@ -368,10 +368,36 @@ into one unreadable line. Sharing a row they wrap instead of collide.
 - `largeApplicationFrame`: Graphacrete, Graffisol, Ceraphene, Ignitron D,
   Lubritron. Field media takes the hero, studio photo moves below, and the
   decorative thumbnail was already absent.
-- `applicationVideo`: Graphacrete, Graffisol, Ceraphene, from `/videos/`.
-  Caption becomes "Application · Field capture".
+- `applicationVideo`: Graphacrete, Graffisol, Ceraphene, Ignitron D, from
+  `/videos/`. Combined with `largeApplicationFrame` the video takes the hero
+  and the studio still drops below it, which is why all four are in both lists.
 - `aquamaxSimulation`: Aquamax only, replaces the right panel entirely.
 - `specs`: 4 products.
+
+## Application video — encode before shipping, and check it on real hardware
+
+Four products carry one. `HeroVideo` exposes an unmute control, so keep the
+audio track; the element is muted on load and loops.
+
+Encode rather than shipping the delivered file. Ignitron D arrived 1920x1080 at
+14.5 Mbps — 18.2 MB for ten seconds. The hero frame paints 718 CSS px wide,
+which is 1436 device px at DPR 2, so 1440x810 covers it exactly with nothing
+wasted: H.264 high, CRF 23, AAC 96k, `-movflags +faststart`. That gave 4.05 MB
+at 35.4 dB against the source. For scale, `graphacrete.mp4` has been live at
+25.8 MB, and the three older files are 480x854 portrait at ~2 Mbps.
+
+`faststart` matters — `moov` must precede `mdat` or the browser buffers the
+whole file before the first frame. Check with a top-level atom dump rather than
+trusting the flag was applied.
+
+**Playback cannot be verified in this container.** Its Chromium is built
+without an H.264 decoder: `canPlayType('video/mp4; codecs="avc1.42E01E"')`
+returns empty and every video on the page fails with
+`MEDIA_ERR_SRC_NOT_SUPPORTED` — including files that have been live for months.
+Do not read that as a broken asset. Confirm with an existing video as a control,
+verify the file with ffprobe, and get one tap on real hardware before calling a
+video done. Note also that the CDN answered a `Range` request with a full 200
+rather than a 206, which is worth watching on iOS Safari.
 
 ## Measured baselines
 
