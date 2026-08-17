@@ -659,7 +659,7 @@ export function Product3DModal({
                   <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-80">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/72">
-                      Field Deployment
+                      Deployment Context
                     </span>
                   </div>
                   <div className="pointer-events-none absolute bottom-5 left-5 z-10 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
@@ -769,7 +769,7 @@ export function Product3DModal({
                   <div className="pointer-events-none absolute left-5 top-4 z-10 flex items-center gap-2 opacity-70 transition-opacity duration-500 group-hover:opacity-100">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/85" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/70">
-                      Field Deployment
+                      Deployment Context
                     </span>
                   </div>
                   <div className="pointer-events-none absolute bottom-5 left-5 z-10">
@@ -853,7 +853,7 @@ export function Product3DModal({
                     <FilmGrain opacity={0.06} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
-                        Field · In-situ context
+                        Application · Deployment context
                       </p>
                     </div>
                   </div>
@@ -890,7 +890,7 @@ export function Product3DModal({
                     <FilmGrain opacity={0.07} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
-                        {item.applicationVideo ? "Application · Field capture" : "Application · Field"}
+                        Application · Deployment context
                       </p>
                     </div>
                     {item.applicationVideo && (
@@ -917,11 +917,11 @@ export function Product3DModal({
                   <div className="relative z-10 flex h-full flex-col justify-between gap-5">
                     <div>
                       <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
-                        {item.largeApplicationFrame ? "Deployment Note" : "Capture Note"}
+                        {item.largeApplicationFrame ? "Application Note" : "Capture Note"}
                       </p>
                       <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
                         {item.largeApplicationFrame
-                          ? "Field documentation prioritised over studio artifact — deployment context, industrial atmosphere, and material behaviour observed in situ within real operating environments."
+                          ? "Application context prioritised over studio artifact — the assembly the material sits in, the industrial environment it is specified for, and the scale at which it works."
                           : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
                       </p>
                     </div>
@@ -931,7 +931,7 @@ export function Product3DModal({
                       </p>
                       <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/62">
                         {item.largeApplicationFrame
-                          ? "Field deployment · in-situ documentation"
+                          ? "Application context · illustrative"
                           : "Cinema lens · shallow DOF · 16mm grain"}
                       </p>
                     </div>

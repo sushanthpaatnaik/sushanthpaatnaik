@@ -337,10 +337,14 @@ function InnovationsPage() {
       .filter((g) => g.list.length > 0);
   }, [visible]);
 
+  // The title spells the count out rather than deriving it from items.length,
+  // so it has to be updated by hand when the catalogue changes. It read
+  // twenty-three against a catalogue of 25, while the eyebrow beside it —
+  // which is derived — read "25 of 25".
   return (
     <CinematicPageShell
       eyebrow={`Innovations · Catalogue · ${items.length} of ${items.length}`}
-      title={<>One material platform.<br className="hidden md:inline" /> Twenty-three industrial expressions.</>}
+      title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
       lead="A private R&D archive of advanced materials engineering — graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
       overlay={0.78}
