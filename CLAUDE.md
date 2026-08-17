@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `b7825782`. Two subsystems carry their own
+The whole site is frozen as of `5cdd321a`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
