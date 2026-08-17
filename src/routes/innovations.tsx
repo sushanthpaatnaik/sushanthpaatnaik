@@ -301,6 +301,10 @@ function InnovationsPage() {
       "Ceraphene",
       "Ignitron D",
       "Lubritron",
+      // Added with its film. The secondary slot is aspect-1.15/1, so a 16:9
+      // video there loses about a third of its width to object-cover; the hero
+      // is 16/10 and shows it nearly whole.
+      "Coalorix",
     ]);
     const captions: Record<string, string> = {
       Graphacrete: "Infrastructure · Concrete deployment",
@@ -308,6 +312,7 @@ function InnovationsPage() {
       Ceraphene: "Automotive surface · Hydrophobic ceramic",
       "Ignitron D": "Diesel fleet · Combustion systems",
       Lubritron: "Engine internals · Friction-reduction",
+      Coalorix: "Thermal plant · Boiler combustion",
     };
     setActive({
       title: it.title,
@@ -327,6 +332,7 @@ function InnovationsPage() {
         // first-party product footage rather than illustrative renders.
         "Ignitron D": "/videos/ignitron-d.mp4",
         Lubritron: "/videos/lubritron.mp4",
+        Coalorix: "/videos/coalorix.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
