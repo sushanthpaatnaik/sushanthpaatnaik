@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `30f91190`. Two subsystems carry their own
+The whole site is frozen as of `b7825782`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -214,7 +214,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `30f91190`.
+The 25-product catalogue and its inspection panel are frozen as of `b7825782`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.
@@ -292,6 +292,15 @@ changes. It read twenty-three against 25 products while the eyebrow beside it,
 which is derived from `items.length`, already read "25 of 25". Everything else
 that states a count is derived: the eyebrow, the JSON-LD `numberOfItems`, the
 filter counts.
+
+The source of truth for these names is the owner's instruction, not the asset
+filenames and not an earlier draft. The chain that produced the table above:
+the two Monoatom entries were first named Thermaphene and Fibraphene, which
+collided with an existing Thermaphene; the smart textile was renamed Thermene;
+Fibraphene became Texaphene and Fibrasphene became Vitraphene; and finally
+Thermene and Thermaphene were swapped, putting Thermene on the interface
+compound. An audit that reads only the filenames will conclude the opposite,
+because `thermaphene.webp` belongs to the smart textile.
 
 Titles are Title Case and carry no trademark symbol. The panel prints the title
 verbatim, so one all-caps or one ™ among twenty-five reads as a typo.
