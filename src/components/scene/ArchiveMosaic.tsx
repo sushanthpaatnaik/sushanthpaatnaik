@@ -835,6 +835,8 @@ export function PresidentialTriptych({
                   src={item.src}
                   alt=""
                   aria-hidden
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover scale-110"
                   style={{
                     objectPosition: item.focus ?? "center",

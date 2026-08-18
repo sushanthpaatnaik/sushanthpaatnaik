@@ -134,6 +134,33 @@ When asserting on the error state, match the literal rendered copy
 `"Couldn't send"`. A regex for `try` matched the word "industry" elsewhere on
 the page and reported a pass that had not happened.
 
+## /recognitions image loading
+
+136 images on a 16,930px page. Everything below the fold is `loading="lazy"`,
+and the one thing that must stay that way is the **decorative blurred backdrop**
+in `ArchiveMosaic`: it renders only for `fit === "contain"` cards, and it points
+at the **same `src`** as the real image beside it. Without its own `loading`
+attribute it fetched eagerly and the lazy sibling then read the cache — so the
+card downloaded its full asset however far down the page it sat, and its lazy
+attribute did nothing. Fourteen images 1,800-12,000px down loaded on first
+paint because of that pair plus two eager call sites in `recognitions.tsx`.
+
+Measured, medians of three runs on one local server: first-load image bytes
+1707 KB → 1012 KB on phone and 1584 KB → 833 KB at 1440, image requests 25 → 16
+and 22 → 11, eager-below-fold 14 → 0.
+
+**LCP and TBT did not move** and were never going to — LCP here is a text node
+(a `<p>` at 390, the `<h1>` at 1440), and TBT is JS. Do not sell a lazy-loading
+change as a blocking-time win.
+
+`i < 2 ? "eager" : "lazy"` is the right heuristic for a list at the top of a
+page and the wrong one here: that list starts at y=11126.
+
+**Not a defect:** 42 of the 136 never decode even after a full scroll, on both
+this build and the one before it. They sit in a collapsed section and are
+already lazy. Use the live build as the control before treating that as a
+regression.
+
 ## Analytics
 
 `lib/analytics.ts` fans out to Plausible, umami, PostHog and dataLayer, and

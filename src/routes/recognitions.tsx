@@ -661,7 +661,8 @@ function EraAccordion({
                   <img
                     src={p.src}
                     alt={p.caption}
-                    loading="eager"
+                    loading="lazy"
+                    decoding="async"
                     className="archival-image-soft archival-image-hover absolute inset-0 h-full w-full object-cover opacity-90 group-hover/era:opacity-100"
                     style={{ objectPosition: p.focus ?? "center 30%" }}
                   />
@@ -1073,7 +1074,8 @@ function RecognitionsPage() {
                       <img
                         src={m.image}
                         alt={m.title}
-                        loading={i < 2 ? "eager" : "lazy"}
+                        loading="lazy"
+                        decoding="async"
                         className={`archival-image archival-image-hover absolute inset-0 h-full w-full opacity-90 ease-out group-hover:scale-[1.015] group-hover:opacity-95 ${
                           m.imageFit === "contain" ? "object-contain p-6 md:p-8" : "object-cover"
                         }`}
