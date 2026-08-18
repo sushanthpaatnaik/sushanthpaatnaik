@@ -109,9 +109,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      // favicon.png is rendered from favicon.svg with a transparent ground and
+      // carries `sizes` so a surface picking by size does not have to decode it
+      // first. It shipped 180x180 and fully opaque on a near-white square,
+      // which is what a WhatsApp link preview drew a white tile around; the SVG
+      // beside it was always transparent, but preview crawlers take the PNG.
+      { rel: "icon", type: "image/png", sizes: "512x512", href: "/favicon.png" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "apple-touch-icon", sizes: "512x512", href: "/favicon.png" },
     ],
     scripts: [
       {
