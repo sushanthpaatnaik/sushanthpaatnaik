@@ -4,7 +4,9 @@
  * The site already has Cloudflare Web Analytics, injected at the edge rather
  * than in this bundle, which gives pageviews and Core Web Vitals for free and
  * costs nothing in JS. What it cannot do is custom events, which is the whole
- * point of `contact_submit` and `engage_click`.
+ * point of the five this site emits: `contact_submit`, `engage_click`, and
+ * `innovation_open` / `innovation_close` / `innovation_filter` from the
+ * /innovations catalogue.
  *
  * Rather than commit the site to one vendor, `track` dispatches to whichever
  * of the common ones happens to be on the page and does nothing at all when

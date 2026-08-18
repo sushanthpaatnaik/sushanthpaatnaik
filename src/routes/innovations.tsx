@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import CinematicPageShell from "@/components/scene/CinematicPageShell";
 import FounderPortrait from "@/components/scene/FounderPortrait";
@@ -8,6 +8,7 @@ import { Tilt3DSurface, Product3DModal, type Product3DModalData } from "@/compon
 import { EvidenceBadge } from "@/components/scene/cinematic";
 import { type Stage, stageMeta } from "@/lib/evidenceStandards";
 import { breadcrumbSchema, ldJsonScript, webPageSchema, SITE_URL } from "@/lib/seo";
+import { track } from "@/lib/analytics";
 import backdrop from "@/assets/story-03-material.webp";
 import founderShowroom from "@/assets/founder-showroom.webp";
 
@@ -276,6 +277,32 @@ function InnovationsPage() {
     setPatentOnly(false);
     setFeaturedOnly(false);
   };
+
+  /**
+   * `innovation_filter` from one effect rather than a handler on each control.
+   * Stage, domain, patent-only and featured-only all narrow the same list, and
+   * `resetRefinements` clears three of them in one click — wiring each control
+   * would mean five call sites that a sixth filter would silently miss, and it
+   * would report a stale count because the state has not committed yet. Same
+   * reasoning as the delegated /engage listener.
+   *
+   * The ref skips the mount pass: without it every page load reports a filter
+   * change that nobody made.
+   */
+  const filtersReady = useRef(false);
+  useEffect(() => {
+    if (!filtersReady.current) {
+      filtersReady.current = true;
+      return;
+    }
+    track("innovation_filter", {
+      stage: filter,
+      domain: domainFilter,
+      patent_only: patentOnly,
+      featured_only: featuredOnly,
+      results: visible.length,
+    });
+  }, [filter, domainFilter, patentOnly, featuredOnly, visible.length]);
   const sortedVisible = useMemo(() => {
     const list = [...visible];
     list.sort((a, b) => {
@@ -295,6 +322,7 @@ function InnovationsPage() {
     }
   };
   const openProduct = (it: Item) => {
+    track("innovation_open", { product: it.title, stage: it.stage, domain: it.domain });
     const largeFrameTitles = new Set([
       "Graphacrete",
       "Graffisol",
@@ -788,7 +816,15 @@ function InnovationsPage() {
         </motion.div>
       </div>
 
-      <Product3DModal item={active} onClose={() => setActive(null)} />
+      {/* Escape, the backdrop and the close button all funnel through this one
+          handler, so tracking here covers every way out of the panel. */}
+      <Product3DModal
+        item={active}
+        onClose={() => {
+          if (active) track("innovation_close", { product: active.title });
+          setActive(null);
+        }}
+      />
     </CinematicPageShell>
 
   );

@@ -137,10 +137,30 @@ the page and reported a pass that had not happened.
 ## Analytics
 
 `lib/analytics.ts` fans out to Plausible, umami, PostHog and dataLayer, and
-swallows every error — analytics must never break a click or a submission. Two
-events: `contact_submit` and `engage_click`, the latter from one delegated
-listener mounted once in the root, because seven links point at /engage across
-the nav and five routes and the nav builds its own from a list.
+swallows every error — analytics must never break a click or a submission.
+Five events:
+
+| Event | Fired from | Properties |
+|---|---|---|
+| `contact_submit` | /contact | `intent`, `outcome` |
+| `engage_click` | one delegated listener in the root | `from`, `label` |
+| `innovation_open` | `openProduct` | `product`, `stage`, `domain` |
+| `innovation_close` | the modal's single `onClose` | `product` |
+| `innovation_filter` | one effect on the filter tuple | `stage`, `domain`, `patent_only`, `featured_only`, `results` |
+
+Two of these are deliberately not wired per control. `engage_click` is one
+delegated listener because seven links point at /engage across the nav and five
+routes and the nav builds its own from a list. `innovation_filter` is one
+effect because four controls narrow the same list and `resetRefinements` clears
+three at once — per-control handlers would be five call sites a sixth filter
+would silently miss, and each would report a stale count from state that has
+not committed yet. Its `filtersReady` ref skips the mount pass; without it every
+page load reports a filter change nobody made.
+
+`innovation_close` sits on the modal's one `onClose`, which Escape, the
+backdrop and the close button all funnel through — verified that all three
+paths emit, at 1440 and 390. There is no backdrop to click on a phone: the
+panel is full-width and stops propagation, so that path is desktop-only.
 
 The Plausible queue stub in `__root.tsx` is not boilerplate. `script.js` is
 deferred, so `window.plausible` does not exist until the document parses, and
