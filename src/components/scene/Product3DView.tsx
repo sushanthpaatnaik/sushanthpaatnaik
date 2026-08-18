@@ -394,7 +394,14 @@ export function HeroVideo({
       />
 
       {/* Cinematic micro-control cluster — bottom right.
-          Order: Play/Pause · Replay · Sound · Full View */}
+          Order: Play/Pause · Replay · Sound · Full View
+
+          Labels are icon-only below sm. With them the cluster wants 362px, and
+          the frame it sits in is 350/335/320 at 390/375/360 — so it was
+          squeezed and broke mid-word, rendering PAUS/E, SOUN/D and FULL/VIEW
+          on two lines. The buttons carry aria-label either way. This is shared
+          with the /innovations product panel, so check both pages when
+          touching it. */}
       <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] p-1 backdrop-blur-md">
         <button
           type="button"
@@ -407,7 +414,7 @@ export function HeroVideo({
           ) : (
             <Play className="h-3.5 w-3.5 text-accent/95 transition-colors" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
+          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
             {isPlaying ? "Pause" : "Play"}
           </span>
         </button>
@@ -436,7 +443,7 @@ export function HeroVideo({
           ) : (
             <Volume2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
+          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
             {muted ? "Sound" : "Mute"}
           </span>
         </button>
@@ -454,7 +461,7 @@ export function HeroVideo({
           ) : (
             <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" strokeWidth={1.6} />
           )}
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
+          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
             {isFullscreen ? "Exit" : "Full View"}
           </span>
         </button>

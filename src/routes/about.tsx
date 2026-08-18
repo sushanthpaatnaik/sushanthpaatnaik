@@ -122,7 +122,7 @@ function AboutPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-        className="not-prose relative mx-auto mt-16 md:mt-24 mb-4"
+        className="not-prose relative mx-auto mt-12 md:mt-16"
       >
         <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.035_0.008_245)]">
           <HeroVideo
@@ -148,21 +148,18 @@ function AboutPage() {
         </figcaption>
       </motion.figure>
 
-      {/* ── Founder plate ── */}
-      <FounderPortrait
-        variant="editorial"
-        plate
-        caption="Inventor, deep-tech founder, and six-time Indian Presidential awardee."
-        meta="Portrait · Bhubaneswar, India"
-      />
-
-      {/* ── Founder dossier — premium narrative block ── */}
+      {/* ── Founder dossier — premium narrative block ──
+          Sits between the film and the portrait rather than after both. Two
+          set-pieces stacked put a 160px void between them at 1440 — against a
+          56px section rhythm — and stepped the column through 896 → 520 → 640
+          in three consecutive blocks. Text here tapers 896 → 640 → 520 and
+          gives the portrait the page's personal narrative to introduce. */}
       <motion.section
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-        className="not-prose mx-auto -mt-12 md:-mt-16 max-w-[640px]"
+        className="not-prose mx-auto mt-16 md:mt-24 max-w-[640px]"
       >
         <div className="flex items-center gap-4">
           <span className="h-px w-8 bg-accent/45" />
@@ -211,6 +208,18 @@ function AboutPage() {
         </p>
       </motion.section>
 
+      {/* ── Founder plate ──
+          my-20 md:my-24 rather than the component default my-28 md:my-40: the
+          default was tuned for a plate the dossier was pulled up into with a
+          negative margin, and standing alone it opened a gap ~3x the 56px
+          section rhythm on either side. */}
+      <FounderPortrait
+        variant="editorial"
+        plate
+        margin="my-20 md:my-24"
+        caption="Inventor, deep-tech founder, and six-time Indian Presidential awardee."
+        meta="Portrait · Bhubaneswar, India"
+      />
 
       {/* ── Origin ── */}
       <EditorialSection number="01 · Origin" heading="A workshop, a wheelchair, and a question.">

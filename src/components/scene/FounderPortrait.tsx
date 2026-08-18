@@ -14,6 +14,14 @@ interface FounderPortraitProps {
   eyebrow?: string;
   narrative?: string[];
   plate?: boolean;
+  /**
+   * Replaces the default vertical rhythm around the figure. Given as a full
+   * utility string rather than merged with the default, because two competing
+   * `my-*` classes resolve by stylesheet order, not by the order they appear
+   * in the class attribute — appending an override would win or lose
+   * unpredictably per breakpoint.
+   */
+  margin?: string;
 }
 
 /**
@@ -36,6 +44,7 @@ export default function FounderPortrait({
   eyebrow,
   narrative,
   plate,
+  margin,
 }: FounderPortraitProps) {
   const src = srcOverride ?? (variant === "documentary" ? lab : editorial);
   const isDoc = variant === "documentary";
@@ -46,7 +55,7 @@ export default function FounderPortrait({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
-      className="not-prose relative mx-auto my-28 md:my-40 max-w-[460px] md:max-w-[520px]"
+      className={`not-prose relative mx-auto ${margin ?? "my-28 md:my-40"} max-w-[460px] md:max-w-[520px]`}
     >
       {/* Cinematic edge diffusion — dissolves the plate into the room.
           Softened texture so the portrait integrates with the page atmosphere
