@@ -109,11 +109,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      // favicon.png is rendered from favicon.svg with a transparent ground and
-      // carries `sizes` so a surface picking by size does not have to decode it
-      // first. It shipped 180x180 and fully opaque on a near-white square,
-      // which is what a WhatsApp link preview drew a white tile around; the SVG
-      // beside it was always transparent, but preview crawlers take the PNG.
+      // Two grounds on purpose. favicon.svg stays TRANSPARENT and is what
+      // Chrome, Firefox and Safari 16+ pick, so a browser tab gets the bare
+      // gold mark on whatever its theme is. The raster pair carries the site's
+      // own graphite (#0A0A0A) because link-preview thumbnails are JPEG, which
+      // has no alpha channel: a transparent icon gets flattened, conventionally
+      // onto WHITE, and WhatsApp drew a white tile around the mark on a dark
+      // green card. Verified as the cause with a control — spiindustries.co
+      // 404s on every icon path and its card shows no icon at all, so WhatsApp
+      // does fetch ours and render it.
+      //
+      // Do not "fix" the raster pair back to transparent without re-checking a
+      // real preview card. Transparent is the correct-looking file and the
+      // wrong-looking result.
       { rel: "icon", type: "image/png", sizes: "512x512", href: "/favicon.png" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "apple-touch-icon", sizes: "512x512", href: "/favicon.png" },
