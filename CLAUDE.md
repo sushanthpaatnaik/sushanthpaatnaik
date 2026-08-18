@@ -203,6 +203,12 @@ rendered grid.
 
 ## Facts that were wrong once
 
+Starunico Capital is at **starunicocapital.com**, not starunico.com. The bare
+name does not resolve, and /ventures shipped pointing at it — with a source
+comment recording it as an unreachable site rather than the wrong domain. The
+visible label is derived from `href`, so the link and the text it prints move
+together.
+
 NASA is Huntsville, Alabama — not Kennedy Space Center. Four recognitions carry
 evidence links (The Global Indian, NIF/nif.org.in, Golden Book of World
 Records, INK Talks) and the renderer emits nothing when a source is absent, so

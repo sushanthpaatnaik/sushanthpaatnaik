@@ -13,8 +13,9 @@ import sunrooofLogo from "@/assets/clients/sunrooof.webp";
 import greenomersLogo from "@/assets/clients/greenomers.webp";
 
 /* Operating-company marks. Four came from each company's own site; InThinks
-   and Starunico were supplied directly, their sites being unreachable
-   (inthinks.com answers 500, starunico.com does not resolve).
+   and Starunico were supplied directly, their sites being unreachable at the
+   time (inthinks.com answers 500; starunico.com does not resolve, but that was
+   the wrong domain — the venture is at starunicocapital.com, which answers 200).
 
    Where a company has a distinct symbol, the plate carries the symbol and not
    the full lockup — Monoatom's lattice, Grafillium's bulb, Starunico's hand —
@@ -147,7 +148,7 @@ const ventures: Venture[] = [
     domain: "Strategic deep-tech investment",
     thesis:
       "Strategic investment into deep-tech ventures — backing the companies turning frontier research into industrial systems.",
-    href: "https://starunico.com/",
+    href: "https://starunicocapital.com/",
     // The hand-and-shoot symbol, cropped off the left of the supplied lockup.
     // Its navy stems and leaf outlines are lifted toward slate the same way the
     // IOCL ring is on /voices — the green is the brand's own and untouched, but
