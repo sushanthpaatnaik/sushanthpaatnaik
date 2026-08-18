@@ -167,9 +167,13 @@ missing rows need source documents before the claim is safe.
 
 ## Measured baselines
 
-- All 13 routes, desktop 1440x900 and phone 390x844 with a touch profile:
-  HTTP 200, 0px horizontal overflow, scroll lock released, absolute canonical,
-  0 welds, 0 console errors.
+- All 13 routes, desktop 1440x900 and phones 430x932/390x844/375x812/360x800
+  with a touch profile: HTTP 200, 0px horizontal overflow, scroll lock
+  released, absolute canonical, 0 welds, 0 console errors. Per-route character
+  counts are identical across all four phone widths — a drop at one width means
+  something reflowed away, not that the phone is narrower.
+- Mobile nav at each of those four widths: 11 links, 0px overflow, opens on
+  tap with `aria-expanded=true`, closes on Escape back to `false`.
 - Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
   from above and below give an identical canvas pixel hash. 6750 and 7920 share
   a chapter heading and that is correct — with a 9000px scroll range they are
@@ -279,7 +283,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `7ad70ac6`.
+The 25-product catalogue and its inspection panel are frozen as of `e5427f4e`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.
@@ -431,9 +435,9 @@ into one unreadable line. Sharing a row they wrap instead of collide.
 ## Panel variants — leave the routing alone
 
 - `largeApplicationFrame`: Graphacrete, Graffisol, Ceraphene, Ignitron D,
-  Lubritron. Field media takes the hero, studio photo moves below, and the
-  decorative thumbnail was already absent.
-- `applicationVideo`: all five of them, from `/videos/`. Every product with
+  Lubritron, Coalorix. Field media takes the hero, studio photo moves below,
+  and the decorative thumbnail was already absent.
+- `applicationVideo`: all six of them, from `/videos/`. Every product with
   `largeApplicationFrame` now has one, so the two lists are currently
   identical — that is a coincidence of the catalogue, not a rule. The video
   takes the hero and the studio still drops below it.
@@ -500,6 +504,12 @@ Re-measure against these before claiming an improvement.
 - Mobile, live build, touch profile (`isMobile`, `hasTouch`, DPR 3, tap): 430×932,
   390×844, 375×812, 360×800 — page overflow 0px, panel-open overflow 0px, titles
   single-line, captions non-overlapping, 0 console errors.
+- Caption vs control cluster inside a hero video frame: 0px overlap at frame
+  widths 720/580/688/398/358/328 (viewports 1440/1024/768/430/390/360). 1024 is
+  the width to check first — the panel goes two-column at `lg`, so its frame is
+  narrower there than at 768.
+- Ignitron D carries two videos and both resolve at all four phone widths:
+  `ignitron-d.mp4` in the hero, `ignitron-d-film.mp4` in the product-film slot.
 - Desktop: horizontal overflow 0px at 390, 1024 and 1440, panel open and closed.
 - Image scale, measured against PAINTED pixels rather than the element box —
   `getBoundingClientRect()` returns the box, and with `object-contain` the
