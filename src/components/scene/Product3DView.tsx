@@ -209,10 +209,17 @@ export function HeroVideo({
   src,
   className,
   style,
+  caption,
 }: {
   src: string;
   className?: string;
   style?: React.CSSProperties;
+  /**
+   * Optional frame caption. Rendered by this component rather than by the
+   * caller so it shares one flex row with the control cluster — see the
+   * comment on that row for why a sibling box does not work.
+   */
+  caption?: string;
 }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const mountedRef = useRef(true);
@@ -393,96 +400,122 @@ export function HeroVideo({
         style={style}
       />
 
-      {/* Cinematic micro-control cluster — bottom right.
-          Order: Play/Pause · Replay · Sound · Full View
+      {/* Bottom row — frame caption and control cluster share one flex line.
+          As independent boxes (caption bottom-5 left-5, cluster bottom-4
+          right-4) they ran through each other: the 304px application caption
+          on an /innovations panel was overlapped by 124px at 1024, 15px at
+          768 and 113-169px at 430/390/360, and only 1440 was clear. A width
+          breakpoint cannot fix that, because the collision depends on the
+          frame width and the panel goes two-column at lg — so 1024 is worse
+          than 768. Sharing a row, they wrap instead of collide at any width.
 
-          Labels are icon-only below sm. With them the cluster wants 362px, and
-          the frame it sits in is 350/335/320 at 390/375/360 — so it was
+          The row is pointer-events-none so clicks outside the cluster still
+          reach the video for click-to-play; the cluster takes them back.
+          ml-1 on the caption lands it at the frame's 20px inset while the
+          cluster keeps its 16px one, so neither moves where they already fit.
+
+          Control order: Play/Pause · Replay · Sound · Full View. Labels are
+          icon-only until the row is 26rem wide. With them the cluster wants
+          362px, and the frame is 350/335/320 at 390/375/360 — so it was
           squeezed and broke mid-word, rendering PAUS/E, SOUN/D and FULL/VIEW
-          on two lines. The buttons carry aria-label either way. This is shared
-          with the /innovations product panel, so check both pages when
-          touching it. */}
-      <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] p-1 backdrop-blur-md">
-        <button
-          type="button"
-          onClick={togglePlay}
-          aria-label={isPlaying ? "Pause" : "Play"}
-          className="group/pp flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
-        >
-          {isPlaying ? (
-            <Pause className="h-3.5 w-3.5 text-foreground/75 transition-colors group-hover/pp:text-accent" strokeWidth={1.6} />
-          ) : (
-            <Play className="h-3.5 w-3.5 text-accent/95 transition-colors" strokeWidth={1.6} />
+          on two lines. Icon-only it is 169px. The threshold is a container
+          query rather than `sm:` because what squeezes the cluster is the
+          FRAME, not the viewport: this component is also used at 240px inside
+          a full-width desktop panel, where any viewport breakpoint would show
+          the labels and overflow. The buttons carry aria-label either way.
+          Shared with /about — check both pages. */}
+      <div className="@container pointer-events-none absolute inset-x-4 bottom-4 z-20 flex flex-col items-end gap-2">
+        {/* Sound hint — stacked above the row rather than pinned to its own
+            bottom-16. Pinned, it sat on top of the caption as soon as the row
+            wrapped, which is every width below 1440. */}
+        <AnimatePresence>
+          {muted && hintVisible && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              className="rounded-sm border border-accent/25 bg-[oklch(0.05_0.01_245/0.8)] px-2.5 py-1 backdrop-blur-md"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/85">
+                Sound Available
+              </span>
+            </motion.div>
           )}
-          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
-            {isPlaying ? "Pause" : "Play"}
-          </span>
-        </button>
+        </AnimatePresence>
 
-        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
-
-        <button
-          type="button"
-          onClick={replay}
-          aria-label="Replay from start"
-          className="group/rp flex h-7 items-center justify-center rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
-        >
-          <RotateCcw className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/rp:text-accent" strokeWidth={1.6} />
-        </button>
-
-        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
-
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={muted ? "Enable sound" : "Mute sound"}
-          className="group/snd flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
-        >
-          {muted ? (
-            <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" strokeWidth={1.6} />
-          ) : (
-            <Volume2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
-          )}
-          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
-            {muted ? "Sound" : "Mute"}
-          </span>
-        </button>
-
-        <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
-
-        <button
-          type="button"
-          onClick={toggleFullscreen}
-          aria-label={isFullscreen ? "Exit full view" : "Open full view"}
-          className="group/fs flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
-        >
-          {isFullscreen ? (
-            <Minimize2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
-          ) : (
-            <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" strokeWidth={1.6} />
-          )}
-          <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
-            {isFullscreen ? "Exit" : "Full View"}
-          </span>
-        </button>
-      </div>
-
-      {/* Subtle hint that audio is available — fades in after a moment */}
-      <AnimatePresence>
-        {muted && hintVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-            className="pointer-events-none absolute bottom-16 right-4 z-20 rounded-sm border border-accent/25 bg-[oklch(0.05_0.01_245/0.8)] px-2.5 py-1 backdrop-blur-md"
-          >
-            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/85">
-              Sound Available
-            </span>
-          </motion.div>
+        <div className="flex w-full flex-wrap items-center gap-x-4 gap-y-2">
+        {caption && (
+          <p className="ml-1 font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
+            {caption}
+          </p>
         )}
-      </AnimatePresence>
+        <div className="pointer-events-auto ml-auto flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] p-1 backdrop-blur-md">
+          <button
+            type="button"
+            onClick={togglePlay}
+            aria-label={isPlaying ? "Pause" : "Play"}
+            className="group/pp flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+          >
+            {isPlaying ? (
+              <Pause className="h-3.5 w-3.5 text-foreground/75 transition-colors group-hover/pp:text-accent" strokeWidth={1.6} />
+            ) : (
+              <Play className="h-3.5 w-3.5 text-accent/95 transition-colors" strokeWidth={1.6} />
+            )}
+            <span className="hidden @[26rem]:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/pp:text-foreground/95">
+              {isPlaying ? "Pause" : "Play"}
+            </span>
+          </button>
+
+          <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+          <button
+            type="button"
+            onClick={replay}
+            aria-label="Replay from start"
+            className="group/rp flex h-7 items-center justify-center rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+          >
+            <RotateCcw className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/rp:text-accent" strokeWidth={1.6} />
+          </button>
+
+          <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={muted ? "Enable sound" : "Mute sound"}
+            className="group/snd flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+          >
+            {muted ? (
+              <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" strokeWidth={1.6} />
+            ) : (
+              <Volume2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
+            )}
+            <span className="hidden @[26rem]:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/snd:text-foreground/95">
+              {muted ? "Sound" : "Mute"}
+            </span>
+          </button>
+
+          <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
+
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            aria-label={isFullscreen ? "Exit full view" : "Open full view"}
+            className="group/fs flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
+            ) : (
+              <Maximize2 className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/fs:text-accent" strokeWidth={1.6} />
+            )}
+            <span className="hidden @[26rem]:inline font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70 transition-colors group-hover/fs:text-foreground/95">
+              {isFullscreen ? "Exit" : "Full View"}
+            </span>
+          </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
@@ -498,6 +531,15 @@ export interface Product3DModalData {
   detailImg?: string;
   /** Optional field-deployment video used in place of the application still. */
   applicationVideo?: string;
+  /**
+   * Optional vertical product film — a narrated explainer in 9:16, distinct
+   * from the landscape application film above it. Gets its own slot rather
+   * than the hero, because object-cover would keep less than half a 9:16
+   * source in the 16:10 hero frame and the burnt-in captions sit low.
+   */
+  productFilm?: string;
+  /** One-paragraph description of what the product film shows. */
+  productFilmNote?: string;
   stage: string;
   specs?: { k: string; v: string; note: string }[];
   positioning?: string;
@@ -748,6 +790,7 @@ export function Product3DModal({
                     <HeroVideo
                       key={item.applicationVideo + "-hero"}
                       src={item.applicationVideo}
+                      caption={item.applicationCaption ?? `${item.title} · Deployment`}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
                       style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94)" }}
                     />
@@ -785,11 +828,16 @@ export function Product3DModal({
                       Deployment Context
                     </span>
                   </div>
-                  <div className="pointer-events-none absolute bottom-5 left-5 z-10">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
-                      {item.applicationCaption ?? `${item.title} · Deployment`}
-                    </p>
-                  </div>
+                  {/* Only for the still hero. With a video, HeroVideo renders
+                      this caption itself so it shares a row with the control
+                      cluster instead of running underneath it. */}
+                  {!item.applicationVideo && (
+                    <div className="pointer-events-none absolute bottom-5 left-5 z-10">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
+                        {item.applicationCaption ?? `${item.title} · Deployment`}
+                      </p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
@@ -951,6 +999,68 @@ export function Product3DModal({
                   </div>
                 </div>
               </div>
+
+              {/* PRODUCT FILM — vertical explainer.
+                  240px wide at sm+ so a 480px source maps 1:1 at DPR 2 with no
+                  upscaling, and paired with its note so the text carries the
+                  height the 9:16 frame adds rather than leaving a column of
+                  dead space beside it. The frame is narrower than the control
+                  cluster's 362px labelled width, which is why that cluster is
+                  keyed to a container query. */}
+              {item.productFilm && (
+                <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-[240px_1fr]">
+                  <div className="group relative mx-auto aspect-[9/16] w-[240px] max-w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)] sm:mx-0">
+                    <HeroVideo
+                      key={item.productFilm + "-film"}
+                      src={item.productFilm}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ filter: "contrast(1.04) saturate(0.9) brightness(0.95)" }}
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%)",
+                      }}
+                    />
+                    <FilmGrain opacity={0.05} />
+                  </div>
+
+                  <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
+                    <div
+                      aria-hidden
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
+                      }}
+                    />
+                    {/* Content height, not the film's. Stretched to the 9:16
+                        frame beside it, three lines of note left ~250px of
+                        empty panel between the copy and the format line. */}
+                    <div className="relative z-10 flex flex-col gap-5">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
+                          Product Film
+                        </p>
+                        <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
+                          {item.productFilmNote ??
+                            "A short narrated explainer on what the product does and where it acts."}
+                        </p>
+                      </div>
+                      <div className="border-t border-foreground/[0.08] pt-3">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
+                          Format
+                        </p>
+                        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/62">
+                          Vertical · 0:30 · narrated
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-6">

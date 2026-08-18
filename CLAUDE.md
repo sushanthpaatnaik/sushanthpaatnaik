@@ -52,31 +52,54 @@ than being appended to it — two competing `my-*` utilities resolve by
 stylesheet order, not by the order they appear in the class attribute, so an
 appended override wins or loses unpredictably per breakpoint.
 
+The film is graded — `grayscale(0.15) contrast(1.06) saturate(0.78)
+brightness(0.82)` plus a multiply gradient and a vignette. Ungraded it read as
+the one bright object on a graphite page: its frames average a luminance of
+70-83 against 38 for the portrait's source, and the portrait then takes
+`brightness(0.9)` and a multiply layer on top of that. Held at 0.82 rather than
+lower because the burnt-in title cards have to stay legible — 0.74 flattened
+them. Every other visual on the site carries a grade in this family.
+
+Judge a change to it on extracted frames in a styled page, not in this
+container's browser: no H.264 decoder means the video paints black, so a
+screenshot of `/about` tells you nothing about the grade.
+
 `/about` carries exactly one video, `identity-film.mp4`, and one image, the
 editorial portrait. `/innovations` carries no video outside the product panels
 — its founder plate is a still. A report of "the video on the About page" that
 arrives with an `/innovations` screenshot is about two different pages.
 
-## HeroVideo control cluster
+## HeroVideo bottom row
 
-Labels are `hidden sm:inline`. The cluster wants 362px with them and the frame
-it sits in is 350/335/320 at 390/375/360, so it was squeezed and broke
-mid-word — PAUS/E, SOUN/D and FULL/VIEW each on two lines. Icon-only it is
-169px. The buttons carry `aria-label` either way, so nothing is lost to
-assistive tech. Desktop is unchanged at 362px.
+Everything at the bottom of a video frame is **one stack**: the sound hint on
+top, then a wrapping row holding the frame caption and the control cluster.
+Nothing there is independently positioned, and adding a fourth box that is
+would reopen the defect this replaced.
+
+As three separate boxes — caption `bottom-5 left-5`, cluster `bottom-4 right-4`,
+hint `bottom-16 right-4` — they ran through each other. The 304px application
+caption on an `/innovations` panel was overlapped by 124px at 1024, 15px at 768
+and 113/153/169px at 430/390/360; only 1440 was clear. Sharing a row they wrap
+instead, and the measured overlap is 0px at 1440/1024/768/430/390/360.
+
+The caption is a **prop on HeroVideo**, not markup beside it. The panel still
+renders its own caption box for the still hero, where there is no cluster to
+collide with.
+
+Control labels are `hidden @[26rem]:inline` — a **container query on the row**,
+not a viewport breakpoint. With labels the cluster wants 362px; icon-only it is
+169px. What squeezes it is the frame, not the viewport: the frame is 350/335/320
+at 390/375/360 where it broke mid-word into PAUS/E, SOUN/D and FULL/VIEW, and
+the product-film slot is 240px wide inside a full-width desktop panel, where any
+`sm:`-style breakpoint would show the labels and overflow. The buttons carry
+`aria-label` either way.
 
 Measure the labels with a `Range` over the text node: they are spans inside a
 flex button, which blockifies them, and `getClientRects().length` on a block
-returns 1 however many lines it paints.
-
-**Known, not fixed:** on an `/innovations` panel the application caption sits
-`bottom-5 left-5` and this cluster sits `bottom-4 right-4` — independent boxes,
-the same shape of defect the studio captions had. The 304px caption overlaps by
-124px at 1024, 15px at 768 and 113/153/169px at 430/390/360; only 1440 is
-clear. Icon-only labels shrank the phone overlap from a full 304px but did not
-remove it. A width-based breakpoint cannot fix it, because the collision
-depends on the *frame* width — the panel goes two-column at `lg`, so 1024 is
-worse than 768.
+returns 1 however many lines it paints. And when measuring the cluster, select
+the **innermost** div holding the buttons — the caption now shares a wrapper
+with it, and selecting the wrapper made the caption a descendant of "the
+cluster", so an overlap check read 100% at every width by construction.
 
 ## Mobile navigation
 
@@ -415,7 +438,19 @@ into one unreadable line. Sharing a row they wrap instead of collide.
   identical — that is a coincidence of the catalogue, not a rule. The video
   takes the hero and the studio still drops below it.
 - `aquamaxSimulation`: Aquamax only, replaces the right panel entirely.
+- `productFilm`: Ignitron D only. A vertical narrated explainer in its own slot
+  at the foot of the left column, paired with a note — **not** a replacement for
+  the landscape application film above it. The two are different assets: 1440x810
+  deployment footage against a 480x854 captioned product film, and `object-cover`
+  would keep under half a 9:16 source in the 16:10 hero frame, cropping exactly
+  the low-sitting captions.
 - `specs`: 4 products.
+
+The product-film frame is `240px` wide at `sm+`, which maps a 480px source 1:1
+at DPR 2 with no upscaling. On a DPR-3 phone it paints 714 device px against a
+480px source — 1.49x — and nothing short of a higher-resolution source fixes
+that. The note beside it is content-height, not stretched: against the 425px
+frame, three lines of copy left ~250px of empty panel.
 
 ## Application video — encode before shipping, and check it on real hardware
 

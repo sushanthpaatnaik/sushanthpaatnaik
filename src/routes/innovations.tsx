@@ -306,6 +306,13 @@ function InnovationsPage() {
       // is 16/10 and shows it nearly whole.
       "Coalorix",
     ]);
+    const productFilms: Record<string, string> = {
+      "Ignitron D": "/videos/ignitron-d-film.mp4",
+    };
+    const productFilmNotes: Record<string, string> = {
+      "Ignitron D":
+        "Where the energy in diesel combustion is lost, and the point in the burn at which the catalyst acts. Narrated, with on-screen captions.",
+    };
     const captions: Record<string, string> = {
       Graphacrete: "Infrastructure · Concrete deployment",
       Graffisol: "Solar array · Coating application",
@@ -340,6 +347,12 @@ function InnovationsPage() {
       applicationContext: it.applicationContext,
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
+      // Vertical narrated explainer, in its own slot below the application
+      // row. It does not replace the landscape film above it — the two are
+      // different assets: 1440x810 deployment footage against a 480x854
+      // captioned product film.
+      productFilm: productFilms[it.title],
+      productFilmNote: productFilmNotes[it.title],
       aquamaxSimulation: it.title === "Aquamax",
     });
   };

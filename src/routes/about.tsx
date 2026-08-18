@@ -125,16 +125,36 @@ function AboutPage() {
         className="not-prose relative mx-auto mt-12 md:mt-16"
       >
         <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.035_0.008_245)]">
+          {/* Graded to the site's palette. Ungraded, the film's frames average
+              a luminance of 70-83 against 38 for the founder portrait's source
+              — and the portrait then takes brightness(0.9) and a multiply
+              gradient on top, so the film read as the one bright object on a
+              graphite page. Held at brightness(0.82) rather than lower because
+              the burnt-in title cards have to stay legible; 0.74 flattened
+              them. Every other visual on the site carries a grade like this —
+              the portrait, and the /innovations application videos. */}
           <HeroVideo
             src="/videos/identity-film.mp4"
             className="absolute inset-0 h-full w-full object-cover"
+            style={{
+              filter:
+                "grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 mix-blend-multiply"
+            style={{
+              background:
+                "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.34) 0%, oklch(0.04 0.005 260 / 0.16) 45%, oklch(0.02 0 0 / 0.48) 100%)",
+            }}
           />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at 50% 46%, transparent 58%, oklch(0.02 0.006 245 / 0.34) 92%)",
+                "radial-gradient(ellipse at 50% 46%, transparent 52%, oklch(0.02 0.006 245 / 0.38) 88%, oklch(0.015 0.006 245 / 0.7) 100%)",
             }}
           />
         </div>
