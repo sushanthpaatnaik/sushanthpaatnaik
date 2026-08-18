@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `867ef72a`. Two subsystems carry their own
+The whole site is frozen as of `7ad70ac6`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -214,7 +214,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `867ef72a`.
+The 25-product catalogue and its inspection panel are frozen as of `7ad70ac6`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.
@@ -377,8 +377,13 @@ into one unreadable line. Sharing a row they wrap instead of collide.
 
 ## Application video — encode before shipping, and check it on real hardware
 
-All five hero-frame products carry one. `HeroVideo` exposes an unmute control,
+All six hero-frame products carry one. `HeroVideo` exposes an unmute control,
 so keep the audio track; the element is muted on load and loops.
+
+**`HeroVideo` is no longer private to this panel.** It is exported from
+`Product3DView` and `/about` uses it for the identity film, because it takes
+only a src and styling and references no product state. Changing it now changes
+two pages — check /about before and after, not just a product panel.
 
 Encode rather than shipping the delivered file. Ignitron D arrived 1920x1080 at
 14.5 Mbps — 18.2 MB for ten seconds. The hero frame paints 718 CSS px wide,
