@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `7ad70ac6`. Two subsystems carry their own
+The whole site is frozen as of `bd8dd14e`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -35,6 +35,48 @@ prose — `p`, headings, `li`, `blockquote`, `figcaption`. A first version walke
 every adjacent text node in `<body>` and reported 502 welds on /recognitions
 whose top hits were "About|Early Works": two separate nav links, which
 concatenate in `body.textContent` too but are not a defect.
+
+## The /about opening spread
+
+Order is film → founder dossier → founder portrait, and it is deliberate. With
+the two set-pieces adjacent the column stepped 896 → 520 → 640 through three
+consecutive blocks and left a 160px gap between them at 1440, against a 56px
+section rhythm. Interleaved, the widths taper 896 → 640 → 520 before the
+numbered sections reset to 896, and the three opening gaps are 96px each.
+
+The portrait passes `margin="my-20 md:my-24"`. `FounderPortrait`'s default
+`my-28 md:my-40` was tuned for a plate the dossier was pulled up into with
+`-mt-12 md:-mt-16`; that negative margin is gone and the default alone opened
+~3x the section rhythm on both sides. The prop **replaces** the default rather
+than being appended to it — two competing `my-*` utilities resolve by
+stylesheet order, not by the order they appear in the class attribute, so an
+appended override wins or loses unpredictably per breakpoint.
+
+`/about` carries exactly one video, `identity-film.mp4`, and one image, the
+editorial portrait. `/innovations` carries no video outside the product panels
+— its founder plate is a still. A report of "the video on the About page" that
+arrives with an `/innovations` screenshot is about two different pages.
+
+## HeroVideo control cluster
+
+Labels are `hidden sm:inline`. The cluster wants 362px with them and the frame
+it sits in is 350/335/320 at 390/375/360, so it was squeezed and broke
+mid-word — PAUS/E, SOUN/D and FULL/VIEW each on two lines. Icon-only it is
+169px. The buttons carry `aria-label` either way, so nothing is lost to
+assistive tech. Desktop is unchanged at 362px.
+
+Measure the labels with a `Range` over the text node: they are spans inside a
+flex button, which blockifies them, and `getClientRects().length` on a block
+returns 1 however many lines it paints.
+
+**Known, not fixed:** on an `/innovations` panel the application caption sits
+`bottom-5 left-5` and this cluster sits `bottom-4 right-4` — independent boxes,
+the same shape of defect the studio captions had. The 304px caption overlaps by
+124px at 1024, 15px at 768 and 113/153/169px at 430/390/360; only 1440 is
+clear. Icon-only labels shrank the phone overlap from a full 304px but did not
+remove it. A width-based breakpoint cannot fix it, because the collision
+depends on the *frame* width — the panel goes two-column at `lg`, so 1024 is
+worse than 768.
 
 ## Mobile navigation
 
