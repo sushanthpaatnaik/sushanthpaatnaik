@@ -188,7 +188,7 @@
    brightness. */
 :root[data-theme="light"] {
   --background: oklch(0.965 0.004 85);        /* warm paper */
-  --foreground: oklch(0.235 0.006 260);       /* graphite ink, never #000 */
+  --foreground: oklch(0.195 0.006 260);       /* graphite ink, never #000 */
   --card: oklch(0.985 0.003 85);
   --card-foreground: oklch(0.235 0.006 260);
   --popover: oklch(0.99 0.003 85);
@@ -198,8 +198,8 @@
   --secondary: oklch(0.93 0.004 85);
   --secondary-foreground: oklch(0.235 0.006 260);
   --muted: oklch(0.945 0.004 85);
-  --muted-foreground: oklch(0.505 0.009 260);
-  --accent: oklch(0.505 0.098 68);            /* copper that holds on paper */
+  --muted-foreground: oklch(0.33 0.011 260);
+  --accent: oklch(0.435 0.108 68);            /* copper that holds on paper */
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.52 0.20 27);
   --destructive-foreground: oklch(0.99 0 0);

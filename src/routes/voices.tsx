@@ -288,7 +288,7 @@ function VoicesPage() {
         >
           <Link
             to="/recognitions"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[var(--surface-raised)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
           >
             <span
               aria-hidden

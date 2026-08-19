@@ -1429,7 +1429,7 @@ function RecognitionsPage() {
           >
             <Link
               to="/ventures"
-              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[var(--surface-raised)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
             >
               <span
                 aria-hidden
@@ -1572,7 +1572,7 @@ function RecognitionsPage() {
           >
             <Link
               to="/engage"
-              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 md:px-12 md:py-6 bg-[oklch(0.065_0.004_245)]/50 border border-foreground/[0.08] rounded-sm transition-all duration-700 hover:border-foreground/20 hover:bg-[var(--surface-raised)]/60"
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 md:px-12 md:py-6 bg-[var(--surface-level)]/50 border border-foreground/[0.08] rounded-sm transition-all duration-700 hover:border-foreground/20 hover:bg-[var(--surface-raised)]/60"
             >
               <span
                 aria-hidden

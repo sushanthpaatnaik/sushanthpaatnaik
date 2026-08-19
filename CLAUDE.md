@@ -429,6 +429,53 @@ edited.
   header already carries a wordmark, nine links and Contact. The drawer, which
   has room, gets the segmented version.
 
+## Contrast
+
+Measured with the browser resolving the colours, not a parser, and scored
+against the **approved dark theme** rather than against nothing:
+
+| | pairs scored | below AA |
+|---|---|---|
+| Dark (shipped, approved) | 132 | 50 |
+| Light (new) | 133 | 56 |
+
+Near parity, and both fall short in the same one place: 10px mono eyebrow
+labels at 30–60% alpha. That is a property of the design language, not of
+either theme.
+
+**On paper it cannot be fixed by choosing a darker colour.** Text at 55%
+alpha over the paper ground composites to `0.55·F + 0.45·243`; AA against
+that ground needs a composited value of 117 or darker, which requires
+`F ≤ 14` — essentially black, and then it is not a muted label any more.
+Closing the remaining gap means changing the alphas in the markup, which
+would change the approved dark theme too. Darkening the light base tokens
+(`--muted-foreground` 0.505 → 0.33, `--accent` 0.505 → 0.435, `--foreground`
+0.235 → 0.195) is what brought light from 49% failing to parity, and that
+lever is now spent.
+
+## Two instruments that lied here
+
+Both passed a naive control check, both produced confident nonsense, and both
+are the reason the numbers above are trustworthy.
+
+**Colour parsing.** This site authors colours in oklch, and Chromium returns
+them that way — `getComputedStyle().backgroundColor` is
+`oklch(0.965 0.004 85)`, not `rgb(...)`. A digit-scraping parser reads those
+three numbers as red, green and blue, turns the warm paper into
+`rgb(1, 0, 85)`, and reports 293 of 307 pairs failing AA on pages that are
+plainly legible in a screenshot. Resolve colour by painting onto a 1×1
+canvas and reading the pixel — that also composites alpha for free, which
+matters because most copy here is `text-foreground/70`.
+
+**Stale dev server.** `wrangler dev` caches the server bundle, so after a
+rebuild the HTML can keep referencing a stylesheet hash that no longer
+exists. Every page then renders completely unstyled: routes resolve the
+fallback theme, text is default-link blue, and a whole QA run reports
+failures that are the harness, not the site. It corrupted two runs before a
+guard existed. **Before any visual or contrast measurement, fetch the
+stylesheet the HTML actually references and assert it returns 200** — the QA
+script does this and refuses to run otherwise. Restarting wrangler clears it.
+
 ## Unfreeze rule
 
 Same as everywhere else on this site: a defect, the viewport and setting that
