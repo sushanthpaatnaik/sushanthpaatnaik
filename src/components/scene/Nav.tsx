@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import spLogo from "@/assets/sp-logo.svg";
+import ThemeSelector, { ThemeMenu } from "./ThemeSelector";
+import { useThemeControl } from "@/lib/theme-context";
 
 const navLinks = [
   { to: "/about", label: "About" },
@@ -17,6 +19,8 @@ const navLinks = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // True only on `/`, which renders dark whatever the visitor chose.
+  const { forcedDark } = useThemeControl();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
@@ -46,9 +50,7 @@ export default function Nav() {
           scrolled ? "h-16 md:h-[60px]" : "h-24 md:h-28"
         }`}
         style={{
-          background: scrolled
-            ? "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.94) 0%, oklch(0.04 0.005 260 / 0.88) 75%, transparent 100%)"
-            : "linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%)",
+          background: scrolled ? "var(--nav-veil-scrolled)" : "var(--nav-veil)",
           WebkitBackdropFilter: "blur(12px)",
           backdropFilter: "blur(12px)",
           maskImage: "linear-gradient(180deg, #000 0%, #000 70%, transparent 100%)",
@@ -68,9 +70,10 @@ export default function Nav() {
             aria-hidden
             width={28}
             height={28}
-            className={`select-none transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] opacity-90 group-hover:opacity-100 [filter:drop-shadow(0_0_14px_oklch(0.7_0.06_232/0.28))] ${
+            className={`select-none transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] opacity-90 group-hover:opacity-100 ${
               scrolled ? "h-6 w-6 md:h-7 md:w-7" : "h-7 w-7 md:h-8 md:w-8"
             }`}
+            style={{ filter: "var(--logo-glow)" }}
             draggable={false}
           />
           <span
@@ -98,6 +101,23 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-3 pointer-events-auto">
+          {/* The theme control lives with the other utilities rather than in
+              the link row: it is a setting, not a destination. Hidden below
+              lg, where the drawer carries it instead — the header row at 390
+              is already the wordmark plus a 44px trigger.
+
+              Absent on the homepage. The homepage is approved as it stands
+              and always renders dark, so a control there would offer a
+              setting that route ignores — and it is the one page whose
+              header was asked to stay exactly as it is. Measured: with the
+              control present, 3,710 of the 3,881 pixels that differed from
+              the deployed build were in the homepage header. Without it the
+              header is byte-identical again. */}
+          {!forcedDark && (
+            <div className="hidden lg:block">
+              <ThemeMenu />
+            </div>
+          )}
           {/* Wrapper div hides at mobile widths — prevents .btn-cinematic's
               display:inline-flex from overriding Tailwind's hidden utility */}
           <div className="hidden sm:block">
@@ -137,8 +157,7 @@ export default function Nav() {
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
-          background:
-            "radial-gradient(110% 80% at 50% 30%, oklch(0.05 0.006 260 / 0.96), oklch(0.03 0.004 260 / 0.99))",
+          background: "var(--nav-drawer)",
           WebkitBackdropFilter: "blur(14px)",
           backdropFilter: "blur(14px)",
         }}
@@ -166,6 +185,17 @@ export default function Nav() {
           >
             Contact →
           </Link>
+          {/* Below the destinations and separated by a rule, so the drawer
+              still reads as a list of places with a setting at the end.
+              Omitted on the homepage for the same reason as the header. */}
+          {!forcedDark && (
+            <div className="mt-8 w-full border-t border-foreground/[0.10] pt-6">
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/60">
+                Theme
+              </p>
+              <ThemeSelector size="lg" />
+            </div>
+          )}
         </nav>
       </div>
     </>

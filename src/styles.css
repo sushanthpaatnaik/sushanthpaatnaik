@@ -80,9 +80,24 @@
      Shared tokens for surfaces, overlays, image grading, and motion.
      Every section should consume these — never invent local values. */
 
-  /* Surfaces — deep industrial plates */
+  /* Surfaces — deep industrial plates.
+     A ladder, not a palette. What each rung means is its position relative
+     to the page ground (--background), and that relationship is what the
+     light theme reproduces: a plate that sits below the ground in the dark
+     sits below the paper in the light, by a comparable step. Reading the
+     light values as "the dark ones inverted" gets the order backwards. */
+  --surface-sunken:      oklch(0.04 0.008 245);
+  --surface-deep:        oklch(0.045 0.006 245);
   --surface-plate:       oklch(0.05 0.006 245);
   --surface-plate-soft:  oklch(0.055 0.006 245);
+  --surface-level:       oklch(0.06 0.004 245);
+  --surface-raised:      oklch(0.07 0.006 245);
+  --surface-high:        oklch(0.09 0.005 245);
+  --surface-veil:        oklch(0.04 0.006 245 / 0.7);
+  --surface-veil-strong: oklch(0.06 0.006 245 / 0.85);
+  --surface-glass:       oklch(0.08 0.012 245 / 0.75);
+  --surface-glass-soft:  oklch(0.05 0.008 245 / 0.7);
+  --surface-chip:        oklch(0.06 0.008 245 / 0.62);
   --surface-hairline:    oklch(0.967 0 0 / 0.08);
   --surface-hairline-strong: oklch(0.967 0 0 / 0.25);
 
@@ -100,6 +115,169 @@
   --dur-reveal: 1.15s;
   --dur-hover:  0.7s;
   --dur-slow:   1200ms;
+
+  /* ─── Theme-directional tokens ────────────────────────────────────
+     The values above are the dark theme and stay on :root, so a page
+     that never runs the theme script — or runs it and throws — renders
+     exactly the site that shipped before this existed.
+
+     These four are the ones that have to REVERSE, not merely shift, for
+     a light page to read as deliberate rather than inverted:
+
+     --page-ground  the paint behind everything, including the strip
+                    above a rubber-band scroll on iOS.
+     --ink          alpha of the page's own ground, for scrims that need
+                    to fade an image INTO the page. In dark that is
+                    black; in light it is the warm paper. A gradient
+                    written against black leaves a black rectangle on a
+                    light page, which is the single most visible way a
+                    retrofitted light theme gives itself away.
+     --sheen        alpha of the page's own foreground, for hairlines
+                    and inner highlights that lift a surface off its
+                    ground. White on dark, graphite on light.
+     --shadow-key   the colour a drop shadow is built from. Pure black
+                    at low alpha reads as grime on paper. */
+  --page-ground: oklch(0.04 0 0);
+  --ink: 0 0 0;
+  --sheen: 255 255 255;
+  --shadow-key: 0 0 0;
+  --focus-ring: oklch(0.74 0.06 232 / 0.75);
+  --selection-bg: oklch(0.71 0.13 240 / 0.28);
+  --selection-fg: oklch(0.99 0 0);
+
+  /* Chrome that has to veil the page behind it. Held as whole gradients
+     rather than a colour plus an alpha, because the dark values below are
+     the ones that shipped and are reproduced here character for character —
+     the light theme is a new design, the dark theme is not up for
+     reinterpretation. */
+  --nav-veil: linear-gradient(180deg, oklch(0.04 0.005 260 / 0.85) 0%, oklch(0.04 0.005 260 / 0.55) 55%, transparent 100%);
+  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.04 0.005 260 / 0.94) 0%, oklch(0.04 0.005 260 / 0.88) 75%, transparent 100%);
+  --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.05 0.006 260 / 0.96), oklch(0.03 0.004 260 / 0.99));
+  --logo-glow: drop-shadow(0 0 14px oklch(0.7 0.06 232 / 0.28));
+
+  /* The fixed archival plate behind every internal page: a photograph,
+     graded until it is atmosphere rather than subject, under a stack of
+     washes. Every layer is a token because every layer has to reverse —
+     a plate graded down to 0.46 brightness under a near-black wash is the
+     page's ground, and on paper that same stack is a black rectangle. */
+  --plate-filter: blur(4px) saturate(0.38) brightness(0.46) contrast(1.05);
+  --plate-haze-filter: blur(28px) saturate(0.32) brightness(0.42);
+  --plate-haze-opacity: 0.85;
+  --plate-ink: oklch(0.03 0.005 260);
+  --plate-ink-top: oklch(0.04 0.006 260);
+  /* screen adds light to a dark ground; multiply removes it from a light
+     one. Same two washes, opposite operators. */
+  --plate-blend: screen;
+  --plate-rim: radial-gradient(60% 50% at 82% 18%, oklch(0.62 0.10 55 / 0.07), transparent 60%);
+  --plate-depth: radial-gradient(70% 55% at 18% 78%, oklch(0.42 0.07 240 / 0.10), transparent 65%);
+  --plate-breath: radial-gradient(55% 45% at 50% 50%, oklch(0.55 0.05 235 / 0.05), transparent 70%);
+  --plate-vignette: radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.02 0 0 / 0.72) 100%);
+}
+
+/* ─── Light ───────────────────────────────────────────────────────────
+   Not an inversion. The dark site is graphite with a premium white and a
+   copper gold used sparingly; the light site is warm paper with graphite
+   ink and the same copper, darkened enough to hold its own against it.
+
+   Two adjustments are doing most of the work. The accent and primary
+   both drop in lightness — copper at 0.63 and graphene blue at 0.71 are
+   tuned to glow against black and go pale and weak against paper, which
+   is exactly how a light theme comes to look like the secondary one.
+   And every neutral carries a trace of warmth (hue 85, chroma 0.004)
+   so the page reads as paper stock rather than as a screen at full
+   brightness. */
+:root[data-theme="light"] {
+  --background: oklch(0.965 0.004 85);        /* warm paper */
+  --foreground: oklch(0.235 0.006 260);       /* graphite ink, never #000 */
+  --card: oklch(0.985 0.003 85);
+  --card-foreground: oklch(0.235 0.006 260);
+  --popover: oklch(0.99 0.003 85);
+  --popover-foreground: oklch(0.235 0.006 260);
+  --primary: oklch(0.50 0.14 245);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.93 0.004 85);
+  --secondary-foreground: oklch(0.235 0.006 260);
+  --muted: oklch(0.945 0.004 85);
+  --muted-foreground: oklch(0.505 0.009 260);
+  --accent: oklch(0.505 0.098 68);            /* copper that holds on paper */
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.52 0.20 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.34 0.006 260 / 15%);
+  --input: oklch(0.99 0.003 85);
+  --ring: oklch(0.50 0.14 245);
+
+  --color-graphite: oklch(0.90 0.004 85);
+  --color-charcoal: oklch(0.86 0.004 85);
+  --color-premium-white: oklch(0.235 0.006 260);
+  --color-graphene-blue: oklch(0.50 0.14 245);
+  --color-energy-glow: oklch(0.58 0.12 240);
+  --color-copper-gold: oklch(0.505 0.098 68);
+  --color-metallic-grey: oklch(0.505 0.009 260);
+
+  /* Glows become washes. A bloom that reads as light emitted in the dark
+     reads as a smudge on paper, so both drop to a fraction of their
+     alpha and lean on the tint instead. */
+  --glow-primary: 0 0 60px oklch(0.50 0.14 245 / 0.10);
+  --glow-accent: 0 0 80px oklch(0.505 0.098 68 / 0.09);
+  --gradient-hero: radial-gradient(ellipse at center, oklch(0.72 0.05 245 / 0.20), transparent 70%);
+  --gradient-text: linear-gradient(180deg, oklch(0.30 0.012 78) 0%, oklch(0.26 0.02 74) 60%, oklch(0.20 0.03 70) 100%);
+  --gradient-metallic: linear-gradient(180deg, oklch(0.955 0.003 85) 0%, oklch(0.90 0.004 85) 100%);
+
+  --surface-sunken:      oklch(0.925 0.005 85);
+  --surface-deep:        oklch(0.935 0.004 85);
+  --surface-plate:       oklch(0.945 0.004 85);
+  --surface-plate-soft:  oklch(0.952 0.004 85);
+  --surface-level:       oklch(0.965 0.004 85);
+  --surface-raised:      oklch(0.980 0.003 85);
+  --surface-high:        oklch(0.993 0.002 85);
+  --surface-veil:        oklch(0.96 0.004 85 / 0.72);
+  --surface-veil-strong: oklch(0.97 0.004 85 / 0.88);
+  --surface-glass:       oklch(0.99 0.003 85 / 0.78);
+  --surface-glass-soft:  oklch(0.965 0.004 85 / 0.72);
+  --surface-chip:        oklch(0.99 0.003 85 / 0.70);
+  --surface-hairline:    oklch(0.235 0.006 260 / 0.11);
+  --surface-hairline-strong: oklch(0.235 0.006 260 / 0.26);
+
+  --wash-blue:     radial-gradient(70% 55% at 18% 12%, oklch(0.55 0.09 240 / 0.07), transparent 65%);
+  --wash-copper:   radial-gradient(60% 50% at 85% 88%, oklch(0.60 0.10 55 / 0.06), transparent 65%);
+  --wash-vignette: radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.35 0.01 260 / 0.10) 100%);
+
+  --glass-plate: oklch(0.97 0.004 85 / 0.82);
+
+  --page-ground: oklch(0.955 0.004 85);
+  --ink: 250 248 244;                         /* the paper itself */
+  --sheen: 44 44 50;                          /* graphite, for hairlines */
+  --shadow-key: 46 40 32;                     /* warm, never neutral black */
+  --focus-ring: oklch(0.48 0.13 245 / 0.85);
+  --selection-bg: oklch(0.50 0.14 245 / 0.20);
+  --selection-fg: oklch(0.20 0.01 260);
+
+  /* The header veils toward paper instead of graphite, and keeps the same
+     fade to transparent so it still reads as a gradient rather than a bar.
+     The logo's blue bloom becomes a soft contact shadow — a glow is light
+     emitted, which is meaningless on a white ground and reads as a smudge. */
+  --nav-veil: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.88) 0%, oklch(0.965 0.004 85 / 0.58) 55%, transparent 100%);
+  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.95) 0%, oklch(0.965 0.004 85 / 0.90) 75%, transparent 100%);
+  --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.004 85 / 0.97), oklch(0.945 0.005 85 / 0.99));
+  --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
+
+  /* The same plate, printed rather than projected. Brightness goes up
+     instead of down and saturation drops further, so the photograph
+     survives as a watermark in the paper — visible when looked for,
+     never competing with the type. The washes multiply instead of
+     screening, and the vignette becomes a faint grey fall-off rather
+     than a black frame. */
+  --plate-filter: blur(5px) saturate(0.20) brightness(1.34) contrast(0.88);
+  --plate-haze-filter: blur(30px) saturate(0.18) brightness(1.40);
+  --plate-haze-opacity: 0.70;
+  --plate-ink: oklch(0.965 0.004 85);
+  --plate-ink-top: oklch(0.975 0.004 85);
+  --plate-blend: multiply;
+  --plate-rim: radial-gradient(60% 50% at 82% 18%, oklch(0.78 0.05 60 / 0.14), transparent 60%);
+  --plate-depth: radial-gradient(70% 55% at 18% 78%, oklch(0.76 0.04 240 / 0.12), transparent 65%);
+  --plate-breath: radial-gradient(55% 45% at 50% 50%, oklch(0.88 0.02 235 / 0.06), transparent 70%);
+  --plate-vignette: radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.58 0.012 265 / 0.16) 100%);
 }
 
 @supports (height: 100dvh) {
@@ -118,7 +296,7 @@
     border-color: var(--color-border);
   }
   html, body {
-    background-color: oklch(0.04 0 0);
+    background-color: var(--page-ground);
     color: var(--color-foreground);
     font-family: var(--font-display);
     font-feature-settings: "ss01", "cv11";
@@ -135,13 +313,46 @@
   }
   /* Premium keyboard focus ring */
   :focus-visible {
-    outline: 2px solid oklch(0.74 0.06 232 / 0.75);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     border-radius: 2px;
   }
   ::selection {
-    background: oklch(0.71 0.13 240 / 0.28);
-    color: oklch(0.99 0 0);
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  /* The theme swap. Only the four properties that carry colour, and only
+     on the elements that paint a surface — animating every nested element
+     turns a 200ms change into a wave that crosses the page. Layout, font
+     metrics and transforms are deliberately excluded.
+
+     Scoped to [data-theme-anim], which the theme code sets for the length
+     of a manual switch and then clears. Without that gate every hover and
+     route change would inherit a 200ms colour lag, and the homepage's
+     scroll-driven work would pay for a transition nobody asked for. */
+  :root[data-theme-anim] body,
+  :root[data-theme-anim] header,
+  :root[data-theme-anim] main,
+  :root[data-theme-anim] section,
+  :root[data-theme-anim] article,
+  :root[data-theme-anim] aside,
+  :root[data-theme-anim] nav,
+  :root[data-theme-anim] footer {
+    transition: background-color 200ms ease, color 200ms ease,
+      border-color 200ms ease, fill 200ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme-anim] body,
+    :root[data-theme-anim] header,
+    :root[data-theme-anim] main,
+    :root[data-theme-anim] section,
+    :root[data-theme-anim] article,
+    :root[data-theme-anim] aside,
+    :root[data-theme-anim] nav,
+    :root[data-theme-anim] footer {
+      transition: none;
+    }
   }
 }
 
@@ -1017,6 +1228,240 @@ html.lenis, html.lenis body {
     flex: 1 1 min(100%, 320px);
     min-width: 0;
   }
+}
+
+/* ─── Light theme: the utility layer ──────────────────────────────────
+   Everything above this point is the dark theme, and it is left byte for
+   byte as it shipped. These rules re-declare only the colour-bearing
+   properties of the same classes under [data-theme="light"].
+
+   That is a deliberate choice over threading a token through each of the
+   declarations above. The button system alone is five classes, four
+   pseudo-elements and three multi-layer box-shadows tuned against a black
+   ground; converting them in place would put every one of those values one
+   typo away from a dark-theme regression, to make the diff look tidier.
+   Here the dark rules cannot regress, because they are not edited — and
+   the light theme stays in one block a reader can take in whole, which is
+   what "not scattered across components" is actually for.
+
+   The component-level colours DO go through tokens, because those are
+   single values with an obvious counterpart. This block is only for the
+   compound treatments. */
+@layer utilities {
+  /* The primary control inverts its weight rather than its colour. In the
+     dark it is a glass pill that catches light; on paper that reads as
+     nothing at all, so it becomes a solid graphite pill — the same role,
+     "the heaviest thing in the row", expressed the way paper expresses it. */
+  :root[data-theme="light"] .btn-cinematic {
+    color: oklch(0.97 0.002 85);
+    background: oklch(0.265 0.008 260);
+    border-color: oklch(0.265 0.008 260);
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.10) inset,
+      0 0 0 0 oklch(0.50 0.14 245 / 0),
+      0 10px 24px -18px oklch(0.30 0.02 60 / 0.55);
+  }
+  :root[data-theme="light"] .btn-cinematic::before {
+    background: radial-gradient(ellipse at 50% 50%, oklch(0.50 0.14 245 / 0.20), transparent 68%);
+  }
+  /* The highlight sweep is light crossing a surface. Screening it over a
+     dark pill brightens; over a light page it would do nothing, so on the
+     graphite pill it keeps screening — the pill is the dark ground now. */
+  :root[data-theme="light"] .btn-cinematic::after {
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      oklch(0.98 0.01 240 / 0.10) 48%,
+      oklch(0.98 0.01 240 / 0.18) 50%,
+      oklch(0.98 0.01 240 / 0.10) 52%,
+      transparent 70%
+    );
+  }
+  :root[data-theme="light"] .btn-cinematic:hover {
+    color: oklch(0.99 0 0);
+    background: oklch(0.205 0.008 260);
+    border-color: oklch(0.205 0.008 260);
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.14) inset,
+      0 0 20px -6px oklch(0.50 0.14 245 / 0.22),
+      0 18px 34px -22px oklch(0.30 0.02 60 / 0.45);
+  }
+  :root[data-theme="light"] .btn-cinematic:focus-visible {
+    box-shadow:
+      0 0 0 1px oklch(0.48 0.13 245 / 0.75),
+      0 0 20px -4px oklch(0.48 0.13 245 / 0.30);
+  }
+
+  /* The ghost keeps its job — present but lighter than the primary — which
+     on paper means graphite type inside a graphite hairline. */
+  :root[data-theme="light"] .btn-cinematic-ghost {
+    color: oklch(0.34 0.008 260);
+    border-color: oklch(0.34 0.008 260 / 0.30);
+  }
+  :root[data-theme="light"] .btn-cinematic-ghost:hover {
+    color: oklch(0.22 0.008 260);
+    border-color: oklch(0.30 0.008 260 / 0.52);
+    background: oklch(0.28 0.01 260 / 0.05);
+  }
+  :root[data-theme="light"] .btn-cinematic-ghost:focus-visible {
+    outline-color: oklch(0.48 0.13 245 / 0.8);
+  }
+
+  :root[data-theme="light"] .btn-cinematic-secondary {
+    color: oklch(0.40 0.008 260);
+  }
+  :root[data-theme="light"] .btn-cinematic-secondary::after {
+    background: oklch(0.40 0.008 260 / 0.38);
+  }
+  :root[data-theme="light"] .btn-cinematic-secondary:hover {
+    color: oklch(0.22 0.008 260);
+  }
+  :root[data-theme="light"] .btn-cinematic-secondary:hover::after {
+    background: oklch(0.22 0.008 260 / 0.45);
+  }
+
+  :root[data-theme="light"] .btn-cinematic-atmospheric {
+    border-color: oklch(0.34 0.012 250 / 0.26);
+    background:
+      linear-gradient(180deg, oklch(1 0 0 / 0.55) 0%, oklch(1 0 0 / 0.20) 100%),
+      oklch(0.90 0.006 85 / 0.60);
+    color: oklch(0.26 0.008 260);
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.60) inset,
+      0 0 0 1px oklch(0.50 0.03 232 / 0.05),
+      0 14px 30px -26px oklch(0.30 0.02 60 / 0.45);
+  }
+  :root[data-theme="light"] .btn-cinematic-atmospheric:hover {
+    border-color: oklch(0.30 0.014 250 / 0.38);
+    background:
+      linear-gradient(180deg, oklch(1 0 0 / 0.70) 0%, oklch(1 0 0 / 0.30) 100%),
+      oklch(0.93 0.006 85 / 0.70);
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.75) inset,
+      0 0 0 1px oklch(0.50 0.04 232 / 0.09),
+      0 20px 40px -26px oklch(0.30 0.02 60 / 0.40);
+  }
+
+  /* Surfaces. A translucent black plate becomes a translucent paper plate,
+     and the inner highlight that lifts an edge out of darkness becomes a
+     graphite hairline that presses an edge into the page. */
+  :root[data-theme="light"] .glass {
+    background: oklch(0.995 0.002 85 / 0.72);
+    border-color: oklch(0.30 0.008 260 / 0.10);
+  }
+  :root[data-theme="light"] .metallic-surface {
+    border-color: oklch(0.30 0.008 260 / 0.10);
+    box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.85);
+  }
+  /* Grain reads as dirt on paper at the dark theme's strength, and overlay
+     against a light ground mostly lightens. Halved and switched to
+     multiply so it stays a tooth in the stock rather than a haze. */
+  :root[data-theme="light"] .noise::after {
+    opacity: 0.018;
+    mix-blend-mode: multiply;
+  }
+
+  /* Image treatments. Both of these exist to sink a photograph into a dark
+     page; on paper they have to sink it into a light one, or the plate
+     ends in the black rectangle this whole theme is trying to avoid. */
+  :root[data-theme="light"] .archive-grade-wrap::after {
+    background: radial-gradient(
+      ellipse 110% 80% at 50% 50%,
+      transparent 55%,
+      oklch(0.55 0.010 265 / 0.16) 100%
+    );
+  }
+  :root[data-theme="light"] .cinematic-overlay::after {
+    background: radial-gradient(
+      120% 80% at 50% 50%,
+      transparent 50%,
+      oklch(0.55 0.010 265 / 0.30) 100%
+    );
+    mix-blend-mode: multiply;
+    opacity: 0.35;
+  }
+  /* The signature grade lifted blacks and pulled brightness down to sit a
+     photograph on graphite. On paper the same picture needs its contrast
+     back and its brightness left alone, or it reads as a grey smudge. */
+  :root[data-theme="light"] .signature-grade {
+    filter: grayscale(0.14) contrast(1.02) saturate(0.86) brightness(1.01) sepia(0.04);
+  }
+  :root[data-theme="light"] .group:hover .signature-grade,
+  :root[data-theme="light"] .signature-grade:hover {
+    filter: grayscale(0.06) contrast(1.01) saturate(0.94) brightness(1.03) sepia(0.02);
+  }
+
+  /* Type. The gradient headline and the copper eyebrow both live at the
+     light end of the scale; on paper they invert to the graphite end while
+     keeping the same warm hue, so the wordmark still feels metallic. */
+  :root[data-theme="light"] .text-gradient {
+    color: oklch(0.26 0.012 78);
+  }
+  :root[data-theme="light"] .text-glow {
+    text-shadow: none;
+  }
+  :root[data-theme="light"] .text-eyebrow {
+    color: oklch(0.46 0.055 68 / 0.92);
+  }
+}
+
+/* ─── Dark islands ────────────────────────────────────────────────────
+   Some surfaces are dark because the photograph in them is dark, not
+   because the page is. The product cutouts are shot on a graphite
+   cyclorama with the shadow baked in; the archive plates are graded
+   documentary stills. Dropping either onto paper does not make a light
+   theme, it makes a light theme with the pictures ruined — which is
+   precisely what "do not simply drop every dark image onto white" is
+   warning about.
+
+   So they stay dark, and become deliberate: a plate inset into the page,
+   the way a photograph is printed on a spread. This class re-declares the
+   dark tokens for that subtree, so every `text-foreground/60` and
+   `border-foreground/[0.08]` inside it keeps meaning what it meant —
+   without a single component needing to know which theme is active.
+
+   In the dark theme it is a no-op by construction: the values are the
+   ones already on :root. */
+.theme-dark-island {
+  --background: oklch(0.06 0 0);
+  --foreground: oklch(0.967 0 0);
+  --card: oklch(0.13 0 0);
+  --card-foreground: oklch(0.967 0 0);
+  --popover: oklch(0.13 0 0);
+  --popover-foreground: oklch(0.967 0 0);
+  --primary: oklch(0.71 0.13 240);
+  --primary-foreground: oklch(0.08 0 0);
+  --secondary: oklch(0.18 0 0);
+  --secondary-foreground: oklch(0.967 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.62 0.005 250);
+  --accent: oklch(0.63 0.1 75);
+  --accent-foreground: oklch(0.08 0 0);
+  --border: oklch(0.28 0.004 250 / 32%);
+  --input: oklch(0.18 0 0);
+  --ring: oklch(0.71 0.13 240);
+  --surface-sunken:      oklch(0.04 0.008 245);
+  --surface-deep:        oklch(0.045 0.006 245);
+  --surface-plate:       oklch(0.05 0.006 245);
+  --surface-plate-soft:  oklch(0.055 0.006 245);
+  --surface-level:       oklch(0.06 0.004 245);
+  --surface-raised:      oklch(0.07 0.006 245);
+  --surface-high:        oklch(0.09 0.005 245);
+  --surface-veil:        oklch(0.04 0.006 245 / 0.7);
+  --surface-veil-strong: oklch(0.06 0.006 245 / 0.85);
+  --surface-glass:       oklch(0.08 0.012 245 / 0.75);
+  --surface-glass-soft:  oklch(0.05 0.008 245 / 0.7);
+  --surface-chip:        oklch(0.06 0.008 245 / 0.62);
+  --surface-hairline:    oklch(0.967 0 0 / 0.08);
+  --surface-hairline-strong: oklch(0.967 0 0 / 0.25);
+  --gradient-text: linear-gradient(180deg, oklch(0.97 0.005 80) 0%, oklch(0.88 0.018 78) 60%, oklch(0.74 0.035 72) 100%);
+  color-scheme: dark;
+}
+/* On paper the island needs an edge, or it reads as a hole. A hairline
+   and a shallow warm shadow are enough to seat it — the dark theme adds
+   nothing, since a dark plate on a dark page is already seated. */
+:root[data-theme="light"] .theme-dark-island {
+  box-shadow: 0 1px 0 oklch(1 0 0 / 0.5), 0 10px 26px -20px oklch(0.30 0.02 60 / 0.55);
 }
 
 /* Final safety nets — prevent absolutely-positioned children from

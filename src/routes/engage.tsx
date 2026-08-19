@@ -242,7 +242,7 @@ function PhilosophyBlock() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 1, delay: i * 0.05, ease: [0.19, 1, 0.22, 1] }}
-          className="bg-[oklch(0.045_0.006_245)]/70 p-6 md:p-8"
+          className="bg-[var(--surface-deep)]/70 p-6 md:p-8"
         >
           <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-accent/75">
             {t.n}

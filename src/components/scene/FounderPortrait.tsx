@@ -79,7 +79,7 @@ export default function FounderPortrait({
         }}
       />
 
-      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[oklch(0.04_0_0)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
+      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[var(--surface-sunken)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
         {/* Founder plate — strengthened editorial identity */}
         {plate && (
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/[0.06] px-6 py-4 md:px-8 md:py-5">
@@ -110,8 +110,8 @@ export default function FounderPortrait({
         <div
           className={
             isDoc
-              ? "group relative aspect-[5/6] sm:aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden bg-[oklch(0.035_0_0)]"
-              : "group relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/4.6] w-full overflow-hidden bg-[oklch(0.04_0_0)]"
+              ? "group relative aspect-[5/6] sm:aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden bg-[var(--surface-sunken)]"
+              : "group relative aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/4.6] w-full overflow-hidden bg-[var(--surface-sunken)]"
           }
         >
           <img

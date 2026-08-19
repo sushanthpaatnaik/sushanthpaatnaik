@@ -143,7 +143,7 @@ function LogoPlate({ v }: { v: Voice }) {
 
   const containerCls = v.logoWhiteBg
     ? "rounded-[6px] border border-black/[0.08] bg-white shadow-[0_2px_12px_oklch(0_0_0_/_0.18)]"
-    : "rounded-[4px] border border-foreground/[0.07] bg-[oklch(0.07_0.004_250)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
+    : "rounded-[4px] border border-foreground/[0.07] bg-[var(--surface-raised)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
 
   const imgStyle: CSSProperties = {
     maxWidth: `${Math.round(76 * scale)}%`,
@@ -288,7 +288,7 @@ function VoicesPage() {
         >
           <Link
             to="/recognitions"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
           >
             <span
               aria-hidden
@@ -302,7 +302,7 @@ function VoicesPage() {
           </Link>
           <Link
             to="/engage"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[var(--surface-level)]/60"
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
               Begin a Conversation

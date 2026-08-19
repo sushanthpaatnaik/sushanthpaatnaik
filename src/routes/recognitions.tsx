@@ -613,7 +613,7 @@ function EraAccordion({
       id={anchorId}
       className="not-prose group/era relative border-t border-foreground/[0.08] scroll-mt-28"
     >
-      <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[oklch(0.05_0.003_245)]/40">
+      <Collapsible.Trigger className="w-full text-left py-10 md:py-14 transition-colors duration-700 hover:bg-[var(--surface-plate)]/40">
         <div className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-8 md:gap-x-12">
           <span className="font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/55 pt-2">
             {number}
@@ -656,7 +656,7 @@ function EraAccordion({
               {previewPlates.slice(0, 4).map((p, i) => (
                 <figure
                   key={p.src + i}
-                  className="relative aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)]"
+                  className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-plate)]"
                 >
                   <img
                     src={p.src}
@@ -882,7 +882,7 @@ function RecognitionsPage() {
       <nav
         id="overview"
         aria-label="Recognitions sections"
-        className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-10 backdrop-blur-xl bg-[oklch(0.04_0.003_245)]/75 border-y border-foreground/[0.08] scroll-mt-2"
+        className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-10 backdrop-blur-xl bg-[var(--surface-sunken)]/75 border-y border-foreground/[0.08] scroll-mt-2"
       >
         <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {sectionNav.map((s) => {
@@ -1038,7 +1038,7 @@ function RecognitionsPage() {
                       className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[oklch(0.045_0.003_245)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
                     />
                     <span className="md:hidden absolute left-6 top-16 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
-                    <div className="md:mt-1 md:px-3 md:py-[3px] md:bg-[oklch(0.045_0.003_245)] md:border md:border-foreground/10">
+                    <div className="md:mt-1 md:px-3 md:py-[3px] md:bg-[var(--surface-deep)] md:border md:border-foreground/10">
                       <span className="font-mono text-[10px] md:text-[10.5px] uppercase tracking-[0.32em] text-foreground/60">
                         {m.year}
                       </span>
@@ -1065,7 +1065,7 @@ function RecognitionsPage() {
                       />
                     )}
                     <figure
-                      className={`relative overflow-hidden rounded-[2px] bg-[oklch(0.045_0.006_245)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
+                      className={`relative overflow-hidden rounded-[2px] bg-[var(--surface-deep)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
                         m.title.includes("Presidential")
                           ? "ring-1 ring-[oklch(0.62_0.12_65/0.30)] shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.12),0_32px_72px_-28px_oklch(0_0_0/0.72),inset_0_1px_0_oklch(1_0_0/0.04)] group-hover:shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.22),0_44px_96px_-30px_oklch(0_0_0/0.82),inset_0_1px_0_oklch(1_0_0/0.05)]"
                           : "ring-1 ring-foreground/8 shadow-[0_24px_60px_-30px_oklch(0_0_0/0.55),inset_0_1px_0_oklch(1_0_0/0.02)] group-hover:shadow-[0_34px_78px_-32px_oklch(0_0_0/0.62)]"
@@ -1118,7 +1118,7 @@ function RecognitionsPage() {
                         <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[10px] uppercase tracking-[0.3em] ${
                           m.category === "Presidential"
                             ? "border border-[oklch(0.62_0.12_65/0.45)] bg-[oklch(0.62_0.12_65/0.08)] text-[oklch(0.80_0.12_65)]"
-                            : "border border-foreground/15 bg-[oklch(0.06_0.004_245)]/50 text-foreground/70"
+                            : "border border-foreground/15 bg-[var(--surface-level)]/50 text-foreground/70"
                         }`}>
                           <span
                             aria-hidden
@@ -1240,7 +1240,7 @@ function RecognitionsPage() {
         <button
           type="button"
           onClick={() => setExpandAll((v) => !v)}
-          className="group inline-flex items-center gap-3 border border-foreground/15 hover:border-foreground/45 px-5 py-2.5 rounded-sm transition-all duration-500 hover:bg-[oklch(0.06_0.004_245)]/70"
+          className="group inline-flex items-center gap-3 border border-foreground/15 hover:border-foreground/45 px-5 py-2.5 rounded-sm transition-all duration-500 hover:bg-[var(--surface-level)]/70"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/70 group-hover:text-foreground transition-colors duration-500">
             {expandAll ? "Collapse full archive" : "Expand full archive"}
@@ -1429,7 +1429,7 @@ function RecognitionsPage() {
           >
             <Link
               to="/ventures"
-              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
             >
               <span
                 aria-hidden
@@ -1447,7 +1447,7 @@ function RecognitionsPage() {
 
             <Link
               to="/engage"
-              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[var(--surface-level)]/60"
             >
               <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
                 Begin a Conversation
@@ -1572,7 +1572,7 @@ function RecognitionsPage() {
           >
             <Link
               to="/engage"
-              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 md:px-12 md:py-6 bg-[oklch(0.065_0.004_245)]/50 border border-foreground/[0.08] rounded-sm transition-all duration-700 hover:border-foreground/20 hover:bg-[oklch(0.08_0.005_245)]/60"
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 md:px-12 md:py-6 bg-[oklch(0.065_0.004_245)]/50 border border-foreground/[0.08] rounded-sm transition-all duration-700 hover:border-foreground/20 hover:bg-[var(--surface-raised)]/60"
             >
               <span
                 aria-hidden

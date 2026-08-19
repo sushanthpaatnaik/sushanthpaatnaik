@@ -439,7 +439,7 @@ function ChapterFeature({
       aria-label={`${inv.name} — ${inv.year}`}
     >
       {/* Large image */}
-      <div className="relative group overflow-hidden rounded-sm">
+      <div className="theme-dark-island relative group overflow-hidden rounded-sm">
         <ParallaxImage
           src={inv.image}
           alt={inv.name}
@@ -756,7 +756,7 @@ function BackdropPanel({ isTouch }: { isTouch: boolean }) {
           backgroundImage: `url(${backdrop})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "blur(4px) saturate(0.38) brightness(0.46) contrast(1.05)",
+          filter: "var(--plate-filter)",
           transform: "scale(1.10) translateZ(0)",
           willChange: "transform",
         }}
@@ -767,46 +767,37 @@ function BackdropPanel({ isTouch }: { isTouch: boolean }) {
           backgroundImage: `url(${backdrop})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "blur(28px) saturate(0.32) brightness(0.42)",
+          filter: "var(--plate-haze-filter)",
           transform: "scale(1.16)",
           WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
           maskImage: "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
-          opacity: 0.85,
+          opacity: "var(--plate-haze-opacity)",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.04 0.006 260 / 0.84) 0%, oklch(0.03 0.005 260 / 0.78) 45%, oklch(0.03 0.005 260 / 0.82) 100%)",
+            "linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) 84%, transparent) 0%, color-mix(in oklab, var(--plate-ink) 78%, transparent) 45%, color-mix(in oklab, var(--plate-ink) 82%, transparent) 100%)",
         }}
       />
       <div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background: "radial-gradient(60% 50% at 82% 18%, oklch(0.62 0.10 55 / 0.07), transparent 60%)",
-        }}
+        className="absolute inset-0"
+        style={{ background: "var(--plate-rim)", mixBlendMode: "var(--plate-blend)" as never }}
       />
       <div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background: "radial-gradient(70% 55% at 18% 78%, oklch(0.42 0.07 240 / 0.10), transparent 65%)",
-        }}
+        className="absolute inset-0"
+        style={{ background: "var(--plate-depth)", mixBlendMode: "var(--plate-blend)" as never }}
       />
       <motion.div
-        className="absolute inset-0 mix-blend-screen"
-        style={{
-          background: "radial-gradient(55% 45% at 50% 50%, oklch(0.55 0.05 235 / 0.05), transparent 70%)",
-        }}
+        className="absolute inset-0"
+        style={{ background: "var(--plate-breath)", mixBlendMode: "var(--plate-blend)" as never }}
         animate={isTouch || reduced ? undefined : { opacity: [0.55, 1, 0.55] }}
         transition={isTouch || reduced ? undefined : { duration: 26, repeat: Infinity, ease: "easeInOut" }}
       />
       <div
         className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.02 0 0 / 0.72) 100%)",
-        }}
+        style={{ background: "var(--plate-vignette)" }}
       />
       <div className="absolute right-[-90px] bottom-[-80px] hidden md:block">
         <SignatureMotif variant="watermark" />

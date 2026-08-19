@@ -124,7 +124,7 @@ function AboutPage() {
         transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
         className="not-prose relative mx-auto mt-12 md:mt-16"
       >
-        <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.035_0.008_245)]">
+        <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
           {/* Graded to the site's palette. Ungraded, the film's frames average
               a luminance of 70-83 against 38 for the founder portrait's source
               — and the portrait then takes brightness(0.9) and a multiply
@@ -362,7 +362,7 @@ function AboutPage() {
         >
           <Link
             to="/early-works"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
           >
             <span
               aria-hidden
@@ -376,7 +376,7 @@ function AboutPage() {
           </Link>
           <Link
             to="/innovations"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[var(--surface-level)]/60"
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
               View Current Innovations

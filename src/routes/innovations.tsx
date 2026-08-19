@@ -445,7 +445,7 @@ function InnovationsPage() {
       />
 
       {/* Material Spec Sheet — the substrate behind everything */}
-      <div className="not-prose relative mt-12 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
+      <div className="not-prose relative mt-12 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[var(--surface-plate)]">
         <LatticeField intensity={0.05} />
         <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
           <div className="mb-7 flex items-center gap-3">
@@ -499,7 +499,7 @@ function InnovationsPage() {
             TRL · I — III
           </span>
         </div>
-        <div className="grid grid-cols-2 sm:flex sm:divide-x sm:divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+        <div className="grid grid-cols-2 sm:flex sm:divide-x sm:divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate)]">
           {filters.map((f) => {
             const isActive = f === filter;
             const count = items.filter((it) => matchesFilters(it, { stage: f })).length;
@@ -547,7 +547,7 @@ function InnovationsPage() {
           <span className="h-px flex-1 bg-foreground/[0.08]" />
         </div>
         <div className="flex flex-wrap items-center gap-3">
-        <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] py-2.5 pl-4 pr-9 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] transition-colors duration-300 hover:border-accent/50 focus-within:border-accent/60">
+        <label className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-sm border border-foreground/20 bg-[var(--surface-raised)] py-2.5 pl-4 pr-9 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] transition-colors duration-300 hover:border-accent/50 focus-within:border-accent/60">
           <span className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.26em] text-foreground/45">
             Domain
           </span>
@@ -581,7 +581,7 @@ function InnovationsPage() {
           className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             patentOnly
               ? "border-accent/50 bg-accent/[0.08] text-accent/90"
-              : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
+              : "border-foreground/20 bg-[var(--surface-raised)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
           }`}
         >
           <span
@@ -599,7 +599,7 @@ function InnovationsPage() {
           className={`inline-flex items-center gap-2.5 rounded-sm border px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.3em] transition-colors duration-300 ${
             featuredOnly
               ? "border-accent/50 bg-accent/[0.08] text-accent/90"
-              : "border-foreground/20 bg-[oklch(0.07_0.006_245)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
+              : "border-foreground/20 bg-[var(--surface-raised)] text-foreground/70 hover:border-accent/40 hover:text-foreground/90"
           }`}
         >
           <span
@@ -633,7 +633,7 @@ function InnovationsPage() {
         <div
           role="group"
           aria-label="Catalogue view — click to switch between a visual gallery and a sortable table"
-          className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/20 bg-[oklch(0.07_0.006_245)] pl-4"
+          className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/20 bg-[var(--surface-raised)] pl-4"
         >
           <span className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.26em] text-foreground/45">
             View
@@ -668,7 +668,7 @@ function InnovationsPage() {
 
       {/* Stage-grouped catalogue — hierarchical, hero + supporting */}
       {visible.length === 0 ? (
-        <div className="not-prose mt-12 flex flex-col items-center gap-4 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] px-6 py-16 text-center">
+        <div className="not-prose mt-12 flex flex-col items-center gap-4 rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate)] px-6 py-16 text-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/50">
             No programs match this combination
           </p>
@@ -734,7 +734,7 @@ function InnovationsPage() {
       )}
 
       {/* Patent · IP Register — closing institutional ledger */}
-      <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[oklch(0.05_0.006_245)]">
+      <div className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.06] bg-[var(--surface-plate)]">
         <LatticeField intensity={0.04} />
         <div className="relative z-10 px-6 py-9 md:px-9 md:py-12">
           <div className="mb-7 flex items-center gap-3">
@@ -824,7 +824,7 @@ function InnovationsPage() {
         >
           <Link
             to="/engage"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
           >
             <span
               aria-hidden
@@ -838,7 +838,7 @@ function InnovationsPage() {
           </Link>
           <Link
             to="/ventures"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[var(--surface-level)]/60"
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
               Explore the Ventures
@@ -874,7 +874,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
       aria-label={`Open product inspection for ${item.title}`}
-      className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+      className="theme-dark-island group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
       <Tilt3DSurface
         src={item.cutout}
@@ -905,7 +905,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Archive entry
         </span>
       </div>
-      <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.06_0.008_245/0.62)] px-2.5 py-1.5 backdrop-blur-sm">
+      <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] px-2.5 py-1.5 backdrop-blur-sm">
         <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
           Studio still
@@ -947,7 +947,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       /* aspect-[3/2] on mobile keeps a full-width card from becoming very tall
          now that these stack in a single column; 4/3 returns from sm up where
          two or three sit side by side. */
-      className="group relative aspect-[3/2] sm:aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.05_0.006_245)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+      className="theme-dark-island group relative aspect-[3/2] sm:aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-foreground/[0.07] bg-[var(--surface-plate)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
     >
       {/* -translate-y on mobile lifts the product clear of the caption block.
           In a single-column card the product sits dead-centre and used to
@@ -1054,7 +1054,7 @@ function InnovationsTable({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[880px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+            <tr className="border-b border-foreground/[0.08] bg-[var(--surface-plate)]">
               <SortHeader label="Technology" active={sortKey === "title"} dir={sortDir} onClick={() => onSort("title")} />
               <SortHeader label="Domain" active={sortKey === "domain"} dir={sortDir} onClick={() => onSort("domain")} />
               <SortHeader label="Stage" active={sortKey === "stage"} dir={sortDir} onClick={() => onSort("stage")} />

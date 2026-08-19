@@ -379,7 +379,7 @@ function MediaPlate({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden bg-[oklch(0.045_0.006_245)] ${className}`}>
+    <div className={`relative overflow-hidden bg-[var(--surface-deep)] ${className}`}>
       <img
         src={src}
         alt={alt}
@@ -459,7 +459,7 @@ function LeadFeature({ item }: { item: PressItem }) {
 
           {/* Editorial reading panel — slight surface plate so copy
               wins against the cinematic backdrop. */}
-          <div className="md:col-span-6 rounded-sm bg-[oklch(0.045_0.006_245)]/55 p-6 md:p-8 backdrop-blur-[2px] hairline">
+          <div className="md:col-span-6 rounded-sm bg-[var(--surface-deep)]/55 p-6 md:p-8 backdrop-blur-[2px] hairline">
             {item.logo && (
               <div className="flex h-8 items-center">
                 <img
@@ -695,7 +695,7 @@ function NewsPage() {
               <a
                 key={c.id}
                 href={`#${anchor}`}
-                className="group block bg-[oklch(0.045_0.006_245)]/70 p-5 transition-colors duration-500 hover:bg-[oklch(0.06_0.008_245)]/80"
+                className="group block bg-[var(--surface-deep)]/70 p-5 transition-colors duration-500 hover:bg-[var(--surface-level)]/80"
               >
                 <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/75">
                   Desk {c.code}
@@ -800,7 +800,7 @@ function NewsPage() {
             The mastheads carrying the work — Indian and international, popular
             press and scientific institutions.
           </p>
-          <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[oklch(0.046_0.003_245)]">
+          <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[var(--surface-deep)]">
             {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
             <div
               aria-hidden

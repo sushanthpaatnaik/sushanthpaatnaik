@@ -50,7 +50,7 @@ export default function AquamaxSimulationCompact() {
   return (
     <section
       aria-labelledby="aquamax-compact-title"
-      className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]"
+      className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]"
     >
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-b border-foreground/[0.07] px-5 py-3.5">
         <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent/85">
@@ -73,7 +73,7 @@ export default function AquamaxSimulationCompact() {
           type="button"
           onClick={() => setDetached((d) => !d)}
           aria-pressed={detached}
-          className="inline-flex items-center gap-2.5 rounded-sm border border-accent/40 bg-[oklch(0.06_0.01_245)] px-3 py-1.5 transition-colors hover:border-accent/70"
+          className="inline-flex items-center gap-2.5 rounded-sm border border-accent/40 bg-[var(--surface-level)] px-3 py-1.5 transition-colors hover:border-accent/70"
         >
           <span
             className={`h-1.5 w-1.5 rounded-full transition-colors ${detached ? "bg-accent/90" : "bg-foreground/40"}`}
@@ -122,13 +122,13 @@ export default function AquamaxSimulationCompact() {
 
         <CompactScene detached={detached} size={size} active={phaseIdx} />
 
-        <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1 backdrop-blur-sm">
+        <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-glass-soft)] px-2.5 py-1 backdrop-blur-sm">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/85" />
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70">
             Live · Schematic
           </span>
         </div>
-        <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1 backdrop-blur-sm">
+        <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[var(--surface-glass-soft)] px-2.5 py-1 backdrop-blur-sm">
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/70">
             {detached ? "Hood · Released" : "Hood · Engaged"}
           </span>
@@ -153,7 +153,7 @@ export default function AquamaxSimulationCompact() {
               type="button"
               onClick={() => setPhaseIdx(i)}
               aria-pressed={active}
-              className={`group relative border-foreground/[0.06] px-3 py-2.5 text-left transition-colors [&:not(:first-child)]:border-l ${active ? "bg-[oklch(0.06_0.01_245)]" : "hover:bg-foreground/[0.025]"}`}
+              className={`group relative border-foreground/[0.06] px-3 py-2.5 text-left transition-colors [&:not(:first-child)]:border-l ${active ? "bg-[var(--surface-level)]" : "hover:bg-foreground/[0.025]"}`}
             >
               <span
                 aria-hidden

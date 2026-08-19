@@ -286,7 +286,7 @@ function VenturesPage() {
         {holdingStats.map((s) => (
           <div
             key={s.label}
-            className="relative flex flex-col items-center gap-1.5 px-4 py-6 md:py-8 bg-[oklch(0.055_0.006_240)]"
+            className="relative flex flex-col items-center gap-1.5 px-4 py-6 md:py-8 bg-[var(--surface-plate-soft)]"
           >
             {/* div, not span — flex blockifies them, so this is a no-op on
                 screen and a real word boundary in the text stream. As spans
@@ -471,7 +471,7 @@ function VenturesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.9, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
-              className="group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[oklch(0.05_0.006_245)] px-5 py-10 md:py-12 text-center"
+              className="group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[var(--surface-plate)] px-5 py-10 md:py-12 text-center"
             >
               {/* ── Atmospheric base — restrained graphene wash ── */}
               <div
@@ -575,7 +575,7 @@ function VenturesPage() {
         >
           <Link
             to="/innovations"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[oklch(0.09_0.005_245)]"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-[oklch(0.07_0.005_245)] border border-foreground/[0.10] rounded-sm transition-all duration-700 hover:border-foreground/25 hover:bg-[var(--surface-high)]"
           >
             <span
               aria-hidden
@@ -589,7 +589,7 @@ function VenturesPage() {
           </Link>
           <Link
             to="/engage"
-            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[oklch(0.06_0.004_245)]/60"
+            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 border border-transparent rounded-sm transition-all duration-700 hover:border-foreground/[0.08] hover:bg-[var(--surface-level)]/60"
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-foreground/50 group-hover:text-foreground/75 transition-colors duration-700">
               Begin a Conversation

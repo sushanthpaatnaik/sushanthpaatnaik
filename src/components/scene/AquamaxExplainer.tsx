@@ -69,7 +69,7 @@ export default function AquamaxExplainer() {
     <section
       ref={sectionRef}
       aria-labelledby="aquamax-explainer-title"
-      className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.07] bg-[oklch(0.04_0.005_245)]"
+      className="not-prose relative mt-24 overflow-hidden rounded-sm border border-foreground/[0.07] bg-[var(--surface-sunken)]"
     >
       <div className="relative z-10 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-b border-foreground/[0.06] px-6 py-5 md:px-9">
         <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
@@ -93,7 +93,7 @@ export default function AquamaxExplainer() {
               <button
                 type="button"
                 onClick={() => setDetached((d) => !d)}
-                className="group inline-flex items-center gap-3 rounded-sm border border-accent/40 bg-[oklch(0.06_0.01_245)] px-3.5 py-2 transition-colors hover:border-accent/70"
+                className="group inline-flex items-center gap-3 rounded-sm border border-accent/40 bg-[var(--surface-level)] px-3.5 py-2 transition-colors hover:border-accent/70"
                 aria-pressed={detached}
               >
                 <span
@@ -106,7 +106,7 @@ export default function AquamaxExplainer() {
                 </span>
               </button>
 
-              <div className="flex divide-x divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.006_245)]">
+              <div className="flex divide-x divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate)]">
                 {(Object.keys(sizeMeta) as Size[]).map((s) => {
                   const active = s === size;
                   return (
@@ -159,13 +159,13 @@ export default function AquamaxExplainer() {
 
               <Scene detached={detached} size={size} dashOffset={dashOffset} />
 
-              <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1.5 backdrop-blur-sm">
+              <div className="absolute left-3 top-3 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-glass-soft)] px-2.5 py-1.5 backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent/80" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                   Live · Schematic
                 </span>
               </div>
-              <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[oklch(0.05_0.008_245/0.7)] px-2.5 py-1.5 backdrop-blur-sm">
+              <div className="absolute right-3 top-3 rounded-sm border border-foreground/[0.08] bg-[var(--surface-glass-soft)] px-2.5 py-1.5 backdrop-blur-sm">
                 <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
                   {detached ? "Hood · Released" : "Hood · Engaged"}
                 </span>
@@ -496,7 +496,7 @@ function PhaseCallout({
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, delay: index * 0.04, ease: [0.19, 1, 0.22, 1] }}
       className={`relative min-h-[80vh] border-b border-foreground/[0.06] px-6 py-10 transition-colors duration-700 md:px-9 ${
-        active ? "bg-[oklch(0.055_0.008_245)]" : "bg-transparent"
+        active ? "bg-[var(--surface-plate-soft)]" : "bg-transparent"
       }`}
     >
       <span

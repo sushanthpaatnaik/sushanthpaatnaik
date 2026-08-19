@@ -217,7 +217,7 @@ export function EcosystemMap({ nodes, className = "" }: { nodes: EcosystemNode[]
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.9, delay: i * 0.07, ease: EASE_CINEMATIC }}
-            className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-[oklch(0.05_0.006_245)] px-5 py-4 md:px-6 md:py-5"
+            className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-[var(--surface-plate)] px-5 py-4 md:px-6 md:py-5"
           >
             <span className="font-mono text-[10px] text-muted-foreground/50">{node.code}</span>
             <span className="font-display text-[16px] md:text-[17px] tracking-[-0.01em] text-foreground/95">
@@ -231,7 +231,7 @@ export function EcosystemMap({ nodes, className = "" }: { nodes: EcosystemNode[]
             </span>
           </motion.div>
           {node.relation && (
-            <div className="flex items-center gap-3 border-y border-foreground/[0.06] bg-[oklch(0.035_0_0)] px-5 py-2 md:px-6">
+            <div className="flex items-center gap-3 border-y border-foreground/[0.06] bg-[var(--surface-sunken)] px-5 py-2 md:px-6">
               <span aria-hidden className="text-foreground/25">↓</span>
               <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/45">
                 {RELATION_LABEL[node.relation]}

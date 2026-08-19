@@ -319,6 +319,124 @@ positions before and after and compare pixels. Run the comparison against the
 *same* build first to learn the noise floor — the homepage scroll cue is
 animated and differs by ~1000 pixels in a 30x104 box between any two loads.
 
+# The theme system
+
+Three settings — **Auto, Light, Dark** — on the eleven internal routes. `/`
+is always dark.
+
+Read this before touching a colour anywhere on the site, because almost every
+colour is now a token and the ones that are not are deliberate.
+
+## Preference is not the same thing as theme
+
+Two values, kept apart on purpose:
+
+| | |
+|---|---|
+| **Preference** | What the visitor picked. `localStorage["sp-theme"]`, one of `auto`/`light`/`dark`. Written only when they pick something. |
+| **Effective** | What the document paints. Derived on every render from preference × route × environment, and stamped on `<html data-theme>`. |
+
+`/` forces dark by returning `"dark"` from `effectiveTheme` — it never writes
+to storage. A visitor on Light who passes through the homepage finds Light
+still waiting on the next internal page. If you ever find yourself writing the
+preference from a route, that is the bug.
+
+## Auto, exactly
+
+1. `prefers-color-scheme: dark` → **dark**, always. Someone who has told their
+   OS they want dark has answered the question.
+2. Otherwise the local clock: **light** 07:00–19:00, **dark** the rest.
+
+The clock is the stated fallback, not an attempt at sunrise. Real sunrise
+needs a latitude and the only way to get one is a geolocation prompt, which is
+not a fair price for a colour; timezone alone gives longitude, which moves
+sunrise by minutes while the seasons move it by hours. A rough solar model
+would be less honest than a stated window, not more accurate.
+
+Auto re-resolves on a `matchMedia` change and on a **timer set to the next
+threshold** — not a poll. At most two wakeups a day, and none while the system
+asks for dark.
+
+## The anti-flash script is load-bearing
+
+`THEME_BOOT_SCRIPT` in `lib/theme.ts` is inlined into `<head>` and runs before
+the first paint. It duplicates the resolution logic on purpose: a module would
+be deferred, and deferred means the page paints in the fallback theme first —
+which is the flash it exists to prevent. It also sets `color-scheme` and the
+`theme-color` meta.
+
+The server cannot know the preference, so it renders the dark defaults that
+sit on `:root`. **Keep the dark values on `:root` and light in
+`:root[data-theme="light"]`, never the other way round** — that ordering is
+what makes a JS failure land on today's site rather than a white page.
+
+React never renders `data-theme`, so there is no hydration mismatch.
+
+## Dark islands
+
+Some surfaces are dark because the *photograph* in them is dark: the product
+cutouts are shot on a graphite cyclorama with the shadow baked in, the archive
+plates are graded documentary stills, and the inspection panel is a lightbox.
+Dropping those onto paper does not produce a light theme, it produces a light
+theme with the pictures ruined.
+
+`.theme-dark-island` re-declares the dark tokens for a subtree, so every
+`text-foreground/60` and `border-foreground/[0.08]` inside keeps meaning what
+it meant, in either theme, with no component knowing which theme is active. In
+dark it is a no-op by construction. In light it also gains a hairline and a
+shallow warm shadow, because on paper an unseated dark plate reads as a hole.
+
+Currently applied to: both innovation card variants, the `/early-works`
+full-bleed photograph blocks, and the whole product-inspection modal.
+
+**Reach for this before reaching for a hard-coded colour.** A component that
+needs to stay dark should say so once, not carry a light value and a dark one.
+
+## What is a token and what is not
+
+Tokens carry anything with an obvious counterpart in the other theme: the
+surface ladder (`--surface-sunken` … `--surface-high`), the page ground, the
+nav veils, the whole archival plate stack (`--plate-*`), the focus ring,
+selection colours.
+
+The surface ladder is **a ladder, not a palette**. What each rung means is its
+position relative to `--background`; the light values reproduce that
+relationship, not the numbers. Reading them as "the dark ones inverted" gets
+the order backwards.
+
+The compound treatments — the five button classes with their four
+pseudo-elements and three-layer box-shadows — are **not** tokenised. They live
+as a light-only override block at the foot of `styles.css`. That was a
+deliberate trade: converting them in place would put every value in a system
+tuned against a black ground one typo away from a dark regression, to make a
+diff look tidier. The dark rules there cannot regress because they are not
+edited.
+
+## Measured
+
+- **Dark is unchanged.** Every route compared against the deployed build at
+  1440, animations paused, differences counted above a threshold and against a
+  noise floor measured by comparing the control to itself. Below the header:
+  0px on the static routes, 145–171px on `/` and `/early-works` against noise
+  floors of 101px and 117px — the ambient wash, not a change.
+- **The homepage carries no theme control**, in the header or the drawer. With
+  one, 3,710 of the 3,881 pixels that differed from the deployed build were in
+  the homepage header. Without it the homepage measures 220px against a 101px
+  floor. It is the one page whose header was asked to stay exactly as it is,
+  and it ignores the setting anyway.
+- The control is a 32px glyph trigger, not the segmented control. The
+  segmented version is ~190px wide and overlapped "Engage" at 1440, where the
+  header already carries a wordmark, nine links and Contact. The drawer, which
+  has room, gets the segmented version.
+
+## Unfreeze rule
+
+Same as everywhere else on this site: a defect, the viewport and setting that
+reproduce it, the measurement showing it, and the measurement showing the fix.
+Plus one more for this system — **re-run the dark regression before and after**.
+It is the only instrument that catches a light-theme edit quietly changing the
+approved dark site.
+
 # Homepage motion system — FROZEN
 
 The cinematic scroll system on `/` is frozen as of `17d221c8`. Do not retune

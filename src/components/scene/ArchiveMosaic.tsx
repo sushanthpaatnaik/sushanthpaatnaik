@@ -47,7 +47,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
       initial={{ opacity: 0, y: 22 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.95, delay: (index % 6) * 0.05, ease: [0.19, 1, 0.22, 1] }}
-      className={`group relative overflow-hidden bg-[oklch(0.05_0.006_245)] ring-1 ring-foreground/[0.05] ${span}`}
+      className={`group relative overflow-hidden bg-[var(--surface-plate)] ring-1 ring-foreground/[0.05] ${span}`}
     >
       <img
         src={item.src}
@@ -460,7 +460,7 @@ export function HallOfFameRibbon({
                 key={`${item.src}-${i}`}
                 data-hof-card
                 aria-hidden={i >= items.length ? true : undefined}
-                className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[oklch(0.05_0.006_245)]"
+                className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[var(--surface-plate)]"
               >
                 <img
                   src={item.src}
@@ -517,9 +517,9 @@ export function HallOfFameRibbon({
           type="button"
           aria-label="Scroll reel left"
           onClick={() => scrollByCards(-1)}
-          className={`hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[oklch(0.04_0.006_245/0.7)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
+          className={`hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-veil)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
             hovering ? "opacity-100" : "opacity-0 pointer-events-none"
-          } hover:bg-[oklch(0.06_0.006_245/0.85)] hover:ring-accent/40`}
+          } hover:bg-[var(--surface-veil-strong)] hover:ring-accent/40`}
         >
           <span className="font-mono text-[14px] leading-none">‹</span>
         </button>
@@ -527,16 +527,16 @@ export function HallOfFameRibbon({
           type="button"
           aria-label="Scroll reel right"
           onClick={() => scrollByCards(1)}
-          className={`hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[oklch(0.04_0.006_245/0.7)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
+          className={`hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-veil)] ring-1 ring-foreground/15 backdrop-blur-sm text-foreground/85 transition-all duration-500 ${
             hovering ? "opacity-100" : "opacity-0 pointer-events-none"
-          } hover:bg-[oklch(0.06_0.006_245/0.85)] hover:ring-accent/40`}
+          } hover:bg-[var(--surface-veil-strong)] hover:ring-accent/40`}
         >
           <span className="font-mono text-[14px] leading-none">›</span>
         </button>
 
         {/* Reduced-motion notice — quietly invites manual exploration */}
         {reducedMotion && (
-          <div className="pointer-events-none absolute right-4 bottom-4 z-20 rounded-full bg-[oklch(0.04_0.006_245/0.75)] px-3 py-1.5 ring-1 ring-foreground/15 backdrop-blur-sm">
+          <div className="pointer-events-none absolute right-4 bottom-4 z-20 rounded-full bg-[var(--surface-veil)] px-3 py-1.5 ring-1 ring-foreground/15 backdrop-blur-sm">
             <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
               Scroll to explore
             </span>
@@ -597,7 +597,7 @@ export function LegacyTimeline({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.75, delay: (i % 8) * 0.05, ease: [0.19, 1, 0.22, 1] }}
-            className="relative flex w-[200px] md:w-[220px] flex-shrink-0 flex-col gap-2 bg-[oklch(0.05_0.006_245)] px-5 py-6"
+            className="relative flex w-[200px] md:w-[220px] flex-shrink-0 flex-col gap-2 bg-[var(--surface-plate)] px-5 py-6"
           >
             <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/80">
               {it.year}
@@ -644,7 +644,7 @@ export function StatsAuthorityBlock({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8, delay: i * 0.06, ease: [0.19, 1, 0.22, 1] }}
-            className="flex flex-col items-center justify-center gap-2 bg-[oklch(0.05_0.006_245)] px-4 py-10"
+            className="flex flex-col items-center justify-center gap-2 bg-[var(--surface-plate)] px-4 py-10"
           >
             {/* div, not span. These are flex children so CSS blockifies them
                 either way and nothing moves on screen — but a <span> is inline
@@ -694,7 +694,7 @@ export function ArchivePlate({
         flip ? "md:[&>figcaption]:order-first" : ""
       }`}
     >
-      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[oklch(0.05_0.006_245)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
+      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[var(--surface-plate)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
         <img
           src={item.src}
           alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
@@ -719,7 +719,7 @@ export function ArchivePlate({
         </div>
       </div>
 
-      <figcaption className="relative col-span-1 flex flex-col justify-between gap-8 bg-[oklch(0.045_0.006_245)] p-7 md:col-span-4 md:p-9">
+      <figcaption className="relative col-span-1 flex flex-col justify-between gap-8 bg-[var(--surface-deep)] p-7 md:col-span-4 md:p-9">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/80">
             {item.category}
@@ -827,7 +827,7 @@ export function PresidentialTriptych({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 1.1, delay: i * 0.12, ease: [0.19, 1, 0.22, 1] }}
-            className="group relative flex flex-col bg-[oklch(0.05_0.006_245)]"
+            className="group relative flex flex-col bg-[var(--surface-plate)]"
           >
             <div className="relative aspect-[3/4] overflow-hidden">
               {item.fit === "contain" && (

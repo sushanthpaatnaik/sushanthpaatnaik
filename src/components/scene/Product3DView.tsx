@@ -437,7 +437,7 @@ export function HeroVideo({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              className="rounded-sm border border-accent/25 bg-[oklch(0.05_0.01_245/0.8)] px-2.5 py-1 backdrop-blur-md"
+              className="rounded-sm border border-accent/25 bg-[var(--surface-glass-soft)] px-2.5 py-1 backdrop-blur-md"
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/85">
                 Sound Available
@@ -452,12 +452,12 @@ export function HeroVideo({
             {caption}
           </p>
         )}
-        <div className="pointer-events-auto ml-auto flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[oklch(0.04_0.006_245/0.72)] p-1 backdrop-blur-md">
+        <div className="pointer-events-auto ml-auto flex items-center gap-1.5 rounded-sm border border-foreground/[0.14] bg-[var(--surface-veil)] p-1 backdrop-blur-md">
           <button
             type="button"
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause" : "Play"}
-            className="group/pp flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+            className="group/pp flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[var(--surface-glass)]"
           >
             {isPlaying ? (
               <Pause className="h-3.5 w-3.5 text-foreground/75 transition-colors group-hover/pp:text-accent" strokeWidth={1.6} />
@@ -475,7 +475,7 @@ export function HeroVideo({
             type="button"
             onClick={replay}
             aria-label="Replay from start"
-            className="group/rp flex h-7 items-center justify-center rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+            className="group/rp flex h-7 items-center justify-center rounded-[2px] px-2 transition-colors hover:bg-[var(--surface-glass)]"
           >
             <RotateCcw className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/rp:text-accent" strokeWidth={1.6} />
           </button>
@@ -486,7 +486,7 @@ export function HeroVideo({
             type="button"
             onClick={toggle}
             aria-label={muted ? "Enable sound" : "Mute sound"}
-            className="group/snd flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+            className="group/snd flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[var(--surface-glass)]"
           >
             {muted ? (
               <VolumeX className="h-3.5 w-3.5 text-foreground/65 transition-colors group-hover/snd:text-accent" strokeWidth={1.6} />
@@ -504,7 +504,7 @@ export function HeroVideo({
             type="button"
             onClick={toggleFullscreen}
             aria-label={isFullscreen ? "Exit full view" : "Open full view"}
-            className="group/fs flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[oklch(0.08_0.012_245/0.75)]"
+            className="group/fs flex h-7 items-center gap-1.5 rounded-[2px] px-2 transition-colors hover:bg-[var(--surface-glass)]"
           >
             {isFullscreen ? (
               <Minimize2 className="h-3.5 w-3.5 text-accent/90" strokeWidth={1.6} />
@@ -679,7 +679,18 @@ export function Product3DModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
+          /* The inspection panel stays dark in both themes, deliberately.
+             It is a lightbox: the visitor asked to look closely at studio
+             photography graded on a graphite cyclorama, at a landscape
+             application frame and at video, and the room dims for that in
+             the same way it does anywhere else pictures are examined.
+             Converting it to paper would mean regrading every one of those
+             assets to suit the page they happen to be opened from.
+
+             theme-dark-island rather than hard-coded values, so every
+             `text-foreground/70` inside the panel resolves against the dark
+             scale whichever theme the page behind it is using. */
+          className="theme-dark-island fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
           style={{
             background:
               "radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%)",
@@ -701,7 +712,7 @@ export function Product3DModal({
                 e.stopPropagation();
                 onClose();
               }}
-              className="pointer-events-auto flex items-center gap-2 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75 backdrop-blur-md transition-colors hover:border-accent/40 hover:text-foreground"
+              className="pointer-events-auto flex items-center gap-2 rounded-sm border border-foreground/[0.12] bg-[var(--surface-veil)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.38em] text-foreground/75 backdrop-blur-md transition-colors hover:border-accent/40 hover:text-foreground"
               aria-label="Close product inspection"
             >
               <X className="h-3.5 w-3.5" strokeWidth={1.6} />
@@ -723,7 +734,7 @@ export function Product3DModal({
           >
             {/* LEFT — Aquamax product studio hero */}
             <div className="grid content-start gap-5">
-              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+              <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
                 <motion.img
                   key={item.img + "-aqua-hero"}
                   src={item.img}
@@ -763,7 +774,7 @@ export function Product3DModal({
               </div>
 
               {item.detailImg && (
-                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
                   <motion.img
                     key={item.detailImg + "-aqua-app"}
                     src={item.detailImg}
@@ -864,7 +875,7 @@ export function Product3DModal({
                   When largeApplicationFrame is on, the field application media
                   takes over the hero slot and the studio photo moves below. */}
               {item.largeApplicationFrame ? (
-                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
                   {item.applicationVideo ? (
                     <HeroVideo
                       key={item.applicationVideo + "-hero"}
@@ -919,7 +930,7 @@ export function Product3DModal({
                   )}
                 </div>
               ) : (
-                <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.04_0.008_245)]">
+                <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
                   <motion.img
                     key={item.img}
                     src={item.img}
@@ -969,7 +980,7 @@ export function Product3DModal({
                     second time under an "Application" label it has not
                     earned. */}
                 {!hasApplicationMedia ? null : item.largeApplicationFrame ? (
-                  <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)]">
+                  <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
@@ -998,7 +1009,7 @@ export function Product3DModal({
                     </div>
                   </div>
                 ) : (
-                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)]">
+                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)]">
                     {item.applicationVideo ? (
                       <HeroVideo
                         key={item.applicationVideo + "-secondary"}
@@ -1034,7 +1045,7 @@ export function Product3DModal({
                       </p>
                     </div>
                     {item.applicationVideo && (
-                      <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[oklch(0.04_0.006_245/0.7)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.12] bg-[var(--surface-veil)] px-2 py-1 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
                         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent/90" />
                         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/80">
                           Live · Loop
@@ -1045,7 +1056,7 @@ export function Product3DModal({
                 )}
 
                 {/* Optical / studio note */}
-                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
+                <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)] px-5 py-5">
                   <div
                     aria-hidden
                     className="absolute inset-0"
@@ -1088,7 +1099,7 @@ export function Product3DModal({
                   keyed to a container query. */}
               {item.productFilm && (
                 <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-[240px_1fr]">
-                  <div className="group relative mx-auto aspect-[9/16] w-[240px] max-w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.045_0.008_245)] sm:mx-0">
+                  <div className="group relative mx-auto aspect-[9/16] w-[240px] max-w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)] sm:mx-0">
                     <HeroVideo
                       key={item.productFilm + "-film"}
                       src={item.productFilm}
@@ -1106,7 +1117,7 @@ export function Product3DModal({
                     <FilmGrain opacity={0.05} />
                   </div>
 
-                  <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-5 py-5">
+                  <div className="relative overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)] px-5 py-5">
                     <div
                       aria-hidden
                       className="absolute inset-0"
@@ -1185,7 +1196,7 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[oklch(0.045_0.008_245)]">
+                <div className="group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
@@ -1267,7 +1278,7 @@ export function Product3DModal({
               )}
 
               {item.applicationContext && (
-                <div className="overflow-hidden rounded-sm border border-foreground/[0.08] bg-[oklch(0.055_0.008_245)] px-4 py-4">
+                <div className="overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)] px-4 py-4">
                   <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
                     Application Context
                   </p>

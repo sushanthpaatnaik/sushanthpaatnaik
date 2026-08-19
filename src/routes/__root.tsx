@@ -13,6 +13,8 @@ import {
 import appCss from "../styles.css?url";
 import { clearGlobalScrollLock } from "../lib/scroll-lock";
 import { installEngageTracking } from "../lib/analytics";
+import { THEME_BOOT_SCRIPT } from "../lib/theme";
+import { ThemeProvider } from "../lib/theme-context";
 
 function NotFoundComponent() {
   return (
@@ -175,6 +177,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Resolves Auto/Light/Dark and stamps <html data-theme> before the
+            first paint. It must sit here, inline and blocking, immediately
+            after the head content it edits: the server cannot know the
+            visitor's preference, so it renders the dark defaults on :root,
+            and anything deferred would let a light-theme visitor see a dark
+            page first. `/` is decided here too, and always resolves dark. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         {/* Plausible — pageviews plus the custom events wired in lib/analytics.
             Cookieless and no personal data, so no consent banner is required.
             ~1 KB, deferred, and on its own domain, so it cannot block render;
@@ -264,7 +273,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ThemeProvider>
+        <Outlet />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
