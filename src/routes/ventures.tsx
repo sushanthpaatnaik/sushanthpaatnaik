@@ -145,9 +145,14 @@ const ventures: Venture[] = [
     year: "2026",
     role: "Co-Founder",
     category: "Deep-Tech Capital",
-    domain: "Strategic deep-tech investment",
+    domain: "Early-stage deep-tech investment",
+    // "Strategic investment ... into industrial systems" was wrong twice over:
+    // the firm invests its own capital rather than acting as a strategic
+    // investor, and its stated frontiers run well past industrial systems —
+    // semiconductors, aerospace and life sciences among them. Stage is the
+    // thing it leads with, on the site and in the owner's own framing.
     thesis:
-      "Strategic investment into deep-tech ventures — backing the companies turning frontier research into industrial systems.",
+      "Investment into deep-tech startups at the earliest stages — backing breakthrough technology, then supporting the rounds that follow.",
     href: "https://starunicocapital.com/",
     // The hand-and-shoot symbol, cropped off the left of the supplied lockup.
     // Its navy stems and leaf outlines are lifted toward slate the same way the
