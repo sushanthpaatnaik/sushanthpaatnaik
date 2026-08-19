@@ -1,6 +1,10 @@
 # Site — FROZEN
 
-The whole site is frozen as of `4de2efac`. Two subsystems carry their own
+The whole site is frozen as of `e02b52f6` — the last commit that changed site
+code. Date it to that, never to the commit that writes this file: a record-only
+commit would always describe code one commit older than itself, which is how the
+previous freeze came to read `4de2efac` while that same commit changed the icons
+and `__root.tsx`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -236,6 +240,14 @@ name does not resolve, and /ventures shipped pointing at it — with a source
 comment recording it as an unreachable site rather than the wrong domain. The
 visible label is derived from `href`, so the link and the text it prints move
 together.
+
+Its one-liner was wrong twice over and now comes from the company's own site: it
+invests **its own capital** rather than acting as a *strategic* investor, and
+its six stated frontiers run well past "industrial systems" — semiconductors,
+aerospace and life sciences among them. Stage is what it leads with, so
+/ventures says early-stage. The site names no people and carries no
+"co-founder" wording, so `role` there is owner-supplied and not verifiable from
+the source.
 
 NASA is Huntsville, Alabama — not Kennedy Space Center. Four recognitions carry
 evidence links (The Global Indian, NIF/nif.org.in, Golden Book of World
