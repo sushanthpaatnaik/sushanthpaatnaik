@@ -128,9 +128,15 @@ const ventures: Venture[] = [
     year: "2026",
     role: "Co-Founder",
     category: "Innovation Studio",
-    domain: "Ideation & IP transfer",
+    domain: "Technology development & transfer",
+    // "An ideation studio that shapes early-stage thinking into products" had
+    // the core verb wrong: InThinks does not originate ideas, it identifies
+    // technologies already emerging from academic and research ecosystems,
+    // acquires them, and develops them from TRL 1-3 to TRL 7-9. Its own badge
+    // reads "Technology development & transfer", and the demand side — industry
+    // submitting challenges to match against the portfolio — is half the model.
     thesis:
-      "An ideation and innovation studio that shapes early-stage thinking into products, then transfers or licenses the technology to partner organisations.",
+      "Identifies early-stage technologies emerging from research, develops them to industrial readiness, then transfers or licenses them to industry.",
     href: "https://inthinks.com/",
     // Supplied as a blue line drawing on an opaque white field. The knockout
     // takes alpha from distance-from-white rather than a hard threshold, so
