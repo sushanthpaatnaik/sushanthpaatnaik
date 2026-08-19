@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `e02b52f6` — the last commit that changed site
+The whole site is frozen as of `db801e43` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -248,6 +248,22 @@ aerospace and life sciences among them. Stage is what it leads with, so
 /ventures says early-stage. The site names no people and carries no
 "co-founder" wording, so `role` there is owner-supplied and not verifiable from
 the source.
+
+InThinks had the same class of error, found the same way. Its one-liner read
+"an ideation and innovation studio that shapes early-stage thinking into
+products" — but it does not originate ideas: step one of its own engine is
+identifying technologies already emerging from academic and research
+ecosystems, which it acquires through IP arrangements and develops from TRL 1-3
+to TRL 7-9. It badges itself **technology development & transfer** and never
+says studio. Its `category` still reads "Innovation Studio", which carries the
+old error — that is the card's eyebrow and the owner's label to pick, so it was
+flagged rather than changed.
+
+**Check a venture one-liner against that venture's own site before trusting
+it.** Two of six were wrong about what the company does, and both read
+plausibly. These sites are SPAs, so the rendered page is the source, not the
+served HTML: mirror the origin on a local port and read it in the browser —
+this container's Chromium has no direct internet, only the local mirror.
 
 NASA is Huntsville, Alabama — not Kennedy Space Center. Four recognitions carry
 evidence links (The Global Indian, NIF/nif.org.in, Golden Book of World
