@@ -414,20 +414,57 @@ edited.
 
 ## Measured
 
-- **Dark is unchanged.** Every route compared against the deployed build at
-  1440, animations paused, differences counted above a threshold and against a
-  noise floor measured by comparing the control to itself. Below the header:
-  0px on the static routes, 145–171px on `/` and `/early-works` against noise
-  floors of 101px and 117px — the ambient wash, not a change.
+**Dark is unchanged.** Every route against the deployed build at 1440,
+animations paused, differences counted above a threshold, split by whether
+they fall in the top 100px — because the control is a deliberate addition to
+the internal-page header, and a whole-frame count reports ~3,750px on every
+internal route and tells you nothing.
+
+| | noise floor | header | below header |
+|---|---|---|---|
+| `/` | 35px | **0** | 160 |
+| 9 internal routes | 0px | ~3,700 | **0** |
+| `/contact` | 0px | 3,682 | 2 |
+| `/early-works` | 46px | 3,789 | 137 |
+
+Zero below the header on ten of twelve routes; the two exceptions sit inside
+their own measured noise. The homepage header is byte-identical.
+
+Do not use `getbbox()` for this. It is computed at a threshold of zero, so one
+pixel differing by 1 stretches it to the whole frame — it did, and briefly
+suggested a global change that was in fact 3,651 pixels in the top 50 rows.
+
 - **The homepage carries no theme control**, in the header or the drawer. With
   one, 3,710 of the 3,881 pixels that differed from the deployed build were in
-  the homepage header. Without it the homepage measures 220px against a 101px
-  floor. It is the one page whose header was asked to stay exactly as it is,
-  and it ignores the setting anyway.
+  the homepage header; without it that header measures 0. It is the one page
+  whose header was asked to stay exactly as it is, and it ignores the setting
+  anyway. The cost is real and deliberate: someone landing on `/` cannot set a
+  preference until they open an internal page.
 - The control is a 32px glyph trigger, not the segmented control. The
   segmented version is ~190px wide and overlapped "Engage" at 1440, where the
   header already carries a wordmark, nine links and Contact. The drawer, which
   has room, gets the segmented version.
+- Full matrix: 11 routes × 2 themes × 9 viewports (1920/1728/1520/1440/1366
+  and 430/390/375/360) — correct theme on every route, 0px horizontal
+  overflow, 0 console errors. Persistence survives reload, navigation and a
+  browser reopen, and is correct at first paint. Auto follows a live system
+  flip, tested with the clock pinned to noon — at 21:00 both sides of the flip
+  are dark, so "dark → dark" reads identically as a pass and as a total
+  failure to react.
+
+## A green matrix is not a look
+
+The phone's header stayed graphite on light pages while desktop was correct,
+and every automated check passed while it was broken: right `data-theme`,
+right ground colour, zero overflow, no console errors. It took a screenshot at
+390.
+
+The cause is worth knowing, because the shape recurs: a mobile-only rule
+replaces the header's blur with a flat gradient (iOS Safari re-composites a
+blurred region on every scroll frame) and carries `!important` to beat the
+inline style — so it beat the theme token too. **Any rule with `!important`
+that paints a colour needs its own token**, or it silently outranks the theme
+on exactly the viewport nobody screenshots.
 
 ## Contrast
 
