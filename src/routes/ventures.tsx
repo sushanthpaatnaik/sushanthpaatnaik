@@ -127,8 +127,14 @@ const ventures: Venture[] = [
     name: "InThinks",
     year: "2026",
     role: "Co-Founder",
-    category: "Innovation Studio",
-    domain: "Technology development & transfer",
+    // Both from the company's own language. "Technology Transfer" is its nav
+    // item and the class of business; the domain is its own H2, "From early
+    // technology to industrial readiness". "Innovation Studio" carried the same
+    // error the old thesis did — implying it originates ideas rather than
+    // identifying and developing ones already emerging from research — and it
+    // also echoed the domain, so both moved together.
+    category: "Technology Transfer",
+    domain: "Research to industrial readiness",
     // "An ideation studio that shapes early-stage thinking into products" had
     // the core verb wrong: InThinks does not originate ideas, it identifies
     // technologies already emerging from academic and research ecosystems,
