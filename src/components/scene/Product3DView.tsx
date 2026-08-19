@@ -534,6 +534,12 @@ export function HeroVideo({
  * Commercial and Pilot entries offer /engage instead; an R&D entry gets
  * nothing, because a bench-stage programme has no product to enquire about.
  */
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
 function ProductCta({ item }: { item: Product3DModalData }) {
   const shell =
     "group/cta flex items-center justify-between gap-4 rounded-sm border border-foreground/[0.12] bg-background/40 px-4 py-3.5 transition-colors duration-500 hover:border-accent/45 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70";
@@ -558,6 +564,13 @@ function ProductCta({ item }: { item: Product3DModalData }) {
           }
           track("product_site_click", {
             innovation_name: item.title,
+            // The catalogue carries no id field, so this is derived from the
+            // title rather than stored — which makes it the same slug the
+            // company sites use ("Ignitron D" → ignitron-d) and keeps the two
+            // analytics properties from drifting apart. Titles are unique
+            // across all 25, verified against the rendered grid and the
+            // JSON-LD ItemList, so the slug is unique too.
+            innovation_id: slugify(item.title),
             destination_domain: domain,
             destination_url: item.productUrl as string,
             stage: item.stage,
