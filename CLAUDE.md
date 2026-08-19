@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `db801e43` — the last commit that changed site
+The whole site is frozen as of `74ce2ec9` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -265,9 +265,11 @@ products" — but it does not originate ideas: step one of its own engine is
 identifying technologies already emerging from academic and research
 ecosystems, which it acquires through IP arrangements and develops from TRL 1-3
 to TRL 7-9. It badges itself **technology development & transfer** and never
-says studio. Its `category` still reads "Innovation Studio", which carries the
-old error — that is the card's eyebrow and the owner's label to pick, so it was
-flagged rather than changed.
+says studio. The `category` carried the same error and is now "Technology
+Transfer" — its own nav item, and a sector name like the siblings (Materials,
+Industrial Systems, Deep-Tech Capital, Design + Living). The domain moved with
+it to the company's H2, "Research to industrial readiness", so the eyebrow no
+longer echoes it.
 
 **Check a venture one-liner against that venture's own site before trusting
 it.** Two of six were wrong about what the company does, and both read
