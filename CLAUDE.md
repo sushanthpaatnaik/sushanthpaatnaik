@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `e5427f4e`. Two subsystems carry their own
+The whole site is frozen as of `4de2efac`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
@@ -194,6 +194,34 @@ deferred, so `window.plausible` does not exist until the document parses, and
 an engage click before that would be lost. The stub queues to
 `window.plausible.q` and the real script drains it.
 
+## Favicons
+
+All three are **transparent**: `favicon.svg`, `favicon.png` (512², 13.9 KB) and
+`favicon.ico` (16/32/48/64, 9.5 KB). A phone fetches only the SVG — Chrome,
+Firefox and Safari 16+ prefer it — so the raster pair exists for link-preview
+crawlers and older browsers.
+
+The history is worth keeping, because two plausible fixes both failed:
+
+1. The PNG shipped 180² and **fully opaque on 253,253,253**, so a WhatsApp card
+   drew a white tile around the gold mark. Made transparent — card unchanged.
+2. `/favicon.ico` was a **404**, which can push a crawler to a third-party
+   favicon service that composites on white. Added, transparent — card
+   unchanged.
+3. Raster pair made **opaque graphite** on the theory that preview thumbnails
+   are JPEG and flatten alpha onto white. That did remove the white tile on a
+   dark-theme card — and produced a **black tile on a light-theme card**. Same
+   defect, colours swapped.
+
+An opaque icon cannot suit both WhatsApp themes, so all three are transparent
+again and the tile a client paints is that client's compositing, not this file.
+
+Two things to hold on to before touching this again. `spiindustries.co` 404s on
+every icon path and its card shows **no icon at all** — that is the control
+proving a crawler does fetch ours and render it. And preview cards are cached
+**per url**, so a card that has not changed proves nothing unless it was
+scraped fresh; test on a new query string, and on light **and** dark themes.
+
 ## SEO
 
 Every route carries an absolute canonical on `https://sushanthpaatnaik.com`. A
@@ -336,7 +364,7 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `e5427f4e`.
+The 25-product catalogue and its inspection panel are frozen as of `b9c15ff1`.
 Do not change the imagery contract, the provenance labelling, the title type
 scale, the header layout or the caption row without first reproducing a
 specific, measurable defect.

@@ -109,19 +109,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      // Two grounds on purpose. favicon.svg stays TRANSPARENT and is what
-      // Chrome, Firefox and Safari 16+ pick, so a browser tab gets the bare
-      // gold mark on whatever its theme is. The raster pair carries the site's
-      // own graphite (#0A0A0A) because link-preview thumbnails are JPEG, which
-      // has no alpha channel: a transparent icon gets flattened, conventionally
-      // onto WHITE, and WhatsApp drew a white tile around the mark on a dark
-      // green card. Verified as the cause with a control — spiindustries.co
-      // 404s on every icon path and its card shows no icon at all, so WhatsApp
-      // does fetch ours and render it.
+      // All three icons are TRANSPARENT, so whatever surface draws them shows
+      // its own ground through the mark.
       //
-      // Do not "fix" the raster pair back to transparent without re-checking a
-      // real preview card. Transparent is the correct-looking file and the
-      // wrong-looking result.
+      // An opaque graphite ground was tried on the raster pair, on the theory
+      // that preview thumbnails are JPEG and flatten alpha onto white. It does
+      // stop a white tile on a dark card — and produces a black tile on a light
+      // one, which is the same defect with the colours swapped. An opaque icon
+      // cannot suit both themes; a transparent one at least composites against
+      // whichever ground the client uses.
+      //
+      // If a client does flatten, the tile it paints is that client's choice,
+      // not this file's. Judge any change here on a real preview card at a
+      // FRESH url — cards are cached per url — and on both light and dark
+      // themes, not on one.
       { rel: "icon", type: "image/png", sizes: "512x512", href: "/favicon.png" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "apple-touch-icon", sizes: "512x512", href: "/favicon.png" },
