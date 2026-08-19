@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `74ce2ec9` — the last commit that changed site
+The whole site is frozen as of `682c01e7` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -16,7 +16,11 @@ Escape at each; 25 cards, 25 unique titles, JSON-LD ItemList agreeing at 25;
 all three favicons serving 200 at 13,912 / 9,540 / 45,025 bytes with alpha 0 at
 the corners; the three newest videos at their exact encoded sizes; both venture
 one-liners live; `--background: oklch(0.06 0 0)` — the site is dark and stays
-dark, a light theme having been previewed and declined.
+dark, a light theme having been previewed and declined. Added that day and
+verified on the deployed build at 1440 and at 390 with a touch profile: the
+product-detail CTA on all 25 panels, 15 external / 9 engage / 1 none, with
+`target` and `rel` correct on every external one and `product_site_click`
+carrying the right payload.
 
 Change nothing here without a specific, reproducible defect and a measurement
 of it. Every rule below was written after something shipped broken, and most of
@@ -404,10 +408,10 @@ cannot resolve a real change there.
 
 # /innovations product panel — FROZEN
 
-The 25-product catalogue and its inspection panel are frozen as of `b9c15ff1`.
+The 25-product catalogue and its inspection panel are frozen as of `682c01e7`.
 Do not change the imagery contract, the provenance labelling, the title type
-scale, the header layout or the caption row without first reproducing a
-specific, measurable defect.
+scale, the header layout, the caption row or the product-detail handoff without
+first reproducing a specific, measurable defect.
 
 Everything below was fixed in response to a reported defect and verified on the
 deployed build. Most of these fixes exist because an earlier pass changed one of
@@ -613,6 +617,53 @@ Do not read that as a broken asset. Confirm with an existing video as a control,
 verify the file with ffprobe, and get one tap on real hardware before calling a
 video done. Note also that the CDN answered a `Range` request with a full 200
 rather than a 206, which is worth watching on iOS Safari.
+
+## The product-detail handoff — one CTA, only where a page was verified
+
+This site is the discovery layer: name, one-line description, domain, stage,
+one outcome, application imagery. Specifications, performance data, validation,
+certifications and enquiry live on the company product site. The panel's foot
+carries exactly one CTA, and which one depends on what actually exists:
+
+| Case | CTA | Destination |
+|---|---|---|
+| Verified company product page | `Explore Product Details ↗` | that page, new tab |
+| No page, Commercial or Pilot | `Engage on this Innovation →` | `/engage` |
+| No page, R&D | none | — |
+
+15 external, 9 engage, 1 none. The R&D exception is Hydrocell alone: a
+bench-stage programme has no product to enquire about, and offering to "engage"
+on one invites a conversation there is nothing to have.
+
+**Every url was verified by rendering it, not by a status code.** Both
+destination sites are hash-routed SPAs and return byte-identical HTML for any
+path, so a 200 proves nothing and a mistyped slug would have silently linked
+the homepage. Monoatom's eight are dedicated pages with their own H1 and
+2.1–3.3k characters; Grafillium's seven open the named product panel, confirmed
+by its breadcrumb reading `GRAFILLIUM / PRODUCTS / <NAME>`. Re-verify the same
+way before adding one.
+
+Ten products are deliberately unmapped — Graphenodes, Thermene, Texaphene,
+Rustene, Gryogen, Mariphene, Aerophenter, Vitraphene, Voltaphene, Hydrocell.
+**Do not point them at a company homepage to fill the gap.** `/ventures`
+already links the homepages, and a CTA promising product details that lands on
+a marketing front page is the same defect as the duplicated application image:
+a promise the destination does not keep.
+
+`ProductCta` is one component rendered by **both** panel variants. Written
+inline in the standard branch it misses Aquamax, whose `aquamaxSimulation`
+variant replaces the right column entirely — and Aquamax has a verified page.
+That was caught mid-work, after the audit had already reported a clean pass on
+the other 24.
+
+The focus ring here is the site's own: `focus:outline-none focus-visible:ring-1
+focus-visible:ring-accent/70`, the same pattern the cards use. It resolves to a
+1px copper ring, `oklab(0.63 0.026 0.097 / 0.7) 0 0 0 1px`, and it is visible —
+3,536 pixels differ between the focused and blurred screenshot of the same clip.
+An earlier pass read that computed value through a log line truncated at 80
+characters, saw two transparent shadow layers, and reported a site-wide
+accessibility defect that does not exist. Print the whole `box-shadow`, and
+difference a screenshot.
 
 ## Measured baselines
 
