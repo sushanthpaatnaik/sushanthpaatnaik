@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Volume2, VolumeX, Maximize2, Minimize2, Play, Pause, RotateCcw, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { Link } from "@tanstack/react-router";
+import { track } from "@/lib/analytics";
 import AquamaxSimulationCompact from "@/components/scene/AquamaxSimulationCompact";
 
 interface TiltImageProps {
@@ -521,6 +523,62 @@ export function HeroVideo({
 }
 
 
+/**
+ * The one CTA at the foot of a product panel.
+ *
+ * Shared by both panel variants — the standard one and Aquamax's, which
+ * replaces the right column entirely. It shipped in the standard branch only,
+ * and Aquamax silently lost its CTA despite having a verified product page.
+ *
+ * Shown only where a real product page was verified. Where none exists,
+ * Commercial and Pilot entries offer /engage instead; an R&D entry gets
+ * nothing, because a bench-stage programme has no product to enquire about.
+ */
+function ProductCta({ item }: { item: Product3DModalData }) {
+  const shell =
+    "group/cta flex items-center justify-between gap-4 rounded-sm border border-foreground/[0.12] bg-background/40 px-4 py-3.5 transition-colors duration-500 hover:border-accent/45 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70";
+  const label =
+    "font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75 transition-colors group-hover/cta:text-foreground";
+  const mark =
+    "font-mono text-[11px] text-foreground/40 transition-colors group-hover/cta:text-accent";
+
+  if (item.productUrl) {
+    return (
+      <a
+        href={item.productUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Explore ${item.title} product details on the company website`}
+        onClick={() => {
+          let domain = "";
+          try {
+            domain = new URL(item.productUrl as string).hostname;
+          } catch {
+            // A malformed url must not break the navigation.
+          }
+          track("product_site_click", {
+            innovation_name: item.title,
+            destination_domain: domain,
+            destination_url: item.productUrl as string,
+            stage: item.stage,
+          });
+        }}
+        className={shell}
+      >
+        <span className={label}>Explore Product Details</span>
+        <span aria-hidden className={mark}>↗</span>
+      </a>
+    );
+  }
+  if (item.stage === "R&D") return null;
+  return (
+    <Link to="/engage" aria-label={`Engage on ${item.title}`} className={shell}>
+      <span className={label}>Engage on this Innovation</span>
+      <span aria-hidden className={mark}>→</span>
+    </Link>
+  );
+}
+
 export interface Product3DModalData {
   title: string;
   domain: string;
@@ -540,6 +598,13 @@ export interface Product3DModalData {
   productFilm?: string;
   /** One-paragraph description of what the product film shows. */
   productFilmNote?: string;
+  /**
+   * Verified company product page. Present only where one genuinely exists —
+   * never a company homepage standing in for a product page, and never a
+   * guessed slug. Both destination sites are hash-routed SPAs, so a 200 proves
+   * nothing: each url was rendered and checked for product-specific content.
+   */
+  productUrl?: string;
   stage: string;
   specs?: { k: string; v: string; note: string }[];
   positioning?: string;
@@ -762,6 +827,7 @@ export function Product3DModal({
                   </p>
                 </div>
               </div>
+              <ProductCta item={item} />
             </div>
 
             {/* RIGHT — Compact chimney hood / HV-LC simulation panel */}
@@ -1225,6 +1291,8 @@ export function Product3DModal({
                   </p>
                 </div>
               </div>
+
+              <ProductCta item={item} />
             </div>
           </motion.div>
           )}

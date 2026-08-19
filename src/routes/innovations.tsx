@@ -334,6 +334,37 @@ function InnovationsPage() {
       // is 16/10 and shows it nearly whole.
       "Coalorix",
     ]);
+    /**
+     * Verified company product pages. Built by rendering every candidate url
+     * rather than trusting a status code: both sites are hash-routed SPAs that
+     * return the same HTML for any path, so a 200 proves nothing and a mistyped
+     * slug would silently show the homepage. Monoatom's eight are dedicated
+     * pages with their own H1; Grafillium's seven open the named product panel,
+     * confirmed by its breadcrumb reading GRAFILLIUM / PRODUCTS / <NAME>.
+     *
+     * Ten products are deliberately absent — Graphenodes, Thermene, Texaphene,
+     * Rustene, Gryogen, Mariphene, Aerophenter, Vitraphene, Voltaphene and
+     * Hydrocell have no product page on any company site. Do not point them at
+     * a company homepage to fill the gap: the panel falls back to /engage,
+     * which is an honest destination, and /ventures already links the homepages.
+     */
+    const productUrls: Record<string, string> = {
+      Graphacrete: "https://monoatomlabs.com/#/products/graphacrete",
+      Graffisol: "https://monoatomlabs.com/#/products/graffisol",
+      Ceraphene: "https://monoatomlabs.com/#/products/ceraphene",
+      "HD-G-PE": "https://monoatomlabs.com/#/products/hd-g-pe",
+      Graphyre: "https://monoatomlabs.com/#/products/pipeline/graphyre",
+      Graphosite: "https://monoatomlabs.com/#/products/pipeline/graphosite",
+      Thermaphene: "https://monoatomlabs.com/#/products/pipeline/thermaphene",
+      Armophene: "https://monoatomlabs.com/#/products/pipeline/armophene",
+      "Ignitron D": "https://grafillium.com/#/products/ignitron-d",
+      "Ignitron P": "https://grafillium.com/#/products/ignitron-p",
+      Lubritron: "https://grafillium.com/#/products/lubritron",
+      Coalorix: "https://grafillium.com/#/products/coalorix",
+      Bitumax: "https://grafillium.com/#/products/bitumax",
+      Aquamax: "https://grafillium.com/#/products/aquamax",
+      Pyronex: "https://grafillium.com/#/products/pyronex",
+    };
     const productFilms: Record<string, string> = {
       "Ignitron D": "/videos/ignitron-d-film.mp4",
     };
@@ -379,6 +410,7 @@ function InnovationsPage() {
       // row. It does not replace the landscape film above it — the two are
       // different assets: 1440x810 deployment footage against a 480x854
       // captioned product film.
+      productUrl: productUrls[it.title],
       productFilm: productFilms[it.title],
       productFilmNote: productFilmNotes[it.title],
       aquamaxSimulation: it.title === "Aquamax",
