@@ -8,6 +8,16 @@ and `__root.tsx`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
+**Last verified against production: 2026-08-19.** Re-freezing when nothing has
+changed does not need a new anchor — it needs this line re-dated and the claims
+below re-checked. What was checked that day: 13 routes pass desktop 1440 and
+phones 430/390/375/360, with the nav opening, listing 11 links and closing on
+Escape at each; 25 cards, 25 unique titles, JSON-LD ItemList agreeing at 25;
+all three favicons serving 200 at 13,912 / 9,540 / 45,025 bytes with alpha 0 at
+the corners; the three newest videos at their exact encoded sizes; both venture
+one-liners live; `--background: oklch(0.06 0 0)` — the site is dark and stays
+dark, a light theme having been previewed and declined.
+
 Change nothing here without a specific, reproducible defect and a measurement
 of it. Every rule below was written after something shipped broken, and most of
 them were broken by a well-meant edit that looked obviously correct.
