@@ -154,6 +154,7 @@
   --nav-veil-scrolled: linear-gradient(180deg, oklch(0.04 0.005 260 / 0.94) 0%, oklch(0.04 0.005 260 / 0.88) 75%, transparent 100%);
   --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.05 0.006 260 / 0.96), oklch(0.03 0.004 260 / 0.99));
   --logo-glow: drop-shadow(0 0 14px oklch(0.7 0.06 232 / 0.28));
+  --nav-veil-flat: linear-gradient(180deg, oklch(0.04 0.005 260 / 0.96) 0%, oklch(0.04 0.005 260 / 0.82) 55%, transparent 100%);
 
   /* The fixed archival plate behind every internal page: a photograph,
      graded until it is atmosphere rather than subject, under a stack of
@@ -261,6 +262,7 @@
   --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.95) 0%, oklch(0.965 0.004 85 / 0.90) 75%, transparent 100%);
   --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.004 85 / 0.97), oklch(0.945 0.005 85 / 0.99));
   --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
+  --nav-veil-flat: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.97) 0%, oklch(0.965 0.004 85 / 0.86) 55%, transparent 100%);
 
   /* The same plate, printed rather than projected. Brightness goes up
      instead of down and saturation drops further, so the photograph
@@ -864,12 +866,12 @@
   .nav-backdrop {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: linear-gradient(
-      180deg,
-      oklch(0.04 0.005 260 / 0.96) 0%,
-      oklch(0.04 0.005 260 / 0.82) 55%,
-      transparent 100%
-    ) !important;
+    /* Its own token, and it must be one: this rule carries !important to
+       beat the inline style, so a hard-coded gradient here wins over
+       --nav-veil and paints a graphite bar across the top of a light page.
+       Desktop looked correct and only the phone was wrong, which is exactly
+       how it went unnoticed until a 390 screenshot. */
+    background: var(--nav-veil-flat) !important;
   }
 
   /* Soften backdrop-filter cost on iOS Safari */
