@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `d433fe2f` — the last commit that changed site
+The whole site is frozen as of `1f169129` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -8,7 +8,7 @@ and `__root.tsx`. Two subsystems carry their own
 detailed records below — the homepage motion system and the /innovations
 product panel — and everything in this first section applies site-wide.
 
-**Last verified against production: 2026-08-19.** Re-freezing when nothing has
+**Last verified against production: 2026-08-20.** Re-freezing when nothing has
 changed does not need a new anchor — it needs this line re-dated and the claims
 below re-checked. What was checked that day: 13 routes pass desktop 1440 and
 phones 430/390/375/360, with the nav opening, listing 11 links and closing on
@@ -310,6 +310,14 @@ missing rows need source documents before the claim is safe.
   0.75 and 0.88, both inside the last band.
 - Reduced motion, phone: lock released, 9284px document, scrolls freely, 1881
   characters of copy, 6 engage/contact links.
+- Canvas, both themes, ten internal pages × four scroll depths, sampled in the
+  left gutter which carries no content at 1440: light **223.6 .. 225.6**
+  (span 2, warmth +4.5..5.2), dark **2.2 .. 8.2** (span 6). `/essays` is the
+  low outlier in the dark and always has been; in the light it is inside the
+  band. A light span above ~5 means the plate wash floor has been broken.
+- Text painted on a photograph, light theme, outside a dark island, with a
+  resolved ink lightness below 0.5: **10 site-wide**, all of them known false
+  positives (see the theme section). Any real hit here is invisible copy.
 
 ## Verifying a change to any of this
 
@@ -377,6 +385,89 @@ what makes a JS failure land on today's site rather than a white page.
 
 React never renders `data-theme`, so there is no hydration mismatch.
 
+## One canvas, and the floor that gives it one
+
+Every internal page passes its own alpha to the plate wash — 0.68 on `/news`
+through 0.82 on `/about`, and `/early-works` carries its own copy of the
+stack at 0.78. Against the dark theme's near-black ink that whole spread
+resolves to the same black, which is why the numbers were never tuned.
+
+On paper it does not. The backdrops are dark cinematic photographs;
+`brightness(1.34)` left them around luminance 55, and at 0.68 wash a third of
+the ground was that. Measured in the left gutter at four scroll depths on all
+ten internal pages, the light canvas ran **183 to 240 — a span of 57, against
+6 in the dark**, and `/essays`, which has no plate at all, sat at the top of
+it painting raw `--background`. Every image on the site was therefore sitting
+on a different, muddy, cool-grey surface depending on which page it was on.
+That is what "the images do not match the background" was.
+
+Two tokens fix it and neither can touch the dark theme:
+
+| token | dark | light |
+|---|---|---|
+| `--plate-wash-min` | `0%` | `91%` |
+| `--wash-ground` | `transparent` | `oklch(0.917 0.006 85)` |
+
+The wash takes `max(overlay, var(--plate-wash-min))`, and `max(x, 0%)` is `x`.
+`--wash-ground` is the same tone flat, as the last layer of
+`.atmosphere-wash`, for `/essays` and the essay reader which have no plate to
+floor. The light grade goes well past mid on brightness and then collapses on
+contrast — `brightness(2.10) contrast(0.40)` — so the photograph survives as a
+watermark in the paper rather than as a grey card.
+
+Re-measured: **223.6 to 225.6 across all ten, a span of 2.** The paper family
+also carries roughly twice the chroma it did (`0.004` → `0.008` at hue 85,
+applied across the whole light block in one pass), which is the difference
+between ivory and cool grey. Warmth, as R−B in the gutter, went from +0.8..3.5
+to a uniform +4.5..5.2.
+
+`--canvas-solid` is that 224 as a solid colour, for the few things that have
+to punch a hole in a rule and match the ground exactly — the timeline dots on
+`/recognitions`, which had the dark value hard-coded. It is **not**
+`--background`: `--background` is 246, the token before the plate stack
+paints, and a punch-out at that value reads as a pale halo.
+
+## Text on a photograph is always light
+
+Every image overlay on the site scrims its photograph with a fixed near-black
+gradient. That gradient is what makes the caption legible and it cannot invert
+without inverting the photograph — so the caption's ink has to stay light in
+both themes, which means the tile has to be a dark island.
+
+It was not. **363 caption elements on `/recognitions` alone** painted
+`--foreground` graphite on that black scrim on the light theme: every archive
+tile, every hall-of-fame card, every era preview plate. Add sections 06 and
+07, which are whole plates of the same kind, and the two `/early-works` cases.
+All invisible, and every one of them a screenshot away from obvious.
+
+Detect it structurally, not by contrast maths: a text box geometrically inside
+an `<img>`, not inside a `.theme-dark-island`, with a resolved ink lightness
+below 0.5. A light-theme token over a fixed dark scrim is wrong whatever the
+ratio comes out at. Down from 373 site-wide to 10, and those ten are false
+positives worth knowing about — an element whose box happens to fall inside a
+large decorative `<img>`, a pale disc with a dark glyph on it, and a year chip
+that sits on paper with a decorative image behind the row.
+
+## Browser autofill
+
+Chrome paints an autofilled field `#E8F0FE` with near-black text, from the UA
+sheet, and neither `background` nor `color` overrides it — both lose to
+`-internal-light-dark` on the pseudo-class. The two properties that do win are
+an inset `box-shadow`, which paints over the UA background, and
+`-webkit-text-fill-color`. Both are set on `.field-underline:-webkit-autofill`,
+with `transition: background-color 0s 600000s` as a belt to that braces since
+Chrome animates the fill in and a shadow alone can flash first.
+
+The shadow colour is `--canvas-solid`, not `--background`. These are underline
+fields with no box of their own, so the slab has to be the colour the canvas
+actually resolves to: on the light theme `--background` is 246 and the canvas
+under the form is 224, and a 246 rectangle behind three of six fields is as
+conspicuous as the blue was.
+
+**This container cannot trigger a real autofill.** What is testable here is
+that the rule reaches the served stylesheet and is well-formed, which the auto
+check asserts. The appearance needs one real Chrome and one real Safari.
+
 ## Dark islands
 
 Some surfaces are dark because the *photograph* in them is dark: the product
@@ -391,13 +482,37 @@ it meant, in either theme, with no component knowing which theme is active. In
 dark it is a no-op by construction. In light it also gains a hairline and a
 shallow warm shadow, because on paper an unseated dark plate reads as a hole.
 
-Currently applied to: both innovation card variants, the `/early-works`
-full-bleed photograph blocks, the whole product-inspection modal, and the
-four brand-mark plates — `/ventures` venture tiles and advisory cards,
-`/voices` organisation plates, `/news` publication plates.
+Currently applied to:
+
+| Surface | Why |
+|---|---|
+| both innovation card variants | cutouts shot on a graphite cyclorama |
+| the whole product-inspection modal | a lightbox |
+| `/early-works` full-bleed photograph blocks | year chip and its scrim are fixed dark values |
+| `/early-works` split-layout image side | same, and it was missed the first time |
+| `/early-works` demo lightbox | `bg-black/80` over a `bg-black` video frame |
+| `FounderPortrait`'s plate | see below |
+| `/about`'s identity-film frame | see below |
+| every `ArchiveMosaic` tile, HoF card and era preview plate | caption sits on the photograph |
+| the `ArchiveMosaic` spread and numbered plate — **frame only** | their captions are page copy beside/below the image, and belong on paper |
+| `/recognitions` sections 06 and 07 | full plates painted from fixed near-black |
 
 Brand-mark plates were briefly on this list and are deliberately **not**
 any more — see the section below.
+
+The rule for choosing the element: island the smallest box that contains
+both the dark paint and the text sitting on it. Islanding a whole grid whose
+caption is a sibling column turns page copy into reversed type; islanding
+only the `<img>` leaves the caption on the scrim it was meant to sit on.
+
+`FounderPortrait` and the `/about` film are on the list because their imagery
+is graded to near-black at its edges — a multiply pass, an inner dissolve to
+`oklch(0.02)`, a bottom fade to `oklch(0.04)` — and none of that can invert
+without becoming a different picture. With the plate on paper, the identity
+bar met the top of the photograph as a hard white-to-black rule and the
+figcaption met the bottom fade the same way. Dark, both bars are continuous
+with the frame and the whole thing reads as a cinematic plate laid on the
+page. This is the shape brief `b6c5b998` calls a "cinematic media module".
 
 **Reach for this before reaching for a hard-coded colour.** A component that
 needs to stay dark should say so once, not carry a light value and a dark one.
@@ -499,6 +614,22 @@ they fall in the top 100px — because the control is a deliberate addition to
 the internal-page header, and a whole-frame count reports ~3,750px on every
 internal route and tells you nothing.
 
+Re-run after the canvas work, ten internal pages × four scroll depths, dark,
+deployed build against the new one, with a control run of the new build
+against **itself** first to learn the floor. Every cell landed inside its own
+control. The only real difference anywhere was one 18px line of text on
+`/innovations` — the word "curated" where the lead used to say "private".
+
+Do not read a raw diff count as a regression on this site. `/recognitions`
+carries a continuously scrolling hall-of-fame reel and the control run scored
+6,176 differing pixels on its own first slice; `/early-works` parallax images
+shift a pixel or two between loads; the ambient breathing layer moves under
+everything. **Finish() animations, never pause()** — pausing freezes a reveal
+mid-flight and reports the animation's own progress as a change. And when a
+cell exceeds its control, crop the diff bounding box and look at it: both
+outliers here turned out to be a sub-pixel parallax offset and a breathing
+phase, visually identical side by side.
+
 | | noise floor | header | below header |
 |---|---|---|---|
 | `/` | 35px | **0** | 160 |
@@ -530,6 +661,16 @@ suggested a global change that was in fact 3,651 pixels in the top 50 rows.
   flip, tested with the clock pinned to noon — at 21:00 both sides of the flip
   are dark, so "dark → dark" reads identically as a pass and as a total
   failure to react.
+- Auto at runtime, clock pinned to noon so the time-of-day fallback says
+  *light* and a system preference of *dark* genuinely disagrees with it: 24
+  assertions, all passing. System light→dark and back again change `/about`
+  **without a reload**; `/` stays dark through both; the stored preference is
+  never rewritten, including by visiting `/`. Then the full persistence walk
+  for each of the three settings — set, reload, navigate to another internal
+  page, visit `/`, come back. **The resolved priority is: forced dark on `/`
+  first, then the explicit stored preference, then `prefers-color-scheme`,
+  then local time.** Time only decides when the system expresses no
+  preference.
 
 ## A green matrix is not a look
 
@@ -558,6 +699,24 @@ against the **approved dark theme** rather than against nothing:
 Near parity, and both fall short in the same one place: 10px mono eyebrow
 labels at 30–60% alpha. That is a property of the design language, not of
 either theme.
+
+Re-run later with the ground taken from the screenshot instead of from an
+ancestor walk, and with the canvas unified at 224, over six scroll depths per
+page — a much wider net, so the counts are not comparable with the table
+above, only with each other:
+
+| | text runs sampled | distinct runs below AA |
+|---|---|---|
+| Dark (approved) | 1,697 | 176 |
+| Light | 1,697 | 251 |
+
+Same conclusion, more of it. The gap is arithmetic, not design: the `+0.05`
+flare term in the WCAG ratio flatters a black ground, so identical alphas
+score higher there. On a 228 paper ground **alpha 0.55 cannot reach 4.5:1
+even with pure black ink** — the best possible composite is 102.6, which is
+4.49. Closing it means raising alphas at a few hundred call sites, which is
+the editorial type of both themes and not a light-mode fix. Deliberately not
+done; say so rather than quietly shipping a harsher page.
 
 **On paper it cannot be fixed by choosing a darker colour.** Text at 55%
 alpha over the paper ground composites to `0.55·F + 0.45·243`; AA against
@@ -591,6 +750,18 @@ failures that are the harness, not the site. It corrupted two runs before a
 guard existed. **Before any visual or contrast measurement, fetch the
 stylesheet the HTML actually references and assert it returns 200** — the QA
 script does this and refuses to run otherwise. Restarting wrangler clears it.
+
+**A percentile is not a background.** Sampling the ground for a text run out
+of the screenshot is right — `getComputedStyle` reports `transparent` for
+nearly every element here, and the real ground is the plate wash over a
+photograph under six blend layers. But taking it as a percentile band assumes
+the glyphs are a small tail, and for 10px uppercase at 0.4em tracking they are
+30–45% of the box: the band lands **on the ink**, reports the ink as the
+ground, and the pair comes back near 1.0 whatever it actually is. Six runs
+came back at 1.1:1 that way; cropping the boxes out of the screenshot showed
+four were white-on-black inside an island and perfectly legible. Take the
+**modal** value instead, and when a number says "invisible", go and look at
+it before believing it.
 
 ## Unfreeze rule
 

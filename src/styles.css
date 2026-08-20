@@ -1624,6 +1624,36 @@ html.lenis, html.lenis body {
     outline-offset: 4px;
     border-radius: 2px;
   }
+
+  /* Chrome paints an autofilled field #E8F0FE and its text near-black, from
+     the UA sheet, and neither `background` nor `color` can override it —
+     both lose to `-internal-light-dark` on the autofill pseudo-class. The
+     two properties that do win are an inset box-shadow, which paints over
+     the UA background, and -webkit-text-fill-color.
+
+     These are underline fields with no box of their own, so the shadow has
+     to be the colour the page canvas actually resolves to, not
+     --background: on the light theme --background is 246 and the canvas
+     under the form is 224, and a 246 slab behind three of six fields is as
+     obvious as the blue was. --canvas-solid is that 224, and near-black in
+     the dark theme, so one declaration covers both.
+
+     `transition: background-color` at an absurd delay is the usual belt to
+     this braces — Chrome animates the autofill background in, and a shadow
+     alone can flash first. Both are harmless if the browser has no such
+     pseudo-class. Verify on real Chrome and real Safari: this container
+     cannot trigger an actual autofill, so what is testable here is only
+     that the rule is present and well-formed. */
+  .field-underline:-webkit-autofill,
+  .field-underline:-webkit-autofill:hover,
+  .field-underline:-webkit-autofill:focus,
+  .field-underline:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--foreground);
+    caret-color: var(--foreground);
+    box-shadow: 0 0 0 1000px var(--canvas-solid) inset;
+    transition: background-color 0s 600000s, color 0s 600000s;
+    font-family: var(--font-display);
+  }
 }
 
 /* Final safety nets — prevent absolutely-positioned children from
