@@ -165,7 +165,7 @@ function AccessForm() {
     const isActive = focused === key;
     return `w-full bg-transparent border-0 border-b ${
       isActive ? "border-accent/60" : "border-foreground/[0.12]"
-    } px-0 py-4 font-display text-[17px] md:text-[19px] tracking-[-0.005em] text-foreground/95 placeholder:text-foreground/25 placeholder:font-display placeholder:italic focus:outline-none focus:ring-0 transition-colors duration-500`;
+    } px-0 py-4 font-display text-[17px] md:text-[19px] tracking-[-0.005em] text-foreground/95 placeholder:text-foreground/25 placeholder:font-display placeholder:italic focus:outline-none focus:ring-0 field-underline transition-colors duration-500`;
   };
 
   return (

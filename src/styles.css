@@ -1561,6 +1561,38 @@ html.lenis, html.lenis body {
   box-shadow: 0 1px 0 oklch(1 0 0 / 0.5), 0 10px 26px -20px oklch(0.30 0.02 60 / 0.55);
 }
 
+@layer utilities {
+  /* The /contact fields are underline inputs: they set focus:outline-none
+     and focus:ring-0 so a mouse click does not draw a box round them. That
+     suppression also removed the KEYBOARD affordance — measured on a focused
+     field, `outline: none 0px` and a ring of width 0px with :focus-visible
+     genuinely true, leaving only the border-bottom turning copper: a 1px,
+     colour-only cue at 0.38 alpha on paper.
+
+     Written out rather than composed from Tailwind's outline utilities,
+     because `focus-visible:outline` in v4 applied the offset and the colour
+     and left outline-style at `none`, which paints nothing at all.
+
+     This is the one change in the light-theme pass that also touches the
+     dark theme, and deliberately so: it paints only while a field holds
+     keyboard focus, so the resting design of neither theme moves. */
+  /* Placeholders carry real guidance here ("you@domain.com", "Begin here…"),
+     so they are worth more than the shared foreground/25. That alpha lands
+     around 2.0:1 on graphite and only 1.6:1 on paper — the light theme
+     coming out WORSE than the dark one, because a 25% ink wash over warm
+     paper is much closer to the paper than a 25% white wash is to black.
+     Light-only, so the dark theme keeps the value it shipped with. */
+  :root[data-theme="light"] .field-underline::placeholder {
+    color: color-mix(in oklab, var(--foreground) 42%, transparent);
+  }
+
+  .field-underline:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+}
+
 /* Final safety nets — prevent absolutely-positioned children from
    creating horizontal scroll on small viewports. */
 @layer base {
