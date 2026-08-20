@@ -207,11 +207,15 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
   }, []);
 
   return (
+    /* Dark island: the scrim is bg-black/80 and the frame is bg-black, so the
+       dialog's own chrome — eyebrow, title, close glyph, the "press Esc" line
+       — was graphite ink on black on the light theme. A video lightbox is a
+       dark room in either theme. */
     <div
       role="dialog"
       aria-modal="true"
       aria-label={`${title} — Demo`}
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8 md:p-12"
+      className="theme-dark-island fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8 md:p-12"
     >
       <div aria-hidden className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
       <motion.div

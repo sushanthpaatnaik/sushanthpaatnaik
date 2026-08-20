@@ -1323,8 +1323,13 @@ function RecognitionsPage() {
         <LedgerYearGroup groups={ledgerByYear} />
       </div>
 
-      {/* 06 · Legacy Closure — cinematic institutional farewell */}
-      <section className="not-prose relative mt-20 md:mt-28 overflow-hidden">
+      {/* 06 · Legacy Closure — cinematic institutional farewell. Dark island
+          for the same reason as 07 below it: the plate is painted from fixed
+          near-black values, so on the light theme the eyebrow, the headline
+          "Recognition was never the objective." and the secondary CTA were
+          all graphite on black, measured at 1.07:1. Only the inverted
+          "Explore the work" button was legible. */}
+      <section className="theme-dark-island not-prose relative mt-20 md:mt-28 overflow-hidden">
         {/* Atmospheric backdrop plate */}
         <div aria-hidden className="absolute inset-1 z-0 overflow-hidden rounded-sm">
           <div
