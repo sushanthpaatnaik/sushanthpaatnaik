@@ -396,24 +396,80 @@ full-bleed photograph blocks, the whole product-inspection modal, and the
 four brand-mark plates — `/ventures` venture tiles and advisory cards,
 `/voices` organisation plates, `/news` publication plates.
 
-**The brand-mark plates are the reason this pattern exists at all.** Every
-mark carries a per-logo `invert` flag meaning "this mark's polarity is
-opposite to the plate", tuned against near-black. When the plate became
-paper, the inverted marks turned white on a near-white tile: four of six
-advisory marks on `/ventures` disappeared, and Deloitte and MIT Technology
-Review disappeared on `/voices`. Do not fix that by flipping the polarities
-per theme — the code comments there already record two earlier attempts that
-got a mark backwards, and there are six of them plus a `logoWhiteBg` variant
-that is already theme-neutral. Keep the plate dark and every tuned value
-stays correct.
-
-Nothing in the DOM can see this defect: the markup is identical in both
-themes, and an invisible mark has no text for a contrast sweep to score. It
-was found by measuring each image's painted luminance against the paper
-around it, and then looking at the page.
+Brand-mark plates were briefly on this list and are deliberately **not**
+any more — see the section below.
 
 **Reach for this before reaching for a hard-coded colour.** A component that
 needs to stay dark should say so once, not carry a light value and a dark one.
+
+## Brand marks: the plate is paper, the mark is itself
+
+Each logo carries a per-logo flag saying what the SOURCE is, and the theme
+decides the filter. On paper almost every mark then needs **no filter at
+all**, which is the entire point: a logo in its own colours on a light card
+is what a brand page looks like. Deloitte, NIF and MIT Technology Review are
+colour marks that the dark theme inverts into colour negatives purely to
+survive graphite — on paper they come back correct.
+
+The polarity of all 35 assets was measured over their **opaque pixels only**;
+averaging the transparent field makes every mark look identical. Three
+outcomes:
+
+| | treatment on paper |
+|---|---|
+| dark mark (Vinrox, Monoatom, Grafillium, Magppie, Deccan…) | none — already right |
+| white mark (Sunroof, Greenomers, INK Talks) | invert |
+| colour mark (VPRPL, Tileopedia, IOCL, TED, YourStory…) | none — never invert a colour mark |
+
+**WeHear is the exception, and exceptions like it are why a measurement beats
+a rule.** It is 45% near-white wordmark and 54% saturated icon: on paper the
+wordmark vanishes, and inverting to rescue it turns the pink waveform green.
+A genuinely two-tone mark cannot be solved by a filter, so it gets `darkChip`
+— its own dark ground, the one it was drawn for. One card, not the whole row.
+
+The first attempt at all this made every logo plate a dark island, which is
+how you get black blocks stamped across a light page. It was expedient and it
+looked it. Do not go back to it.
+
+## Four flips, not one
+
+The three places that flip a mark shipped three slightly different filters,
+and the advisory row a fourth:
+
+| context | dark filter |
+|---|---|
+| `/voices` | `invert(1) brightness(1.05) contrast(1.1) saturate(0)` |
+| `/ventures` advisory | `invert(1) brightness(1.05) contrast(1.05) saturate(0)` |
+| `/ventures` tiles | `invert(1) saturate(0) brightness(1.06) contrast(1.04)` |
+| `/news` | `invert(1) brightness(0.96) contrast(1.08) saturate(0)` |
+
+Collapsing them into one token is the obvious tidy-up and it is wrong: it
+moved the news marks ~9% brighter and the advisory row by a stable 275
+pixels. Each context keeps its own token — `--mark-flip`, `--mark-flip-adv`,
+`--mark-flip-soft`, `--mark-flip-dim` — all `none` on paper. Likewise
+`--mark-flip-lt` is **not** `none` in the dark theme: a white mark did not
+get "no filter" before, it fell into the colour branch, so the dark value is
+`brightness(1.08) contrast(1.06)`.
+
+`/voices` also needs its own plate: it had a flat `--surface-raised` fill
+where the venture tiles have a gradient. Sharing one `--logo-plate` moved
+7,125 pixels.
+
+## Two more ways the harness lied
+
+**Pausing animations freezes them mid-flight.** A regression harness that
+calls `animation.pause()` captures a reveal wherever it happens to be, so a
+card mid-transform lands 20px low and the diff reports 25,433 changed pixels
+on a page whose document height and element positions are *identical*. Call
+`finish()` — it jumps to the settled end state, deterministically.
+
+**One noise-floor sample is not a floor.** The advisory row read 279px
+against a floor of 0px, which looked like noise until the control was
+compared against itself four times: 0, 1, 4, 0 — while new-vs-live sat at
+279, 279, 279, 279. Stable to the pixel means real. Then diff the *computed
+styles* rather than bisecting screenshots, and check every card in a row, not
+the first one — the culprit was a `contrast(1.05)` against a `contrast(1.1)`
+on a single mark in a card the style diff was not looking at.
 
 ## What is a token and what is not
 

@@ -218,8 +218,12 @@ type Advisory = {
   scale: number;
   /** Px vertical nudge for optical centering. */
   offsetY?: number;
-  /** Mark is dark-on-transparent → invert so it reads on the dark plate. */
+  /** Mark is dark-on-transparent → lift it on the dark plate. */
   invert?: boolean;
+  /** Mark is white-on-transparent → the reverse: darken it on paper. */
+  lightSource?: boolean;
+  /** Mark mixes white and colour → no filter works; give it a dark ground. */
+  darkChip?: boolean;
 };
 
 /* Brand colour, deliberately. These were briefly normalised to one greyscale
@@ -246,10 +250,10 @@ type Advisory = {
 const advisories: Advisory[] = [
   { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0, invert: true },
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.85, offsetY: -1 },
-  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.78, offsetY: 0 },
+  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.78, offsetY: 0, darkChip: true },
   { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
-  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0 },
-  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.10, offsetY: 0 },
+  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0, lightSource: true },
+  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.10, offsetY: 0, lightSource: true },
 ];
 
 
@@ -339,7 +343,7 @@ function VenturesPage() {
                   plate is the constant; the mark is normalised into it by
                   logoScale. */}
               <div className="flex items-center justify-start md:justify-center md:pt-1.5">
-                <div className="theme-dark-island relative grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
+                <div className="relative grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-sm border border-[var(--logo-plate-border)] bg-[image:var(--logo-plate)] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
                   {v.logo ? (
                     <img
                       src={v.logo}
@@ -349,8 +353,10 @@ function VenturesPage() {
                       style={{
                         maxHeight: `${Math.round(48 * (v.logoScale ?? 1))}px`,
                         maxWidth: `${Math.round(74 * (v.logoScale ?? 1))}%`,
+                        /* invert records that the SOURCE is dark, not that a
+                           filter is always wanted — the theme decides. */
                         filter: v.invert
-                          ? "invert(1) saturate(0) brightness(1.06) contrast(1.04)"
+                          ? "var(--mark-flip-soft)"
                           : "brightness(1.06) contrast(1.04)",
                       }}
                       className="h-auto w-auto object-contain opacity-[0.86] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.05]"
@@ -471,7 +477,7 @@ function VenturesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.9, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
-              className="theme-dark-island group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[var(--surface-plate)] px-5 py-10 md:py-12 text-center"
+              className="group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[var(--surface-plate)] px-5 py-10 md:py-12 text-center"
             >
               {/* ── Atmospheric base — restrained graphene wash ── */}
               <div
@@ -479,7 +485,7 @@ function VenturesPage() {
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(85% 60% at 50% 35%, oklch(0.11 0.012 235 / 0.32) 0%, transparent 75%)",
+"var(--card-wash)",
                 }}
               />
 
@@ -516,7 +522,18 @@ function VenturesPage() {
 
               {/* ── Logo plate — fixed canvas for optical normalisation ── */}
               <div
-                className="relative z-10 flex items-center justify-center w-full"
+                /* darkChip: one mark needs its own ground. WeHear is 45%
+                   near-white wordmark and 54% saturated icon, measured over
+                   its opaque pixels — so on paper the wordmark disappears,
+                   and inverting to save it would turn the pink waveform
+                   green. A mark that is genuinely two-tone cannot be solved
+                   by a filter; it needs the ground it was drawn for. In the
+                   dark theme this chip is invisible against the card. */
+                className={`relative z-10 flex items-center justify-center w-full ${
+                  a.darkChip
+                    ? "rounded-[3px] bg-[image:var(--chip-plate)]"
+                    : ""
+                }`}
                 /* 80px, not 64. Equal optical mass is unreachable in a short
                    plate: a 0.99:1 icon can only ever be as tall as the plate,
                    while a 7.96:1 wordmark spends its budget on width. Opening
@@ -533,9 +550,16 @@ function VenturesPage() {
                       maxHeight: `${Math.round(58 * a.scale)}px`,
                       maxWidth: `${Math.round(88 * a.scale)}%`,
                       transform: `translateY(${a.offsetY || 0}px)`,
+                      /* Three states, not two. Measured over each asset's
+                         opaque pixels: Vinrox is a dark mark, VPRPL/WeHear/
+                         Tileopedia are colour, and Sunroof and Greenomers
+                         are genuinely white — which no flag recorded, so on
+                         paper they were white on near-white and vanished. */
                       filter: a.invert
-                        ? "invert(1) brightness(1.05) contrast(1.05) saturate(0)"
-                        : "brightness(1.08) contrast(1.06)",
+                        ? "var(--mark-flip-adv)"
+                        : a.lightSource
+                        ? "var(--mark-flip-lt)"
+                        : "var(--mark-colour)",
                     }}
                     className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
                   />

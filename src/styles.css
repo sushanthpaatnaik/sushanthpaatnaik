@@ -169,6 +169,55 @@
   --honour-muted: oklch(0.75 0.12 65 / 0.6);
   --honour-institution: oklch(0.75 0.12 65 / 0.85);
 
+  /* Brand marks.
+     Which filter a mark needs depends on the mark's own polarity and on the
+     plate beneath it, so the theme owns the answer and the markup only
+     declares what the SOURCE is. Every asset was measured over its opaque
+     pixels — the transparent field excluded, since averaging it makes every
+     mark look identical and tells you nothing.
+
+     --mark-flip     source is dark (or a dark colour mark): lifted on
+                     graphite, already correct on paper.
+     --mark-flip-lt  source is genuinely white: the reverse.
+     --mark-colour   a saturated brand mark. Never inverted in either theme —
+                     inverting a colour mark yields a colour negative. */
+  /* Three flips, not one, because the three places that need one shipped
+     three slightly different values and the dark theme is not up for
+     re-tuning: /voices and the advisory row at 1.05/1.1, the venture tiles
+     at 1.06/1.04, the news plates at 0.96/1.08. Unifying them would have
+     shifted the news marks about 9% brighter — invisible in a diff, visible
+     on the page. Likewise two colour treatments, since /voices desaturates
+     and the advisory row does not. */
+  --mark-flip: invert(1) brightness(1.05) contrast(1.1) saturate(0);
+  --mark-flip-soft: invert(1) saturate(0) brightness(1.06) contrast(1.04);
+  --mark-flip-adv: invert(1) brightness(1.05) contrast(1.05) saturate(0);
+  --mark-flip-dim: invert(1) brightness(0.96) contrast(1.08) saturate(0);
+  /* A white mark needs no flip on graphite — but it did not get `none`
+     before this existed, it got the colour treatment, because it fell into
+     the same else-branch. Preserve that exactly: this is the dark theme, and
+     the difference is two marks at brightness 1.08, which measured as a
+     stable 279-pixel change against a 0-4px floor. */
+  --mark-flip-lt: brightness(1.08) contrast(1.06);
+  --mark-colour: brightness(1.08) contrast(1.06);
+  --mark-colour-soft: saturate(0.9) brightness(1.04);
+  --logo-plate: linear-gradient(160deg, oklch(0.14 0.008 245), oklch(0.08 0.008 245));
+  --logo-plate-border: oklch(0.967 0 0 / 0.07);
+  --logo-plate-shadow: inset 0 1px 0 oklch(1 0 0 / 0.03);
+  --card-wash: radial-gradient(85% 60% at 50% 35%, oklch(0.11 0.012 235 / 0.32) 0%, transparent 75%);
+  /* `none`, not a transparent gradient. A transparent-to-transparent
+     gradient is still a paint layer and still composites, which moved 279
+     pixels of the dark theme — stable across four runs against a 0-4px
+     floor, so real rather than noise. background-image: none paints
+     nothing at all. */
+  --chip-plate: none;
+  /* /voices had a FLAT --surface-raised fill, not the venture tiles'
+     gradient — same idea, different plate, and reusing one token for both
+     moved 7,125 pixels of the dark theme. Written as a gradient of one
+     colour so the same property can carry either. */
+  --voice-plate: linear-gradient(0deg, oklch(0.07 0.006 245), oklch(0.07 0.006 245));
+  --voice-plate-border: oklch(0.967 0 0 / 0.07);
+  --voice-plate-shadow: inset 0 1px 0 oklch(1 0 0 / 0.03);
+
   /* The fixed archival plate behind every internal page: a photograph,
      graded until it is atmosphere rather than subject, under a stack of
      washes. Every layer is a token because every layer has to reverse —
@@ -287,6 +336,28 @@
   --honour-fill: oklch(0.62 0.120 62 / 0.10);
   --honour-muted: oklch(0.44 0.105 62 / 0.85);
   --honour-institution: oklch(0.42 0.110 62);
+
+  /* On paper the plate is paper — and then almost every mark is already the
+     right way round, which is the whole point. A logo shown in its own
+     colours on a light card is what a brand page looks like; a black chip
+     with a bleached mark inside it is a dark theme with the lights left on.
+     Only genuinely white marks are flipped here, and the plate carries a
+     hairline and a shallow warm shadow instead of a glow. */
+  --mark-flip: none;
+  --mark-flip-soft: none;
+  --mark-flip-adv: none;
+  --mark-flip-dim: none;
+  --mark-flip-lt: invert(1) saturate(0) contrast(1.04) brightness(0.92);
+  --mark-colour: none;
+  --mark-colour-soft: none;
+  --logo-plate: linear-gradient(160deg, oklch(0.995 0.002 85), oklch(0.963 0.004 85));
+  --logo-plate-border: oklch(0.30 0.008 260 / 0.14);
+  --logo-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
+  --card-wash: radial-gradient(85% 60% at 50% 35%, oklch(1 0 0 / 0.75) 0%, transparent 75%);
+  --chip-plate: linear-gradient(160deg, oklch(0.20 0.008 250), oklch(0.145 0.008 250));
+  --voice-plate: linear-gradient(160deg, oklch(0.995 0.002 85), oklch(0.963 0.004 85));
+  --voice-plate-border: oklch(0.30 0.008 260 / 0.14);
+  --voice-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
 
   /* The same plate, printed rather than projected. Brightness goes up
      instead of down and saturation drops further, so the photograph

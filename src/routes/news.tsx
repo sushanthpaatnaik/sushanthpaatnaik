@@ -844,8 +844,12 @@ function NewsPage() {
                   o.tone === "muted"
                     ? "opacity-[0.92] saturate-[0.85] brightness-[1.0] contrast-[1.06] group-hover:opacity-100 group-hover:brightness-[1.04]"
                     : "opacity-[0.94] saturate-[0.92] brightness-[1.02] contrast-[1.08] group-hover:opacity-100 group-hover:brightness-[1.06]";
+                /* "lighten" named the effect on the dark plate; what it
+                   actually records is that the source mark is dark. The
+                   theme decides whether that needs lifting (graphite) or
+                   leaving alone (paper). */
                 const lightenTone =
-                  "[filter:invert(1)_brightness(0.96)_contrast(1.08)_saturate(0)] opacity-[0.94] group-hover:opacity-100 group-hover:[filter:invert(1)_brightness(1.02)_contrast(1.1)_saturate(0)]";
+                  "[filter:var(--mark-flip-dim)] opacity-[0.94] group-hover:opacity-100";
                 const inner = (
                   <img
                     src={o.logo}
@@ -864,7 +868,7 @@ function NewsPage() {
                 // Matte anodized panel — soft inner gradient, restrained border,
                 // understated hover with subtle amber edge.
                 const baseCls =
-                  "theme-dark-island group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[linear-gradient(180deg,oklch(0.075_0.003_250)_0%,oklch(0.06_0.003_250)_100%)] px-3 py-3 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.012),inset_0_0_40px_oklch(0_0_0_/_0.35)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
+                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-[var(--logo-plate-border)] bg-[image:var(--logo-plate)] px-3 py-3 shadow-[var(--logo-plate-shadow)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
 
                 return href ? (
                   <a

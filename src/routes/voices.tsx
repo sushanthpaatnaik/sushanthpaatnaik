@@ -143,13 +143,7 @@ function LogoPlate({ v }: { v: Voice }) {
 
   const containerCls = v.logoWhiteBg
     ? "rounded-[6px] border border-black/[0.08] bg-white shadow-[0_2px_12px_oklch(0_0_0_/_0.18)]"
-    // theme-dark-island: these marks carry per-logo `logoInvert` flags tuned
-    // against a near-black plate, so on paper the plate stays dark and the
-    // flags stay correct. Without it the inverted marks turn white on a
-    // near-white tile — Deloitte and MIT Technology Review vanished entirely.
-    // The logoWhiteBg variant above is already theme-neutral: a genuinely
-    // white tile with the mark in its own colours.
-    : "theme-dark-island rounded-[4px] border border-foreground/[0.07] bg-[var(--surface-raised)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
+    : "rounded-[4px] border border-[var(--voice-plate-border)] bg-[image:var(--voice-plate)] shadow-[var(--voice-plate-shadow)]";
 
   const imgStyle: CSSProperties = {
     maxWidth: `${Math.round(76 * scale)}%`,
@@ -157,11 +151,23 @@ function LogoPlate({ v }: { v: Voice }) {
     objectFit: "contain",
   };
 
+  /* logoInvert records that the SOURCE is dark, not that a filter is always
+     wanted: on the graphite plate a dark mark has to be lifted, on paper it
+     is already right. The theme decides via --mark-flip, so nothing here
+     needs to know which theme is active.
+
+     This is why it matters: NIF, MIT Technology Review and Deloitte are all
+     colour marks being inverted into colour negatives purely to survive the
+     dark plate. On paper they come back in their real brand colours, which
+     is both more correct and better looking. */
   const imgCls = v.logoWhiteBg
     ? "opacity-100"
     : v.logoInvert
-    ? "[filter:invert(1)_brightness(1.05)_contrast(1.1)_saturate(0)] opacity-[0.92] group-hover:opacity-100 transition-all duration-700"
-    : "opacity-[0.88] saturate-[0.9] brightness-[1.04] group-hover:opacity-100 transition-all duration-700";
+    ? "opacity-[0.92] group-hover:opacity-100 transition-all duration-700"
+    : "opacity-[0.88] group-hover:opacity-100 transition-all duration-700";
+  if (!v.logoWhiteBg) {
+    imgStyle.filter = v.logoInvert ? "var(--mark-flip)" : "var(--mark-colour-soft)";
+  }
 
   return (
     <div
