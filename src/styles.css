@@ -156,6 +156,19 @@
   --logo-glow: drop-shadow(0 0 14px oklch(0.7 0.06 232 / 0.28));
   --nav-veil-flat: linear-gradient(180deg, oklch(0.04 0.005 260 / 0.96) 0%, oklch(0.04 0.005 260 / 0.82) 55%, transparent 100%);
 
+  /* The Presidential honour marking on /recognitions. Its own family rather
+     than the plain accent, because it is deliberately brighter and warmer
+     than the site's copper — it is the one badge allowed to carry weight.
+     Every value here was a hard-coded literal in the 0.62-0.80 lightness
+     band, which is correct against graphite and washes to pale orange on
+     paper: the chip read about 2.5:1, on a label that says PRESIDENTIAL. */
+  --honour-text: oklch(0.80 0.12 65);
+  --honour-dot: oklch(0.75 0.14 65);
+  --honour-border: oklch(0.62 0.12 65 / 0.45);
+  --honour-fill: oklch(0.62 0.12 65 / 0.08);
+  --honour-muted: oklch(0.75 0.12 65 / 0.6);
+  --honour-institution: oklch(0.75 0.12 65 / 0.85);
+
   /* The fixed archival plate behind every internal page: a photograph,
      graded until it is atmosphere rather than subject, under a stack of
      washes. Every layer is a token because every layer has to reverse —
@@ -263,6 +276,17 @@
   --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.004 85 / 0.97), oklch(0.945 0.005 85 / 0.99));
   --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
   --nav-veil-flat: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.97) 0%, oklch(0.965 0.004 85 / 0.86) 55%, transparent 100%);
+
+  /* The same honour marking, printed. Lightness drops by roughly half and
+     chroma holds, so it stays unmistakably copper rather than turning into
+     a brown — the point of the badge is that it reads as a decoration, not
+     as body text in an odd colour. */
+  --honour-text: oklch(0.40 0.115 62);
+  --honour-dot: oklch(0.46 0.130 62);
+  --honour-border: oklch(0.50 0.110 62 / 0.42);
+  --honour-fill: oklch(0.62 0.120 62 / 0.10);
+  --honour-muted: oklch(0.44 0.105 62 / 0.85);
+  --honour-institution: oklch(0.42 0.110 62);
 
   /* The same plate, printed rather than projected. Brightness goes up
      instead of down and saturation drops further, so the photograph

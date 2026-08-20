@@ -143,7 +143,13 @@ function LogoPlate({ v }: { v: Voice }) {
 
   const containerCls = v.logoWhiteBg
     ? "rounded-[6px] border border-black/[0.08] bg-white shadow-[0_2px_12px_oklch(0_0_0_/_0.18)]"
-    : "rounded-[4px] border border-foreground/[0.07] bg-[var(--surface-raised)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
+    // theme-dark-island: these marks carry per-logo `logoInvert` flags tuned
+    // against a near-black plate, so on paper the plate stays dark and the
+    // flags stay correct. Without it the inverted marks turn white on a
+    // near-white tile — Deloitte and MIT Technology Review vanished entirely.
+    // The logoWhiteBg variant above is already theme-neutral: a genuinely
+    // white tile with the mark in its own colours.
+    : "theme-dark-island rounded-[4px] border border-foreground/[0.07] bg-[var(--surface-raised)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.03)]";
 
   const imgStyle: CSSProperties = {
     maxWidth: `${Math.round(76 * scale)}%`,

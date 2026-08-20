@@ -339,7 +339,7 @@ function VenturesPage() {
                   plate is the constant; the mark is normalised into it by
                   logoScale. */}
               <div className="flex items-center justify-start md:justify-center md:pt-1.5">
-                <div className="relative grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
+                <div className="theme-dark-island relative grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-sm border border-foreground/[0.07] bg-[linear-gradient(160deg,oklch(0.14_0.008_245),oklch(0.08_0.008_245))] transition-colors duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:border-accent/25">
                   {v.logo ? (
                     <img
                       src={v.logo}
@@ -471,7 +471,7 @@ function VenturesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.9, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
-              className="group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[var(--surface-plate)] px-5 py-10 md:py-12 text-center"
+              className="theme-dark-island group relative flex flex-col items-center justify-between gap-7 overflow-hidden bg-[var(--surface-plate)] px-5 py-10 md:py-12 text-center"
             >
               {/* ── Atmospheric base — restrained graphene wash ── */}
               <div

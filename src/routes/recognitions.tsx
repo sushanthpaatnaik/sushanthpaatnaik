@@ -740,7 +740,7 @@ function LedgerYearGroup({ groups }: { groups: LedgerYear[] }) {
                     <div className="grid grid-cols-[auto_1fr] gap-x-5 items-baseline">
                       <span className={`font-mono text-[10px] uppercase tracking-[0.42em] pt-1 ${
                         e.institution?.includes("President") || e.institution?.includes("NIF")
-                          ? "text-[oklch(0.75_0.12_65/0.80)]"
+                          ? "text-[var(--honour-institution)]"
                           : "text-foreground/55"
                       }`}>
                         ◆
@@ -1067,7 +1067,7 @@ function RecognitionsPage() {
                     <figure
                       className={`relative overflow-hidden rounded-[2px] bg-[var(--surface-deep)] md:col-span-7 aspect-[5/4] transition-shadow duration-1000 ${
                         m.title.includes("Presidential")
-                          ? "ring-1 ring-[oklch(0.62_0.12_65/0.30)] shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.12),0_32px_72px_-28px_oklch(0_0_0/0.72),inset_0_1px_0_oklch(1_0_0/0.04)] group-hover:shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.22),0_44px_96px_-30px_oklch(0_0_0/0.82),inset_0_1px_0_oklch(1_0_0/0.05)]"
+                          ? "ring-1 ring-[var(--honour-border)] shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.12),0_32px_72px_-28px_oklch(0_0_0/0.72),inset_0_1px_0_oklch(1_0_0/0.04)] group-hover:shadow-[0_0_0_1px_oklch(0.62_0.12_65/0.22),0_44px_96px_-30px_oklch(0_0_0/0.82),inset_0_1px_0_oklch(1_0_0/0.05)]"
                           : "ring-1 ring-foreground/8 shadow-[0_24px_60px_-30px_oklch(0_0_0/0.55),inset_0_1px_0_oklch(1_0_0/0.02)] group-hover:shadow-[0_34px_78px_-32px_oklch(0_0_0/0.62)]"
                       }`}
                     >
@@ -1117,24 +1117,24 @@ function RecognitionsPage() {
                         {/* Category chip — archival classification */}
                         <span className={`inline-flex items-center gap-1.5 px-2 py-[3px] font-mono text-[10px] uppercase tracking-[0.3em] ${
                           m.category === "Presidential"
-                            ? "border border-[oklch(0.62_0.12_65/0.45)] bg-[oklch(0.62_0.12_65/0.08)] text-[oklch(0.80_0.12_65)]"
+                            ? "border border-[var(--honour-border)] bg-[var(--honour-fill)] text-[var(--honour-text)]"
                             : "border border-foreground/15 bg-[var(--surface-level)]/50 text-foreground/70"
                         }`}>
                           <span
                             aria-hidden
-                            className={`h-[3px] w-[3px] rounded-full ${m.category === "Presidential" ? "bg-[oklch(0.75_0.14_65)]" : "bg-accent/80"}`}
+                            className={`h-[3px] w-[3px] rounded-full ${m.category === "Presidential" ? "bg-[var(--honour-dot)]" : "bg-accent/80"}`}
                           />
                           {m.category}
                         </span>
                         {m.major && (
-                          <span className={`font-mono text-[10px] uppercase tracking-[0.26em] ${m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.6)]" : "text-foreground/45"}`}>
+                          <span className={`font-mono text-[10px] uppercase tracking-[0.26em] ${m.category === "Presidential" ? "text-[var(--honour-muted)]" : "text-foreground/45"}`}>
                             · Anchor
                           </span>
                         )}
                       </div>
 
                       <span className={`block font-mono text-[10px] uppercase tracking-[0.32em] mb-3 ${
-                        m.category === "Presidential" ? "text-[oklch(0.75_0.12_65/0.85)]" : "text-accent/70"
+                        m.category === "Presidential" ? "text-[var(--honour-institution)]" : "text-accent/70"
                       }`}>
                         {m.institution}
                       </span>
