@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `682c01e7` — the last commit that changed site
+The whole site is frozen as of `d433fe2f` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -15,12 +15,17 @@ phones 430/390/375/360, with the nav opening, listing 11 links and closing on
 Escape at each; 25 cards, 25 unique titles, JSON-LD ItemList agreeing at 25;
 all three favicons serving 200 at 13,912 / 9,540 / 45,025 bytes with alpha 0 at
 the corners; the three newest videos at their exact encoded sizes; both venture
-one-liners live; `--background: oklch(0.06 0 0)` — the site is dark and stays
-dark, a light theme having been previewed and declined. Added that day and
-verified on the deployed build at 1440 and at 390 with a touch profile: the
-product-detail CTA on all 25 panels, 15 external / 9 engage / 1 none, with
-`target` and `rel` correct on every external one and `product_site_click`
-carrying the right payload.
+one-liners live. Added that day and verified on the deployed build at 1440
+and at 390 with a touch profile: the product-detail CTA on all 25 panels,
+15 external / 9 engage / 1 none, with `target` and `rel` correct on every
+external one and `product_site_click` carrying the right payload.
+
+**The site is no longer dark-only.** A whole-site light theme was previewed
+and declined earlier; what shipped is a narrower thing that was asked for
+afterwards — Auto/Light/Dark on the eleven internal routes, with `/`
+permanently dark. If an older note anywhere says the site "is dark and stays
+dark", it is describing the declined proposal, not this one. See **The theme
+system** below.
 
 Change nothing here without a specific, reproducible defect and a measurement
 of it. Every rule below was written after something shipped broken, and most of
@@ -387,7 +392,25 @@ dark it is a no-op by construction. In light it also gains a hairline and a
 shallow warm shadow, because on paper an unseated dark plate reads as a hole.
 
 Currently applied to: both innovation card variants, the `/early-works`
-full-bleed photograph blocks, and the whole product-inspection modal.
+full-bleed photograph blocks, the whole product-inspection modal, and the
+four brand-mark plates — `/ventures` venture tiles and advisory cards,
+`/voices` organisation plates, `/news` publication plates.
+
+**The brand-mark plates are the reason this pattern exists at all.** Every
+mark carries a per-logo `invert` flag meaning "this mark's polarity is
+opposite to the plate", tuned against near-black. When the plate became
+paper, the inverted marks turned white on a near-white tile: four of six
+advisory marks on `/ventures` disappeared, and Deloitte and MIT Technology
+Review disappeared on `/voices`. Do not fix that by flipping the polarities
+per theme — the code comments there already record two earlier attempts that
+got a mark backwards, and there are six of them plus a `logoWhiteBg` variant
+that is already theme-neutral. Keep the plate dark and every tuned value
+stays correct.
+
+Nothing in the DOM can see this defect: the markup is identical in both
+themes, and an invisible mark has no text for a contrast sweep to score. It
+was found by measuring each image's painted luminance against the paper
+around it, and then looking at the page.
 
 **Reach for this before reaching for a hard-coded colour.** A component that
 needs to stay dark should say so once, not carry a light value and a dark one.
