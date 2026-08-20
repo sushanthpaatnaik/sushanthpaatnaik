@@ -432,7 +432,7 @@ function InnovationsPage() {
     <CinematicPageShell
       eyebrow={`Innovations · Catalogue · ${items.length} of ${items.length}`}
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
-      lead="A private R&D archive of advanced materials engineering — graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
+      lead="A curated R&D archive of advanced materials engineering — graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
       overlay={0.78}
     >

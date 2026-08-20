@@ -79,7 +79,18 @@ export default function FounderPortrait({
         }}
       />
 
-      <div className="relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[var(--surface-sunken)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
+      {/* A dark island on paper, deliberately. The portrait is graded to
+          near-black at its edges — a multiply pass, an inner dissolve to
+          oklch(0.02) and a bottom fade to oklch(0.04) — because that is how
+          the photograph is meant to read, and none of it can invert without
+          becoming a different picture. On the light theme the plate around
+          it was the paper surface, so the identity bar met the top of the
+          photograph as a hard white-to-black rule and the figcaption met the
+          bottom fade the same way: the "dark image pasted onto a bright
+          canvas" this pass exists to remove. Keeping the whole module dark
+          makes the bars continuous with the frame and the module reads as a
+          cinematic plate laid on the page. */}
+      <div className="theme-dark-island relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[var(--surface-sunken)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
         {/* Founder plate — strengthened editorial identity */}
         {plate && (
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/[0.06] px-6 py-4 md:px-8 md:py-5">

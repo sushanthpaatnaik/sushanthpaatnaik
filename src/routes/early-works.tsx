@@ -394,8 +394,11 @@ function ChapterSplit({
         </div>
       </div>
 
-      {/* Image side */}
-      <div className={`relative group ${reversed ? "lg:order-first" : ""}`}>
+      {/* Image side — a dark island for the same reason the full-bleed plate
+          below already is: the year chip and its scrim are painted from fixed
+          dark values, so on paper the chip's own background went pale while
+          the scrim under it stayed black. */}
+      <div className={`theme-dark-island relative group ${reversed ? "lg:order-first" : ""}`}>
         <ParallaxImage
           src={inv.image}
           alt={inv.name}
@@ -778,7 +781,11 @@ function BackdropPanel({ isTouch }: { isTouch: boolean }) {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) 84%, transparent) 0%, color-mix(in oklab, var(--plate-ink) 78%, transparent) 45%, color-mix(in oklab, var(--plate-ink) 82%, transparent) 100%)",
+            // Floored by --plate-wash-min exactly as CinematicPageShell is —
+            // this page carries its own copy of the plate stack, and leaving
+            // it out is how /early-works would end up the one internal page
+            // on a different ground.
+            "linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(84%, var(--plate-wash-min)), transparent) 0%, color-mix(in oklab, var(--plate-ink) max(78%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(82%, var(--plate-wash-min)), transparent) 100%)",
         }}
       />
       <div

@@ -47,8 +47,14 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
       initial={{ opacity: 0, y: 22 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.95, delay: (index % 6) * 0.05, ease: [0.19, 1, 0.22, 1] }}
-      className={`group relative overflow-hidden bg-[var(--surface-plate)] ring-1 ring-foreground/[0.05] ${span}`}
+      className={`theme-dark-island group relative overflow-hidden bg-[var(--surface-plate)] ring-1 ring-foreground/[0.05] ${span}`}
     >
+      {/* Dark island. Every tile here scrims its photograph with a fixed
+          near-black gradient so the caption can sit on the image, and that
+          gradient cannot invert — inverting it is inverting the photograph.
+          On the light theme the caption was reading --foreground, so it
+          painted graphite ink on that black scrim: measured 363 such
+          captions across /recognitions, all of them invisible. */}
       <img
         src={item.src}
         alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
@@ -460,7 +466,7 @@ export function HallOfFameRibbon({
                 key={`${item.src}-${i}`}
                 data-hof-card
                 aria-hidden={i >= items.length ? true : undefined}
-                className="group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[var(--surface-plate)]"
+                className="theme-dark-island group relative h-[230px] md:h-[260px] w-[300px] md:w-[340px] flex-shrink-0 overflow-hidden bg-[var(--surface-plate)]"
               >
                 <img
                   src={item.src}
@@ -694,7 +700,9 @@ export function ArchivePlate({
         flip ? "md:[&>figcaption]:order-first" : ""
       }`}
     >
-      <div className="relative col-span-1 aspect-[4/3] overflow-hidden bg-[var(--surface-plate)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
+      {/* Island on the frame only — this layout's caption is a sibling
+          column on the page, and belongs on paper. */}
+      <div className="theme-dark-island relative col-span-1 aspect-[4/3] overflow-hidden bg-[var(--surface-plate)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
         <img
           src={item.src}
           alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
@@ -829,7 +837,9 @@ export function PresidentialTriptych({
             transition={{ duration: 1.1, delay: i * 0.12, ease: [0.19, 1, 0.22, 1] }}
             className="group relative flex flex-col bg-[var(--surface-plate)]"
           >
-            <div className="relative aspect-[3/4] overflow-hidden">
+            {/* Same again: only the plate is an island. The figcaption
+                below it is page copy. */}
+            <div className="theme-dark-island relative aspect-[3/4] overflow-hidden">
               {item.fit === "contain" && (
                 <img
                   src={item.src}

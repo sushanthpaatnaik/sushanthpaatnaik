@@ -654,9 +654,11 @@ function EraAccordion({
           <div className="mt-8 md:mt-10 pl-0 md:pl-[calc(theme(spacing.12)+1.5rem)]">
             <div className="grid grid-cols-4 gap-px bg-foreground/[0.05] ring-1 ring-foreground/[0.05] rounded-sm overflow-hidden">
               {previewPlates.slice(0, 4).map((p, i) => (
+                /* Dark island: the era preview plates carry their category
+                   label on a 0.82-alpha near-black scrim over the photo. */
                 <figure
                   key={p.src + i}
-                  className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-plate)]"
+                  className="theme-dark-island relative aspect-[4/3] overflow-hidden bg-[var(--surface-plate)]"
                 >
                   <img
                     src={p.src}
@@ -1035,9 +1037,9 @@ function RecognitionsPage() {
                   <div className="md:absolute md:left-1/2 md:top-20 md:-translate-x-1/2 md:flex md:flex-col md:items-center md:gap-3 z-10">
                     <span
                       aria-hidden
-                      className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[oklch(0.045_0.003_245)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
+                      className="hidden md:block h-3 w-3 rounded-full bg-foreground/55 ring-[6px] ring-[var(--canvas-solid)] shadow-[0_0_0_1px_oklch(var(--foreground)/0.18)]"
                     />
-                    <span className="md:hidden absolute left-6 top-16 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[oklch(0.045_0.003_245)]" />
+                    <span className="md:hidden absolute left-6 top-16 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-foreground/55 ring-4 ring-[var(--canvas-solid)]" />
                     <div className="md:mt-1 md:px-3 md:py-[3px] md:bg-[var(--surface-deep)] md:border md:border-foreground/10">
                       <span className="font-mono text-[10px] md:text-[10.5px] uppercase tracking-[0.32em] text-foreground/60">
                         {m.year}
@@ -1458,8 +1460,11 @@ function RecognitionsPage() {
         </div>
       </section>
 
-      {/* 07 · Future Signal — cinematic decompression into forward momentum */}
-      <section className="not-prose relative mt-2 overflow-hidden">
+      {/* 07 · Future Signal — cinematic decompression into forward momentum.
+          A dark island on the light theme: the whole section is a graded
+          planetary plate under a 0.94-alpha matte, painted from fixed
+          near-black values, and its copy sat on that in graphite ink. */}
+      <section className="theme-dark-island not-prose relative mt-2 overflow-hidden">
         {/* Atmospheric planetary backdrop */}
         <div aria-hidden className="absolute inset-0 z-0 overflow-hidden">
           <div

@@ -77,14 +77,17 @@ export default function CinematicPageShell({
           }}
         />
         {/* The wash that turns the photograph into a ground. Its colour is a
-            token and its alpha stays the caller's `overlay`, so a page that
-            asked for 0.78 gets 0.78 of whichever ink the theme uses —
-            graphite in the dark, paper in the light. color-mix rather than a
-            second alpha token, because the two have to stay one number. */}
+            token and its alpha is the caller's `overlay` — but never below
+            `--plate-wash-min`, which is 0% in the dark and so changes
+            nothing there, and 91% on paper. The nine pages ask for 0.68 to
+            0.82; against near-black ink that whole spread resolves to the
+            same black, and against paper it resolved to nine different
+            greys. color-mix rather than a second alpha token, because the
+            colour and the alpha have to stay one number. */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) ${(overlay + 0.06) * 100}%, transparent) 0%, color-mix(in oklab, var(--plate-ink) ${overlay * 100}%, transparent) 45%, color-mix(in oklab, var(--plate-ink) ${(overlay + 0.04) * 100}%, transparent) 100%)`,
+            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(${(overlay + 0.06) * 100}%, var(--plate-wash-min)) , transparent) 0%, color-mix(in oklab, var(--plate-ink) max(${overlay * 100}%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(${(overlay + 0.04) * 100}%, var(--plate-wash-min)), transparent) 100%)`,
           }}
         />
         {/* Restrained copper rim, off-axis */}

@@ -105,6 +105,15 @@
   --wash-blue:     radial-gradient(70% 55% at 18% 12%, oklch(0.42 0.07 240 / 0.10), transparent 65%);
   --wash-copper:   radial-gradient(60% 50% at 85% 88%, oklch(0.62 0.10 55 / 0.06), transparent 65%);
   --wash-vignette: radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.02 0 0 / 0.55) 100%);
+  /* The flat tone under those three, for the pages that carry the wash
+     instead of the photographic plate. Transparent in the dark, where the
+     page ground is already the same near-black the plate resolves to. */
+  --wash-ground: transparent;
+  /* What the internal page canvas actually resolves to once the plate stack
+     has painted — not --background, which is the token before any of it.
+     Used where something has to punch a hole in a rule and match the ground
+     exactly, like the timeline dots on /recognitions. */
+  --canvas-solid: oklch(0.045 0.003 245);
 
   /* Glass / panel translucency */
   --glass-plate: oklch(0.05 0.006 245 / 0.80);
@@ -228,6 +237,13 @@
   --plate-haze-opacity: 0.85;
   --plate-ink: oklch(0.03 0.005 260);
   --plate-ink-top: oklch(0.04 0.006 260);
+  /* The floor under the caller's `overlay`. Each page picks its own alpha —
+     0.68 on /news up to 0.82 on /about — and against a near-black ink every
+     one of those lands on the same black, so the floor is 0 and nothing
+     changes. On paper the same spread is the difference between a page that
+     reads as ivory and one that reads as grey card, which is why the light
+     theme raises it. `max()` of a value and 0% is that value. */
+  --plate-wash-min: 0%;
   /* screen adds light to a dark ground; multiply removes it from a light
      one. Same two washes, opposite operators. */
   --plate-blend: screen;
@@ -250,28 +266,28 @@
    so the page reads as paper stock rather than as a screen at full
    brightness. */
 :root[data-theme="light"] {
-  --background: oklch(0.965 0.004 85);        /* warm paper */
+  --background: oklch(0.965 0.008 85);        /* warm paper */
   --foreground: oklch(0.195 0.006 260);       /* graphite ink, never #000 */
-  --card: oklch(0.985 0.003 85);
+  --card: oklch(0.985 0.006 85);
   --card-foreground: oklch(0.235 0.006 260);
-  --popover: oklch(0.99 0.003 85);
+  --popover: oklch(0.99 0.006 85);
   --popover-foreground: oklch(0.235 0.006 260);
   --primary: oklch(0.50 0.14 245);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.93 0.004 85);
+  --secondary: oklch(0.93 0.008 85);
   --secondary-foreground: oklch(0.235 0.006 260);
-  --muted: oklch(0.945 0.004 85);
+  --muted: oklch(0.945 0.008 85);
   --muted-foreground: oklch(0.33 0.011 260);
   --accent: oklch(0.435 0.108 68);            /* copper that holds on paper */
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.52 0.20 27);
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.34 0.006 260 / 15%);
-  --input: oklch(0.99 0.003 85);
+  --input: oklch(0.99 0.006 85);
   --ring: oklch(0.50 0.14 245);
 
-  --color-graphite: oklch(0.90 0.004 85);
-  --color-charcoal: oklch(0.86 0.004 85);
+  --color-graphite: oklch(0.90 0.008 85);
+  --color-charcoal: oklch(0.86 0.008 85);
   --color-premium-white: oklch(0.235 0.006 260);
   --color-graphene-blue: oklch(0.50 0.14 245);
   --color-energy-glow: oklch(0.58 0.12 240);
@@ -285,30 +301,39 @@
   --glow-accent: 0 0 80px oklch(0.505 0.098 68 / 0.09);
   --gradient-hero: radial-gradient(ellipse at center, oklch(0.72 0.05 245 / 0.20), transparent 70%);
   --gradient-text: linear-gradient(180deg, oklch(0.30 0.012 78) 0%, oklch(0.26 0.02 74) 60%, oklch(0.20 0.03 70) 100%);
-  --gradient-metallic: linear-gradient(180deg, oklch(0.955 0.003 85) 0%, oklch(0.90 0.004 85) 100%);
+  --gradient-metallic: linear-gradient(180deg, oklch(0.955 0.006 85) 0%, oklch(0.90 0.008 85) 100%);
 
-  --surface-sunken:      oklch(0.925 0.005 85);
-  --surface-deep:        oklch(0.935 0.004 85);
-  --surface-plate:       oklch(0.945 0.004 85);
-  --surface-plate-soft:  oklch(0.952 0.004 85);
-  --surface-level:       oklch(0.965 0.004 85);
-  --surface-raised:      oklch(0.980 0.003 85);
-  --surface-high:        oklch(0.993 0.002 85);
-  --surface-veil:        oklch(0.96 0.004 85 / 0.72);
-  --surface-veil-strong: oklch(0.97 0.004 85 / 0.88);
-  --surface-glass:       oklch(0.99 0.003 85 / 0.78);
-  --surface-glass-soft:  oklch(0.965 0.004 85 / 0.72);
-  --surface-chip:        oklch(0.99 0.003 85 / 0.70);
+  --surface-sunken:      oklch(0.925 0.009 85);
+  --surface-deep:        oklch(0.935 0.008 85);
+  --surface-plate:       oklch(0.945 0.008 85);
+  --surface-plate-soft:  oklch(0.952 0.008 85);
+  --surface-level:       oklch(0.965 0.008 85);
+  --surface-raised:      oklch(0.980 0.006 85);
+  --surface-high:        oklch(0.993 0.004 85);
+  --surface-veil:        oklch(0.96 0.008 85 / 0.72);
+  --surface-veil-strong: oklch(0.97 0.008 85 / 0.88);
+  --surface-glass:       oklch(0.99 0.006 85 / 0.78);
+  --surface-glass-soft:  oklch(0.965 0.008 85 / 0.72);
+  --surface-chip:        oklch(0.99 0.006 85 / 0.70);
   --surface-hairline:    oklch(0.235 0.006 260 / 0.11);
   --surface-hairline-strong: oklch(0.235 0.006 260 / 0.26);
 
   --wash-blue:     radial-gradient(70% 55% at 18% 12%, oklch(0.55 0.09 240 / 0.07), transparent 65%);
   --wash-copper:   radial-gradient(60% 50% at 85% 88%, oklch(0.60 0.10 55 / 0.06), transparent 65%);
   --wash-vignette: radial-gradient(115% 78% at 50% 50%, transparent 45%, oklch(0.35 0.01 260 / 0.10) 100%);
+  /* /essays and the essay reader have no backdrop photograph, so on paper
+     they were painting raw --background: measured 240 against the 224 the
+     nine plate pages resolve to, which is the "one page near-white, the
+     next ivory" the canvas is meant to avoid. This is that 224, flat. */
+  --wash-ground: oklch(0.917 0.006 85);
+  /* Measured, not derived: the ten internal pages paint their canvas at
+     sRGB 224 after the wash, which is oklch(0.906). --background is 246 and
+     a punch-out at that value reads as a pale halo on this ground. */
+  --canvas-solid: oklch(0.906 0.008 85);
 
-  --glass-plate: oklch(0.97 0.004 85 / 0.82);
+  --glass-plate: oklch(0.97 0.008 85 / 0.82);
 
-  --page-ground: oklch(0.955 0.004 85);
+  --page-ground: oklch(0.955 0.008 85);
   --ink: 250 248 244;                         /* the paper itself */
   --sheen: 44 44 50;                          /* graphite, for hairlines */
   --shadow-key: 46 40 32;                     /* warm, never neutral black */
@@ -320,11 +345,11 @@
      fade to transparent so it still reads as a gradient rather than a bar.
      The logo's blue bloom becomes a soft contact shadow — a glow is light
      emitted, which is meaningless on a white ground and reads as a smudge. */
-  --nav-veil: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.88) 0%, oklch(0.965 0.004 85 / 0.58) 55%, transparent 100%);
-  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.95) 0%, oklch(0.965 0.004 85 / 0.90) 75%, transparent 100%);
-  --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.004 85 / 0.97), oklch(0.945 0.005 85 / 0.99));
+  --nav-veil: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.88) 0%, oklch(0.965 0.008 85 / 0.58) 55%, transparent 100%);
+  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.95) 0%, oklch(0.965 0.008 85 / 0.90) 75%, transparent 100%);
+  --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.008 85 / 0.97), oklch(0.945 0.009 85 / 0.99));
   --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
-  --nav-veil-flat: linear-gradient(180deg, oklch(0.965 0.004 85 / 0.97) 0%, oklch(0.965 0.004 85 / 0.86) 55%, transparent 100%);
+  --nav-veil-flat: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.97) 0%, oklch(0.965 0.008 85 / 0.86) 55%, transparent 100%);
 
   /* The same honour marking, printed. Lightness drops by roughly half and
      chroma holds, so it stays unmistakably copper rather than turning into
@@ -350,26 +375,33 @@
   --mark-flip-lt: invert(1) saturate(0) contrast(1.04) brightness(0.92);
   --mark-colour: none;
   --mark-colour-soft: none;
-  --logo-plate: linear-gradient(160deg, oklch(0.995 0.002 85), oklch(0.963 0.004 85));
+  --logo-plate: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.963 0.008 85));
   --logo-plate-border: oklch(0.30 0.008 260 / 0.14);
   --logo-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
   --card-wash: radial-gradient(85% 60% at 50% 35%, oklch(1 0 0 / 0.75) 0%, transparent 75%);
   --chip-plate: linear-gradient(160deg, oklch(0.20 0.008 250), oklch(0.145 0.008 250));
-  --voice-plate: linear-gradient(160deg, oklch(0.995 0.002 85), oklch(0.963 0.004 85));
+  --voice-plate: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.963 0.008 85));
   --voice-plate-border: oklch(0.30 0.008 260 / 0.14);
   --voice-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
 
-  /* The same plate, printed rather than projected. Brightness goes up
-     instead of down and saturation drops further, so the photograph
-     survives as a watermark in the paper — visible when looked for,
-     never competing with the type. The washes multiply instead of
-     screening, and the vignette becomes a faint grey fall-off rather
-     than a black frame. */
-  --plate-filter: blur(5px) saturate(0.20) brightness(1.34) contrast(0.88);
-  --plate-haze-filter: blur(30px) saturate(0.18) brightness(1.40);
-  --plate-haze-opacity: 0.70;
-  --plate-ink: oklch(0.965 0.004 85);
-  --plate-ink-top: oklch(0.975 0.004 85);
+  /* The same plate, printed rather than projected — but the grade has to do
+     far more work here than the first pass allowed. Every backdrop on the
+     site is a dark cinematic photograph, so brightness(1.34) left it around
+     luminance 55 on a 246 paper, and at 0.68–0.82 wash that residue was
+     between a sixth and a third of the ground. It made each page a slightly
+     different grey card: measured across the ten internal pages the light
+     canvas ranged 183 to 240, a span of 57, against 6 in the dark.
+
+     Brightness carries it well past mid and contrast then collapses what is
+     left toward that mid, so the photograph survives as a tonal modulation
+     in the paper rather than as a subject. With the wash floored at 91% the
+     page-to-page spread of the residue is a couple of levels. */
+  --plate-filter: blur(5px) saturate(0.16) brightness(2.10) contrast(0.40);
+  --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
+  --plate-haze-opacity: 0.55;
+  --plate-wash-min: 91%;
+  --plate-ink: oklch(0.965 0.008 85);
+  --plate-ink-top: oklch(0.975 0.008 85);
   --plate-blend: multiply;
   --plate-rim: radial-gradient(60% 50% at 82% 18%, oklch(0.78 0.05 60 / 0.14), transparent 60%);
   --plate-depth: radial-gradient(70% 55% at 18% 78%, oklch(0.76 0.04 240 / 0.12), transparent 65%);
@@ -651,7 +683,8 @@
     background:
       var(--wash-blue),
       var(--wash-copper),
-      var(--wash-vignette);
+      var(--wash-vignette),
+      var(--wash-ground);
   }
 
   /* Archival corner registration marks — for image plates */
