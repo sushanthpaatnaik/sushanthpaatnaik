@@ -384,7 +384,7 @@ function MediaPlate({
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-[var(--press-img-opacity)] grayscale-[0.55] contrast-[1.08] brightness-[0.95] [filter:var(--press-img-filter)] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:grayscale-[0.2] group-hover:scale-[1.02]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[var(--press-img-opacity)] [filter:var(--press-img-filter)] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:[filter:var(--press-img-filter-hover)] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
       {/* Newspaper halftone texture */}

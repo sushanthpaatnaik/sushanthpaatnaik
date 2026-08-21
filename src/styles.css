@@ -272,7 +272,7 @@
   --product-scrim: linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%);
   --product-shadow-hero: drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08));
   --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34));
-  --product-lift: none;
+  --product-lift: brightness(1);
 
   --photo-plate: var(--surface-sunken);
   --photo-veil: transparent;
@@ -282,11 +282,12 @@
   --photo-grade-doc: linear-gradient(180deg, oklch(0.05 0.01 240 / 0.5) 0%, oklch(0.04 0.005 240 / 0.3) 50%, oklch(0.03 0 0 / 0.6) 100%);
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%);
   --photo-frame-shadow: 0 36px 88px -36px oklch(0 0 0 / 0.78);
-  --photo-filter: none;
+  --photo-filter: brightness(1);
   --archive-foot: linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent);
   --archive-foot-deep: linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%);
   --press-img-opacity: 0.8;
-  --press-img-filter: none;
+  --press-img-filter: brightness(0.95) contrast(1.08) grayscale(0.55);
+  --press-img-filter-hover: brightness(0.95) contrast(1.08) grayscale(0.2);
   --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%);
   --press-vignette-opacity: 0.35;
   --press-foot: linear-gradient(to top, oklch(0.06 0 0 / 0.85) 0%, oklch(0.06 0 0 / 0.20) 55%, transparent 100%);
@@ -311,6 +312,25 @@
   --stage-foot: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%);
   --stage-pad: 9%;
   --stage-pad-hero: 7%;
+
+  /* The product-inspection panel. It used to be a dark island, which is the
+     right answer for a lightbox and the wrong one here: it opens from a card
+     that is now a paper plate, and a full-screen black surface arriving out
+     of that is exactly the "dark theme pasted in" this pass is about. Same
+     literals, now in tokens. */
+  --panel-ground: radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%);
+  --panel-topveil: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%);
+  --panel-frame: linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%);
+  --panel-vig-a: radial-gradient(ellipse at 50% 42%, transparent 50%, oklch(0.02 0.006 245 / 0.36) 84%, oklch(0.015 0.006 245 / 0.72) 100%);
+  --panel-vig-b: radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%);
+  --panel-vig-c: radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%);
+  --panel-vig-d: radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%);
+  --panel-vig-e: radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%);
+  --panel-media-foot: linear-gradient(180deg, transparent 38%, oklch(0.03 0.006 245 / 0.88) 100%);
+  --panel-media-foot-tight: linear-gradient(180deg, transparent 22%, oklch(0.03 0.006 245 / 0.78) 100%);
+  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
+  --panel-stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%);
+  --panel-stage-shadow: drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06));
   /* screen adds light to a dark ground; multiply removes it from a light
      one. Same two washes, opposite operators. */
   --plate-blend: screen;
@@ -514,7 +534,8 @@
      Full opacity here, a slightly cooler grade in place of the see-through,
      and a vignette that darkens rather than lifts. */
   --press-img-opacity: 1;
-  --press-img-filter: brightness(0.97) contrast(1.04);
+  --press-img-filter: brightness(0.94) contrast(1.12) grayscale(0.55) saturate(1.05);
+  --press-img-filter-hover: brightness(0.97) contrast(1.10) grayscale(0.18) saturate(1.05);
   --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 46%, oklch(0.30 0.01 260 / 0.30) 100%);
   --press-vignette-opacity: 0.5;
   --press-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 92%, transparent) 0%, color-mix(in oklab, var(--canvas-solid) 22%, transparent) 55%, transparent 100%);
@@ -546,6 +567,24 @@
      on paper the same overlap is a dark bottle crossing dark type. */
   --stage-pad: 6% 9% 26% 9%;
   --stage-pad-hero: 5% 7% 20% 7%;
+
+  /* The panel on paper. The ground is a warm sheet rather than a dimmed room,
+     the media frames stay graphite because the application photographs and
+     films genuinely are dark and a light frame behind a dark film is a halo,
+     and the vignettes close to a warm grey instead of to black. */
+  --panel-ground: radial-gradient(ellipse at 50% 38%, oklch(0.972 0.006 85) 0%, oklch(0.940 0.009 82) 72%);
+  --panel-topveil: linear-gradient(180deg, oklch(0.972 0.006 85 / 0.92) 0%, oklch(0.972 0.006 85 / 0.62) 60%, transparent 100%);
+  --panel-frame: linear-gradient(180deg, oklch(0.918 0.010 82) 0%, oklch(0.884 0.012 80) 100%);
+  --panel-vig-a: radial-gradient(ellipse at 50% 42%, transparent 56%, oklch(0.55 0.016 70 / 0.16) 86%, oklch(0.50 0.018 68 / 0.28) 100%);
+  --panel-vig-b: radial-gradient(ellipse at 50% 46%, transparent 56%, oklch(0.55 0.016 70 / 0.18) 90%, oklch(0.50 0.018 68 / 0.30) 100%);
+  --panel-vig-c: radial-gradient(ellipse at 50% 44%, transparent 58%, oklch(0.55 0.016 70 / 0.15) 84%, oklch(0.50 0.018 68 / 0.26) 100%);
+  --panel-vig-d: radial-gradient(ellipse at 50% 50%, transparent 48%, oklch(0.52 0.018 68 / 0.22) 96%);
+  --panel-vig-e: radial-gradient(ellipse at 50% 46%, transparent 64%, oklch(0.55 0.016 70 / 0.16) 96%);
+  --panel-media-foot: linear-gradient(180deg, transparent 44%, oklch(0.30 0.010 70 / 0.62) 100%);
+  --panel-media-foot-tight: linear-gradient(180deg, transparent 30%, oklch(0.30 0.010 70 / 0.55) 100%);
+  --panel-stage-cyc: radial-gradient(ellipse at 50% 20%, oklch(1 0 0 / 0.72), transparent 55%), radial-gradient(circle at 50% 112%, oklch(0.55 0.02 68 / 0.24), transparent 62%), linear-gradient(180deg, oklch(0.995 0.003 85) 0%, oklch(0.968 0.007 85) 56%, oklch(0.930 0.010 82) 100%);
+  --panel-stage-contact: radial-gradient(ellipse, oklch(0.48 0.028 62 / 0.45), transparent 66%);
+  --panel-stage-shadow: drop-shadow(0 30px 36px oklch(0.48 0.03 62 / 0.28)) drop-shadow(0 12px 17px oklch(0.45 0.028 60 / 0.17));
   --plate-ink: oklch(0.965 0.008 85);
   --plate-ink-top: oklch(0.975 0.008 85);
   --plate-blend: multiply;
@@ -1714,6 +1753,62 @@ html.lenis, html.lenis body {
    In the dark theme it is a no-op by construction: the values are the
    ones already on :root. */
 .theme-dark-island {
+  /* The media family too, or an island is only half dark: it would take
+     the dark ink scale while the pictures under it stayed lit for paper,
+     which put white type on a light cyclorama in the inspection panel.
+     Copied from :root — change a value there, change it here. */
+  --product-plate: oklch(0.05 0.006 245);
+  --product-border: oklch(0.967 0 0 / 0.08);
+  --product-sheen: linear-gradient(270deg, oklch(0.86 0.02 235 / 0.08) 0%, transparent 70%);
+  --product-scrim-hero: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.16) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.9) 100%);
+  --product-scrim: linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%);
+  --product-shadow-hero: drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08));
+  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34));
+  --product-lift: brightness(1);
+  --photo-plate: var(--surface-sunken);
+  --photo-veil: transparent;
+  --photo-dissolve: radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%);
+  --photo-foot: linear-gradient(to top, oklch(0.04 0 0) 0%, transparent 100%);
+  --photo-grade: linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.22) 45%, oklch(0.02 0 0 / 0.60) 100%);
+  --photo-grade-doc: linear-gradient(180deg, oklch(0.05 0.01 240 / 0.5) 0%, oklch(0.04 0.005 240 / 0.3) 50%, oklch(0.03 0 0 / 0.6) 100%);
+  --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%);
+  --photo-frame-shadow: 0 36px 88px -36px oklch(0 0 0 / 0.78);
+  --photo-filter: brightness(1);
+  --archive-foot: linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent);
+  --archive-foot-deep: linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%);
+  --press-img-opacity: 0.8;
+  --press-img-filter: brightness(0.95) contrast(1.08) grayscale(0.55);
+  --press-img-filter-hover: brightness(0.95) contrast(1.08) grayscale(0.2);
+  --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%);
+  --press-vignette-opacity: 0.35;
+  --press-foot: linear-gradient(to top, oklch(0.06 0 0 / 0.85) 0%, oklch(0.06 0 0 / 0.20) 55%, transparent 100%);
+  --stage-cyc: radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%);
+  --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
+  --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
+  --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);
+  --stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 65%);
+  --stage-bounce: radial-gradient(ellipse, oklch(0 0 0 / 0.7), transparent 72%);
+  --stage-subject-shadow: drop-shadow(0 32px 42px oklch(0 0 0 / 0.78)) drop-shadow(0 16px 24px oklch(0 0 0 / 0.4)) drop-shadow(0 0 22px oklch(0.85 0.02 235 / 0.06));
+  --stage-refl-opacity: 0.16;
+  --stage-refl-filter: blur(5px) saturate(0.55) brightness(0.65);
+  --stage-rim: linear-gradient(90deg, transparent, oklch(0.92 0.02 235 / 0.6), transparent);
+  --stage-vignette: radial-gradient(ellipse at 50% 44%, transparent 48%, oklch(0.02 0.006 245 / 0.32) 78%, oklch(0.015 0.006 245 / 0.7) 100%);
+  --stage-foot: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%);
+  --stage-pad: 9%;
+  --stage-pad-hero: 7%;
+  --panel-ground: radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%);
+  --panel-topveil: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%);
+  --panel-frame: linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%);
+  --panel-vig-a: radial-gradient(ellipse at 50% 42%, transparent 50%, oklch(0.02 0.006 245 / 0.36) 84%, oklch(0.015 0.006 245 / 0.72) 100%);
+  --panel-vig-b: radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%);
+  --panel-vig-c: radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%);
+  --panel-vig-d: radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%);
+  --panel-vig-e: radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%);
+  --panel-media-foot: linear-gradient(180deg, transparent 38%, oklch(0.03 0.006 245 / 0.88) 100%);
+  --panel-media-foot-tight: linear-gradient(180deg, transparent 22%, oklch(0.03 0.006 245 / 0.78) 100%);
+  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
+  --panel-stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%);
+  --panel-stage-shadow: drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06));
   --background: oklch(0.06 0 0);
   --foreground: oklch(0.967 0 0);
   --card: oklch(0.13 0 0);

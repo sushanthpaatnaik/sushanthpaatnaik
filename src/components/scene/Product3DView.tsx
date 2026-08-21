@@ -679,28 +679,27 @@ export function Product3DModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          /* The inspection panel stays dark in both themes, deliberately.
-             It is a lightbox: the visitor asked to look closely at studio
-             photography graded on a graphite cyclorama, at a landscape
-             application frame and at video, and the room dims for that in
-             the same way it does anywhere else pictures are examined.
-             Converting it to paper would mean regrading every one of those
-             assets to suit the page they happen to be opened from.
+          /* The panel used to stay dark in both themes on the argument that a
+             lightbox is a dark room. That argument is sound for a lightbox
+             and wrong here: this one opens out of a card that is now a paper
+             plate, and a full-screen black surface arriving from that is the
+             "dark theme pasted in" the whole pass is about.
 
-             theme-dark-island rather than hard-coded values, so every
-             `text-foreground/70` inside the panel resolves against the dark
-             scale whichever theme the page behind it is using. */
-          className="theme-dark-island fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
+             Every surface in it is a token, so the panel follows the page.
+             The media frames are the exception and stay graphite on both —
+             the application photographs and films genuinely are dark, and a
+             paper frame behind a dark film is a halo round it, not a mount. */
+          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%)",
+              "var(--panel-ground)",
             backdropFilter: "blur(20px)",
             willChange: "opacity",
             transform: "translateZ(0)",
           }}
           onClick={onClose}
         >
-          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 md:px-10" style={{ background: "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%)" }}>
+          <div className="pointer-events-none fixed left-0 right-0 top-0 z-[82] flex items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 md:px-10" style={{ background: "var(--panel-topveil)" }}>
             <div className="pointer-events-auto flex items-center gap-3">
               <span className="h-px w-8 bg-accent/70" />
               <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-accent/85">
@@ -751,7 +750,7 @@ export function Product3DModal({
                   className="pointer-events-none absolute inset-0"
                   style={{
                     background:
-                      "radial-gradient(ellipse at 50% 42%, transparent 50%, oklch(0.02 0.006 245 / 0.36) 84%, oklch(0.015 0.006 245 / 0.72) 100%)",
+                      "var(--panel-vig-a)",
                   }}
                 />
                 <FilmGrain opacity={0.05} />
@@ -774,7 +773,7 @@ export function Product3DModal({
               </div>
 
               {item.detailImg && (
-                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
+                <div className="theme-dark-island group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
                   <motion.img
                     key={item.detailImg + "-aqua-app"}
                     src={item.detailImg}
@@ -791,10 +790,10 @@ export function Product3DModal({
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%)",
+                        "var(--panel-vig-b)",
                     }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,oklch(0.03_0.006_245/0.88)_100%)]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot)]" />
                   <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
                   <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
                   <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
@@ -875,7 +874,7 @@ export function Product3DModal({
                   When largeApplicationFrame is on, the field application media
                   takes over the hero slot and the studio photo moves below. */}
               {item.largeApplicationFrame ? (
-                <div className="group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
+                <div className="theme-dark-island group relative aspect-[16/10] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
                   {item.applicationVideo ? (
                     <HeroVideo
                       key={item.applicationVideo + "-hero"}
@@ -902,10 +901,10 @@ export function Product3DModal({
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 46%, transparent 50%, oklch(0.02 0.006 245 / 0.4) 88%, oklch(0.015 0.006 245 / 0.72) 100%)",
+                        "var(--panel-vig-b)",
                     }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,oklch(0.03_0.006_245/0.88)_100%)]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot)]" />
                   {/* Industrial corner brackets */}
                   <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
                   <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
@@ -930,7 +929,15 @@ export function Product3DModal({
                   )}
                 </div>
               ) : (
-                <div className="relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
+                /* Islanded and given a foot, because this frame renders
+                   item.img — the studio PHOTOGRAPH, not the cut-out — and 16
+                   of the 25 have a light background in their bottom strip
+                   while 9 are dark. The caption printed straight onto that
+                   had no ground in either theme: white on a 241-luminance
+                   photo is as invisible in the dark theme as graphite is on
+                   paper. The scrim gives it one, and the island keeps the
+                   ink light over it. */
+                <div className="theme-dark-island relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
                   <motion.img
                     key={item.img}
                     src={item.img}
@@ -947,7 +954,7 @@ export function Product3DModal({
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 44%, transparent 52%, oklch(0.02 0.006 245 / 0.34) 82%, oklch(0.015 0.006 245 / 0.7) 100%)",
+                        "var(--panel-vig-c)",
                     }}
                   />
                   <FilmGrain opacity={0.05} />
@@ -957,6 +964,7 @@ export function Product3DModal({
                       interleaved into "ARCHIVE · STU D/I2O. C8A5PMTM URE ·
                       CINEMA". Sharing a row they wrap instead of collide, at
                       any width. */}
+                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot)]" />
                   <div className="pointer-events-none absolute inset-x-5 bottom-5 z-10 flex flex-wrap items-end justify-between gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-[0.34em]">
                     <span className="text-foreground/70">Archive · Studio capture</span>
                     <span className="text-foreground/45">ƒ/2.0 · 85mm · cinema</span>
@@ -980,7 +988,7 @@ export function Product3DModal({
                     second time under an "Application" label it has not
                     earned. */}
                 {!hasApplicationMedia ? null : item.largeApplicationFrame ? (
-                  <div className="group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
+                  <div className="theme-dark-island group relative aspect-[1.45/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)]">
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
@@ -997,10 +1005,10 @@ export function Product3DModal({
                       className="pointer-events-none absolute inset-0"
                       style={{
                         background:
-                          "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
+                          "var(--panel-vig-d)",
                       }}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                    <div className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot-tight)]" />
                     <FilmGrain opacity={0.06} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
@@ -1009,7 +1017,7 @@ export function Product3DModal({
                     </div>
                   </div>
                 ) : (
-                  <div className="group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)]">
+                  <div className="theme-dark-island group relative aspect-[1.15/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate-soft)]">
                     {item.applicationVideo ? (
                       <HeroVideo
                         key={item.applicationVideo + "-secondary"}
@@ -1034,10 +1042,10 @@ export function Product3DModal({
                       className="pointer-events-none absolute inset-0"
                       style={{
                         background:
-                          "radial-gradient(ellipse at 50% 50%, transparent 40%, oklch(0.02 0.006 245 / 0.42) 95%)",
+                          "var(--panel-vig-d)",
                       }}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_22%,oklch(0.03_0.006_245/0.78)_100%)]" />
+                    <div className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot-tight)]" />
                     <FilmGrain opacity={0.07} />
                     <div className="absolute bottom-3 left-3 z-10">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/65">
@@ -1062,7 +1070,7 @@ export function Product3DModal({
                     className="absolute inset-0"
                     style={{
                       background:
-                        "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
+                        "var(--panel-frame)",
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-between gap-5">
@@ -1099,7 +1107,7 @@ export function Product3DModal({
                   keyed to a container query. */}
               {item.productFilm && (
                 <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-[240px_1fr]">
-                  <div className="group relative mx-auto aspect-[9/16] w-[240px] max-w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)] sm:mx-0">
+                  <div className="theme-dark-island group relative mx-auto aspect-[9/16] w-[240px] max-w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-deep)] sm:mx-0">
                     <HeroVideo
                       key={item.productFilm + "-film"}
                       src={item.productFilm}
@@ -1111,7 +1119,7 @@ export function Product3DModal({
                       className="pointer-events-none absolute inset-0"
                       style={{
                         background:
-                          "radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%)",
+                          "var(--panel-vig-e)",
                       }}
                     />
                     <FilmGrain opacity={0.05} />
@@ -1123,7 +1131,7 @@ export function Product3DModal({
                       className="absolute inset-0"
                       style={{
                         background:
-                          "linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%)",
+                          "var(--panel-frame)",
                       }}
                     />
                     {/* Content height, not the film's. Stretched to the 9:16
@@ -1196,27 +1204,27 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
+                <div className="theme-dark-island group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden
                     className="absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%)",
+                        "var(--panel-stage-cyc)",
                     }}
                   />
                   {/* Soft top diffusion */}
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-[10%] top-[5%] h-[28%] rounded-[50%] opacity-55 blur-3xl"
-                    style={{ background: "radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%)" }}
+                    style={{ background: "var(--stage-key)" }}
                   />
                   {/* Ground contact shadow */}
                   <div
                     aria-hidden
                     className="pointer-events-none absolute bottom-[10%] left-1/2 h-[6%] w-[64%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
-                    style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%)" }}
+                    style={{ background: "var(--panel-stage-contact)" }}
                   />
                   <motion.img
                     key={item.img + "-hero-artifact"}
@@ -1229,7 +1237,7 @@ export function Product3DModal({
                     className="absolute inset-0 h-full w-full object-contain px-[3%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{
                       filter:
-                        "drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06))",
+                        "var(--panel-stage-shadow)",
                     }}
                   />
                   {/* Industrial corner brackets */}

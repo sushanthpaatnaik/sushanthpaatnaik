@@ -28,26 +28,55 @@ const DAY_STARTS = 7;
 const DAY_ENDS = 19;
 
 /**
- * Auto, in full:
+ * Does the operating system actually express a preference?
  *
- *   1. The system preference is the primary signal. `prefers-color-scheme:
- *      dark` means dark, always — a visitor who has told their OS they want
- *      dark has already answered this question, and no clock should overrule
- *      them.
- *   2. Otherwise the local clock decides: light through the day, dark from
- *      19:00 to 07:00 local. This is the explicit fallback, not a guess at
- *      sunrise. Real sunrise needs a latitude, and the only way to get one
- *      is a geolocation prompt, which is not a fair price for a colour.
- *      Timezone alone gives longitude, which moves sunrise by minutes and
- *      the seasons move it by hours — so a rough solar model would be less
- *      honest than a stated window, not more accurate.
- *
- * Nothing here reads the network, and no permission is requested.
+ * Not the same question as "is it dark". A machine that has been told
+ * nothing matches neither query, and that is the only case where guessing
+ * from the room or the clock is appropriate — everywhere else the visitor
+ * has already answered.
  */
-export function resolveAuto(now: Date = new Date()): EffectiveTheme {
-  if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+export function systemPreference(): EffectiveTheme | null {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return null;
+  try {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+    if (window.matchMedia("(prefers-color-scheme: light)").matches) return "light";
+  } catch {
+    // matchMedia can throw in exotic embeddings. Treat it as "no signal".
   }
+  return null;
+}
+
+/**
+ * Auto, in full, in priority order:
+ *
+ *   1. The system preference. `prefers-color-scheme` is the primary signal
+ *      because it is the one the visitor set deliberately. Someone who puts
+ *      their OS in dark mode at noon has answered the question, and neither
+ *      a bright room nor a clock should overrule them. This is the ordering
+ *      chosen over "ambient light first" precisely because the alternative
+ *      lets an invisible sensor fight a visible choice.
+ *
+ *   2. Ambient light, when the system expresses no preference at all. That
+ *      is the case the sensor is actually useful for, and it is also the
+ *      only case where nothing is being overridden. See ambient-light.ts
+ *      for why this is nearly always unavailable in practice.
+ *
+ *   3. The local clock: light through the day, dark from 19:00 to 07:00
+ *      local. An explicit stated window, not a guess at sunrise — real
+ *      sunrise needs a latitude, the only way to get one is a geolocation
+ *      prompt, and that is not a fair price for a colour. Timezone alone
+ *      gives longitude, which moves sunrise by minutes while the seasons
+ *      move it by hours, so a rough solar model would be less honest than
+ *      a stated window rather than more accurate.
+ *
+ *   4. Dark, as the site's own default.
+ *
+ * Nothing here reads the network, requests geolocation, or touches a camera.
+ */
+export function resolveAuto(now: Date = new Date(), ambient?: EffectiveTheme | null): EffectiveTheme {
+  const sys = systemPreference();
+  if (sys) return sys;
+  if (ambient) return ambient;
   const h = now.getHours();
   return h >= DAY_STARTS && h < DAY_ENDS ? "light" : "dark";
 }
@@ -70,9 +99,13 @@ export function writePreference(pref: ThemePreference) {
   }
 }
 
-export function effectiveTheme(pref: ThemePreference, pathname: string): EffectiveTheme {
+export function effectiveTheme(
+  pref: ThemePreference,
+  pathname: string,
+  ambient?: EffectiveTheme | null,
+): EffectiveTheme {
   if (isForcedDarkRoute(pathname)) return "dark";
-  return pref === "auto" ? resolveAuto() : pref;
+  return pref === "auto" ? resolveAuto(new Date(), ambient) : pref;
 }
 
 /** Matches --page-ground so the browser's own chrome agrees with the page. */
@@ -109,6 +142,7 @@ var t;
 if(location.pathname==="/"){t="dark"}
 else if(p!=="auto"){t=p}
 else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){t="dark"}
+else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches){t="light"}
 else{var h=new Date().getHours();t=(h>=${DAY_STARTS}&&h<${DAY_ENDS})?"light":"dark"}
 d.setAttribute("data-theme",t);
 d.style.colorScheme=t;

@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useThemeControl } from "@/lib/theme-context";
 import type { ThemePreference } from "@/lib/theme";
 
-const OPTIONS: { value: ThemePreference; label: string }[] = [
-  { value: "auto", label: "Auto" },
+const OPTIONS: { value: ThemePreference; label: string; hint?: string }[] = [
+  // Auto is the only one whose behaviour is not obvious from its name, so it
+  // is the only one that says anything. Plain language on purpose: what it
+  // follows, not which API it follows it with.
+  { value: "auto", label: "Auto", hint: "Follows your device and environment where supported" },
   { value: "light", label: "Light" },
   { value: "dark", label: "Dark" },
 ];
@@ -58,6 +61,7 @@ export default function ThemeSelector({ size = "sm" }: { size?: "sm" | "lg" }) {
             tabIndex={on ? 0 : -1}
             onClick={() => choose(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
+            title={o.hint}
             /* 44px tall in the drawer, where it is tapped. In the header it
                is a pointer target beside an equally small Contact link, and
                matching that row matters more than a touch minimum that does
@@ -196,6 +200,7 @@ export function ThemeMenu() {
             return (
               <button
                 key={o.value}
+                title={o.hint}
                 type="button"
                 role="menuitemradio"
                 aria-checked={on}
