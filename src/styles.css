@@ -201,6 +201,10 @@
   --mark-flip-soft: invert(1) saturate(0) brightness(1.06) contrast(1.04);
   --mark-flip-adv: invert(1) brightness(1.05) contrast(1.05) saturate(0);
   --mark-flip-dim: invert(1) brightness(0.96) contrast(1.08) saturate(0);
+  /* INK Talks is the one masthead that ships as a dark mark on a WHITE
+     field. Its own pair, carrying the exact literal it had, so swapping it
+     onto a token does not nudge the approved dark theme. */
+  --mark-flip-field: invert(1) brightness(0.92) contrast(1.05) saturate(0);
   /* A white mark needs no flip on graphite — but it did not get `none`
      before this existed, it got the colour treatment, because it fell into
      the same else-branch. Preserve that exactly: this is the dark theme, and
@@ -312,6 +316,17 @@
   --stage-foot: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%);
   --stage-pad: 9%;
   --stage-pad-hero: 7%;
+  /* The two closing plates on /recognitions — sections 06 and 07. Same
+     structure as the page plate: a photograph, graded down, under a matte.
+     These were the last full-bleed literals on the site. */
+  --closer-filter: blur(5px) saturate(0.30) brightness(0.40) contrast(1.06);
+  --closer-filter-deep: blur(6px) saturate(0.22) brightness(0.28) contrast(1.05);
+  --closer-haze-filter: blur(32px) saturate(0.24) brightness(0.36);
+  --closer-haze-filter-deep: blur(40px) saturate(0.18) brightness(0.22);
+  --closer-haze-opacity: 0.88;
+  --closer-matte: linear-gradient(180deg, oklch(0.035 0.006 260 / 0.88) 0%, oklch(0.03 0.005 260 / 0.92) 50%, oklch(0.032 0.005 260 / 0.90) 100%);
+  --closer-matte-deep: linear-gradient(180deg, oklch(0.032 0.005 260 / 0.94) 0%, oklch(0.028 0.004 260 / 0.96) 45%, oklch(0.030 0.005 260 / 0.94) 100%);
+  --closer-foot: linear-gradient(to top, oklch(0.025 0.003 260 / 0.95), transparent);
 
   /* The product-inspection panel. It used to be a dark island, which is the
      right answer for a lightbox and the wrong one here: it opens from a card
@@ -459,6 +474,7 @@
   --mark-flip-soft: none;
   --mark-flip-adv: none;
   --mark-flip-dim: none;
+  --mark-flip-field: none;
   --mark-flip-lt: invert(1) saturate(0) contrast(1.04) brightness(0.92);
   --mark-colour: none;
   --mark-colour-soft: none;
@@ -466,7 +482,12 @@
   --logo-plate-border: oklch(0.30 0.008 260 / 0.14);
   --logo-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
   --card-wash: radial-gradient(85% 60% at 50% 35%, oklch(1 0 0 / 0.75) 0%, transparent 75%);
-  --chip-plate: linear-gradient(160deg, oklch(0.20 0.008 250), oklch(0.145 0.008 250));
+  /* No chip on paper any more. It existed to rescue WeHear, whose mark was
+     45% near-white wordmark and 54% saturated icon — unsolvable by a filter,
+     so it got the ground it was drawn for. With an owner-supplied paper-side
+     mark there is nothing left to rescue, and a black tile in a row of paper
+     plates was always the compromise rather than the design. */
+  --chip-plate: none;
   --voice-plate: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.963 0.008 85));
   --voice-plate-border: oklch(0.30 0.008 260 / 0.14);
   --voice-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
@@ -567,6 +588,19 @@
      on paper the same overlap is a dark bottle crossing dark type. */
   --stage-pad: 6% 9% 26% 9%;
   --stage-pad-hero: 5% 7% 20% 7%;
+  /* The closing plates, printed. Brightness up and contrast collapsed so the
+     photograph survives as a watermark, and the matte becomes a paper wash
+     just short of opaque — the same recipe as --plate-* on the page behind
+     it, so the two plates read as a deeper panel on the sheet rather than as
+     two black slabs punched through it. */
+  --closer-filter: blur(5px) saturate(0.18) brightness(2.05) contrast(0.42);
+  --closer-filter-deep: blur(6px) saturate(0.16) brightness(2.15) contrast(0.40);
+  --closer-haze-filter: blur(32px) saturate(0.16) brightness(2.10) contrast(0.40);
+  --closer-haze-filter-deep: blur(40px) saturate(0.14) brightness(2.20) contrast(0.38);
+  --closer-haze-opacity: 0.55;
+  --closer-matte: linear-gradient(180deg, oklch(0.952 0.008 84 / 0.90) 0%, oklch(0.944 0.009 84 / 0.93) 50%, oklch(0.948 0.009 84 / 0.91) 100%);
+  --closer-matte-deep: linear-gradient(180deg, oklch(0.946 0.009 84 / 0.93) 0%, oklch(0.938 0.010 83 / 0.95) 45%, oklch(0.942 0.010 84 / 0.93) 100%);
+  --closer-foot: linear-gradient(to top, oklch(0.930 0.010 83 / 0.92), transparent);
 
   /* The panel on paper. The ground is a warm sheet rather than a dimmed room,
      the media frames stay graphite because the application photographs and
@@ -1796,6 +1830,17 @@ html.lenis, html.lenis body {
   --stage-foot: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%);
   --stage-pad: 9%;
   --stage-pad-hero: 7%;
+  /* The two closing plates on /recognitions — sections 06 and 07. Same
+     structure as the page plate: a photograph, graded down, under a matte.
+     These were the last full-bleed literals on the site. */
+  --closer-filter: blur(5px) saturate(0.30) brightness(0.40) contrast(1.06);
+  --closer-filter-deep: blur(6px) saturate(0.22) brightness(0.28) contrast(1.05);
+  --closer-haze-filter: blur(32px) saturate(0.24) brightness(0.36);
+  --closer-haze-filter-deep: blur(40px) saturate(0.18) brightness(0.22);
+  --closer-haze-opacity: 0.88;
+  --closer-matte: linear-gradient(180deg, oklch(0.035 0.006 260 / 0.88) 0%, oklch(0.03 0.005 260 / 0.92) 50%, oklch(0.032 0.005 260 / 0.90) 100%);
+  --closer-matte-deep: linear-gradient(180deg, oklch(0.032 0.005 260 / 0.94) 0%, oklch(0.028 0.004 260 / 0.96) 45%, oklch(0.030 0.005 260 / 0.94) 100%);
+  --closer-foot: linear-gradient(to top, oklch(0.025 0.003 260 / 0.95), transparent);
   --panel-ground: radial-gradient(ellipse at 50% 40%, oklch(0.05 0.008 245 / 0.92) 0%, oklch(0.02 0.006 245 / 0.98) 70%);
   --panel-topveil: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.85) 0%, oklch(0.02 0.006 245 / 0.55) 60%, transparent 100%);
   --panel-frame: linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.05 0.008 245) 100%);
@@ -1851,6 +1896,23 @@ html.lenis, html.lenis body {
 }
 
 @layer utilities {
+  /* A brand mark that ships as two files — the real one, and a variant
+     redrawn to survive a graphite plate. A filter cannot get from one to the
+     other: `iocl-reversed.webp` has its navy wordmark lightened, and no
+     amount of inverting turns that back into navy without also inverting the
+     orange disc beside it. So both are rendered and the theme picks.
+
+     Not a media query — the theme is `data-theme`, which a <picture> cannot
+     see — and not conditional rendering, which would flash the wrong mark
+     between the boot script and hydration. */
+  .mark-on-paper { display: none; }
+  :root[data-theme="light"] .mark-on-paper { display: revert-layer; }
+  :root[data-theme="light"] .mark-on-graphite { display: none; }
+  /* Inside a dark island the graphite variant is the right one again, even
+     though the page around it is paper. */
+  :root[data-theme="light"] .theme-dark-island .mark-on-paper { display: none; }
+  :root[data-theme="light"] .theme-dark-island .mark-on-graphite { display: revert-layer; }
+
   /* The /contact fields are underline inputs: they set focus:outline-none
      and focus:ring-0 so a mouse click does not draw a box round them. That
      suppression also removed the KEYBOARD affordance — measured on a focused

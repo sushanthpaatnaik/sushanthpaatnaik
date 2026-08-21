@@ -1204,7 +1204,12 @@ export function Product3DModal({
               </div>
 
               {item.largeApplicationFrame && (
-                <div className="theme-dark-island group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-foreground/[0.1] bg-[var(--surface-deep)]">
+                /* Not an island. This frame holds the transparent cut-out on
+                   a CSS cyclorama, not a photograph — so the cyclorama can be
+                   lit for paper exactly as the grid cards are, and the product
+                   stands on it. Keeping it dark made the one black card in an
+                   otherwise light panel. */
+                <div className="group relative mx-auto aspect-[1/1.15] w-full max-w-[92%] overflow-hidden rounded-sm border border-[var(--product-border)] bg-[var(--photo-plate)]">
                   {/* Studio cyclorama backdrop */}
                   <div
                     aria-hidden

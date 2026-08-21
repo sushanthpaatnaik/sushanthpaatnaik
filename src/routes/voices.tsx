@@ -15,6 +15,11 @@ import nifLogo from "@/assets/outlets/nif-color.webp";
    already reads on dark — and only the ring and wordmark are lifted to a pale
    blue-white, the way a brand's own reversed lockup would be. */
 import ioclLogo from "@/assets/outlets/iocl-reversed.webp";
+// The real IndianOil mark. `iocl-reversed` is a redrawn variant whose navy
+// wordmark was lightened to survive the graphite plate; on paper that reads
+// as a pale ghost under the orange disc, and no filter recovers it without
+// also inverting the disc. Both ship, the theme picks — see .mark-on-paper.
+import ioclLogoLight from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
@@ -59,6 +64,8 @@ type Voice = {
   logo?: string;
   href?: string;
   logoInvert?: boolean;
+  /** The paper-side variant, when a filter cannot get there from the dark one. */
+  logoLight?: string;
   logoWhiteBg?: boolean;
   logoScale?: number;
 };
@@ -105,6 +112,7 @@ const voices: Voice[] = [
     personTitle: "Eastern Zone",
     organization: "Indian Oil Corporation (IOCL)",
     logo: ioclLogo,
+    logoLight: ioclLogoLight,
     // 1.6, not 1.0. Every other mark here is a wide wordmark bound by
     // maxWidth; this one is taller than it is wide, so maxHeight bound first
     // and it rendered 43x52 in a 108px plate — visibly the smallest thing on
@@ -174,13 +182,25 @@ function LogoPlate({ v }: { v: Voice }) {
       className={`flex shrink-0 items-center justify-center w-[88px] h-[88px] md:w-[108px] md:h-[108px] ${containerCls}`}
     >
       {v.logo ? (
-        <img
-          src={v.logo}
-          alt={`${v.organization} logo`}
-          loading="lazy"
-          style={imgStyle}
-          className={`w-auto h-auto ${imgCls}`}
-        />
+        <>
+          <img
+            src={v.logo}
+            alt={`${v.organization} logo`}
+            loading="lazy"
+            style={imgStyle}
+            className={`w-auto h-auto ${imgCls} ${v.logoLight ? "mark-on-graphite" : ""}`}
+          />
+          {v.logoLight && (
+            <img
+              src={v.logoLight}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              style={{ ...imgStyle, filter: undefined }}
+              className="mark-on-paper w-auto h-auto opacity-100"
+            />
+          )}
+        </>
       ) : (
         <span className="font-mono text-[11px] tracking-[0.3em] text-muted-foreground/60">
           {v.organization.slice(0, 2).toUpperCase()}

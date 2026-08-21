@@ -855,7 +855,16 @@ function NewsPage() {
                     style={imgStyle}
                     className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
                       o.transparentBg
-                        ? "[filter:invert(1)_brightness(0.92)_contrast(1.05)_saturate(0)] opacity-[0.9] group-hover:opacity-100"
+                        /* `transparentBg` records that the SOURCE is a dark
+                           mark on a white field — INK Talks is the only one.
+                           On graphite that has to be flipped to survive; on
+                           paper it is already correct, and flipping it turned
+                           the tile into a blank white square with the mark
+                           erased. --mark-flip-dim already means exactly this
+                           — flip on graphite, leave alone on paper — and
+                           --mark-flip-field carries this one's own literal so
+                           the dark theme does not move. */
+                        ? "[filter:var(--mark-flip-field)] opacity-[0.9] group-hover:opacity-100"
                         : o.lighten
                         ? lightenTone
                         : colorTone

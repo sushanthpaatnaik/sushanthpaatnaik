@@ -1323,13 +1323,12 @@ function RecognitionsPage() {
         <LedgerYearGroup groups={ledgerByYear} />
       </div>
 
-      {/* 06 · Legacy Closure — cinematic institutional farewell. Dark island
-          for the same reason as 07 below it: the plate is painted from fixed
-          near-black values, so on the light theme the eyebrow, the headline
-          "Recognition was never the objective." and the secondary CTA were
-          all graphite on black, measured at 1.07:1. Only the inverted
-          "Explore the work" button was legible. */}
-      <section className="theme-dark-island not-prose relative mt-20 md:mt-28 overflow-hidden">
+      {/* 06 · Legacy Closure. Was a dark island, which fixed the legibility
+          (graphite on black measured 1.07:1) and left the worst thing on the
+          page: a full-bleed black slab on ivory. Every layer is a token now,
+          so on paper the same plate is the same photograph under a paper
+          wash — the treatment the rest of the site already uses. */}
+      <section className="not-prose relative mt-20 md:mt-28 overflow-hidden">
         {/* Atmospheric backdrop plate */}
         <div aria-hidden className="absolute inset-1 z-0 overflow-hidden rounded-sm">
           <div
@@ -1338,7 +1337,7 @@ function RecognitionsPage() {
               backgroundImage: `url(${closureBackdrop})`,
               backgroundSize: "cover",
               backgroundPosition: "center 55%",
-              filter: "blur(5px) saturate(0.30) brightness(0.40) contrast(1.06)",
+              filter: "var(--closer-filter)",
               transform: "scale(1.12)",
             }}
           />
@@ -1348,20 +1347,19 @@ function RecognitionsPage() {
               backgroundImage: `url(${closureBackdrop})`,
               backgroundSize: "cover",
               backgroundPosition: "center 55%",
-              filter: "blur(32px) saturate(0.24) brightness(0.36)",
+              filter: "var(--closer-haze-filter)",
               transform: "scale(1.20)",
               WebkitMaskImage:
                 "radial-gradient(ellipse 68% 58% at 50% 48%, transparent 28%, #000 88%)",
               maskImage:
                 "radial-gradient(ellipse 68% 58% at 50% 48%, transparent 28%, #000 88%)",
-              opacity: 0.90,
+              opacity: "var(--closer-haze-opacity)" as unknown as number,
             }}
           />
           <div
             className="absolute inset-1"
             style={{
-              background:
-                "linear-gradient(180deg, oklch( 0.035 0.006 260 / 0.88) 0%, oklch(0.03 0.005 260 / 0.92) 50%, oklch(0.032 0.005 260 / 0.90) 100%)",
+              background: "var(--closer-matte)",
             }}
           />
           <div
@@ -1465,11 +1463,8 @@ function RecognitionsPage() {
         </div>
       </section>
 
-      {/* 07 · Future Signal — cinematic decompression into forward momentum.
-          A dark island on the light theme: the whole section is a graded
-          planetary plate under a 0.94-alpha matte, painted from fixed
-          near-black values, and its copy sat on that in graphite ink. */}
-      <section className="theme-dark-island not-prose relative mt-2 overflow-hidden">
+      {/* 07 · Future Signal. Same story as 06 above it, same fix. */}
+      <section className="not-prose relative mt-2 overflow-hidden">
         {/* Atmospheric planetary backdrop */}
         <div aria-hidden className="absolute inset-0 z-0 overflow-hidden">
           <div
@@ -1478,7 +1473,7 @@ function RecognitionsPage() {
               backgroundImage: `url(${futureBackdrop})`,
               backgroundSize: "cover",
               backgroundPosition: "center 62%",
-              filter: "blur(6px) saturate(0.22) brightness(0.28) contrast(1.05)",
+              filter: "var(--closer-filter-deep)",
               transform: "scale(1.14)",
             }}
           />
@@ -1488,21 +1483,20 @@ function RecognitionsPage() {
               backgroundImage: `url(${futureBackdrop})`,
               backgroundSize: "cover",
               backgroundPosition: "center 62%",
-              filter: "blur(40px) saturate(0.18) brightness(0.22)",
+              filter: "var(--closer-haze-filter-deep)",
               transform: "scale(1.26)",
               WebkitMaskImage:
                 "radial-gradient(ellipse 72% 62% at 50% 52%, transparent 32%, #000 90%)",
               maskImage:
                 "radial-gradient(ellipse 72% 62% at 50% 52%, transparent 32%, #000 90%)",
-              opacity: 0.85,
+              opacity: "var(--closer-haze-opacity)" as unknown as number,
             }}
           />
           {/* Deep matte overlay — heavier than closure for more silence */}
           <div
             className="absolute inset-0"
             style={{
-              background:
-                "linear-gradient(180deg, oklch(0.032 0.005 260 / 0.94) 0%, oklch(0.028 0.004 260 / 0.96) 45%, oklch(0.030 0.005 260 / 0.94) 100%)",
+              background: "var(--closer-matte-deep)",
             }}
           />
           {/* Faint infrastructure glow — industrial geometry */}
@@ -1517,8 +1511,7 @@ function RecognitionsPage() {
           <div
             className="absolute inset-x-5 bottom-0 h-32"
             style={{
-              background:
-                "linear-gradient(to top, oklch(0.025 0.003 260 / 0.95), transparent)",
+              background: "var(--closer-foot)",
             }}
           />
         </div>

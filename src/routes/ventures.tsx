@@ -9,8 +9,13 @@ import vinroxLogo from "@/assets/clients/vinrox.webp";
 import vprplLogo from "@/assets/clients/vprpl.webp";
 import tileopediaLogo from "@/assets/clients/tileopedia-mark.webp";
 import wehearLogo from "@/assets/clients/wehear.webp";
+// Owner-supplied paper-side marks. Both are cases a filter cannot reach:
+// WeHear is genuinely two-tone, and the Greenomers file in the repo is a
+// white-only cut that inverts to flat greyscale rather than to its greens.
+import wehearLogoLight from "@/assets/clients/wehear-light.webp";
 import sunrooofLogo from "@/assets/clients/sunrooof.webp";
 import greenomersLogo from "@/assets/clients/greenomers.webp";
+import greenomersLogoLight from "@/assets/clients/greenomers-light.webp";
 
 /* Operating-company marks. Four came from each company's own site; InThinks
    and Starunico were supplied directly, their sites being unreachable at the
@@ -224,6 +229,8 @@ type Advisory = {
   lightSource?: boolean;
   /** Mark mixes white and colour → no filter works; give it a dark ground. */
   darkChip?: boolean;
+  /** Paper-side mark, where no filter can get there from the graphite one. */
+  logoLight?: string;
 };
 
 /* Brand colour, deliberately. These were briefly normalised to one greyscale
@@ -250,10 +257,13 @@ type Advisory = {
 const advisories: Advisory[] = [
   { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0, invert: true },
   { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.85, offsetY: -1 },
-  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     scale: 0.78, offsetY: 0, darkChip: true },
+  /* The dark chip is gone: with a paper-side mark there is nothing left for
+     it to rescue, and a black tile in a row of paper plates was always the
+     compromise rather than the design. */
+  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     logoLight: wehearLogoLight,     scale: 0.78, offsetY: 0, darkChip: true },
   { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
   { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0, lightSource: true },
-  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, scale: 1.10, offsetY: 0, lightSource: true },
+  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, logoLight: greenomersLogoLight, scale: 1.10, offsetY: 0, lightSource: true },
 ];
 
 
@@ -541,6 +551,20 @@ function VenturesPage() {
                    instead of the wordmarks having to shrink to theirs. */
                 style={{ height: "80px" }}
               >
+                {a.logoLight && (
+                  <img
+                    src={a.logoLight}
+                    alt=""
+                    aria-hidden
+                    loading="lazy"
+                    style={{
+                      maxHeight: `${Math.round(58 * a.scale)}px`,
+                      maxWidth: `${Math.round(88 * a.scale)}%`,
+                      transform: `translateY(${a.offsetY || 0}px)`,
+                    }}
+                    className="mark-on-paper h-auto w-auto object-contain transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04]"
+                  />
+                )}
                 {a.logo ? (
                   <img
                     src={a.logo}
@@ -561,7 +585,7 @@ function VenturesPage() {
                         ? "var(--mark-flip-lt)"
                         : "var(--mark-colour)",
                     }}
-                    className="h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)]"
+                    className={`h-auto w-auto object-contain opacity-[0.88] transition-all duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_14px_oklch(1_0_0_/_0.18)] ${a.logoLight ? "mark-on-graphite" : ""}`}
                   />
                 ) : (
                   // Text wordmark fallback until the real logo asset is supplied.
