@@ -248,6 +248,12 @@
      reads as ivory and one that reads as grey card, which is why the light
      theme raises it. `max()` of a value and 0% is that value. */
   --plate-wash-min: 0%;
+  /* Appended to every photographic grade on the site. Each of those was
+     tuned for a graphite room and darkens and desaturates — nine of them
+     in the inspection panel alone, all brightness(0.88..0.98). On paper
+     that leaves a dark rectangle. brightness(1) is the identity here, so
+     the dark theme cannot move; `none` would be invalid in a chain. */
+  --media-lift: brightness(1);
 
   /* ── The media system ────────────────────────────────────────────────
      Every value below was a literal inside a component until the light
@@ -508,6 +514,12 @@
   --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
   --plate-haze-opacity: 0.55;
   --plate-wash-min: 91%;
+  /* Open the shadows, hold the contrast, give back the saturation those
+     grades removed. A dusk construction site or a graded archive plate
+     then reads as an open photograph on the sheet rather than as a hole
+     in it — without bleaching, which is the failure mode the /news
+     plates already demonstrated. */
+  --media-lift: brightness(1.16) contrast(0.94) saturate(1.10);
 
   /* The other half. See the dark block for what each family is for.
 
@@ -1392,11 +1404,11 @@ html.lenis, html.lenis body {
  * ============================================ */
 .archival-image {
   filter: grayscale(0.18) contrast(0.96) saturate(0.78) brightness(0.86)
-          sepia(0.08);
+          sepia(0.08) var(--media-lift);
 }
 .archival-image-soft {
   filter: grayscale(0.24) contrast(0.94) saturate(0.72) brightness(0.82)
-          sepia(0.10);
+          sepia(0.10) var(--media-lift);
 }
 .archival-image-hover {
   transition: filter 1400ms ease-out, transform 1600ms ease-out, opacity 1200ms ease-out;
@@ -1405,7 +1417,7 @@ html.lenis, html.lenis body {
 .group:hover .archival-image-hover,
 .group\/era:hover .archival-image-hover {
   filter: grayscale(0.12) contrast(0.98) saturate(0.82) brightness(0.90)
-          sepia(0.06);
+          sepia(0.06) var(--media-lift);
 }
 
 /* Section reveal — gentle layered opacity & lift for scroll storytelling */

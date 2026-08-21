@@ -14,11 +14,12 @@ import nifLogo from "@/assets/outlets/nif-color.webp";
    alone was on a white card. The roundel keeps its own colours untouched — it
    already reads on dark — and only the ring and wordmark are lifted to a pale
    blue-white, the way a brand's own reversed lockup would be. */
-import ioclLogo from "@/assets/outlets/iocl-reversed.webp";
-// The real IndianOil mark. `iocl-reversed` is a redrawn variant whose navy
-// wordmark was lightened to survive the graphite plate; on paper that reads
-// as a pale ghost under the orange disc, and no filter recovers it without
-// also inverting the disc. Both ship, the theme picks — see .mark-on-paper.
+// The IndianOil pair. The disc is identical in both — its own navy band on
+// orange reads on any ground — and only the "IndianOil" wordmark differs:
+// navy on paper, white on graphite. Cut from the true-colour mark rather than
+// filtered, because a filter that lightens the wordmark also lightens the disc.
+// `iocl-reversed.webp` is the old single-file compromise and is no longer used.
+import ioclLogo from "@/assets/outlets/iocl-dark.webp";
 import ioclLogoLight from "@/assets/outlets/iocl.webp";
 import deloitteLogo from "@/assets/outlets/deloitte-mark.svg";
 import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
@@ -232,8 +233,20 @@ function VoiceCard({ v, i }: { v: Voice; i: number }) {
           {/* LEFT col — logo + institution name */}
           <div className="flex md:flex-col items-center md:items-start gap-4 md:gap-4">
             <LogoPlate v={v} />
-            {/* Institution name below logo on desktop */}
-            <p className="hidden md:block font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/45 leading-relaxed mt-1">
+            {/* Institution name below logo on desktop, in a box exactly the
+                plate's width.
+
+                Every caption already started its ink 0.5px into a box whose
+                left edge matched the plate's — flush, measured. What jitters
+                is the MARK: the plate centres it, so a wide mark's ink starts
+                further left than a tall one's. YourStory begins 14px into the
+                plate where IOCL begins 20px and Deloitte 19px, and against a
+                column of flush captions that 6px reads as a misalignment.
+
+                Constraining the caption to the plate's own width makes both
+                blocks the same rectangle, so the pair reads as one unit and
+                the mark's optical centring stops fighting the type. */}
+            <p className="hidden md:block w-[108px] font-mono text-[10px] uppercase tracking-[0.32em] text-muted-foreground/45 leading-relaxed mt-1">
               {v.organization}
             </p>
           </div>

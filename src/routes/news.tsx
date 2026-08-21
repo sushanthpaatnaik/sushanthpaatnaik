@@ -47,6 +47,11 @@ import wikipediaLogo from "@/assets/outlets/wikipedia.svg";
 import thePrintLogo from "@/assets/outlets/theprint.webp";
 import newIndianExpressLogo from "@/assets/outlets/new-indian-express.webp";
 import inkTalksLogo from "@/assets/outlets/inktalks.webp";
+// The real INK mark, blue on transparent. `inktalks.webp` is a dark mark on a
+// WHITE field, which has to be inverted to survive graphite — and inverting it
+// on paper erased the tile. A filter cannot get from one to the other, so both
+// ship and the theme picks. See .mark-on-paper.
+import inkTalksLogoLight from "@/assets/outlets/inktalks-light.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
@@ -340,7 +345,7 @@ function outletHref(name: string): string | undefined {
 // `lighten` flags publications whose marks are inherently dark/grayscale —
 // they get inverted+desaturated so they read as soft silver on the dark wall.
 // `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
-const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number }[] = [
+const outlets: { name: string; logo: string; logoLight?: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number }[] = [
   { name: "India Today",            logo: indiaTodayLogo,        scale: 1.10 },
   { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.14 },
   { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.20 },
@@ -358,7 +363,7 @@ const outlets: { name: string; logo: string; lighten?: boolean; scale?: number; 
   { name: "Wikipedia",              logo: wikipediaLogo,         lighten: true, scale: 1.14 },
   { name: "ThePrint",               logo: thePrintLogo,          scale: 1.04, tone: "lift" },
   { name: "The New Indian Express", logo: newIndianExpressLogo,  lighten: true, scale: 1.18 },
-  { name: "INK Talks",              logo: inkTalksLogo,          scale: 1.06, transparentBg: true },
+  { name: "INK Talks",              logo: inkTalksLogo,          logoLight: inkTalksLogoLight, scale: 1.06, transparentBg: true },
 ];
 
 // Testimonials and institutional voices now live exclusively on the dedicated
@@ -463,7 +468,14 @@ function LeadFeature({ item }: { item: PressItem }) {
                   src={item.logo}
                   alt={`${item.outlet} logo`}
                   loading="lazy"
-                  className="max-h-7 w-auto max-w-[160px] object-contain opacity-80 saturate-[0.6] brightness-[1.05] mix-blend-screen"
+                  /* `mix-blend-screen` assumes a WHITE mark: screen with black
+                     is the identity, so it shows the background instead of the
+                     logo. Both marks that reach this slot — The Global Indian
+                     and Rediff — are dark-source, and both are already flagged
+                     `lighten` in the masthead grid below, so both were
+                     invisible here in BOTH themes. --mark-flip-dim is that same
+                     polarity: flip on graphite, leave alone on paper. */
+                  className="max-h-7 w-auto max-w-[160px] object-contain opacity-90 [filter:var(--mark-flip-dim)]"
                 />
               </div>
             )}
@@ -848,12 +860,23 @@ function NewsPage() {
                 const lightenTone =
                   "[filter:var(--mark-flip-dim)] opacity-[0.94] group-hover:opacity-100";
                 const inner = (
+                  <>
+                  {o.logoLight && (
+                    <img
+                      src={o.logoLight}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      style={imgStyle}
+                      className="mark-on-paper h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
+                    />
+                  )}
                   <img
                     src={o.logo}
                     alt={`${o.name} logo`}
                     loading="lazy"
                     style={imgStyle}
-                    className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
+                    className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${o.logoLight ? "mark-on-graphite " : ""}${
                       o.transparentBg
                         /* `transparentBg` records that the SOURCE is a dark
                            mark on a white field — INK Talks is the only one.
@@ -870,6 +893,7 @@ function NewsPage() {
                         : colorTone
                     }`}
                   />
+                  </>
                 );
                 // Matte anodized panel — soft inner gradient, restrained border,
                 // understated hover with subtle amber edge.

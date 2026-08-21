@@ -743,7 +743,7 @@ export function Product3DModal({
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
                   className="absolute inset-0 h-full w-full object-contain px-[5%] py-[7%]"
-                  style={{ filter: "contrast(1.04) saturate(0.94) brightness(0.97)" }}
+                  style={{ filter: "contrast(1.04) saturate(0.94) brightness(0.97) var(--media-lift)" }}
                 />
                 <div
                   aria-hidden
@@ -783,7 +783,7 @@ export function Product3DModal({
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, delay: 0.08, ease: [0.19, 1, 0.22, 1] }}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
-                    style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92)" }}
+                    style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92) var(--media-lift)" }}
                   />
                   <div
                     aria-hidden
@@ -881,7 +881,7 @@ export function Product3DModal({
                       src={item.applicationVideo}
                       caption={item.applicationCaption ?? `${item.title} · Deployment`}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
-                      style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94)" }}
+                      style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94) var(--media-lift)" }}
                     />
                   ) : (
                     <motion.img
@@ -893,7 +893,7 @@ export function Product3DModal({
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
-                      style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92)" }}
+                      style={{ filter: "contrast(1.05) saturate(0.86) brightness(0.92) var(--media-lift)" }}
                     />
                   )}
                   <div
@@ -947,7 +947,7 @@ export function Product3DModal({
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                     className="absolute inset-0 h-full w-full object-contain px-[5.5%] py-[8%]"
-                    style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98)" }}
+                    style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98) var(--media-lift)" }}
                   />
                   <div
                     aria-hidden
@@ -998,7 +998,7 @@ export function Product3DModal({
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
-                      style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
+                      style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88) var(--media-lift)" }}
                     />
                     <div
                       aria-hidden
@@ -1023,7 +1023,7 @@ export function Product3DModal({
                         key={item.applicationVideo + "-secondary"}
                         src={item.applicationVideo}
                         className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
-                        style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9)" }}
+                        style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9) var(--media-lift)" }}
                       />
                     ) : (
                       <motion.img
@@ -1034,7 +1034,7 @@ export function Product3DModal({
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
                         className="absolute inset-0 h-full w-full object-cover"
-                        style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88)" }}
+                        style={{ filter: "contrast(1.05) saturate(0.82) brightness(0.88) var(--media-lift)" }}
                       />
                     )}
                     <div
@@ -1112,7 +1112,7 @@ export function Product3DModal({
                       key={item.productFilm + "-film"}
                       src={item.productFilm}
                       className="absolute inset-0 h-full w-full object-cover"
-                      style={{ filter: "contrast(1.04) saturate(0.9) brightness(0.95)" }}
+                      style={{ filter: "contrast(1.04) saturate(0.9) brightness(0.95) var(--media-lift)" }}
                     />
                     <div
                       aria-hidden

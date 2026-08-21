@@ -14,7 +14,6 @@ import wehearLogo from "@/assets/clients/wehear.webp";
 // white-only cut that inverts to flat greyscale rather than to its greens.
 import wehearLogoLight from "@/assets/clients/wehear-light.webp";
 import sunrooofLogo from "@/assets/clients/sunrooof.webp";
-import greenomersLogo from "@/assets/clients/greenomers.webp";
 import greenomersLogoLight from "@/assets/clients/greenomers-light.webp";
 
 /* Operating-company marks. Four came from each company's own site; InThinks
@@ -263,7 +262,10 @@ const advisories: Advisory[] = [
   { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     logoLight: wehearLogoLight,     scale: 0.78, offsetY: 0, darkChip: true },
   { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
   { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0, lightSource: true },
-  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogo, logoLight: greenomersLogoLight, scale: 1.10, offsetY: 0, lightSource: true },
+  /* Colour in both themes, by request. The white-only cut it used to ship on
+     graphite is gone: the real mark's bright green carries against near-black,
+     and the darker "GREEN POLYMERS" subline is lifted by --mark-colour. */
+  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogoLight, scale: 1.10, offsetY: 0 },
 ];
 
 
