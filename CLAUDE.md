@@ -1,6 +1,6 @@
 # Site — FROZEN
 
-The whole site is frozen as of `1f169129` — the last commit that changed site
+The whole site is frozen as of `f0c46557` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
@@ -356,9 +356,18 @@ preference from a route, that is the bug.
 
 ## Auto, exactly
 
-1. `prefers-color-scheme: dark` → **dark**, always. Someone who has told their
-   OS they want dark has answered the question.
-2. Otherwise the local clock: **light** 07:00–19:00, **dark** the rest.
+**The default.** Nothing stored resolves to Auto, in `readPreference` and in
+the boot script alike. A first-time visitor gets Auto, and storage stays empty
+until they pick something.
+
+Four layers, in order:
+
+1. **The system preference.** `prefers-color-scheme`, and note this is three
+   states not two: dark, light, and *nothing said*. A machine that has been
+   told nothing matches neither query.
+2. **Ambient light** — but only where the system said nothing. See below.
+3. **The local clock**: light 07:00–19:00, dark the rest.
+4. **Dark.**
 
 The clock is the stated fallback, not an attempt at sunrise. Real sunrise
 needs a latitude and the only way to get one is a geolocation prompt, which is
@@ -366,9 +375,41 @@ not a fair price for a colour; timezone alone gives longitude, which moves
 sunrise by minutes while the seasons move it by hours. A rough solar model
 would be less honest than a stated window, not more accurate.
 
-Auto re-resolves on a `matchMedia` change and on a **timer set to the next
-threshold** — not a poll. At most two wakeups a day, and none while the system
-asks for dark.
+Auto re-resolves on a `matchMedia` change — on **both** queries, because a
+system going from "nothing said" to light fires only on the light one — on
+`visibilitychange`, because a tab backgrounded for hours has a throttled
+timer and may have crossed a threshold, and on a **timer set to the next
+threshold** rather than a poll. At most two wakeups a day.
+
+## Ambient light is second, and that is the whole argument
+
+The obvious design puts the room at the top: a bright room means a light
+page. It is wrong, and the brief asked the question directly. **Someone who
+sets their OS to dark at noon has answered it.** Letting a sensor they cannot
+see overrule a choice they made deliberately is worse than ignoring the room
+entirely. So ambient light is consulted only where the system expresses no
+preference at all — which is both the case it is useful for and the only case
+where nothing is being overridden.
+
+**It is also almost never available.** `AmbientLightSensor` exists in
+Chromium but behind `#enable-generic-sensor-extra-classes`, so
+`'AmbientLightSensor' in window` is false in a stock browser; it needs a
+secure context, a permissions-policy grant and the `ambient-light-sensor`
+permission, and it never shipped in Safari or Firefox. The old
+`ondevicelight` event was a Firefox feature removed in 62. Measured in this
+container: both absent. **Do not claim ambient support anywhere.** The module
+reports unsupported and Auto falls to the system preference, which is the
+expected outcome rather than a failure.
+
+When it *is* there: hysteresis at **120 lux up / 40 lux down** — a single cut
+point flips the page whenever a hand passes over a laptop — a reading must
+hold for **4 seconds**, and the sensor runs at 1 Hz and only while the
+preference is Auto, the system is silent and the tab is visible. Every one of
+those is also a reason to stop.
+
+Nothing is stored, nothing is sent, no history is kept, and the only thing
+that leaves the module is one of two words. No camera, ever: brightness from a
+video stream is not an acceptable price for a colour.
 
 ## The anti-flash script is load-bearing
 
@@ -468,6 +509,93 @@ conspicuous as the blue was.
 that the rule reaches the served stylesheet and is well-formed, which the auto
 check asserts. The appearance needs one real Chrome and one real Safari.
 
+## The light media system
+
+The first answer to "the images do not match the light theme" was to keep the
+media dark and seat it — a dark island everywhere. **That was wrong and it
+shipped.** A black rectangle laid deliberately on ivory is still dark imagery
+pasted onto a bright canvas. What the light theme needed was for the pictures
+to be *re-lit*, and almost all of them could be.
+
+### /innovations needed no new assets at all
+
+All 25 cut-outs carry a real alpha channel — 89% of `graphacrete.webp` is
+fully transparent. The products already float. Two things made the grid read
+as 25 black rectangles:
+
+1. a hard-coded `bg-[oklch(0.05 0.006 245)]` on the card, and
+2. **`Tilt3DSurface`**, which is an entire photographic set built in CSS —
+   cyclorama, key light, floor, horizon line, two contact shadows, a mirrored
+   reflection, a rim and a lens vignette — every layer a graphite literal.
+
+(2) is why the first attempt appeared to change nothing: the set was painting
+over the plate. All eleven layers are `--stage-*` tokens now and the light
+theme re-lights the same set as a high-key product cyclorama. Notes worth
+keeping:
+
+- Contact shadows go warm grey, not black. A black contact shadow under a
+  product on paper is a smudge, not a shadow.
+- The mirrored reflection drops from 0.16 to 0.06 and loses its brightness
+  cut. On a dark floor a mirrored product reads as sheen; on a light floor
+  the same opacity reads as a second, dirtier product.
+- `--stage-pad` gives the subject more room at the foot on paper. The caption
+  covers the bottom ~40% of a card, which is invisible when a dark product
+  fades into a dark floor and is a bottle crossing the title when it does not.
+
+`coalorix.webp` and `ignitron-p.webp` were the only two cut-outs shipped
+without alpha. Keyed by flooding inward from the border and keeping the
+largest connected component — a luminance threshold eats both, since one is a
+black bottle and the other a dark vial, and the flood alone left a detached
+shadow puddle under Ignitron P that the border could not reach.
+
+### Photography that cannot be re-grounded
+
+The founder portrait, the identity film and the `/early-works` plates are
+genuinely dark pictures. They keep their grade and stop **terminating in
+black**: the edge dissolve, the foot fade and the grading pass are `--photo-*`
+tokens that resolve to the page ground, so a picture ends on the sheet instead
+of being cut through it, and `--photo-veil` screens 10% paper over it to lift
+the blacks.
+
+The first foot ramp bleached `/early-works` to nothing — it covered three
+quarters of the plate, where the dark original only ever reached 0.85 alpha.
+It is a band under the title now, not a wash.
+
+### /news had the opposite defect and the same cause
+
+Its press photographs ran at `opacity-80` with a black vignette in `overlay`
+and a `from-background/85` foot. On graphite that grades a picture; on paper
+it lets the page through and washes it out. Full opacity, a real grade, and a
+vignette that darkens.
+
+### Three ways a filter silently broke the dark theme
+
+- **`filter: <chain> none` is invalid.** `none` is only legal as the sole
+  value, so appending a `none`-valued token drops the entire declaration —
+  320,738 differing pixels on one `/early-works` slice, with every archival
+  grade simply gone. The identity is **`brightness(1)`**.
+- **An arbitrary `[filter:…]` overrides Tailwind's `grayscale-/contrast-/
+  brightness-` utilities** rather than composing with them, so the whole chain
+  has to move into the token.
+- **Filter order is not commutative,** and Tailwind composes `--tw-filter` as
+  blur → brightness → contrast → grayscale. Writing the same functions in
+  source order changes the picture.
+
+### The inspection panel
+
+It stayed dark for a while on the argument that a lightbox is a dark room.
+Sound for a lightbox, wrong for this one: it opens out of a card that is now
+a paper plate. Every ground in it is a `--panel-*` token and it follows the
+page. The **six media frames are the exception** and stay graphite in both
+themes — the application photographs and films genuinely are dark, and a
+paper frame behind a dark film is a halo round it rather than a mount.
+
+The studio frame gained a foot scrim it never had. It renders `item.img`, the
+studio *photograph* rather than the cut-out, and **16 of the 25 have a light
+bottom strip while 9 are dark** — so its caption had no ground in *either*
+theme. White on a 241-luminance photo is as invisible in the dark theme as
+graphite is on paper.
+
 ## Dark islands
 
 Some surfaces are dark because the *photograph* in them is dark: the product
@@ -479,7 +607,13 @@ theme with the pictures ruined.
 `.theme-dark-island` re-declares the dark tokens for a subtree, so every
 `text-foreground/60` and `border-foreground/[0.08]` inside keeps meaning what
 it meant, in either theme, with no component knowing which theme is active. In
-dark it is a no-op by construction. In light it also gains a hairline and a
+dark it is a no-op by construction.
+
+**It re-declares the media family too** — `--product-*`, `--photo-*`,
+`--archive-*`, `--press-*`, `--stage-*`, `--panel-*`. Without those an island
+is only half dark: dark ink over pictures still lit for paper, which is how
+white type ended up on a light cyclorama in the inspection panel. Those values
+are copied from `:root`; change one there and change it here. In light it also gains a hairline and a
 shallow warm shadow, because on paper an unseated dark plate reads as a hole.
 
 Currently applied to:
@@ -661,6 +795,15 @@ suggested a global change that was in fact 3,651 pixels in the top 50 rows.
   flip, tested with the clock pinned to noon — at 21:00 both sides of the flip
   are dark, so "dark → dark" reads identically as a pass and as a total
   failure to react.
+- Auto, 47 assertions, clock pinned to noon so the day/night fallback says
+  *light* and a system preference of *dark* genuinely disagrees with it. A
+  fresh visitor with empty storage lands on Auto and the control reads Auto;
+  the system outranks the clock in both directions and live, without a
+  reload; `no-preference` falls through to the clock; the homepage is dark
+  under all six combinations of system state × stored preference and never
+  rewrites storage; manual Light holds against system dark and manual Dark
+  against system light; returning to Auto re-resolves at once; and
+  localStorage holds exactly one key.
 - Auto at runtime, clock pinned to noon so the time-of-day fallback says
   *light* and a system preference of *dark* genuinely disagrees with it: 24
   assertions, all passing. System light→dark and back again change `/about`
