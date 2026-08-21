@@ -83,7 +83,7 @@ export function Tilt3DSurface({
         transition={still ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%)",
+            "var(--stage-cyc)",
         }}
       />
 
@@ -91,7 +91,7 @@ export function Tilt3DSurface({
       <div
         aria-hidden
         className="absolute inset-x-[6%] top-[6%] h-[36%] rounded-[50%] opacity-55 blur-3xl"
-        style={{ background: "radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%)" }}
+        style={{ background: "var(--stage-key)" }}
       />
 
       {/* Reflective grounding plane — sub-surface */}
@@ -100,27 +100,27 @@ export function Tilt3DSurface({
         className="absolute inset-x-0 bottom-0 h-[42%]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%)",
+            "var(--stage-floor)",
         }}
       />
       {/* Hairline horizon */}
       <div
         aria-hidden
         className="absolute left-[4%] right-[4%] bottom-[18%] h-px opacity-40"
-        style={{ background: "linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent)" }}
+        style={{ background: "var(--stage-horizon)" }}
       />
 
       {/* Contact shadow — tight beneath subject */}
       <div
         aria-hidden
         className="absolute bottom-[14%] left-1/2 h-[8%] w-[58%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
-        style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 65%)" }}
+        style={{ background: "var(--stage-contact)" }}
       />
       {/* Ambient bounce shadow — wider, softer */}
       <div
         aria-hidden
         className="absolute bottom-[10%] left-1/2 h-[14%] w-[82%] -translate-x-1/2 rounded-[50%] opacity-60 blur-3xl"
-        style={{ background: "radial-gradient(ellipse, oklch(0 0 0 / 0.7), transparent 72%)" }}
+        style={{ background: "var(--stage-bounce)" }}
       />
 
       {/* Subject — main product */}
@@ -133,7 +133,7 @@ export function Tilt3DSurface({
         className={`absolute inset-0 h-full w-full object-contain ${pad} ${imgClassName}`}
         style={{
           filter:
-            "drop-shadow(0 32px 42px oklch(0 0 0 / 0.78)) drop-shadow(0 16px 24px oklch(0 0 0 / 0.4)) drop-shadow(0 0 22px oklch(0.85 0.02 235 / 0.06))",
+            "var(--stage-subject-shadow)",
           ...imgStyle,
         }}
       />
@@ -146,8 +146,8 @@ export function Tilt3DSurface({
           className="pointer-events-none absolute inset-0 overflow-hidden"
           style={{
             transform: "scaleY(-1) translateY(-78%)",
-            opacity: 0.16,
-            filter: "blur(5px) saturate(0.55) brightness(0.65)",
+            opacity: "var(--stage-refl-opacity)" as unknown as number,
+            filter: "var(--stage-refl-filter)",
             maskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
             WebkitMaskImage: "linear-gradient(180deg, oklch(0 0 0 / 0.85) 0%, transparent 60%)",
           }}
@@ -168,7 +168,7 @@ export function Tilt3DSurface({
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-[10%] top-[6%] h-px opacity-55"
-        style={{ background: "linear-gradient(90deg, transparent, oklch(0.92 0.02 235 / 0.6), transparent)" }}
+        style={{ background: "var(--stage-rim)" }}
       />
 
       {/* Lens vignette + atmospheric cinematic rolloff */}
@@ -177,7 +177,7 @@ export function Tilt3DSurface({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 44%, transparent 48%, oklch(0.02 0.006 245 / 0.32) 78%, oklch(0.015 0.006 245 / 0.7) 100%)",
+            "var(--stage-vignette)",
         }}
       />
       <div
@@ -185,7 +185,7 @@ export function Tilt3DSurface({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%)",
+            "var(--stage-foot)",
         }}
       />
 

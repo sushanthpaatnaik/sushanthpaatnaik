@@ -124,15 +124,15 @@ function AboutPage() {
         transition={{ duration: 1.3, ease: [0.19, 1, 0.22, 1] }}
         className="not-prose relative mx-auto mt-12 md:mt-16"
       >
-        {/* Dark island for the same reason the portrait plate is one: the film
-            is graded to a multiply pass and a vignette that reaches
-            oklch(0.015) at the corners, so the frame is dark whatever the
-            theme. On paper --surface-sunken made the ground behind it — the
-            poster frame, and whatever shows while it buffers — near-white,
-            which flashed a white rectangle where a black one was about to
-            appear. HeroVideo's own controls read this too, and they sit on
-            the film, not on the page. */}
-        <div className="theme-dark-island group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
+        {/* The film frame follows the same rule as the portrait plate below
+            it: the ground behind it is the page ground, and the grading
+            layers resolve outward to that rather than to black. A film is
+            dark whatever the theme, but it should sit on the sheet, not be
+            punched through it. */}
+        <div
+          className="group relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-foreground/[0.08]"
+          style={{ background: "var(--photo-plate)" }}
+        >
           {/* Graded to the site's palette. Ungraded, the film's frames average
               a luminance of 70-83 against 38 for the founder portrait's source
               — and the portrait then takes brightness(0.9) and a multiply
@@ -146,23 +146,21 @@ function AboutPage() {
             className="absolute inset-0 h-full w-full object-cover"
             style={{
               filter:
-                "grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82)",
+                "grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82) var(--photo-filter)",
             }}
           />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 mix-blend-multiply"
             style={{
-              background:
-                "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.34) 0%, oklch(0.04 0.005 260 / 0.16) 45%, oklch(0.02 0 0 / 0.48) 100%)",
+              background: "var(--photo-grade)",
             }}
           />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
-              background:
-                "radial-gradient(ellipse at 50% 46%, transparent 52%, oklch(0.02 0.006 245 / 0.38) 88%, oklch(0.015 0.006 245 / 0.7) 100%)",
+              background: "var(--photo-dissolve)",
             }}
           />
         </div>

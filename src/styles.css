@@ -244,6 +244,73 @@
      reads as ivory and one that reads as grey card, which is why the light
      theme raises it. `max()` of a value and 0% is that value. */
   --plate-wash-min: 0%;
+
+  /* ── The media system ────────────────────────────────────────────────
+     Every value below was a literal inside a component until the light
+     theme needed the other half of it. The dark values here are those
+     literals verbatim, so the dark site is byte-identical.
+
+     Two families:
+
+     `--product-*` is the /innovations catalogue. The 25 cut-outs carry a
+     real alpha channel — the products float, they are not photographs of
+     products on black — so on paper the plate becomes paper and the
+     product simply sits on it. The plate was a near-black literal, which
+     is the only reason the grid read as 25 black rectangles on ivory.
+
+     `--photo-*` is photography that cannot be re-grounded: the founder
+     portrait, the identity film, the /early-works plates. Those images
+     genuinely are dark, and the fix is not to bleach them but to stop
+     them terminating in black — the edge dissolve and the foot fade
+     resolve to whatever the page ground is, and a low screen veil lifts
+     the blacks so the frame reads as a graphite plate laid on paper
+     rather than a hole cut through it. */
+  --product-plate: oklch(0.05 0.006 245);
+  --product-border: oklch(0.967 0 0 / 0.08);
+  --product-sheen: linear-gradient(270deg, oklch(0.86 0.02 235 / 0.08) 0%, transparent 70%);
+  --product-scrim-hero: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.16) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.9) 100%);
+  --product-scrim: linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%);
+  --product-shadow-hero: drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08));
+  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34));
+  --product-lift: none;
+
+  --photo-plate: var(--surface-sunken);
+  --photo-veil: transparent;
+  --photo-dissolve: radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%);
+  --photo-foot: linear-gradient(to top, oklch(0.04 0 0) 0%, transparent 100%);
+  --photo-grade: linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.22) 45%, oklch(0.02 0 0 / 0.60) 100%);
+  --photo-grade-doc: linear-gradient(180deg, oklch(0.05 0.01 240 / 0.5) 0%, oklch(0.04 0.005 240 / 0.3) 50%, oklch(0.03 0 0 / 0.6) 100%);
+  --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%);
+  --photo-frame-shadow: 0 36px 88px -36px oklch(0 0 0 / 0.78);
+  --photo-filter: none;
+  --archive-foot: linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent);
+  --archive-foot-deep: linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%);
+  --press-img-opacity: 0.8;
+  --press-img-filter: none;
+  --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%);
+  --press-vignette-opacity: 0.35;
+  --press-foot: linear-gradient(to top, oklch(0.06 0 0 / 0.85) 0%, oklch(0.06 0 0 / 0.20) 55%, transparent 100%);
+
+  /* The product stage — Tilt3DSurface. This is a whole photographic set
+     built in CSS: a cyclorama, a key light, a floor, a horizon line, two
+     contact shadows, a mirrored reflection, a rim and a lens vignette. It
+     was hard-coded to a graphite studio, which is why putting a paper plate
+     behind it changed nothing — the set was painted over the plate. These
+     are those literals; the light block re-lights the same set. */
+  --stage-cyc: radial-gradient(ellipse at 38% 16%, oklch(0.78 0.025 230 / 0.20), transparent 0 22%), radial-gradient(circle at 70% 30%, oklch(0.42 0.012 240 / 0.22), transparent 0 32%), linear-gradient(180deg, oklch(0.135 0.008 245) 0%, oklch(0.075 0.008 245) 48%, oklch(0.035 0.008 245) 100%);
+  --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
+  --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
+  --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);
+  --stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 65%);
+  --stage-bounce: radial-gradient(ellipse, oklch(0 0 0 / 0.7), transparent 72%);
+  --stage-subject-shadow: drop-shadow(0 32px 42px oklch(0 0 0 / 0.78)) drop-shadow(0 16px 24px oklch(0 0 0 / 0.4)) drop-shadow(0 0 22px oklch(0.85 0.02 235 / 0.06));
+  --stage-refl-opacity: 0.16;
+  --stage-refl-filter: blur(5px) saturate(0.55) brightness(0.65);
+  --stage-rim: linear-gradient(90deg, transparent, oklch(0.92 0.02 235 / 0.6), transparent);
+  --stage-vignette: radial-gradient(ellipse at 50% 44%, transparent 48%, oklch(0.02 0.006 245 / 0.32) 78%, oklch(0.015 0.006 245 / 0.7) 100%);
+  --stage-foot: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.10) 0%, transparent 22%, transparent 56%, oklch(0.015 0.006 245 / 0.78) 100%);
+  --stage-pad: 9%;
+  --stage-pad-hero: 7%;
   /* screen adds light to a dark ground; multiply removes it from a light
      one. Same two washes, opposite operators. */
   --plate-blend: screen;
@@ -400,6 +467,85 @@
   --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
   --plate-haze-opacity: 0.55;
   --plate-wash-min: 91%;
+
+  /* The other half. See the dark block for what each family is for.
+
+     The product plate is paper raised a step off the 224 canvas, the
+     shadow is warm and shallow instead of a black pool, and the caption
+     scrim ramps to the plate rather than to black — so a card is a
+     product standing on a sheet, which is what the assets actually are.
+
+     The photographic set keeps its grading but resolves outward to paper:
+     the dissolve and the foot fade end on --canvas-solid, and --photo-veil
+     is a paper screen at 15% which lifts the blacks about 30 levels
+     without touching the highlights. --photo-filter adds a little back so
+     the lift does not read as haze. */
+  --product-plate: linear-gradient(168deg, oklch(0.990 0.005 85) 0%, oklch(0.962 0.008 85) 100%);
+  --product-border: oklch(0.30 0.008 260 / 0.13);
+  --product-sheen: linear-gradient(270deg, oklch(0.72 0.05 62 / 0.06) 0%, transparent 70%);
+  --product-scrim-hero: linear-gradient(180deg, transparent 0%, transparent 62%, oklch(0.972 0.008 85 / 0.72) 82%, oklch(0.968 0.009 85 / 0.95) 100%);
+  --product-scrim: linear-gradient(180deg, transparent 0%, transparent 52%, oklch(0.975 0.007 85 / 0.60) 70%, oklch(0.968 0.009 85 / 0.94) 86%, oklch(0.962 0.010 85 / 0.99) 100%);
+  --product-shadow-hero: drop-shadow(0 26px 34px oklch(0.50 0.035 62 / 0.26)) drop-shadow(0 10px 16px oklch(0.45 0.03 60 / 0.15));
+  --product-shadow: drop-shadow(0 18px 24px oklch(0.50 0.035 62 / 0.22)) drop-shadow(0 6px 11px oklch(0.45 0.03 60 / 0.13));
+  --product-lift: contrast(1.03) saturate(1.04);
+
+  --photo-plate: var(--canvas-solid);
+  --photo-veil: oklch(0.965 0.010 85 / 0.10);
+  --photo-dissolve: radial-gradient(120% 90% at 50% 50%, transparent 52%, color-mix(in oklab, var(--canvas-solid) 62%, transparent) 100%);
+  --photo-foot: linear-gradient(to top, var(--canvas-solid) 0%, transparent 100%);
+  --photo-grade: linear-gradient(180deg, oklch(0.35 0.012 260 / 0.16) 0%, transparent 45%, oklch(0.30 0.008 260 / 0.20) 100%);
+  --photo-grade-doc: linear-gradient(180deg, oklch(0.35 0.012 240 / 0.18) 0%, transparent 50%, oklch(0.30 0.008 240 / 0.22) 100%);
+  --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.55 0.02 62 / 0.13), transparent 76%);
+  --photo-frame-shadow: 0 26px 60px -34px oklch(0.42 0.03 60 / 0.42);
+  --photo-filter: brightness(1.05) contrast(1.05) saturate(1.06);
+  /* The foot of an archival plate resolves to the page ground rather than to
+     black, so the picture ends on the sheet and the title printed over it has
+     a paper base to sit on. */
+  /* A band, not a wash. The first version ramped paper across three quarters
+     of the plate and bleached the photograph away — the dark original only
+     ever reached 0.85 alpha and let the picture through. Solid under the
+     title so the graphite type has a ground, then out fast. */
+  --archive-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 72%, transparent) 0%, transparent 92%);
+  --archive-foot-deep: linear-gradient(to top, var(--canvas-solid) 0%, var(--canvas-solid) 19%, color-mix(in oklab, var(--canvas-solid) 42%, transparent) 37%, transparent 62%);
+  /* The press plates were the opposite defect to the product cards: not too
+     dark on paper but bleached. A photograph at opacity 0.8 lets the ground
+     through it, which grades it on graphite and washes it out on paper, and a
+     black vignette in `overlay` over a light page comes back as a grey ring.
+     Full opacity here, a slightly cooler grade in place of the see-through,
+     and a vignette that darkens rather than lifts. */
+  --press-img-opacity: 1;
+  --press-img-filter: brightness(0.97) contrast(1.04);
+  --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 46%, oklch(0.30 0.01 260 / 0.30) 100%);
+  --press-vignette-opacity: 0.5;
+  --press-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 92%, transparent) 0%, color-mix(in oklab, var(--canvas-solid) 22%, transparent) 55%, transparent 100%);
+
+  /* The same set, re-lit. A high-key product cyclorama: a warm sweep from
+     near-white at the top to a soft paper floor, the key light kept because
+     a lit backdrop still needs one, contact shadows in warm grey rather
+     than black — a black contact shadow under a product on paper is a
+     smudge, not a shadow — and a vignette that closes to a light warm grey.
+
+     The reflection stays but drops to a third of its strength and loses the
+     brightness cut: on a dark floor a mirrored product reads as a sheen, on
+     a light floor the same opacity reads as a second, dirtier product. */
+  --stage-cyc: radial-gradient(ellipse at 38% 14%, oklch(1 0 0 / 0.75), transparent 0 34%), radial-gradient(circle at 72% 28%, oklch(0.88 0.02 70 / 0.22), transparent 0 40%), linear-gradient(180deg, oklch(0.995 0.003 85) 0%, oklch(0.972 0.006 85) 52%, oklch(0.936 0.009 82) 100%);
+  --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
+  --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.90 0.010 80 / 0.34) 46%, oklch(0.868 0.012 78 / 0.72) 100%);
+  --stage-horizon: linear-gradient(90deg, transparent, oklch(0.55 0.015 70 / 0.20), transparent);
+  --stage-contact: radial-gradient(ellipse, oklch(0.48 0.028 62 / 0.42), transparent 66%);
+  --stage-bounce: radial-gradient(ellipse, oklch(0.55 0.022 62 / 0.26), transparent 72%);
+  --stage-subject-shadow: drop-shadow(0 26px 32px oklch(0.48 0.03 62 / 0.26)) drop-shadow(0 10px 15px oklch(0.45 0.028 60 / 0.16));
+  --stage-refl-opacity: 0.06;
+  --stage-refl-filter: blur(6px) saturate(0.5);
+  --stage-rim: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.85), transparent);
+  --stage-vignette: radial-gradient(ellipse at 50% 44%, transparent 54%, oklch(0.62 0.014 72 / 0.14) 80%, oklch(0.56 0.016 70 / 0.26) 100%);
+  --stage-foot: linear-gradient(180deg, oklch(1 0 0 / 0.22) 0%, transparent 24%, transparent 62%, oklch(0.90 0.010 80 / 0.42) 100%);
+  /* More room at the foot on paper. The caption block covers the bottom
+     ~40% of a card; in the dark the product's lower half is dark on a dark
+     floor and the scrim takes it to black before it reaches the type, but
+     on paper the same overlap is a dark bottle crossing dark type. */
+  --stage-pad: 6% 9% 26% 9%;
+  --stage-pad-hero: 5% 7% 20% 7%;
   --plate-ink: oklch(0.965 0.008 85);
   --plate-ink-top: oklch(0.975 0.008 85);
   --plate-blend: multiply;
@@ -596,13 +742,28 @@
      Lifted blacks, controlled highlights, restrained saturation, subtle
      filmic texture via inner shadow vignette. Applied as a wrapper class
      or directly to <img>; pairs well with .cinematic-image. */
+  /* The archival grade, plus whatever the theme needs on top. --photo-filter
+     is `none` in the dark and a small lift on paper, where these plates are
+     otherwise the darkest objects on the page. */
   .archive-grade {
     filter:
       contrast(1.06)
       saturate(0.84)
       brightness(0.93)
-      sepia(0.04);
+      sepia(0.04)
+      var(--photo-filter);
     transition: filter var(--dur-slow) var(--ease-cinematic);
+  }
+  /* Screened over an archival plate to lift its blacks toward the page
+     ground. Transparent in the dark, where `screen` with a transparent
+     colour is the identity, so the dark plates do not move. */
+  .archive-lift::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: var(--photo-veil);
   }
   .archive-grade-wrap {
     position: relative;

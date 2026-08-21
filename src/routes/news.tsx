@@ -384,7 +384,7 @@ function MediaPlate({
         src={src}
         alt={alt}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-80 grayscale-[0.55] contrast-[1.08] brightness-[0.95] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:grayscale-[0.2] group-hover:scale-[1.02]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[var(--press-img-opacity)] grayscale-[0.55] contrast-[1.08] brightness-[0.95] [filter:var(--press-img-filter)] transition-all duration-[1400ms] group-hover:opacity-100 group-hover:grayscale-[0.2] group-hover:scale-[1.02]"
         style={{ objectPosition: objectPosition ?? "center" }}
       />
       {/* Newspaper halftone texture */}
@@ -406,13 +406,10 @@ function MediaPlate({
             "repeating-linear-gradient(0deg, oklch(1 0 0) 0 1px, transparent 1px 3px)",
         }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-0" style={{ background: "var(--press-foot)" }} />
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-35"
-        style={{
-          background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 50%, oklch(0.02 0 0 / 0.65) 100%)",
-        }}
+        className="pointer-events-none absolute inset-0 mix-blend-overlay"
+        style={{ background: "var(--press-vignette)", opacity: "var(--press-vignette-opacity)" }}
       />
       {/* Archival corner registration marks */}
       <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-foreground/30" />

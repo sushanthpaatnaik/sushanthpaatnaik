@@ -402,7 +402,7 @@ function ChapterSplit({
           below already is: the year chip and its scrim are painted from fixed
           dark values, so on paper the chip's own background went pale while
           the scrim under it stayed black. */}
-      <div className={`theme-dark-island relative group ${reversed ? "lg:order-first" : ""}`}>
+      <div className={`archive-lift relative group ${reversed ? "lg:order-first" : ""}`}>
         <ParallaxImage
           src={inv.image}
           alt={inv.name}
@@ -412,9 +412,9 @@ function ChapterSplit({
         <div
           aria-hidden
           className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-          style={{ background: "linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent)" }}
+          style={{ background: "var(--archive-foot)" }}
         />
-        <span className="absolute bottom-4 right-4 font-mono text-[10px] tracking-[0.32em] text-accent/60 bg-background/40 backdrop-blur-sm px-2 py-1 rounded-[2px]">
+        <span className="absolute bottom-4 right-4 font-mono text-[10px] tracking-[0.32em] text-accent/80 bg-[var(--surface-veil-strong)] ring-1 ring-foreground/10 backdrop-blur-sm px-2 py-1 rounded-[2px]">
           {inv.year}
         </span>
         {/* Hover frame */}
@@ -446,7 +446,7 @@ function ChapterFeature({
       aria-label={`${inv.name} — ${inv.year}`}
     >
       {/* Large image */}
-      <div className="theme-dark-island relative group overflow-hidden rounded-sm">
+      <div className="archive-lift relative group overflow-hidden rounded-sm">
         <ParallaxImage
           src={inv.image}
           alt={inv.name}
@@ -457,17 +457,17 @@ function ChapterFeature({
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: "linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%)",
+            background: "var(--archive-foot-deep)",
           }}
         />
         {/* Chapter label on image */}
         <div className="absolute top-5 left-5 flex items-center gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/50 bg-background/30 backdrop-blur-sm px-2 py-1 rounded-[2px]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/70 bg-[var(--surface-veil-strong)] ring-1 ring-foreground/10 backdrop-blur-sm px-2 py-1 rounded-[2px]">
             {String(index + 1).padStart(2, "0")}
           </span>
         </div>
         {/* Year */}
-        <span className="absolute top-5 right-5 font-mono text-[10px] tracking-[0.32em] text-accent/70 bg-background/40 backdrop-blur-sm px-2 py-1 rounded-[2px]">
+        <span className="absolute top-5 right-5 font-mono text-[10px] tracking-[0.32em] text-accent/85 bg-[var(--surface-veil-strong)] ring-1 ring-foreground/10 backdrop-blur-sm px-2 py-1 rounded-[2px]">
           {inv.year}
         </span>
         {/* Name on image bottom */}

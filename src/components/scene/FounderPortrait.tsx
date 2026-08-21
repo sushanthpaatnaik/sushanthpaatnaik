@@ -64,8 +64,7 @@ export default function FounderPortrait({
         aria-hidden
         className="pointer-events-none absolute -inset-x-20 -inset-y-24 md:-inset-x-32 md:-inset-y-36"
         style={{
-          background:
-            "radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%)",
+          background: "var(--photo-halo)",
           filter: "blur(34px)",
         }}
       />
@@ -79,18 +78,20 @@ export default function FounderPortrait({
         }}
       />
 
-      {/* A dark island on paper, deliberately. The portrait is graded to
-          near-black at its edges — a multiply pass, an inner dissolve to
-          oklch(0.02) and a bottom fade to oklch(0.04) — because that is how
-          the photograph is meant to read, and none of it can invert without
-          becoming a different picture. On the light theme the plate around
-          it was the paper surface, so the identity bar met the top of the
-          photograph as a hard white-to-black rule and the figcaption met the
-          bottom fade the same way: the "dark image pasted onto a bright
-          canvas" this pass exists to remove. Keeping the whole module dark
-          makes the bars continuous with the frame and the module reads as a
-          cinematic plate laid on the page. */}
-      <div className="theme-dark-island relative overflow-hidden rounded-sm border border-foreground/[0.05] bg-[var(--surface-sunken)] shadow-[0_36px_88px_-36px_oklch(0_0_0/0.78)]">
+      {/* Not a dark island — that was the first answer and it just moved the
+          problem: a black module laid on paper still reads as dark-theme
+          imagery pasted in. The photograph is genuinely dark and cannot be
+          bleached, so instead every layer that used to terminate in black
+          now terminates in the PAGE GROUND. The edge dissolve, the foot
+          fade and the grading pass are tokens; on paper they resolve to
+          --canvas-solid and the frame melts into the sheet instead of
+          being cut out of it. --photo-veil then lifts the blacks about 30
+          levels so the picture reads as a graphite plate rather than a
+          hole. */}
+      <div
+        className="relative overflow-hidden rounded-sm border border-foreground/[0.05]"
+        style={{ background: "var(--photo-plate)", boxShadow: "var(--photo-frame-shadow)" }}
+      >
         {/* Founder plate — strengthened editorial identity */}
         {plate && (
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/[0.06] px-6 py-4 md:px-8 md:py-5">
@@ -137,19 +138,25 @@ export default function FounderPortrait({
             decoding="async"
             className={
               isDoc
-                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.3)_contrast(1.05)_saturate(0.55)_brightness(0.78)]"
-                : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)]"
+                ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.3)_contrast(1.05)_saturate(0.55)_brightness(0.78)_var(--photo-filter)]"
+                : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)_var(--photo-filter)]"
             }
           />
 
+          {/* Lifts the blacks so a dark photograph reads as a plate on paper
+              rather than a hole in it. Transparent in the dark theme, where
+              `screen` with a fully transparent colour is the identity. */}
+          <div
+            aria-hidden
+            className="absolute inset-0 mix-blend-screen"
+            style={{ background: "var(--photo-veil)" }}
+          />
           {/* Cinematic grading overlays */}
           <div
             aria-hidden
             className="absolute inset-0 mix-blend-multiply"
             style={{
-              background: isDoc
-                ? "linear-gradient(180deg, oklch(0.05 0.01 240 / 0.5) 0%, oklch(0.04 0.005 240 / 0.3) 50%, oklch(0.03 0 0 / 0.6) 100%)"
-                : "linear-gradient(180deg, oklch(0.05 0.01 260 / 0.42) 0%, oklch(0.04 0.005 260 / 0.22) 45%, oklch(0.02 0 0 / 0.60) 100%)",
+              background: isDoc ? "var(--photo-grade-doc)" : "var(--photo-grade)",
             }}
           />
           <div
@@ -181,8 +188,7 @@ export default function FounderPortrait({
             aria-hidden
             className="absolute inset-0"
             style={{
-              background:
-                "radial-gradient(120% 90% at 50% 50%, transparent 48%, oklch(0.02 0 0 / 0.72) 100%)",
+              background: "var(--photo-dissolve)",
             }}
           />
           {/* Soft cinematic vignette — deepens edges, preserves center */}
@@ -200,8 +206,7 @@ export default function FounderPortrait({
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
             style={{
-              background:
-                "linear-gradient(to top, oklch(0.04 0 0) 0%, transparent 100%)",
+              background: "var(--photo-foot)",
             }}
           />
         </div>
