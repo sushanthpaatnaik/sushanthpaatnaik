@@ -544,14 +544,19 @@
   --product-border: oklch(0.30 0.008 260 / 0.13);
   --product-sheen: linear-gradient(270deg, oklch(0.72 0.05 62 / 0.06) 0%, transparent 70%);
   --product-scrim-hero: linear-gradient(180deg, transparent 0%, transparent 62%, oklch(0.972 0.008 85 / 0.72) 82%, oklch(0.968 0.009 85 / 0.95) 100%);
-  /* Ramp starts at 26%/reaches half-opacity by 54%, matching the dark
-     theme's 28%/55% stops. The old 52%/70%/86% stops left the caption
-     block reading against a mostly-transparent scrim through the exact
-     band a tall product (a standing bottle, say) occupies — its cap sat
-     directly across the domain label with almost nothing behind the text
-     to separate them, on Ceraphene/HD-G-PE/Graphenodes/Ignitron D at
-     minimum. The dark theme's earlier ramp never had this gap. */
-  --product-scrim: linear-gradient(180deg, transparent 0%, transparent 18%, oklch(0.975 0.007 85 / 0.72) 42%, oklch(0.968 0.009 85 / 0.95) 62%, oklch(0.962 0.010 85 / 0.99) 100%);
+  /* The caption's domain line sits at a fixed 47.2% down every compact
+     card (measured directly, not eyeballed — CompactCard's layout is
+     shared, so this is identical for all 23 products). Two earlier passes
+     got this wrong in opposite directions: 52%/70%/86% left the scrim
+     still near-transparent at 47%, so a tall product's silhouette (a
+     standing bottle, a battery pack) ran straight through the caption
+     text uncovered; 18%/42%/62% covered it but started ramping so early
+     that it washed out the product itself through most of the card, not
+     just the caption band. This keeps 0–30% fully clear — where the
+     product actually reads as a lit object — and packs the transition
+     into a narrow 30–44% band so it is already strongly opaque by the
+     47.2% line, without touching the image above that. */
+  --product-scrim: linear-gradient(180deg, transparent 0%, transparent 30%, oklch(0.975 0.007 85 / 0.88) 44%, oklch(0.968 0.009 85 / 0.97) 58%, oklch(0.962 0.010 85 / 0.99) 100%);
   --product-shadow-hero: drop-shadow(0 26px 34px oklch(0.50 0.035 62 / 0.26)) drop-shadow(0 10px 16px oklch(0.45 0.03 60 / 0.15));
   --product-shadow: drop-shadow(0 18px 24px oklch(0.50 0.035 62 / 0.22)) drop-shadow(0 6px 11px oklch(0.45 0.03 60 / 0.13));
   --product-lift: contrast(1.03) saturate(1.04);
