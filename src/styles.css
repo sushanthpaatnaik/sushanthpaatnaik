@@ -586,7 +586,7 @@
      bottom edge. Capped at 72% mixed rather than solid, so even the
      closest pixel to the edge keeps some of the jacket/hand visible
      through it instead of terminating in flat paper. */
-  --photo-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 72%, transparent) 0%, transparent 100%);
+  --photo-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 62%, transparent) 0%, transparent 100%);
   --photo-grade: linear-gradient(180deg, oklch(0.35 0.012 260 / 0.16) 0%, transparent 45%, oklch(0.30 0.008 260 / 0.20) 100%);
   --photo-grade-doc: linear-gradient(180deg, oklch(0.35 0.012 240 / 0.18) 0%, transparent 50%, oklch(0.30 0.008 240 / 0.22) 100%);
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.55 0.02 62 / 0.13), transparent 76%);
@@ -612,7 +612,13 @@
   --press-img-filter-hover: brightness(0.97) contrast(1.10) grayscale(0.18) saturate(1.05);
   --press-vignette: radial-gradient(120% 80% at 50% 50%, transparent 46%, oklch(0.30 0.01 260 / 0.30) 100%);
   --press-vignette-opacity: 0.5;
-  --press-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 92%, transparent) 0%, color-mix(in oklab, var(--canvas-solid) 22%, transparent) 55%, transparent 100%);
+  /* Same relative shape as dark's 0.85/0.20 stops, which is exactly the
+     problem on paper: a near-black wash fading into shadow reads as
+     natural falloff, but the same proportion fading to white paper visibly
+     erases the lower third of the photo (legs, feet, stage floor on the
+     lead feature). Shorter reach (fully clear by 60% instead of still
+     fading at 100%) and lower peak (65% vs 92%) — dark is untouched. */
+  --press-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 65%, transparent) 0%, color-mix(in oklab, var(--canvas-solid) 12%, transparent) 35%, transparent 60%);
 
   /* The same set, re-lit. A high-key product cyclorama: a warm sweep from
      near-white at the top to a soft paper floor, the key light kept because
