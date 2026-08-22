@@ -202,9 +202,15 @@ export default function FounderPortrait({
               }}
             />
           )}
+          {/* Percentage height, not a fixed h-24: this component renders at
+              wildly different sizes (the full-width /about portrait vs. the
+              291px-tall /innovations R&D card), and a fixed 96px band eats a
+              third of the shorter one — a foot fade sized for the tall crop
+              read as a near-total wash on the small one. 14% keeps the same
+              proportion the tall portrait already had. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%]"
             style={{
               background: "var(--photo-foot)",
             }}
