@@ -578,8 +578,15 @@
 
   --photo-plate: var(--canvas-solid);
   --photo-veil: oklch(0.965 0.010 85 / 0.10);
-  --photo-dissolve: radial-gradient(120% 90% at 50% 50%, transparent 52%, color-mix(in oklab, var(--canvas-solid) 62%, transparent) 100%);
-  --photo-foot: linear-gradient(to top, var(--canvas-solid) 0%, transparent 100%);
+  --photo-dissolve: radial-gradient(120% 90% at 50% 50%, transparent 58%, color-mix(in oklab, var(--canvas-solid) 62%, transparent) 100%);
+  /* Solid --canvas-solid at 0% compounds with --photo-dissolve's own edge
+     falloff (both terminate at the same bottom edge of FounderPortrait's
+     tall 4/4.6 crop), which together consumed the crossed hands in the
+     editorial portrait — full opacity was reached well above the frame's
+     bottom edge. Capped at 72% mixed rather than solid, so even the
+     closest pixel to the edge keeps some of the jacket/hand visible
+     through it instead of terminating in flat paper. */
+  --photo-foot: linear-gradient(to top, color-mix(in oklab, var(--canvas-solid) 72%, transparent) 0%, transparent 100%);
   --photo-grade: linear-gradient(180deg, oklch(0.35 0.012 260 / 0.16) 0%, transparent 45%, oklch(0.30 0.008 260 / 0.20) 100%);
   --photo-grade-doc: linear-gradient(180deg, oklch(0.35 0.012 240 / 0.18) 0%, transparent 50%, oklch(0.30 0.008 240 / 0.22) 100%);
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.55 0.02 62 / 0.13), transparent 76%);
