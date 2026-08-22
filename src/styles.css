@@ -86,6 +86,11 @@
      light theme reproduces: a plate that sits below the ground in the dark
      sits below the paper in the light, by a comparable step. Reading the
      light values as "the dark ones inverted" gets the order backwards. */
+  /* /news mastheads panel: a vignette tuned to deepen an already-near-black
+     surface toward the corners. On paper the same near-black stops read as
+     a grey smudge over the panel instead of the flat white the surface
+     token already is, so the light theme drops it rather than reversing it. */
+  --masthead-vignette: radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%);
   --surface-sunken:      oklch(0.04 0.008 245);
   --surface-deep:        oklch(0.045 0.006 245);
   --surface-plate:       oklch(0.05 0.006 245);
@@ -410,6 +415,8 @@
   --gradient-hero: radial-gradient(ellipse at center, oklch(0.72 0.05 245 / 0.20), transparent 70%);
   --gradient-text: linear-gradient(180deg, oklch(0.30 0.012 78) 0%, oklch(0.26 0.02 74) 60%, oklch(0.20 0.03 70) 100%);
   --gradient-metallic: linear-gradient(180deg, oklch(0.955 0.006 85) 0%, oklch(0.90 0.008 85) 100%);
+
+  --masthead-vignette: none;
 
   --surface-sunken:      oklch(0.925 0.009 85);
   --surface-deep:        oklch(0.935 0.008 85);

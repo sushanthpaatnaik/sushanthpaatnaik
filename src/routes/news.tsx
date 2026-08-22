@@ -810,14 +810,14 @@ function NewsPage() {
             press and scientific institutions.
           </p>
           <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[var(--surface-deep)]">
-            {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain */}
+            {/* Atmospheric depth — restrained vignette + faint warm/cool wash + film grain.
+                Dark-only: the near-black stops read as a grey smudge over the
+                already near-white paper surface, so --masthead-vignette drops
+                to none in the light theme rather than reversing them. */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 z-[1]"
-              style={{
-                background:
-                  "radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0.02 0.005 250 / 0.55) 100%), linear-gradient(180deg, oklch(0.06 0.004 250 / 0.25) 0%, transparent 35%, transparent 65%, oklch(0.02 0.005 250 / 0.32) 100%)",
-              }}
+              style={{ background: "var(--masthead-vignette)" }}
             />
             <div
               aria-hidden
@@ -843,10 +843,16 @@ function NewsPage() {
                   maxHeight: `${maxH}px`,
                   maxWidth: `${maxW}%`,
                 };
-                if (o.transparentBg) {
-                  imgStyle.mixBlendMode = "screen";
-                }
                 if (o.nudgeY) imgStyle.transform = `translateY(${o.nudgeY}px)`;
+                /* mixBlendMode is a graphite-only survival trick (see below) —
+                   it must not reach the paper-side logoLight image, which sits
+                   on a plain light plate and needs no blending at all. Applying
+                   it there screens the real mark toward invisible against the
+                   light backdrop, which is how INK Talks' light-theme tile went
+                   blank: both images shared one style object. */
+                const graphiteImgStyle: CSSProperties = o.transparentBg
+                  ? { ...imgStyle, mixBlendMode: "screen" }
+                  : imgStyle;
 
                 // Matte print finish — slightly clearer than prior pass, still no gloss.
                 const colorTone =
@@ -875,7 +881,7 @@ function NewsPage() {
                     src={o.logo}
                     alt={`${o.name} logo`}
                     loading="lazy"
-                    style={imgStyle}
+                    style={graphiteImgStyle}
                     className={`h-auto w-auto object-contain transition-all duration-[700ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${o.logoLight ? "mark-on-graphite " : ""}${
                       o.transparentBg
                         /* `transparentBg` records that the SOURCE is a dark
