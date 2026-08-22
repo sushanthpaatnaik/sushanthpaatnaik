@@ -37,7 +37,11 @@ import telegraphLogo from "@/assets/outlets/telegraph-color.svg";
 import globalIndianLogo from "@/assets/outlets/global-indian-color.webp";
 import mitTrLogo from "@/assets/outlets/mit-tr-color.webp";
 import tedLogo from "@/assets/outlets/ted-color.webp";
-import nifLogo from "@/assets/outlets/nif-color.webp";
+// Fixed black ink plus a genuine green accent a filter would shift off-brand
+// (invert turns it magenta) — two pre-coloured exports, same pair as /voices,
+// shown via the same logo/logoLight graphite/paper split as INK Talks below.
+import nifLogo from "@/assets/outlets/nif-dark.webp";
+import nifLogoLight from "@/assets/outlets/nif-color.webp";
 import governanceNowLogo from "@/assets/outlets/governance-now-color.webp";
 import rediffLogo from "@/assets/outlets/rediff-color.svg";
 import productNationLogo from "@/assets/outlets/productnation-color.webp";
@@ -345,7 +349,7 @@ function outletHref(name: string): string | undefined {
 // `lighten` flags publications whose marks are inherently dark/grayscale —
 // they get inverted+desaturated so they read as soft silver on the dark wall.
 // `scale` optically normalises visual weight (NOT pixel size). Use 0.7–1.3.
-const outlets: { name: string; logo: string; logoLight?: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number; whiteBg?: boolean }[] = [
+const outlets: { name: string; logo: string; logoLight?: string; lighten?: boolean; scale?: number; transparentBg?: boolean; tone?: "muted" | "lift"; nudgeY?: number }[] = [
   { name: "India Today",            logo: indiaTodayLogo,        scale: 1.10 },
   { name: "The Times of India",     logo: toiLogo,               lighten: true, scale: 1.14 },
   { name: "Business Standard",      logo: businessStandardLogo,  scale: 1.20 },
@@ -354,7 +358,7 @@ const outlets: { name: string; logo: string; logoLight?: string; lighten?: boole
   { name: "The Global Indian",      logo: globalIndianLogo,      lighten: true, scale: 0.72 },
   { name: "MIT Technology Review",  logo: mitTrLogo,             scale: 1.10 },
   { name: "TED@Bangalore",          logo: tedLogo,               scale: 0.78, tone: "muted" },
-  { name: "NIF India",              logo: nifLogo,               whiteBg: true, scale: 1.46 },
+  { name: "NIF India",              logo: nifLogo,               logoLight: nifLogoLight, scale: 1.46 },
   { name: "Governance Now",         logo: governanceNowLogo,     lighten: true, scale: 1.34 },
   { name: "Rediff · PTI",           logo: rediffLogo,            lighten: true, scale: 1.14 },
   { name: "ProductNation",          logo: productNationLogo,     scale: 1.14 },
@@ -903,13 +907,8 @@ function NewsPage() {
                 );
                 // Matte anodized panel — soft inner gradient, restrained border,
                 // understated hover with subtle amber edge.
-                // NIF's mark is fixed dark ink (plus a genuine green accent that
-                // a filter would shift off-brand) — it needs its own white plate
-                // in both themes rather than the shared graphite-aware background,
-                // the same reasoning /voices gives Deloitte's logoWhiteBg card.
-                const baseCls = o.whiteBg
-                  ? "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-black/[0.08] bg-white px-3 py-3 shadow-[0_2px_12px_oklch(0_0_0_/_0.18)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px]"
-                  : "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-[var(--logo-plate-border)] bg-[image:var(--logo-plate)] px-3 py-3 shadow-[var(--logo-plate-shadow)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
+                const baseCls =
+                  "group relative flex h-24 sm:h-28 w-full items-center justify-center overflow-hidden rounded-[3px] border border-[var(--logo-plate-border)] bg-[image:var(--logo-plate)] px-3 py-3 shadow-[var(--logo-plate-shadow)] transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-[1px] hover:border-[oklch(0.62_0.10_55_/_0.22)] hover:shadow-[inset_0_1px_0_oklch(1_0_0_/_0.02),inset_0_0_50px_oklch(0_0_0_/_0.4),0_4px_18px_-10px_oklch(0.62_0.10_55_/_0.18)]";
 
                 return href ? (
                   <a

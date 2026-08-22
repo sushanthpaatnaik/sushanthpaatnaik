@@ -8,12 +8,14 @@ import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/scene-media-wall.webp";
 
 import mitTrLogo from "@/assets/outlets/mit-tr-color.webp";
-import nifLogo from "@/assets/outlets/nif-color.webp";
-/* Reversed lockup: the stock mark's navy ring and wordmark all but vanish on
-   the near-black plate every other logo here sits on, which is why this one
-   alone was on a white card. The roundel keeps its own colours untouched — it
-   already reads on dark — and only the ring and wordmark are lifted to a pale
-   blue-white, the way a brand's own reversed lockup would be. */
+/* The NIF pair, same reasoning as IOCL below: the icon's brush strokes and
+   the "National Innovation Foundation" wordmark are fixed black ink, plus a
+   genuine green accent a filter would shift off-brand (invert turns it
+   magenta). Two pre-coloured exports rather than one filtered mark — the
+   dark file has both the strokes and the wordmark lifted to white with the
+   green dot untouched, the light file is the true-colour mark. */
+import nifLogo from "@/assets/outlets/nif-dark.webp";
+import nifLogoLight from "@/assets/outlets/nif-color.webp";
 // The IndianOil pair. The disc is identical in both — its own navy band on
 // orange reads on any ground — and only the "IndianOil" wordmark differs:
 // navy on paper, white on graphite. Cut from the true-colour mark rather than
@@ -67,7 +69,6 @@ type Voice = {
   logoInvert?: boolean;
   /** The paper-side variant, when a filter cannot get there from the dark one. */
   logoLight?: string;
-  logoWhiteBg?: boolean;
   logoScale?: number;
 };
 
@@ -80,9 +81,7 @@ const voices: Voice[] = [
     personTitle: "Professor, IIM-Ahmedabad · Vice-Chair",
     organization: "National Innovation Foundation — India",
     logo: nifLogo,
-    // Fixed dark ink plus a genuine green accent a filter would shift
-    // off-brand — its own white plate in both themes, like Deloitte.
-    logoWhiteBg: true,
+    logoLight: nifLogoLight,
     logoScale: 1.3,
   },
   {
@@ -152,9 +151,8 @@ function VoicesStrip() {
 function LogoPlate({ v }: { v: Voice }) {
   const scale = v.logoScale ?? 1;
 
-  const containerCls = v.logoWhiteBg
-    ? "rounded-[6px] border border-black/[0.08] bg-white shadow-[0_2px_12px_oklch(0_0_0_/_0.18)]"
-    : "rounded-[4px] border border-[var(--voice-plate-border)] bg-[image:var(--voice-plate)] shadow-[var(--voice-plate-shadow)]";
+  const containerCls =
+    "rounded-[4px] border border-[var(--voice-plate-border)] bg-[image:var(--voice-plate)] shadow-[var(--voice-plate-shadow)]";
 
   const imgStyle: CSSProperties = {
     maxWidth: `${Math.round(76 * scale)}%`,
@@ -167,18 +165,16 @@ function LogoPlate({ v }: { v: Voice }) {
      is already right. The theme decides via --mark-flip, so nothing here
      needs to know which theme is active.
 
-     This is why it matters: NIF, MIT Technology Review and Deloitte are all
-     colour marks being inverted into colour negatives purely to survive the
-     dark plate. On paper they come back in their real brand colours, which
-     is both more correct and better looking. */
-  const imgCls = v.logoWhiteBg
-    ? "opacity-100"
-    : v.logoInvert
+     This is why it matters: MIT Technology Review and Deloitte are colour
+     marks being inverted into colour negatives purely to survive the dark
+     plate. On paper they come back in their real brand colours, which is
+     both more correct and better looking. NIF and IOCL instead ship two
+     pre-coloured exports (logo/logoLight) because a genuine brand accent
+     (NIF's green, IOCL's navy-on-orange disc) would shift hue under invert. */
+  const imgCls = v.logoInvert
     ? "opacity-[0.92] group-hover:opacity-100 transition-all duration-700"
     : "opacity-[0.88] group-hover:opacity-100 transition-all duration-700";
-  if (!v.logoWhiteBg) {
-    imgStyle.filter = v.logoInvert ? "var(--mark-flip)" : "var(--mark-colour-soft)";
-  }
+  imgStyle.filter = v.logoInvert ? "var(--mark-flip)" : "var(--mark-colour-soft)";
 
   return (
     <div
