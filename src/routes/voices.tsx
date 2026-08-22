@@ -80,8 +80,10 @@ const voices: Voice[] = [
     personTitle: "Professor, IIM-Ahmedabad · Vice-Chair",
     organization: "National Innovation Foundation — India",
     logo: nifLogo,
-    logoInvert: true,
-    logoScale: 1.1,
+    // Fixed dark ink plus a genuine green accent a filter would shift
+    // off-brand — its own white plate in both themes, like Deloitte.
+    logoWhiteBg: true,
+    logoScale: 1.3,
   },
   {
     category: "Press · Technology",
