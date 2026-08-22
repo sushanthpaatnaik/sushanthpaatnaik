@@ -23,7 +23,7 @@ import { Route as EarlyWorksRouteImport } from './routes/early-works'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EssaysSlugRouteImport } from './routes/essays.$slug'
+import { Route as EssaysSlugRouteImport } from './routes/essays_.$slug'
 
 const VoicesRoute = VoicesRouteImport.update({
   id: '/voices',
@@ -96,9 +96,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const EssaysSlugRoute = EssaysSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => EssaysRoute,
+  id: '/essays_/$slug',
+  path: '/essays/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -107,7 +107,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
-  '/essays': typeof EssaysRouteWithChildren
+  '/essays': typeof EssaysRoute
   '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
@@ -124,7 +124,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
-  '/essays': typeof EssaysRouteWithChildren
+  '/essays': typeof EssaysRoute
   '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
@@ -142,7 +142,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/early-works': typeof EarlyWorksRoute
   '/engage': typeof EngageRoute
-  '/essays': typeof EssaysRouteWithChildren
+  '/essays': typeof EssaysRoute
   '/evidence-standards': typeof EvidenceStandardsRoute
   '/innovations': typeof InnovationsRoute
   '/news': typeof NewsRoute
@@ -151,7 +151,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/ventures': typeof VenturesRoute
   '/voices': typeof VoicesRoute
-  '/essays/$slug': typeof EssaysSlugRoute
+  '/essays_/$slug': typeof EssaysSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -204,7 +204,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/ventures'
     | '/voices'
-    | '/essays/$slug'
+    | '/essays_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -213,7 +213,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EarlyWorksRoute: typeof EarlyWorksRoute
   EngageRoute: typeof EngageRoute
-  EssaysRoute: typeof EssaysRouteWithChildren
+  EssaysRoute: typeof EssaysRoute
   EvidenceStandardsRoute: typeof EvidenceStandardsRoute
   InnovationsRoute: typeof InnovationsRoute
   NewsRoute: typeof NewsRoute
@@ -222,6 +222,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VenturesRoute: typeof VenturesRoute
   VoicesRoute: typeof VoicesRoute
+  EssaysSlugRoute: typeof EssaysSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -324,26 +325,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/essays/$slug': {
-      id: '/essays/$slug'
-      path: '/$slug'
+    '/essays_/$slug': {
+      id: '/essays_/$slug'
+      path: '/essays/$slug'
       fullPath: '/essays/$slug'
       preLoaderRoute: typeof EssaysSlugRouteImport
-      parentRoute: typeof EssaysRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface EssaysRouteChildren {
-  EssaysSlugRoute: typeof EssaysSlugRoute
-}
-
-const EssaysRouteChildren: EssaysRouteChildren = {
-  EssaysSlugRoute: EssaysSlugRoute,
-}
-
-const EssaysRouteWithChildren =
-  EssaysRoute._addFileChildren(EssaysRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -351,7 +341,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EarlyWorksRoute: EarlyWorksRoute,
   EngageRoute: EngageRoute,
-  EssaysRoute: EssaysRouteWithChildren,
+  EssaysRoute: EssaysRoute,
   EvidenceStandardsRoute: EvidenceStandardsRoute,
   InnovationsRoute: InnovationsRoute,
   NewsRoute: NewsRoute,
@@ -360,6 +350,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VenturesRoute: VenturesRoute,
   VoicesRoute: VoicesRoute,
+  EssaysSlugRoute: EssaysSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

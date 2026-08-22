@@ -135,7 +135,7 @@ const essayBodies: Record<string, EssayContent> = {
   },
 };
 
-export const Route = createFileRoute("/essays/$slug")({
+export const Route = createFileRoute("/essays_/$slug")({
   loader: ({ params }) => {
     const essay = essayBodies[params.slug];
     if (!essay) throw notFound();
