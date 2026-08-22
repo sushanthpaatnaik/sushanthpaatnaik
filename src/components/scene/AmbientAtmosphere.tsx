@@ -1,11 +1,16 @@
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
 
 export default function AmbientAtmosphere() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[3] overflow-clip mix-blend-screen"
-      style={{ contain: "layout paint style" }}
+      className="pointer-events-none fixed inset-0 z-[3] overflow-clip"
+      style={{
+        contain: "layout paint style",
+        mixBlendMode: "var(--ambient-blend)" as CSSProperties["mixBlendMode"],
+        opacity: "var(--ambient-opacity)" as unknown as number,
+      }}
     >
       {/* Haze blob A — opacity-only: GPU composites without re-rasterizing */}
       <motion.div

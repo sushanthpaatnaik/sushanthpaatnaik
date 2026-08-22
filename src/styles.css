@@ -35,6 +35,16 @@
   --radius: 0.5rem;
   --viewport-height: 100svh;
   --viewport-width: 100vw;
+  /* AmbientAtmosphere's haze blobs use mix-blend-screen, which only ever
+     lightens — the right effect against the near-black homepage and dark
+     internal pages this was built for, and the wrong one on paper: screening
+     a light blob onto an already-0.96-lightness ground just pushes it
+     further toward white, which is where the site-wide "hazy/washed out"
+     complaint on the light theme traces back to. Screen stays the identity
+     everywhere this token isn't overridden — dark internal pages and the
+     permanently-dark homepage are unaffected. */
+  --ambient-blend: screen;
+  --ambient-opacity: 1;
   /* Industrial deep-tech palette
      Graphite #0A0A0A · Charcoal #151515 · Premium white #F5F5F5
      Graphene blue #3FA9F5 · Energy glow #7CCBFF
@@ -379,6 +389,15 @@
    so the page reads as paper stock rather than as a screen at full
    brightness. */
 :root[data-theme="light"] {
+  /* multiply, not none: the blobs still want to read as atmosphere, not
+     vanish outright. Multiply can only darken, so against paper it leaves a
+     faint warm/cool tint where each blob sits instead of screening the page
+     toward white. */
+  --ambient-blend: multiply;
+  /* Multiply alone still leaves the blobs reading as visible smudges rather
+     than atmosphere — cut to roughly a third on top of that, matching the
+     "reduce haze 50-70%" brief without removing the effect outright. */
+  --ambient-opacity: 0.35;
   --background: oklch(0.965 0.008 85);        /* warm paper */
   --foreground: oklch(0.195 0.006 260);       /* graphite ink, never #000 */
   --card: oklch(0.985 0.006 85);
@@ -544,19 +563,15 @@
   --product-border: oklch(0.30 0.008 260 / 0.13);
   --product-sheen: linear-gradient(270deg, oklch(0.72 0.05 62 / 0.06) 0%, transparent 70%);
   --product-scrim-hero: linear-gradient(180deg, transparent 0%, transparent 62%, oklch(0.972 0.008 85 / 0.72) 82%, oklch(0.968 0.009 85 / 0.95) 100%);
-  /* The caption's domain line sits at a fixed 47.2% down every compact
-     card (measured directly, not eyeballed — CompactCard's layout is
-     shared, so this is identical for all 23 products). Two earlier passes
-     got this wrong in opposite directions: 52%/70%/86% left the scrim
-     still near-transparent at 47%, so a tall product's silhouette (a
-     standing bottle, a battery pack) ran straight through the caption
-     text uncovered; 18%/42%/62% covered it but started ramping so early
-     that it washed out the product itself through most of the card, not
-     just the caption band. This keeps 0–30% fully clear — where the
-     product actually reads as a lit object — and packs the transition
-     into a narrow 30–44% band so it is already strongly opaque by the
-     47.2% line, without touching the image above that. */
-  --product-scrim: linear-gradient(180deg, transparent 0%, transparent 30%, oklch(0.975 0.007 85 / 0.88) 44%, oklch(0.968 0.009 85 / 0.97) 58%, oklch(0.962 0.010 85 / 0.99) 100%);
+  /* Three tuning passes tried to make this gradient alone guarantee caption
+     legibility, at a fixed percentage down the card. That fight was
+     unwinnable: products aren't positioned consistently within their own
+     source frame (HD-G-PE's cutout content sits at 49-77% of its square,
+     Ceraphene's at 24-81%), so any single curve either left one product's
+     caption exposed or washed another product to a ghost. The caption now
+     carries its own solid backdrop chip (see CompactCard), so this only
+     needs to give the card a soft floor — grounding, not protection. */
+  --product-scrim: linear-gradient(180deg, transparent 0%, transparent 62%, oklch(0.975 0.007 85 / 0.30) 84%, oklch(0.965 0.009 85 / 0.50) 100%);
   --product-shadow-hero: drop-shadow(0 26px 34px oklch(0.50 0.035 62 / 0.26)) drop-shadow(0 10px 16px oklch(0.45 0.03 60 / 0.15));
   --product-shadow: drop-shadow(0 18px 24px oklch(0.50 0.035 62 / 0.22)) drop-shadow(0 6px 11px oklch(0.45 0.03 60 / 0.13));
   --product-lift: contrast(1.03) saturate(1.04);
@@ -653,10 +668,18 @@
   --plate-ink: oklch(0.965 0.008 85);
   --plate-ink-top: oklch(0.975 0.008 85);
   --plate-blend: multiply;
-  --plate-rim: radial-gradient(60% 50% at 82% 18%, oklch(0.78 0.05 60 / 0.14), transparent 60%);
-  --plate-depth: radial-gradient(70% 55% at 18% 78%, oklch(0.76 0.04 240 / 0.12), transparent 65%);
-  --plate-breath: radial-gradient(55% 45% at 50% 50%, oklch(0.88 0.02 235 / 0.06), transparent 70%);
-  --plate-vignette: radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.58 0.012 265 / 0.16) 100%);
+  /* This plate is `position: fixed` (see CinematicPageShell) — it stays
+     pinned behind the ENTIRE page, not just the hero, so its alpha is
+     visible at every scroll depth on every internal page. "Heavily
+     atmospheric" was tuned for the dark theme's near-black ground; on paper
+     the same values (plus the wash-min floor already pushing the backdrop
+     photo toward transparent) read as a lingering fog behind the whole
+     page. Roughly halved, multiply blend and colours unchanged — the
+     atmosphere stays, it just stops competing with the content above it. */
+  --plate-rim: radial-gradient(60% 50% at 82% 18%, oklch(0.78 0.05 60 / 0.07), transparent 60%);
+  --plate-depth: radial-gradient(70% 55% at 18% 78%, oklch(0.76 0.04 240 / 0.06), transparent 65%);
+  --plate-breath: radial-gradient(55% 45% at 50% 50%, oklch(0.88 0.02 235 / 0.03), transparent 70%);
+  --plate-vignette: radial-gradient(115% 78% at 50% 50%, transparent 38%, oklch(0.58 0.012 265 / 0.08) 100%);
 }
 
 @supports (height: 100dvh) {

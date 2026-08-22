@@ -955,11 +955,12 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         imgClassName="-translate-y-[11%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />
-      {/* Reading scrim. Ramps to near-opaque higher up the card (~55% rather
-          than ~84%) so the product still reads as a lit object in the upper
-          two-thirds while the caption block below always sits on a solid
-          base — previously the centred product bled through the domain and
-          metric lines and both fought each other. */}
+      {/* Grounding wash only now — legibility for the caption below comes
+          from its own backdrop chip, not from this gradient. A percentage-
+          based scrim can't serve every product: HD-G-PE's cutout sits low
+          in its own frame (content spans 49-77% of the source square) while
+          Ceraphene's sits high (24-81%), so the same curve either left text
+          exposed on one or washed the product to a ghost on the other. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -973,7 +974,9 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Still
         </span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 z-10 p-3.5 md:p-4">
+      {/* The chip is the actual legibility mechanism — opaque enough to read
+          against any product, whatever sits behind it. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-[var(--surface-chip)] p-3.5 backdrop-blur-md md:p-4">
         <p className="truncate font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
