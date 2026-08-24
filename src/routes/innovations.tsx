@@ -887,6 +887,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
         hero
+        tintHue={domainHue(item.domain)}
         imgClassName="opacity-[0.98] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow-hero) var(--product-lift)" }}
       />
@@ -933,6 +934,40 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   );
 }
 
+/**
+ * Domain light — an oklch hue per sector, keyed off the domain's leading
+ * segment so a new product inherits its family's light automatically and only
+ * a genuinely new sector needs a line here. Hues are grouped, not unique per
+ * product: the grid should read as a catalogue with sectors in it, not as 25
+ * differently-coloured cards. Anything unmapped falls through to the neutral
+ * stage, which is the current look.
+ */
+const DOMAIN_HUE: Record<string, number> = {
+  Construction: 250,      // cool mineral — cement, aggregate
+  Infrastructure: 250,
+  Solar: 65,              // amber
+  Ceramics: 70,           // warm stone
+  Coatings: 70,
+  Polymers: 300,
+  "Energy Storage": 255,  // deep blue
+  "Grid Storage": 255,
+  Hydrogen: 220,          // cyan
+  Thermal: 45,            // copper
+  "Thermal Power": 45,
+  Tribology: 45,
+  Textiles: 85,           // warm sand
+  "Smart Textiles": 85,
+  Mobility: 235,          // steel
+  Defence: 235,
+  Water: 205,             // teal
+  "Atmospheric Water": 205,
+  Composites: 265,        // graphite
+};
+
+function domainHue(domain: string): number | undefined {
+  return DOMAIN_HUE[domain.split("·")[0].trim()];
+}
+
 function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
@@ -966,6 +1001,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
+        tintHue={domainHue(item.domain)}
         imgClassName="max-sm:p-[16%] sm:p-[9%] max-sm:-translate-y-[24%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />

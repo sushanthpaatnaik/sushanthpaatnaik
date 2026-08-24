@@ -16,6 +16,14 @@ interface TiltImageProps {
   children?: ReactNode;
   /** Reduce inner padding to increase product authority on flagship cards. */
   hero?: boolean;
+  /**
+   * oklch hue angle for this card's domain, giving each sector its own light
+   * without breaking the shared cyclorama. Sits directly on the cyc and under
+   * the whole light rig, so the key, floor, contact shadow, rim and vignette
+   * all still composite over it and grounding is unchanged. Omit for the
+   * neutral stage.
+   */
+  tintHue?: number;
 }
 
 function useReducedMotion() {
@@ -59,6 +67,7 @@ export function Tilt3DSurface({
   imgStyle,
   children,
   hero = false,
+  tintHue,
 }: TiltImageProps) {
   const reduced = useReducedMotion();
   // On touch/coarse-pointer devices: disable all repeat:Infinity animations
@@ -86,6 +95,24 @@ export function Tilt3DSurface({
             "var(--stage-cyc)",
         }}
       />
+
+      {/* Domain light. The one thing that differentiates a sector's cards,
+          kept as a wash of coloured light on the existing cyclorama rather
+          than a photograph: it costs no assets, and because it rides on
+          tokens it re-lights per theme — `screen` to add a glow on graphite,
+          `multiply` to tint the paper — which is exactly what a photographic
+          background could not do. */}
+      {tintHue != null && (
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 82% 66% at 50% 36%, oklch(var(--stage-tint-l) var(--stage-tint-c) ${tintHue}), transparent 74%)`,
+            opacity: "var(--stage-tint-opacity)" as unknown as number,
+            mixBlendMode: "var(--stage-tint-blend)" as React.CSSProperties["mixBlendMode"],
+          }}
+        />
+      )}
 
       {/* Volumetric key light haze — soft top diffusion */}
       <div
