@@ -333,6 +333,7 @@ function InnovationsPage() {
       // video there loses about a third of its width to object-cover; the hero
       // is 16/10 and shows it nearly whole.
       "Coalorix",
+      "Pyronex",
     ]);
     /**
      * Verified company product pages. Built by rendering every candidate url
@@ -379,6 +380,7 @@ function InnovationsPage() {
       "Ignitron D": "Diesel fleet · Combustion systems",
       Lubritron: "Engine internals · Friction-reduction",
       Coalorix: "Thermal plant · Boiler combustion",
+      Pyronex: "Timber siding · Direct flame test",
     };
     setActive({
       title: it.title,
@@ -399,6 +401,7 @@ function InnovationsPage() {
         "Ignitron D": "/videos/ignitron-d.mp4",
         Lubritron: "/videos/lubritron.mp4",
         Coalorix: "/videos/coalorix.mp4",
+        Pyronex: "/videos/pyronex.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
