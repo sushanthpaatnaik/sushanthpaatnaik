@@ -334,6 +334,7 @@ function InnovationsPage() {
       // is 16/10 and shows it nearly whole.
       "Coalorix",
       "Pyronex",
+      "Bitumax",
     ]);
     /**
      * Verified company product pages. Built by rendering every candidate url
@@ -381,6 +382,7 @@ function InnovationsPage() {
       Lubritron: "Engine internals · Friction-reduction",
       Coalorix: "Thermal plant · Boiler combustion",
       Pyronex: "Timber siding · Direct flame test",
+      Bitumax: "Bitumen binder · Drop-in dosing",
     };
     setActive({
       title: it.title,
@@ -402,6 +404,7 @@ function InnovationsPage() {
         Lubritron: "/videos/lubritron.mp4",
         Coalorix: "/videos/coalorix.mp4",
         Pyronex: "/videos/pyronex.mp4",
+        Bitumax: "/videos/bitumax.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
