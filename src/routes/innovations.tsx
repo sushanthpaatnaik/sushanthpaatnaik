@@ -980,43 +980,28 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
       aria-label={`Open product inspection for ${item.title}`}
-      /* aspect-[3/2] on mobile keeps a full-width card from becoming very tall
-         now that these stack in a single column; 4/3 returns from sm up where
-         two or three sit side by side. */
-      className="group relative aspect-[3/2] sm:aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+      /* Stacked geometry rather than an aspect-ratio box with the caption
+         floated over it. The overlay version had to spend ~42% of the card
+         on an opaque chip to keep the text legible, which is exactly the
+         space the product itself needed — the tallest cutouts were sliced
+         in half by it. Here the media keeps a full 4/3 frame to
+         itself and the caption sits below it in normal flow, on the card's
+         own plate, so the text needs no chip, no blur and no scrim to be
+         legible whatever the product behind it is doing. */
+      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
       style={{ background: "var(--product-plate)" }}
     >
-      {/* Mobile: the caption chip covers ~51% of the single-column card
-          (measured 118.5px of 233px at 390 wide), and -translate-y-[11%]
-          wasn't nearly enough to clear it — the tallest cutouts (Ignitron D,
-          content to 91% of its own frame) still had ~60px sliced off under
-          the opaque chip. -24% alone would do it but pushes some products'
-          tops uncomfortably close to the card edge, so the fix splits the
-          work: max-sm:p-[16%] shrinks the rendered product (object-contain
-          padding is width-relative per CSS, so this scales with the card)
-          and max-sm:-translate-y-[24%] lifts what's left clear, verified
-          against the tallest content fraction in the catalogue (Ignitron D)
-          with several px of margin. sm+ resets both to the desktop values,
-          where cards are narrower and centring was already correct. */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      {/* No -translate-y / extra padding here any more: both existed purely
+          to lift the product clear of the overlaid caption chip, and with the
+          caption moved below there is nothing to dodge. The product gets the
+          centre of its own frame back. */}
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
         tintHue={domainHue(item.domain)}
-        imgClassName="max-sm:p-[16%] sm:p-[9%] max-sm:-translate-y-[24%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+        imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
-      />
-      {/* Grounding wash only now — legibility for the caption below comes
-          from its own backdrop chip, not from this gradient. A percentage-
-          based scrim can't serve every product: HD-G-PE's cutout sits low
-          in its own frame (content spans 49-77% of the source square) while
-          Ceraphene's sits high (24-81%), so the same curve either left text
-          exposed on one or washed the product to a ghost on the other. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: "var(--product-scrim)",
-        }}
       />
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
         <span className="h-px w-5 bg-accent/60" />
@@ -1024,9 +1009,12 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           Still
         </span>
       </div>
-      {/* The chip is the actual legibility mechanism — opaque enough to read
-          against any product, whatever sits behind it. */}
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-[var(--surface-chip)] p-3.5 backdrop-blur-md md:p-4">
+      </div>
+
+      {/* In flow, on the card's own plate — so it needs no chip, no blur and
+          no scrim to be legible, whatever the photograph behind the media
+          happens to be doing. */}
+      <div className="border-t border-[var(--product-border)] p-3.5 md:p-4">
         <p className="truncate font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
           {item.domain}
         </p>
