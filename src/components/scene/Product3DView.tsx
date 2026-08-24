@@ -929,15 +929,44 @@ export function Product3DModal({
                   )}
                 </div>
               ) : (
-                /* Islanded and given a foot, because this frame renders
-                   item.img — the studio PHOTOGRAPH, not the cut-out — and 16
-                   of the 25 have a light background in their bottom strip
-                   while 9 are dark. The caption printed straight onto that
-                   had no ground in either theme: white on a 241-luminance
-                   photo is as invisible in the dark theme as graphite is on
-                   paper. The scrim gives it one, and the island keeps the
-                   ink light over it. */
-                <div className="theme-dark-island relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-sunken)]">
+                /* Not an island, for the same reason the largeApplicationFrame
+                   products' "Engineered Artifact" box below isn't one: this
+                   frame holds item.img — which is it.cutout, the transparent
+                   cut-out, not a photograph — on a CSS cyclorama rather than a
+                   fixed dark plate. The old theme-dark-island + flat surface
+                   here was leftover from when this box genuinely held a
+                   photograph with an unpredictable light/dark bottom strip;
+                   it hasn't since img was aliased to the cutout, so every one
+                   of the ~18 non-hero-frame products (Graphenodes, Thermene,
+                   Texaphene, HD-G-PE, Bitumax and the rest) was stuck showing
+                   its product on a graphite plate even on paper — the one
+                   dark card left in an otherwise light panel, and the exact
+                   thing the largeApplicationFrame comment below already warns
+                   against. Same cyclorama, same tokens, so it's lit for paper
+                   exactly as the grid cards and the Engineered Artifact box
+                   already are. */
+                <div className="group relative aspect-[1.05/1] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--photo-plate)]">
+                  {/* Studio cyclorama backdrop */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "var(--panel-stage-cyc)",
+                    }}
+                  />
+                  {/* Soft top diffusion */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-[10%] top-[5%] h-[28%] rounded-[50%] opacity-55 blur-3xl"
+                    style={{ background: "var(--stage-key)" }}
+                  />
+                  {/* Ground contact shadow */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute bottom-[10%] left-1/2 h-[6%] w-[64%] -translate-x-1/2 rounded-[50%] opacity-85 blur-2xl"
+                    style={{ background: "var(--panel-stage-contact)" }}
+                  />
                   <motion.img
                     key={item.img}
                     src={item.img}
@@ -946,17 +975,14 @@ export function Product3DModal({
                     initial={{ opacity: 0, scale: 1.015 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[5.5%] py-[8%]"
-                    style={{ filter: "contrast(1.02) saturate(0.96) brightness(0.98) var(--media-lift)" }}
+                    className="absolute inset-0 h-full w-full object-contain px-[3%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    style={{ filter: "var(--panel-stage-shadow)" }}
                   />
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        "var(--panel-vig-c)",
-                    }}
-                  />
+                  {/* Industrial corner brackets */}
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute left-2.5 bottom-2.5 h-3.5 w-3.5 border-l border-b border-foreground/30" />
+                  <div aria-hidden className="pointer-events-none absolute right-2.5 bottom-2.5 h-3.5 w-3.5 border-r border-b border-foreground/30" />
                   <FilmGrain opacity={0.05} />
                   {/* One flex row rather than a bottom-left and a bottom-right
                       box. Independently positioned, the two captions ran into
@@ -964,7 +990,6 @@ export function Product3DModal({
                       interleaved into "ARCHIVE · STU D/I2O. C8A5PMTM URE ·
                       CINEMA". Sharing a row they wrap instead of collide, at
                       any width. */}
-                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-[image:var(--panel-media-foot)]" />
                   <div className="pointer-events-none absolute inset-x-5 bottom-5 z-10 flex flex-wrap items-end justify-between gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-[0.34em]">
                     <span className="text-foreground/70">Archive · Studio capture</span>
                     <span className="text-foreground/45">ƒ/2.0 · 85mm · cinema</span>
