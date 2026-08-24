@@ -448,7 +448,16 @@
   --surface-veil-strong: oklch(0.97 0.008 85 / 0.88);
   --surface-glass:       oklch(0.99 0.006 85 / 0.78);
   --surface-glass-soft:  oklch(0.965 0.008 85 / 0.72);
-  --surface-chip:        oklch(0.99 0.006 85 / 0.70);
+  /* Opaque rather than a glass tint: this is the compact product card's
+     caption backdrop, which covers most of the card's lower half and
+     sits directly over the Tilt3DSurface stage's warm-grey contact
+     shadow. At 0.70 alpha that shadow blob showed through as a smudge
+     behind the title/eyebrow text — invisible on the dark theme's near-
+     black chip over a graphite shadow, but plain on paper. 0.94 still
+     left a faint trace on the darkest contact shadows, so this is fully
+     opaque; backdrop-blur on the caption element is then a no-op, which
+     is harmless. */
+  --surface-chip:        oklch(0.99 0.006 85 / 1);
   --surface-hairline:    oklch(0.235 0.006 260 / 0.11);
   --surface-hairline-strong: oklch(0.235 0.006 260 / 0.26);
 
