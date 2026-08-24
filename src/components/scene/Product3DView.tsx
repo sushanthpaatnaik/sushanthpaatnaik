@@ -33,6 +33,8 @@ interface TiltImageProps {
    */
   bgSrc?: string;
   contextual?: boolean;
+  /** Per-card exposure multiplier applied on top of --stage-ctx-bg-filter. */
+  bgExposure?: number;
 }
 
 function useReducedMotion() {
@@ -79,6 +81,7 @@ export function Tilt3DSurface({
   tintHue,
   bgSrc,
   contextual = false,
+  bgExposure,
 }: TiltImageProps) {
   const reduced = useReducedMotion();
   // On touch/coarse-pointer devices: disable all repeat:Infinity animations
@@ -117,7 +120,9 @@ export function Tilt3DSurface({
           className="absolute inset-0 h-full w-full scale-105 object-cover"
           style={{
             opacity: "var(--stage-ctx-bg-opacity)" as unknown as number,
-            filter: "var(--stage-ctx-bg-filter)",
+            filter: bgExposure
+              ? `var(--stage-ctx-bg-filter) brightness(${bgExposure})`
+              : "var(--stage-ctx-bg-filter)",
           }}
         />
       )}

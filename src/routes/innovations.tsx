@@ -889,6 +889,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         hero
         tintHue={domainHue(item.domain)}
         bgSrc={item.application}
+        bgExposure={CONTEXT_EXPOSURE[item.title]}
         contextual
         imgClassName="opacity-[0.98] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow-hero) var(--product-lift)" }}
@@ -944,6 +945,46 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
  * differently-coloured cards. Anything unmapped falls through to the neutral
  * stage, which is the current look.
  */
+/**
+ * Per-card exposure compensation for the contextual ground.
+ *
+ * The application photographs were never shot as a set: measured over their
+ * own pixels their mean luminance runs 21 (Ignitron P) to 124 (Pyronex), a
+ * six-fold spread. One global brightness filter cannot serve both ends — it
+ * either blows the bright frames out or leaves the dark ones as a black
+ * rectangle, which is the "some cards nearly white while others heavily grey"
+ * failure. This multiplies the shared filter per product to bring every
+ * ground to a common target of 48, clamped to 0.55-1.75 so no single frame is
+ * pushed far enough to band or posterise. Anything already within 6% of
+ * target is absent and simply inherits the shared filter.
+ *
+ * Scoped to the decorative background layer only: the same photographs are
+ * shown at full strength in the inspection panel, where they are documentary
+ * and must not be re-graded.
+ */
+const CONTEXT_EXPOSURE: Record<string, number> = {
+  "Aerophenter": 0.49,
+  "Aquamax": 1.17,
+  "Armophene": 1.23,
+  "Bitumax": 0.91,
+  "Ceraphene": 1.17,
+  "Coalorix": 1.23,
+  "Graphenodes": 1.26,
+  "Graphosite": 1.26,
+  "Graphyre": 1.78,
+  "HD-G-PE": 1.09,
+  "Hydrocell": 1.55,
+  "Ignitron P": 2.1,
+  "Lubritron": 1.14,
+  "Mariphene": 0.7,
+  "Pyronex": 0.4,
+  "Rustene": 1.17,
+  "Thermaphene": 0.92,
+  "Thermene": 0.75,
+  "Vitraphene": 0.59,
+  "Voltaphene": 0.77,
+};
+
 const DOMAIN_HUE: Record<string, number> = {
   Construction: 250,      // cool mineral — cement, aggregate
   Infrastructure: 250,
@@ -1008,6 +1049,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         alt={`${item.title} — ${item.body}`}
         tintHue={domainHue(item.domain)}
         bgSrc={item.application}
+        bgExposure={CONTEXT_EXPOSURE[item.title]}
         contextual
         imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
