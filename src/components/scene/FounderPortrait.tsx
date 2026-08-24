@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import editorial from "@/assets/founder-editorial.webp";
+import editorialLight from "@/assets/founder-editorial-light.webp";
 import lab from "@/assets/founder-lab-portrait.webp";
 
 type Variant = "editorial" | "documentary";
@@ -48,6 +49,12 @@ export default function FounderPortrait({
 }: FounderPortraitProps) {
   const src = srcOverride ?? (variant === "documentary" ? lab : editorial);
   const isDoc = variant === "documentary";
+  /* Only the /about page's default editorial call (no src override) gets the
+     paired light-theme photo. It's a naturally lit outdoor portrait, not a
+     dark plate that needs rescuing onto paper, so it skips the cinematic
+     grading stack built for the graphite photo below — mark-on-graphite /
+     mark-on-paper is the same dual-asset mechanism the outlet logos use. */
+  const isEditorialDefault = variant === "editorial" && !srcOverride;
 
   return (
     <motion.figure
@@ -137,31 +144,46 @@ export default function FounderPortrait({
             loading="lazy"
             decoding="async"
             className={
-              isDoc
+              (isDoc
                 ? "absolute inset-0 h-full w-full object-cover object-[32%_center] md:object-[center_center] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.04] [filter:grayscale(0.3)_contrast(1.05)_saturate(0.55)_brightness(0.78)_var(--photo-filter)]"
-                : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)_var(--photo-filter)]"
+                : "absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03] [filter:grayscale(0.22)_contrast(1.03)_saturate(0.68)_brightness(0.9)_var(--photo-filter)]") +
+              (isEditorialDefault ? " mark-on-graphite" : "")
             }
           />
+          {/* Naturally lit outdoor shot — shown as itself on paper rather
+              than run through the graphite portrait's grading stack. */}
+          {isEditorialDefault && (
+            <img
+              src={editorialLight}
+              alt={alt ?? "Sushanth Paatnaik — editorial portrait"}
+              loading="lazy"
+              decoding="async"
+              className="mark-on-paper absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03]"
+            />
+          )}
 
           {/* Lifts the blacks so a dark photograph reads as a plate on paper
               rather than a hole in it. Transparent in the dark theme, where
-              `screen` with a fully transparent colour is the identity. */}
+              `screen` with a fully transparent colour is the identity. Only
+              the graphite photo needs this — the light-theme portrait below
+              is already lit for paper, so this whole rescue stack is scoped
+              to mark-on-graphite when the pair is in play. */}
           <div
             aria-hidden
-            className="absolute inset-0 mix-blend-screen"
+            className={`absolute inset-0 mix-blend-screen${isEditorialDefault ? " mark-on-graphite" : ""}`}
             style={{ background: "var(--photo-veil)" }}
           />
           {/* Cinematic grading overlays */}
           <div
             aria-hidden
-            className="absolute inset-0 mix-blend-multiply"
+            className={`absolute inset-0 mix-blend-multiply${isEditorialDefault ? " mark-on-graphite" : ""}`}
             style={{
               background: isDoc ? "var(--photo-grade-doc)" : "var(--photo-grade)",
             }}
           />
           <div
             aria-hidden
-            className="absolute inset-0 mix-blend-soft-light"
+            className={`absolute inset-0 mix-blend-soft-light${isEditorialDefault ? " mark-on-graphite" : ""}`}
             style={{
               background:
                 "radial-gradient(ellipse 55% 50% at 50% 38%, oklch(0.58 0.05 240 / 0.18), transparent 70%)",
@@ -169,7 +191,7 @@ export default function FounderPortrait({
           />
           <div
             aria-hidden
-            className="absolute inset-0 mix-blend-screen"
+            className={`absolute inset-0 mix-blend-screen${isEditorialDefault ? " mark-on-graphite" : ""}`}
             style={{
               background:
                 "radial-gradient(ellipse 28% 36% at 84% 20%, oklch(0.62 0.10 55 / 0.08), transparent 65%)",
@@ -177,7 +199,7 @@ export default function FounderPortrait({
           />
           <div
             aria-hidden
-            className="absolute inset-0 mix-blend-screen"
+            className={`absolute inset-0 mix-blend-screen${isEditorialDefault ? " mark-on-graphite" : ""}`}
             style={{
               background:
                 "radial-gradient(ellipse 30% 36% at 16% 80%, oklch(0.52 0.04 232 / 0.06), transparent 68%)",
