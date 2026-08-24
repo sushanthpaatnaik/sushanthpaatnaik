@@ -948,14 +948,22 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       className="group relative aspect-[3/2] sm:aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
       style={{ background: "var(--product-plate)" }}
     >
-      {/* -translate-y on mobile lifts the product clear of the caption block.
-          In a single-column card the product sits dead-centre and used to
-          overlap the domain and metric lines; from sm up the cards are
-          narrower and the default centring is correct again. */}
+      {/* Mobile: the caption chip covers ~51% of the single-column card
+          (measured 118.5px of 233px at 390 wide), and -translate-y-[11%]
+          wasn't nearly enough to clear it — the tallest cutouts (Ignitron D,
+          content to 91% of its own frame) still had ~60px sliced off under
+          the opaque chip. -24% alone would do it but pushes some products'
+          tops uncomfortably close to the card edge, so the fix splits the
+          work: max-sm:p-[16%] shrinks the rendered product (object-contain
+          padding is width-relative per CSS, so this scales with the card)
+          and max-sm:-translate-y-[24%] lifts what's left clear, verified
+          against the tallest content fraction in the catalogue (Ignitron D)
+          with several px of margin. sm+ resets both to the desktop values,
+          where cards are narrower and centring was already correct. */}
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
-        imgClassName="-translate-y-[11%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
+        imgClassName="max-sm:p-[16%] sm:p-[9%] max-sm:-translate-y-[24%] sm:translate-y-0 opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />
       {/* Grounding wash only now — legibility for the caption below comes
