@@ -331,6 +331,19 @@
   --stage-tint-c: 0.075;
   --stage-tint-opacity: 0.20;
   --stage-tint-blend: screen;
+  /* Contextual ground. The application photographs are dark cinematic frames,
+     so on graphite they must be LIFTED to register at all — darkening them,
+     the instinct on a dark theme, is what made them invisible. */
+  --stage-ctx-bg-opacity: 1;
+  --stage-ctx-bg-filter: blur(2px) saturate(0.8) brightness(1.85) contrast(1.04);
+  --stage-ctx-floor-opacity: 0.16;
+  --stage-ctx-vig-opacity: 0.26;
+  --stage-ctx-head: linear-gradient(180deg, oklch(0.04 0.006 245 / 0.66) 0%, transparent 100%);
+  /* Featured cards print title and metric straight onto the media, so over
+     a photograph they need their own ground. Ramps in BELOW the product —
+     clear to 40% so the bottle keeps its light, solid by the time the text
+     starts — rather than washing the whole frame. */
+  --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.02 0.006 245 / 0.55) 52%, oklch(0.015 0.006 245 / 0.88) 70%, oklch(0.012 0.006 245 / 0.96) 100%);
   --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);
@@ -653,6 +666,14 @@
   --stage-tint-c: 0.105;
   --stage-tint-opacity: 0.23;
   --stage-tint-blend: multiply;
+  /* Same frames on paper: lifted harder still, with contrast dropped, so they
+     read as a watermark in the sheet rather than dark blots on it. */
+  --stage-ctx-bg-opacity: 0.88;
+  --stage-ctx-bg-filter: blur(2px) saturate(0.6) brightness(2.05) contrast(0.84);
+  --stage-ctx-floor-opacity: 0.14;
+  --stage-ctx-vig-opacity: 0.22;
+  --stage-ctx-head: linear-gradient(180deg, oklch(0.995 0.003 85 / 0.78) 0%, transparent 100%);
+  --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.985 0.004 85 / 0.80) 52%, oklch(0.975 0.006 85 / 0.96) 70%, oklch(0.97 0.007 85 / 0.99) 100%);
   --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.90 0.010 80 / 0.34) 46%, oklch(0.868 0.012 78 / 0.72) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.55 0.015 70 / 0.20), transparent);
@@ -1914,6 +1935,19 @@ html.lenis, html.lenis body {
   --stage-tint-c: 0.075;
   --stage-tint-opacity: 0.20;
   --stage-tint-blend: screen;
+  /* Contextual ground. The application photographs are dark cinematic frames,
+     so on graphite they must be LIFTED to register at all — darkening them,
+     the instinct on a dark theme, is what made them invisible. */
+  --stage-ctx-bg-opacity: 1;
+  --stage-ctx-bg-filter: blur(2px) saturate(0.8) brightness(1.85) contrast(1.04);
+  --stage-ctx-floor-opacity: 0.16;
+  --stage-ctx-vig-opacity: 0.26;
+  --stage-ctx-head: linear-gradient(180deg, oklch(0.04 0.006 245 / 0.66) 0%, transparent 100%);
+  /* Featured cards print title and metric straight onto the media, so over
+     a photograph they need their own ground. Ramps in BELOW the product —
+     clear to 40% so the bottle keeps its light, solid by the time the text
+     starts — rather than washing the whole frame. */
+  --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.02 0.006 245 / 0.55) 52%, oklch(0.015 0.006 245 / 0.88) 70%, oklch(0.012 0.006 245 / 0.96) 100%);
   --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);

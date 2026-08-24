@@ -888,6 +888,8 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         alt={`${item.title} — ${item.body}`}
         hero
         tintHue={domainHue(item.domain)}
+        bgSrc={item.application}
+        contextual
         imgClassName="opacity-[0.98] transition-opacity duration-[1400ms] ease-out group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow-hero) var(--product-lift)" }}
       />
@@ -899,7 +901,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--product-scrim-hero)" }}
+        style={{ background: "var(--product-scrim-ctx-hero)" }}
       />
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
@@ -991,7 +993,12 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       className="group relative flex cursor-pointer flex-col overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
       style={{ background: "var(--product-plate)" }}
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      {/* 3/2 on mobile, 4/3 from sm up. In a single-column card the caption
+          now adds its own height BELOW the media, so a 4/3 frame at 390 made
+          each card ~292px of media plus caption — barely one and a half cards
+          on screen across a 25-product catalogue. The shorter mobile frame
+          buys that back without costing the product any room it needs. */}
+      <div className="relative aspect-[3/2] w-full overflow-hidden sm:aspect-[4/3]">
       {/* No -translate-y / extra padding here any more: both existed purely
           to lift the product clear of the overlaid caption chip, and with the
           caption moved below there is nothing to dodge. The product gets the
@@ -1000,6 +1007,8 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
         tintHue={domainHue(item.domain)}
+        bgSrc={item.application}
+        contextual
         imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />

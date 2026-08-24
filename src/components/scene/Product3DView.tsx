@@ -24,6 +24,15 @@ interface TiltImageProps {
    * neutral stage.
    */
   tintHue?: number;
+  /**
+   * Contextual ground — the product's own application photograph, sitting on
+   * the cyclorama and under the whole light rig. Softens the floor and
+   * vignette, which at their default strengths (0.98 and 0.7) leave a
+   * photograph nothing to survive on; the contact shadow is deliberately not
+   * softened, since it is what still seats the product on the surface.
+   */
+  bgSrc?: string;
+  contextual?: boolean;
 }
 
 function useReducedMotion() {
@@ -68,6 +77,8 @@ export function Tilt3DSurface({
   children,
   hero = false,
   tintHue,
+  bgSrc,
+  contextual = false,
 }: TiltImageProps) {
   const reduced = useReducedMotion();
   // On touch/coarse-pointer devices: disable all repeat:Infinity animations
@@ -95,6 +106,21 @@ export function Tilt3DSurface({
             "var(--stage-cyc)",
         }}
       />
+
+      {contextual && bgSrc && (
+        <img
+          src={bgSrc}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full scale-105 object-cover"
+          style={{
+            opacity: "var(--stage-ctx-bg-opacity)" as unknown as number,
+            filter: "var(--stage-ctx-bg-filter)",
+          }}
+        />
+      )}
 
       {/* Domain light. The one thing that differentiates a sector's cards,
           kept as a wash of coloured light on the existing cyclorama rather
@@ -128,6 +154,7 @@ export function Tilt3DSurface({
         style={{
           background:
             "var(--stage-floor)",
+          ...(contextual ? { opacity: "var(--stage-ctx-floor-opacity)" as unknown as number } : null),
         }}
       />
       {/* Hairline horizon */}
@@ -205,6 +232,7 @@ export function Tilt3DSurface({
         style={{
           background:
             "var(--stage-vignette)",
+          ...(contextual ? { opacity: "var(--stage-ctx-vig-opacity)" as unknown as number } : null),
         }}
       />
       <div
@@ -215,6 +243,14 @@ export function Tilt3DSurface({
             "var(--stage-foot)",
         }}
       />
+
+      {contextual && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-[15%]"
+          style={{ background: "var(--stage-ctx-head)" }}
+        />
+      )}
 
       <FilmGrain opacity={0.06} />
       {children}
