@@ -152,6 +152,20 @@ export function Tilt3DSurface({
         style={{ background: "var(--stage-key)" }}
       />
 
+      {/* Separation light. Several products are photographed with a black cap
+          on a black bottle (Ignitron P and D, Bitumax), and against a dark
+          ground the cap BODY lands within a few levels of what is behind it —
+          measured 42 on the asset — so only its rim highlight survives and the
+          bottle reads as though its top were cut off. This lifts the ground
+          behind the subject so a dark crown becomes a silhouette again. Broad
+          and low-alpha so it reads as cyclorama falloff, not a glow ring, and
+          transparent in the light theme where nothing needs separating. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "var(--stage-separation)" }}
+      />
+
       {/* Reflective grounding plane — sub-surface */}
       <div
         aria-hidden

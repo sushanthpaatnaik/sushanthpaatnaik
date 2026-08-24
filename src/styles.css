@@ -296,7 +296,15 @@
   --product-scrim-hero: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.16) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.9) 100%);
   --product-scrim: linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%);
   --product-shadow-hero: drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08));
-  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34));
+  /* The two dark drop-shadows seat the product; the three tight pale ones are
+     a rim. Several products are shot with a black cap on a black bottle
+     (Ignitron P and D, Bitumax) and the cap body renders around luminance 9
+     on a card — against a dark passage of a contextual photograph it has
+     nothing to separate from, so the bottle reads as though its top were cut
+     off. A rim on the SUBJECT works wherever the product happens to sit,
+     which a lift in the background cannot: the background varies per card.
+     Offsets stay at 0 with a small radius so this is an edge, not a glow. */
+  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34)) drop-shadow(0 0 1px oklch(0.78 0.012 235 / 0.55)) drop-shadow(0 -1px 2px oklch(0.72 0.012 235 / 0.40)) drop-shadow(0 0 4px oklch(0.60 0.01 235 / 0.30));
   --product-lift: brightness(1);
 
   --photo-plate: var(--surface-sunken);
@@ -345,6 +353,7 @@
      starts — rather than washing the whole frame. */
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.02 0.006 245 / 0.55) 52%, oklch(0.015 0.006 245 / 0.88) 70%, oklch(0.012 0.006 245 / 0.96) 100%);
   --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
+  --stage-separation: radial-gradient(ellipse 58% 42% at 50% 34%, oklch(0.40 0.012 240 / 0.42), transparent 72%);
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);
   --stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 65%);
@@ -682,6 +691,7 @@
   --stage-ctx-head: linear-gradient(180deg, oklch(0.995 0.003 85 / 0.78) 0%, transparent 100%);
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.985 0.004 85 / 0.80) 52%, oklch(0.975 0.006 85 / 0.96) 70%, oklch(0.97 0.007 85 / 0.99) 100%);
   --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
+  --stage-separation: none;
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.90 0.010 80 / 0.34) 46%, oklch(0.868 0.012 78 / 0.72) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.55 0.015 70 / 0.20), transparent);
   --stage-contact: radial-gradient(ellipse, oklch(0.48 0.028 62 / 0.42), transparent 66%);
@@ -1915,7 +1925,15 @@ html.lenis, html.lenis body {
   --product-scrim-hero: linear-gradient(180deg, oklch(0.02 0.006 245 / 0.16) 0%, transparent 28%, transparent 56%, oklch(0.015 0.006 245 / 0.9) 100%);
   --product-scrim: linear-gradient(180deg, oklch(0.03 0.006 245 / 0.10) 0%, transparent 28%, oklch(0.02 0.006 245 / 0.55) 55%, oklch(0.015 0.006 245 / 0.93) 76%, oklch(0.012 0.006 245 / 0.98) 100%);
   --product-shadow-hero: drop-shadow(0 34px 48px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 28px oklch(0 0 0 / 0.38)) drop-shadow(0 0 28px oklch(0.85 0.02 235 / 0.08));
-  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34));
+  /* The two dark drop-shadows seat the product; the three tight pale ones are
+     a rim. Several products are shot with a black cap on a black bottle
+     (Ignitron P and D, Bitumax) and the cap body renders around luminance 9
+     on a card — against a dark passage of a contextual photograph it has
+     nothing to separate from, so the bottle reads as though its top were cut
+     off. A rim on the SUBJECT works wherever the product happens to sit,
+     which a lift in the background cannot: the background varies per card.
+     Offsets stay at 0 with a small radius so this is an edge, not a glow. */
+  --product-shadow: drop-shadow(0 22px 34px oklch(0 0 0 / 0.72)) drop-shadow(0 10px 18px oklch(0 0 0 / 0.34)) drop-shadow(0 0 1px oklch(0.78 0.012 235 / 0.55)) drop-shadow(0 -1px 2px oklch(0.72 0.012 235 / 0.40)) drop-shadow(0 0 4px oklch(0.60 0.01 235 / 0.30));
   --product-lift: brightness(1);
   --photo-plate: var(--surface-sunken);
   --photo-veil: transparent;
@@ -1956,6 +1974,7 @@ html.lenis, html.lenis body {
      starts — rather than washing the whole frame. */
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.02 0.006 245 / 0.55) 52%, oklch(0.015 0.006 245 / 0.88) 70%, oklch(0.012 0.006 245 / 0.96) 100%);
   --stage-key: radial-gradient(ellipse, oklch(0.88 0.02 235 / 0.22), transparent 70%);
+  --stage-separation: radial-gradient(ellipse 58% 42% at 50% 34%, oklch(0.40 0.012 240 / 0.42), transparent 72%);
   --stage-floor: linear-gradient(180deg, transparent 0%, oklch(0.04 0.006 245 / 0.55) 40%, oklch(0.018 0.006 245 / 0.98) 100%);
   --stage-horizon: linear-gradient(90deg, transparent, oklch(0.7 0.015 235 / 0.5), transparent);
   --stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.92), transparent 65%);
