@@ -384,7 +384,14 @@
   --panel-vig-e: radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%);
   --panel-media-foot: linear-gradient(180deg, transparent 38%, oklch(0.03 0.006 245 / 0.88) 100%);
   --panel-media-foot-tight: linear-gradient(180deg, transparent 22%, oklch(0.03 0.006 245 / 0.78) 100%);
-  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
+  /* The second ellipse is a separation light, not decoration. Products shot
+     with a black cap on a black cyclorama (Ignitron P, Ignitron D, Bitumax)
+     had the cap BODY land within ~10 levels of the ground — measured 16
+     against 6 — so only its rim highlight survived and the bottle read as
+     though its top had been cut off. Lifting the ground behind the subject
+     turns the cap back into a silhouette. Kept broad and low-alpha so it
+     reads as cyclorama falloff rather than a glow behind the product. */
+  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(ellipse 62% 46% at 50% 34%, oklch(0.42 0.012 240 / 0.55), transparent 72%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
   --panel-stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%);
   --panel-stage-shadow: drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06));
   /* screen adds light to a dark ground; multiply removes it from a light
@@ -1982,7 +1989,14 @@ html.lenis, html.lenis body {
   --panel-vig-e: radial-gradient(ellipse at 50% 46%, transparent 60%, oklch(0.02 0.006 245 / 0.3) 95%);
   --panel-media-foot: linear-gradient(180deg, transparent 38%, oklch(0.03 0.006 245 / 0.88) 100%);
   --panel-media-foot-tight: linear-gradient(180deg, transparent 22%, oklch(0.03 0.006 245 / 0.78) 100%);
-  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
+  /* The second ellipse is a separation light, not decoration. Products shot
+     with a black cap on a black cyclorama (Ignitron P, Ignitron D, Bitumax)
+     had the cap BODY land within ~10 levels of the ground — measured 16
+     against 6 — so only its rim highlight survived and the bottle read as
+     though its top had been cut off. Lifting the ground behind the subject
+     turns the cap back into a silhouette. Kept broad and low-alpha so it
+     reads as cyclorama falloff rather than a glow behind the product. */
+  --panel-stage-cyc: radial-gradient(ellipse at 50% 22%, oklch(0.82 0.02 235 / 0.16), transparent 55%), radial-gradient(ellipse 62% 46% at 50% 34%, oklch(0.42 0.012 240 / 0.55), transparent 72%), radial-gradient(circle at 50% 110%, oklch(0 0 0 / 0.9), transparent 60%), linear-gradient(180deg, oklch(0.09 0.008 245) 0%, oklch(0.045 0.008 245) 55%, oklch(0.02 0.006 245) 100%);
   --panel-stage-contact: radial-gradient(ellipse, oklch(0 0 0 / 0.95), transparent 65%);
   --panel-stage-shadow: drop-shadow(0 36px 44px oklch(0 0 0 / 0.78)) drop-shadow(0 18px 22px oklch(0 0 0 / 0.45)) drop-shadow(0 0 24px oklch(0.85 0.02 235 / 0.06));
   --background: oklch(0.06 0 0);
