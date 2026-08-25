@@ -936,7 +936,9 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       >
         <div className="relative aspect-[16/10] w-full overflow-hidden">
           <SceneMedia item={item} position="inset-x-0 w-full" />
-          <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+          {/* Chipped for the same reason as the label opposite: this sits on a
+              photograph now, not on a cyclorama this component controls. */}
+          <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] backdrop-blur-sm px-2.5 py-1.5">
             <span className="h-px w-6 bg-accent/70" />
             <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
               Archive entry
@@ -1006,7 +1008,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         style={{ background: "var(--product-scrim-ctx-hero)" }}
       />
       </>
-      <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+      <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] backdrop-blur-sm px-2.5 py-1.5">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
           Archive entry
@@ -1225,7 +1227,11 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />
       )}
-      <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+        {/* The eyebrow sits directly on the media. That was fine over a
+            cyclorama this component controlled; over a photograph it has no
+            ground of its own and washes out on a bright frame. It takes the
+            same chip as the label opposite it, so both read on any image. */}
+      <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] backdrop-blur-sm px-2 py-1">
         <span className="h-px w-5 bg-accent/60" />
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent/75">
           Still
