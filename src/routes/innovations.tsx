@@ -69,6 +69,15 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
 import sceneGraphacrete from "@/assets/innovations/scenes/graphacrete.webp";
+import sceneGraffisol from "@/assets/innovations/scenes/graffisol.webp";
+import sceneCeraphene from "@/assets/innovations/scenes/ceraphene.webp";
+import sceneHdgpe from "@/assets/innovations/scenes/hdgpe.webp";
+import sceneGraphenodes from "@/assets/innovations/scenes/graphenodes.webp";
+import sceneThermene from "@/assets/innovations/scenes/thermal-paste.webp";
+import sceneTexaphene from "@/assets/innovations/scenes/graphene-fabric.webp";
+import sceneIgnitronD from "@/assets/innovations/scenes/ignitron-d.webp";
+import sceneCoalorix from "@/assets/innovations/scenes/coalorix.webp";
+import sceneAquamax from "@/assets/innovations/scenes/aquamax.webp";
 import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
 import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
@@ -158,6 +167,13 @@ type Item = {
       panel is unaffected: it keeps the studio artifact frame and, where one
       exists, the application film. */
   scene?: string;
+  /** How the scene photograph meets its frame. "contain" (the default) is for
+      a source taller than the frame — it is shown whole over a blurred copy of
+      itself, because cropping would cut the artifact. "cover" is for a source
+      already close to the frame's own aspect, where filling it edge to edge
+      costs nothing: a 4:3 scene loses 8% top and bottom in the 16/10 hero and
+      nothing at all in the 4/3 card. */
+  sceneFit?: "cover" | "contain";
   domain: string;
   status: string;
   featured?: boolean;
@@ -168,10 +184,10 @@ type Item = {
 
 const items: Item[] = [
   { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, featured: true },
-  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, featured: true },
-  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
-  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
-  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes },
+  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, scene: sceneGraffisol, sceneFit: "cover", featured: true },
+  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene, scene: sceneCeraphene, sceneFit: "cover" },
+  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe, scene: sceneHdgpe, sceneFit: "cover" },
+  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes, scene: sceneGraphenodes, sceneFit: "cover" },
   /* Both co-developed with Monoatom Labs, and the only two programmes here that
      arrived with a single photograph instead of three. An earlier pass filled
      their application slot by re-cropping and regrading that one bench macro,
@@ -187,19 +203,19 @@ const items: Item[] = [
      further down.) If a future entry arrives without one, leave `application` off and
      let the panel drop the frame. Do not reach for `img`: that is what produced
      the duplicate. */
-  { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste },
-  { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric },
-  { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, specs: [
+  { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste, scene: sceneThermene, sceneFit: "cover" },
+  { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric, scene: sceneTexaphene, sceneFit: "cover" },
+  { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, scene: sceneIgnitronD, sceneFit: "cover", specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
     { k: "Emissions", v: "20%", note: "Reduced emissions output" },
     { k: "Dose", v: "0.05%", note: "Optimized additive integration" },
   ], positioning: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", applicationContext: ["Heavy commercial vehicles", "Logistics infrastructure", "Mining / fleet systems", "Industrial diesel engines"] },
-  { title: "Coalorix", stage: "Pilot", domain: "Thermal Power · Combustion", status: "Plant pilot", metric: "15% optimized coal utilization", body: "Nano-engineered coal combustion optimization technology for thermal plants, industrial furnaces, and energy infrastructure.", img: imgCoalorix, cutout: cutCoalorix, application: appCoalorix, featured: true, specs: [
+  { title: "Coalorix", stage: "Pilot", domain: "Thermal Power · Combustion", status: "Plant pilot", metric: "15% optimized coal utilization", body: "Nano-engineered coal combustion optimization technology for thermal plants, industrial furnaces, and energy infrastructure.", img: imgCoalorix, cutout: cutCoalorix, application: appCoalorix, scene: sceneCoalorix, sceneFit: "cover", featured: true, specs: [
     { k: "Coal Savings", v: "15%", note: "Optimized coal utilization" },
     { k: "Emissions", v: "35%", note: "Reduced emissions output" },
     { k: "Dose", v: "0.01%", note: "Combustion optimization integration" },
   ], positioning: "Nano-engineered coal combustion optimization technology for thermal plants, industrial furnaces, and energy infrastructure.", applicationContext: ["Thermal power plants", "Industrial combustion systems", "Boiler / furnace optimization", "Energy-efficiency infrastructure"] },
-  { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, cutout: cutAquamax, application: appAquamax, featured: true },
+  { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, cutout: cutAquamax, application: appAquamax, scene: sceneAquamax, sceneFit: "cover", featured: true },
   { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "15% combustion efficiency improvement", body: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", img: imgIgnitronP, cutout: cutIgnitronP, application: appIgnitronP, specs: [
     { k: "Fuel Savings", v: "15%", note: "Combustion efficiency improvement" },
     { k: "Emissions", v: "10%", note: "Reduced emissions output" },
@@ -216,11 +232,11 @@ const items: Item[] = [
   { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene },
   { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter },
   { title: "Vitraphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgVitraphene, cutout: cutVitraphene, application: appVitraphene },
-  { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
+  { title: "Voltaphene", stage: "Commercial", domain: "Grid Storage", status: "Commercial stage", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
   { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, featured: true },
   { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, featured: true },
-  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax },
-  { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
+  { title: "Bitumax", stage: "Pilot", domain: "Infrastructure · Bitumen", status: "Pilot stage", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax },
+  { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Pilot stage", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
   { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre },
   { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite },
   { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene },
@@ -900,31 +916,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
            and cut the bottle in half, and a centred contain would put the
            title straight across it. */
         <>
-          <img
-            src={item.scene}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 h-full w-full scale-110 object-cover"
-            style={{ filter: "var(--scene-backdrop-filter)" }}
-          />
-          <img
-            src={item.scene}
-            alt={`${item.title} — ${item.body}`}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-y-0 right-0 h-full w-[46%] object-contain object-right md:w-[50%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03]"
-            style={{ filter: "var(--scene-img-filter)" }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background: "var(--scene-vignette)",
-              opacity: "var(--scene-vignette-opacity)" as unknown as number,
-            }}
-          />
+          <SceneMedia item={item} position="right-0 w-[46%] object-right md:w-[50%]" />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -1075,6 +1067,51 @@ function domainHue(domain: string): number | undefined {
   return DOMAIN_HUE[domain.split("·")[0].trim()];
 }
 
+/**
+ * A scene photograph as the media of a card — no cyclorama, floor or contact
+ * shadow, all of which exist to seat a cut-out that has no ground of its own.
+ * A "contain" scene rides over a blurred, scaled copy of the same file so a
+ * source taller than its frame is shown whole; both layers carry loading="lazy"
+ * explicitly, since they share a src and an eager backdrop would warm the cache
+ * for the contained image and silently defeat its lazy attribute.
+ */
+function SceneMedia({ item, position = "" }: { item: Item; position?: string }) {
+  const cover = item.sceneFit === "cover";
+  return (
+    <>
+      {!cover && (
+        <img
+          src={item.scene}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full scale-110 object-cover"
+          style={{ filter: "var(--scene-backdrop-filter)" }}
+        />
+      )}
+      <img
+        src={item.scene}
+        alt={`${item.title} — ${item.body}`}
+        loading="lazy"
+        decoding="async"
+        className={`absolute inset-y-0 h-full transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03] ${
+          cover ? "inset-x-0 w-full object-cover" : `object-contain ${position}`
+        }`}
+        style={{ filter: "var(--scene-img-filter)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "var(--scene-vignette)",
+          opacity: "var(--scene-vignette-opacity)" as unknown as number,
+        }}
+      />
+    </>
+  );
+}
+
 function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
   return (
     <motion.article
@@ -1123,33 +1160,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
            explicitly: they share a src, and an eager backdrop would warm the
            cache for the contained image and silently defeat its lazy
            attribute (see the /recognitions note). */
-        <>
-          <img
-            src={item.scene}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 h-full w-full scale-110 object-cover"
-            style={{ filter: "var(--scene-backdrop-filter)" }}
-          />
-          <img
-            src={item.scene}
-            alt={`${item.title} — ${item.body}`}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-contain transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03]"
-            style={{ filter: "var(--scene-img-filter)" }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background: "var(--scene-vignette)",
-              opacity: "var(--scene-vignette-opacity)" as unknown as number,
-            }}
-          />
-        </>
+        <SceneMedia item={item} position="inset-x-0 w-full" />
       ) : (
       <Tilt3DSurface
         src={item.cutout}
