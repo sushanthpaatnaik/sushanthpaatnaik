@@ -356,16 +356,24 @@
      in a grid of graphite cards. The backdrop is the same file blurred, to
      fill a landscape frame from a square source without cropping the
      subject — see ArchiveMosaic for the same technique. */
-  --scene-img-filter: brightness(0.82) contrast(1.06) saturate(0.88);
+  /* Graded for the page it sits on, not left as the daylight frame it was
+     shot as. Most of these are bright exteriors and lit factory floors; at the
+     old 0.82 they read as lit rectangles punched into a near-black page rather
+     than as plates belonging to it. Pulled down and desaturated into the same
+     family every other photograph on this site carries — /about's film is
+     grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82) and the
+     press marks sit at grayscale(0.55) — with the vignette carrying the edges
+     into the ground. */
+  --scene-img-filter: brightness(0.60) contrast(1.12) saturate(0.60) grayscale(0.22);
   --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
-  --scene-vignette-opacity: 0.5;
+  --scene-vignette-opacity: 0.72;
   /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
      these photographs are portrait, so the artifact is seated right and the
      title sits left over blurred ground. The vertical --product-scrim-ctx-hero
      would have ramped to solid across the bottom two thirds of the frame,
      which on a standing bottle is the bottle. */
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.94) 0%, oklch(0.04 0.006 245 / 0.80) 30%, oklch(0.04 0.006 245 / 0.30) 44%, transparent 56%);
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.95) 0%, oklch(0.04 0.006 245 / 0.90) 34%, oklch(0.04 0.006 245 / 0.66) 48%, oklch(0.04 0.006 245 / 0.22) 58%, transparent 68%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text
@@ -718,11 +726,15 @@
      belongs. The backdrop stays dark enough to seat the contained frame
      rather than letting it float, and the vignette warms instead of
      blackening, matching --press-vignette. */
-  --scene-img-filter: brightness(0.98) contrast(1.04) saturate(0.94);
+  /* On paper the opposite problem: these are daylight frames sitting on an
+     ivory sheet, which is where they already belong. Held at natural exposure
+     with the vignette pulled back, so the page reads as an editorial spread
+     rather than a set of darkened tiles. */
+  --scene-img-filter: brightness(1.02) contrast(1.02) saturate(0.96);
   --scene-backdrop-filter: blur(26px) brightness(0.86) saturate(0.62);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 46%, oklch(0.30 0.01 260 / 0.26) 100%);
-  --scene-vignette-opacity: 0.45;
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.985 0.004 85 / 0.95) 0%, oklch(0.980 0.005 85 / 0.84) 30%, oklch(0.975 0.006 85 / 0.34) 44%, transparent 56%);
+  --scene-vignette-opacity: 0.34;
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.985 0.004 85 / 0.97) 0%, oklch(0.980 0.005 85 / 0.93) 34%, oklch(0.975 0.006 85 / 0.72) 48%, oklch(0.972 0.006 85 / 0.26) 58%, transparent 68%);
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.985 0.004 85 / 0.80) 52%, oklch(0.975 0.006 85 / 0.96) 70%, oklch(0.97 0.007 85 / 0.99) 100%);
   --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
   --stage-separation: none;
@@ -2011,16 +2023,24 @@ html.lenis, html.lenis body {
      in a grid of graphite cards. The backdrop is the same file blurred, to
      fill a landscape frame from a square source without cropping the
      subject — see ArchiveMosaic for the same technique. */
-  --scene-img-filter: brightness(0.82) contrast(1.06) saturate(0.88);
+  /* Graded for the page it sits on, not left as the daylight frame it was
+     shot as. Most of these are bright exteriors and lit factory floors; at the
+     old 0.82 they read as lit rectangles punched into a near-black page rather
+     than as plates belonging to it. Pulled down and desaturated into the same
+     family every other photograph on this site carries — /about's film is
+     grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82) and the
+     press marks sit at grayscale(0.55) — with the vignette carrying the edges
+     into the ground. */
+  --scene-img-filter: brightness(0.60) contrast(1.12) saturate(0.60) grayscale(0.22);
   --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
-  --scene-vignette-opacity: 0.5;
+  --scene-vignette-opacity: 0.72;
   /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
      these photographs are portrait, so the artifact is seated right and the
      title sits left over blurred ground. The vertical --product-scrim-ctx-hero
      would have ramped to solid across the bottom two thirds of the frame,
      which on a standing bottle is the bottle. */
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.94) 0%, oklch(0.04 0.006 245 / 0.80) 30%, oklch(0.04 0.006 245 / 0.30) 44%, transparent 56%);
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.95) 0%, oklch(0.04 0.006 245 / 0.90) 34%, oklch(0.04 0.006 245 / 0.66) 48%, oklch(0.04 0.006 245 / 0.22) 58%, transparent 68%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text

@@ -78,6 +78,19 @@ import sceneTexaphene from "@/assets/innovations/scenes/graphene-fabric.webp";
 import sceneIgnitronD from "@/assets/innovations/scenes/ignitron-d.webp";
 import sceneCoalorix from "@/assets/innovations/scenes/coalorix.webp";
 import sceneAquamax from "@/assets/innovations/scenes/aquamax.webp";
+import sceneIgnitronP from "@/assets/innovations/scenes/ignitron-p.webp";
+import sceneLubritron from "@/assets/innovations/scenes/lubritron.webp";
+import sceneRustene from "@/assets/innovations/scenes/rustene.webp";
+import sceneGryogen from "@/assets/innovations/scenes/gryogen.webp";
+import sceneMariphene from "@/assets/innovations/scenes/mariphene.webp";
+import sceneAerophenter from "@/assets/innovations/scenes/aerophenter.webp";
+import sceneVitraphene from "@/assets/innovations/scenes/vitraphene.webp";
+import sceneVoltaphene from "@/assets/innovations/scenes/voltaphene.webp";
+import sceneArmophene from "@/assets/innovations/scenes/armophene.webp";
+import sceneHydrocell from "@/assets/innovations/scenes/hydrocell.webp";
+import sceneGraphyre from "@/assets/innovations/scenes/graphyre.webp";
+import sceneGraphosite from "@/assets/innovations/scenes/graphosite.webp";
+import sceneThermaphene from "@/assets/innovations/scenes/thermaphene.webp";
 import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
 import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
@@ -183,7 +196,7 @@ type Item = {
 };
 
 const items: Item[] = [
-  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, featured: true },
+  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, sceneFit: "cover", featured: true },
   { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, scene: sceneGraffisol, sceneFit: "cover", featured: true },
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene, scene: sceneCeraphene, sceneFit: "cover" },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe, scene: sceneHdgpe, sceneFit: "cover" },
@@ -216,30 +229,30 @@ const items: Item[] = [
     { k: "Dose", v: "0.01%", note: "Combustion optimization integration" },
   ], positioning: "Nano-engineered coal combustion optimization technology for thermal plants, industrial furnaces, and energy infrastructure.", applicationContext: ["Thermal power plants", "Industrial combustion systems", "Boiler / furnace optimization", "Energy-efficiency infrastructure"] },
   { title: "Aquamax", stage: "Pilot", domain: "Water · Recovery", status: "World-first system", metric: "95%+ recovery · 12–24 mo ROI", body: "World-first hybrid HAMR + HGMC system recovering 95%+ of cooling tower plume water.", img: imgAquamax, cutout: cutAquamax, application: appAquamax, scene: sceneAquamax, sceneFit: "cover", featured: true },
-  { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "15% combustion efficiency improvement", body: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", img: imgIgnitronP, cutout: cutIgnitronP, application: appIgnitronP, specs: [
+  { title: "Ignitron P", stage: "Pilot", domain: "Mobility · Combustion", status: "Field pilot", metric: "15% combustion efficiency improvement", body: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", img: imgIgnitronP, cutout: cutIgnitronP, application: appIgnitronP, scene: sceneIgnitronP, sceneFit: "cover", specs: [
     { k: "Fuel Savings", v: "15%", note: "Combustion efficiency improvement" },
     { k: "Emissions", v: "10%", note: "Reduced emissions output" },
     { k: "Dose", v: "0.2%", note: "Optimized additive integration" },
   ], positioning: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", applicationContext: ["Automotive systems", "Petrol-engine optimization", "Mobility platforms", "Fuel-performance enhancement"] },
-  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "6% fuel savings · 40% wear reduction", body: "Nano-enabled molecular engine oil additive for all engine types — improving fuel efficiency, reducing engine wear, and extending oil life.", img: imgLubritron, cutout: cutLubritron, application: appLubritron, specs: [
+  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "6% fuel savings · 40% wear reduction", body: "Nano-enabled molecular engine oil additive for all engine types — improving fuel efficiency, reducing engine wear, and extending oil life.", img: imgLubritron, cutout: cutLubritron, application: appLubritron, scene: sceneLubritron, sceneFit: "cover", specs: [
     { k: "Fuel Savings", v: "Up to 6%", note: "Optimized fuel efficiency" },
     { k: "Wear Reduction", v: "Up to 40%", note: "Engine friction reduction" },
     { k: "Oil Life", v: "Up to 50%", note: "Extended drain interval" },
     { k: "Dose", v: "0.2%", note: "Optimized lubricant additive integration" },
   ], positioning: "Molecular engine oil additive for all engine types, designed to improve fuel efficiency, reduce engine wear, and extend oil life.", applicationContext: ["All engine types", "Petrol engines", "Diesel engines", "Two-stroke engines"] },
-  { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene, cutout: cutRustene, application: appRustene },
-  { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen, application: appGryogen },
-  { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene },
-  { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter },
-  { title: "Vitraphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgVitraphene, cutout: cutVitraphene, application: appVitraphene },
-  { title: "Voltaphene", stage: "Commercial", domain: "Grid Storage", status: "Commercial stage", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
-  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, featured: true },
-  { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, featured: true },
+  { title: "Rustene", stage: "Pilot", domain: "Coatings · Corrosion", status: "Industrial pilot", metric: "Multi-year corrosion shield", body: "Graphene-based anti-corrosion shield for steel, marine and industrial assets.", img: imgRustene, cutout: cutRustene, application: appRustene, scene: sceneRustene, sceneFit: "cover" },
+  { title: "Gryogen", stage: "Pilot", domain: "Hydrogen · Membranes", status: "Membrane trial", metric: "Selective H₂ separation", body: "Graphene-based hydrogen selection membrane for clean fuel production.", img: imgGryogen, cutout: cutGryogen, application: appGryogen, scene: sceneGryogen, sceneFit: "cover" },
+  { title: "Mariphene", stage: "Pilot", domain: "Water · Desalination", status: "Membrane trial", metric: "Low-energy desalination", body: "Graphene desalination membrane for high-throughput, low-energy water production.", img: imgMariphene, cutout: cutMariphene, application: appMariphene, scene: sceneMariphene, sceneFit: "cover" },
+  { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter, scene: sceneAerophenter, sceneFit: "cover" },
+  { title: "Vitraphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgVitraphene, cutout: cutVitraphene, application: appVitraphene, scene: sceneVitraphene, sceneFit: "cover" },
+  { title: "Voltaphene", stage: "Commercial", domain: "Grid Storage", status: "Commercial stage", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene, scene: sceneVoltaphene, sceneFit: "cover" },
+  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, scene: sceneArmophene, sceneFit: "cover", featured: true },
+  { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, scene: sceneHydrocell, sceneFit: "cover", featured: true },
   { title: "Bitumax", stage: "Pilot", domain: "Infrastructure · Bitumen", status: "Pilot stage", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax },
   { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Pilot stage", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
-  { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre },
-  { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite },
-  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene },
+  { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre, scene: sceneGraphyre, sceneFit: "cover" },
+  { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite, scene: sceneGraphosite, sceneFit: "cover" },
+  { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene, scene: sceneThermaphene, sceneFit: "cover" },
 ];
 
 const filters = ["All", "Commercial", "Pilot", "R&D"] as const;
