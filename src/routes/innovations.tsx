@@ -440,7 +440,7 @@ function InnovationsPage() {
         // the other three. Unlike the application stills, both are genuine
         // first-party product footage rather than illustrative renders.
         "Ignitron D": "/videos/ignitron-d.mp4",
-        Lubritron: "/videos/lubritron-a6e93631.mp4",
+        Lubritron: "/videos/lubritron-3b026bf2.mp4",
         Coalorix: "/videos/coalorix.mp4",
         Pyronex: "/videos/pyronex.mp4",
         Bitumax: "/videos/bitumax.mp4",
