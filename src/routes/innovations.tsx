@@ -91,6 +91,7 @@ import sceneHydrocell from "@/assets/innovations/scenes/hydrocell.webp";
 import sceneGraphyre from "@/assets/innovations/scenes/graphyre.webp";
 import sceneGraphosite from "@/assets/innovations/scenes/graphosite.webp";
 import sceneThermaphene from "@/assets/innovations/scenes/thermaphene.webp";
+import scenePyronex from "@/assets/innovations/scenes/pyronex.webp";
 import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
 import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
@@ -249,7 +250,7 @@ const items: Item[] = [
   { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, scene: sceneArmophene, sceneFit: "cover", featured: true },
   { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, scene: sceneHydrocell, sceneFit: "cover", featured: true },
   { title: "Bitumax", stage: "Pilot", domain: "Infrastructure · Bitumen", status: "Pilot stage", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax },
-  { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Pilot stage", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
+  { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Pilot stage", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex, scene: scenePyronex },
   { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre, scene: sceneGraphyre, sceneFit: "cover" },
   { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite, scene: sceneGraphosite, sceneFit: "cover" },
   { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene, scene: sceneThermaphene, sceneFit: "cover" },
