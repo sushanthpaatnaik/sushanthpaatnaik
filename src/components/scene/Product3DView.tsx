@@ -1183,20 +1183,20 @@ export function Product3DModal({
                   <div className="relative z-10 flex h-full flex-col justify-between gap-5">
                     <div>
                       <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-accent/75">
-                        {item.largeApplicationFrame ? "Application Note" : "Capture Note"}
+                        {hasApplicationMedia ? "Application Note" : "Capture Note"}
                       </p>
                       <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
-                        {item.largeApplicationFrame
+                        {hasApplicationMedia
                           ? "Application context prioritised over studio artifact — the assembly the material sits in, the industrial environment it is specified for, and the scale at which it works."
                           : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
                       </p>
                     </div>
                     <div className="border-t border-foreground/[0.08] pt-3">
                       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
-                        {item.largeApplicationFrame ? "Capture context" : "Optical treatment"}
+                        {hasApplicationMedia ? "Capture context" : "Optical treatment"}
                       </p>
                       <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/62">
-                        {item.largeApplicationFrame
+                        {hasApplicationMedia
                           ? "Application context · illustrative"
                           : "Cinema lens · shallow DOF · 16mm grain"}
                       </p>
