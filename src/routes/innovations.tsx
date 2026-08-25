@@ -907,6 +907,68 @@ function InnovationsPage() {
 }
 
 function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
+  /* A scene hero stacks, exactly like CompactCard: media on top, copy below on
+     the card's own plate. It does NOT print the copy over the photograph the
+     way a cut-out hero does, and the reason is geometric rather than stylistic.
+     Cover fits a 4:3 scene into this 16/10 frame by cropping vertically only —
+     there is no horizontal slack — so the artifact stays wherever the
+     photograph put it, and across the supplied set that is 43-56% of the
+     width: precisely where the copy column ends. Copy and subject then contend
+     for the same band and no amount of scrim tuning settles it. Darkening the
+     ground far enough to carry a title is darkening it far enough to swallow
+     the bottle, which is what happened. Stacked, the whole frame is visible,
+     the copy is on plate, and the hero reads like a larger version of the
+     cards around it instead of a different component. */
+  if (item.scene) {
+    return (
+      <motion.article
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.95, ease: [0.19, 1, 0.22, 1] }}
+        onClick={onOpen}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+        aria-label={`Open product inspection for ${item.title}`}
+        className="group relative flex cursor-pointer flex-col overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
+        style={{ background: "var(--product-plate)" }}
+      >
+        <div className="relative aspect-[16/10] w-full overflow-hidden">
+          <SceneMedia item={item} position="inset-x-0 w-full" />
+          <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+            <span className="h-px w-6 bg-accent/70" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
+              Archive entry
+            </span>
+          </div>
+          <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] px-2.5 py-1.5 backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
+              Scene still
+            </span>
+          </div>
+        </div>
+        <div className="border-t border-[var(--product-border)] p-5 md:p-7">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
+            {item.domain}
+          </p>
+          <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
+            {item.title}
+          </h3>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <span className="h-px w-5 bg-accent/60" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
+              {item.metric}
+            </span>
+          </div>
+          <div className="mt-2.5">
+            <EvidenceBadge stage={item.stage} label={item.status} />
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -921,23 +983,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
       style={{ background: "var(--product-plate)" }}
     >
-      {item.scene ? (
-        /* Shot as a finished scene — see the note on CompactCard. The hero
-           frame is 16/10 and these photographs are portrait, so the artifact
-           is seated RIGHT and the copy runs down the left over blurred
-           ground: object-cover here would keep only 701 of 1402 source rows
-           and cut the bottle in half, and a centred contain would put the
-           title straight across it. */
-        <>
-          <SceneMedia item={item} position="right-0 w-[46%] object-right md:w-[50%]" />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "var(--scene-scrim-hero)" }}
-          />
-        </>
-      ) : (
-        <>
+      <>
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
@@ -959,8 +1005,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         className="pointer-events-none absolute inset-0"
         style={{ background: "var(--product-scrim-ctx-hero)" }}
       />
-        </>
-      )}
+      </>
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
@@ -974,22 +1019,16 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
             that took "Field" off the application slot. "Scene still" is
             descriptive and claims neither a cyclorama nor a real deployment. */}
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
-          {item.scene ? "Scene still" : "Studio still"}
+          Studio still
         </span>
       </div>
       <div
-        className={`absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 ${
-          item.scene ? "pr-[48%] md:pr-[52%]" : "md:pr-[5.5rem]"
-        }`}
+        className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 md:pr-[5.5rem]"
       >
         <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
         </p>
-        <h3
-          className={`mt-2 font-display leading-[1.1] tracking-[-0.02em] text-foreground/98 ${
-            item.scene ? "text-xl md:text-2xl" : "text-2xl md:text-3xl"
-          }`}
-        >
+        <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
           {item.title}
         </h3>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">

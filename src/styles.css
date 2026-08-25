@@ -368,12 +368,6 @@
   --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
   --scene-vignette-opacity: 0.72;
-  /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
-     these photographs are portrait, so the artifact is seated right and the
-     title sits left over blurred ground. The vertical --product-scrim-ctx-hero
-     would have ramped to solid across the bottom two thirds of the frame,
-     which on a standing bottle is the bottle. */
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.95) 0%, oklch(0.04 0.006 245 / 0.90) 34%, oklch(0.04 0.006 245 / 0.66) 48%, oklch(0.04 0.006 245 / 0.22) 58%, transparent 68%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text
@@ -734,7 +728,6 @@
   --scene-backdrop-filter: blur(26px) brightness(0.86) saturate(0.62);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 46%, oklch(0.30 0.01 260 / 0.26) 100%);
   --scene-vignette-opacity: 0.34;
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.985 0.004 85 / 0.97) 0%, oklch(0.980 0.005 85 / 0.93) 34%, oklch(0.975 0.006 85 / 0.72) 48%, oklch(0.972 0.006 85 / 0.26) 58%, transparent 68%);
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.985 0.004 85 / 0.80) 52%, oklch(0.975 0.006 85 / 0.96) 70%, oklch(0.97 0.007 85 / 0.99) 100%);
   --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
   --stage-separation: none;
@@ -2035,12 +2028,6 @@ html.lenis, html.lenis body {
   --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
   --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
   --scene-vignette-opacity: 0.72;
-  /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
-     these photographs are portrait, so the artifact is seated right and the
-     title sits left over blurred ground. The vertical --product-scrim-ctx-hero
-     would have ramped to solid across the bottom two thirds of the frame,
-     which on a standing bottle is the bottle. */
-  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.95) 0%, oklch(0.04 0.006 245 / 0.90) 34%, oklch(0.04 0.006 245 / 0.66) 48%, oklch(0.04 0.006 245 / 0.22) 58%, transparent 68%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text
