@@ -68,6 +68,7 @@ import cutVoltaphene from "@/assets/innovations/cutouts/voltaphene.webp";
 // Application / use-case imagery — shown as the secondary still in the
 // inspection modal. Each one depicts the product's real-world context.
 import appGraphacrete from "@/assets/innovations/applications/graphacrete.webp";
+import sceneGraphacrete from "@/assets/innovations/scenes/graphacrete.webp";
 import appThermalPaste from "@/assets/innovations/applications/thermal-paste.webp";
 import appGrapheneFabric from "@/assets/innovations/applications/graphene-fabric.webp";
 import appGraffisol from "@/assets/innovations/applications/graffisol.webp";
@@ -80,6 +81,7 @@ import appIgnitronD from "@/assets/innovations/applications/ignitron-d.webp";
 import appIgnitronP from "@/assets/innovations/applications/ignitron-p.webp";
 import appLubritron from "@/assets/innovations/applications/lubritron.webp";
 import appBitumax from "@/assets/innovations/applications/bitumax.webp";
+import sceneBitumax from "@/assets/innovations/scenes/bitumax.webp";
 import appRustene from "@/assets/innovations/applications/rustene.webp";
 import appPyronex from "@/assets/innovations/applications/pyronex.webp";
 import appGraphyre from "@/assets/innovations/applications/graphyre.webp";
@@ -149,6 +151,13 @@ type Item = {
       the panel then states the documentation is pending rather than
       re-showing the studio photograph under an "Application" label. */
   application?: string;
+  /** A finished photograph of the artifact already standing in its own
+      environment, used as the catalogue card in place of the cut-out stage.
+      Only for products actually shot that way — a cut-out composited onto a
+      backdrop is the stage treatment and belongs in `cutout`, not here. The
+      panel is unaffected: it keeps the studio artifact frame and, where one
+      exists, the application film. */
+  scene?: string;
   domain: string;
   status: string;
   featured?: boolean;
@@ -158,7 +167,7 @@ type Item = {
 };
 
 const items: Item[] = [
-  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, featured: true },
+  { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, featured: true },
   { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, featured: true },
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe },
@@ -210,7 +219,7 @@ const items: Item[] = [
   { title: "Voltaphene", stage: "Pilot", domain: "Grid Storage", status: "Stack pilot", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene },
   { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, featured: true },
   { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, featured: true },
-  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax },
+  { title: "Bitumax", stage: "R&D", domain: "Infrastructure · Bitumen", status: "R&D · Bench", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax },
   { title: "Pyronex", stage: "R&D", domain: "Coatings · Multifunctional", status: "R&D · Bench", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex },
   { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre },
   { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite },
@@ -883,6 +892,47 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-sm border border-[var(--product-border)] focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/70"
       style={{ background: "var(--product-plate)" }}
     >
+      {item.scene ? (
+        /* Shot as a finished scene — see the note on CompactCard. The hero
+           frame is 16/10 and these photographs are portrait, so the artifact
+           is seated RIGHT and the copy runs down the left over blurred
+           ground: object-cover here would keep only 701 of 1402 source rows
+           and cut the bottle in half, and a centred contain would put the
+           title straight across it. */
+        <>
+          <img
+            src={item.scene}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full scale-110 object-cover"
+            style={{ filter: "var(--scene-backdrop-filter)" }}
+          />
+          <img
+            src={item.scene}
+            alt={`${item.title} — ${item.body}`}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-y-0 right-0 h-full w-[46%] object-contain object-right md:w-[50%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03]"
+            style={{ filter: "var(--scene-img-filter)" }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "var(--scene-vignette)",
+              opacity: "var(--scene-vignette-opacity)" as unknown as number,
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "var(--scene-scrim-hero)" }}
+          />
+        </>
+      ) : (
+        <>
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
@@ -904,6 +954,8 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         className="pointer-events-none absolute inset-0"
         style={{ background: "var(--product-scrim-ctx-hero)" }}
       />
+        </>
+      )}
       <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
         <span className="h-px w-6 bg-accent/70" />
         <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-accent/85">
@@ -912,18 +964,30 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       </div>
       <div className="absolute right-4 top-4 z-10 hidden md:flex items-center gap-2 rounded-sm border border-foreground/[0.08] bg-[var(--surface-chip)] px-2.5 py-1.5 backdrop-blur-sm">
         <span className="h-1.5 w-1.5 rounded-full bg-accent/75" />
+        {/* A scene card is not a studio capture, and this site does not put a
+            provenance label on an image that does not have it — the same rule
+            that took "Field" off the application slot. "Scene still" is
+            descriptive and claims neither a cyclorama nor a real deployment. */}
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
-          Studio still
+          {item.scene ? "Scene still" : "Studio still"}
         </span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 md:pr-[5.5rem]">
+      <div
+        className={`absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 ${
+          item.scene ? "pr-[48%] md:pr-[52%]" : "md:pr-[5.5rem]"
+        }`}
+      >
         <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/55">
           {item.domain}
         </p>
-        <h3 className="mt-2 font-display text-2xl leading-[1.1] tracking-[-0.02em] text-foreground/98 md:text-3xl">
+        <h3
+          className={`mt-2 font-display leading-[1.1] tracking-[-0.02em] text-foreground/98 ${
+            item.scene ? "text-xl md:text-2xl" : "text-2xl md:text-3xl"
+          }`}
+        >
           {item.title}
         </h3>
-        <div className="mt-3 flex items-center gap-3">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <span className="h-px w-5 bg-accent/60" />
           <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-foreground/70">
             {item.metric}
@@ -1044,6 +1108,49 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
           to lift the product clear of the overlaid caption chip, and with the
           caption moved below there is nothing to dodge. The product gets the
           centre of its own frame back. */}
+      {item.scene ? (
+        /* Photographed as a finished scene, so it is shown as one: no
+           cyclorama, no floor, no contact shadow — those exist to seat a
+           cut-out that has no ground of its own, and this frame already has
+           asphalt in it.
+
+           The source is square and the frame is landscape, so object-cover
+           would slice the subject: at 4/3 only 940 of 1254 source rows
+           survive and the tube spans 1138 of them. It is contained instead,
+           over a blurred, scaled copy of the same file that fills the frame
+           edge to edge — the technique ArchiveMosaic uses for its
+           `fit === "contain"` cards. Both layers carry `loading="lazy"`
+           explicitly: they share a src, and an eager backdrop would warm the
+           cache for the contained image and silently defeat its lazy
+           attribute (see the /recognitions note). */
+        <>
+          <img
+            src={item.scene}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full scale-110 object-cover"
+            style={{ filter: "var(--scene-backdrop-filter)" }}
+          />
+          <img
+            src={item.scene}
+            alt={`${item.title} — ${item.body}`}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-contain transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03]"
+            style={{ filter: "var(--scene-img-filter)" }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "var(--scene-vignette)",
+              opacity: "var(--scene-vignette-opacity)" as unknown as number,
+            }}
+          />
+        </>
+      ) : (
       <Tilt3DSurface
         src={item.cutout}
         alt={`${item.title} — ${item.body}`}
@@ -1054,6 +1161,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
         imgClassName="opacity-[0.98] transition-opacity duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100"
         imgStyle={{ filter: "var(--product-shadow) var(--product-lift)" }}
       />
+      )}
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
         <span className="h-px w-5 bg-accent/60" />
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent/75">

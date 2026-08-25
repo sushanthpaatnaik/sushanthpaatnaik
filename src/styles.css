@@ -347,6 +347,25 @@
   --stage-ctx-floor-opacity: 0.16;
   --stage-ctx-vig-opacity: 0.26;
   --stage-ctx-head: linear-gradient(180deg, oklch(0.04 0.006 245 / 0.66) 0%, transparent 100%);
+  /* Scene cards. A handful of products were photographed as a finished scene —
+     the artifact already standing in its own environment — rather than as a
+     cut-out on a cyclorama. Those get the photograph itself as the card, which
+     wants a foreground grade, not the heavy lift the --stage-ctx-bg-* family
+     applies to a backdrop sitting behind a product at low opacity. Graded
+     DOWN here, not up: an overcast exterior is otherwise the brightest thing
+     in a grid of graphite cards. The backdrop is the same file blurred, to
+     fill a landscape frame from a square source without cropping the
+     subject — see ArchiveMosaic for the same technique. */
+  --scene-img-filter: brightness(0.82) contrast(1.06) saturate(0.88);
+  --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
+  --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
+  --scene-vignette-opacity: 0.5;
+  /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
+     these photographs are portrait, so the artifact is seated right and the
+     title sits left over blurred ground. The vertical --product-scrim-ctx-hero
+     would have ramped to solid across the bottom two thirds of the frame,
+     which on a standing bottle is the bottle. */
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.94) 0%, oklch(0.04 0.006 245 / 0.80) 30%, oklch(0.04 0.006 245 / 0.30) 44%, transparent 56%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text
@@ -694,6 +713,16 @@
   --stage-ctx-floor-opacity: 0.14;
   --stage-ctx-vig-opacity: 0.22;
   --stage-ctx-head: linear-gradient(180deg, oklch(0.995 0.003 85 / 0.78) 0%, transparent 100%);
+  /* On paper the same photograph needs almost no grade — it is an exterior
+     daylight frame sitting on an ivory sheet, which is where it already
+     belongs. The backdrop stays dark enough to seat the contained frame
+     rather than letting it float, and the vignette warms instead of
+     blackening, matching --press-vignette. */
+  --scene-img-filter: brightness(0.98) contrast(1.04) saturate(0.94);
+  --scene-backdrop-filter: blur(26px) brightness(0.86) saturate(0.62);
+  --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 46%, oklch(0.30 0.01 260 / 0.26) 100%);
+  --scene-vignette-opacity: 0.45;
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.985 0.004 85 / 0.95) 0%, oklch(0.980 0.005 85 / 0.84) 30%, oklch(0.975 0.006 85 / 0.34) 44%, transparent 56%);
   --product-scrim-ctx-hero: linear-gradient(180deg, transparent 0%, transparent 34%, oklch(0.985 0.004 85 / 0.80) 52%, oklch(0.975 0.006 85 / 0.96) 70%, oklch(0.97 0.007 85 / 0.99) 100%);
   --stage-key: radial-gradient(ellipse, oklch(1 0 0 / 0.55), transparent 70%);
   --stage-separation: none;
@@ -1973,6 +2002,25 @@ html.lenis, html.lenis body {
   --stage-ctx-floor-opacity: 0.16;
   --stage-ctx-vig-opacity: 0.26;
   --stage-ctx-head: linear-gradient(180deg, oklch(0.04 0.006 245 / 0.66) 0%, transparent 100%);
+  /* Scene cards. A handful of products were photographed as a finished scene —
+     the artifact already standing in its own environment — rather than as a
+     cut-out on a cyclorama. Those get the photograph itself as the card, which
+     wants a foreground grade, not the heavy lift the --stage-ctx-bg-* family
+     applies to a backdrop sitting behind a product at low opacity. Graded
+     DOWN here, not up: an overcast exterior is otherwise the brightest thing
+     in a grid of graphite cards. The backdrop is the same file blurred, to
+     fill a landscape frame from a square source without cropping the
+     subject — see ArchiveMosaic for the same technique. */
+  --scene-img-filter: brightness(0.82) contrast(1.06) saturate(0.88);
+  --scene-backdrop-filter: blur(26px) brightness(0.5) saturate(0.7);
+  --scene-vignette: radial-gradient(122% 82% at 50% 46%, transparent 44%, oklch(0.02 0 0 / 0.62) 100%);
+  --scene-vignette-opacity: 0.5;
+  /* Hero scene cards run the scrim HORIZONTALLY. The hero frame is 16/10 and
+     these photographs are portrait, so the artifact is seated right and the
+     title sits left over blurred ground. The vertical --product-scrim-ctx-hero
+     would have ramped to solid across the bottom two thirds of the frame,
+     which on a standing bottle is the bottle. */
+  --scene-scrim-hero: linear-gradient(90deg, oklch(0.04 0.006 245 / 0.94) 0%, oklch(0.04 0.006 245 / 0.80) 30%, oklch(0.04 0.006 245 / 0.30) 44%, transparent 56%);
   /* Featured cards print title and metric straight onto the media, so over
      a photograph they need their own ground. Ramps in BELOW the product —
      clear to 40% so the bottle keeps its light, solid by the time the text
