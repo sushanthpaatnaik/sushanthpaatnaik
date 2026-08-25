@@ -1057,7 +1057,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, scale: 1.015 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[3%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    className="absolute inset-0 h-full w-full object-contain px-[9%] py-[10%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{ filter: "var(--panel-stage-shadow)" }}
                   />
                   {/* Industrial corner brackets */}
@@ -1346,7 +1346,7 @@ export function Product3DModal({
                     initial={{ opacity: 0, y: 8, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 1, delay: 0.15, ease: [0.19, 1, 0.22, 1] }}
-                    className="absolute inset-0 h-full w-full object-contain px-[3%] py-[4%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
+                    className="absolute inset-0 h-full w-full object-contain px-[9%] py-[10%] transition-transform duration-[1600ms] ease-out group-hover:scale-[1.025] group-hover:-translate-y-1"
                     style={{
                       filter:
                         "var(--panel-stage-shadow)",
