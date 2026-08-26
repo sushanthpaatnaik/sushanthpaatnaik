@@ -294,6 +294,7 @@ export function HeroVideo({
   className,
   style,
   caption,
+  silent = false,
 }: {
   src: string;
   className?: string;
@@ -304,6 +305,15 @@ export function HeroVideo({
    * comment on that row for why a sibling box does not work.
    */
   caption?: string;
+  /**
+   * Set when the file carries no audio track. The unmute control and the
+   * "Sound Available" hint are then not rendered at all, rather than offering
+   * a toggle that does nothing — the same rule that keeps "Field" off an
+   * application frame that is not one. Declared by the caller because the
+   * platforms disagree on detecting this: Chromium ships neither audioTracks
+   * nor mozHasAudio, so a runtime probe would have to guess.
+   */
+  silent?: boolean;
 }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const mountedRef = useRef(true);
@@ -513,7 +523,7 @@ export function HeroVideo({
             bottom-16. Pinned, it sat on top of the caption as soon as the row
             wrapped, which is every width below 1440. */}
         <AnimatePresence>
-          {muted && hintVisible && (
+          {muted && hintVisible && !silent && (
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -564,6 +574,7 @@ export function HeroVideo({
 
           <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
 
+          {!silent && (
           <button
             type="button"
             onClick={toggle}
@@ -579,6 +590,7 @@ export function HeroVideo({
               {muted ? "Sound" : "Mute"}
             </span>
           </button>
+          )}
 
           <span aria-hidden className="h-3 w-px bg-foreground/[0.12]" />
 
@@ -682,6 +694,7 @@ export interface Product3DModalData {
   body: string;
   img: string;
   detailImg?: string;
+  applicationVideoSilent?: boolean;
   /** Optional field-deployment video used in place of the application still. */
   applicationVideo?: string;
   /**
@@ -961,6 +974,7 @@ export function Product3DModal({
                     <HeroVideo
                       key={item.applicationVideo + "-hero"}
                       src={item.applicationVideo}
+                        silent={item.applicationVideoSilent}
                       caption={item.applicationCaption ?? `${item.title} · Deployment`}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
                       style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94) var(--media-lift)" }}
@@ -1129,6 +1143,7 @@ export function Product3DModal({
                       <HeroVideo
                         key={item.applicationVideo + "-secondary"}
                         src={item.applicationVideo}
+                        silent={item.applicationVideoSilent}
                         className="absolute inset-0 h-full w-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
                         style={{ filter: "contrast(1.05) saturate(0.85) brightness(0.9) var(--media-lift)" }}
                       />

@@ -374,6 +374,7 @@ function InnovationsPage() {
       "Coalorix",
       "Pyronex",
       "Bitumax",
+      "Gryogen",
     ]);
     /**
      * Verified company product pages. Built by rendering every candidate url
@@ -444,11 +445,19 @@ function InnovationsPage() {
         Coalorix: "/videos/coalorix.mp4",
         Pyronex: "/videos/pyronex.mp4",
         Bitumax: "/videos/bitumax.mp4",
+        // Supplied without an audio track, unlike the rest — HeroVideo's unmute
+        // control is inert on it. Hashed filename because public/videos/ serves
+        // from fixed paths at max-age 2592000, so a bare name would strand
+        // every returning visitor on whatever they cached.
+        Gryogen: "/videos/gryogen-256a9011.mp4",
       } as Record<string, string>)[it.title],
       stage: it.stage,
       specs: it.specs,
       positioning: it.positioning,
       applicationContext: it.applicationContext,
+      // Gryogen's film was supplied without an audio track, so the panel does
+      // not offer an unmute control on it.
+      applicationVideoSilent: it.title === "Gryogen",
       largeApplicationFrame: largeFrameTitles.has(it.title),
       applicationCaption: captions[it.title],
       // Vertical narrated explainer, in its own slot below the application
