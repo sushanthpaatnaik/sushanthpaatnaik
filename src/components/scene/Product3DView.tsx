@@ -977,7 +977,7 @@ export function Product3DModal({
                         silent={item.applicationVideoSilent}
                       caption={item.applicationCaption ?? `${item.title} · Deployment`}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035]"
-                      style={{ filter: "contrast(1.05) saturate(0.88) brightness(0.94) var(--media-lift)" }}
+                      style={{ filter: "var(--film-tone-hero) var(--media-lift)" }}
                     />
                   ) : (
                     <motion.img

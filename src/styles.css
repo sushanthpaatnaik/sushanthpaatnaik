@@ -321,6 +321,21 @@
      to the theme and the light page multiplied its small lift against a
      brightness(0.78) base — the picture stayed dark on paper. Dark keeps the
      values it always had, to the digit. */
+  /* The panel's hero film. Measured across the eleven films on the site,
+     three frames each, the hero set spans mean luminance 38 to 117 and five of
+     them sit above 95 — bright enough that at the old brightness(0.94) they
+     read as lit rectangles on a graphite panel. For comparison /about's
+     identity film sits at 73 and takes 0.82, so the panel was grading its
+     brighter footage more gently than the page grades its darker footage.
+     0.86 closes most of that gap; 0.74 is the known floor, where CLAUDE.md
+     records the burnt-in title cards flattening.
+
+     Declared here rather than written into the markup so the light theme can
+     keep its own value: the literal chain was shared across both themes and
+     only --media-lift varied, so deepening it in place would have darkened the
+     light panel too. Not added to .theme-dark-island, so it follows the page
+     the way --media-lift already does. */
+  --film-tone-hero: contrast(1.05) saturate(0.88) brightness(0.86);
   --photo-tone-doc: grayscale(0.3) contrast(1.05) saturate(0.55) brightness(0.78);
   --photo-tone-editorial: grayscale(0.22) contrast(1.03) saturate(0.68) brightness(0.9);
   --photo-tone-film: grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82);
@@ -676,6 +691,9 @@
      they still read as part of the same photographic family rather than as raw
      camera output. These compose with --photo-filter above, which is why they
      sit at brightness(1) rather than lifting again. */
+  /* Unchanged from what the literal shipped — this change was asked for on the
+     dark theme, and on paper the films are already lifted by --media-lift. */
+  --film-tone-hero: contrast(1.05) saturate(0.88) brightness(0.94);
   --photo-tone-doc: grayscale(0.05) contrast(1) saturate(0.95) brightness(1);
   --photo-tone-editorial: grayscale(0.04) contrast(1) saturate(0.96) brightness(1);
   --photo-tone-film: grayscale(0.03) contrast(1) saturate(0.97) brightness(1);
@@ -2039,6 +2057,20 @@ html.lenis, html.lenis body {
      to the theme and the light page multiplied its small lift against a
      brightness(0.78) base — the picture stayed dark on paper. Dark keeps the
      values it always had, to the digit. */
+  /* The panel's hero film. Measured across the eleven films on the site,
+     three frames each, the hero set spans mean luminance 38 to 117 and five of
+     them sit above 95 — bright enough that at the old brightness(0.94) they
+     read as lit rectangles on a graphite panel. For comparison /about's
+     identity film sits at 73 and takes 0.82, so the panel was grading its
+     brighter footage more gently than the page grades its darker footage.
+     0.86 closes most of that gap; 0.74 is the known floor, where CLAUDE.md
+     records the burnt-in title cards flattening.
+
+     Declared here rather than written into the markup so the light theme can
+     keep its own value: the literal chain was shared across both themes and
+     only --media-lift varied, so deepening it in place would have darkened the
+     light panel too. Not added to .theme-dark-island, so it follows the page
+     the way --media-lift already does. */
   --photo-tone-doc: grayscale(0.3) contrast(1.05) saturate(0.55) brightness(0.78);
   --photo-tone-editorial: grayscale(0.22) contrast(1.03) saturate(0.68) brightness(0.9);
   --photo-tone-film: grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82);
