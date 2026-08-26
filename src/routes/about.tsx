@@ -146,7 +146,7 @@ function AboutPage() {
             className="absolute inset-0 h-full w-full object-cover"
             style={{
               filter:
-                "grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82) var(--photo-filter)",
+                "var(--photo-tone-film) var(--photo-filter)",
             }}
           />
           <div

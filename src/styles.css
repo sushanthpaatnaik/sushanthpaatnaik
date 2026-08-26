@@ -316,6 +316,14 @@
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%);
   --photo-frame-shadow: 0 36px 88px -36px oklch(0 0 0 / 0.78);
   --photo-filter: brightness(1);
+  /* The base grade for the site's three founder-facing pictures. These were
+     hard-coded into the markup, so only the trailing --photo-filter responded
+     to the theme and the light page multiplied its small lift against a
+     brightness(0.78) base — the picture stayed dark on paper. Dark keeps the
+     values it always had, to the digit. */
+  --photo-tone-doc: grayscale(0.3) contrast(1.05) saturate(0.55) brightness(0.78);
+  --photo-tone-editorial: grayscale(0.22) contrast(1.03) saturate(0.68) brightness(0.9);
+  --photo-tone-film: grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82);
   --archive-foot: linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent);
   --archive-foot-deep: linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%);
   --press-img-opacity: 0.8;
@@ -663,6 +671,14 @@
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.55 0.02 62 / 0.13), transparent 76%);
   --photo-frame-shadow: 0 26px 60px -34px oklch(0.42 0.03 60 / 0.42);
   --photo-filter: brightness(1.05) contrast(1.05) saturate(1.06);
+  /* On paper these are daylight photographs of a lit room and belong at their
+     own exposure. The darkening comes out and a trace of the grade stays, so
+     they still read as part of the same photographic family rather than as raw
+     camera output. These compose with --photo-filter above, which is why they
+     sit at brightness(1) rather than lifting again. */
+  --photo-tone-doc: grayscale(0.05) contrast(1) saturate(0.95) brightness(1);
+  --photo-tone-editorial: grayscale(0.04) contrast(1) saturate(0.96) brightness(1);
+  --photo-tone-film: grayscale(0.03) contrast(1) saturate(0.97) brightness(1);
   /* The foot of an archival plate resolves to the page ground rather than to
      black, so the picture ends on the sheet and the title printed over it has
      a paper base to sit on. */
@@ -1575,6 +1591,41 @@ html.lenis, html.lenis body {
           sepia(0.06) var(--media-lift);
 }
 
+/* The archival plates on /recognitions and /early-works. The dark rules
+   above grade them down and desaturate them, which is what makes a
+   documentary still sit on graphite. On paper the same chain reads as a
+   grey wash over the photograph — the picture is neither dark nor light,
+   just flat.
+
+   These sit inside .theme-dark-island, and that is correct and stays: the
+   island exists so the caption printed ON the photograph keeps light ink
+   against the fixed near-black scrim below it, which cannot invert without
+   inverting the picture. The island governs the TEXT. The exposure of the
+   picture itself follows the page, exactly as --media-lift already does —
+   it is declared at :root and in the light block but not in the island,
+   which is the precedent these rules follow.
+
+   Values are back-solved through --media-lift's light value of
+   brightness(1.16) contrast(0.94) saturate(1.10), so the composed result
+   lands near brightness 1.04, contrast 1.0, saturation 1.0 rather than
+   stacking two lifts. A trace of grayscale and sepia stays: these are
+   archive photographs and should still read as archive photographs. */
+:root[data-theme="light"] .archival-image {
+  filter: grayscale(0.05) contrast(1.06) saturate(0.91) brightness(0.9)
+          sepia(0.03) var(--media-lift);
+  opacity: 1;
+}
+:root[data-theme="light"] .archival-image-soft {
+  filter: grayscale(0.07) contrast(1.05) saturate(0.89) brightness(0.88)
+          sepia(0.04) var(--media-lift);
+  opacity: 1;
+}
+:root[data-theme="light"] .group:hover .archival-image-hover,
+:root[data-theme="light"] .group\/era:hover .archival-image-hover {
+  filter: grayscale(0.03) contrast(1.07) saturate(0.94) brightness(0.93)
+          sepia(0.02) var(--media-lift);
+}
+
 /* Section reveal — gentle layered opacity & lift for scroll storytelling */
 @keyframes archival-reveal {
   0%   { opacity: 0; transform: translateY(18px); filter: blur(2px); }
@@ -1983,6 +2034,14 @@ html.lenis, html.lenis body {
   --photo-halo: radial-gradient(58% 52% at 50% 50%, oklch(0.16 0.018 245 / 0.26), transparent 76%);
   --photo-frame-shadow: 0 36px 88px -36px oklch(0 0 0 / 0.78);
   --photo-filter: brightness(1);
+  /* The base grade for the site's three founder-facing pictures. These were
+     hard-coded into the markup, so only the trailing --photo-filter responded
+     to the theme and the light page multiplied its small lift against a
+     brightness(0.78) base — the picture stayed dark on paper. Dark keeps the
+     values it always had, to the digit. */
+  --photo-tone-doc: grayscale(0.3) contrast(1.05) saturate(0.55) brightness(0.78);
+  --photo-tone-editorial: grayscale(0.22) contrast(1.03) saturate(0.68) brightness(0.9);
+  --photo-tone-film: grayscale(0.15) contrast(1.06) saturate(0.78) brightness(0.82);
   --archive-foot: linear-gradient(to top, oklch(0.04 0.005 245 / 0.6), transparent);
   --archive-foot-deep: linear-gradient(to top, oklch(0.04 0.005 245 / 0.85) 0%, oklch(0.04 0.005 245 / 0.25) 45%, transparent 70%);
   --press-img-opacity: 0.8;
