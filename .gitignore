@@ -40,3 +40,6 @@ public/sequences/*.zip
 # Throwaway measurement probes written at the repo root during debugging.
 # Two of these have been committed by accident via `git add -A`.
 /.*.mjs
+# Same class of thing, kept in a directory: QA harness scripts, local
+# mirrors of the origin, and their logs. Never part of the build.
+/.qa-tmp/
