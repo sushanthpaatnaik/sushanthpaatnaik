@@ -1521,39 +1521,44 @@ html.lenis, html.lenis body {
   height: auto;
 }
 
-/* Mobile scroll safety — ensure vertical scrolling is never accidentally
-   blocked on touch devices. Lenis owns the scroll mechanics; these rules
-   prevent iOS Safari from treating the page as a fixed/non-scrollable surface. */
-@media (pointer: coarse) {
-  html {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  body {
-    overflow-y: auto;
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
-  }
+/* ONE scroll container, every pointer type — <html> scrolls, <body> does not.
+   `body { overflow-x: hidden }` in @layer base, plus the same on <html>,
+   resolves BOTH elements to `overflow: hidden auto`, i.e. two document
+   scrollers. Chrome mishandles that state and stops routing scroll to the
+   document: the page freezes though it is tall and content is present. Other
+   engines tolerate it, which is what makes the symptom look browser-specific
+   rather than like a stylesheet bug.
+
+   This was found and fixed once on desktop and the fix was scoped to
+   `pointer: fine`, on the reasoning that the touch setup was known-good — but
+   the touch case that had been checked was iOS Safari, one of the engines that
+   tolerates it. Chrome on Android is the same Blink that freezes, and it kept
+   the dual container. Reported from the field: every page frozen in Chrome on
+   Android, scrolling normally in other browsers on the same handset.
+   Verified before the change: `dual = true` on all 12 internal routes at 390
+   with a touch profile, `dual = false` at 1440.
+
+   So the collapse is unconditional now. Desktop keeps the exact values it
+   already computed, and dropping `overflow-x: hidden` from <body> on touch
+   also removes the thing the note above line 1460 warns kills native momentum
+   scrolling on iOS. <html> keeps `overflow-x: hidden`, so it still clips —
+   horizontal overflow stays 0px on every route at every phone width. */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body {
+  overflow-x: visible;
+  overflow-y: visible;
 }
 
-/* Desktop scroll fix — collapse to a SINGLE scroll container.
-   A leftover `body { overflow-x: hidden }` (in @layer base) combined with the
-   same on <html> made BOTH elements document scrollers (overflow: hidden auto
-   on each). Chrome desktop mishandles that dual-scroll-container state and
-   stops routing wheel/keyboard/trackpad scroll to the document — the page
-   freezes even though it is tall and content is present. Safari tolerates the
-   dual container, and touch devices are handled by the pointer:coarse block
-   above, which is why the freeze was Chrome-desktop-only and every-page.
-   Scoped to pointer:fine so the working mobile/touch setup is left untouched:
-   <html> becomes the one scroller, <body> is no longer a scroll container. */
-@media (pointer: fine) {
+@media (pointer: coarse) {
   html {
-    overflow-x: hidden;
-    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   body {
-    overflow-x: visible;
-    overflow-y: visible;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
