@@ -63,7 +63,7 @@ export default function Nav() {
           scrolled ? "py-2 md:py-3.5" : "py-4 md:py-6"
         }`}
       >
-        <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik — Home">
+        <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik, Home">
           <img
             src={spLogo}
             alt=""

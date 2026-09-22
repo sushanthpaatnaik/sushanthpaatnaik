@@ -29,14 +29,14 @@ const phases = [
     tag: "Recovery",
     title: "HV · Low-Current Condenser",
     body:
-      "Inside the Aquamax cabinet, a high-voltage / ultra-low-current array collapses vapor into liquid through dielectric phase-change — continuous duty.",
+      "Inside the Aquamax cabinet, a high-voltage / ultra-low-current array collapses vapor into liquid through dielectric phase-change, for continuous duty.",
   },
   {
     code: "04",
     tag: "Reclaim",
     title: "Condensate Recycle Loop",
     body:
-      "Recovered condensate is filtered, mineralised and re-injected into plant process water — closing the loop on emissions-side moisture.",
+      "Recovered condensate is filtered, mineralised and re-injected into plant process water, closing the loop on emissions-side moisture.",
   },
 ];
 
@@ -60,7 +60,7 @@ export default function AquamaxSimulationCompact() {
           id="aquamax-compact-title"
           className="font-display text-[15px] tracking-[-0.015em] text-foreground/95"
         >
-          Aquamax — Vapor Recovery
+          Aquamax · Vapor Recovery
         </h3>
         <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/45">
           HV · LC · Closed-loop

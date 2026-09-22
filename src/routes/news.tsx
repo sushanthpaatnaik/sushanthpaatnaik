@@ -134,7 +134,7 @@ const CATEGORIES: { id: Category; code: string; blurb: string }[] = [
   {
     id: "Public Speaking & Thought Leadership",
     code: "V",
-    blurb: "The stage record: TED@Bangalore, TEDx, INK Talks, FAB10 and the global conference circuit.",
+    blurb: "The stage record, from TED@Bangalore and TEDx to INK Talks, FAB10 and the global conference circuit.",
   },
 ];
 

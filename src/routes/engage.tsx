@@ -58,7 +58,7 @@ const lanes: Lane[] = [
     n: "01",
     category: "Industrial Collaboration",
     title: "Materials, infrastructure, manufacturing systems.",
-    body: "Co-development with incumbents and operators integrating graphene, advanced coatings, and nano-additives into existing product lines and industrial infrastructure, without re-engineering supply chains.",
+    body: "Co-development that puts graphene, advanced coatings and nano-additives into the product lines and industrial infrastructure incumbents already run, without re-engineering supply chains.",
     surfaces: [
       "Graphene & advanced materials",
       "Industrial coatings",
@@ -72,7 +72,7 @@ const lanes: Lane[] = [
     n: "02",
     category: "Research & Deep-Tech",
     title: "R&D direction, applied science, lab collaboration.",
-    body: "Embedded research direction and applied-science collaboration with universities, national labs, and corporate R&D groups working on materials, energy storage, water systems and climate infrastructure, from problem framing to lab-scale validation and prototyping.",
+    body: "Embedded research direction with universities, national labs and corporate R&D groups. The work spans materials, energy storage, water systems and climate infrastructure, and runs from problem framing through to lab-scale validation and prototyping.",
     surfaces: [
       "Embedded R&D direction",
       "Prototyping & lab validation",
@@ -86,7 +86,7 @@ const lanes: Lane[] = [
     n: "03",
     category: "Venture & Strategic Advisory",
     title: "Commercialization, innovation systems, venture architecture.",
-    body: "Founder-to-founder advisory, selective board seats, and capital co-architecture for deep-tech ventures at the materials, climate and industrial interface, plus multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
+    body: "Founder-to-founder advisory, selective board seats and capital co-architecture for deep-tech ventures at the materials, climate and industrial interface. Also multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
     surfaces: [
       "Deep-tech venture advisory",
       "Innovation strategy for conglomerates & sovereign bodies",
@@ -100,7 +100,7 @@ const lanes: Lane[] = [
     n: "04",
     category: "Speaking & Thought Leadership",
     title: "Keynotes, institutional stages, editorial voice.",
-    body: "Keynotes, long-form interviews, panels, and stage conversations on invention, deep-tech, the carbon century, and India's industrial trajectory, for conferences, ministries, publications and institutional convenings.",
+    body: "Keynotes, long-form interviews, panels and stage conversations on invention, deep-tech, the carbon century and India's industrial trajectory. Delivered at conferences, in ministries, for publications and at institutional convenings.",
     surfaces: [
       "Conference keynotes",
       "Institutional & ministry talks",
@@ -114,7 +114,7 @@ const lanes: Lane[] = [
     n: "05",
     category: "Global Partnerships",
     title: "Academia, climate systems, cross-border collaboration.",
-    body: "Cross-border partnerships with academic institutions, climate organisations, and industrial transition programmes, coordinating frontier materials and deep-tech capacity across India and abroad.",
+    body: "Cross-border partnerships with academic institutions, climate organisations and industrial transition programmes. These coordinate frontier materials and deep-tech capacity across India and abroad.",
     surfaces: [
       "Academic & research consortia",
       "Climate systems & industrial transition",

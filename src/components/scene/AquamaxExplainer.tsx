@@ -15,7 +15,7 @@ const phases = [
     tag: "Vapor capture",
     title: "High-Voltage Intake Hood",
     body:
-      "Detachable flanged hood seals over the chimney mouth via a quick-release collar, gasket ring, and aligned bolt-clamp set — capturing exhaust plume before it dissipates.",
+      "Detachable flanged hood seals over the chimney mouth via a quick-release collar, gasket ring and aligned bolt-clamp set, capturing exhaust plume before it dissipates.",
     bullets: ["Quick-release flange", "Insulated HV routing", "Aligned bolt-clamp set"],
   },
   {
@@ -31,7 +31,7 @@ const phases = [
     tag: "Recovery",
     title: "HV Low-Current Condenser",
     body:
-      "Inside the Aquamax cabinet, a high-voltage / ultra-low-current condensation array collapses vapor into liquid through dielectric phase-change — engineered for continuous duty.",
+      "Inside the Aquamax cabinet, a high-voltage / ultra-low-current condensation array collapses vapor into liquid through dielectric phase-change, engineered for continuous duty.",
     bullets: ["HV · low-current architecture", "Protected service access", "Dielectric phase-change"],
   },
   {
@@ -39,7 +39,7 @@ const phases = [
     tag: "Reclaim",
     title: "Condensate · Recycle Loop",
     body:
-      "Recovered condensate is filtered, mineralised, and re-injected into plant process water — closing the loop on emissions-side moisture that would otherwise be lost to atmosphere.",
+      "Recovered condensate is filtered, mineralised, and re-injected into plant process water, closing the loop on emissions-side moisture that would otherwise be lost to atmosphere.",
     bullets: ["Closed recycle loop", "Inline filtration stage", "Reusable process water"],
   },
 ];
@@ -79,7 +79,7 @@ export default function AquamaxExplainer() {
           id="aquamax-explainer-title"
           className="font-display text-xl tracking-[-0.02em] text-foreground/95 md:text-2xl"
         >
-          Aquamax — Industrial Vapor Recovery Deployment
+          Aquamax · Industrial Vapor Recovery Deployment
         </h3>
         <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/45">
           HV · Low-Current · Closed-Loop

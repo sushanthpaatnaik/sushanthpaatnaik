@@ -138,8 +138,8 @@ export default function FounderPortrait({
             alt={
               alt ??
               (isDoc
-                ? "Sushanth Paatnaik in the lab — instrumentation and engineering context"
-                : "Sushanth Paatnaik — editorial portrait")
+                ? "Sushanth Paatnaik in the lab, instrumentation and engineering context"
+                : "Sushanth Paatnaik, editorial portrait")
             }
             loading="lazy"
             decoding="async"
@@ -155,7 +155,7 @@ export default function FounderPortrait({
           {isEditorialDefault && (
             <img
               src={editorialLight}
-              alt={alt ?? "Sushanth Paatnaik — editorial portrait"}
+              alt={alt ?? "Sushanth Paatnaik, editorial portrait"}
               loading="lazy"
               decoding="async"
               className="mark-on-paper absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-[1400ms] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform motion-safe:md:group-hover:scale-[1.03]"
