@@ -23,7 +23,7 @@ export const Route = createFileRoute("/engage")({
       {
         property: "og:description",
         content:
-          "Selective collaboration across industry, research, ventures, speaking, and global partnerships. Invitation-based, mandate-led.",
+          "Collaboration across industry, research, ventures, speaking and global partnerships. By invitation, and run directly.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/engage" },
