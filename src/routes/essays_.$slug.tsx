@@ -31,7 +31,7 @@ const essayBodies: Record<string, EssayContent> = {
         paragraphs: [
           "I learned the lesson at fourteen, watching a man with locked-in syndrome try to ask for water. He could move two muscles: his eyebrows and his diaphragm. The room was full of caring people who could not hear him.",
           "The wheelchair I built him wasn't elegant. It was a breath-pressure sensor wired to a relay, taped to a frame that I welded badly in a workshop borrowed for the weekend. But for the first time in years, he could move himself toward the glass.",
-          "That afternoon rewrote what engineering meant to me. Until then, I had thought it was the discipline of optimisation: getting more performance out of less material, less power, less time. After that afternoon, I understood it as the discipline of agency. Performance is the means; agency is the brief.",
+          "That afternoon changed what I thought engineering was for. Until then I had treated it as optimisation: more performance out of less material, less power, less time. After that afternoon I understood that the performance was only ever the means. What he actually needed back was the ability to act on his own.",
         ],
       },
       {
