@@ -285,7 +285,7 @@ const holdingStats = [
 function VenturesPage() {
   return (
     <CinematicPageShell
-      eyebrow="Ventures · Stack Architecture"
+      eyebrow="Ventures · The Operating Group"
       title={<>Six companies,<br className="hidden md:inline" /> one materials platform.</>}
       lead="Founder, co-founder and chief innovation officer across six companies, and an advisory role at six more across industry, materials and climate."
       backdrop={backdrop}
@@ -447,7 +447,7 @@ function VenturesPage() {
       </ul>
 
       {/* ---------- Architecture editorial ---------- */}
-      <EditorialSection number="01 · Architecture" heading="One stack, four layers.">
+      <EditorialSection number="01 · Architecture" heading="How the six fit together.">
         <p>
           <span className="text-foreground/95">Research</span> at Monoatom feeds{" "}
           <span className="text-foreground/95">materials</span> at Grafillium, which feed{" "}
@@ -463,7 +463,7 @@ function VenturesPage() {
       </EditorialSection>
 
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
-      <EditorialSection number="02 · Advisory" heading="Counsel across six industry layers.">
+      <EditorialSection number="02 · Advisory" heading="Six companies I advise.">
         <p>
           Six companies I advise, one in each area: materials, industrial
           systems, consumer technology, surface technologies, wellness

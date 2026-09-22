@@ -33,7 +33,7 @@ export const essays: EssayMeta[] = [
     title: "On graphene and the next century",
     pull: "India does not need to follow the silicon century. We can lead the carbon one.",
     description:
-      "A note on why graphene, produced cleanly and at scale, is the most under-priced strategic asset on the table for India this decade.",
+      "A note on why graphene, produced cleanly and at scale, is the material India is in the best position to get right this decade.",
   },
   {
     slug: "staying-a-beginner",
@@ -137,8 +137,8 @@ function EssaysIndex() {
             transition={{ duration: 1.3, delay: 0.46, ease: [0.19, 1, 0.22, 1] }}
             className="mt-10 max-w-[34rem] font-display text-[19px] md:text-[22px] leading-[1.55] tracking-[-0.005em] text-foreground/70"
           >
-            Occasional dispatches on deep-tech, graphene, and the quiet
-            discipline of inventing for one specific person at a time.
+            Occasional notes on deep-tech, graphene, and building for one
+            specific person at a time.
           </motion.p>
 
           <motion.p

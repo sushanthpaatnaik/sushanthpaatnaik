@@ -77,7 +77,7 @@ const lanes: Lane[] = [
       "Embedded R&D direction",
       "Prototyping & lab validation",
       "Joint research programmes",
-      "Patent & IP architecture",
+      "Patents & IP",
     ],
     fit: "Universities · National labs · Corporate R&D",
     horizon: "24 – 60 months",
@@ -85,8 +85,8 @@ const lanes: Lane[] = [
   {
     n: "03",
     category: "Venture & Strategic Advisory",
-    title: "Commercialization, innovation systems, venture architecture.",
-    body: "Founder-to-founder advisory, selective board seats and help structuring funding for deep-tech ventures at the materials, climate and industrial interface. Also multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
+    title: "Commercialization, IP, and company building.",
+    body: "Founder-to-founder advisory, selective board seats and help structuring funding for deep-tech ventures at the materials, climate and industrial interface. Also innovation strategy for large groups and government bodies trying to turn research into products.",
     surfaces: [
       "Deep-tech venture advisory",
       "Innovation strategy for conglomerates & sovereign bodies",
@@ -215,7 +215,7 @@ function PhilosophyBlock() {
     {
       n: "i.",
       t: "Selective collaboration",
-      b: "The inbox stays small by design: fit decides what gets taken on, not volume.",
+      b: "The inbox stays small. I would rather take on less and do it properly.",
     },
     {
       n: "ii.",
@@ -225,7 +225,7 @@ function PhilosophyBlock() {
     {
       n: "iii.",
       t: "Long-term impact",
-      b: "The horizon is measured in years. The collaborations that last are the ones that shift an industry's direction.",
+      b: "This work runs in years, not months. The collaborations that last are the ones that change how an industry makes something.",
     },
     {
       n: "iv.",
@@ -285,9 +285,9 @@ function CTABlock() {
             two sentences weld into "...material intelligence.When the work is
             right" for anything reading the text stream. `block` separates them
             on screen only, which is CSS, which readers and crawlers ignore. */}
-        Building systems for industrial futures and material intelligence.{" "}
+        Advanced materials and industrial R&D.{" "}
         <span className="block mt-3 text-foreground/55 italic text-[15px] md:text-[16px]">
-          When the work is right, the desk opens.
+          Every message is read personally.
         </span>
       </p>
 
@@ -330,7 +330,7 @@ function EngagePage() {
       eyebrow="Engage · Collaboration · Advisory · Speaking · By Selection"
       title={
         <>
-          The doors open<br className="hidden md:inline" /> for the right work.
+          Who to write to,<br className="hidden md:inline" /> and about what.
         </>
       }
       lead="One place to start a conversation about industrial collaboration, research, advisory, speaking or partnerships. Everything runs through the operating group. The work is getting advanced materials further into industrial use."
@@ -341,13 +341,12 @@ function EngagePage() {
 
       <EditorialSection
         number="01 · Categories"
-        heading="Five ways the desk opens."
+        heading="Five kinds of work."
       >
         <p>
-          Each category below is held to the same standard: a real problem, an
-          honest horizon, and the patience to build the thing properly. If
-          your inquiry doesn't yet fit a category, write anyway. Clarity is
-          welcome.
+          All five come down to the same test: is there a real problem, and is
+          there time to do it properly? If your inquiry doesn't yet fit a
+          category, write anyway.
         </p>
       </EditorialSection>
 
@@ -355,7 +354,7 @@ function EngagePage() {
 
       <EditorialSection
         number="02 · Philosophy"
-        heading="How the desk thinks about collaboration."
+        heading="How I choose what to take on."
       >
         <p>
           Four principles hold the

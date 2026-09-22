@@ -80,7 +80,7 @@ const innovations: Innovation[] = [
     solution:
       "A hardware-first safety system engineered to retrofit onto any existing vehicle, without redesigning the host platform. Field-deployable, low-cost and scalable from a school workshop.",
     impact:
-      "Recognized by the President of India at age 14. Proved that life-saving engineering could emerge from constrained resources and genuine intent.",
+      "Recognized by the President of India at age 14. Built with school-workshop tools and parts bought locally.",
     image: rectofitImg,
     badges: ["Presidential Award"],
     layout: "split-right",
@@ -112,7 +112,7 @@ const innovations: Innovation[] = [
     problem:
       "Keyboards and mice excluded individuals with motor disabilities from fully engaging with technology.",
     solution:
-      "A system enabling computers to be operated entirely through hand gestures, reimagining human-machine interaction before gesture computing reached mainstream awareness.",
+      "A system enabling computers to be operated entirely through hand gestures, built before gesture control reached consumer devices.",
     impact:
       "Recognized by the President at the Intel IRIS National Science Fair. Explored a way of interacting with computers that mainstream technology would adopt nearly a decade later.",
     image: supersenseImg,
@@ -146,7 +146,7 @@ const innovations: Innovation[] = [
     problem:
       "Devices died at the worst possible moments. Solar chargers required direct sunlight, were bulky for everyday carry, and performed poorly in indoor environments.",
     solution:
-      "A power bank case that harvests ambient indoor light, not direct sunlight, to continuously trickle-charge connected devices. Quietly self-sufficient. Invisible in its operation.",
+      "A power bank case that harvests ambient indoor light, not direct sunlight, to continuously trickle-charge connected devices. It runs continuously without being plugged in or thought about.",
     impact:
       "Presidential Award for ambient energy harvesting as a practical portable product, at a time when the concept existed primarily in academic literature.",
     image: solkaImg,
@@ -165,7 +165,7 @@ const innovations: Innovation[] = [
     solution:
       "A discreet smart-watch wearable with silent alert and real-time location capabilities, engineered years before the women's safety wearable category reached mainstream product awareness.",
     impact:
-      "Presidential Award for the sixth consecutive year. The invention that closed this chapter and confirmed that hardware innovation would define the decade ahead.",
+      "Presidential Award for the sixth consecutive year. The sixth and last of the school-years inventions.",
     image: shewatchImg,
     videoUrl: "https://youtu.be/o8nir3oFzXg",
     badges: ["Presidential Award"],

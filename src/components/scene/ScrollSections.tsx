@@ -487,7 +487,7 @@ function MaterialContent() {
             carries the material list instead and the paragraph stays in the
             document for search and screen readers. */}
         <p className="hidden md:block text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md">
-          Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, manufactured cleanly and at scale, is the most under-priced strategic asset on the table this decade.
+          Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, made cleanly and at scale, changes what concrete, batteries, coatings and composites can do.
         </p>
         <div
           className="md:hidden flex flex-col gap-2 font-mono text-[10.5px] uppercase tracking-[0.26em] text-foreground/80"
@@ -888,7 +888,7 @@ function FutureContent() {
         </p>
         {/* Italic intro */}
         <p className="mx-auto mb-10 md:mb-14 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
-          Not a forecast. A working hypothesis, built one industrial system at a time.
+          Not a forecast. Just the work, one industrial system at a time.
         </p>
         {/* H2 */}
         <h2
@@ -898,7 +898,7 @@ function FutureContent() {
               "0 2px 26px oklch(0.04 0.010 240 / 0.72), 0 1px 10px oklch(0.04 0.010 240 / 0.55), 0 0 0.5px oklch(0.98 0.008 232 / 0.34)",
           }}
         >
-          Energy as infrastructure.<br /> Industry at global scale.
+          Energy, water, materials.<br /> Built to industrial scale.
         </h2>
         {/* Body */}
         <p className="mx-auto mt-7 md:mt-9 mb-10 md:mb-12 max-w-[52ch] text-[14px] md:text-[15px] leading-[1.8] text-foreground/70">
@@ -931,9 +931,9 @@ function FutureContent() {
    so the phone gets the same thought delivered in five successive
    states instead of one dense one:
 
-     A  Not a forecast. A working hypothesis.
-     B  Energy as infrastructure.
-     C  Industry at global scale.
+     A  Not a forecast. Just the work.
+     B  Energy, water, materials.
+     C  Built to industrial scale.
      D  Advanced Materials · Energy Systems · Industrial Infrastructure
      E  The next century will be engineered. → Begin a conversation
 
@@ -983,7 +983,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         className={`${band} z-10 font-display italic text-[16px] leading-[1.6] text-foreground/75`}
         style={{ opacity: opA }}
       >
-        Not a forecast.{" "}<br />A working hypothesis.
+        Not a forecast.{" "}<br />Just the work.
       </motion.p>
 
       {/* B — the thesis, both halves together. Four lines at this size, so
@@ -993,9 +993,9 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         className={`${band} z-10 font-display text-[clamp(1.75rem,8.0vw,2.25rem)] leading-[1.12] tracking-[-0.03em] font-medium text-gradient`}
         style={{ opacity: opB, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
       >
-        Energy as{" "}<br />infrastructure.{" "}
+        Energy, water,{" "}<br />materials.{" "}
         <span className="mt-3 block">
-          Industry at{" "}<br />global scale.
+          Built to{" "}<br />industrial scale.
         </span>
       </motion.h2>
 

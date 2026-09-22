@@ -213,24 +213,23 @@ function AboutPage() {
         <div className="mt-14 h-px w-12 bg-foreground/20" />
 
         <p className="mt-10 text-[16px] md:text-[17px] leading-[1.85] text-foreground/70">
-          Fourteen years inside the workshop have taught one lesson without
-          exception: frontier science only matters when it reaches the
-          industrial world. The brief is not a paper, not a prototype, not even
-          a product. It is the discipline of carrying invention through capital,
-          through manufacturing, and through the long quiet years before scale.
+          Fourteen years of this has taught me one thing: the science only
+          matters once it reaches a factory. Publishing it is not the hard
+          part, and neither is a prototype. The hard part is carrying it
+          through funding, through manufacturing, and through the years before
+          any of it reaches volume.
         </p>
 
         <p className="mt-7 font-display italic text-[18px] md:text-[20px] leading-[1.55] tracking-[-0.005em] text-foreground/80">
-          The philosophy is simple. Engineer matter. Engineer capital. Engineer
-          scale. Hold all three in one hand long enough for the work to
-          outlive the inventor.
+          In practice that means three things at once: the material, the money
+          to develop it, and a company that can make it at volume. Most of the
+          difficulty is holding all three together for long enough.
         </p>
 
         <p className="mt-7 text-[15px] md:text-[16px] leading-[1.8] text-foreground/60">
-          The direction is narrower still: graphene and advanced materials,
-          patient industrial capital, and a vertically integrated stack
-          built so Indian deep-tech can compete globally in the carbon century
-          ahead.
+          The focus now is narrower: graphene and advanced materials, funding
+          that can wait out a long development cycle, and companies that cover
+          research, production and sale rather than just one of them.
         </p>
       </motion.section>
 
@@ -254,8 +253,8 @@ function AboutPage() {
             At sixteen, in a workshop borrowed for a weekend, I built a
             breath-powered wheelchair for a man with locked-in syndrome who could
             no longer ask for water. That afternoon rewrote what engineering
-            meant to me: not optimisation, but agency. Performance is the means.
-            Agency is the brief.
+            meant to me. Not getting more out of less, but giving someone back the
+            ability to act.
           </p>
           <p className="mt-5">
             Every venture since has begun with the same question. Who is this
@@ -303,7 +302,7 @@ function AboutPage() {
             speed.
           </p>
           <p className="mt-5">
-            Recognition is a lagging indicator. The real measure is whether the
+            Recognition arrives late. What I actually watch is whether the
             next prototype shipped, whether the next venture is solvent, and
             whether the work eventually outlives the inventor.
           </p>
@@ -319,17 +318,17 @@ function AboutPage() {
       </div>
 
       {/* ── Mission ── */}
-      <EditorialSection number="05 · Mission" heading="Built in India. Designed for the world.">
+      <EditorialSection number="05 · Mission" heading="Why this has to happen in India.">
         <NarrativePassage indent>
           <p>
-            India has the talent, the demand, and the urgency to lead the carbon
-            century. What remains is patience, the institutional patience to
-            translate Indian invention into global industrial deployment.
+            India has the researchers and the domestic demand for this. What it
+            does not yet have is funding structured for work that takes a
+            decade to reach a plant.
           </p>
           <p className="mt-5">
-            My ventures, taken together, are one answer to that question: a
-            vertically integrated stack from atom-scale research to capital and
-            commercialization, so that Indian deep-tech can compete globally.
+            The six companies are my attempt at that: research, materials,
+            industrial products, technology transfer, funding, and one applied
+            business, so a result does not stall for want of the next step.
           </p>
         </NarrativePassage>
       </EditorialSection>
