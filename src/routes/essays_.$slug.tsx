@@ -31,14 +31,14 @@ const essayBodies: Record<string, EssayContent> = {
         paragraphs: [
           "I learned the lesson at fourteen, watching a man with locked-in syndrome try to ask for water. He could move two muscles: his eyebrows and his diaphragm. The room was full of caring people who could not hear him.",
           "The wheelchair I built him wasn't elegant. It was a breath-pressure sensor wired to a relay, taped to a frame that I welded badly in a workshop borrowed for the weekend. But for the first time in years, he could move himself toward the glass.",
-          "That afternoon rewrote what engineering meant to me. Until then, I had thought it was the discipline of optimisation — getting more performance out of less material, less power, less time. After that afternoon, I understood it as the discipline of agency. Performance is the means; agency is the brief.",
+          "That afternoon rewrote what engineering meant to me. Until then, I had thought it was the discipline of optimisation: getting more performance out of less material, less power, less time. After that afternoon, I understood it as the discipline of agency. Performance is the means; agency is the brief.",
         ],
       },
       {
         heading: "Why this still organises my work",
         paragraphs: [
           "Every venture I have built since has begun with the same question: who is this for, and what does dignity feel like for them?",
-          "In materials science, that question becomes: which sectors are still using carbon-intensive composites because nothing better has scaled? In energy, it becomes: which communities are still spending nine percent of their income on cooking fuel because the grid hasn't reached them? In assistive technology, it becomes the question I started with — and still, twenty years later, the one I am proudest to answer well.",
+          "In materials science, that question becomes: which sectors are still using carbon-intensive composites because nothing better has scaled? In energy, it becomes: which communities are still spending nine percent of their income on cooking fuel because the grid hasn't reached them? In assistive technology, it becomes the question I started with, and still, twenty years later, the one I'm proudest to answer well.",
           "The deep-tech world likes to romanticise the science. The science is necessary. It is not, by itself, the work.",
         ],
       },
@@ -64,8 +64,8 @@ const essayBodies: Record<string, EssayContent> = {
       {
         heading: "A century built on a single sheet",
         paragraphs: [
-          "Silicon defined the second half of the twentieth century — not because it was a miraculous element, but because we learned, slowly and expensively, to manufacture it at staggering purity and scale. The trillion-dollar industries that followed were downstream of that learning curve.",
-          "Graphene is, today, where silicon was in 1958. The science is settled. The applications are emerging. The manufacturing is not yet routine. Whoever solves the manufacturing — cleanly, at scale, at a price industry can absorb — gets to write the rules of the next industrial vocabulary.",
+          "Silicon defined the second half of the twentieth century, not because it was a miraculous element, but because we learned, slowly and expensively, to manufacture it at staggering purity and scale. The trillion-dollar industries that followed were downstream of that learning curve.",
+          "Graphene is, today, where silicon was in 1958. The science is settled. The applications are emerging. The manufacturing is not yet routine. Whoever solves the manufacturing (cleanly, at scale, at a price industry can absorb) gets to write the rules of the next industrial vocabulary.",
         ],
       },
       {
@@ -74,10 +74,10 @@ const essayBodies: Record<string, EssayContent> = {
           "A single layer of carbon atoms in a hexagonal lattice does, casually, things that the rest of the periodic table struggles with:",
         ],
         bullets: [
-          "Energy storage — batteries that charge in minutes, not hours, with cycle lives counted in tens of thousands.",
-          "Composites — structures with the strength of steel at a fraction of the weight, opening aviation, automotive and infrastructure to genuinely lower carbon footprints.",
-          "Water and air — selective membranes that filter out pathogens, salts and pollutants at energy budgets the desalination industry currently considers science fiction.",
-          "Sensors — single-molecule detection sensitive enough to redesign how we think about diagnostics and environmental monitoring.",
+          "Energy storage: batteries that charge in minutes, not hours, with cycle lives counted in tens of thousands.",
+          "Composites with the strength of steel at a fraction of the weight, opening aviation, automotive and infrastructure to genuinely lower carbon footprints.",
+          "For water and air, selective membranes that filter out pathogens, salts and pollutants at energy budgets the desalination industry currently considers science fiction.",
+          "Sensors capable of single-molecule detection, sensitive enough to redesign how we think about diagnostics and environmental monitoring.",
         ],
       },
       {
@@ -88,15 +88,15 @@ const essayBodies: Record<string, EssayContent> = {
       {
         heading: "Why India, and why now",
         paragraphs: [
-          "India has the three things this requires. We have the talent — a generation of materials chemists, electrochemists and process engineers trained in our IITs, IISERs and CSIR labs. We have the demand — a domestic market that needs cleaner energy, lighter vehicles, better water and stronger infrastructure simultaneously. And we have the urgency — a climate ledger that does not allow us the slow, polluting industrial path the West took to get rich.",
-          "What we now need is the patience. Materials science is a decade-long discipline. Venture capital is an annual one. Bridging that gap — through patient capital, public–private programmes, and founders willing to spend their thirties on a single problem — is the strategic question of this decade.",
+          "India has the three things this requires. We have the talent: a generation of materials chemists, electrochemists and process engineers trained in our IITs, IISERs and CSIR labs. We have the demand, a domestic market that needs cleaner energy, lighter vehicles, better water and stronger infrastructure simultaneously. And we have the urgency of a climate ledger that does not allow us the slow, polluting industrial path the West took to get rich.",
+          "What we now need is the patience. Materials science is a decade-long discipline. Venture capital is an annual one. Bridging that gap, through patient capital, public–private programmes and founders willing to spend their thirties on a single problem, is the strategic question of this decade.",
         ],
       },
       {
         heading: "A quiet wager",
         paragraphs: [
-          "I have spent the last several years, with my co-founders, betting on exactly this gap. We will not be the only ones. The companies and labs that emerge from this period will not look like the silicon giants of the last century — they will look more like steel mills meeting semiconductor fabs meeting biotech. That is, in itself, a very Indian sort of company.",
-          "If we get the next ten years right, the second half of this century will rhyme with the second half of the last one — except the master material will be carbon, the centre of gravity will have shifted, and the question of who gets to industrialise without destroying the planet will, for the first time, have a serious answer.",
+          "I have spent the last several years, with my co-founders, betting on exactly this gap. We will not be the only ones. The companies and labs that emerge from this period won't look like the silicon giants of the last century. They'll look more like steel mills meeting semiconductor fabs meeting biotech. That is, in itself, a very Indian sort of company.",
+          "If we get the next ten years right, the second half of this century will rhyme with the second half of the last one, except that the master material will be carbon, the centre of gravity will have shifted, and the question of who gets to industrialise without destroying the planet will, for the first time, have a serious answer.",
         ],
       },
     ],
@@ -114,13 +114,13 @@ const essayBodies: Record<string, EssayContent> = {
         heading: "The kindness of awards",
         paragraphs: [
           "Recognitions are kind. They open doors, they invite collaborations, and they let your parents finally explain to their friends what it is, exactly, that you do.",
-          "But they are lagging indicators. By the time an award arrives, the work it celebrates is already behind you. The version of you that did it has moved on. If you are not careful, the awards become a quiet substitute for the next prototype — the framed certificate hanging in the place where a soldering iron used to be.",
+          "But they are lagging indicators. By the time an award arrives, the work it celebrates is already behind you. The version of you that did it has moved on. If you are not careful, the awards become a quiet substitute for the next prototype, the framed certificate hanging in the place where a soldering iron used to be.",
         ],
       },
       {
         heading: "The next prototype",
         paragraphs: [
-          "The work, always, is in the next prototype. The one that doesn't yet exist. The one that will probably fail, then fail again, and finally — on a quiet Tuesday afternoon when no one is filming — do something quietly remarkable.",
+          "The work, always, is in the next prototype. The one that doesn't yet exist. The one that will probably fail, then fail again, and finally, on a quiet Tuesday afternoon when no one is filming, do something quietly remarkable.",
           "That is the only honest currency a builder has: the willingness to be a beginner again. To not know how something will turn out. To start with a sketch on a napkin and the suspicion that this might be the one.",
         ],
       },
@@ -148,7 +148,7 @@ export const Route = createFileRoute("/essays_/$slug")({
     }
     return {
       meta: [
-        { title: `${e.title} — Sushanth Paatnaik` },
+        { title: `${e.title} · Sushanth Paatnaik` },
         { name: "description", content: e.description },
         { property: "og:title", content: e.title },
         { property: "og:description", content: e.description },

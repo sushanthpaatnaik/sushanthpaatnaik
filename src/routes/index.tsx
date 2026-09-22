@@ -25,13 +25,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Sushanth Paatnaik — Inventor & Deep-Tech Founder" },
+      { title: "Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
       { name: "description", content: description },
-      { property: "og:title", content: "Sushanth Paatnaik — Inventor · Graphene & Deep-Tech Founder" },
+      { property: "og:title", content: "Sushanth Paatnaik · Inventor, Graphene & Deep-Tech Founder" },
       {
         property: "og:description",
         content:
-          "Six-time Indian Presidential awardee engineering matter, capital, and scale — graphene, nano-materials, AI, and industrial commercialization.",
+          "Six-time Indian Presidential awardee, engineering matter, capital and scale across graphene, nano-materials, AI and industrial commercialization.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/" },

@@ -35,19 +35,19 @@ import magppieLogo from "@/assets/ventures/magppie.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Six operating vehicles across advanced materials, industrial products, AI, and capital — and a five-mark advisory roster.";
+  "Six operating vehicles across advanced materials, industrial products, AI and capital, plus a six-house advisory roster.";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
   head: () => ({
     meta: [
-      { title: "Ventures — Operating Group · Sushanth Paatnaik" },
+      { title: "Ventures & Operating Group · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Ventures — Sushanth Paatnaik" },
+      { property: "og:title", content: "Ventures · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "Ecosystem architecture carrying frontier materials from lab to industrial world.",
+          "Architecture that carries frontier materials from the lab to the industrial world.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/ventures" },
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/ventures")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/ventures" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Ventures — Sushanth Paatnaik", description, path: "/ventures" }),
+        webPageSchema({ type: "CollectionPage", name: "Ventures · Sushanth Paatnaik", description, path: "/ventures" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Ventures", path: "/ventures" }])),
     ],
@@ -93,7 +93,7 @@ const ventures: Venture[] = [
     category: "Materials",
     domain: "Graphene at scale",
     thesis:
-      "An innovative, scalable and economical method to manufacture graphene — and the applications that turn it into real-world performance gains.",
+      "An innovative, scalable and economical method to manufacture graphene, plus the applications that turn it into real-world performance gains.",
     href: "https://monoatomlabs.com/",
     logo: monoatomLogo,
     logoScale: 1.06,
@@ -121,7 +121,7 @@ const ventures: Venture[] = [
     category: "Industrial Systems",
     domain: "R&D industrial solutions",
     thesis:
-      "Innovative R&D-led industrial solutions in nanomaterial engineering — translating advanced materials science into deployable systems that move the needle for industry.",
+      "Innovative R&D-led industrial solutions in nanomaterial engineering, translating advanced materials science into deployable systems that move the needle for industry.",
     href: "https://spiindustries.co/",
     logo: spiLogo,
     logoScale: 0.98,
@@ -168,7 +168,7 @@ const ventures: Venture[] = [
     // semiconductors, aerospace and life sciences among them. Stage is the
     // thing it leads with, on the site and in the owner's own framing.
     thesis:
-      "Investment into deep-tech startups at the earliest stages — backing breakthrough technology, then supporting the rounds that follow.",
+      "Investment into deep-tech startups at the earliest stages, backing breakthrough technology and then supporting the rounds that follow.",
     href: "https://starunicocapital.com/",
     // The hand-and-shoot symbol, cropped off the left of the supplied lockup.
     // Its navy stems and leaf outlines are lifted toward slate the same way the
@@ -185,7 +185,7 @@ const ventures: Venture[] = [
     category: "Design + Living",
     domain: "Stone wellness kitchens",
     thesis:
-      "Pioneering the world's first 100% stone-built modular kitchen — transforming ordinary homes into wellness homes that protect family and planet.",
+      "The world's first 100% stone-built modular kitchen, turning ordinary homes into wellness homes that protect family and planet.",
     href: "https://magppie.com/",
     logo: magppieLogo,
     logoScale: 1.00,
@@ -276,7 +276,7 @@ const holdingStats = [
   { value: "06", label: "Operating Vehicles" },
   { value: "06", label: "Advisory Positions" },
   { value: "03", label: "Material Science Layers" },
-  { value: "01", label: "Closed Loop Ecosystem" },
+  { value: "01", label: "Closed Loop System" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -285,9 +285,9 @@ const holdingStats = [
 function VenturesPage() {
   return (
     <CinematicPageShell
-      eyebrow="Ventures · Ecosystem Architecture"
+      eyebrow="Ventures · Stack Architecture"
       title={<>A portfolio engineered<br className="hidden md:inline" /> for planetary impact.</>}
-      lead="Founder, co-founder and chief innovation officer across six ventures — plus a quietly held advisory roster of six houses shaping industry, materials and climate."
+      lead="Founder, co-founder and chief innovation officer across six ventures, plus a quietly held advisory roster of six houses shaping industry, materials and climate."
       backdrop={backdrop}
       overlay={0.72}
     >
@@ -306,7 +306,7 @@ function VenturesPage() {
           >
             {/* div, not span — flex blockifies them, so this is a no-op on
                 screen and a real word boundary in the text stream. As spans
-                these read "06Operating Vehicles", "01Closed Loop Ecosystem". */}
+                these read "06Operating Vehicles", "01Closed Loop System". */}
             <div className="font-display text-2xl md:text-3xl tracking-[-0.02em] text-foreground/95">
               {s.value}
             </div>
@@ -465,7 +465,7 @@ function VenturesPage() {
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
       <EditorialSection number="02 · Advisory" heading="Counsel across six industry layers.">
         <p>
-          A short ledger of the houses I quietly advise — one mark per layer
+          A short ledger of the houses I quietly advise, one mark per layer
           of the industrial network: materials, industrial systems, consumer
           technology, surface technologies, wellness lighting, and sustainable
           materials.

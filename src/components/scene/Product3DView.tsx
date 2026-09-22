@@ -832,7 +832,7 @@ export function Product3DModal({
                 <motion.img
                   key={item.img + "-aqua-hero"}
                   src={item.img}
-                  alt={`${item.title} — HV-LC recovery system`}
+                  alt={`${item.title}, HV-LC recovery system`}
                   draggable={false}
                   initial={{ opacity: 0, scale: 1.02 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -872,7 +872,7 @@ export function Product3DModal({
                   <motion.img
                     key={item.detailImg + "-aqua-app"}
                     src={item.detailImg}
-                    alt={`${item.title} — field deployment`}
+                    alt={`${item.title}, field deployment`}
                     draggable={false}
                     initial={{ opacity: 0, scale: 1.025 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -983,7 +983,7 @@ export function Product3DModal({
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-hero"}
                       src={item.detailImg ?? item.img}
-                      alt={`${item.title} — field deployment`}
+                      alt={`${item.title}, field deployment`}
                       draggable={false}
                       initial={{ opacity: 0, scale: 1.025 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -1113,7 +1113,7 @@ export function Product3DModal({
                     <motion.img
                       key={(item.detailImg ?? item.img) + "-fieldctx"}
                       src={item.detailImg ?? item.img}
-                      alt={`${item.title} — supporting field context`}
+                      alt={`${item.title}, supporting field context`}
                       draggable={false}
                       initial={{ opacity: 0, scale: 1.02 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -1151,7 +1151,7 @@ export function Product3DModal({
                       <motion.img
                         key={(item.detailImg ?? item.img) + "-app"}
                         src={item.detailImg ?? item.img}
-                        alt={`${item.title} — application`}
+                        alt={`${item.title}, application`}
                         initial={{ opacity: 0, scale: 1.02 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.9, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
@@ -1202,8 +1202,8 @@ export function Product3DModal({
                       </p>
                       <p className="mt-3 text-[12.5px] leading-[1.65] text-foreground/74">
                         {hasApplicationMedia
-                          ? "Application context prioritised over studio artifact — the assembly the material sits in, the industrial environment it is specified for, and the scale at which it works."
-                          : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff — staged as a confidential industrial artifact."}
+                          ? "Application context prioritised over studio artifact: the assembly the material sits in, the industrial environment it is specified for, and the scale at which it works."
+                          : "Photographed against a low-key graphite cyclorama. Soft top diffusion, single edge key, controlled specular rolloff, staged as a confidential industrial artifact."}
                       </p>
                     </div>
                     <div className="border-t border-foreground/[0.08] pt-3">
@@ -1356,7 +1356,7 @@ export function Product3DModal({
                   <motion.img
                     key={item.img + "-hero-artifact"}
                     src={item.img}
-                    alt={`${item.title} — engineered artifact`}
+                    alt={`${item.title}, engineered artifact`}
                     draggable={false}
                     initial={{ opacity: 0, y: 8, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}

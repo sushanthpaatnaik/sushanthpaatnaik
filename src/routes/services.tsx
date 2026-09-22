@@ -9,11 +9,11 @@ export const Route = createFileRoute("/services")({
   component: ServicesRedirect,
   head: () => ({
     meta: [
-      { title: "Engage — Sushanth Paatnaik" },
+      { title: "Engage · Sushanth Paatnaik" },
       {
         name: "description",
         content:
-          "The Services desk has been merged into Engage — a single destination for collaboration, advisory, research, speaking, and partnerships.",
+          "The Services desk has been merged into Engage, a single destination for collaboration, advisory, research, speaking and partnerships.",
       },
       { name: "robots", content: "noindex" },
     ],

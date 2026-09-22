@@ -15,7 +15,7 @@ const phases = [
     tag: "Vapor capture",
     title: "High-Voltage Intake Hood",
     body:
-      "Detachable flanged hood seals over the chimney mouth via a quick-release collar and aligned bolt-clamp set — capturing exhaust plume before it dissipates.",
+      "Detachable flanged hood seals over the chimney mouth via a quick-release collar and aligned bolt-clamp set, capturing exhaust plume before it dissipates.",
   },
   {
     code: "02",

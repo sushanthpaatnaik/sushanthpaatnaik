@@ -83,28 +83,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "Sushanth Paatnaik" },
       { name: "format-detection", content: "telephone=no" },
-      { title: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
+      { title: "Sushanth Paatnaik · Deep-Tech Founder & Industrial Futurist" },
       {
         name: "description",
         content:
-          "Sushanth Paatnaik — six-time Indian Presidential awardee, inventor and founder building graphene, nano-materials, and industrial deep-tech ventures from India for the world.",
+          "Sushanth Paatnaik is a six-time Indian Presidential awardee. He builds graphene, nano-materials and industrial deep-tech ventures from India, for the world.",
       },
       { name: "author", content: "Sushanth Paatnaik" },
       { name: "theme-color", content: "#070708" },
       { property: "og:site_name", content: "Sushanth Paatnaik" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
+      { property: "og:title", content: "Sushanth Paatnaik · Deep-Tech Founder & Industrial Futurist" },
       {
         property: "og:description",
         content:
           "Inventor, founder, and six-time Indian Presidential awardee engineering graphene, nano-materials, and industrial systems from India for the world.",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Sushanth Paatnaik — Deep-Tech Founder & Industrial Futurist" },
+      { name: "twitter:title", content: "Sushanth Paatnaik · Deep-Tech Founder & Industrial Futurist" },
       {
         name: "twitter:description",
         content:
-          "Graphene, nano-materials, AI, and industrial commercialization — built in India, designed for the world.",
+          "Graphene, nano-materials, AI and industrial commercialization. Built in India, designed for the world.",
       },
       { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
       { name: "twitter:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },

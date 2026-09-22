@@ -16,10 +16,10 @@ export const Route = createFileRoute("/engage")({
     meta: [
       {
         title:
-          "Engage — Collaboration, Advisory, Research & Speaking · Sushanth Paatnaik",
+          "Engage: Collaboration, Advisory, Research & Speaking · Sushanth Paatnaik",
       },
       { name: "description", content: description },
-      { property: "og:title", content: "Engage — Sushanth Paatnaik" },
+      { property: "og:title", content: "Engage · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/engage")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/engage" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ name: "Engage — Sushanth Paatnaik", description, path: "/engage" }),
+        webPageSchema({ name: "Engage · Sushanth Paatnaik", description, path: "/engage" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Engage", path: "/engage" }])),
     ],
@@ -58,7 +58,7 @@ const lanes: Lane[] = [
     n: "01",
     category: "Industrial Collaboration",
     title: "Materials, infrastructure, manufacturing systems.",
-    body: "Co-development with incumbents and operators integrating graphene, advanced coatings, and nano-additives into existing product lines and industrial infrastructure — without re-engineering supply chains.",
+    body: "Co-development with incumbents and operators integrating graphene, advanced coatings, and nano-additives into existing product lines and industrial infrastructure, without re-engineering supply chains.",
     surfaces: [
       "Graphene & advanced materials",
       "Industrial coatings",
@@ -72,7 +72,7 @@ const lanes: Lane[] = [
     n: "02",
     category: "Research & Deep-Tech",
     title: "R&D direction, applied science, lab collaboration.",
-    body: "Embedded research direction and applied-science collaboration with universities, national labs, and corporate R&D groups working on materials, energy storage, water systems, and climate infrastructure — from problem framing to lab-scale validation and prototyping.",
+    body: "Embedded research direction and applied-science collaboration with universities, national labs, and corporate R&D groups working on materials, energy storage, water systems and climate infrastructure, from problem framing to lab-scale validation and prototyping.",
     surfaces: [
       "Embedded R&D direction",
       "Prototyping & lab validation",
@@ -86,7 +86,7 @@ const lanes: Lane[] = [
     n: "03",
     category: "Venture & Strategic Advisory",
     title: "Commercialization, innovation systems, venture architecture.",
-    body: "Founder-to-founder advisory, selective board seats, and capital co-architecture for deep-tech ventures at the materials, climate, and industrial interface — and multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
+    body: "Founder-to-founder advisory, selective board seats, and capital co-architecture for deep-tech ventures at the materials, climate and industrial interface, plus multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
     surfaces: [
       "Deep-tech venture advisory",
       "Innovation strategy for conglomerates & sovereign bodies",
@@ -100,7 +100,7 @@ const lanes: Lane[] = [
     n: "04",
     category: "Speaking & Thought Leadership",
     title: "Keynotes, institutional stages, editorial voice.",
-    body: "Keynotes, long-form interviews, panels, and stage conversations on invention, deep-tech, the carbon century, and India's industrial trajectory — for conferences, ministries, publications, and institutional convenings.",
+    body: "Keynotes, long-form interviews, panels, and stage conversations on invention, deep-tech, the carbon century, and India's industrial trajectory, for conferences, ministries, publications and institutional convenings.",
     surfaces: [
       "Conference keynotes",
       "Institutional & ministry talks",
@@ -114,12 +114,12 @@ const lanes: Lane[] = [
     n: "05",
     category: "Global Partnerships",
     title: "Academia, climate systems, cross-border collaboration.",
-    body: "Cross-border partnerships with academic institutions, climate organisations, and industrial transition programmes — coordinating frontier materials and deep-tech capacity across India and the international ecosystem.",
+    body: "Cross-border partnerships with academic institutions, climate organisations, and industrial transition programmes, coordinating frontier materials and deep-tech capacity across India and abroad.",
     surfaces: [
       "Academic & research consortia",
       "Climate systems & industrial transition",
       "Bilateral & cross-border programmes",
-      "Standards, policy, and ecosystem-building",
+      "Standards, policy and institution-building",
     ],
     fit: "Academia · Climate bodies · Sovereign · Multilateral",
     horizon: "Multi-year",
@@ -215,7 +215,7 @@ function PhilosophyBlock() {
     {
       n: "i.",
       t: "Selective collaboration",
-      b: "A small inbox by design. Engagements are accepted by fit, not volume — so signal can survive and the work can be done properly.",
+      b: "A small inbox by design. Engagements are accepted by fit, not volume, so signal survives and the work gets done properly.",
     },
     {
       n: "ii.",
@@ -230,7 +230,7 @@ function PhilosophyBlock() {
     {
       n: "iv.",
       t: "Systems thinking",
-      b: "Materials, capital, policy, and institutions move together. Each engagement is held against the wider ecosystem it sits inside.",
+      b: "Materials, capital, policy, and institutions move together. Each engagement is held against the wider system it sits inside.",
     },
   ];
   return (
@@ -333,7 +333,7 @@ function EngagePage() {
           The doors open<br className="hidden md:inline" /> for the right work.
         </>
       }
-      lead="A single, selective desk for collaboration across industry, research, ventures, speaking, and global partnerships. Invitation-based, mandate-led, and run through the operating group — designed to move frontier materials further into the industrial world."
+      lead="A single, selective desk for collaboration across industry, research, ventures, speaking, and global partnerships. Invitation-based, mandate-led, and run through the operating group, and designed to move frontier materials further into the industrial world."
       backdrop={backdrop}
       overlay={0.78}
     >
@@ -346,7 +346,7 @@ function EngagePage() {
         <p>
           Each category below is held to the same standard: a real problem, an
           honest horizon, and the patience to build the thing properly. If
-          your inquiry doesn't yet fit a category, write anyway — clarity is
+          your inquiry doesn't yet fit a category, write anyway. Clarity is
           welcome.
         </p>
       </EditorialSection>

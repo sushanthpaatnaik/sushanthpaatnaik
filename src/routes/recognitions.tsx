@@ -86,9 +86,9 @@ export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
   head: () => ({
     meta: [
-      { title: "Recognitions — Six Presidential Awards · TED · MIT · NASA" },
+      { title: "Recognitions · Six Presidential Awards · TED · MIT · NASA" },
       { name: "description", content: description },
-      { property: "og:title", content: "Recognitions — Sushanth Paatnaik" },
+      { property: "og:title", content: "Recognitions · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -103,7 +103,7 @@ export const Route = createFileRoute("/recognitions")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/recognitions" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Recognitions — Sushanth Paatnaik", description, path: "/recognitions" }),
+        webPageSchema({ type: "CollectionPage", name: "Recognitions · Sushanth Paatnaik", description, path: "/recognitions" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Recognitions", path: "/recognitions" }])),
     ],
@@ -156,7 +156,7 @@ const milestones: Milestone[] = [
     // The six are not one-per-year either, so the wording says "across" rather
     // than pairing a year to each name. Note the ledger itemises four of the
     // six; see the note above the ledger.
-    body: "Recognized by three Presidents of India across six national innovation honours between 2008 and 2013 — Dr. A.P.J. Abdul Kalam (2008, 2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013) — for sustained contribution to indigenous deep-tech and assistive innovation.",
+    body: "Recognized by three Presidents of India across six national innovation honours between 2008 and 2013: Dr. A.P.J. Abdul Kalam (2008, 2009), Smt. Pratibha Patil (2010) and Shri Pranab Mukherjee (2013), for sustained contribution to indigenous deep-tech and assistive innovation.",
     image: honorPresidentialTrio,
     imageFocus: "center center",
     institution: "President of India · National Innovation Foundation",
@@ -167,7 +167,7 @@ const milestones: Milestone[] = [
     year: "2010",
     sortYear: 2010,
     title: "MIT TR-35 Awardee",
-    body: "Recognized by MIT Technology Review among the world's leading young innovators under 35 — for early work on sustainable materials and assistive technology.",
+    body: "Recognized by MIT Technology Review among the world's leading young innovators under 35, for early work on sustainable materials and assistive technology.",
     image: honorMitTr35,
     imageFocus: "center 25%",
     institution: "MIT Technology Review · Cambridge",
@@ -177,7 +177,7 @@ const milestones: Milestone[] = [
     year: "2010",
     sortYear: 2010.5,
     title: "Intel IRIS National Recognition",
-    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair — the school-bench prototype that opened a fourteen-year practice in deep-tech.",
+    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair, the school-bench prototype that opened a fourteen-year practice in deep-tech.",
     image: honorIntelIris,
     institution: "Intel Foundation · National Science Fair",
     category: "Innovation",
@@ -193,7 +193,7 @@ const milestones: Milestone[] = [
     // Kennedy Space Center is not part of this entry; the Mobile Quarantine
     // Facility photographed here is at the U.S. Space & Rocket Center, which is
     // the Huntsville site. Every reference on the page now names Huntsville.
-    body: "International recognition from NASA for breakthrough engineering in human–machine interfaces, received in Huntsville, Alabama — home of the Apollo-era Mobile Quarantine Facility held at the U.S. Space & Rocket Center, photographed here.",
+    body: "International recognition from NASA for breakthrough engineering in human–machine interfaces, received in Huntsville, Alabama, home of the Apollo-era Mobile Quarantine Facility held at the U.S. Space & Rocket Center, photographed here.",
     image: honorNasa,
     institution: "NASA · United States",
     category: "Research",
@@ -203,7 +203,7 @@ const milestones: Milestone[] = [
     year: "2012",
     sortYear: 2012,
     title: "TED@Bangalore Speaker",
-    body: "Invited to TED@Bangalore as one of the youngest speakers ever featured — on sustainable graphene and the long arc from empathy to engineering.",
+    body: "Invited to TED@Bangalore as one of the youngest speakers ever featured, on sustainable graphene and the long arc from empathy to engineering.",
     image: keynoteTed,
     institution: "TED@Bangalore",
     category: "Global",
@@ -213,7 +213,7 @@ const milestones: Milestone[] = [
     year: "2013–14",
     sortYear: 2013,
     title: "MIT Fab-10 & Fab-11 Awardee",
-    body: "Selected at MIT Fab-10 (Barcelona) and Fab-11 for fabrication-led prototype systems and experimental engineering — built end-to-end inside MIT's Center for Bits and Atoms personal fabrication network.",
+    body: "Selected at MIT Fab-10 (Barcelona) and Fab-11 for fabrication-led prototype systems and experimental engineering, built end-to-end inside MIT's Center for Bits and Atoms personal fabrication network.",
     image: honorMitFab,
     imageFocus: "center 35%",
     institution: "MIT · Center for Bits and Atoms",
@@ -875,7 +875,7 @@ function RecognitionsPage() {
           An archival journey<br className="hidden md:inline" /> of recognition.
         </>
       }
-      lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley — a photographic record of two decades on stage, in the lab, and in conversation with institutions."
+      lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley. A photographic record of two decades on stage, in the lab and in conversation with institutions."
       backdrop={backdrop}
       overlay={0.74}
       contentPb="pb-0"
@@ -963,8 +963,8 @@ function RecognitionsPage() {
       <div id="hall-of-fame" className="scroll-mt-24">
         <EditorialSection number="01 · Overture" heading="Moments of recognition.">
           <p>
-            A continuous cinematic strip — mainstage keynotes, presidential
-            demonstrations, diplomatic honours and institutional citations —
+            A continuous cinematic strip of mainstage keynotes, presidential
+            demonstrations, diplomatic honours and institutional citations,
             offered up front so the visual depth of the record is felt
             before the chronology begins.
           </p>
@@ -1001,7 +1001,7 @@ function RecognitionsPage() {
         heading="Six recognitions that define the archive."
       >
         <p>
-          The gravitational anchors of the register — the citations that the
+          The gravitational anchors of the register, the citations that the
           rest of the chronology orbits. Read each as an institutional plate
           rather than a line item.
         </p>
@@ -1201,7 +1201,7 @@ function RecognitionsPage() {
                 2007, so the 2008 and 2009 awards came from him as a former
                 President — which is exactly how the ledger below labels them.
                 Patil (2010) and Mukherjee (2013) were in office. */}
-            The defining plate of the archive — felicitated by three Presidents
+            The defining plate of the archive: felicitated by three Presidents
             of India across six separate citations between 2008 and 2013. The
             gravitational centre around which the rest of the recognitions
             orbit.
@@ -1219,7 +1219,7 @@ function RecognitionsPage() {
       >
         <p>
           Newspaper plates, ministerial moments, presidential citations, and
-          mainstage photography — drawn from the full archive and intercut as
+          mainstage photography, drawn from the full archive and intercut as
           a single documentary collage.
         </p>
       </EditorialSection>
@@ -1230,7 +1230,7 @@ function RecognitionsPage() {
         <p>
           Four eras, four archives. Each opens into the full photographic
           plates for that period. A preview strip remains visible for every
-          era so the depth of the record is always felt — or expand the full
+          era so the depth of the record is always felt, or expand the full
           archive at once.
         </p>
       </EditorialSection>
@@ -1259,7 +1259,7 @@ function RecognitionsPage() {
           number="II"
           era="2010 – 2014"
           title="Global stages."
-          description="TED@Bangalore, TEDx, NASA Huntsville, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad — speaking, fellowshipping, and bringing the work into conversation with the world."
+          description="TED@Bangalore, TEDx, NASA Huntsville, INK, MIT Technology Review, MIT Fab-10 & Fab-11. The first decade abroad: speaking, fellowshipping and bringing the work into conversation with the world."
           plateCount={eraGlobal.length}
           registryCount={ledgerSlice(["2010", "2011", "2012", "2013–14"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraGlobal}
@@ -1277,7 +1277,7 @@ function RecognitionsPage() {
           number="III"
           era="2020 – 2023"
           title="Industrial leadership & diplomacy."
-          description="The diplomatic and ministerial years — embassies, BRICS, G20, the Ministry of Power, and the signing of MoUs that turn frontier research into national infrastructure."
+          description="The diplomatic and ministerial years: embassies, BRICS, G20, the Ministry of Power, and the signing of MoUs that turn frontier research into national infrastructure."
           plateCount={eraIndustrial.length}
           registryCount={ledgerSlice(["2021", "2022", "2023"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraIndustrial}
@@ -1295,7 +1295,7 @@ function RecognitionsPage() {
           number="IV"
           era="2024 – 2025"
           title="The present field."
-          description="IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond Retreat, Bharatiya Knowledge Systems. The current chapter — where materials, ventures and public address converge."
+          description="IEEMA mainstage, Silicon Valley, GMR Innovex, NIT Rourkela, Beyond Retreat, Bharatiya Knowledge Systems. The current chapter, where materials, ventures and public address converge."
           plateCount={eraPresent.length}
           registryCount={ledgerSlice(["2024", "2025"]).reduce((a, g) => a + g.entries.length, 0)}
           previewPlates={eraPresent}
@@ -1314,7 +1314,7 @@ function RecognitionsPage() {
       <div id="ledger" className="scroll-mt-24 mt-20 md:mt-28">
         <EditorialSection number="07 · Register" heading="Achievement ledger · 27 of record.">
           <p>
-            The complete year-by-year register — every Presidential citation,
+            The complete year-by-year register, with every Presidential citation,
             fellowship, award, keynote and felicitation on file from 2008 to
             2025. Featured entries are marked with a diamond; the full
             chronology is always open here.

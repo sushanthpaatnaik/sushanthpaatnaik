@@ -7,15 +7,15 @@ import backdrop from "@/assets/story-03-material.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "How every claim across the Innovations catalogue is graded — development stage, evidence labels, and patent status explained, so a claim's confidence level is never left to guesswork.";
+  "How every claim across the Innovations catalogue is graded. Development stage, evidence labels and patent status explained, so a claim's confidence level is never left to guesswork.";
 
 export const Route = createFileRoute("/evidence-standards")({
   component: EvidenceStandardsPage,
   head: () => ({
     meta: [
-      { title: "Evidence & Development-Stage Standards — Sushanth Paatnaik" },
+      { title: "Evidence & Development-Stage Standards · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Evidence & Development-Stage Standards — Sushanth Paatnaik" },
+      { property: "og:title", content: "Evidence & Development-Stage Standards · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -97,7 +97,7 @@ function EvidenceStandardsPage() {
     <CinematicPageShell
       eyebrow="Reference · How This Catalogue Is Labelled"
       title={<>Evidence & development-stage<br className="hidden md:inline" /> standards.</>}
-      lead="How every claim across the Innovations catalogue is graded — from bench formulation to field deployment — so a label's confidence level is never left to guesswork."
+      lead="How every claim across the Innovations catalogue is graded, from bench formulation to field deployment, so a label's confidence level is never left to guesswork."
       backdrop={backdrop}
       overlay={0.8}
     >
@@ -105,7 +105,7 @@ function EvidenceStandardsPage() {
         <p>
           Every technology on the Innovations page carries one of three stage
           labels. Stage describes how far the work has moved from the lab
-          bench toward the market — nothing more.
+          bench toward the market, and nothing more.
         </p>
         <div className="not-prose mt-2">
           {stageOrder.map((s, i) => (
@@ -115,7 +115,7 @@ function EvidenceStandardsPage() {
         <p className="mt-8 text-[13.5px] leading-[1.7] text-foreground/55">
           These three tiers map loosely, low to high, onto the engineering
           convention of Technology Readiness Level (TRL). No specific numeric
-          TRL is assigned to any individual technology on this site — only
+          TRL is assigned to any individual technology on this site, only
           the three-tier band above.
         </p>
       </EditorialSection>
@@ -123,7 +123,7 @@ function EvidenceStandardsPage() {
       <EditorialSection number="02 · Evidence Labels" heading="What the status text under each stage means.">
         <p>
           Beside its stage, every technology also carries a short status
-          phrase — the founder-authored text shown verbatim on its card. The
+          phrase: the founder-authored text shown verbatim on its card. The
           phrases fall into four groups.
         </p>
         <div className="not-prose mt-2">
@@ -136,14 +136,14 @@ function EvidenceStandardsPage() {
       <EditorialSection number="03 · Reading a Claim" heading="Stage first, status second.">
         <p>
           Every numeric or technical claim on the Innovations page is paired
-          with both labels. Read the stage first — how far along the
-          technology is — and the status second — what specifically has been
+          with both labels. Read the stage first, which says how far along the
+          technology is. Read the status second, which says what specifically has been
           validated, and where. Together they describe the confidence behind
           a number; neither one alone does.
         </p>
         <p>
-          For per-technology detail beyond what's shown here — including
-          specific patent-filing stage — write in through Engage.
+          For per-technology detail beyond what's shown here, including
+          specific patent-filing stage, write in through Engage.
         </p>
       </EditorialSection>
 

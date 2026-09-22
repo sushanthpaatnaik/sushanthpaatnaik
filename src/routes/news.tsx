@@ -65,9 +65,9 @@ export const Route = createFileRoute("/news")({
   component: NewsPage,
   head: () => ({
     meta: [
-      { title: "News & Media — Editorial Archive · Sushanth Paatnaik" },
+      { title: "News & Media · Editorial Archive · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "News — Sushanth Paatnaik" },
+      { property: "og:title", content: "News · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -82,7 +82,7 @@ export const Route = createFileRoute("/news")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/news" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "News & Media — Sushanth Paatnaik", description, path: "/news" }),
+        webPageSchema({ type: "CollectionPage", name: "News & Media · Sushanth Paatnaik", description, path: "/news" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "News", path: "/news" }])),
     ],
@@ -129,12 +129,12 @@ const CATEGORIES: { id: Category; code: string; blurb: string }[] = [
   {
     id: "Startup & Venture Press",
     code: "IV",
-    blurb: "Coverage of the companies — Capattery, Monoatom Labs and the wider portfolio.",
+    blurb: "Coverage of the companies: Capattery, Monoatom Labs and the wider portfolio.",
   },
   {
     id: "Public Speaking & Thought Leadership",
     code: "V",
-    blurb: "The stage record — TED@Bangalore, TEDx, INK Talks, FAB10 and the global conference circuit.",
+    blurb: "The stage record: TED@Bangalore, TEDx, INK Talks, FAB10 and the global conference circuit.",
   },
 ];
 
@@ -144,7 +144,7 @@ const featured: PressItem = {
   tag: "★ Lead Story",
   title:
     "Six times President awardee Sushant Pattnaik is making a difference with groundbreaking innovations",
-  body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar — from a breath-controlled wheelchair built as a teenager to founding multiple deep-tech ventures.",
+  body: "An exclusive cover story chronicling the journey of a serial innovator from Bhubaneswar, from a breath-controlled wheelchair built as a teenager to founding multiple deep-tech ventures.",
   href: "https://www.globalindian.com/story/global-indian-exclusive/six-times-president-awardee-sushant-pattnaiks-ground-breaking-innovations/",
   image: globalImg,
   category: "Global Features & Interviews",
@@ -157,7 +157,7 @@ const secondary: PressItem = {
   date: "March 9, 2026",
   tag: "Conference",
   title: "India hosts GraphIN 2026 to explore graphene's potential",
-  body: "National coverage of GraphIN 2026 in Kochi — the conference convening industry, academia and government to chart India's graphene future.",
+  body: "National coverage of GraphIN 2026 in Kochi, the conference convening industry, academia and government to chart India's graphene future.",
   href: "https://www.rediff.com/news/report/graphin-2026-graphene-conference-opens-in-kochi/20260309.htm",
   image: rediffImg,
   category: "Scientific & Deep-Tech Coverage",
@@ -182,7 +182,7 @@ const coverage: PressItem[] = [
     date: "2013",
     tag: "Profile",
     title: "Susant Pattnaik: Serial entrepreneur at 20",
-    body: "The Sunday Chronicle profiles the breath-operated wheelchair innovator and co-founder of two companies — honoured thrice by the President of India before turning 21.",
+    body: "The Sunday Chronicle profiles the breath-operated wheelchair innovator and co-founder of two companies, honoured thrice by the President of India before turning 21.",
     href: "https://www.deccanchronicle.com/131208/commentary-sunday-chronicle/article/susant-pattnaik-serial-entrepreneur-20",
     image: deccanImg,
     category: "Global Features & Interviews",
@@ -213,7 +213,7 @@ const coverage: PressItem[] = [
     date: "2014",
     tag: "Profile",
     title: "Susant Pattnaik: Real Life 'Doremon' or an Innovation Champ?",
-    body: "A long-form profile by India's product think-tank on the young innovator whose gadgets — once compared to Doraemon's — are now solving real-world problems.",
+    body: "A long-form profile by India's product think-tank on the young innovator whose gadgets, once compared to Doraemon's, are now solving real-world problems.",
     href: "https://pn.ispirt.in/susant-pattnaik-real-life-doremon-or-an-innovation-champ/",
     image: ispirtImg,
     category: "Global Features & Interviews",
@@ -233,7 +233,7 @@ const coverage: PressItem[] = [
     date: "September 16, 2013",
     tag: "Impact",
     title: "A resolve in every breath: a teen helps special people live anew",
-    body: "Governance Now profiles the breath-sensor apparatus at the NIF-organised Delhi exhibition — an innovation enabling paralysed and physically challenged people to perform basic chores independently.",
+    body: "Governance Now profiles the breath-sensor apparatus at the NIF-organised Delhi exhibition, an innovation enabling paralysed and physically challenged people to perform basic chores independently.",
     href: "https://www.governancenow.com/news/regular-story/resolve-every-breath-bhopal-teen-helps-special-people-live-anew",
     image: governanceNowImg,
     category: "Scientific & Deep-Tech Coverage",
@@ -265,7 +265,7 @@ const coverage: PressItem[] = [
     date: "March 21, 2022",
     tag: "Innovation",
     title: "Game-changing innovation in battery charging technology by 6-times President awardee",
-    body: "Business Standard reports on Sushanth's breakthrough in rapid battery charging — a technology poised to charge a smartphone in seconds and reshape the EV and consumer electronics landscape.",
+    body: "Business Standard reports on Sushanth's breakthrough in rapid battery charging, a technology poised to charge a smartphone in seconds and reshape EV and consumer electronics.",
     href: "https://www.business-standard.com/content/press-releases-ani/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik-122032100710_1.html",
     image: businessStandardImg,
     category: "Scientific & Deep-Tech Coverage",
@@ -276,7 +276,7 @@ const coverage: PressItem[] = [
     date: "March 21, 2022",
     tag: "Innovation",
     title: "Game-changing innovation in battery charging technology by 6-times President awardee",
-    body: "ThePrint syndicates the ANI dispatch on Sushanth's nano-material battery breakthrough — promising smartphone charges in seconds and EV refuels in minutes.",
+    body: "ThePrint syndicates the ANI dispatch on Sushanth's nano-material battery breakthrough, promising smartphone charges in seconds and EV refuels in minutes.",
     href: "https://theprint.in/ani-press-releases/game-changing-innovation-in-the-world-of-battery-charging-technology-by-6-times-president-awardee-sushant-pattnaik/881783/",
     image: thePrintImg,
     category: "Scientific & Deep-Tech Coverage",
@@ -319,7 +319,7 @@ const coverage: PressItem[] = [
     date: "May 15, 2014",
     tag: "Profile",
     title: "A wiz kid on an invention spree — heading to FAB10 Barcelona",
-    body: "TOI Bhopal profiles Sushanth — then a second-year engineering student with a string of patents — selected to be honoured at the FAB10 international conference in Barcelona.",
+    body: "TOI Bhopal profiles Sushanth, then a second-year engineering student with a string of patents, selected to be honoured at the FAB10 international conference in Barcelona.",
     href: "https://timesofindia.indiatimes.com/city/bhopal/a-wiz-kid-on-an-invention-spree/articleshow/35132755.cms",
     image: toiFab10Img,
     category: "Public Speaking & Thought Leadership",
@@ -329,7 +329,7 @@ const coverage: PressItem[] = [
     date: "2012",
     tag: "World Record",
     title: "Youngest Inventor and Social Entrepreneur",
-    body: "The Golden Book of World Records officially recognises Sushanth Paatnaik for the world record of 'the Youngest Inventor and Social Entrepreneur' — citing his MIT TR-35 selection at 17 and a string of national and international honours.",
+    body: "The Golden Book of World Records officially recognises Sushanth Paatnaik for the world record of 'the Youngest Inventor and Social Entrepreneur', citing his MIT TR-35 selection at 17 and a string of national and international honours.",
     href: "https://goldenbookofworldrecords.com/youngest-inventor-and-social-interpreneur/",
     image: goldenBookImg,
     category: "Awards & Recognition",
@@ -458,7 +458,7 @@ function LeadFeature({ item }: { item: PressItem }) {
         <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
           <MediaPlate
             src={item.image}
-            alt={`${item.title} — ${item.outlet}`}
+            alt={`${item.title}, ${item.outlet}`}
             objectPosition={item.objectPosition}
             className="aspect-[4/5] max-h-[540px] border border-foreground/[0.1] md:col-span-6 md:aspect-[4/5] md:max-h-[32rem]"
           />
@@ -525,7 +525,7 @@ function SecondaryFeature({ item }: { item: PressItem }) {
       <div className="mt-5 grid grid-cols-1 items-start gap-6 md:grid-cols-12 md:gap-8">
         <MediaPlate
           src={item.image}
-          alt={`${item.title} — ${item.outlet}`}
+          alt={`${item.title}, ${item.outlet}`}
           objectPosition={item.objectPosition}
           className="aspect-[16/10] max-h-[380px] border border-foreground/[0.08] md:col-span-6 md:max-h-[22rem]"
         />
@@ -604,7 +604,7 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
         {/* Thumbnail */}
         <MediaPlate
           src={item.image}
-          alt={`${item.title} — ${item.outlet}`}
+          alt={`${item.title}, ${item.outlet}`}
           objectPosition={item.objectPosition}
           className="hidden aspect-[4/3] rounded-sm border border-foreground/[0.08] md:block"
         />
@@ -613,7 +613,7 @@ function ArchiveEntry({ item, index }: { item: PressItem; index: number }) {
           {/* Mobile-only thumbnail */}
           <MediaPlate
             src={item.image}
-            alt={`${item.title} — ${item.outlet}`}
+            alt={`${item.title}, ${item.outlet}`}
             objectPosition={item.objectPosition}
             className="md:hidden mb-3 aspect-[16/9] rounded-sm border border-foreground/[0.08]"
           />
@@ -666,7 +666,7 @@ function NewsPage() {
           The press<br className="hidden md:inline" /> of record.
         </>
       }
-      lead="An editorial archive of coverage across sixteen years and eighteen publications — Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
+      lead="An editorial archive of coverage across sixteen years and eighteen publications: Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
       overlay={0.68}
     >
@@ -732,7 +732,7 @@ function NewsPage() {
       {/* The archive proper */}
       <EditorialSection number="07 · The Archive" heading="Filed chronologically. Read selectively.">
         <p>
-          The full register — features and interviews, deep-tech reporting,
+          The full register: features and interviews, deep-tech reporting,
           recognitions of record, venture press, and the stage record. From
           teenage assistive tech in <em>The Telegraph</em> and NIF, to global
           recognition in MIT TR and Wikipedia, to deep-tech reporting on
@@ -810,7 +810,7 @@ function NewsPage() {
         </h2>
         <div className="mt-6 space-y-5 text-[15px] md:text-base leading-relaxed text-foreground/75">
           <p>
-            The mastheads carrying the work — Indian and international, popular
+            The mastheads carrying the work, Indian and international, popular
             press and scientific institutions.
           </p>
           <div className="not-prose relative mt-12 overflow-hidden rounded-[3px] border border-foreground/[0.05] bg-[var(--surface-deep)]">
@@ -916,7 +916,7 @@ function NewsPage() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title={`${o.name} — read coverage ↗`}
+                    title={`${o.name}, read coverage ↗`}
                     className={baseCls}
                   >
                     {inner}

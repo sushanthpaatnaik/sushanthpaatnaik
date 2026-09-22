@@ -10,15 +10,15 @@ import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 import { track } from "@/lib/analytics";
 
 const description =
-  "Direct line to Sushanth Paatnaik. Selective access for partnerships, capital, research collaboration, advisory, and press — read and triaged personally.";
+  "Direct line to Sushanth Paatnaik. Selective access for partnerships, capital, research collaboration, advisory and press. Every message is read and triaged personally.";
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
   head: () => ({
     meta: [
-      { title: "Contact — Sushanth Paatnaik" },
+      { title: "Contact · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Contact — Sushanth Paatnaik" },
+      { property: "og:title", content: "Contact · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/contact")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/contact" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "ContactPage", name: "Contact — Sushanth Paatnaik", description, path: "/contact" }),
+        webPageSchema({ type: "ContactPage", name: "Contact · Sushanth Paatnaik", description, path: "/contact" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])),
     ],
@@ -88,7 +88,7 @@ function AccessForm() {
   );
 
   const mailto = useMemo(() => {
-    const subject = `[${intentLabel}] — ${name || "New inquiry"}`;
+    const subject = `[${intentLabel}] ${name || "New inquiry"}`;
     const body = [
       `Intent · ${intentLabel}`,
       "",
@@ -134,7 +134,7 @@ function AccessForm() {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `[${intentLabel}] — ${name}`,
+          subject: `[${intentLabel}] ${name}`,
           from_name: name,
           Intent: intentLabel,
           Name: name,
@@ -198,7 +198,7 @@ function AccessForm() {
             </span>
           </div>
           <p className="mt-2 font-display italic text-[13px] text-foreground/40">
-            Choose the nature of your inquiry — one is pre-selected.
+            Choose the nature of your inquiry. One is pre-selected.
           </p>
           <div className="mt-6 flex flex-col" role="radiogroup" aria-label="Intent">
             {intents.map((i) => {
@@ -399,7 +399,7 @@ function AccessForm() {
                 </button>
                 {status === "error" ? (
                   <p className="max-w-[280px] text-right font-mono text-[10px] uppercase tracking-[0.3em] text-destructive/80 sm:max-w-none">
-                    Couldn&apos;t send —{" "}
+                    Couldn&apos;t send.{" "}
                     <a href={mailto} className="underline underline-offset-2 hover:text-accent">
                       email directly
                     </a>
@@ -414,7 +414,7 @@ function AccessForm() {
             </div>
             <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               {WEB3FORMS_ACCESS_KEY
-                ? "Your message goes straight to the founder's inbox — no email app required. Nothing else is stored on this site."
+                ? "Your message goes straight to the founder's inbox. No email app required. Nothing else is stored on this site."
                 : "Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site."}
             </p>
           </>
@@ -447,7 +447,7 @@ function ContactPage() {
           Build with<br className="hidden md:inline" /> Sushanth.
         </>
       }
-      lead="One inbox. Read personally. Open to industry partnerships, strategic advisory, speaking, deep-tech ventures, and research collaborations — when the work is right."
+      lead="One inbox. Read personally. Open to industry partnerships, strategic advisory, speaking, deep-tech ventures, and research collaborations, when the work is right."
       backdrop={backdrop}
       overlay={0.76}
     >
@@ -468,7 +468,7 @@ function ContactPage() {
               `block` only separates them visually. See the twin on /engage. */}
           Building systems for industrial futures and material intelligence.{" "}
           <span className="block mt-3 text-foreground/55 italic">
-            The desk is small on purpose — opened only for work that deserves a multi-year horizon.
+            The desk is small on purpose. It opens only for work that deserves a multi-year horizon.
           </span>
         </p>
       </motion.div>

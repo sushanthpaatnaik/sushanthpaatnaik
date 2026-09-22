@@ -28,15 +28,15 @@ import yourStoryLogo from "@/assets/outlets/yourstory-color.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "What institutions, founders, journalists, and global platforms say about the work — on record testimonials from MIT Technology Review, NIF, Deloitte, TED, INK, and more.";
+  "What institutions, founders, journalists, and global platforms say about the work. On-record testimonials from MIT Technology Review, NIF, Deloitte, TED, INK and more.";
 
 export const Route = createFileRoute("/voices")({
   component: VoicesPage,
   head: () => ({
     meta: [
-      { title: "Voices — Testimonials & On-Record Recognition" },
+      { title: "Voices · Testimonials & On-Record Recognition" },
       { name: "description", content: description },
-      { property: "og:title", content: "Voices — Sushanth Paatnaik" },
+      { property: "og:title", content: "Voices · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/voices")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/voices" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Voices — Sushanth Paatnaik", description, path: "/voices" }),
+        webPageSchema({ type: "CollectionPage", name: "Voices · Sushanth Paatnaik", description, path: "/voices" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Voices", path: "/voices" }])),
     ],
@@ -304,7 +304,7 @@ function VoicesPage() {
           What people say<br className="hidden md:inline" /> about the work.
         </>
       }
-      lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages — spanning two decades of invention."
+      lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages, spanning two decades of invention."
       backdrop={backdrop}
       overlay={0.76}
     >
@@ -313,7 +313,7 @@ function VoicesPage() {
       <EditorialSection number="01 · Voices" heading="Direct, on the record.">
         <p>
           Comments, endorsements, and testimonials from the people and
-          institutions who have engaged the work — in their own words.
+          institutions who have engaged the work, in their own words.
         </p>
       </EditorialSection>
 

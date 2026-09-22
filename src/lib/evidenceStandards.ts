@@ -17,7 +17,7 @@ export const stageMeta: Record<Stage, { label: string; sub: string; tone: string
 export const stageExplainer: Record<Stage, string> = {
   Commercial: "In active manufacturing, sold, or deployed in the field.",
   Pilot: "Undergoing plant-scale or field trials ahead of commercial rollout.",
-  "R&D": "Laboratory bench stage — formulation and prototyping, not yet field- or plant-tested.",
+  "R&D": "Laboratory bench stage: formulation and prototyping, not yet field- or plant-tested.",
 };
 
 /**
@@ -44,7 +44,7 @@ export const evidenceGroups: EvidenceGroup[] = [
       "Patent · Fleet trial",
     ],
     explainer:
-      "A patent filing exists for the underlying technology. The word after · describes where the product itself currently stands — already in field deployment, sold at retail, running on an industrial line, or in cell/fleet trials — not the patent's own grant status. Per-technology filing stage (filed, pending, or granted) is tracked internally; ask via Engage for specifics on a given technology.",
+      "A patent filing exists for the underlying technology. The word after · describes where the product itself currently stands (already in field deployment, sold at retail, running on an industrial line, or in cell/fleet trials), not the patent's own grant status. Per-technology filing stage (filed, pending, or granted) is tracked internally; ask via Engage for specifics on a given technology.",
     stage: "Commercial",
   },
   {
@@ -59,14 +59,14 @@ export const evidenceGroups: EvidenceGroup[] = [
       "Stack pilot",
     ],
     explainer:
-      "The technology has moved beyond the lab bench into a live pilot — at a partner's plant, in the field, on an industrial line, or as a working membrane, prototype, or stack under real operating conditions — but has not yet reached full commercial deployment.",
+      "The technology has moved beyond the lab bench into a live pilot: at a partner's plant, in the field, on an industrial line, or as a working membrane, prototype or stack under real operating conditions. It has not yet reached full commercial deployment.",
     stage: "Pilot",
   },
   {
     heading: "Novelty claim",
     examples: ["World-first system"],
     explainer:
-      "Describes technical novelty — a first-of-its-kind system — not maturity. Read it alongside the item's own Stage label: a “world-first” can still be at Pilot, not yet Commercial.",
+      "Describes technical novelty, a first-of-its-kind system, not maturity. Read it alongside the item's own Stage label: a “world-first” can still be at Pilot, not yet Commercial.",
     stage: "Pilot",
   },
   {

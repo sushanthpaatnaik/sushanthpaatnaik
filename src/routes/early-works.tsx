@@ -15,19 +15,19 @@ import supersenseImg from "@/assets/early/supersense.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Six original inventions built between 2008 and 2013 — the teenage innovations that earned six Presidential Awards and became the foundation for today's deep-tech ventures.";
+  "Six original inventions built between 2008 and 2013. These teenage innovations earned six Presidential Awards and became the foundation for today's deep-tech ventures.";
 
 export const Route = createFileRoute("/early-works")({
   component: EarlyWorksPage,
   head: () => ({
     meta: [
-      { title: "Early Works — Sushanth Paatnaik" },
+      { title: "Early Works · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Early Works — Sushanth Paatnaik" },
+      { property: "og:title", content: "Early Works · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "Six original devices built between 2008 and 2013 — the teenage innovations that earned six Presidential Awards.",
+          "Six original devices built between 2008 and 2013. These teenage innovations earned six Presidential Awards.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/early-works" },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/early-works")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/early-works" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Early Works — Sushanth Paatnaik", description, path: "/early-works" }),
+        webPageSchema({ type: "CollectionPage", name: "Early Works · Sushanth Paatnaik", description, path: "/early-works" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Early Works", path: "/early-works" }])),
     ],
@@ -78,7 +78,7 @@ const innovations: Innovation[] = [
     problem:
       "Road accidents claimed thousands of lives annually across India. Existing vehicles lacked basic safety mechanisms, and factory-level safety upgrades were cost-prohibitive for most families.",
     solution:
-      "A hardware-first safety system engineered to retrofit onto any existing vehicle — without redesigning the host platform. Field-deployable, low-cost, and scalable from a school workshop.",
+      "A hardware-first safety system engineered to retrofit onto any existing vehicle, without redesigning the host platform. Field-deployable, low-cost and scalable from a school workshop.",
     impact:
       "Recognized by the President of India at age 14. Proved that life-saving engineering could emerge from constrained resources and genuine intent.",
     image: rectofitImg,
@@ -92,11 +92,11 @@ const innovations: Innovation[] = [
     name: "Enabler",
     tagline: "Breath-operated wheelchair",
     problem:
-      "Individuals with severe paralysis had no affordable means of independent mobility in India. Commercial alternatives — where they existed — were inaccessible to most families.",
+      "Individuals with severe paralysis had no affordable means of independent mobility in India. Commercial alternatives, where they existed, were inaccessible to most families.",
     solution:
       "A wheelchair controlled entirely through breath patterns, a sip-and-puff interface built with hardware a teenager could design, iterate, and test. No imported components. No institutional lab.",
     impact:
-      "Won the National Innovation Award. Recognized by the President of India. The foundation invention that opened every door that followed — and the one that made everything else inevitable.",
+      "Won the National Innovation Award. Recognized by the President of India. The foundation invention that opened every door that followed, and the one that made everything else inevitable.",
     image: enablerImg,
     videoUrl: "https://youtu.be/n-JiX6vmwOI",
     badges: ["Presidential Award", "National Innovation Award"],
@@ -110,11 +110,11 @@ const innovations: Innovation[] = [
     name: "Super Sense",
     tagline: "Gesture-controlled computing",
     problem:
-      "Traditional computing interfaces — keyboards and mice — excluded individuals with motor disabilities from fully engaging with technology.",
+      "Keyboards and mice excluded individuals with motor disabilities from fully engaging with technology.",
     solution:
       "A system enabling computers to be operated entirely through hand gestures, reimagining human-machine interaction before gesture computing reached mainstream awareness.",
     impact:
-      "Recognized by the President at the Intel IRIS National Science Fair. Explored a computing paradigm that mainstream technology would adopt nearly a decade later.",
+      "Recognized by the President at the Intel IRIS National Science Fair. Explored a way of interacting with computers that mainstream technology would adopt nearly a decade later.",
     image: supersenseImg,
     videoUrl: "https://youtu.be/YuNwD71F3tA",
     badges: ["Presidential Award", "Intel IRIS"],
@@ -129,7 +129,7 @@ const innovations: Innovation[] = [
     problem:
       "Over 400 million Indians had no reliable access to electricity. Grid extension was slow, expensive, and politically complex. The problem was urgent and compounding.",
     solution:
-      "A high-efficiency, low-cost portable power generation kit designed for rural deployment — no grid dependency, no infrastructure prerequisite, built for the real conditions of India's hinterland.",
+      "A high-efficiency, low-cost portable power generation kit designed for rural deployment. No grid dependency, no infrastructure prerequisite, built for the real conditions of India's hinterland.",
     impact:
       "Recognized by the President. Shortlisted by the National Innovation Foundation. Addressed one of India's most pressing humanitarian engineering challenges of the era.",
     image: powergenImg,
@@ -146,7 +146,7 @@ const innovations: Innovation[] = [
     problem:
       "Devices died at the worst possible moments. Solar chargers required direct sunlight, were bulky for everyday carry, and performed poorly in indoor environments.",
     solution:
-      "A power bank case that harvests ambient indoor light — not direct sunlight — to continuously trickle-charge connected devices. Quietly self-sufficient. Invisible in its operation.",
+      "A power bank case that harvests ambient indoor light, not direct sunlight, to continuously trickle-charge connected devices. Quietly self-sufficient. Invisible in its operation.",
     impact:
       "Presidential Award for ambient energy harvesting as a practical portable product, at a time when the concept existed primarily in academic literature.",
     image: solkaImg,
@@ -163,7 +163,7 @@ const innovations: Innovation[] = [
     problem:
       "Women's personal safety in India remained an urgent, unsolved problem. Existing solutions were reactive, visible to the threat, and dependent on network coverage that was often unavailable.",
     solution:
-      "A discreet smart-watch wearable with silent alert and real-time location capabilities — engineered years before the women's safety wearable category reached mainstream product awareness.",
+      "A discreet smart-watch wearable with silent alert and real-time location capabilities, engineered years before the women's safety wearable category reached mainstream product awareness.",
     impact:
       "Presidential Award for the sixth consecutive year. The invention that closed this chapter and confirmed that hardware innovation would define the decade ahead.",
     image: shewatchImg,
@@ -214,7 +214,7 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`${title} — Demo`}
+      aria-label={`${title} demo`}
       className="theme-dark-island fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8 md:p-12"
     >
       <div aria-hidden className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
@@ -246,7 +246,7 @@ function VideoModal({ videoUrl, title, onClose }: VideoModalProps) {
         <div className="aspect-video w-full overflow-hidden rounded-sm border border-foreground/[0.10] bg-black shadow-[0_0_60px_oklch(0_0_0/0.5)]">
           <iframe
             src={embedUrl}
-            title={`${title} — Demo Video`}
+            title={`${title} demo video`}
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
             className="h-full w-full"
@@ -346,7 +346,7 @@ function ChapterSplit({
       viewport={{ once: true, margin: "-80px 0px" }}
       transition={{ duration: 1.2, ease: EASE }}
       className={`grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-0 ${reversed ? "lg:[&>*:first-child]:order-2" : ""}`}
-      aria-label={`${inv.name} — ${inv.year}`}
+      aria-label={`${inv.name}, ${inv.year}`}
     >
       {/* Content side */}
       <div className={`flex flex-col justify-center py-12 lg:py-20 ${reversed ? "lg:pl-12 xl:pl-16" : "lg:pr-12 xl:pr-16"}`}>
@@ -443,7 +443,7 @@ function ChapterFeature({
       viewport={{ once: true, margin: "-60px 0px" }}
       transition={{ duration: 1.3, ease: EASE }}
       className="relative"
-      aria-label={`${inv.name} — ${inv.year}`}
+      aria-label={`${inv.name}, ${inv.year}`}
     >
       {/* Large image */}
       <div className="archive-lift relative group overflow-hidden rounded-sm">
@@ -699,7 +699,7 @@ function EndingSection() {
     >
       {/* Eyebrow */}
       <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/35 mb-8">
-        2008 — 2013 · The Foundation
+        2008–2013 · The Foundation
       </p>
 
       {/* Statement */}
@@ -710,7 +710,7 @@ function EndingSection() {
 
       <p className="max-w-2xl text-[15px] md:text-base leading-relaxed text-foreground/60 mb-14">
         Six problems. Six hardware solutions. Six Presidential Awards across six years.
-        Recognition from NASA, MIT, and TED followed — not for a single invention, but for the
+        Recognition from NASA, MIT and TED followed, not for a single invention, but for the
         consistent belief that real engineering could solve real human problems. That belief became
         the only constant across every venture that followed.
       </p>

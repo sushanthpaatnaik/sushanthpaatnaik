@@ -119,19 +119,19 @@ import appVitraphene from "@/assets/innovations/applications/vitraphene.webp";
 import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
 
 const description =
-  "25 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour — from commercial to pilot to R&D.";
+  "25 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour, from commercial to pilot to R&D.";
 
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
     meta: [
-      { title: "Innovations — 25 Graphene Products · Sushanth Paatnaik" },
+      { title: "Innovations: 25 Graphene Products · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Innovations — Sushanth Paatnaik" },
+      { property: "og:title", content: "Innovations · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "From Graphacrete and Graffisol to Voltaphene and Armophene — 25 graphene innovations across commercial, pilot, and R&D stages.",
+          "From Graphacrete and Graffisol to Voltaphene and Armophene. 25 graphene innovations across commercial, pilot and R&D stages.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/innovations" },
@@ -142,7 +142,7 @@ export const Route = createFileRoute("/innovations")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/innovations" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Innovations — Sushanth Paatnaik", description, path: "/innovations" }),
+        webPageSchema({ type: "CollectionPage", name: "Innovations · Sushanth Paatnaik", description, path: "/innovations" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Innovations", path: "/innovations" }])),
       ldJsonScript({
@@ -154,7 +154,7 @@ export const Route = createFileRoute("/innovations")({
         itemListElement: items.map((it, i) => ({
           "@type": "ListItem",
           position: i + 1,
-          item: { "@type": "Thing", name: it.title, description: `${it.domain} — ${it.body}` },
+          item: { "@type": "Thing", name: it.title, description: `${it.domain}: ${it.body}` },
         })),
       }),
     ],
@@ -200,7 +200,7 @@ const items: Item[] = [
   { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, sceneFit: "cover", featured: true },
   { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, scene: sceneGraffisol, sceneFit: "cover", featured: true },
   { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene, scene: sceneCeraphene, sceneFit: "cover" },
-  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch — drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe, scene: sceneHdgpe, sceneFit: "cover" },
+  { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch. A drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe, scene: sceneHdgpe, sceneFit: "cover" },
   { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes, scene: sceneGraphenodes, sceneFit: "cover" },
   /* Both co-developed with Monoatom Labs, and the only two programmes here that
      arrived with a single photograph instead of three. An earlier pass filled
@@ -217,7 +217,7 @@ const items: Item[] = [
      further down.) If a future entry arrives without one, leave `application` off and
      let the panel drop the frame. Do not reach for `img`: that is what produced
      the duplicate. */
-  { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low — so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste, scene: sceneThermene, sceneFit: "cover" },
+  { title: "Thermene", stage: "Commercial", domain: "Thermal · Interfaces", status: "Co-developed · Monoatom", metric: "Copper-class conductivity", body: "Graphene-loaded thermal interface compound. Pulls heat out of the contact area and spreads it laterally rather than letting it pool, at a bond line thin enough to keep interface resistance low, so an aluminium heat sink carries a duty specified for copper.", img: imgThermalPaste, cutout: cutThermalPaste, application: appThermalPaste, scene: sceneThermene, sceneFit: "cover" },
   { title: "Texaphene", stage: "Commercial", domain: "Textiles · Functional", status: "Co-developed · Monoatom", metric: "Function survives the wash", body: "Graphene-infused technical cotton. Graphene oxide and reduced graphene oxide are bonded directly into 100% cotton, so antimicrobial, anti-odour, antistatic and ESD protection are built into the cloth rather than coated onto it.", img: imgGrapheneFabric, cutout: cutGrapheneFabric, application: appGrapheneFabric, scene: sceneTexaphene, sceneFit: "cover" },
   { title: "Ignitron D", stage: "Commercial", domain: "Mobility · Combustion", status: "Patent · Fleet trial", metric: "25% optimized diesel efficiency", body: "Graphene-enhanced diesel combustion optimization technology for industrial fleets, logistics systems, and heavy-duty engines.", img: imgIgnitronD, cutout: cutIgnitronD, application: appIgnitronD, scene: sceneIgnitronD, sceneFit: "cover", specs: [
     { k: "Fuel Savings", v: "25%", note: "Optimized diesel efficiency" },
@@ -235,7 +235,7 @@ const items: Item[] = [
     { k: "Emissions", v: "10%", note: "Reduced emissions output" },
     { k: "Dose", v: "0.2%", note: "Optimized additive integration" },
   ], positioning: "Advanced petrol-engine fuel optimization technology engineered for cleaner ignition and enhanced combustion stability.", applicationContext: ["Automotive systems", "Petrol-engine optimization", "Mobility platforms", "Fuel-performance enhancement"] },
-  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "6% fuel savings · 40% wear reduction", body: "Nano-enabled molecular engine oil additive for all engine types — improving fuel efficiency, reducing engine wear, and extending oil life.", img: imgLubritron, cutout: cutLubritron, application: appLubritron, scene: sceneLubritron, sceneFit: "cover", specs: [
+  { title: "Lubritron", stage: "Pilot", domain: "Tribology · Lubricants", status: "Industrial pilot", metric: "6% fuel savings · 40% wear reduction", body: "Nano-enabled molecular engine oil additive for all engine types, improving fuel efficiency, reducing engine wear and extending oil life.", img: imgLubritron, cutout: cutLubritron, application: appLubritron, scene: sceneLubritron, sceneFit: "cover", specs: [
     { k: "Fuel Savings", v: "Up to 6%", note: "Optimized fuel efficiency" },
     { k: "Wear Reduction", v: "Up to 40%", note: "Engine friction reduction" },
     { k: "Oil Life", v: "Up to 50%", note: "Extended drain interval" },
@@ -247,10 +247,10 @@ const items: Item[] = [
   { title: "Aerophenter", stage: "Pilot", domain: "Atmospheric Water", status: "Prototype field-trial", metric: "Water from air", body: "Atmospheric water harvesting using graphene-engineered surfaces.", img: imgAerophenter, cutout: cutAerophenter, application: appAerophenter, scene: sceneAerophenter, sceneFit: "cover" },
   { title: "Vitraphene", stage: "Pilot", domain: "Composites · Fibres", status: "Composite pilot", metric: "Stronger glass fibres", body: "Reinforced graphene glass fibres for stronger composites and structures.", img: imgVitraphene, cutout: cutVitraphene, application: appVitraphene, scene: sceneVitraphene, sceneFit: "cover" },
   { title: "Voltaphene", stage: "Commercial", domain: "Grid Storage", status: "Commercial supply", metric: "Grid-scale storage", body: "Graphene-enabled energy storage systems for grid and mobility applications.", img: imgVoltaphene, cutout: cutVoltaphene, application: appVoltaphene, scene: sceneVoltaphene, sceneFit: "cover" },
-  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics — lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, scene: sceneArmophene, sceneFit: "cover", featured: true },
+  { title: "Armophene", stage: "R&D", domain: "Defence · Ballistics", status: "R&D · Bench", metric: "Lighter than steel armour", body: "Next-generation graphene ballistics. Lighter, stronger personal and vehicle armour.", img: imgArmophene, cutout: cutArmophene, application: appArmophene, scene: sceneArmophene, sceneFit: "cover", featured: true },
   { title: "Hydrocell", stage: "R&D", domain: "Hydrogen · Fuel Cell", status: "R&D · Bench", metric: "Zero-emission · high power density", body: "Graphene-enhanced hydrogen fuel cell stack for clean mobility and stationary power.", img: imgHydrocell, cutout: cutHydrocell, application: appHydrocell, scene: sceneHydrocell, sceneFit: "cover", featured: true },
   { title: "Bitumax", stage: "Pilot", domain: "Infrastructure · Bitumen", status: "Pavement pilot", metric: "1.5–2× pavement life", body: "Bitumen additive extending pavement life with major fatigue reduction.", img: imgBitumax, cutout: cutBitumax, application: appBitumax, scene: sceneBitumax, sceneFit: "cover" },
-  { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Coating pilot", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive — fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex, scene: scenePyronex, sceneFit: "cover" },
+  { title: "Pyronex", stage: "Pilot", domain: "Coatings · Multifunctional", status: "Coating pilot", metric: "Fire · Heat · UV · Microbe shield", body: "Multi-functional paint additive: fire retardant, thermal barrier, UV insulation, anti-algae and anti-microbial in one coat.", img: imgPyronex, cutout: cutPyronex, application: appPyronex, scene: scenePyronex, sceneFit: "cover" },
   { title: "Graphyre", stage: "R&D", domain: "Mobility · Tyres", status: "R&D · Compound", metric: "Longer life · better grip", body: "Reinforced performance tyres with graphene for grip, mileage and rolling efficiency.", img: imgGraphyre, cutout: cutGraphyre, application: appGraphyre, scene: sceneGraphyre, sceneFit: "cover" },
   { title: "Graphosite", stage: "R&D", domain: "Composites · Structural", status: "R&D · Bench", metric: "Ultra-light · ultra-strong", body: "Structural graphene composites for ultra-light, ultra-strong applications.", img: imgGraphosite, cutout: cutGraphosite, application: appGraphosite, scene: sceneGraphosite, sceneFit: "cover" },
   { title: "Thermaphene", stage: "R&D", domain: "Smart Textiles", status: "R&D · Bench", metric: "Active thermal regulation", body: "Smart thermal fabrics that regulate body temperature using graphene.", img: imgThermaphene, cutout: cutThermaphene, application: appThermaphene, scene: sceneThermaphene, sceneFit: "cover" },
@@ -486,15 +486,15 @@ function InnovationsPage() {
     <CinematicPageShell
       eyebrow={`Innovations · Catalogue · ${items.length} of ${items.length}`}
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
-      lead="A curated R&D archive of advanced materials engineering — graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
+      lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
       overlay={0.78}
     >
       <FounderPortrait
         variant="documentary"
         src={founderShowroom}
-        alt="Sushanth Paatnaik in the R&D showroom — instrumentation and engineering context"
-        caption="Calibrating instrumentation in the R&D showroom — graphene formulations under bench-scale validation."
+        alt="Sushanth Paatnaik in the R&D showroom, instrumentation and engineering context"
+        caption="Calibrating instrumentation in the R&D showroom, with graphene formulations under bench-scale validation."
         meta="Field · R&D Facility"
       />
 
@@ -550,7 +550,7 @@ function InnovationsPage() {
           </span>
           <span className="h-px flex-1 bg-foreground/[0.08]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-foreground/40">
-            TRL · I — III
+            TRL · I–III
           </span>
         </div>
         <div className="grid grid-cols-2 sm:flex sm:divide-x sm:divide-foreground/[0.08] overflow-hidden rounded-sm border border-foreground/[0.08] bg-[var(--surface-plate)]">
@@ -609,7 +609,7 @@ function InnovationsPage() {
           <select
             value={domainFilter}
             onChange={(e) => setDomainFilter(e.target.value)}
-            aria-label="Filter by domain — click to choose an industry category"
+            aria-label="Filter by domain, click to choose an industry category"
             className={`appearance-none bg-transparent font-mono text-[10px] uppercase tracking-[0.28em] transition-colors duration-300 focus:outline-none ${
               domainFilter === "All" ? "text-foreground/80" : "text-accent/90"
             }`}
@@ -686,7 +686,7 @@ function InnovationsPage() {
         </Link>
         <div
           role="group"
-          aria-label="Catalogue view — click to switch between a visual gallery and a sortable table"
+          aria-label="Catalogue view, click to switch between a visual gallery and a sortable table"
           className="inline-flex items-center overflow-hidden rounded-sm border border-foreground/20 bg-[var(--surface-raised)] pl-4"
         >
           <span className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.26em] text-foreground/45">
@@ -859,7 +859,7 @@ function InnovationsPage() {
                   </div>
                 ))}
                 <p className="pt-1 text-[12.5px] leading-relaxed text-foreground/50">
-                  Foundational process patents underlying the graphene production platform — not tied to a single catalogued product. Full records available via Engage.
+                  Foundational process patents underlying the graphene production platform, not tied to a single catalogued product. Full records available via Engage.
                 </p>
               </div>
             )}
@@ -998,7 +998,7 @@ function HeroCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       <>
       <Tilt3DSurface
         src={item.cutout}
-        alt={`${item.title} — ${item.body}`}
+        alt={`${item.title}, ${item.body}`}
         hero
         tintHue={domainHue(item.domain)}
         bgSrc={item.application}
@@ -1156,7 +1156,7 @@ function SceneMedia({ item, position = "" }: { item: Item; position?: string }) 
       )}
       <img
         src={item.scene}
-        alt={`${item.title} — ${item.body}`}
+        alt={`${item.title}, ${item.body}`}
         loading="lazy"
         decoding="async"
         className={`absolute inset-y-0 h-full transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03] ${
@@ -1228,7 +1228,7 @@ function CompactCard({ item, onOpen }: { item: Item; onOpen: () => void }) {
       ) : (
       <Tilt3DSurface
         src={item.cutout}
-        alt={`${item.title} — ${item.body}`}
+        alt={`${item.title}, ${item.body}`}
         tintHue={domainHue(item.domain)}
         bgSrc={item.application}
         bgExposure={CONTEXT_EXPOSURE[item.title]}

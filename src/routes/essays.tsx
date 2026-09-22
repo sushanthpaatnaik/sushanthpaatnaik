@@ -23,7 +23,7 @@ export const essays: EssayMeta[] = [
     title: "On engineering with empathy",
     pull: "The most important specification on any drawing I make is the human being it is meant for.",
     description:
-      "Why the wheelchair I built at sixteen taught me about deep-tech, dignity, and building for someone — not an audience.",
+      "Why the wheelchair I built at sixteen taught me about deep-tech, dignity, and building for someone, not an audience.",
   },
   {
     slug: "graphene-and-the-next-century",
@@ -33,7 +33,7 @@ export const essays: EssayMeta[] = [
     title: "On graphene and the next century",
     pull: "India does not need to follow the silicon century. We can lead the carbon one.",
     description:
-      "A note on why graphene — produced cleanly and at scale — is the most under-priced strategic asset on the table for India this decade.",
+      "A note on why graphene, produced cleanly and at scale, is the most under-priced strategic asset on the table for India this decade.",
   },
   {
     slug: "staying-a-beginner",
@@ -54,13 +54,13 @@ export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
-      { title: "Essays — Sushanth Paatnaik · Deep-Tech & Invention" },
+      { title: "Essays on Deep-Tech & Invention · Sushanth Paatnaik" },
       { name: "description", content: description },
-      { property: "og:title", content: "Essays — Sushanth Paatnaik" },
+      { property: "og:title", content: "Essays · Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
-          "Editorial notes on deep-tech, graphene, and the discipline of invention — from inventor and founder Sushanth Paatnaik.",
+          "Editorial notes on deep-tech, graphene, and the discipline of invention, from inventor and founder Sushanth Paatnaik.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/essays" },
@@ -71,7 +71,7 @@ export const Route = createFileRoute("/essays")({
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/essays" }],
     scripts: [
       ldJsonScript(
-        webPageSchema({ type: "CollectionPage", name: "Essays — Sushanth Paatnaik", description, path: "/essays" }),
+        webPageSchema({ type: "CollectionPage", name: "Essays · Sushanth Paatnaik", description, path: "/essays" }),
       ),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Essays", path: "/essays" }])),
     ],

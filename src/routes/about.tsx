@@ -10,15 +10,15 @@ import backdrop from "@/assets/scene-about-graphite.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "The philosophy, journey, and mission of Sushanth Paatnaik — inventor and six-time Indian Presidential awardee building from India.";
+  "The philosophy, journey and mission of Sushanth Paatnaik, inventor and six-time Indian Presidential awardee, building from India.";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About — Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
+      { title: "About Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
       { name: "description", content: description },
-      { property: "og:title", content: "About — Sushanth Paatnaik" },
+      { property: "og:title", content: "About Sushanth Paatnaik" },
       {
         property: "og:description",
         content:
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/about")({
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/about" }],
     scripts: [
-      ldJsonScript(webPageSchema({ name: "About — Sushanth Paatnaik", description, path: "/about" })),
+      ldJsonScript(webPageSchema({ name: "About Sushanth Paatnaik", description, path: "/about" })),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])),
     ],
   }),
@@ -106,7 +106,7 @@ function AboutPage() {
     <CinematicPageShell
       eyebrow="About · Founder"
       title={<>An inventor, quietly building<br className="hidden md:inline" /> industrial futures.</>}
-      lead="Born in Bhubaneswar, Odisha. The work began with a vehicle safety retrofit at fourteen — and has not really paused since."
+      lead="Born in Bhubaneswar, Odisha. The work began with a vehicle safety retrofit at fourteen, and it has not really paused since."
       backdrop={backdrop}
       overlay={0.82}
     >
@@ -190,7 +190,7 @@ function AboutPage() {
         <div className="flex items-center gap-4">
           <span className="h-px w-8 bg-accent/45" />
           <span className="font-mono text-[10px] uppercase tracking-[0.55em] text-accent/80">
-            02 — Founder
+            02 · Founder
           </span>
         </div>
 
@@ -216,7 +216,7 @@ function AboutPage() {
           Fourteen years inside the workshop have taught one lesson without
           exception: frontier science only matters when it reaches the
           industrial world. The brief is not a paper, not a prototype, not even
-          a product — it is the discipline of carrying invention through capital,
+          a product. It is the discipline of carrying invention through capital,
           through manufacturing, and through the long quiet years before scale.
         </p>
 
@@ -227,7 +227,7 @@ function AboutPage() {
         </p>
 
         <p className="mt-7 text-[15px] md:text-[16px] leading-[1.8] text-foreground/60">
-          The direction is narrower still — graphene and advanced materials,
+          The direction is narrower still: graphene and advanced materials,
           patient industrial capital, and a vertically integrated stack
           designed to make Indian deep-tech globally inevitable in the carbon
           century ahead.
@@ -258,7 +258,7 @@ function AboutPage() {
             Agency is the brief.
           </p>
           <p className="mt-5">
-            Every venture since has begun with the same question — who is this
+            Every venture since has begun with the same question. Who is this
             for, and what does dignity look like for them at scale?
           </p>
         </NarrativePassage>
@@ -271,13 +271,13 @@ function AboutPage() {
             <span className="text-foreground/90">BSc.</span> from{" "}
             <span className="text-foreground/90">IISER Bhopal</span>, admitted
             under the <span className="text-foreground/90">KVPY-SP</span>{" "}
-            scholarship — the foundation in chemistry, physics, and the
+            scholarship. That gave me the foundation in chemistry, physics, and the
             discipline of asking questions matter cannot easily answer.
           </p>
           <p className="mt-5">
             <span className="text-foreground/90">B.E.</span> in ETE from{" "}
             <span className="text-foreground/90">OCT, Bhopal</span>, under the
-            Special Achiever category — a quiet conviction that an inventor who
+            Special Achiever category, on a quiet conviction: an inventor who
             cannot teach has not really finished the invention.
           </p>
         </NarrativePassage>
@@ -285,7 +285,7 @@ function AboutPage() {
 
       {/* ── Manifesto interlude ── */}
       <ManifestoBlock
-        label="03 — Philosophy"
+        label="03 · Philosophy"
         lines={[
           "Engineer matter.",
           "Engineer capital.",
@@ -323,7 +323,7 @@ function AboutPage() {
         <NarrativePassage indent>
           <p>
             India has the talent, the demand, and the urgency to lead the carbon
-            century. What remains is patience — the institutional patience to
+            century. What remains is patience, the institutional patience to
             translate Indian invention into global industrial deployment.
           </p>
           <p className="mt-5">
@@ -336,11 +336,11 @@ function AboutPage() {
       </EditorialSection>
 
       {/* ── Evolution ── */}
-      <EditorialSection number="06 · Evolution" heading="From inventor to ecosystem.">
+      <EditorialSection number="06 · Evolution" heading="From inventor to system-builder.">
         <NarrativePassage>
           <p>
-            The first decade was about inventions — ten-plus working prototypes
-            shipped from a borrowed workshop. The second is about systems —
+            The first decade was about inventions: ten-plus working prototypes
+            shipped from a borrowed workshop. The second is about systems,
             companies, capital, and the talent that compounds across them. The
             third, I suspect, will be about handing the work to the next
             generation of Indian builders who never had to ask permission.

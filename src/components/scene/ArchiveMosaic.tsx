@@ -57,7 +57,7 @@ function ArchiveTile({ item, index }: { item: ArchiveItem; index: number }) {
           captions across /recognitions, all of them invisible. */}
       <img
         src={item.src}
-        alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
+        alt={`${item.institution ?? item.caption}, ${item.recognition ?? item.meta}`}
         loading="lazy"
         className={`archival-image-hover absolute inset-0 h-full w-full object-cover ease-out group-hover:scale-[1.035] ${
           isHero ? "archival-image opacity-95 group-hover:opacity-100" : "archival-image-soft opacity-90 group-hover:opacity-100"
@@ -705,7 +705,7 @@ export function ArchivePlate({
       <div className="theme-dark-island relative col-span-1 aspect-[4/3] overflow-hidden bg-[var(--surface-plate)] md:col-span-8 md:aspect-auto md:min-h-[420px]">
         <img
           src={item.src}
-          alt={`${item.institution ?? item.caption} — ${item.recognition ?? item.meta}`}
+          alt={`${item.institution ?? item.caption}, ${item.recognition ?? item.meta}`}
           loading="lazy"
           className="archival-image archival-image-hover absolute inset-0 h-full w-full object-cover opacity-95 ease-out group-hover:scale-[1.025] group-hover:opacity-100"
           style={{ objectPosition: item.focus ?? "center 30%" }}
