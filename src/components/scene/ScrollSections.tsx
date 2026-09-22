@@ -281,7 +281,7 @@ function OriginHero() {
           <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
             Inventor and deep-tech founder.{" "}
             <br className="hidden md:inline" />
-            Building from India — for the world.
+            Building from India, for the world.
           </p>
           {/* Credibility strip — value+label pairs separated by · dots.
               Renders as: 06 Presidential Awards · 25 Innovations · 06 Ventures
@@ -531,7 +531,7 @@ function IndustrialContent() {
         {/* Body — narrower measure than the heading so the two read as
             separate steps rather than one dense block at laptop widths. */}
         <p className="hidden md:block text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
-          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure — each downstream of the same material platform.
+          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure: each downstream of the same material platform.
         </p>
         {/* Phone: the enumeration is the paragraph's whole point, so it is
             shown as a list and the sentence stays in the document. */}
@@ -888,7 +888,7 @@ function FutureContent() {
         </p>
         {/* Italic intro */}
         <p className="mx-auto mb-10 md:mb-14 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
-          Not a forecast. A working hypothesis — built one industrial system at a time.
+          Not a forecast. A working hypothesis, built one industrial system at a time.
         </p>
         {/* H2 */}
         <h2
@@ -898,11 +898,11 @@ function FutureContent() {
               "0 2px 26px oklch(0.04 0.010 240 / 0.72), 0 1px 10px oklch(0.04 0.010 240 / 0.55), 0 0 0.5px oklch(0.98 0.008 232 / 0.34)",
           }}
         >
-          Energy as infrastructure.<br /> Industry at planetary scale.
+          Energy as infrastructure.<br /> Industry at global scale.
         </h2>
         {/* Body */}
         <p className="mx-auto mt-7 md:mt-9 mb-10 md:mb-12 max-w-[52ch] text-[14px] md:text-[15px] leading-[1.8] text-foreground/70">
-          The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
+          None of this is science fiction. It is calibrated alloys, smarter grids, water systems, hydrogen logistics and engineered materials sitting underneath ordinary industry. The work is slow and technical.
         </p>
         {/* CTA row */}
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:items-center sm:gap-5">
@@ -915,7 +915,7 @@ function FutureContent() {
         </div>
         {/* Tag row */}
         <p className="mt-8 md:mt-10 font-mono text-[10px] uppercase tracking-[0.24em] sm:tracking-[0.32em] text-foreground/45 [text-wrap:balance]">
-          Advanced Materials · Energy Systems · Planetary Infrastructure
+          Advanced Materials · Energy Systems · Industrial Infrastructure
         </p>
       </div>
     </div>
@@ -933,8 +933,8 @@ function FutureContent() {
 
      A  Not a forecast. A working hypothesis.
      B  Energy as infrastructure.
-     C  Industry at planetary scale.
-     D  Advanced Materials · Energy Systems · Planetary Infrastructure
+     C  Industry at global scale.
+     D  Advanced Materials · Energy Systems · Industrial Infrastructure
      E  The next century will be engineered. → Begin a conversation
 
    The long paragraph is kept in the document for search and screen
@@ -975,7 +975,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
 
       {/* Full copy preserved for search and assistive tech, never painted */}
       <p className="sr-only">
-        The next century is not science fiction. It is calibrated alloys, intelligent grids, water systems, hydrogen logistics, and quietly engineered materials shaping the floor of every industry. The work is restrained, technical, and inevitable.
+        None of this is science fiction. It is calibrated alloys, smarter grids, water systems, hydrogen logistics and engineered materials sitting underneath ordinary industry. The work is slow and technical.
       </p>
 
       {/* A — the premise */}
@@ -995,7 +995,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
       >
         Energy as{" "}<br />infrastructure.{" "}
         <span className="mt-3 block">
-          Industry at{" "}<br />planetary scale.
+          Industry at{" "}<br />global scale.
         </span>
       </motion.h2>
 
@@ -1008,7 +1008,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
         <span className="h-px w-6 bg-foreground/20" aria-hidden />
         <span>Energy Systems</span>
         <span className="h-px w-6 bg-foreground/20" aria-hidden />
-        <span>Planetary Infrastructure</span>
+        <span>Industrial Infrastructure</span>
       </motion.div>
 
       {/* D — closing state. Statement in the text band, the single CTA and
@@ -1121,7 +1121,7 @@ const OV  = CONTENT_FADE;
    These hand over in sequence, exactly as chapters do, and for exactly
    the same reason: every phone state in Future Systems is painted in
    the same text band at top-26 %, so a cross-dissolve put "Energy as
-   infrastructure." and "Industry at planetary scale." on top of each
+   infrastructure." and "Industry at global scale." on top of each
    other at 50 % apiece. That was the same defect as the desktop
    Recognition → Future overlap, one level down, and it was shipping.
    fadeOutAt/fadeInAt carve the window into leave / beat / arrive, so

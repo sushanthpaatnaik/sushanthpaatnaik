@@ -47,7 +47,7 @@ export const Route = createFileRoute("/ventures")({
       {
         property: "og:description",
         content:
-          "Architecture that carries frontier materials from the lab to the industrial world.",
+          "Six companies taking advanced materials from the lab into industrial use.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/ventures" },
@@ -93,7 +93,7 @@ const ventures: Venture[] = [
     category: "Materials",
     domain: "Graphene at scale",
     thesis:
-      "An innovative, scalable and economical method to manufacture graphene, plus the applications that turn it into real-world performance gains.",
+      "Develops a scalable, low-cost method for manufacturing graphene, and the applications built on it.",
     href: "https://monoatomlabs.com/",
     logo: monoatomLogo,
     logoScale: 1.06,
@@ -107,7 +107,7 @@ const ventures: Venture[] = [
     category: "Materials",
     domain: "Eco nano additives",
     thesis:
-      "Deep-tech nanomaterial additive technologies that boost efficiency and cut carbon emissions across power, logistics and heavy industry.",
+      "Develops nano-additives that improve efficiency and cut emissions in power, logistics and heavy industry.",
     href: "https://grafillium.com/",
     logo: grafilliumLogo,
     logoScale: 1.00,
@@ -121,7 +121,7 @@ const ventures: Venture[] = [
     category: "Industrial Systems",
     domain: "R&D industrial solutions",
     thesis:
-      "Innovative R&D-led industrial solutions in nanomaterial engineering, translating advanced materials science into deployable systems that move the needle for industry.",
+      "Industrial R&D in nanomaterial engineering, taking materials science through to deployable systems.",
     href: "https://spiindustries.co/",
     logo: spiLogo,
     logoScale: 0.98,
@@ -168,7 +168,7 @@ const ventures: Venture[] = [
     // semiconductors, aerospace and life sciences among them. Stage is the
     // thing it leads with, on the site and in the owner's own framing.
     thesis:
-      "Investment into deep-tech startups at the earliest stages, backing breakthrough technology and then supporting the rounds that follow.",
+      "Invests in deep-tech startups at the earliest stages, then supports the rounds that follow.",
     href: "https://starunicocapital.com/",
     // The hand-and-shoot symbol, cropped off the left of the supplied lockup.
     // Its navy stems and leaf outlines are lifted toward slate the same way the
@@ -185,7 +185,7 @@ const ventures: Venture[] = [
     category: "Design + Living",
     domain: "Stone wellness kitchens",
     thesis:
-      "The world's first 100% stone-built modular kitchen, turning ordinary homes into wellness homes that protect family and planet.",
+      "The world's first 100% stone-built modular kitchen. Applies materials-led design to homes and living spaces.",
     href: "https://magppie.com/",
     logo: magppieLogo,
     logoScale: 1.00,
@@ -286,8 +286,8 @@ function VenturesPage() {
   return (
     <CinematicPageShell
       eyebrow="Ventures · Stack Architecture"
-      title={<>A portfolio engineered<br className="hidden md:inline" /> for planetary impact.</>}
-      lead="Founder, co-founder and chief innovation officer across six ventures, plus a quietly held advisory roster of six houses shaping industry, materials and climate."
+      title={<>Six companies,<br className="hidden md:inline" /> one materials platform.</>}
+      lead="Founder, co-founder and chief innovation officer across six companies, and an advisory role at six more across industry, materials and climate."
       backdrop={backdrop}
       overlay={0.72}
     >
@@ -452,22 +452,22 @@ function VenturesPage() {
           <span className="text-foreground/95">Research</span> at Monoatom feeds{" "}
           <span className="text-foreground/95">materials</span> at Grafillium, which feed{" "}
           <span className="text-foreground/95">industrial products</span> at SPI. InThinks
-          runs the intelligence layer across all three. Starunico is the patient capital
-          underneath. Magppie is the field deployment of materials thinking inside an
-          established house.
+          handles technology transfer across all three. Starunico provides the
+          early-stage funding. Magppie applies the same materials work to homes
+          and living spaces.
         </p>
         <p>
-          Each company is independently viable. Together, they form a closed loop from
-          atom to invoice.
+          Each company stands on its own. Together they cover the path from raw
+          material to finished product.
         </p>
       </EditorialSection>
 
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
       <EditorialSection number="02 · Advisory" heading="Counsel across six industry layers.">
         <p>
-          A short ledger of the houses I quietly advise, one mark per layer
-          of the industrial network: materials, industrial systems, consumer
-          technology, surface technologies, wellness lighting, and sustainable
+          Six companies I advise, one in each area: materials, industrial
+          systems, consumer technology, surface technologies, wellness
+          lighting and sustainable
           materials.
         </p>
 

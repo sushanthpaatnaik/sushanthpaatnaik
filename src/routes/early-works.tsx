@@ -96,7 +96,7 @@ const innovations: Innovation[] = [
     solution:
       "A wheelchair controlled entirely through breath patterns, a sip-and-puff interface built with hardware a teenager could design, iterate, and test. No imported components. No institutional lab.",
     impact:
-      "Won the National Innovation Award. Recognized by the President of India. The foundation invention that opened every door that followed, and the one that made everything else inevitable.",
+      "Won the National Innovation Award. Recognized by the President of India. The invention that opened every door that followed.",
     image: enablerImg,
     videoUrl: "https://youtu.be/n-JiX6vmwOI",
     badges: ["Presidential Award", "National Innovation Award"],

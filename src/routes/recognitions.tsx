@@ -965,8 +965,7 @@ function RecognitionsPage() {
           <p>
             A continuous cinematic strip of mainstage keynotes, presidential
             demonstrations, diplomatic honours and institutional citations,
-            offered up front so the visual depth of the record is felt
-            before the chronology begins.
+            shown before the chronology begins.
           </p>
         </EditorialSection>
         {/* Ambient lighting backdrop — soft cinematic glow behind the reel */}

@@ -8,7 +8,7 @@ import backdrop from "@/assets/story-06-india.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "A single, selective desk for industrial collaboration, deep-tech research, venture and strategic advisory, speaking, and global partnerships across the operating group.";
+  "Industrial collaboration, deep-tech research, advisory, speaking and partnerships, handled directly across the operating group.";
 
 export const Route = createFileRoute("/engage")({
   component: EngagePage,
@@ -86,11 +86,11 @@ const lanes: Lane[] = [
     n: "03",
     category: "Venture & Strategic Advisory",
     title: "Commercialization, innovation systems, venture architecture.",
-    body: "Founder-to-founder advisory, selective board seats and capital co-architecture for deep-tech ventures at the materials, climate and industrial interface. Also multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
+    body: "Founder-to-founder advisory, selective board seats and help structuring funding for deep-tech ventures at the materials, climate and industrial interface. Also multi-horizon innovation strategy for conglomerates and sovereign bodies moving from invention pipelines to industrial outcome.",
     surfaces: [
       "Deep-tech venture advisory",
       "Innovation strategy for conglomerates & sovereign bodies",
-      "Capital co-architecture · sovereign, family-office, strategic LPs",
+      "Funding structure · sovereign, family-office, strategic LPs",
       "Commercialization · IP, JV design, industrial partner matching",
     ],
     fit: "Founders · Operators · Boards · Strategic LPs",
@@ -100,7 +100,7 @@ const lanes: Lane[] = [
     n: "04",
     category: "Speaking & Thought Leadership",
     title: "Keynotes, institutional stages, editorial voice.",
-    body: "Keynotes, long-form interviews, panels and stage conversations on invention, deep-tech, the carbon century and India's industrial trajectory. Delivered at conferences, in ministries, for publications and at institutional convenings.",
+    body: "Keynotes, long-form interviews, panels and stage conversations on invention, deep-tech, the carbon century and where Indian industry is heading. Delivered at conferences, in ministries, for publications and at institutional convenings.",
     surfaces: [
       "Conference keynotes",
       "Institutional & ministry talks",
@@ -114,7 +114,7 @@ const lanes: Lane[] = [
     n: "05",
     category: "Global Partnerships",
     title: "Academia, climate systems, cross-border collaboration.",
-    body: "Cross-border partnerships with academic institutions, climate organisations and industrial transition programmes. These coordinate frontier materials and deep-tech capacity across India and abroad.",
+    body: "Cross-border partnerships with academic institutions, climate organisations and industrial transition programmes. These coordinate advanced materials and deep-tech capacity across India and abroad.",
     surfaces: [
       "Academic & research consortia",
       "Climate systems & industrial transition",
@@ -215,22 +215,22 @@ function PhilosophyBlock() {
     {
       n: "i.",
       t: "Selective collaboration",
-      b: "A small inbox by design. Engagements are accepted by fit, not volume, so signal survives and the work gets done properly.",
+      b: "The inbox stays small by design: fit decides what gets taken on, not volume.",
     },
     {
       n: "ii.",
       t: "Technical seriousness",
-      b: "Every conversation begins from the science. No category is entered without the patience to work it from first principles.",
+      b: "Every conversation starts at the science. Nothing is taken on without the patience to work the problem from the bottom up.",
     },
     {
       n: "iii.",
       t: "Long-term impact",
-      b: "Horizons are measured in years, not quarters. The collaborations that endure are the ones that change the trajectory of an industry.",
+      b: "The horizon is measured in years. The collaborations that last are the ones that shift an industry's direction.",
     },
     {
       n: "iv.",
       t: "Systems thinking",
-      b: "Materials, capital, policy, and institutions move together. Each engagement is held against the wider system it sits inside.",
+      b: "Materials, capital, policy and institutions move together, so each engagement is judged against the wider system it sits inside.",
     },
   ];
   return (
@@ -298,7 +298,7 @@ function CTABlock() {
           One paragraph on context.{" "}
           <br />
           <em className="not-italic font-display italic text-foreground/65">
-            One on why a conversation would change the trajectory.
+            One on why a conversation would be useful.
           </em>
         </h3>
 
@@ -333,7 +333,7 @@ function EngagePage() {
           The doors open<br className="hidden md:inline" /> for the right work.
         </>
       }
-      lead="A single, selective desk for collaboration across industry, research, ventures, speaking, and global partnerships. Invitation-based, mandate-led, and run through the operating group, and designed to move frontier materials further into the industrial world."
+      lead="One place to start a conversation about industrial collaboration, research, advisory, speaking or partnerships. Everything runs through the operating group. The work is getting advanced materials further into industrial use."
       backdrop={backdrop}
       overlay={0.78}
     >
@@ -358,7 +358,7 @@ function EngagePage() {
         heading="How the desk thinks about collaboration."
       >
         <p>
-          The engagement model is small on purpose. Four principles hold the
+          Four principles hold the
           work to the same standard across every category.
         </p>
         <PhilosophyBlock />
@@ -371,7 +371,7 @@ function EngagePage() {
         <p>
           The fastest route is a short, specific note. One paragraph on what
           you are building or considering, one paragraph on why a conversation
-          would change the trajectory.
+          would be useful.
         </p>
         <p>
           <Link

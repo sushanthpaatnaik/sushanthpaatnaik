@@ -468,7 +468,7 @@ function ContactPage() {
               `block` only separates them visually. See the twin on /engage. */}
           Building systems for industrial futures and material intelligence.{" "}
           <span className="block mt-3 text-foreground/55 italic">
-            The desk is small on purpose. It opens only for work that deserves a multi-year horizon.
+            The desk is deliberately narrow. It opens only for work that deserves a multi-year horizon.
           </span>
         </p>
       </motion.div>
@@ -516,7 +516,7 @@ function ContactPage() {
 
       <EditorialSection number="10 · Signal" heading="What to write about.">
         <p>
-          Industrial partnerships in advanced materials. Capital co-architecture
+          Industrial partnerships in advanced materials. Funding structure
           for deep-tech. Research collaboration in graphene, energy, water, or
           climate systems. Advisory and board work. Editorial, press, and
           speaking.
@@ -526,7 +526,7 @@ function ContactPage() {
       <EditorialSection number="11 · Noise" heading="Kept off the desk.">
         <p>
           Generic outreach, mass campaigns, or unsolicited fundraising decks.
-          The inbox is small on purpose, so signal can survive.
+          Keeping the inbox narrow is what lets the signal survive.
         </p>
       </EditorialSection>
     </CinematicPageShell>

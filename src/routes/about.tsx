@@ -105,7 +105,7 @@ function AboutPage() {
   return (
     <CinematicPageShell
       eyebrow="About · Founder"
-      title={<>An inventor, quietly building<br className="hidden md:inline" /> industrial futures.</>}
+      title={<>An inventor working on materials<br className="hidden md:inline" /> and industrial systems.</>}
       lead="Born in Bhubaneswar, Odisha. The work began with a vehicle safety retrofit at fourteen, and it has not really paused since."
       backdrop={backdrop}
       overlay={0.82}
@@ -229,8 +229,8 @@ function AboutPage() {
         <p className="mt-7 text-[15px] md:text-[16px] leading-[1.8] text-foreground/60">
           The direction is narrower still: graphene and advanced materials,
           patient industrial capital, and a vertically integrated stack
-          designed to make Indian deep-tech globally inevitable in the carbon
-          century ahead.
+          built so Indian deep-tech can compete globally in the carbon century
+          ahead.
         </p>
       </motion.section>
 
@@ -297,10 +297,10 @@ function AboutPage() {
       <EditorialSection number="" heading="">
         <NarrativePassage indent>
           <p>
-            Frontier science only matters when it reaches the industrial world.
-            That requires three disciplines held together: invention, capital
-            architecture, and operating systems. I have spent the last fourteen
-            years learning to hold all three in one hand.
+            Three disciplines have to be held together for any of it to work:
+            invention, capital architecture, and operating systems. Fourteen
+            years in, I am still learning to keep all three moving at the same
+            speed.
           </p>
           <p className="mt-5">
             Recognition is a lagging indicator. The real measure is whether the
@@ -329,8 +329,7 @@ function AboutPage() {
           <p className="mt-5">
             My ventures, taken together, are one answer to that question: a
             vertically integrated stack from atom-scale research to capital and
-            commercialization, designed to make Indian deep-tech globally
-            inevitable.
+            commercialization, so that Indian deep-tech can compete globally.
           </p>
         </NarrativePassage>
       </EditorialSection>
