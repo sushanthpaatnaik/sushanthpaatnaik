@@ -221,7 +221,11 @@ type Advisory = {
       ("ELECTRONICS") it breaks mid-word as "ELECTRONIC / S", and at 14
       ("INFRASTRUCTURE") it shatters. Every label is two words inside that
       ceiling, which also keeps all six eyebrows two lines tall so the logos,
-      names and blurbs line up across the row. Screenshot after changing one —
+      names and blurbs line up across the row. The min-height floor that keeps
+      them level is per-breakpoint: the 2-up phone column is twice as wide, so
+      the two need different floors — 5.6rem at the phone widths, 5.4rem on
+      the 6-up desktop grid — measured to 0px row drift at 390 and 360.
+      Screenshot after changing one —
       the overflow check passes while the word is visibly broken. */
   /** What the advisory covers. Owner-supplied, checked against each company's
       own site where one is reachable: vinrox.com describes itself as design,
@@ -478,9 +482,9 @@ function VenturesPage() {
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
       <EditorialSection number="02 · Advisory" heading="Six companies I advise.">
         <p>
-          Six companies I advise, one in each area: electronics, construction,
-          assistive technology, building materials, lighting and green
-          chemistry.
+          These are advisory seats rather than operating ones. Each sits in a
+          different part of the same chain, from components through to
+          finished buildings.
         </p>
 
         {/* Industry-layer header strip — anchors the wall as one network */}
@@ -618,7 +622,7 @@ function VenturesPage() {
                 <span className="font-display text-[13px] tracking-[-0.005em] text-foreground/80 transition-colors duration-[1100ms] group-hover:text-foreground/95">
                   {a.name}
                 </span>
-                <p className="min-h-[5.4rem] max-w-[22ch] text-center text-[11.5px] leading-[1.55] text-foreground/55">
+                <p className="max-w-[22ch] text-center text-[11.5px] leading-[1.55] text-foreground/55 min-h-[5.6rem] md:min-h-[5.4rem]">
                   {a.blurb}
                 </p>
               </div>
