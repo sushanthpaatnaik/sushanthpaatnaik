@@ -216,6 +216,19 @@ function monogram(name: string): string {
 type Advisory = {
   name: string;
   category: string;
+  /** Category label. The eyebrow runs at tracking-[0.42em] in a ~200px card,
+      which puts a hard ceiling of ~10 characters on any single word: at 11
+      ("ELECTRONICS") it breaks mid-word as "ELECTRONIC / S", and at 14
+      ("INFRASTRUCTURE") it shatters. Every label is two words inside that
+      ceiling, which also keeps all six eyebrows two lines tall so the logos,
+      names and blurbs line up across the row. Screenshot after changing one —
+      the overflow check passes while the word is visibly broken. */
+  /** What the advisory covers. Owner-supplied, checked against each company's
+      own site where one is reachable: vinrox.com describes itself as design,
+      engineering and electronics contract manufacturing (the row previously
+      said "Materials", which was wrong), and sunrooof.com as sun-lighting for
+      interiors, which the existing label already matched. */
+  blurb: string;
   /** Undefined until a real logo asset is supplied — renders a text wordmark fallback. */
   logo?: string;
   /** Optical scale — normalised so every mark reads at the same weight. */
@@ -254,18 +267,18 @@ type Advisory = {
    the ceiling every other mark is matched down to. Aim higher and Sunrooof
    overflows the cell. */
 const advisories: Advisory[] = [
-  { name: "Vinrox",     category: "Materials",           logo: vinroxLogo,     scale: 0.89, offsetY: 0, invert: true },
-  { name: "VPRPL",      category: "Industrial Systems",  logo: vprplLogo,      scale: 0.85, offsetY: -1 },
+  { name: "Vinrox",     category: "Electronic Hardware", blurb: "Contract electronics manufacturing and product engineering.", logo: vinroxLogo,     scale: 0.89, offsetY: 0, invert: true },
+  { name: "VPRPL",      category: "Civil Structures", blurb: "Advanced materials and sustainable building solutions for infrastructure.", logo: vprplLogo,      scale: 0.85, offsetY: -1 },
   /* The dark chip is gone: with a paper-side mark there is nothing left for
      it to rescue, and a black tile in a row of paper plates was always the
      compromise rather than the design. */
-  { name: "WeHear",     category: "Consumer Tech",       logo: wehearLogo,     logoLight: wehearLogoLight,     scale: 0.78, offsetY: 0, darkChip: true },
-  { name: "Tileopedia", category: "Surface Tech",       logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
-  { name: "Sunrooof",   category: "Wellness Lighting",   logo: sunrooofLogo,   scale: 1.13, offsetY: 0, lightSource: true },
+  { name: "WeHear",     category: "Assistive Tech", blurb: "Accessible technology and user-centred design for assistive devices.", logo: wehearLogo,     logoLight: wehearLogoLight,     scale: 0.78, offsetY: 0, darkChip: true },
+  { name: "Tileopedia", category: "Building Materials", blurb: "Next-generation tiles, material innovation and surface technologies.", logo: tileopediaLogo, scale: 0.93, offsetY: 0 },
+  { name: "Sunrooof",   category: "Wellness Lighting",   blurb: "Sunlight-inspired indoor lighting and healthier indoor spaces.", logo: sunrooofLogo,   scale: 1.13, offsetY: 0, lightSource: true },
   /* Colour in both themes, by request. The white-only cut it used to ship on
      graphite is gone: the real mark's bright green carries against near-black,
      and the darker "GREEN POLYMERS" subline is lifted by --mark-colour. */
-  { name: "Greenomers", category: "Bio Materials",       logo: greenomersLogoLight, scale: 1.10, offsetY: 0 },
+  { name: "Greenomers", category: "Green Chemistry", blurb: "Bio-based materials and circular-economy chemistry.", logo: greenomersLogoLight, scale: 1.10, offsetY: 0 },
 ];
 
 
@@ -465,10 +478,9 @@ function VenturesPage() {
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
       <EditorialSection number="02 · Advisory" heading="Six companies I advise.">
         <p>
-          Six companies I advise, one in each area: materials, industrial
-          systems, consumer technology, surface technologies, wellness
-          lighting and sustainable
-          materials.
+          Six companies I advise, one in each area: electronics, construction,
+          assistive technology, building materials, lighting and green
+          chemistry.
         </p>
 
         {/* Industry-layer header strip — anchors the wall as one network */}
@@ -570,7 +582,7 @@ function VenturesPage() {
                 {a.logo ? (
                   <img
                     src={a.logo}
-                    alt={`${a.name} — ${a.category}`}
+                    alt={`${a.name}, ${a.category}`}
                     loading="lazy"
                     style={{
                       maxHeight: `${Math.round(58 * a.scale)}px`,
@@ -606,6 +618,9 @@ function VenturesPage() {
                 <span className="font-display text-[13px] tracking-[-0.005em] text-foreground/80 transition-colors duration-[1100ms] group-hover:text-foreground/95">
                   {a.name}
                 </span>
+                <p className="min-h-[5.4rem] max-w-[22ch] text-center text-[11.5px] leading-[1.55] text-foreground/55">
+                  {a.blurb}
+                </p>
               </div>
             </motion.div>
 
