@@ -482,7 +482,7 @@ function VenturesPage() {
       {/* ---------- Advisory roster · Industry layer wall ---------- */}
       <EditorialSection number="02 · Advisory" heading="Six companies I advise.">
         <p>
-          These are advisory seats rather than operating ones. Each sits in a
+          These are seats I hold rather than companies I run. Each sits in a
           different part of the same chain, from components through to
           finished buildings.
         </p>
@@ -491,7 +491,7 @@ function VenturesPage() {
         <div className="not-prose mt-14 mb-px flex items-center gap-3">
           <span className="h-px flex-1 bg-foreground/[0.08]" />
           <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-foreground/55">
-            Industry Layers · Advisory Network
+            Sectors · One Chain
           </span>
           <span className="h-px flex-1 bg-foreground/[0.08]" />
         </div>
