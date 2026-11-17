@@ -1,12 +1,10 @@
 # Site — FROZEN
 
-The whole site is frozen as of `e0bef4ef` — the last commit that changed site
+The whole site is frozen as of `13263f58` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. One commit after it, `57c9f372`, deleted the two superseded
-frame directories and nothing else; no page referenced either, so the anchor
-did not move. Four subsystems carry their own
+and `__root.tsx`. Four subsystems carry their own
 detailed records below — the homepage motion system, the film it plays, the
 seven-chapter story set to that film and the /innovations product panel — and
 everything in this first section applies site-wide.
@@ -313,6 +311,14 @@ missing rows need source documents before the claim is safe.
   something reflowed away, not that the phone is narrower.
 - Mobile nav at each of those four widths: 11 links, 0px overflow, opens on
   tap with `aria-expanded=true`, closes on Escape back to `false`.
+- Both re-run on 2026-11-17 with two profiles added, 320x568 and a 768x1024
+  tablet: 78 route-and-viewport checks, all passing — 200,
+  0px overflow, one `h1`, lock released, absolute canonical, 0 console errors,
+  and the menu opening to 11 links and closing on Escape on every one. The
+  homepage's character count is not the same at every width, and that is not a
+  reflow: 1749 at 430/390/375/360, 1603 at 320x568 where two optional lines of
+  chapter 3 step back under 700px of height, 1954 on the tablet, which gets the
+  laptop compositions.
 - Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
   from above and below give an identical canvas pixel hash. The positions are
   kept from the five-chapter page so the series stays comparable. On the
@@ -320,10 +326,11 @@ missing rows need source documents before the claim is safe.
   Presidential, its last frames before the hand-over), 0.60 (the hand-over into
   Advanced Materials), 0.75 (the hand-over into Industrial Impact) and 0.88
   (the hand-over into the close). The check is about the canvas, not the copy.
-- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1633
-  characters of copy in `main.innerText` (1707 on the five-chapter page by the
-  same measure; an older figure here, 1881, predates copy edits that never
-  re-measured it), 6 engage/contact links in the document.
+- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1749
+  characters of copy in `main.innerText` (1633 before the second pass on the
+  seven-chapter page, 1707 on the five-chapter page by the same measure; an
+  older figure here, 1881, predates copy edits that never re-measured it), 6
+  engage/contact links in the document.
 - Canvas, both themes, ten internal pages × four scroll depths, sampled in the
   left gutter which carries no content at 1440: light **223.6 .. 225.6**
   (span 2, warmth +4.5..5.2), dark **2.2 .. 8.2** (span 6). `/essays` is the
@@ -943,6 +950,10 @@ the film. Nothing else in the renderer moved: the frame map is still linear,
 and every smoothing, hand-over, retention and prefetch value in the table is
 exactly as it was.
 
+One line of the draw has changed since, with its defect and its measurements:
+`cover()` now draws the film at its own proportions beside a classic
+scrollbar. See **The film was drawn narrow beside a classic scrollbar**.
+
 This is not a style preference. Three separate tuning attempts were measured
 against the live build and all three were reverted because none produced an
 improvement distinguishable from run-to-run variance. Changing these values
@@ -964,6 +975,7 @@ again without evidence is more likely to regress the site than improve it.
 | `MAX_INFLIGHT` / `START_INFLIGHT` | 12 / 4 desktop, 6 / 3 touch | `CanvasLayer.tsx` |
 | `INITIAL_AHEAD` | 32 desktop, 24 touch | `CanvasLayer.tsx` |
 | DPR cap | `min(rawDpr, 2, fit)`, floored at 1 | `CanvasLayer.tsx` |
+| Classic-scrollbar correction | `squeezeX` = innerWidth / clientWidth, desktop only, 1 when there is no bar | `CanvasLayer.tsx` |
 
 There is exactly ONE smoothing layer: Lenis, desktop only. `scroll-behavior:
 auto !important` disables the browser's own, and no `useSpring` is applied to
@@ -1009,7 +1021,13 @@ re-proved.
   Scales at 8.29 MB per retained frame (1920x1080x4). *Carried over* — same
   window, same frame dimensions.
 - Draw scale: never above 1.00x. No upscaling. **Re-measured** at 1440x900:
-  0.83x.
+  0.83x. That is the vertical scale, and the horizontal one wherever there is
+  no classic scrollbar. Beside one, the frame is drawn wider inside the buffer
+  by `squeezeX` — 1.0105 at 1440 — and the box the buffer is shown in takes
+  exactly that back, so on screen the two scales are equal.
+- Real hardware, a MacBook, from a recording of the live site: at rest the
+  picture is the frame the scroll position calls for, within 0.04vh; while
+  scrolling it follows about 33ms behind. See **Measured on real hardware**.
 
 ## Known, deliberate, NOT defects
 
@@ -1043,6 +1061,95 @@ re-proved.
   server, and the loader's first pass goes out before the preference applies.
   The visitor is shown the still and never sees them. It is waste, not
   breakage, and it predates this film; fixing it means touching the loader.
+
+## The film was drawn narrow beside a classic scrollbar
+
+Found on 2026-11-17 in a screen recording the owner made of the live site.
+Laying the exported frames over the recording needed a horizontal scale of
+0.990 and a vertical one of 1.000; a single scale for both scored 0.59 on the
+same frame where the pair scored 0.82. The buffer is sized from
+`window.innerWidth`, which includes a scrollbar that takes space. The stage it
+is shown in is `fixed inset-0`, which does not. So a 1440-wide buffer was
+being shown in a 1425-wide box and the film came out about 1% narrow.
+
+| | horizontal scale over vertical, before | after |
+|---|---|---|
+| 1440x900, classic scrollbar | 0.9896 | 1.0000 |
+| 1280x800, classic scrollbar | 0.9883 | 1.0000 |
+| 1920x1080, classic scrollbar | 0.9922 | 1.0000 |
+| 1366x768, classic scrollbar | — | 1.0000 |
+| any of them, no scrollbar | 1.0000 | 1.0000 |
+| the owner's Mac, 1280x832, read off the recording | 0.990 | — |
+
+That is most Windows and Linux desktops — Chrome and Edge there draw a
+scrollbar that takes space — and a Mac with a mouse attached or scrollbars set
+to always show. A phone never has it. Headless Chromium hides
+scrollbars by default, which is why no check here had ever seen it: launch with
+`ignoreDefaultArgs: ["--hide-scrollbars"]` to reproduce it. "After" is read
+from the renderer's own `drawImage` calls — destination size over source size,
+times box over buffer, per axis — with the frame still covering the buffer and
+still centred in it.
+
+The correction is in `cover()`, not in the buffer size: the frame is drawn
+wider by `squeezeX` and the box squeezes it back. Sizing the buffer to the box
+is the obvious fix and the wrong one here — the scrollbar appears at the
+moment the loader releases its scroll lock, a resize clears a canvas, and the
+first sight of the film would have been a black frame.
+
+With no scrollbar `squeezeX` is exactly 1 and every number in `cover()` is the
+number it was. The control for that is the determinism check: the five canvas
+hashes on this build are the five the previous build gave, character for
+character — `c95be34d`, `98379bab`, `8e3ead53`, `37c2b0ce`, `b4f4cf74`.
+
+Nobody would have seen 1%. It is fixed because it was measured, it is on most
+desktops, and a circle that is 1% narrow is a wrong picture of the Earth.
+
+## Measured on real hardware
+
+The first measurement of this page that was not made in this container. The
+owner recorded the live site on a MacBook: Chrome, full screen, 1280x832, 15
+frames a second, 33 seconds — down the whole page in 16.4 seconds, a pause at
+the foot, back up in 9.4.
+
+The scroll position in each frame is read off the browser's scrollbar thumb,
+which travels 727px for the page's 1000vh: a quarter of a vh per reading. The
+film frame on screen is found by matching the recording against all 481
+exported frames, laid out the way `cover()` lays them, on local contrast so
+that shields, grades and the vignette cancel; type, the header and chapter 3's
+photographs are masked out. The search has no prior — it runs over the whole
+film — and lands within three frames of the scrollbar's position in 462 of
+466 frames.
+
+| | captured frames | scroll speed, median | picture behind the scroll position: median | p90 | worst |
+|---|---|---|---|---|---|
+| at rest | 55 | 0 | 0.04vh | 0.36vh | 0.68vh |
+| scrolling forward | 252 | 55vh/s | 1.74vh | 3.12vh | 4.47vh |
+| scrolling back | 147 | 103vh/s | 3.60vh | 5.12vh | 5.99vh |
+
+It is a delay, not a shortfall. The distance grows with speed and changes sign
+with direction, and one number explains all 399 moving frames: **33ms**, two
+display frames at 60Hz, with 0.48vh of scatter left over. At rest the picture
+is the frame the position calls for. No capture shows the scroll moving on
+while the picture stood still, and nothing resembles the 576-frame cut's
+fallback, where the picture ran 25vh behind.
+
+What a 15fps recording cannot resolve is pacing finer than 67ms, and what this
+one does not cover is a phone: it is a laptop with a trackpad. One scroll on a
+real phone is still owed. The copy's own timing was not measured separately;
+it runs on the same scroll position, so it cannot be further from the film
+than the film is from the scrollbar.
+
+Two things the instrument got wrong first, both worth keeping:
+
+- **A registration that is 1% out is a finding, not an error bar.** The first
+  fit used one scale for both axes, came back 0.9% small and 1.5px low, and
+  would have been accepted as "close enough" for matching frames. Splitting
+  the axes is what turned it into the defect above.
+- **The last half-second is not the site.** To stop the recording the owner
+  moved the pointer to the top of the screen, Chrome's toolbar slid down, the
+  scrollbar's track moved with it and the thumb read as a 600vh/s jump with
+  the picture 50vh "behind". Those frames are excluded; the table is the 454
+  before them.
 
 ## Measuring this page in a container without a GPU
 
@@ -1337,6 +1444,8 @@ the pixels actually behind the glyphs, at the weakest sixth of each line:
 | 390 phone, seven chapters | 268 | 0 | 9 |
 | 1440 desktop, five chapters on the 2x cut | 328 | 128 | 167 |
 | 1440 desktop, seven chapters | 348 | 0 | 53 |
+| 390 phone, after the second pass | 287 | 0 | 0 |
+| 1440 desktop, after the second pass | 367 | 0 | 0 |
 
 The two rows of each pair are different pages measured at different stops, so
 read them as a level, not as a line-for-line comparison. What moved the desktop
@@ -1344,7 +1453,22 @@ figure is mostly not the shields. The first measurement of the new page had
 145 lines below AA with every background under control: the weak lines were
 supporting sentences at `muted-foreground/90`, captions and register notes at
 55-60% alpha — dim ink, not bright footage. Those went to `foreground` at
-70-85%. After that: 53 and 9. What is left below AA is 10px labels — chapter eyebrows, the register's years, the closing index — between 3.1 and 4.46, which is the floor the site's contrast records already describe.
+70-85%. After that: 53 and 9, every one of them a 10px label — chapter
+eyebrows, the register's years, the closing index, "Back to top" — between 3.1
+and 4.46.
+
+The second pass took those to nothing. They were not far off: the eyebrow's
+accent went from 90% to full, the numbers, years and index links from 70% to
+85%, the photographs' second caption line from 75% to 85%, the closing
+chapter's label to 95%. One of them was not dim at all. The phone's "07"
+measured 3.12 at 80% ink on black, then 4.0 at 95%: at 10px the strokes of "0"
+and "7" are under a pixel wide and their cores never reach the ink's colour.
+It is a weight heavier than its label now and passes. **A low reading on white
+type over black is the stroke, not the colour** — raising the alpha a third
+time would have done nothing.
+
+This is the homepage only. The site-wide contrast record further up, with its
+10px eyebrows at 30-60% alpha, is about the internal pages and is unchanged.
 
 ## Measured
 
@@ -1390,9 +1514,10 @@ several hundred is cut short by the container's proxy while still reporting
 200: a 27,472-byte frame came back as 7,958 bytes, and 4 of the 1,443 needed a
 second attempt. Compare checksums, with a retry, not the size of one download.
 
-Not verified here, and not verifiable here: how it feels on real hardware.
-This container rasterises in software and has no H.264 decoder. One scroll on
-a real phone is still owed.
+Not verifiable here: how it feels on real hardware. This container rasterises
+in software and has no H.264 decoder. A laptop has since been measured, from a
+recording — see **Measured on real hardware** in the motion system's section.
+One scroll on a real phone is still owed.
 
 ## Six more instruments that lied
 
@@ -1456,8 +1581,8 @@ cut**, in the film's section.
 |---|---|---|---|---|
 | 01 · Origin | workbench | Every invention begins with a problem worth solving. | A young inventor. A workbench. The beginning of a journey. | — |
 | 02 · Early Works | inventor at the bench | Six years. Six inventions. One purpose. | 2008–2013 · From vehicle safety and assistive technology to energy and wearable safety. | Explore Early Works → `/early-works` |
-| 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · National recognition for early inventions. · The record exists. The next prototype matters more. · three archive photographs | View Presidential Archive → `/recognitions` |
-| 04 · Global Recognition | Earth | From India to the global stage. | a dated register, five rows | Explore Recognitions → `/recognitions` |
+| 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · National recognition for early inventions. · Six national recognitions. A journey of invention that continues today. · three archive photographs · Selected moments from the Presidential recognition archive · 2008–2013 | View Presidential Archive → `/recognitions` |
+| 04 · Global Recognition | Earth | From India to the global stage. | a dated register, six rows | Explore Recognitions → `/recognitions` |
 | 05 · Advanced Materials | graphene lattice | From inventions to intelligent materials. | Graphene and advanced materials became the next chapter of the work. | Explore Innovations → `/innovations` |
 | 06 · Industrial Impact | viaduct, then plant | One material platform. Many industries. | Concrete. Solar. Batteries. Thermal management. Advanced composites. · Graphacrete · Graffisol · Graphenodes · Thermene · Six operating companies carry that platform into industry. | See the Work → `/innovations`, View Ventures → `/ventures` |
 | 07 · The Work Continues | city | Sushanth Paatnaik · I build what does not yet exist. | The future is not imagined. It is engineered quietly. · Inventor · Entrepreneur · Speaker · Advisor · 25 Innovations · 6 Ventures | Begin a conversation → `/contact`, Explore my journey → `/about`, and an index of the other eight sections |
@@ -1488,9 +1613,12 @@ page that owns it before it went in:
   it. It says "Three Presidents of India" and never "sitting Presidents":
   Dr. Kalam left office in 2007 and both his citations are titled "Former
   President of India Award".
-- **The register** — five rows of the same ledger with its years: TR-35 from
-  MIT Technology Review and Intel IRIS · Best Popular Invention in 2010, NASA
-  in 2011, TED@Bangalore in 2012, MIT Fab-10 & Fab-11 in 2013–14. The NASA row
+- **The register** — six rows of the same ledger with its years: TR-35 from
+  MIT Technology Review, Intel IRIS · Best Popular Invention and INK Fellow in
+  2010, NASA in 2011, TED@Bangalore in 2012, MIT Fab-10 & Fab-11 in 2013–14.
+  The INK row came in on the second pass; it is one of the four rows on
+  `/recognitions` that carry an evidence link, to the organisation's own
+  profile. The NASA row
   says where — Huntsville, Alabama — and nothing about what for. A satellite
   in the film's Earth shot is scenery, not a claim about a mission; the
   generated insignia that shot arrived with was painted out of the frames.
@@ -1559,15 +1687,16 @@ Two things about how they load:
   land inside the dissolve that reveals it.
 
 On a laptop the three share a row, capped by viewport height as well as by the
-column so the block still fits a 720px screen. On a phone they cannot: at a
+column so the block still fits a 720px screen. They arrive left to right as
+the chapter does — see **The Presidential entrance**. On a phone they cannot: at a
 third of 390px each is too small to look at. The statement holds and the
 photographs turn over beneath it one at a time, 2009, 2010, 2013, about 47vh
 of scrolling each.
 
 ## Phone compositions
 
-Two chapters are staged on a phone, chapter 3 as above and chapter 7 in two
-states: the founder's line alone, then the name, the headline, the roles and
+Two chapters are staged on a phone held upright, chapter 3 as above and
+chapter 7 in two states: the founder's line alone, then the name, the headline, the roles and
 the buttons, which is also where the page ends.
 
 **A staged chapter has to finish inside its hold, not inside its band.** The
@@ -1587,6 +1716,139 @@ reason — as two long ones, "materials." ended on the atom.
 Below 560px of height the laptop compositions drop their optional rows and
 size their type by height as well as width, so a phone held sideways clips
 nothing and no chapter scrolls internally.
+
+## The second pass
+
+Later the same day the owner sent a screen recording of the live page, a
+screenshot of chapter 3 with "is it fine?", two more briefs — one for the
+whole homepage, one for the Presidential chapter, the second cut off
+mid-sentence after its third section — and "make sure the website works well
+on mobile phones too". The recording is under **Measured on real hardware**,
+and what it found in the renderer under **The film was drawn narrow beside a
+classic scrollbar**, both in the motion system's section. The rest is here.
+
+**Copy.** The Presidential brief's two lines went in as written. "Six national
+recognitions. A journey of invention that continues today." replaces "The
+record exists. The next prototype matters more."; "Selected moments from the
+Presidential recognition archive · 2008–2013" sits under the gallery, on the
+archive link's row on a laptop. Neither is a new claim: six is the headline's
+count, and the three photographs are dated 2009, 2010 and 2013. The new
+sentence stands directly under "National recognition for early inventions."
+and echoes it. That was raised with the owner, not edited.
+
+The captions were asked to "distinguish former and sitting Presidents". They
+already did, and are unchanged: "With Dr. A.P.J. Abdul Kalam" carries no
+title, and the other two say "President".
+
+### The Presidential entrance
+
+On a laptop the chapter's parts arrive in reading order: the headline with the
+wrapper, the note just behind it, the three photographs left to right, then
+the line under them. Each is an opacity ramp and a 12px rise, scroll-linked,
+inside the wrapper's own 30vh fade-in — the note across 0.05–0.50 of it, the
+photographs across 0.10–0.55, 0.30–0.75 and 0.50–0.95, the line across
+0.55–0.95. The photographs start 6vh apart, a tenth of a second at the pace
+the owner's recording scrolls. Reduced motion keeps the order and drops the
+rise.
+
+**It has to be complete at the band's first pixel, not shortly after it.** The
+chapter rail jumps to exactly that pixel. The first design, caught on paper
+before it was built, let the photographs run 24vh into the hold: that reads
+well while scrolling and leaves a visitor who clicked "Presidential
+Recognition" looking at a gallery with its third photograph at 2%, at rest.
+This is the same rule as "a staged chapter has to finish inside its hold",
+from the other end.
+
+Measured at 1280x800, 1440x900 and 1024x768: left to right; every part at
+1.000 at the rail's landing pixel; at 1 through the hold; whole when entered
+from below; and scrolled back to the middle of the window the three
+photographs read 0.97 / 0.42 / 0.00, the values they had on the way in.
+
+### What a 320px phone showed
+
+The briefs name 320px and nothing here had been run that small. On the build
+that was live, at 320x568:
+
+- Chapter 3's eyebrow wrapped to two lines at 0.42em tracking, and the
+  photograph — whose box is placed at 27.5% of the height, not flowed — sat on
+  top of "Three Presidents of India." **The layout audit passed it**: it
+  checks a composition against the header and the foot, not its parts against
+  each other. It took a screenshot.
+- "View Presidential Archive →" wrapped with the arrow alone on its own line.
+- Chapter 4 stood 8px under the header with five rows, and would not have
+  held a sixth.
+- The `h1` ran to four lines and chapter 6's headline to three.
+
+The eyebrow and the chapter links step their tracking in below 340px of
+width; the photograph's box starts at 30% under 600px of height; the
+register's year column and row padding step in; the two headlines take a
+fixed size below 340px that keeps their designed line counts.
+
+### A phone held sideways
+
+Tested at 844x390 before, where the laptop compositions apply, and never
+below 768px of width — 667x375, 740x360 — where the gate said "mobile" and
+the portrait compositions were laid into a frame half their height. Chapter
+3's photograph came out 500px tall in a 375px viewport, its caption and link
+off the bottom; the closing chapter's bands landed on top of each other;
+three more chapters ran under the header. All of that was live.
+
+The phone compositions are portrait-only now, and the short-viewport rules
+are orientation-aware: `stage-ls` is landscape under 560px of height at any
+width, where it used to be written `[@media(max-height:560px)]:md:`;
+`stage-ps` is portrait under 600px. **Height alone cannot tell them apart** —
+a 375x667 phone with its browser toolbars showing is about 553px tall and
+still portrait, and an un-gated 560px rule would have recentred chapter 2's
+copy onto the inventor's face.
+
+Every composition is inside its frame at 896x414, 844x390 and 667x375, and
+to within a pixel at 740x360. At 568x320, a ten-year-old phone on its side,
+chapters 3 and 4 run 2px and 7px into the header's band and that is where it
+was left.
+
+### What the two later briefs asked for that was not done
+
+- A `<video>`, seek throttling, ScrollTrigger: there is no video element and
+  no GSAP, as before. "Clamp to the last clean frame" was already so.
+- **Product descriptors in chapter 6** — "Graphacrete — Graphene Concrete
+  Admixture" and three more. Not added. The catalogue's own words would be
+  concrete admixture, solar coating, cathode and anode materials, thermal
+  interface compound, which is not the brief's wording; and this is the
+  shortest hold on the page, where the rule is to shorten copy, not add it.
+  Offered to the owner in the catalogue's words.
+- Photographs or certificates in chapter 4, and rows that arrive one at a
+  time. The Earth is that chapter's picture, six rows of a register are not
+  clutter, and a 69vh hold is too short to stage them through.
+- "INK Fellowship" went in as the ledger words it, INK Fellow.
+- Performance work. None was done because nothing measured slow: no new
+  listener, no new React state; ten motion values that change only inside
+  chapter 3's entrance.
+
+### Measured, second pass
+
+2026-11-17, local production build under `wrangler dev`.
+
+- Sync: 35 of 35 at 1440 and 35 of 35 on a 390 phone.
+- Film checks: 24 of 24, run alone. Run beside another browser the same
+  script gave 22 of 24, one position read "from below" at correlation 0.16 —
+  the stale-canvas tell this file already describes, not a neighbour's 0.99.
+  Determinism hashes identical to the previous build's.
+- Layout, ten compositions at each of nineteen viewports from 1920x1080 to
+  320x568: nothing outside its frame on any desktop, tablet or portrait
+  phone; sideways as above.
+- Contrast: 0 lines below 3:1 and 0 below AA, 367 lines at 1440 and 287 at
+  390.
+- Routes: 13 at 1440 and 390, and 78 route-and-viewport checks on six
+  touch profiles with the menu opened and closed on each.
+- Chapter rail: 7 of 7 land on their chapter's first pixel at full opacity.
+- `scripts/e2e-scroll.mjs`: all passed, 7 inconclusive — the keyboard start
+  and the six rail jumps, as before, which is this container's frame delivery.
+  The rail is the 7 of 7 above.
+- Scroll tracking at 960x540, wheel-driven: three fast runs, a steady
+  run and a phone run. The picture is a median 0.5-0.6vh behind the scroll
+  position and within 1vh on every draw, except one reverse fast run whose
+  worst draw was 3vh; 0-1 long tasks a run. The previous build gave 0.5-0.6vh
+  and 1vh on the same harness the same evening.
 
 ## What was retired
 
