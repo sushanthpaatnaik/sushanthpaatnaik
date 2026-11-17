@@ -4,7 +4,9 @@ The whole site is frozen as of `e0bef4ef` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. Four subsystems carry their own
+and `__root.tsx`. One commit after it, `57c9f372`, deleted the two superseded
+frame directories and nothing else; no page referenced either, so the anchor
+did not move. Four subsystems carry their own
 detailed records below — the homepage motion system, the film it plays, the
 seven-chapter story set to that film and the /innovations product panel — and
 everything in this first section applies site-wide.
@@ -1247,8 +1249,9 @@ loader's throughput the film stops keeping up and the draw loop falls back to
 the edge of `FALLBACK_RADIUS` — 14 frames, which is where the 25vh comes from.
 481 over 1000vh is a frame every 2.08vh, the density this renderer has been
 proven at. **If a chapter ever needs more hold, shorten its copy; do not buy it
-with frames.** `inventor-story/`, the 576-frame directory, was served for about
-ninety minutes, was never referenced by a page, and is gone.
+with frames.** `inventor-story/`, the 576-frame directory, was served for 72
+minutes — 20:14 to 21:26 UTC, by the polls that watched it arrive and leave —
+was never referenced by a page, and is gone.
 
 The lag is measured by logging every `drawImage` of a film frame together with
 the scroll position it was drawn at. The frame number is carried from the fetch
@@ -1364,6 +1367,28 @@ was live — the 2x cut under five chapters — served beside it as control.
   360x640: nothing outside its frame at the five laptop sizes, the tablet and the five portrait phones. On a phone held sideways (844x390) every composition sits between the header and the foot with nothing clipped; chapter 3's three photographs are about 80px tall there.
 - 13 routes at 1440 and 390: 200, 0px overflow, one `h1`, absolute canonical,
   0 errors.
+
+On production, the same day, after the two superseded directories were
+removed: all 1,443 files of `inventor-story-481/` are byte-identical to the
+repository by checksum; `inventor-film/` and `inventor-story/` answer 404; the
+served HTML carries the seven headlines, one `h1` and none of the five retired
+headlines; the deployed bundle names `inventor-story-481` and 481; 13 routes
+answer 200. The sync check in a real browser, through a local mirror of the
+origin: 35 of 35 at 1440 and 35 of 35 on a 390 phone, with screenshots at the
+middle of the first six holds and at the end of the page on both. The two
+console errors in those runs are the mirror's own: it answers GET only, so the
+`/cdn-cgi/rum` beacon gets 501, and it returns 502 when its own request
+upstream is cut short.
+
+Three things about checking production from this container. `grep -o` printed
+"binary file matches" for the served HTML and counted nothing, so every
+headline read 0 — the retired ones included, whose check is that they read 0.
+Use `grep -a`, and prove a check for absence can find something before
+trusting it. Frame files are numbered from 0001 — index `i` is
+`frame_{i+1}` — so `frame_0000` is a 404 by design. And about one request in
+several hundred is cut short by the container's proxy while still reporting
+200: a 27,472-byte frame came back as 7,958 bytes, and 4 of the 1,443 needed a
+second attempt. Compare checksums, with a retry, not the size of one download.
 
 Not verified here, and not verifiable here: how it feels on real hardware.
 This container rasterises in software and has no H.264 decoder. One scroll on
