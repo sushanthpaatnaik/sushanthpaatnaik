@@ -1,13 +1,13 @@
 # Site — FROZEN
 
-The whole site is frozen as of `d9437694` — the last commit that changed site
+The whole site is frozen as of `e0bef4ef` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. Three subsystems carry their own
-detailed records below — the homepage motion system, the film it plays and the
-/innovations product panel — and everything in this first section applies
-site-wide.
+and `__root.tsx`. Four subsystems carry their own
+detailed records below — the homepage motion system, the film it plays, the
+seven-chapter story set to that film and the /innovations product panel — and
+everything in this first section applies site-wide.
 
 This anchor sat at `f0c46557` through a run of later commits that did change
 site code — a portrait, a scroll fix, several passes over the copy, the
@@ -206,7 +206,7 @@ Five events:
 | `innovation_filter` | one effect on the filter tuple | `stage`, `domain`, `patent_only`, `featured_only`, `results` |
 
 Two of these are deliberately not wired per control. `engage_click` is one
-delegated listener because seven links point at /engage across the nav and five
+delegated listener because eight links point at /engage across the nav and five
 routes and the nav builds its own from a list. `innovation_filter` is one
 effect because four controls narrow the same list and `resetRefinements` clears
 three at once — per-control handlers would be five call sites a sixth filter
@@ -312,11 +312,16 @@ missing rows need source documents before the claim is safe.
 - Mobile nav at each of those four widths: 11 links, 0px overflow, opens on
   tap with `aria-expanded=true`, closes on Escape back to `false`.
 - Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
-  from above and below give an identical canvas pixel hash. 6750 and 7920 share
-  a chapter heading and that is correct — with a 9000px scroll range they are
-  0.75 and 0.88, both inside the last band.
-- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1881
-  characters of copy, 6 engage/contact links.
+  from above and below give an identical canvas pixel hash. The positions are
+  kept from the five-chapter page so the series stays comparable. On the
+  seven-chapter page they are 0.30 (Presidential Recognition), 0.45 (still
+  Presidential, its last frames before the hand-over), 0.60 (the hand-over into
+  Advanced Materials), 0.75 (the hand-over into Industrial Impact) and 0.88
+  (the hand-over into the close). The check is about the canvas, not the copy.
+- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1633
+  characters of copy in `main.innerText` (1707 on the five-chapter page by the
+  same measure; an older figure here, 1881, predates copy edits that never
+  re-measured it), 6 engage/contact links in the document.
 - Canvas, both themes, ten internal pages × four scroll depths, sampled in the
   left gutter which carries no content at 1440: light **223.6 .. 225.6**
   (span 2, warmth +4.5..5.2), dark **2.2 .. 8.2** (span 6). `/essays` is the
@@ -927,9 +932,13 @@ The cinematic scroll system on `/` is frozen as of `17d221c8`. Do not retune
 easing, smoothing, transition overlap, retention or prefetch behaviour without
 first reproducing a specific, measurable defect.
 
-The film it plays is a separate matter with its own section, **The inventor
-film**, below. Replacing the film changed `FRAME_COUNT` and the sequence
-directory and nothing else in the renderer; every other value in the table is
+The film it plays and the copy laid over it are separate matters with their
+own sections below, **The inventor film** and **The story**. Replacing the film
+changed `FRAME_COUNT` and the sequence directory. Setting the copy to the film
+changed those two again, and `N_CHAPTERS`, `CHAPTER_BANDS` and `CHAPTER_GRADES`
+with them, because there are seven chapters now and their edges are read off
+the film. Nothing else in the renderer moved: the frame map is still linear,
+and every smoothing, hand-over, retention and prefetch value in the table is
 exactly as it was.
 
 This is not a style preference. Three separate tuning attempts were measured
@@ -945,8 +954,8 @@ again without evidence is more likely to regress the site than improve it.
 | Lenis wheelMultiplier | 1.0 | `useLenis.ts` |
 | Lenis on touch / reduced motion | never constructed | `useLenis.ts` |
 | `HANDOVER_OUT` / `HANDOVER_IN` | 0.50 / 0.50 | `chapterBands.ts` |
-| `CHAPTER_BANDS` | 0 / .21 / .39 / .55 / .75 | `chapterBands.ts` |
-| `FRAME_COUNT` | 453 — 227 real + 226 synthesised | `CanvasLayer.tsx` |
+| `CHAPTER_BANDS` | 0 / .161 / .287 / .514 / .643 / .769 / .895 — seven, read off the film | `chapterBands.ts` |
+| `FRAME_COUNT` | 481 — 227 real + 254 synthesised | `CanvasLayer.tsx` |
 | `RETAIN_RADIUS` | 40 desktop, 55 touch | `CanvasLayer.tsx` |
 | `FALLBACK_RADIUS` | 14 | `CanvasLayer.tsx` |
 | `BLEND_STEPS` | 12, desktop only | `CanvasLayer.tsx` |
@@ -961,31 +970,39 @@ any scroll value the homepage mounts. Do not add a second one.
 ## Measured baselines
 
 Re-measure against these before claiming an improvement. Each line says whether
-it was re-measured on the inventor film (2026-11-17) or carried over from the
-previous one; carried-over lines are the renderer's and were not expected to
-move, but they have not been re-proved.
+it was re-measured on the story cut (2026-11-17) or carried over; carried-over
+lines are the renderer's and were not expected to move, but they have not been
+re-proved.
 
 - Determinism: five positions (2700/4050/5400/6750/7920) approached from above
   and below give an identical canvas pixel hash. This is the strongest
   invariant on the page — do not break it. **Re-measured:** 5/5 at 1440, and
   3/3 at 390 on the portrait set.
 - Frame selection: the picture at rest is the expected frame, `round(progress
-  x 452)`. **Re-measured** by matching the live canvas against the exported
-  frames: 136, 203, 271, 339 and 398 at the five positions, each the expected
-  index, correlation 0.986-0.9998.
+  x 480)`. **Re-measured** by matching the live canvas against the exported
+  frames: 144, 216, 288, 360 and 422 at the five positions, each the expected index, correlation
+  0.997-0.9999.
 - Arbitrary stops: 6 viewports, 15 samples each, one dominant chapter per
   sample; no sample paints a second chapter above 5%; longest image-only beat
-  54px. **Re-measured** with `scripts/e2e-scroll.mjs`. The old line here also
-  claimed "0 film/copy mismatch". That is no longer true in the sense it meant
-  — see the scene table under The inventor film.
+  54px. **Re-measured** with `scripts/e2e-scroll.mjs`, whose samples and
+  boundaries were moved to the seven chapters.
+- Scroll tracking: at 960x540, wheel-driven, the picture on screen is within
+  1vh of the picture the scroll position calls for on every draw — at ordinary
+  speed and in a fast scroll, forward and back, three runs out of three, and
+  the same on a 390 phone profile. **New**, and measured against the 2x cut on
+  the same harness, which scores the same. How it is measured is under The
+  story cut.
 - Main thread during scroll: 81.2% idle at 1920x1080. All site JS under 2% of
   samples. React and framer-motion ~0%. *Carried over.*
-- Loading: 41 frames fetched at rest before any scroll at 1440 (1,381 KB) and
-  56 on a 390 phone (1,014 KB); peak 12 and 6 concurrent; CLS 0.
-  **Re-measured**, with the previous film's build on the same harness as
-  control: 41 / 3,096 KB and 56 / 2,023 KB. Same counts, half the bytes. An
-  older record here read "33 requested initially"; 33 is `INITIAL_AHEAD` + 1,
-  the head start alone, counted before the first retention top-up.
+- Loading: 41 frames fetched at rest before any scroll at 1440 and 56 on a 390
+  phone; peak 12 and 6 concurrent; CLS 0. **Re-measured**, with the 2x cut's
+  build on the same harness as control: 41 and 56 there too. Those are frames 0-40 and 0-55,
+  which are the same files in both cuts, byte for byte: 3,513 KB and 1,424 KB on
+  disk. Earlier records here gave 1,381 KB and 1,014 KB for those frames, and
+  they were wrong. The harness sums `request.sizes()` as requests finish, and
+  in one run it returned 1,795 KB for the control's 41 files and 1,198 KB for
+  the identical 41 in the new build. Count the requests; take the bytes from
+  the files.
 - Decoded memory: ~1.36 GB parked mid-film desktop, ~402 MB portrait mobile.
   Scales at 8.29 MB per retained frame (1920x1080x4). *Carried over* — same
   window, same frame dimensions.
@@ -999,7 +1016,9 @@ move, but they have not been re-proved.
   handover: the outgoing chapter reaches zero as the incoming one starts, so
   the two are never painted together. Both alternatives were tried and were
   worse — 0.46/0.54 opened a readable dead zone, 0.68/0.32 put 27 text nodes
-  above 25% opacity simultaneously. Do not "fix" this.
+  above 25% opacity simultaneously. Do not "fix" this. There are six seams now
+  rather than four, and each is where the film changes scene, so the empty
+  beat is the picture turning over with nothing written on it.
 - **Reverse scroll trails the benchmark.** At 960x540: ~36 fps and 4-5 long
   tasks per run, against grafillium.com's locked ~60 fps and zero. Forward
   scroll *beats* it — ~34 fps against their 24-32. The asymmetry is
@@ -1010,9 +1029,12 @@ move, but they have not been re-proved.
 - **After a scroll jump the canvas holds the previous picture until a frame
   near the new position is resident.** Time to the correct picture after a
   1500px jump at 1440, ten trials: 310-3877ms (median 799) on the previous
-  film, 349-2272ms (median 618) on the inventor film. On a 390 phone profile
-  both sit at 127-143ms. That is by design — the alternative is cutting to an
-  unrelated frame — and it is not something the film changed.
+  film, 349-2272ms (median 618) on the inventor film's 2x cut. On a 390 phone
+  profile both sit at 127-143ms. That is by design — the alternative is cutting
+  to an unrelated frame — and it is not something the film changed. The ten
+  trials were not repeated on the story cut; its determinism checks needed 4.5s
+  of stillness where 3s had served, which is the same tail seen from the other
+  side.
 - **Reduced motion still fetches the opening window.** 56 frame requests on a
   390 phone with the preference set, on both films. `useReducedMotionSafe`
   reports "no preference" for the first render so hydration matches the
@@ -1047,8 +1069,10 @@ Gemini's sparkle in the corner. The instruction was to use that exact video as
 the scroll background, in HD WebP, with the watermark removed. It plays in its
 own order, linearly, through the unchanged renderer.
 
-Read the scene table before touching anything here. The film's order is not the
-page's, that is known, and it was accepted.
+Read the scene table before touching anything here. The film's order is the
+page's order now. The same day, the copy was reset to the film's seven scenes —
+see **The story** — and the film was re-cut so that each scene lasts as long as
+the chapter over it. That is **The story cut**, below.
 
 ## What was done to the source, and what was not
 
@@ -1059,7 +1083,7 @@ page's, that is known, and it was accepted.
 | Frames dropped | 227-239 |
 | Watermark | un-blended from every frame |
 | NASA insignia | painted out, frames 119-149 |
-| Frame count | doubled to 453, an exact 2x |
+| Frame count | 481: every scene slowed by its own whole number |
 | Exposure | 38 of the 227 real frames dimmed |
 
 **The dropped tail.** From frame 228 a fake website fades in over the city: a
@@ -1141,26 +1165,96 @@ well-determined quantity: the mark adds 74-76 levels on black in every channel.
 Any invisible provenance signal in the file was not looked for and was not
 touched.
 
-## Doubling the frames
+## In-between frames
 
-The renderer wants an integer multiple, and it wants density: 227 frames over
-this page is 4.4vh a frame, which is the stepping a phone was once measured
-complaining about at 4.2. At 2x it is 2.2vh, finer than the previous film's
-2.6.
+The renderer wants whole-number multiples, and it wants density: 227 frames
+over this page is 4.4vh a frame, which is the stepping a phone was once
+measured complaining about at 4.2.
 
-In-betweens are motion-interpolated. Tested by dropping every odd frame and
-synthesising it back, scored against the real one — the job at double the real
-motion, so pessimistic: 31.1 dB against 24.1 dB for a plain blend, better on
-106 of 112 frames. It lost on six, all inside the bloom-out into the inventor
-shot and the dissolve into the hall, where brightness is changing and there is
-no motion to follow. Pairs 35-42 and 57-64 use a blend instead.
+The first cut doubled every frame: 453, an exact 2x, 2.2vh a frame. The cut
+that is live slows each scene by its own whole number — see The story cut —
+and comes to 481.
 
-Even indices are the source's own frames and never pass through the
-interpolator. Where two real frames agree, the in-between is taken from them
-rather than from the interpolator, so static regions cannot be hallucinated.
-Every synthesised frame is a true midpoint — PSNR to its two neighbours agreed
-within 0.1 dB at all five pairs sampled — which is the property that stops the
-sequence stepping unevenly.
+In-betweens are motion-interpolated. Tested twice, by hiding real frames from
+the interpolator and scoring what it makes of the gap against them — the job at
+two and three times the real motion, so pessimistic:
+
+| Held out | Interpolated | Plain blend | Interpolation better on |
+|---|---|---|---|
+| every 2nd frame | 31.1 dB | 24.1 dB | 106 of 112 |
+| 2 of every 3 | 27.4 dB | 22.7 dB | 143 of 150 |
+
+It lost in the same two places both times: inside the bloom-out into the
+inventor shot and the dissolve into the hall, where brightness is changing and
+there is no motion to follow. In this cut the bloom has no in-betweens at all,
+and pair 42 and pairs 57-64 use a plain blend.
+
+The source's own frames never pass through the interpolator. Where two real
+frames agree, the in-between is taken from them rather than from the
+interpolator, so static regions cannot be hallucinated. Within a scene every
+in-between sits at an exact half, third or fifth of the way between two real
+frames, which is the property that stops the sequence stepping unevenly.
+
+## The story cut
+
+Same footage, same order. Each scene is slowed by a whole number so that, under
+the page's linear frame map, it lasts as long as the chapter that sits over it.
+
+| Scene | Source frames | x | In the 481 | Scroll progress | Chapter |
+|---|---|---|---|---|---|
+| workbench | 0-28 | 2 | 0-56 | 0.000-0.117 | 01 Origin |
+| bloom | 28-42 | 1 | 56-70 | 0.117-0.146 | hand-over |
+| inventor at the bench | 42-58 | 3 | 70-118 | 0.146-0.246 | 02 Early Works |
+| dissolve | 58-65 | 2 | 118-132 | 0.246-0.275 | hand-over |
+| recognition hall | 65-114 | 2 | 132-230 | 0.275-0.479 | 03 Presidential Recognition |
+| dissolve | 114-122 | 1 | 230-238 | 0.479-0.496 | hand-over |
+| Earth | 122-147 | 2 | 238-288 | 0.496-0.600 | 04 Global Recognition |
+| zoom | 147-156 | 2 | 288-306 | 0.600-0.637 | hand-over |
+| graphene lattice | 156-174 | 2 | 306-342 | 0.637-0.713 | 05 Advanced Materials |
+| iris | 174-184 | 2 | 342-362 | 0.713-0.754 | hand-over |
+| solar viaduct | 184-191 | 3 | 362-383 | 0.754-0.798 | 06 Industrial Impact |
+| dissolve | 191-196 | 2 | 383-393 | 0.798-0.819 | 06, mid-chapter |
+| plant | 196-205 | 2 | 393-411 | 0.819-0.856 | 06 Industrial Impact |
+| burst | 205-214 | 1 | 411-420 | 0.856-0.875 | hand-over |
+| city | 214-226 | 5 | 420-480 | 0.875-1.000 | 07 The Work Continues |
+
+The chapter edges in `CHAPTER_BANDS` are not chosen. Each is 0.030 after the
+midpoint of the transition between two scenes — half of `CONTENT_FADE` — so the
+picture turns over exactly where the text hand-over is empty: the old line
+leaves, the scene changes with nothing written on it, the new line arrives on
+its own footage. The midpoints were measured, by fitting every frame of a
+transition as a mix of the clean frames either side: source frames 35.0, 60.7,
+116.2, 150.0, 180.3 and 209.4. Every transition is shorter than the 60vh
+hand-over it sits in — 17 to 42vh.
+
+**To move a chapter edge, change a multiple and re-export.** Moving the number
+in `chapterBands.ts` alone puts the copy over the wrong scene, which is the
+defect this cut replaced.
+
+**481, not 576.** A first cut used higher multiples — inventor and plant x4,
+lattice x3, city x6 — and came to 576 frames. It gave the four short chapters
+about 10vh more hold each and stepped finer. It was exported, deployed and
+measured against the build that was live:
+
+| 960x540, wheel-driven | 453-frame cut | 576-frame cut | 481-frame cut |
+|---|---|---|---|
+| ordinary scroll, median lag behind the scroll position | 0.5-0.6vh | 0.4vh | 0.5vh |
+| fast scroll, median lag | 0.5-0.6vh | 12.7vh | 0.5-0.6vh |
+| fast scroll, worst | 1vh | 25vh | 1vh |
+
+More frames per screen is more to fetch and decode per screen. Past the
+loader's throughput the film stops keeping up and the draw loop falls back to
+the edge of `FALLBACK_RADIUS` — 14 frames, which is where the 25vh comes from.
+481 over 1000vh is a frame every 2.08vh, the density this renderer has been
+proven at. **If a chapter ever needs more hold, shorten its copy; do not buy it
+with frames.** `inventor-story/`, the 576-frame directory, was served for about
+ninety minutes, was never referenced by a page, and is gone.
+
+The lag is measured by logging every `drawImage` of a film frame together with
+the scroll position it was drawn at. The frame number is carried from the fetch
+through `createImageBitmap` to the draw by a `WeakMap` in an init script. It is
+reported in vh, not in frames, so that cuts with different frame counts compare:
+a frame behind on a denser cut is a smaller distance behind.
 
 ## The exposure ceiling
 
@@ -1177,115 +1271,97 @@ gain is 0.647, at frame 36. The hall, at 113-118, is touched by 1.5%.
 
 | Set | Size | Total | Average |
 |---|---|---|---|
-| desktop | 1920x1080, q86 | 53.1 MB | 114 KB |
-| `/p/` portrait phones | 500x1080 centre crop, q84 | 16.2 MB | 35 KB |
-| `/m/` landscape touch | 854x480, q84 | 18.8 MB | 41 KB |
+| desktop | 1920x1080, q86 | 58.1 MB | 118 KB |
+| `/p/` portrait phones | 500x1080 centre crop, q84 | 17.6 MB | 36 KB |
+| `/m/` landscape touch | 854x480, q84 | 20.5 MB | 42 KB |
 
-88.1 MB against the previous film's 109.9 MB. The centre crop was checked scene
-by scene: the board, the inventor's face and hands, the hall's central cases,
-India on the globe, the lattice's centre atom, the chip and the towers all sit
-inside it. No per-scene offset is needed.
+96.2 MB, against 88.1 MB for the 2x cut and 109.9 MB for the film before it.
+The centre crop was checked scene by scene: the board, the inventor's face and
+hands, the hall's central cases, India on the globe, the lattice's centre atom,
+the chip and the towers all sit inside it. No per-scene offset is needed.
 
-It lives in `public/sequences/inventor-film/`, a new directory, because frame
-URLs are not content-addressed and `/sequences/` is cached for 30 days. The
-reduced-motion still is the film's own frame 14, `film-still-origin.webp`.
-
-## Which scene is behind which chapter
-
-| Scene | Source frames | Scroll progress | Copy on screen |
-|---|---|---|---|
-| workbench | 0-29 | 0.00-0.13 | Origin: hero, then the dissolve to the founder's voice |
-| bloom | 30-39 | 0.13-0.17 | Origin: founder's voice |
-| inventor at the bench | 40-57 | 0.18-0.25 | hand-over, then Material |
-| dissolve | 58-65 | 0.26-0.29 | Material |
-| recognition hall | 66-113 | 0.29-0.50 | Material's second half, all of Industrial |
-| dissolve | 114-123 | 0.50-0.54 | hand-over |
-| Earth | 124-145 | 0.55-0.64 | Recognition |
-| zoom | 146-155 | 0.65-0.69 | Recognition |
-| graphene lattice | 156-175 | 0.69-0.77 | hand-over, then Future |
-| solar viaduct | 176-195 | 0.78-0.86 | Future |
-| plant | 196-205 | 0.87-0.91 | Future |
-| city | 206-226 | 0.91-1.00 | Future |
-
-So the hall plays behind "Engineering intelligent matter." and "One lattice.
-Many industries.", and the lattice arrives under Future Systems. The film tells
-origin, recognition, the world, graphene, industry, the future; the page runs
-Origin, Material, Industrial, Recognition, Future.
-
-This is recorded, not fixed. The owner asked for the exact video, and no
-mapping can fix it — a time-warp can stretch a scene but cannot reorder two.
-There are two real fixes and both are the owner's decision:
-
-- **Re-sequence the film's scenes to the chapter order.** Needs dissolves at
-  three new joins, and gives the chapters very unequal footage: the lattice is
-  20 source frames and the city 21, against 48 for the hall. Density would
-  spread about 4:1, which is the stutter the renderer's own notes warn about.
-- **Reorder the chapters to the film's order.** Touches the page, not the film.
-
-Do neither unasked.
+It lives in `public/sequences/inventor-story-481/`. Every cut has had its own
+directory, because frame URLs are not content-addressed and `/sequences/` is
+cached for 30 days. The reduced-motion still is the film's own frame 14,
+`film-still-origin.webp`.
 
 ## What is in the film that someone should know about
 
 It is generated, start to finish. The man at the bench is a generated likeness.
 
-The hall, frames 66-113, shows trophies and framed "ceremony" photographs that
+The hall, frames 65-113, shows trophies and framed "ceremony" photographs that
 are generated, on plinths carrying the State Emblem of India, whose use is
 regulated by the State Emblem of India (Prohibition of Improper Use) Act, 2005.
 It sits oddly beside a site whose `/recognitions` page will not print an
 evidence link it cannot source, and whose Presidential ledger itemises four
 citations against a stated six. It is in the film because the film was asked
-for as supplied, and it has been raised with the owner. If it has to come out,
-the replacement is the real archive in `src/assets/hof/`, not another
-generated room.
+for as supplied, and it has been raised with the owner.
 
-## Two shields moved with the footage
+It now plays behind the one chapter that is about the Presidential awards,
+veiled to a dim room, with three real archive photographs standing in front of
+it. That is closer to right than a generated hall behind the materials copy
+was. The generated frames and the emblems are still in the footage. If the hall
+has to come out, what replaces it is more of the real archive in
+`src/assets/hof/`, not another generated room.
 
-The text shields in `ScrollSections.tsx` follow what is behind them. Two did
-not survive the new film unchanged.
+## Shields follow the footage
 
-| | previous film | inventor film, unchanged shield | after |
-|---|---|---|---|
-| Industrial, 390 wide — three list lines | 4.5-6.3 | 2.2-3.1 | 5.4-6.3 |
-| Material, 1440 wide — body paragraph | 2.75-3.23 | 2.33-2.76 | 2.70-2.96 |
+The text shields in `ScrollSections.tsx` are tuned to what is behind them, and
+all seven chapters have new footage behind them. What each one carries now:
 
-Contrast of the stroke cores against the pixels actually behind the glyphs, at
-the weakest sixth of each line.
+| Chapter | Laptop | Phone |
+|---|---|---|
+| 01 Origin | centre 0.56 | the same |
+| 02 Early Works | right 0.80 | a scrim rising from the foot, clear of the face |
+| 03 Presidential | a veil over the whole frame, 0.80 at the head, 0.60 through the middle, 0.76 at the foot | the same |
+| 04 Global | right 0.82 | centre 0.80 |
+| 05 Materials | left 0.82 | a scrim rising from the foot, clear of the "C" atom |
+| 06 Industrial | right 0.88 | right 0.88 plus left 0.70 |
+| 07 The close | centre 0.84 | a scrim falling from the head, clear of the skyline |
 
-- **Industrial on phones.** Below `md` the copy is left-aligned, and the only
-  shield was the right-side one: strongest where there is no text, absent
-  where the lines begin. That went unnoticed while the film was dark on that
-  side. The hall puts lit display cases there. A left shield at 0.55 was
-  added, `md:hidden`, on top of the right one.
-- **Material.** The left shield went from 0.62 back to 0.82. It has followed
-  the footage both ways before: 0.82 for the original bright plate, 0.62 when
-  the film behind it became a dim lab. It was left a little short of parity
-  rather than darkened further.
+The hall is the brightest sustained footage in the film and chapter 3's copy
+runs the full width of it, so no side shield can cover the type. Its veil was
+0.86 / 0.70 / 0.84 first, which measured well and showed a black room: the
+film has to stay a film.
 
-Whole page, every line of fully-arrived copy at 30 scroll stops:
+Whole page, every line of fully-arrived copy at 25 scroll stops — the start,
+middle and end of every chapter's hold. Contrast of the stroke cores against
+the pixels actually behind the glyphs, at the weakest sixth of each line:
 
 | | lines | below 3:1 | below AA |
 |---|---|---|---|
-| 390 phone, previous film | 212 | 25 | 49 |
-| 390 phone, inventor film | 212 | 18 | 43 |
-| 1440 desktop, previous film | 328 | 122 | 163 |
-| 1440 desktop, inventor film | 328 | 128 | 167 |
+| 390 phone, five chapters on the 2x cut | 212 | 18 | 43 |
+| 390 phone, seven chapters | 268 | 0 | 9 |
+| 1440 desktop, five chapters on the 2x cut | 328 | 128 | 167 |
+| 1440 desktop, seven chapters | 348 | 0 | 53 |
 
-The desktop floor is the design's: 10px mono labels and the directory's
-sub-lines at 30-60% alpha, as recorded under Contrast.
+The two rows of each pair are different pages measured at different stops, so
+read them as a level, not as a line-for-line comparison. What moved the desktop
+figure is mostly not the shields. The first measurement of the new page had
+145 lines below AA with every background under control: the weak lines were
+supporting sentences at `muted-foreground/90`, captions and register notes at
+55-60% alpha — dim ink, not bright footage. Those went to `foreground` at
+70-85%. After that: 53 and 9. What is left below AA is 10px labels — chapter eyebrows, the register's years, the closing index — between 3.1 and 4.46, which is the floor the site's contrast records already describe.
 
 ## Measured
 
-2026-11-17, local production build under `wrangler dev`, with the previous
-film's build served beside it as control.
+2026-11-17, local production build under `wrangler dev`, with the build that
+was live — the 2x cut under five chapters — served beside it as control.
 
-- 24 of 24 film checks: frames only from the new directory, every request 200,
-  none to the old film, `/p/` on a portrait phone and `/m/` in landscape,
+- **Sync, the check this change exists for.** At five points across every
+  chapter's full-opacity hold: which chapter is painted, which exported frame
+  the canvas is actually showing — matched against the files, not computed —
+  and which scene that frame belongs to. 35 of 35 at 1440 and 35 of 35 on a
+  390 phone: every chapter's copy is on its own scene for the whole of its
+  hold. At the six hand-over midpoints the screen carries no copy and the film
+  is mid-transition.
+- 24 of 24 film checks: frames only from the new directory, every request 200, none
+  to an older cut, `/p/` on a portrait phone and `/m/` in landscape,
   determinism and frame selection as above, 0 console errors, 0px overflow,
-  loader releases, reduced motion shows the new still and scrolls.
-- `scripts/e2e-scroll.mjs`: all passed, 5 inconclusive. **The control build
-  reports the same five** — the keyboard start and four rail jumps, "no
-  movement within 14s" — so they are this container's frame delivery, not the
-  film.
+  loader releases, reduced motion shows the film's still and scrolls.
+- `scripts/e2e-scroll.mjs`: all passed, 7 inconclusive. The seven are the keyboard start and the six rail jumps — "no movement within 14s" — which is this container's frame delivery, and the control build reports the same for its own rail. The rail was checked a second way, under reduced motion, where there is no Lenis to wait for: 7 of 7 buttons land on the first pixel of their chapter's hold, with that chapter at full opacity.
+- Layout, ten compositions at each of twelve viewports from 1920x1080 to
+  360x640: nothing outside its frame at the five laptop sizes, the tablet and the five portrait phones. On a phone held sideways (844x390) every composition sits between the header and the foot with nothing clipped; chapter 3's three photographs are about 80px tall there.
 - 13 routes at 1440 and 390: 200, 0px overflow, one `h1`, absolute canonical,
   0 errors.
 
@@ -1293,7 +1369,7 @@ Not verified here, and not verifiable here: how it feels on real hardware.
 This container rasterises in software and has no H.264 decoder. One scroll on
 a real phone is still owed.
 
-## Four more instruments that lied
+## Six more instruments that lied
 
 - **Stepping through pixel data by a number that is not a multiple of four.**
   A "has the canvas painted yet" guard sampled every 4001st byte, landed on
@@ -1312,10 +1388,225 @@ a real phone is still owed.
   `dist/server/server.js`; the build emits `index.js`. Static files still
   serve, so a frame URL returns 200 and suggests the server is fine. Serve the
   build with `npx wrangler dev -c dist/server/wrangler.json`.
+- **A scroll measured at 1440x900 in this container measures the container.**
+  The full-size canvas renders three to five frames a second in software, so
+  Lenis takes ninety seconds to cross the page and every timing is the
+  rasteriser's. The same harness at 960x540 runs at fifty. This file already
+  said so, under "Measuring this page in a container without a GPU"; the first
+  scroll comparison of the story cut was run at 1440 anyway and had to be
+  thrown away.
+- **Three seconds of stillness was not always enough either.** Two of the
+  film checks failed on a canvas that was still showing the previous scene —
+  correlation 0.04 with every frame near the playhead — after twenty identical
+  reads with nothing in flight. Thirty reads, 4.5 seconds, passed. The same
+  effect returned frame 517 at correlation 0.914 for a position that calls for
+  527, which looked like a sync fault and was the harness reading early. A low
+  correlation is the tell: a frame that is merely a neighbour scores 0.99.
 
 And one about the tooling rather than the site: `/usr/local/bin/python3` here
 has no numpy; `/usr/bin/python3` does. "The imaging stack is gone" was a
 conclusion drawn from the first one on the path.
+
+# The story — seven chapters set to the film
+
+The homepage's copy was rewritten on 2026-11-17 to follow the film behind it.
+The owner's complaint was exact: the content coming up during the scroll did
+not match the picture, and "still old contents are there". They supplied a
+seven-scene storyline with a caption for each scene, and then a longer brief
+for the same change.
+
+The page used to run five chapters in its own order — Origin, Material
+Intelligence, Industrial Translation, Recognition & Ecosystem, Future Systems
+— over a film that runs workbench, inventor, hall, Earth, lattice, industry,
+city. So the hall played behind "Engineering intelligent matter." and the
+lattice arrived under Future Systems. This file used to list two honest fixes
+for that and call both the owner's decision. This is the second of them — the
+chapters reordered to the film — together with a re-cut of the film so that
+each scene lasts as long as its chapter. The re-cut is under **The story
+cut**, in the film's section.
+
+## The seven chapters
+
+| | Film | Headline | With it | Link |
+|---|---|---|---|---|
+| 01 · Origin | workbench | Every invention begins with a problem worth solving. | A young inventor. A workbench. The beginning of a journey. | — |
+| 02 · Early Works | inventor at the bench | Six years. Six inventions. One purpose. | 2008–2013 · From vehicle safety and assistive technology to energy and wearable safety. | Explore Early Works → `/early-works` |
+| 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · National recognition for early inventions. · The record exists. The next prototype matters more. · three archive photographs | View Presidential Archive → `/recognitions` |
+| 04 · Global Recognition | Earth | From India to the global stage. | a dated register, five rows | Explore Recognitions → `/recognitions` |
+| 05 · Advanced Materials | graphene lattice | From inventions to intelligent materials. | Graphene and advanced materials became the next chapter of the work. | Explore Innovations → `/innovations` |
+| 06 · Industrial Impact | viaduct, then plant | One material platform. Many industries. | Concrete. Solar. Batteries. Thermal management. Advanced composites. · Graphacrete · Graffisol · Graphenodes · Thermene · Six operating companies carry that platform into industry. | See the Work → `/innovations`, View Ventures → `/ventures` |
+| 07 · The Work Continues | city | Sushanth Paatnaik · I build what does not yet exist. | The future is not imagined. It is engineered quietly. · Inventor · Entrepreneur · Speaker · Advisor · 25 Innovations · 6 Ventures | Begin a conversation → `/contact`, Explore my journey → `/about`, and an index of the other eight sections |
+
+The headlines are the owner's captions. Chapter 6 takes its headline from the
+later brief, not the earlier storyline, which had "25 Innovations. 6 Ventures.
+One Vision." there; the brief moved those two figures to the close, where they
+sit under the name.
+
+The site's signature line used to open the page as its `<h1>`. It closes it
+now, because that is where the storyline puts it. The `<h1>` is the first
+chapter's headline — one per page, and the first heading a reader, a crawler
+or a screen reader meets — and the closing line is an `<h2>` like every other
+chapter heading.
+
+## Every claim in the copy is one the site already makes
+
+Nothing was taken from the brief on trust. Each line was checked against the
+page that owns it before it went in:
+
+- **Six inventions, 2008–2013** — `/early-works`: "Six original inventions
+  built between 2008 and 2013", one a year. The four fields named are its own
+  categories: Mobility Safety, Assistive Technology, Off-Grid Energy and
+  Energy Harvesting, Wearable Safety.
+- **Six Presidential Awards, three Presidents** — `/recognitions`. The ledger
+  there still itemises four citations against a stated six, and that item is
+  still open; this chapter repeats the site's own count and adds nothing to
+  it. It says "Three Presidents of India" and never "sitting Presidents":
+  Dr. Kalam left office in 2007 and both his citations are titled "Former
+  President of India Award".
+- **The register** — five rows of the same ledger with its years: TR-35 from
+  MIT Technology Review and Intel IRIS · Best Popular Invention in 2010, NASA
+  in 2011, TED@Bangalore in 2012, MIT Fab-10 & Fab-11 in 2013–14. The NASA row
+  says where — Huntsville, Alabama — and nothing about what for. A satellite
+  in the film's Earth shot is scenery, not a claim about a mission; the
+  generated insignia that shot arrived with was painted out of the frames.
+- **Four product names** — each is on `/innovations` in the industry beside
+  it: Graphacrete in Construction · Cement, Graffisol in Solar · Coatings,
+  Graphenodes in Energy Storage · Electrodes, Thermene in Thermal ·
+  Interfaces.
+- **25 and 6** — the catalogue on `/innovations` and the roster on
+  `/ventures`.
+- **Four roles** — inventor throughout; "serial entrepreneur" in the press on
+  `/news`; TED@Bangalore and sixty keynotes on `/recognitions`; six companies
+  advised on `/ventures`.
+
+**Left out: "Mentor".** The brief's role line had five words. The fifth is not
+stated anywhere on the site, and the brief's own rule was to change no
+biography fact that the site does not already carry. It goes in on the owner's
+word, and `ROLES` in `ScrollSections.tsx` is the one place to add it — on a
+phone the roles are set as two rows of two, so a fifth needs a third row.
+
+## What the brief asked for that was not done
+
+The brief was written without sight of the code, and four things in it do not
+describe this site:
+
+- It specifies a `<video>` scrubbed through `currentTime`. The film is a WebP
+  frame sequence on a canvas — which is what the owner asked for when the film
+  was installed — so its instructions about `muted`, `playsInline` and seeking
+  have nothing to act on.
+- It asks for a piecewise scroll-to-video mapping, so the hall can run longer
+  than its share of the footage. A piecewise map over a fixed set of frames
+  stretches some scenes and thins others, which is the 5.7:1 density spread
+  `CanvasLayer.tsx` records as a visible stutter. The same allocation went
+  into the frames instead, and the map stayed linear.
+- It asks for the film to be clamped at 9.45s, short of a garbled website that
+  fades in over the last frames. That was already so: frames 227–239 were
+  never exported.
+- It points "Begin a conversation" at `/engage`. It goes to `/contact`, as it
+  does in the mobile action bar and did before; `/engage` is in the closing
+  index.
+
+Its scroll allocation gave the hall 27% of the page. It has 22.7%, the widest
+band by a factor of 1.4 — any more comes out of chapters that are already
+holding for about two thirds of a screen.
+
+## The Presidential photographs
+
+The hall is generated — its trophies, the framed "ceremony" pictures in its
+cases, the emblems on its plinths. None of it is evidence and none of it is
+counted. So in chapter 3 the film is not the picture: a veil takes the hall
+down to a dim gold room, and three archive photographs stand in front of it.
+
+They are `award-kalam.webp`, `award-pratibha-patil.webp` and
+`award-pranab-mukherjee.webp` from `src/assets/hof/` — the files `/recognitions`
+prints — with that page's captions, word for word, and its `archive-grade`
+class. They are DOM laid over the canvas, never frames, so they can be changed
+without touching the film. The captions sit under the photographs, not on
+them.
+
+Two things about how they load:
+
+- They mount when the reader reaches chapter 2, not on first paint. The stage
+  is `position: fixed`, so to the browser every image in it is in the viewport
+  from the first frame and `loading="lazy"` would fetch all three at once.
+  Mounting late is what defers the 197 KB.
+- Each calls `decode()` as it mounts, so the first paint of a plate does not
+  land inside the dissolve that reveals it.
+
+On a laptop the three share a row, capped by viewport height as well as by the
+column so the block still fits a 720px screen. On a phone they cannot: at a
+third of 390px each is too small to look at. The statement holds and the
+photographs turn over beneath it one at a time, 2009, 2010, 2013, about 47vh
+of scrolling each.
+
+## Phone compositions
+
+Two chapters are staged on a phone, chapter 3 as above and chapter 7 in two
+states: the founder's line alone, then the name, the headline, the roles and
+the buttons, which is also where the page ends.
+
+**A staged chapter has to finish inside its hold, not inside its band.** The
+last 0.060 of every band is the hand-over to the next chapter. A first version
+timed the third photograph to arrive at 0.775 of chapter 3's local progress;
+the chapter starts leaving at 0.736, so the 2013 plate never once appeared at
+full opacity. It passed every automated check, because nothing was checking
+that a state reaches 1. `PresidentialMobile` now derives its timings from
+`CHAPTER_BANDS` and `CONTENT_FADE`, so they move with the bands.
+
+Three chapters are lower thirds on a phone rather than centred, each for what
+is in the middle of its frame: the inventor's face (chapter 2), the lattice's
+labelled "C" atom (chapter 5), which showed through the middle of a centred
+headline. On a laptop chapter 5's headline is three short lines for the same
+reason — as two long ones, "materials." ended on the atom.
+
+Below 560px of height the laptop compositions drop their optional rows and
+size their type by height as well as width, so a phone held sideways clips
+nothing and no chapter scrolls internally.
+
+## What was retired
+
+- The five old headlines and their paragraphs: "Engineering intelligent
+  matter.", "One lattice. Many industries.", "Recognised early. Building
+  continuously.", "Energy, water, materials. Built to industrial scale." and
+  the phone-only "The next century will be engineered."
+- The credential strip under the old hero. Every figure in it is still on the
+  page, each in the chapter that is about it.
+- The six-row directory. The homepage has no footer and the stage is fixed, so
+  the closing chapter carries an index instead: one row, eight links, with
+  About and Contact as the two buttons above it.
+- **`RecognitionAmbient` is no longer mounted.** It was a ceiling crush, a
+  floor crush and three spotlight columns placed for a trophy tableau two
+  films ago. Over this hall it lit nothing that is there and took the top of
+  the frame to 97% black — on top of the chapter's own veil, and only on
+  machines capable enough to mount it, so the chapter looked one way on a
+  laptop and another on a phone. The file is still in the tree because
+  `AtmosphereLayer` imports it; `AtmosphereLayer` is mounted by no route.
+- **`GrapheneVolumetric` shows across chapter 5 only.** It used to run from
+  0.14 to 0.68 of the page, which was Material, Industrial and Recognition
+  while those were the middle chapters. In the film's order that span is the
+  inventor, the hall and Earth, and a molecular mesh over archive photographs
+  of a ceremony is clutter. Its window is derived from `CHAPTER_BANDS[4]`.
+
+The founder's line — "The future is not imagined. It is engineered quietly."
+— was Origin's second beat and appears nowhere else on the site, so it moved
+to the close rather than going.
+
+## One more way a style lied
+
+`text-shadow` on `.text-gradient` greys the letters. The fill is transparent
+and the gradient is the element's background, which paints before the shadow
+does — so a dark shadow lands on top of the gradient it was meant to sit
+behind. The closing headline's two gradient lines came out visibly duller than
+the plain line under them. The shadow is on the plain last line only.
+
+## Unfreeze rule
+
+The copy is the owner's, so a change of wording is theirs to ask for. Anything
+else here — a band, a shield, a stage timing, which chapter a decoration shows
+in — changes only with the defect, the viewport that reproduces it, the
+measurement showing it and the measurement showing the fix. Re-run the sync
+check after any change to the film or to `CHAPTER_BANDS`: it is the only
+instrument that says whether a caption is still on its own scene.
 
 # /innovations product panel — FROZEN
 
