@@ -423,6 +423,26 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const fallbackMs = isTouch ? 3_000 : 4_000;
     const fallback = window.setTimeout(notifyReady, fallbackMs);
 
+    // ── Classic scrollbars ───────────────────────────────────────────────────
+    // The buffer below is sized from window.innerWidth, which includes a
+    // scrollbar that takes space, while the stage it is shown in is `fixed
+    // inset-0`, which does not. So on any desktop whose browser draws a classic
+    // scrollbar — Windows, Linux, macOS with a mouse attached or "always show"
+    // — a 1440-wide buffer was being displayed in a 1425-wide box, and the
+    // film came out about 1% narrower than it is. Measured: horizontal scale
+    // over vertical 0.9896 at 1440x900, 0.9883 at 1280x800, 0.9922 at
+    // 1920x1080, against 1.0000 with no scrollbar; and 0.990 on a screen
+    // recording of the live site on a Mac, which is how it was found.
+    // Headless Chromium hides scrollbars, so no earlier check could see it.
+    //
+    // The correction goes in the draw, not in the buffer size: cover() draws
+    // the frame wider by the same factor the box squeezes it. Resizing the
+    // buffer instead would clear the canvas at the moment the loader releases
+    // its scroll lock and the scrollbar appears — a black frame on first
+    // sight of the film. With no scrollbar the factor is exactly 1 and every
+    // number in cover() is the one it was.
+    let squeezeX = 1;
+
     // ── Canvas sizing ────────────────────────────────────────────────────────
     // Cap DPR at 1.5 on mobile. iPhone 15 Pro reports DPR=3 which creates
     // a 1170×2532 buffer — 9× more pixels than needed. At 1.5 the buffer is
@@ -463,6 +483,18 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         canvas.width  = nW;
         canvas.height = nH;
         lastFrameRef.current = -1; // force redraw after resize
+      }
+      // Touch browsers overlay their scrollbars, and innerWidth there follows
+      // a pinch zoom, so the factor stays 1 on touch. The clamp is a guard
+      // against a transient layout, not a tuning value: a real scrollbar is
+      // 13-17px, which is 0.7-1.3% of any desktop width.
+      const boxW = document.documentElement.clientWidth;
+      const nextSqueeze = !isTouch && boxW > 0
+        ? Math.min(1.05, Math.max(1, window.innerWidth / boxW))
+        : 1;
+      if (nextSqueeze !== squeezeX) {
+        squeezeX = nextSqueeze;
+        lastFrameRef.current = -1; // same picture, redrawn at its own proportions
       }
     };
     syncSize();
@@ -506,8 +538,10 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // rather than by a mix-blend-mode div stacked over it. See the note on the
     // tick's redraw condition for why.
     const cover = (bmp: ImageBitmap, cW: number, cH: number, alpha: number) => {
-      const scale = Math.max(cW / bmp.width, cH / bmp.height);
-      const dW    = bmp.width  * scale;
+      // squeezeX is 1 unless a classic scrollbar narrows the box this buffer
+      // is shown in — see where it is declared.
+      const scale = Math.max(cW / (bmp.width * squeezeX), cH / bmp.height);
+      const dW    = bmp.width  * scale * squeezeX;
       const dH    = bmp.height * scale;
       ctx.globalAlpha = alpha;
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);

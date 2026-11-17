@@ -4,6 +4,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Homepage stage, short viewports — used only by ScrollSections.tsx.
+   `stage-ls` is a phone held sideways, or any landscape window under 560px
+   tall. It used to be written `[@media(max-height:560px)]:md:`, which missed
+   every phone narrower than 768px in landscape — 667x375, 740x360 — where the
+   portrait compositions were being laid into a frame half their height.
+   `stage-ps` is a small portrait phone, 320x568 and its like. Orientation is
+   in both because height alone cannot tell them apart: a 375x667 phone with
+   its browser toolbars showing is about 553px tall and still portrait. */
+@custom-variant stage-ls (@media (orientation: landscape) and (max-height: 560px));
+@custom-variant stage-ps (@media (orientation: portrait) and (max-height: 600px));
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
