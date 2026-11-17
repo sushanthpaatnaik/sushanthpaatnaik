@@ -10,12 +10,14 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
  * is SVG, gradient, or CSS, kept at ultra-low opacity so it is **felt**
  * rather than seen.
  *
- *   0 Origin                 → cool ink wash + faint volumetric beam
- *                              (absorbs the former standalone Founder layer)
- *   1 Material               → graphene hex micro-grid + cool diffusion
- *   2 Industrial             → measurement marks
- *   3 Recognition & Ecosystem → archival spotlights + infrastructure haze
- *                              (the two former layers, composited)
+ *   0 Origin                  → cool ink wash + faint volumetric beam
+ *   1 Early Works             → the same layer: one workshop, two chapters
+ *   2 Presidential Recognition → archival spotlights + warm centre glow
+ *   3 Global Recognition      → cool orbital wash, no texture
+ *   4 Advanced Materials      → graphene hex micro-grid + cool diffusion
+ *   5 Industrial Impact       → measurement marks
+ *   6 The Work Continues      → horizon haze + atmospheric lift (the closing
+ *                               plate is a daylit city, not deep space)
  *
  * No ruled geometry anywhere. Industrial carried a 72px engineering grid and
  * Recognition three hairline column rules; both drew straight lines across the
@@ -23,8 +25,6 @@ import { N_CHAPTERS, CHAPTER_BANDS } from "./chapterBands";
  * content, Industrial's grid was still ruled over Recognition's frame after
  * its own chapter had gone. The footage already carries a graphene lattice —
  * adding a CSS grid on top read as a rendering fault rather than as texture.
- *   4 Future                 → horizon haze + atmospheric lift (the closing
- *                              plate is a daylit city, not deep space)
  *
  * Cross-fades are strict (only neighbouring chapters overlap) and driven by
  * the shared `useChapterPhase` motion value, so the rail, photographic
@@ -192,11 +192,11 @@ function ConnectingLines() {
 
 /* ──────────────────────── Chapter compositions ──────────────────────── */
 
-// Origin now spans the planetary opening *and* the founder's lab, so its
-// atmosphere carries both: the cool cosmic wash for the first beat and the
-// twin volumetric beams that used to be the standalone Founder layer. Both
-// are near-invisible washes, so compositing them costs nothing and avoids a
-// hard swap mid-chapter.
+// Origin and Early Works share this layer: the workbench and the inventor at
+// it are one room under one lamp. A cool wash plus the twin volumetric beams
+// that used to be the standalone Founder layer — both near-invisible, so
+// compositing them costs nothing and the room does not change character at the
+// chapter edge.
 function OriginAtmosphere() {
   return (
     <>
@@ -301,9 +301,9 @@ function IndustrialAtmosphere() {
   );
 }
 
-// Recognition & Ecosystem share one layer now: the archival spotlight
-// treatment, then the ecosystem's atmospheric haze composited beneath it.
-function RecognitionEcosystemAtmosphere() {
+// Presidential Recognition — the hall: the archival spotlight treatment over a
+// soft haze, a dark surround and a warm centre glow.
+function PresidentialAtmosphere() {
   const reduce = useReducedMotion();
   return (
     <>
@@ -348,6 +348,29 @@ function RecognitionEcosystemAtmosphere() {
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.60  0 0 0 0 0.66  0 0 0 0 0.78  0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>\")",
+        }}
+      />
+    </>
+  );
+}
+
+// Global Recognition — the Earth shot. A cool wash and nothing else: the frame
+// is a planet against stars, and any pattern laid over that reads as noise.
+function GlobalAtmosphere() {
+  return (
+    <>
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 70% at 50% 50%, oklch(0.06 0.012 232 / 0.30), transparent 80%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 mix-blend-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 46% 60% at 32% 48%, oklch(0.50 0.04 232 / 0.045), transparent 72%)",
         }}
       />
     </>
@@ -460,15 +483,21 @@ export default function ChapterAtmosphere() {
         <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={1}>
-        <MaterialAtmosphere />
+        <OriginAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={2}>
-        <IndustrialAtmosphere />
+        <PresidentialAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={3}>
-        <RecognitionEcosystemAtmosphere />
+        <GlobalAtmosphere />
       </ChapterLayer>
       <ChapterLayer scrollYProgress={scrollYProgress} idx={4}>
+        <MaterialAtmosphere />
+      </ChapterLayer>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={5}>
+        <IndustrialAtmosphere />
+      </ChapterLayer>
+      <ChapterLayer scrollYProgress={scrollYProgress} idx={6}>
         <FutureAtmosphere />
       </ChapterLayer>
     </div>

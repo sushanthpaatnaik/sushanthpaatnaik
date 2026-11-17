@@ -139,17 +139,23 @@ const VIEWPORTS = [
   { w: 390, h: 844 },
   { w: 360, h: 800 },
 ];
-const SAMPLES = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.78, 0.8, 0.82, 0.85, 0.9, 1];
+// Two samples inside every chapter's hold, plus the page's two ends. A sample
+// that lands in a hand-over is tolerated by the checks below, but it tells you
+// nothing about the chapter it was meant to probe, so these sit clear of every
+// boundary's 0.06 window.
+const SAMPLES = [0, 0.05, 0.18, 0.21, 0.33, 0.42, 0.53, 0.57, 0.66, 0.69, 0.78, 0.82, 0.92, 0.96, 1];
 // Chapter boundaries and the hand-over width, from chapterBands.ts. Kept in
 // sync by hand: this script runs against a built bundle, not the source.
-const BOUNDARIES = [0.21, 0.39, 0.55, 0.75];
+const BOUNDARIES = [0.161, 0.287, 0.514, 0.643, 0.769, 0.895];
 const FADE = 0.06;
 const NAMES = [
   "Origin",
-  "Material Intelligence",
-  "Industrial Translation",
-  "Recognition & Ecosystem",
-  "Future Systems",
+  "Early Works",
+  "Presidential Recognition",
+  "Global Recognition",
+  "Advanced Materials",
+  "Industrial Impact",
+  "The Work Continues",
 ];
 
 let failures = 0;
@@ -353,8 +359,9 @@ for (const vp of VIEWPORTS) {
     prevDom = dom;
   }
   if (rows.out[0].op[0] < 0.99) note(`Origin not fully visible at 0% (${rows.out[0].op[0]})`);
-  if (rows.out.at(-1).op[4] < 0.99)
-    note(`Future Systems not fully visible at 100% (${rows.out.at(-1).op[4]})`);
+  if (rows.out.at(-1).op[rows.n - 1] < 0.99)
+    note(`closing chapter not fully visible at 100% (${rows.out.at(-1).op[rows.n - 1]})`);
+  if (rows.n !== NAMES.length) note(`expected ${NAMES.length} chapter layers, found ${rows.n}`);
   for (let i = 0; i < rows.n; i++)
     if (!rows.out.some((r) => r.op[i] >= 0.99)) note(`${NAMES[i]} never reaches full opacity`);
 
@@ -453,7 +460,7 @@ for (const vp of VIEWPORTS) {
   }, BOUNDARIES);
   chk(!r.lenis, `Lenis is not initialised`);
   chk(errs.length === 0, `no page errors${errs.length ? " — " + errs[0] : ""}`);
-  chk(r.doms.join("") === "01234", `all five chapters reachable (${r.doms.join("")})`);
+  chk(r.doms.join("") === "0123456", `all seven chapters reachable (${r.doms.join("")})`);
   await ctx.close();
 }
 

@@ -16,10 +16,12 @@ interface ParticleFieldProps {
 }
 
 // One stop per chapter — must match CHAPTER_BANDS length.
-// Origin / Material / Industrial / Recognition & Ecosystem / Future.
-const PHASE_INDICES = [0, 1, 2, 3, 4];
-const HUE_BY_PHASE = [0, -18, -8, 38, 22];
-const SAT_BY_PHASE = [1.0, 1.05, 1.0, 0.6, 1.05];
+// Origin / Early Works / Presidential / Global / Materials / Industrial / Close.
+// Each chapter keeps the hue it had under its old name; Early Works shares
+// Origin's, and Global sits between the hall's warmth and the lattice's blue.
+const PHASE_INDICES = [0, 1, 2, 3, 4, 5, 6];
+const HUE_BY_PHASE = [0, 0, 38, 8, -18, -8, 22];
+const SAT_BY_PHASE = [1.0, 1.0, 0.6, 0.85, 1.05, 1.0, 1.05];
 
 // Chapter copy is centered in a max-w-3xl column, vertically centered in the
 // viewport — roughly this box, across every chapter. Particles are ambient

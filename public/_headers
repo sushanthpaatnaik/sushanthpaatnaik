@@ -29,9 +29,11 @@
 # window to expire.
 #
 # That is what happened when the film was replaced outright: the inventor film
-# lives in /sequences/inventor-film/, not in the old founder-film directory, so
-# no visitor can be served a cached frame of the previous film under a URL the
-# new one reuses.
+# went into /sequences/inventor-film/, not the old founder-film directory. And
+# again when that film was re-cut to the page's seven chapters: the story cut
+# is /sequences/inventor-story-481/. Each time the frame at a given number
+# changed, so each time the directory did, and no visitor can be served a
+# cached frame of an older cut under a URL the newer one reuses.
 /sequences/*
   Cache-Control: public, max-age=2592000
 

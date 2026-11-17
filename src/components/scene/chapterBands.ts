@@ -6,58 +6,68 @@
  * sequence (CanvasLayer) and the chapter rail (HUD) all import this, so
  * their bands are always identical.
  *
- *  0  Origin                 0.000 – 0.210  (0.210 — opens on the workbench and
- *                                            arrives at the inventor; carries
- *                                            the hero and the founder voice)
- *  1  Material Intelligence  0.210 – 0.390  (0.180)
- *  2  Industrial Translation 0.390 – 0.550  (0.160)
- *  3  Recognition & Ecosystem 0.550 – 0.750 (0.200 — record, then the directory)
- *  4  Future Systems         0.750 – 1.000  (0.250 — five staged phone states)
+ *  0  Origin                    0.000 – 0.161  (0.161)  the workbench
+ *  1  Early Works               0.161 – 0.287  (0.126)  the inventor at the bench
+ *  2  Presidential Recognition  0.287 – 0.514  (0.227)  the hall
+ *  3  Global Recognition        0.514 – 0.643  (0.129)  Earth
+ *  4  Advanced Materials        0.643 – 0.769  (0.126)  the graphene lattice
+ *  5  Industrial Impact         0.769 – 0.895  (0.126)  the viaduct, then the plant
+ *  6  The Work Continues        0.895 – 1.000  (0.105)  the city
  *
- * Sum = 0.210 + 0.180 + 0.160 + 0.200 + 0.250 = 1.000 ✓
+ * Sum = 0.161 + 0.126 + 0.227 + 0.129 + 0.126 + 0.126 + 0.105 = 1.000 ✓
  *
- * Bands are sized by how many *states* a chapter renders on a phone, not by
- * how much desktop copy it holds. Counting mobile states — Origin has two
- * beats, Recognition two, Material and Industrial one each, Future five — the
- * old split gave Industrial 190vh for a single composition while Future had
- * 190vh to divide five ways, 38vh apiece.
+ * The chapters are the film's seven scenes, and these edges are not chosen —
+ * they are read off the film. The frame map is linear (frame = progress x 480),
+ * so a scene change sits wherever its frames sit, and each edge is placed 0.030
+ * after the midpoint of the transition that separates two scenes:
  *
- * Future's 0.060 comes half from Industrial and half from Origin. Taking the
- * whole of it from Industrial was measured first and over-corrected: at 0.130
- * Industrial's desktop hold fell to 70vh — 0.7 of a screen for a heading, a
- * paragraph, a venture line and two links, tighter than Material had been
- * before it was widened. Origin, holding 1.8 screens, was the chapter with
- * slack to give.
+ *     transition          midpoint, source frame   in the 481   progress   edge
+ *     bloom               35.0                      63.0        0.1313     0.161
+ *     dissolve to hall    60.7                     123.4        0.2571     0.287
+ *     dissolve to Earth  116.2                     232.2        0.4838     0.514
+ *     zoom to lattice    150.0                     294.0        0.6125     0.643
+ *     iris to viaduct    180.3                     354.6        0.7388     0.769
+ *     burst to city      209.4                     415.4        0.8654     0.895
  *
- * Material widened twice for the same reason — a fixed-length hand-over costs
- * a narrow band proportionally more than a wide one. 0.120 → 0.150 when the
- * hand-over was first widened to a readable length (at 0.120 it spent half its
- * span in transition while every other chapter held for ~70 %), then 0.150 →
- * 0.180 after the page was shortened to 1100vh, where it was still holding for
- * only 0.96 of a phone screen against Origin's 1.83. It is now 1.26 screens.
+ * 0.030 is half of CONTENT_FADE. The text hand-over occupies the 0.060 before
+ * an edge — the outgoing chapter leaves across the first half, the incoming one
+ * arrives across the second — so its empty midpoint is exactly edge - 0.030,
+ * and that is where the picture changes. The reader sees the old line leave,
+ * the scene turn over with nothing written on it, and the new line arrive on
+ * its own footage. Every transition in the cut is shorter than the hand-over
+ * it sits in (17-42vh against 60vh), so none of them is ever under settled copy.
  *
- * These bands were sized against the previous film, where every boundary sat
- * inside continuous footage. They are unchanged for the inventor film, whose
- * scenes run in a different order from the chapters — which scene sits behind
- * which band is tabulated under "The inventor film" in CLAUDE.md. Read that
- * before moving a boundary: the bands are sized by what each chapter has to
- * say, not by where the film cuts, and moving one to chase a cut re-opens the
- * pacing work recorded above.
+ * The widths come from the cut, not the other way round: each scene of the
+ * film is slowed by a whole number — see FRAME_COUNT in CanvasLayer and "The
+ * story cut" in CLAUDE.md — and those multiples were picked so that every
+ * chapter holds for a comfortable read and the hall holds longest. To move an
+ * edge, change a multiple and re-export the film; moving the number here alone
+ * would put the copy over the wrong scene, which is the defect this arrangement
+ * replaced.
  *
- * Previously seven bands: Founder was its own chapter between Origin and
- * Material, and Ecosystem its own chapter after Recognition. Those merged
- * into their neighbours, so each merged band is exactly the sum of the two
- * it replaced and every other boundary is unchanged — the pacing of the
- * surviving chapters is identical to before.
+ * Holds at full opacity are a band's width less the 0.060 hand-over at its far
+ * end: 101, 66, 167, 69, 66, 66vh, and 105vh for the close, which never leaves.
+ * That is tighter than the five-chapter page was (90-210vh), because seven
+ * chapters share the same 1000vh and pay for six hand-overs instead of four.
+ * Each chapter is written to that budget — one headline, a line or two, a link.
+ *
+ * History, for whoever reads the bands' older notes in git: there were seven
+ * bands once before, then five (Founder merged into Origin, Ecosystem into
+ * Recognition), in the page's own order — Origin, Material, Industrial,
+ * Recognition, Future. The inventor film ran in a different order, so the hall
+ * played behind Material and the lattice under Future. These seven are that
+ * film's order.
  */
-export const N_CHAPTERS = 5;
+export const N_CHAPTERS = 7;
 
 export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
-  [0.000, 0.210],
-  [0.210, 0.390],
-  [0.390, 0.550],
-  [0.550, 0.750],
-  [0.750, 1.000],
+  [0.000, 0.161],
+  [0.161, 0.287],
+  [0.287, 0.514],
+  [0.514, 0.643],
+  [0.643, 0.769],
+  [0.769, 0.895],
+  [0.895, 1.000],
 ];
 
 /**

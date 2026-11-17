@@ -9,7 +9,7 @@ import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBan
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
 // The homepage plays one continuous film across the whole scroll instead of
-// five independently-cut chapter clips.
+// independently-cut chapter clips.
 //
 // The frame advances LINEARLY with scroll — constant frames-per-pixel across
 // the entire page. This is a smoothness requirement, not a stylistic choice:
@@ -26,38 +26,57 @@ import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBan
 // replaced. Uniform mapping puts every chapter at 3.2vh/frame — better than
 // the old system everywhere.
 //
-// The film is the owner-supplied inventor film, played in its own order:
-// workbench, the inventor at the bench, the recognition hall, Earth, the
-// graphene lattice, the solar viaduct, the plant, the city.
+// The film is the owner-supplied inventor film in its own order — workbench,
+// the inventor at the bench, the recognition hall, Earth, the graphene lattice,
+// the solar viaduct, the plant, the city — and the page's seven chapters are
+// those scenes in that order. Which scene is behind which chapter is settled
+// by how many frames each scene has, because the map above is linear: see the
+// table on CHAPTER_BANDS.
 //
-// That order is NOT the page's chapter order (Origin, Material, Industrial,
-// Recognition, Future). Under the linear map the hall sits behind the second
-// half of Material and all of Industrial, Earth behind Recognition, and the
-// lattice arrives under Future. That mismatch is known and recorded, and was
-// accepted so the film plays exactly as supplied — see "The inventor film" in
-// CLAUDE.md. The two honest fixes are re-sequencing the scenes or reordering
-// the chapters, and both are the owner's call. A non-uniform map is not one of
-// them: it cannot change the order, and it trades a visible stutter for
-// nothing.
-const SEQUENCE_PATH = "inventor-film";
-// 453 frames: frames 0-226 of the 1080p 24fps master at exactly 2x, so every
-// synthesised frame sits at the midpoint of two real ones — 227 real + 226
-// synthesised. Even indices are the master's own frames and never pass through
-// the interpolator. Desktop frames are 1920x1080 with no rescaling. Touch has
-// two sets: /p/ is a 500x1080 centre crop of the same frames, for portrait
-// phones, and /m/ is a 854x480 downscale, for landscape. See framesPath for
-// which goes where and why.
+// That replaced an arrangement where the film and the page disagreed. The same
+// footage used to play at a uniform 2x under five chapters in a different
+// order, which put the hall behind the materials copy and the lattice under
+// the closing chapter. A non-uniform map could not have fixed that — it trades
+// a visible stutter for nothing — so the fix went into the frames instead.
+const SEQUENCE_PATH = "inventor-story-481";
+// 481 frames: frames 0-226 of the 1080p 24fps master, with each scene slowed
+// by its own whole number so that it lasts as long as its chapter.
 //
-// The ratio has to stay an integer. The previous film was first cut at 2.479x
-// and shook: a fractional resample cannot place every synthesised frame evenly
-// between two real ones, so the sequence steps unevenly on a repeating period
-// — measured then as a regular 5-frame beat, baked into the images where no
-// renderer-side fix could reach it. Regenerated at 2x the beat was gone.
+//   workbench x2 · bloom x1 · inventor x3 · dissolve x2 · hall x2 · dissolve x1
+//   Earth x2 · zoom x2 · lattice x2 · iris x2 · viaduct x3 · dissolve x2
+//   plant x2 · burst x1 · city x5
 //
-// If this is ever regenerated, keep it at 2N-1 for N real frames, and put it
-// in a new directory rather than reusing this one: frame URLs are not
-// content-addressed and /sequences/ is cached for 30 days.
-const FRAME_COUNT   = 453;
+// 227 of the 481 are the master's own frames and never pass through the
+// interpolator; the other 254 are in-betweens, motion-interpolated inside a
+// scene and plain blends inside the bloom's tail and the dissolve into the
+// hall, where interpolation loses. Desktop frames are 1920x1080 with no
+// rescaling. Touch has two sets: /p/ is a 500x1080 centre crop of the same
+// frames, for portrait phones, and /m/ is a 854x480 downscale, for landscape.
+// See framesPath for which goes where.
+//
+// Every multiple has to stay an integer. The previous film was first cut at
+// 2.479x and shook: a fractional resample cannot place every synthesised frame
+// evenly between two real ones, so the sequence steps unevenly on a repeating
+// period — measured then as a regular 5-frame beat, baked into the images
+// where no renderer-side fix could reach it. A whole-number slow-down puts the
+// in-betweens at exact halves, thirds or fifths of the way, so within a scene
+// every step is the same size. The multiple may differ between scenes; that is
+// a scene playing slower, not the sequence stepping.
+//
+// The count is deliberate, and a bigger one was tried. A 576-frame cut gave
+// the chapters about 10vh more hold each and a finer step, and it was exported
+// and measured: at ordinary scroll speeds it tracked as well as the 453-frame
+// cut it replaced, and in a fast scroll it fell a median 12.7vh behind where
+// the 453 stayed within 1vh. More frames per screen is more to fetch and
+// decode per screen, and past the loader's throughput the film stops keeping
+// up. 481 over 1000vh is one frame every 2.08vh — the density this renderer
+// has been proven at (2.2vh for the 2x cut, 2.1vh for the film before that).
+// Do not raise it to buy hold time; shorten the copy instead.
+//
+// If this is ever regenerated, put it in a new directory rather than reusing
+// this one — frame URLs are not content-addressed and /sequences/ is cached
+// for 30 days — and re-derive CHAPTER_BANDS from the new frame counts.
+const FRAME_COUNT   = 481;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 function getFrameIndex(sp: number): number {
@@ -123,16 +142,20 @@ const CHAPTER_GRADES: ReadonlyArray<{
   angle: number;
   opacity: number;
 }> = [
-  // Origin — cold blue atmosphere, warm gold horizon. Holds through the
-  // in-chapter dissolve into the lab, so it stays neutral enough for both.
+  // Origin — cold blue atmosphere, warm gold horizon, over the workbench.
   { stops: [[0.5, "#004c9b"], [1, "#c18100"]], angle: 155, opacity: 0.075 },
-  // Material Intelligence — graphene blue: deep, cool, metallic
-  { stops: [[0, "#004a6d"]], angle: 0, opacity: 0.09 },
-  // Industrial Translation — warm industrial amber
-  { stops: [[0, "#be5a0a"]], angle: 0, opacity: 0.085 },
-  // Recognition & Ecosystem — prestige white-gold
+  // Early Works — the same grade as Origin. It is the same room and the same
+  // lamp; a second tint would change the colour of one continuous place.
+  { stops: [[0.5, "#004c9b"], [1, "#c18100"]], angle: 155, opacity: 0.075 },
+  // Presidential Recognition — prestige white-gold, over the hall
   { stops: [[0.3, "#e2d7ba"], [1, "#d1ab64"]], angle: 160, opacity: 0.07 },
-  // Future Systems — electric blue-cyan
+  // Global Recognition — deep orbital blue, over Earth
+  { stops: [[0, "#003f8a"]], angle: 0, opacity: 0.07 },
+  // Advanced Materials — graphene blue: deep, cool, metallic
+  { stops: [[0, "#004a6d"]], angle: 0, opacity: 0.09 },
+  // Industrial Impact — warm industrial amber
+  { stops: [[0, "#be5a0a"]], angle: 0, opacity: 0.085 },
+  // The Work Continues — electric blue-cyan
   { stops: [[0, "#005dd6"]], angle: 0, opacity: 0.105 },
 ] as const;
 

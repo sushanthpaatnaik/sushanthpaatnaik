@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   motion,
@@ -12,21 +12,29 @@ import {
   CONTENT_FADE,
   getChapterFromProgress,
   clamp01 as c01,
-  smoothstep as eoo,
   fadeOutAt,
   fadeInAt,
 } from "./chapterBands";
+import { HOME_CHAPTER_IDS } from "./useChapterPhase";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
+
+// The three Presidential plates are the site's own archive photographs — the
+// same files, with the same captions, that /recognitions prints. They are laid
+// over the film's hall as DOM, never burned into it: the hall and everything
+// standing in it is generated, and these are not.
+import awardKalam from "@/assets/hof/award-kalam.webp";
+import awardPatil from "@/assets/hof/award-pratibha-patil.webp";
+import awardPranab from "@/assets/hof/award-pranab-mukherjee.webp";
 
 /* ──────────────────────────────────────────────────────────────────
    Mobile stage gate.
 
    Phones get a different *composition* of the same chapters, not a
-   different site: where a laptop can hold a headline, a paragraph, an
-   index and a CTA in one frame, a 360 px portrait viewport cannot. On
-   mobile each chapter is broken into successive states — one thought
-   per frame — driven by the chapter's own scroll band. Desktop never
-   enters this path and its layout, copy and timing are untouched.
+   different site: where a laptop can hold a headline, three photographs
+   and a link in one frame, a 360 px portrait viewport cannot. On mobile
+   the two chapters that carry more than one thought are broken into
+   successive states — one thought per frame — driven by the chapter's
+   own scroll band. Desktop never enters this path.
 
    Breakpoint matches Tailwind's `md`, so the JS gate and the `md:`
    utilities in the markup always agree.
@@ -45,11 +53,25 @@ function useIsMobileStage(): boolean {
 
 /* ──────────────────────────────────────────────────────────────────
    Homepage = single sticky cinematic stage.
-   Eight chapters. One viewport. Scroll is the timeline.
+   Seven chapters. One viewport. Scroll is the timeline.
 
-   Each chapter occupies ~217 vh of scroll travel (Industrial: ~336 vh).
-   OV=0.15 → 15 % fade window. Active hold: 70 % of band.
-   Future Systems holds at full opacity to close the documentary.
+   The chapters are the film's seven scenes, in the film's order:
+
+     01  Origin                    the workbench
+     02  Early Works               the inventor at the bench
+     03  Presidential Recognition  the hall
+     04  Global Recognition        Earth
+     05  Advanced Materials        the graphene lattice
+     06  Industrial Impact         the solar viaduct, then the plant
+     07  The Work Continues        the city
+
+   They used to be five, in the page's own order — Origin, Material,
+   Industrial, Recognition, Future — over a film that ran workbench,
+   inventor, hall, Earth, lattice, industry, city. So the hall played
+   behind "Engineering intelligent matter." and the lattice arrived under
+   Future Systems. The copy now follows the footage, one headline per
+   scene, and the film is cut so each scene lasts as long as its chapter:
+   see CHAPTER_BANDS and "The story cut" in CLAUDE.md.
    ────────────────────────────────────────────────────────────────── */
 
 // Ghost-track height; scrollable travel = TOTAL_VH - 100.
@@ -61,52 +83,27 @@ function useIsMobileStage(): boolean {
 // undone the pacing work this shortening sits on top of. Raised to 0.060 the
 // dissolve stays at ~60vh of scrolling on a shorter page.
 //
-// What actually pays for the cut is the holds. Measured after: Origin ~210vh,
-// Recognition ~170vh, Future ~160vh, Industrial ~130vh, Material ~90vh.
-// Material is the pinch — its band is the narrowest, so a fixed-length
-// dissolve eats proportionally most of it, and 90vh is just under one screen
-// of scrolling at full opacity. Readable, but it is the first thing to feel
-// rushed if this page is ever shortened further.
-//
-// Frame density improves: 476 frames over 1000vh is 2.1vh/frame against the
-// old 3.2, so the sequence steps less, not more.
+// Seven chapters on the same 1000vh: six hand-overs instead of four, so the
+// holds are shorter than they were — about 66-70vh for four of the chapters,
+// 100vh for Origin, 167vh for Presidential Recognition and 105vh for the close,
+// which never has to leave. Each chapter therefore carries one headline, one or two lines and
+// one link, and nothing longer. The page was not lengthened to buy the holds
+// back: it was shortened once on purpose.
 const TOTAL_VH = 1100;
 
-// Ecosystem directory — every primary-nav destination still reachable, but
-// grouped into six entries instead of nine so the closing chapter reads as a
-// compact index rather than a wall. Grouped rows link to their primary route
-// and expose the companions as secondary links, so no page lost an entrance.
-const gateways = [
-  {
-    to: "/about", n: "I", label: "About",
-    line: "Founder, philosophy, journey.",
-    also: [],
-  },
-  {
-    to: "/early-works", n: "II", label: "Early Works",
-    line: "Inventions and the origin archive.",
-    also: [],
-  },
-  {
-    to: "/innovations", n: "III", label: "Innovations",
-    line: "Graphene, materials, systems.",
-    also: [],
-  },
-  {
-    to: "/ventures", n: "IV", label: "Ventures",
-    line: "Operating companies. Industrial translation.",
-    also: [],
-  },
-  {
-    to: "/recognitions", n: "V", label: "Recognitions & Voices",
-    line: "Recognition, talks, perspectives.",
-    also: [{ to: "/voices", label: "Voices" }],
-  },
-  {
-    to: "/essays", n: "VI", label: "Essays, News & Engage",
-    line: "Workshop notes, editorial archive, collaboration.",
-    also: [{ to: "/news", label: "News" }, { to: "/engage", label: "Engage" }],
-  },
+// The closing index. The homepage has no footer, and the stage is fixed, so
+// this row is the one place in the page body that links every section the
+// seven chapters do not already point at. About and Contact are the two
+// buttons directly above it, so they are not repeated here.
+const INDEX = [
+  { to: "/early-works", label: "Early Works" },
+  { to: "/innovations", label: "Innovations" },
+  { to: "/ventures", label: "Ventures" },
+  { to: "/recognitions", label: "Recognitions" },
+  { to: "/voices", label: "Voices" },
+  { to: "/essays", label: "Essays" },
+  { to: "/news", label: "News" },
+  { to: "/engage", label: "Engage" },
 ] as const;
 
 /* ──────────────────────────────────────────────────────────────────
@@ -208,147 +205,86 @@ function ScrollProgressBar({ progress }: { progress: MotionValue<number> }) {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 0 — Origin (id="spark")
+   Chapter eyebrow — "03 · Presidential Recognition".
 
-   Two beats inside one chapter, not two chapters. Beat A is the hero over
-   the planetary opening; beat B is the founder's voice once the canvas has
-   dissolved into the lab. They cross-fade against each other on local band
-   progress, and are laid out in different columns (centred vs right) so the
-   overlap reads as a dissolve rather than as two texts stacked in the same
-   place. Founder was previously its own full-screen chapter with its own
-   rail entry.
+   The number is the chapter's place among the film's seven scenes, the
+   same convention the internal pages use for their numbered sections.
    ────────────────────────────────────────────────────────────────── */
-function OriginContent({
-  beatA,
-  beatB,
-  peA,
-  peB,
+function Eyebrow({
+  n,
+  children,
+  className = "",
 }: {
-  beatA: MotionValue<number>;
-  beatB: MotionValue<number>;
-  peA: MotionValue<"auto" | "none">;
-  peB: MotionValue<"auto" | "none">;
+  n: string;
+  children: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="relative w-full h-full">
-      <motion.div
-        className="absolute inset-0"
-        style={{ opacity: beatA, pointerEvents: peA }}
-      >
-        <OriginHero />
-      </motion.div>
-      <motion.div
-        className="absolute inset-0"
-        style={{ opacity: beatB, pointerEvents: peB }}
-      >
-        <FounderVoice />
-      </motion.div>
-    </div>
+    <p className={`text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-primary/90 ${className}`}>
+      <span className="text-foreground/70">{n}</span>
+      {" · "}
+      {children}
+    </p>
   );
 }
 
+const CHAPTER_LINK =
+  "inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/75 hover:text-foreground transition-colors";
+
+/* ──────────────────────────────────────────────────────────────────
+   Chapter 0 — Origin (id="spark"). Film: the workbench.
+
+   The opening line used to be the site's signature, "I build what does
+   not yet exist." That line is now where the story ends — chapter 7 —
+   and the page opens on the sentence the film's first scene is about.
+   This is still the document's one <h1>: it is the first heading a
+   reader, a crawler or a screen reader meets, and the closing line is an
+   <h2> like every other chapter heading.
+
+   The credential strip that sat under the old headline (06 Presidential
+   Awards · 25 Innovations · 06 Ventures · TED · MIT TR) is gone from this
+   frame. Every figure in it is still on the page, each in the chapter
+   that is about it; stating them all on the first screen told the ending
+   before the story had started.
+   ────────────────────────────────────────────────────────────────── */
 function OriginHero() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6">
-      {/* Origin: dark cosmic background — moderate center shield */}
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 [@media(max-height:560px)]:pt-14">
+      {/* Origin: a dark workbench under one lamp — moderate centre shield */}
       <ContentShield align="center" strength={0.56} />
 
-      {/* All text content lives in one centered block — headline, subtitle,
-          and awards. Nothing can overlap because they share a single layout
-          context. The animated indicator is purely decorative (aria-hidden)
-          and lives at absolute bottom separately. */}
       <div className="relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
-        <div className="mb-10 md:mb-12 flex items-center justify-center gap-3">
+        <div className="mb-10 md:mb-12 [@media(max-height:560px)]:mb-5 flex items-center justify-center gap-3">
           <span className="h-px w-8 bg-foreground/20" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground/80">
-            Origin
+          <span className="font-mono text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-foreground/70">
+            01 · Origin
           </span>
           <span className="h-px w-8 bg-foreground/20" />
         </div>
 
         {/* H1 */}
         {/* The three lines are `block` spans, so JSX drops the whitespace
-            between them and textContent reads "I buildwhat does notyet exist."
-            — the site's primary H1, welded, for anything that does not run CSS.
-            An explicit space restores the boundary; the spans are block-level,
-            so it collapses and costs nothing on screen. */}
-        <h1 className="font-display text-[clamp(2.2rem,7.8vw,6.5rem)] leading-[1.02] md:leading-[0.98] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
-          <span className="block py-1 text-gradient">I build</span>{" "}
-          <span className="block py-1 text-gradient">what does not</span>{" "}
-          <span className="block py-1 text-foreground/95">yet exist.</span>
+            between them and textContent would read "Every inventionbegins
+            with a problemworth solving." for anything that does not run CSS.
+            An explicit space restores each boundary; the spans are
+            block-level, so it collapses and costs nothing on screen.
+
+            The size is smaller than the old three-word-a-line headline's:
+            "begins with a problem" is the longest line and has to clear a
+            350px column at 390 wide and the 896px measure at 1440. */}
+        <h1 className="font-display text-[clamp(1.85rem,min(6.4vw,11.5vh),4.75rem)] leading-[1.04] md:leading-[1.0] tracking-[-0.035em] md:tracking-[-0.04em] font-medium">
+          <span className="block py-1 text-gradient">Every invention</span>{" "}
+          <span className="block py-1 text-gradient">begins with a problem</span>{" "}
+          <span className="block py-1 text-foreground/95">worth solving.</span>
         </h1>
 
-        {/* Subtitle */}
-        <div className="mx-auto mt-14 md:mt-20 max-w-xl">
-          <p className="font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80">
-            Inventor and deep-tech founder.{" "}
-            <br className="hidden md:inline" />
-            Building from India, for the world.
-          </p>
-          {/* Credibility strip — value+label pairs separated by · dots.
-              Renders as: 06 Presidential Awards · 25 Innovations · 06 Ventures
-              · TED · MIT TR · Global Recognition
-
-              The labels used to be `hidden sm:inline`, so on every phone this
-              read as "06 · 25 · 06 · TED · MIT TR · Global Recognition" —
-              three bare numbers with nothing saying what they counted. A
-              number without its noun is not a shorter version of the claim,
-              it is not the claim at all, and it is unreadable to a screen
-              reader and to search on any width.
-
-              The fix for that was a second, shorter label behind a media
-              query, which put BOTH strings in the document and had CSS hide
-              one. On screen that worked; in the text stream every label
-              appeared twice. One label now, at one length, and the row wraps
-              rather than truncating — `flex-wrap` with `gap-y-2` is what pays
-              for that at 360px.
-
-              "Presidential Awards" is the site's umbrella term, matching the
-              ledger's own formal titles (President of India Award / Former
-              President of India Award, NIF) rather than paraphrasing them. */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-y-2">
-            {[
-              { v: "06",                  l: "Presidential Awards" },
-              { v: "25",                  l: "Innovations" },
-              { v: "06",                  l: "Ventures" },
-              { v: "TED",                 l: "" },
-              { v: "MIT TR",              l: "" },
-              { v: "Global Recognition",  l: "" },
-            ].map((s, i, arr) => (
-              <span key={i} className="inline-flex items-center whitespace-nowrap">
-                {/* Both a margin AND a literal space, because they fix two
-                    different things and neither covers the other. The margin is
-                    what you see: these are flex items, so a leading space in an
-                    item's own text is trimmed and renders as nothing. The
-                    literal space is what extractors read, and margins are
-                    invisible to the text
-                    stream: with mx-0.5 and ml-1.5 doing the spacing, the strip
-                    looked correct on screen but extracted as
-                    "06PresidentialPresidential Awards·25InnovationsInnovations·…"
-                    — no word boundaries at all, and every label twice, because
-                    the short and long forms were both in the DOM with CSS
-                    hiding one. That is what copy-paste, search engines and any
-                    reader that does not run CSS receive. Same defect, and same
-                    fix, as the role separator on /ventures. */}
-                <span className="font-mono text-[11px] sm:text-[12px] text-foreground/70 tracking-[-0.01em]">{s.v}</span>
-                {s.l && (
-                  <span className="ml-1.5 font-mono text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.18em] text-muted-foreground/55">
-                    {" "}{s.l}
-                  </span>
-                )}
-                {/* Separator trails its item rather than leading the next one.
-                    Leading it meant a wrap put the dot at the start of the
-                    second line — "· 06 Ventures · TED …" — which reads as a
-                    bullet list rather than a continued run. */}
-                {i < arr.length - 1 && (
-                  <span className="mx-2 sm:mx-2.5 font-mono text-[10px] text-foreground/25">{" · "}</span>
-                )}
-              </span>
-            ))}
-          </div>
-
-        </div>
+        {/* Supporting line */}
+        <p className="mx-auto mt-10 md:mt-14 [@media(max-height:560px)]:mt-5 max-w-xl font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80 [text-wrap:balance]">
+          A young inventor. A workbench.{" "}
+          <br className="hidden md:inline" />
+          The beginning of a journey.
+        </p>
       </div>
 
       {/* Animated indicator — decorative only, no text, aria-hidden.
@@ -411,52 +347,52 @@ function OriginHero() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Origin, beat B — the founder's voice (no separate chapter id)
-   ────────────────────────────────────────────────────────────────── */
-function FounderVoice() {
-  return (
-    /* Anchored to the upper third on phones, centred from md up.
-       ─────────────────────────────────────────────────────────────
-       On a laptop this beat lives in grid columns 7-12 and Material
-       Intelligence is left-aligned, so the dissolve between them reads
-       as a hand-off across the frame. On a phone the grid collapses to
-       one column and both land in the same place: measured at 393x873,
-       "The future is not imagined." occupied y=368-425 and "Engineering
-       intelligent matter." y=408-471, so at the dissolve midpoint the
-       two headlines interleaved at 50% each — the second line of one
-       running through the first line of the other, with "Read the
-       journey" landing on top of "Coatings · Composites".
+   Chapter 1 — Early Works (id="early-works"). Film: the inventor at
+   the bench.
 
-       Raising this beat to the upper third opens ~140px between them,
-       so the same cross-dissolve reads as one text handing over to
-       another rather than as two texts sharing a space. It also lifts
-       the quote off the founder's mouth, where it had been sitting. */
-    <div className="relative w-full h-full flex items-start pt-[11vh] md:items-center md:pt-0 px-5 sm:px-6 lg:pl-32 xl:pl-36">
-      {/* Founder: dark footage, text on right — right-side shield */}
-      <ContentShield align="right" strength={0.68} />
-      {/* Founder label top left */}
-      <p className="pointer-events-none absolute top-10 left-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.55em] text-muted-foreground/25 blur-[0.3px]">
-        Founder
-      </p>
+   Six inventions, 2008 to 2013: the count, the years and the four
+   fields named here are /early-works' own — Mobility Safety, Assistive
+   Technology, Off-Grid Energy and Energy Harvesting, Wearable Safety.
+
+   The man is centre frame with his face in the upper half. On a laptop
+   the copy takes the right-hand column, over the shelves. On a phone the
+   frame is a centre crop with his face at 10-45% of its height, so the
+   copy is a lower third and the scrim rises from the foot instead of
+   coming in from the side: the face stays clear and the type sits over
+   the bench.
+   ────────────────────────────────────────────────────────────────── */
+function EarlyWorksContent() {
+  return (
+    <div className="relative w-full h-full flex items-end pb-[17vh] md:items-center md:pb-0 px-5 sm:px-6 lg:pl-32 xl:pl-36 [@media(max-height:560px)]:md:pt-14">
+      <ContentShield align="right" strength={0.8} className="hidden md:block" />
+      <div
+        aria-hidden
+        className="md:hidden pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 36%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.82) 68%, rgba(0,0,0,0.90) 100%)",
+        }}
+      />
 
       {/* 12-col grid, content in cols 7-12 */}
-      <div className="relative mx-auto grid w-full max-w-6xl md:grid-cols-12">
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl md:grid-cols-12">
         <div className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
-          <p className="mb-4 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-            Founder · Voice
+          <Eyebrow n="02" className="mb-4 md:mb-6 [@media(max-height:560px)]:md:mb-3">
+            Early Works
+          </Eyebrow>
+          <h2 className="font-display text-[clamp(1.9rem,min(4.4vw,9.5vh),3.5rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient">
+            <span className="block">Six years.</span>{" "}
+            <span className="block">Six inventions.</span>{" "}
+            <span className="block">One purpose.</span>
+          </h2>
+          <p className="mt-5 md:mt-7 [@media(max-height:560px)]:md:mt-4 font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75">
+            2008–2013
           </p>
-          <blockquote className="font-display text-2xl leading-[1.19] tracking-[-0.025em] text-gradient md:text-3xl lg:text-[2.4rem] whitespace-pre-line">
-            {"The future is not imagined.\nIt is engineered quietly."}
-          </blockquote>
-          <div className="mt-5 md:mt-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/45">
-            <span className="h-px w-10 bg-gradient-to-r from-foreground/25 to-transparent" />
-            <span>Sushanth Paatnaik</span>
-          </div>
-          <Link
-            to="/about"
-            className="mt-6 md:mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
-          >
-            Read the journey →
+          <p className="mt-2.5 max-w-[26rem] text-[14.5px] md:text-base leading-relaxed text-foreground/80">
+            From vehicle safety and assistive technology to energy and wearable safety.
+          </p>
+          <Link to="/early-works" className={`mt-6 md:mt-9 [@media(max-height:560px)]:md:mt-5 ${CHAPTER_LINK}`}>
+            Explore Early Works →
           </Link>
         </div>
       </div>
@@ -465,114 +401,456 @@ function FounderVoice() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 2 — Material Intelligence (id="carbon-intelligence")
+   Chapter 2 — Presidential Recognition (id="presidential"). Film: the
+   hall.
+
+   The centre of the page, and the one chapter where the film is not the
+   picture. The hall is generated: its trophies, the framed "ceremony"
+   photographs in its cases and the emblems on its plinths were made by
+   the same model that made the room. None of it is evidence of anything,
+   and none of it is counted — the headline says six because the record
+   says six, not because of how many plinths the camera passes.
+
+   So the hall is veiled down to a dim gold room, and the three archive
+   photographs stand in front of it: the same files /recognitions prints,
+   with the captions it gives them. They are DOM, laid over the film, so
+   they are never part of the footage and can be replaced without
+   touching a frame. The row sits across the middle band of the frame,
+   which is where the hall's own cases are.
+
+   "Three Presidents of India", never "three sitting Presidents":
+   Dr. Kalam left office in 2007, and the ledger titles his two citations
+   "Former President of India Award".
+   ────────────────────────────────────────────────────────────────── */
+type Plate = {
+  src: string;
+  w: number;
+  h: number;
+  caption: string;
+  meta: string;
+  focus: string;
+};
+
+const PRESIDENTIAL_PLATES: readonly Plate[] = [
+  {
+    src: awardKalam,
+    w: 1195,
+    h: 896,
+    caption: "With Dr. A.P.J. Abdul Kalam",
+    meta: "Presidential Award · NIF · 2009",
+    focus: "center 30%",
+  },
+  {
+    src: awardPatil,
+    w: 1172,
+    h: 912,
+    caption: "With President Pratibha Patil",
+    meta: "Presidential Award · 2010",
+    focus: "center",
+  },
+  {
+    src: awardPranab,
+    w: 1183,
+    h: 896,
+    caption: "With President Pranab Mukherjee",
+    meta: "Presidential Award · 2013",
+    focus: "left top",
+  },
+];
+
+/* The hall is the brightest sustained footage in the film — a lit gold room,
+   edge to edge — and this chapter's copy runs the full width of it, so no
+   side scrim can cover the type. A veil over the whole frame, heavier at the
+   head where the headline sits and at the foot where the captions and the
+   link sit. */
+function HallVeil() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        background:
+          "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.70) 30%, rgba(0,0,0,0.60) 56%, rgba(0,0,0,0.76) 100%)",
+      }}
+    />
+  );
+}
+
+function ArchivePlate({ plate, armed }: { plate: Plate; armed: boolean }) {
+  const ref = useRef<HTMLImageElement>(null);
+  // Decode ahead of the hand-over rather than inside it. The plates mount a
+  // chapter early, at opacity 0; without this the first paint of each one
+  // could land in the middle of the dissolve that reveals it.
+  useEffect(() => {
+    if (!armed) return;
+    ref.current?.decode?.().catch(() => {});
+  }, [armed]);
+
+  return (
+    <figure className="min-w-0">
+      <div className="archive-grade-wrap relative aspect-[4/3] overflow-hidden rounded-[2px] bg-[oklch(0.08_0.006_250)] ring-1 ring-foreground/[0.16] shadow-[0_28px_64px_-30px_oklch(0_0_0/0.95)]">
+        {armed && (
+          <img
+            ref={ref}
+            src={plate.src}
+            alt={`${plate.caption}. ${plate.meta}.`}
+            width={plate.w}
+            height={plate.h}
+            decoding="async"
+            draggable={false}
+            className="archive-grade absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: plate.focus }}
+          />
+        )}
+      </div>
+      {/* Caption below the photograph, never on it: nothing here has to be
+          legible against a picture. Two block spans, so an explicit space
+          keeps "…Abdul Kalam" and "Presidential Award…" apart in the text
+          stream. */}
+      <figcaption className="mt-2.5 md:mt-3">
+        <span className="block font-display text-[13.5px] md:text-[15px] leading-snug tracking-[-0.01em] text-foreground/90">
+          {plate.caption}
+        </span>{" "}
+        <span className="mt-1 block font-mono text-[9.5px] md:text-[10px] uppercase tracking-[0.2em] text-foreground/75">
+          {plate.meta}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function PresidentialContent({ armed }: { armed: boolean }) {
+  return (
+    /* Symmetric gutters sized to the chapter rail (68px backing panel), and
+       pt matching the fixed header, so the block centres in the frame below
+       the chrome rather than in the raw viewport. This is the tallest
+       composition on the page. */
+    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:px-24 xl:px-28 md:pt-[68px]">
+      <HallVeil />
+      <div className="relative z-10 mx-auto w-full max-w-6xl">
+        <Eyebrow n="03" className="mb-4 md:mb-5 [@media(max-height:560px)]:mb-2.5">
+          Presidential Recognition
+        </Eyebrow>
+        <div className="flex flex-wrap items-end justify-between gap-x-14 gap-y-5">
+          <h2 className="font-display text-[clamp(1.5rem,min(4.1vw,7.6vh),3.4rem)] leading-[1.05] tracking-[-0.03em] font-medium text-gradient">
+            <span className="block">Six Presidential Awards.</span>{" "}
+            <span className="block">Three Presidents of India.</span>
+          </h2>
+          <div className="max-w-[23rem] pb-1 [@media(max-height:560px)]:hidden">
+            <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75">
+              2008–2013
+            </p>
+            <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
+              National recognition for early inventions.
+            </p>
+            <p className="mt-1 text-[15px] leading-relaxed text-foreground/70">
+              The record exists. The next prototype matters more.
+            </p>
+          </div>
+        </div>
+
+        {/* The row is capped by viewport height as well as by the column.
+            Three 4:3 plates of height H are 4H wide plus the gaps, and the
+            rest of this block — eyebrow, headline, captions, link — and the
+            header above it take about 400px between them, so the plates get
+            what is left: 400vh - 1552px of width. That only bites below about
+            650px of height. Under it the row falls back to 92vh of width,
+            which on a phone held sideways is three plates about 80px tall:
+            small, but nothing is clipped and nothing scrolls inside the
+            chapter. */}
+        <div
+          className="mt-7 lg:mt-9 [@media(max-height:560px)]:mt-3 grid grid-cols-3 gap-4 lg:gap-5"
+          style={{ maxWidth: "clamp(15rem, max(calc(400vh - 1552px), 92vh), 100%)" }}
+        >
+          {PRESIDENTIAL_PLATES.map((p) => (
+            <ArchivePlate key={p.caption} plate={p} armed={armed} />
+          ))}
+        </div>
+
+        <Link to="/recognitions" className={`mt-6 lg:mt-8 [@media(max-height:560px)]:mt-2 ${CHAPTER_LINK}`}>
+          View Presidential Archive →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   Chapter 2 — Presidential Recognition, phone composition.
+
+   Three 4:3 photographs do not fit beside a headline on a 390px screen,
+   and at a third of the width each they are too small to be looked at.
+   So the statement holds for the whole chapter and the photographs turn
+   over beneath it, one at a time at full width, each with its own
+   caption: 2009, 2010, 2013.
+
+   The three states have to finish inside the chapter's hold, not inside
+   its band. The last 0.060 of every band is the hand-over to the next
+   chapter, and for this one that is the final 29% of local progress — a
+   first version timed the third photograph to arrive at 0.775, where the
+   whole chapter was already at half opacity and falling, so the 2013
+   plate never once appeared in full. Everything here is laid out on
+   [0, HOLD] instead: three holds of 0.209 and two hand-overs of 0.055,
+   which is about 47vh of scrolling for each photograph.
+   ────────────────────────────────────────────────────────────────── */
+function PresidentialMobile({
+  lp,
+  armed,
+}: {
+  lp: MotionValue<number>;
+  armed: boolean;
+}) {
+  // Local progress at which the chapter itself starts to leave.
+  const [bIn, bOut] = CHAPTER_BANDS[2];
+  const HOLD = (bOut - bIn - CONTENT_FADE) / (bOut - bIn);
+  const span = (HOLD - 2 * STAGE_FADE) / 3;
+  const from = (i: number) => i * (span + STAGE_FADE);
+  const op0 = useTransform(lp, (v) => stageOp(v, 0, span));
+  const op1 = useTransform(lp, (v) => stageOp(v, from(1), from(1) + span));
+  const op2 = useTransform(lp, (v) => stageOp(v, from(2), 1, true));
+  const plateOps = [op0, op1, op2];
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <HallVeil />
+
+      <div className="absolute inset-x-6 top-[13.5%] z-10">
+        <Eyebrow n="03" className="mb-3.5">
+          Presidential Recognition
+        </Eyebrow>
+        <h2 className="font-display text-[clamp(1.35rem,6.4vw,1.6rem)] leading-[1.12] tracking-[-0.03em] font-medium text-gradient">
+          <span className="block">Six Presidential Awards.</span>{" "}
+          <span className="block">Three Presidents of India.</span>
+        </h2>
+      </div>
+
+      {/* One archive photograph at a time. They share a box, so they hand
+          over in sequence like every other staged state on this page. */}
+      <div className="absolute inset-x-6 top-[27.5%] z-10">
+        {/* Reserves the height of a plate and its caption, so the copy below
+            sits in the same place whichever photograph is showing. */}
+        <div className="invisible" aria-hidden>
+          <div className="aspect-[4/3]" />
+          <div className="mt-2.5 h-[2.6rem]" />
+        </div>
+        {PRESIDENTIAL_PLATES.map((p, i) => (
+          <motion.div
+            key={p.caption}
+            className="absolute inset-0"
+            style={{ opacity: plateOps[i] }}
+          >
+            <ArchivePlate plate={p} armed={armed} />
+          </motion.div>
+        ))}
+        {/* On a phone under 700px tall the photograph, its caption, this line
+            and the link do not all clear the action bar, so the line steps
+            back and the link keeps its place. */}
+        <p className="mt-5 max-w-[32ch] text-[14.5px] leading-[1.55] text-foreground/75 [@media(max-height:700px)]:hidden">
+          The record exists. The next prototype matters more.
+        </p>
+        <Link to="/recognitions" className={`mt-5 ${CHAPTER_LINK}`}>
+          View Presidential Archive →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   Chapter 3 — Global Recognition (id="recognition"). Film: Earth, with
+   arcs leaving India.
+
+   A dated register rather than a sentence. Every row is a line of the
+   ledger on /recognitions, in that page's own words and with its years:
+   TR-35 from MIT Technology Review and Intel IRIS in 2010, NASA in 2011,
+   TED@Bangalore in 2012, MIT Fab-10 and Fab-11 in 2013-14.
+
+   The NASA row says where — Huntsville, Alabama — and nothing about
+   what for. The film's Earth shot carried a generated NASA insignia and
+   it was painted out of the frames; a satellite in the background is
+   scenery, not a claim about a mission.
+
+   The globe fills the left two thirds of the frame and India sits just
+   left of centre, so the copy takes the right-hand column: the arcs and
+   their origin stay in view.
+   ────────────────────────────────────────────────────────────────── */
+const HONOURS = [
+  { year: "2010", title: "MIT Technology Review", note: "TR-35" },
+  { year: "2010", title: "Intel IRIS", note: "Best Popular Invention" },
+  { year: "2011", title: "NASA recognition", note: "Huntsville, Alabama" },
+  { year: "2012", title: "TED@Bangalore", note: "Speaker" },
+  { year: "2013–14", title: "MIT Fab-10 & Fab-11", note: "Awardee" },
+] as const;
+
+function GlobalContent() {
+  return (
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 xl:pl-36 [@media(max-height:560px)]:md:pt-14">
+      <ContentShield align="right" strength={0.82} className="hidden md:block" />
+      {/* Phones show the centre of the frame, which is the globe itself —
+          there is no dark side to stand the copy on, so it takes the centre
+          shield. */}
+      <ContentShield align="center" strength={0.8} className="md:hidden" />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl md:grid-cols-12">
+        <div className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
+          <Eyebrow n="04" className="mb-4 md:mb-6 [@media(max-height:560px)]:md:mb-3">
+            Global Recognition
+          </Eyebrow>
+          <h2 className="font-display text-[clamp(1.75rem,min(4.4vw,8vh),3.5rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient">
+            <span className="block">From India to</span>{" "}
+            <span className="block">the global stage.</span>
+          </h2>
+
+          <ul className="mt-7 md:mt-9 [@media(max-height:560px)]:md:mt-3 max-w-[27rem]">
+            {HONOURS.map((h) => (
+              /* A baseline flex row, so the year, the name and the note are
+                 three flex items and their text would otherwise run together
+                 for anything that does not execute CSS. The explicit spaces
+                 are dropped from layout and kept in the text stream. */
+              <li
+                key={h.title}
+                className="flex items-baseline gap-4 border-t border-foreground/[0.12] py-2.5 md:py-3 [@media(max-height:560px)]:md:py-1"
+                style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.75)" }}
+              >
+                <span className="w-[4.1rem] shrink-0 font-mono text-[10px] tracking-[0.16em] text-foreground/70">
+                  {h.year}
+                </span>{" "}
+                <span className="min-w-0">
+                  <span className="font-display text-[14.5px] md:text-[16px] tracking-[-0.01em] text-foreground/90">
+                    {h.title}
+                  </span>
+                  <span className="text-foreground/35">{" · "}</span>
+                  <span className="text-[12.5px] md:text-[13.5px] text-foreground/75">
+                    {h.note}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <Link to="/recognitions" className={`mt-6 md:mt-8 [@media(max-height:560px)]:md:mt-3 ${CHAPTER_LINK}`}>
+            Explore Recognitions →
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   Chapter 4 — Advanced Materials (id="carbon-intelligence"). Film: the
+   graphene lattice.
    ────────────────────────────────────────────────────────────────── */
 function MaterialContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
-      {/* Material: left column. This strength follows the footage, and has
-          moved with it twice — 0.82 for the original bright-metallic plate,
-          0.62 when the film behind it became a dim lab, and 0.82 again for the
-          inventor film, which puts a lit workshop and then the hall here.
-          Measured at 1440 on the body paragraph's four lines, stroke-core
-          contrast against what is actually behind the glyphs: 2.75-3.23 on the
-          previous film, 2.33-2.76 on the inventor film at 0.62. */}
-      <ContentShield align="left" strength={0.82} />
+    /* The lattice has one labelled atom, a "C" sitting dead centre of the
+       frame, and both first layouts ran type through it. On a laptop the
+       headline was two long lines and "materials." ended on the atom; on a
+       phone the frame is a centre crop, the block was centred, and the "C"
+       showed through the middle of the word. So the headline is three short
+       lines, which end well left of centre, and on a phone the block is a
+       lower third with the atom clear above it. */
+    <div className="relative w-full h-full flex items-end pb-[15vh] md:items-center md:pb-0 px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 [@media(max-height:560px)]:md:pt-14">
+      {/* Left column. This strength follows the footage and has moved with it
+          three times — 0.82 for the original bright-metallic plate, 0.62 when
+          the film behind it became a dim lab, 0.82 again when the inventor
+          film put a lit workshop and the hall here, and it is now measured
+          against the lattice, which is what this chapter finally sits on. */}
+      <ContentShield align="left" strength={0.82} className="hidden md:block" />
+      <div
+        aria-hidden
+        className="md:hidden pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.50) 54%, rgba(0,0,0,0.80) 70%, rgba(0,0,0,0.90) 100%)",
+        }}
+      />
       <div className="relative z-10 mr-auto text-left max-w-2xl">
         {/* Decorative line */}
-        <div className="h-px w-20 md:w-24 mb-7 bg-gradient-to-r from-primary via-accent to-transparent" />
-        {/* Eyebrow */}
-        <p className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6">
-          Material Intelligence
-        </p>
-        {/* H2 */}
-        <h2 className="font-display text-[clamp(1.9rem,6.2vw,4.4rem)] leading-[1.04] tracking-[-0.025em] font-medium text-gradient mb-7 [text-wrap:balance]">
-          Engineering intelligent matter.
+        <div className="h-px w-20 md:w-24 mb-6 md:mb-7 [@media(max-height:560px)]:md:mb-3 bg-gradient-to-r from-primary via-accent to-transparent" />
+        <Eyebrow n="05" className="mb-4 md:mb-6 [@media(max-height:560px)]:md:mb-3">
+          Advanced Materials
+        </Eyebrow>
+        <h2 className="font-display text-[clamp(1.9rem,min(5.2vw,10vh),4rem)] leading-[1.04] tracking-[-0.025em] font-medium text-gradient mb-5 md:mb-7 [@media(max-height:560px)]:md:mb-3">
+          <span className="block">From inventions</span>{" "}
+          <span className="block">to intelligent</span>{" "}
+          <span className="block">materials.</span>
         </h2>
-        {/* Body — the full argument is a laptop-sized paragraph. On a phone
-            it lands as eight lines of 14 px over lab footage, so the frame
-            carries the material list instead and the paragraph stays in the
-            document for search and screen readers. */}
-        <p className="hidden md:block text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-md">
-          Graphene, nano-materials, coatings, additives, composites. A single sheet of carbon, made cleanly and at scale, changes what concrete, batteries, coatings and composites can do.
+        <p className="text-[15px] md:text-lg text-foreground/80 leading-relaxed max-w-md">
+          Graphene and advanced materials became the next chapter of the work.
         </p>
-        <div
-          className="md:hidden flex flex-col gap-2 font-mono text-[10.5px] uppercase tracking-[0.26em] text-foreground/80"
-          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
-        >
-          <span>Graphene · Nano-materials</span>
-          {/* The two lines are a deliberate break on a phone, but a line break
-              contributes nothing to the text stream, so this read back as
-              "Graphene · Nano-materialsCoatings · Composites". A plain text
-              node here would become an anonymous flex item and paint as a
-              third row; sr-only is position:absolute, so it stays out of the
-              flex flow and out of the gap-2 spacing while still carrying the
-              separator for anything reading the document. */}
-          <span className="sr-only"> · </span>
-          <span>Coatings · Composites</span>
-        </div>
+        {/* The technical claim is a laptop-sized sentence. On a phone it would
+            be five more lines over the lattice, so the frame carries the one
+            sentence above and this stays in the document. */}
+        <p className="hidden md:block [@media(max-height:560px)]:md:hidden mt-3 text-base text-foreground/70 leading-relaxed max-w-md">
+          A single sheet of carbon, made cleanly and at scale, changes what concrete, batteries, coatings and composites can do.
+        </p>
+        <Link to="/innovations" className={`mt-6 md:mt-10 [@media(max-height:560px)]:md:mt-4 ${CHAPTER_LINK}`}>
+          Explore Innovations →
+        </Link>
       </div>
     </div>
   );
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 3 — Industrial Translation (id="industrial")
+   Chapter 5 — Industrial Impact (id="industrial"). Film: the solar
+   viaduct, then the plant.
+
+   Five industries and four product names. Each name is a product on
+   /innovations in the industry beside it: Graphacrete in Construction ·
+   Cement, Graffisol in Solar · Coatings, Graphenodes in Energy Storage ·
+   Electrodes, Thermene in Thermal · Interfaces. Composites has no name
+   here because the brief that set this copy named four.
    ────────────────────────────────────────────────────────────────── */
 function IndustrialContent() {
   return (
-    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
-      {/* Industrial: text on right — right-side shield */}
-      <ContentShield align="right" strength={0.80} />
-      {/* Below md the copy is left-aligned, so the right-side shield is strongest
-          where there is no text and absent where the lines begin. That went
-          unnoticed while the film was dark on that side. The inventor film puts
-          the hall's lit cases there: at 390 the three list lines measured
-          2.2-3.1 against 4.5-6.3 on the previous film. A left shield, phones
-          only, on top of the right one. */}
-      <ContentShield align="left" strength={0.55} className="md:hidden" />
+    <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 [@media(max-height:560px)]:md:pt-14">
+      {/* Text on the right. This is daylight footage — green ground, grey
+          deck, a white plant building in exactly this corner — so the shield
+          is the strongest side shield on the page. */}
+      <ContentShield align="right" strength={0.88} />
+      {/* Below md the copy is left-aligned, so the right-side shield is
+          strongest where there is no text and absent where the lines begin.
+          A left shield, phones only, on top of the right one. */}
+      <ContentShield align="left" strength={0.7} className="md:hidden" />
       <div className="relative z-10 ml-auto md:text-right max-w-2xl">
         {/* Decorative line */}
-        <div className="h-px w-20 md:w-24 mb-7 ml-auto bg-gradient-to-l from-primary via-accent to-transparent" />
-        {/* Eyebrow */}
-        <p className="text-[10px] uppercase tracking-[0.5em] text-primary/90 mb-6">
-          Industrial Translation
-        </p>
-        {/* H2 */}
-        <h2 className="font-display text-[clamp(1.9rem,6.2vw,4.4rem)] leading-[1.04] tracking-[-0.025em] font-medium text-gradient mb-7 [text-wrap:balance]">
-          One lattice. Many industries.
+        <div className="h-px w-20 md:w-24 mb-7 [@media(max-height:560px)]:md:mb-3 ml-auto bg-gradient-to-l from-primary via-accent to-transparent" />
+        <Eyebrow n="06" className="mb-6 [@media(max-height:560px)]:md:mb-3">
+          Industrial Impact
+        </Eyebrow>
+        <h2 className="font-display text-[clamp(1.75rem,min(4.6vw,9.5vh),3.6rem)] leading-[1.05] tracking-[-0.025em] font-medium text-gradient mb-7 [@media(max-height:560px)]:md:mb-3">
+          <span className="block">One material platform.</span>{" "}
+          <span className="block">Many industries.</span>
         </h2>
-        {/* Body — narrower measure than the heading so the two read as
-            separate steps rather than one dense block at laptop widths. */}
-        <p className="hidden md:block text-[15px] md:text-base text-muted-foreground/90 leading-relaxed max-w-[26rem] ml-auto">
-          Solar coatings, batteries that charge in minutes, polymer additives, protective coatings, composites, climate infrastructure: each downstream of the same material platform.
-        </p>
-        {/* Phone: the enumeration is the paragraph's whole point, so it is
-            shown as a list and the sentence stays in the document. */}
         <p
-          className="md:hidden font-mono text-[10.5px] uppercase tracking-[0.24em] leading-[2] text-foreground/80"
+          className="text-[15px] md:text-base text-foreground/85 leading-relaxed max-w-[26rem] ml-auto"
+          style={{ textShadow: "0 1px 10px oklch(0.02 0.006 260 / 0.8)" }}
+        >
+          Concrete. Solar. Batteries. Thermal management. Advanced composites.
+        </p>
+        <p
+          className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.22em] leading-[1.9] text-foreground/75 max-w-[26rem] ml-auto [text-wrap:balance]"
           style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
         >
-          Solar coatings · Batteries{" "}<br />Additives · Composites{" "}<br />Climate infrastructure
+          {/* A no-break space before each dot, so a wrapped line ends on the
+              dot rather than starting with one. */}
+          Graphacrete{"\u00A0"}· Graffisol{"\u00A0"}· Graphenodes{"\u00A0"}· Thermene
         </p>
-        {/* Ventures — the commercial expression of the platform. Given more
-            air above it than the body copy's own line spacing so it reads as
-            its own beat, not a trailing sentence. */}
-        <p className="mt-7 text-sm md:text-[15px] text-foreground/65 leading-relaxed max-w-[26rem] ml-auto">
+        {/* Ventures — the commercial expression of the platform. */}
+        <p
+          className="mt-6 [@media(max-height:560px)]:md:mt-2 text-sm md:text-[15px] text-foreground/70 leading-relaxed max-w-[26rem] ml-auto"
+          style={{ textShadow: "0 1px 10px oklch(0.02 0.006 260 / 0.8)" }}
+        >
           Six operating companies carry that platform into industry.
         </p>
         {/* Link row */}
-        <div className="mt-10 flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-3">
-          <Link
-            to="/innovations"
-            className="text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
-          >
-            Explore Innovations →
-          </Link>
-          <Link
-            to="/ventures"
-            className="text-[11px] uppercase tracking-[0.4em] text-foreground/70 hover:text-foreground transition-colors"
-          >
+        <div className="mt-9 [@media(max-height:560px)]:md:mt-4 flex flex-wrap items-center justify-start md:justify-end gap-x-8 gap-y-3">
+          <Link to="/innovations" className={CHAPTER_LINK}>
+            See the Work →
+          </Link>{" "}
+          <Link to="/ventures" className={CHAPTER_LINK}>
             View Ventures →
           </Link>
         </div>
@@ -582,282 +860,89 @@ function IndustrialContent() {
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 3 — Recognition & Ecosystem (id="recognition")
+   Chapter 6 — The Work Continues (id="future"). Film: the city.
 
-   Recognition and Ecosystem were separate chapters. Merged: the record
-   states the context, the directory is where the reader goes next. One
-   background, one shield, one column — the two never cross-fade against
-   each other, so no duplicated plate and no overlapping text.
+   Where the story lands: the name, then the line the site is known by.
+   "I build what does not yet exist." opened the page until the copy was
+   set to the film; it closes it now, in the same three-line form.
+
+   The founder's line — "The future is not imagined. It is engineered
+   quietly." — used to be Origin's second beat. It is the only place on
+   the site that sentence appears, so it moved here rather than being
+   dropped, and this is the chapter it was always about.
+
+   The four roles are each stated elsewhere on the site: inventor
+   throughout, "serial entrepreneur" in the press on /news, TED@Bangalore
+   and sixty keynotes on /recognitions, six companies advised on
+   /ventures. 25 and 6 are the catalogue on /innovations and the roster
+   on /ventures.
    ────────────────────────────────────────────────────────────────── */
-function RecognitionEcosystemContent() {
+const ROLES = ["Inventor", "Entrepreneur", "Speaker", "Advisor"] as const;
+
+/* One row on a laptop. On a phone the four do not fit on a line at any
+   tracking that still reads as a label, and a wrapping row left "Advisor"
+   alone on the second line, so `pairs` sets them as two rows of two by
+   design. The separator between the rows is still in the text stream. */
+function RoleLine({
+  className = "",
+  pairs = false,
+}: {
+  className?: string;
+  pairs?: boolean;
+}) {
+  const dot = <span className="mx-2.5 text-foreground/30">{" · "}</span>;
+  if (pairs) {
+    return (
+      <p className={`font-mono uppercase ${className}`}>
+        <span className="block">
+          {ROLES[0]}
+          {dot}
+          {ROLES[1]}
+        </span>
+        <span className="sr-only"> · </span>
+        <span className="mt-1.5 block">
+          {ROLES[2]}
+          {dot}
+          {ROLES[3]}
+        </span>
+      </p>
+    );
+  }
   return (
-    /* Symmetric gutters, not a left-only inset.
-
-       This used to be `px-5 sm:px-6 lg:pl-32 xl:pl-36` — padding on the left
-       to clear the chapter rail, and nothing to match it on the right. At
-       1440 that measured 144px of margin on the left and 24px on the right:
-       the whole chapter visibly shunted right and jammed against the edge,
-       which is the composition being complained about.
-
-       So the clearance stays but becomes a gutter on both sides, sized to the
-       rail rather than to a round number. The rail's resting footprint is the
-       68px backing panel in HUD; lg:px-24 (96px) and xl:px-28 (112px) clear it
-       with room while keeping the block centred at every width. Sizing by
-       max-width alone does not work here: max-w-7xl centred at 1366 leaves
-       43px a side, which the rail would sit on top of. */
-    /* pt matches the fixed header (measured 67px at every desktop width), so
-       this chapter centres in the frame *below* the chrome rather than in the
-       raw viewport. It is the one chapter whose block nearly fills the screen
-       — 618px of it — so at 1366x768 pure viewport centring put the eyebrow's
-       box top at exactly 67px, flush against the header with no gap at all.
-       Future Systems needs no equivalent: its block is 540px and clears the
-       header by 47px even at that height. */
-    <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:px-24 xl:px-28 md:pt-[68px]">
-      {/* Bright product/industrial plate. The directory spans nearly the full
-          width in its two-column form, so a left-weighted scrim would leave
-          the right column sitting on the brightest part of the frame — this
-          chapter needs the centre shield, not the left one. */}
-      <ContentShield align="center" strength={0.80} />
-      {/* overflow-y-auto on the inner scroller, not the flex container, so iOS
-          doesn't fight the fixed parent's overflow-hidden on the scroll chain.
-          max-height uses dvh so it's constrained to the actual viewport height
-          and overflow-y actually triggers (100% in flex items-center doesn't). */}
-      {/* The scroll box has to clear the page chrome, not just the viewport:
-          the fixed header sits at the top and MobileCTABar at the bottom on
-          touch widths. Sizing this to the bare viewport centred the content
-          such that the eyebrow tucked under the header and the last directory
-          rows sat behind the CTA bar. */}
-      <div
-        className="relative z-10 mx-auto w-full max-w-6xl xl:max-w-7xl overflow-y-auto overflow-x-hidden overscroll-contain max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-5rem)]"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-      >
-        {/* Eyebrow */}
-        <p className="mb-2 md:mb-6 text-[10px] uppercase tracking-[0.5em] text-primary/80">
-          Recognition &amp; Ecosystem
-        </p>
-        {/* H2 — ~9% smaller ceiling than the other chapter headings and
-            capped in width. At full size this line nearly spans a laptop
-            viewport, which reads as a banner rather than a headline. */}
-        <h2 className="font-display text-[clamp(1.35rem,5.4vw,4rem)] leading-[1.02] md:leading-[1.04] tracking-[-0.04em] text-gradient [text-wrap:balance] max-w-[20ch]">
-          Recognised early. Building continuously.
-        </h2>
-        {/* The record, then the philosophy that outranks it */}
-        <p className="mt-2.5 md:mt-7 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-muted-foreground/85">
-          Six Indian Presidential Awards. NIF-India IGNITE. TED@Bangalore. MIT Technology Review. India Today.
-        </p>
-        <p className="mt-1.5 md:mt-3 max-w-2xl text-[12.5px] md:text-[15px] leading-snug md:leading-relaxed text-foreground/70">
-          The record exists. The next prototype matters more.
-        </p>
-        <Link
-          to="/recognitions"
-          className="mt-3 md:mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.42em] text-foreground/75 hover:text-foreground transition-colors"
-        >
-          Open the archive →
-        </Link>
-
-        {/* Ecosystem directory — restrained editorial index. Single column on
-            mobile, two on md+. Roman numerals retained for archive character.
-            The directory sits over the founder silhouette and the lit works
-            behind it, which is the busiest part of this plate; it carries its
-            own soft scrim rather than pushing the global shield darker and
-            flattening the whole frame. Gradient only — no card, no border. */}
-        <div className="relative mt-3.5 md:mt-12">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 62% 70% at 42% 50%, oklch(0.02 0.006 260 / 0.62) 0%, oklch(0.02 0.006 260 / 0.42) 45%, oklch(0.02 0.006 260 / 0.12) 78%, transparent 100%)",
-            }}
-          />
-          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 gap-y-0">
-          {gateways.map((g) => (
-            <div
-              key={g.to}
-              className="group border-t border-foreground/[0.08] py-1 md:py-4 hover:border-foreground/25 transition-colors duration-500"
-            >
-              <div className="flex items-baseline gap-3 md:gap-5">
-                {/* Fixed column, so all six labels start on the same x. The
-                    numerals are I through VI and this is a baseline flex row,
-                    so an auto width let "III" push Innovations 20px right of
-                    About and Recognitions — a ragged left edge on what is
-                    meant to read as an index. */}
-                <span className="w-6 md:w-8 shrink-0 whitespace-nowrap font-mono text-[10px] md:text-[10px] tracking-[0.4em] text-muted-foreground/45">
-                  {g.n}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <Link
-                    to={g.to}
-                    className="font-display text-base md:text-lg lg:text-xl tracking-[-0.015em] text-foreground/90 hover:text-gradient transition-colors duration-500"
-                    style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.65)" }}
-                  >
-                    {g.label}
-                  </Link>
-                  {/* Sub-line sits over the brightest part of the plate on
-                      narrow screens, so it carries its own shadow rather than
-                      relying on the shield alone. */}
-                  <p
-                    className="mt-0.5 text-[10.5px] md:text-[12.5px] leading-snug text-muted-foreground/80 [text-wrap:balance]"
-                    style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.7)" }}
-                  >
-                    {g.line}
-                  </p>
-                  {g.also.length > 0 && (
-                    <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
-                      {g.also.map((s) => (
-                        <Link
-                          key={s.to}
-                          to={s.to}
-                          className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/50 hover:text-foreground/80 transition-colors"
-                        >
-                          {s.label} →
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <p className={`flex flex-wrap items-center justify-center gap-y-1.5 font-mono uppercase ${className}`}>
+      {ROLES.map((r, i) => (
+        <span key={r} className="inline-flex items-center whitespace-nowrap">
+          <span>{r}</span>
+          {/* The separator trails its item, so a wrap never starts a line
+              with a dot. Margin for the eye, a literal space for the text
+              stream — flex trims a leading space in an item's own text. */}
+          {i < ROLES.length - 1 && dot}
+        </span>
+      ))}
+    </p>
   );
 }
 
-/* ──────────────────────────────────────────────────────────────────
-   Chapter 3 — Recognition & Ecosystem, phone composition.
+/* The name is set the way the preloader sets it — light, wide-tracked
+   capitals — so the page ends on the mark it opened on. */
+const NAME_CLASS =
+  "font-light uppercase tracking-[0.44em] pl-[0.44em] text-foreground/90";
 
-   Desktop can carry the record and the directory in one frame because
-   the directory runs two columns beside the copy. On a phone the same
-   markup collapses into a single column and the whole chapter becomes
-   a wall of 10 px type — the record, six destinations and six
-   descriptions competing at once.
+/* A shadow belongs on the plain last line only. On the two gradient lines the
+   fill is transparent and the gradient is the element's *background*, which
+   paints before text-shadow does — so a dark shadow lands on top of the
+   gradient and greys the letters it was meant to lift. That is what the first
+   version of this heading did: "I build / what does not" came out visibly
+   duller than "yet exist." beneath them. */
+const LAST_LINE_SHADOW = "0 2px 22px oklch(0.04 0.010 240 / 0.7), 0 1px 8px oklch(0.04 0.010 240 / 0.5)";
 
-   So the merge is kept (one background, one shield, one chapter) but
-   the two halves are separated in *time*: the record holds first, the
-   directory replaces it. Descriptions stay in the document for search
-   and screen readers; visually the phone index is labels only, and
-   every destination remains one tap away in the header menu.
-   ────────────────────────────────────────────────────────────────── */
-const RECORD = [
-  "Six Indian Presidential Awards",
-  "NIF-India · IGNITE",
-  "TED@Bangalore",
-  "MIT Technology Review",
-] as const;
-
-function RecognitionMobile({ lp }: { lp: MotionValue<number> }) {
-  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.420));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.475, 1, true));
-  const peA = useTransform(opA, (v) => (v > 0.5 ? "auto" : "none"));
-  const peB = useTransform(opB, (v) => (v > 0.5 ? "auto" : "none"));
-
-  return (
-    <div className="relative w-full h-full overflow-hidden px-6">
-      <ContentShield align="center" strength={0.72} />
-
-      {/* A — the record. Read as an evidence list, not a run-on sentence. */}
-      <motion.div
-        className="absolute inset-x-6 top-[22%] z-10"
-        style={{ opacity: opA, pointerEvents: peA }}
-      >
-        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-primary/80">
-          Recognition
-        </p>
-        <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
-          {/* A <br> is a visual break only — without the space the heading
-              extracts as "Recognised early.Building continuously." */}
-          Recognised early.{" "}<br />Building continuously.
-        </h2>
-        <ul className="mt-8 space-y-2.5">
-          {RECORD.map((r) => (
-            <li
-              key={r}
-              className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-foreground/70"
-              style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.7)" }}
-            >
-              {r}
-            </li>
-          ))}
-        </ul>
-        <p
-          className="mt-8 max-w-[26ch] text-[15px] leading-[1.55] text-foreground/80"
-          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.8)" }}
-        >
-          The record exists. The next prototype matters more.
-        </p>
-        <Link
-          to="/recognitions"
-          className="mt-6 inline-flex items-center gap-3 text-[12px] uppercase tracking-[0.32em] text-foreground/90 transition-colors hover:text-foreground"
-          style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.8)" }}
-        >
-          Open the archive →
-        </Link>
-      </motion.div>
-
-      {/* B — the directory, in its own frame. Labels only. */}
-      <motion.div
-        className="absolute inset-x-6 top-[19%] z-10"
-        style={{ opacity: opB, pointerEvents: peB }}
-      >
-        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-primary/80">
-          Ecosystem
-        </p>
-        <h2 className="font-display text-[clamp(1.9rem,8.6vw,2.5rem)] leading-[1.06] tracking-[-0.03em] text-gradient">
-          The work{" "}<br />continues outward.
-        </h2>
-        <div className="mt-7">
-          {gateways.map((g) => (
-            <Link
-              key={g.to}
-              to={g.to}
-              className="flex items-baseline gap-4 border-t border-foreground/[0.1] py-3.5 transition-colors active:border-foreground/30"
-            >
-              <span
-                className="font-mono text-[10px] tracking-[0.3em] text-foreground/45 w-6 shrink-0"
-                style={{ textShadow: "0 1px 6px oklch(0.02 0.006 260 / 0.8)" }}
-              >
-                {g.n}
-              </span>
-              <span
-                className="font-display text-[17px] tracking-[-0.015em] text-foreground/90"
-                style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.65)" }}
-              >
-                {g.label}
-              </span>
-              <span className="sr-only">— {g.line}</span>
-            </Link>
-          ))}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────────
-   Chapter 4 — Future Systems (id="future")
-   ────────────────────────────────────────────────────────────────── */
 function FutureContent() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden">
-      {/* Centred, and the separation is bought with the scrim rather than
-          with position.
-
-          The closing shot has a figure standing centre frame, so centred copy
-          sits over him. Moving the copy left put it under the chapter rail;
-          moving it right forced a ragged left margin on four lines of body
-          text and orphaned "scale." onto its own headline line. Both traded a
-          composition problem for a reading problem.
-
-          A title card over a subject is normal film grammar — what makes it
-          read as deliberate rather than accidental is contrast. So the shield
-          goes to 0.84, the top of the 0.78-0.84 band its own notes prescribe
-          for bright plates and well above the 0.68 this chapter carried when
-          the CTAs first disappeared into his torso, and the headline's shadow
-          roughly doubles in radius and opacity so the type holds its edge
-          wherever it crosses him. */}
+    <div className="relative w-full h-full flex flex-col items-center justify-center text-center overflow-hidden md:pt-[68px]">
+      {/* A title card over a subject. The closing shot puts the tallest
+          tower and a lit sky behind centred copy, so the separation is
+          bought with the scrim rather than with position: 0.84, the top of
+          the band this shield prescribes for bright plates. */}
       <ContentShield align="center" strength={0.84} />
       {/* Atmospheric volumetric glow */}
       <motion.div
@@ -883,177 +968,157 @@ function FutureContent() {
         }}
       />
 
-      {/* Text zone — centred on the viewport, both axes.
-          max-w is in ch/rem rather than a fraction of the viewport so the
-          measure stays constant and the gap to the figure grows with the
-          screen instead of shrinking.
-
-          The block used to carry -translate-y-[3%] md:-translate-y-[5%], a
-          lift off its own height rather than the frame's. At 1440x900 that
-          measured 153px of clearance above the eyebrow against 207px below the
-          domain row — 27px high of the frame it is supposed to be centred in,
-          and the imbalance grows with the block, so it read as "not centred"
-          at exactly the widths where the copy is tallest. Flex centring alone
-          puts it on the frame's axis at every viewport. */}
+      {/* Text zone — centred on the frame below the header, both axes. The
+          large gaps are sized in vh as well as rem so the block still clears
+          a 720px-tall laptop: it is eight rows deep. */}
       <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6">
         {/* Eyebrow */}
-        <p className="mb-5 md:mb-7 text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-muted-foreground">
-          Future Systems
+        <p className="mb-[clamp(0.6rem,3vh,1.75rem)] text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-foreground/70">
+          <span>07</span>
+          {" · "}
+          The Work Continues
         </p>
-        {/* Italic intro */}
-        <p className="mx-auto mb-10 md:mb-14 max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/55">
-          Not a forecast. Just the work, one industrial system at a time.
+        {/* The founder's line */}
+        <p className="mx-auto mb-[clamp(1.5rem,5vh,2.75rem)] max-w-xl font-display italic text-[14px] md:text-[15px] leading-[1.65] text-foreground/75 [@media(max-height:560px)]:hidden">
+          The future is not imagined. It is engineered quietly.
         </p>
-        {/* H2 */}
-        <h2
-          className="mx-auto max-w-[24ch] font-display text-[clamp(1.7rem,4.2vw,3.4rem)] leading-[1.08] tracking-[-0.03em] font-medium text-gradient [text-wrap:balance]"
-          style={{
-            textShadow:
-              "0 2px 26px oklch(0.04 0.010 240 / 0.72), 0 1px 10px oklch(0.04 0.010 240 / 0.55), 0 0 0.5px oklch(0.98 0.008 232 / 0.34)",
-          }}
-        >
-          Energy, water, materials.<br /> Built to industrial scale.
+        {/* Name */}
+        <p className={`mb-[clamp(0.75rem,2.2vh,1.4rem)] text-[clamp(14px,1.55vw,21px)] leading-none ${NAME_CLASS}`}>
+          Sushanth Paatnaik
+        </p>
+        {/* H2 — three block spans; the explicit spaces keep the line
+            "I build what does not yet exist." whole in the text stream. */}
+        <h2 className="mx-auto font-display text-[clamp(1.9rem,min(5.6vw,8.4vh),4.5rem)] leading-[1.0] tracking-[-0.035em] font-medium">
+          <span className="block py-1 text-gradient">I build</span>{" "}
+          <span className="block py-1 text-gradient">what does not</span>{" "}
+          <span className="block py-1 text-foreground/95" style={{ textShadow: LAST_LINE_SHADOW }}>
+            yet exist.
+          </span>
         </h2>
-        {/* Body */}
-        <p className="mx-auto mt-7 md:mt-9 mb-10 md:mb-12 max-w-[52ch] text-[14px] md:text-[15px] leading-[1.8] text-foreground/70">
-          None of this is science fiction. It is calibrated alloys, smarter grids, water systems, hydrogen logistics and engineered materials sitting underneath ordinary industry. The work is slow and technical.
+        {/* Roles, then the count */}
+        <RoleLine className="mt-[clamp(1.25rem,4vh,2.25rem)] text-[10.5px] md:text-[11px] tracking-[0.3em] text-foreground/80" />
+        <p className="mt-2.5 font-mono text-[10.5px] md:text-[11px] uppercase tracking-[0.3em] text-foreground/70">
+          25 Innovations · 6 Ventures
         </p>
         {/* CTA row */}
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:items-center sm:gap-5">
+        <div className="mt-[clamp(1.5rem,4.6vh,2.75rem)] flex flex-col items-center justify-center gap-4 sm:flex-row sm:items-center sm:gap-5">
           <Link to="/contact" className="btn-cinematic btn-cinematic-atmospheric">
             Begin a conversation
-          </Link>
-          <Link to="/engage" className="btn-cinematic-ghost">
-            Engage →
+          </Link>{" "}
+          <Link to="/about" className="btn-cinematic-ghost">
+            Explore my journey →
           </Link>
         </div>
-        {/* Tag row */}
-        <p className="mt-8 md:mt-10 font-mono text-[10px] uppercase tracking-[0.24em] sm:tracking-[0.32em] text-foreground/45 [text-wrap:balance]">
-          Advanced Materials · Energy Systems · Industrial Infrastructure
-        </p>
+        {/* Closing index */}
+        <nav
+          aria-label="Sections"
+          className="mt-[clamp(1.5rem,4.6vh,2.75rem)] -mx-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 [@media(max-height:560px)]:hidden"
+        >
+          {INDEX.map((s) => (
+            <span key={s.to} className="inline-flex">
+              <Link
+                to={s.to}
+                className="font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/70 hover:text-foreground transition-colors"
+              >
+                {s.label}
+              </Link>{" "}
+            </span>
+          ))}
+        </nav>
       </div>
     </div>
   );
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   Chapter 4 — Future Systems, phone composition.
+   Chapter 6 — The Work Continues, phone composition.
 
-   The desktop frame above holds eyebrow, hypothesis, headline,
-   paragraph, two buttons and a domain row at once. On a 360 px
-   portrait screen that stack buries the silhouette it is sitting on,
-   so the phone gets the same thought delivered in five successive
-   states instead of one dense one:
+   Two states, not one. The desktop frame holds the founder's line, the
+   name, the headline, the roles, the count, two buttons and an index;
+   on a 360px portrait screen that stack would bury the skyline it is
+   set against. So the line arrives first, alone, and then the identity
+   replaces it and stays: the last state is also the page's ending.
 
-     A  Not a forecast. Just the work.
-     B  Energy, water, materials.
-     C  Built to industrial scale.
-     D  Advanced Materials · Energy Systems · Industrial Infrastructure
-     E  The next century will be engineered. → Begin a conversation
-
-   The long paragraph is kept in the document for search and screen
-   readers but is never painted over the frame. The eyebrow persists
-   across every state so the chapter never loses its label, and text
-   is held in the upper band of the frame so the silhouette and the
-   industrial landscape below it stay uncovered.
+   The band is 105vh, so two states hold for roughly 36vh and 64vh. Three
+   would have held for under 30vh each, which is the pace this page
+   already measured as too quick to read on a phone.
    ────────────────────────────────────────────────────────────────── */
 function FutureMobile({ lp }: { lp: MotionValue<number> }) {
-  // Four states, not five. The thesis is one sentence pair — desktop sets
-  // it as a single h2 with a line break — and splitting it across two
-  // scroll states was buying a hand-over with reading time. Five states
-  // in a 250vh band could only afford 0.38 of a phone screen each, about
-  // one gentle swipe; four afford half a screen, and the pair now reads
-  // as the single thought it is.
-  //
-  // 0.20 + 0.22 + 0.20 + 0.215 hold, 3 x 0.055 hand-over = 1.000.
-  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.200));
-  const opB = useTransform(lp, (v) => stageOp(v, 0.255, 0.475));
-  const opC = useTransform(lp, (v) => stageOp(v, 0.530, 0.730));
-  const opD = useTransform(lp, (v) => stageOp(v, 0.785, 1, true));
-  const peD = useTransform(opD, (v) => (v > 0.5 ? "auto" : "none"));
+  // 0.34 hold + 0.055 hand-over + 0.605 hold = 1.000.
+  const opA = useTransform(lp, (v) => stageOp(v, 0.000, 0.340));
+  const opB = useTransform(lp, (v) => stageOp(v, 0.395, 1, true));
+  const peB = useTransform(opB, (v) => (v > 0.5 ? "auto" : "none"));
 
-  // Upper text band: clear of the subject's head at the top and of the
-  // silhouette's body below. Every transient state lands in this box.
-  const band = "absolute inset-x-0 top-[26%] px-6 text-center";
+  // Upper text band, clear of the header above and of the towers below.
+  const band = "absolute inset-x-0 top-[24%] px-6 text-center";
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {/* Lighter than the desktop shield: on a phone the frame is the
-          argument, so it is lifted for contrast rather than covered. */}
-      <ContentShield align="center" strength={0.46} />
+      {/* The portrait crop puts the lit sky directly behind the text band,
+          so the scrim is weighted to the head of the frame and lets the
+          skyline through below it. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.70) 34%, rgba(0,0,0,0.46) 54%, rgba(0,0,0,0.14) 70%, transparent 80%)",
+        }}
+      />
 
       {/* Persistent chapter label */}
-      <p className="absolute inset-x-0 top-[17%] z-10 text-center text-[10px] uppercase tracking-[0.32em] text-foreground/70">
-        Future Systems
+      <p className="absolute inset-x-0 top-[16%] z-10 text-center text-[10px] uppercase tracking-[0.32em] text-foreground/80">
+        <span>07</span>
+        {" · "}
+        The Work Continues
       </p>
 
-      {/* Full copy preserved for search and assistive tech, never painted */}
-      <p className="sr-only">
-        None of this is science fiction. It is calibrated alloys, smarter grids, water systems, hydrogen logistics and engineered materials sitting underneath ordinary industry. The work is slow and technical.
-      </p>
-
-      {/* A — the premise */}
+      {/* A — the founder's line */}
       <motion.p
-        className={`${band} z-10 font-display italic text-[16px] leading-[1.6] text-foreground/75`}
-        style={{ opacity: opA }}
+        className={`${band} z-10 font-display italic text-[17px] leading-[1.6] text-foreground/85`}
+        style={{ opacity: opA, textShadow: "0 1px 12px oklch(0.03 0.008 250 / 0.7)" }}
       >
-        Not a forecast.{" "}<br />Just the work.
+        The future is not imagined.{" "}
+        <br />
+        It is engineered quietly.
       </motion.p>
 
-      {/* B — the thesis, both halves together. Four lines at this size, so
-          it is set a step smaller than the single-sentence states were and
-          the two sentences are separated by leading rather than by scroll. */}
-      <motion.h2
-        className={`${band} z-10 font-display text-[clamp(1.75rem,8.0vw,2.25rem)] leading-[1.12] tracking-[-0.03em] font-medium text-gradient`}
-        style={{ opacity: opB, textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
-      >
-        Energy, water,{" "}<br />materials.{" "}
-        <span className="mt-3 block">
-          Built to{" "}<br />industrial scale.
-        </span>
-      </motion.h2>
-
-      {/* C — the domains, stacked so they read rather than wrap */}
-      <motion.div
-        className={`${band} z-10 flex flex-col items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/80`}
-        style={{ opacity: opC }}
-      >
-        <span>Advanced Materials</span>
-        <span className="h-px w-6 bg-foreground/20" aria-hidden />
-        <span>Energy Systems</span>
-        <span className="h-px w-6 bg-foreground/20" aria-hidden />
-        <span>Industrial Infrastructure</span>
-      </motion.div>
-
-      {/* D — closing state. Statement in the text band, the single CTA and
-          the page's ending anchored to the bottom, clear of Android's
-          navigation area and Chrome's controls. */}
+      {/* B — the identity, and the page's ending */}
       <motion.div
         className="absolute inset-0 z-10"
-        style={{ opacity: opD, pointerEvents: peD }}
+        style={{ opacity: opB, pointerEvents: peB }}
       >
-        <p
-          className={`${band} font-display text-[clamp(2.05rem,9.4vw,2.6rem)] leading-[1.06] tracking-[-0.03em] font-medium text-gradient`}
-          style={{ textShadow: "0 1px 16px oklch(0.05 0.012 240 / 0.5)" }}
-        >
-          The next century{" "}<br />will be engineered.
-        </p>
+        <div className={band}>
+          <p className={`mb-4 text-[13px] leading-none ${NAME_CLASS}`}>
+            Sushanth Paatnaik
+          </p>
+          <h2 className="font-display text-[clamp(2.2rem,10.6vw,2.9rem)] leading-[1.02] tracking-[-0.035em] font-medium">
+            <span className="block py-0.5 text-gradient">I build</span>{" "}
+            <span className="block py-0.5 text-gradient">what does not</span>{" "}
+            <span className="block py-0.5 text-foreground/95" style={{ textShadow: LAST_LINE_SHADOW }}>
+              yet exist.
+            </span>
+          </h2>
+          <RoleLine pairs className="mt-6 text-[10px] tracking-[0.24em] text-foreground/80" />
+          <p className="mt-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/75">
+            25 Innovations · 6 Ventures
+          </p>
+        </div>
 
-        {/* The closing block sits over the brightest part of the plate —
-            the lit industrial landscape. It carries its own bottom lift so
-            the CTA and the page's ending stay legible without darkening the
-            whole frame. */}
+        {/* The closing block sits over the brightest part of the plate — the
+            lit city. It carries its own bottom lift so the CTA and the page's
+            ending stay legible without darkening the whole frame. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.02 0.006 260 / 0.34) 34%, oklch(0.02 0.006 260 / 0.72) 72%, oklch(0.02 0.006 260 / 0.88) 100%)",
+              "linear-gradient(180deg, transparent 0%, oklch(0.02 0.006 260 / 0.40) 30%, oklch(0.02 0.006 260 / 0.78) 68%, oklch(0.02 0.006 260 / 0.90) 100%)",
           }}
         />
         <div
-          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-5 px-6"
-          style={{ paddingBottom: "max(1.75rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem))" }}
+          className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 px-6"
+          style={{ paddingBottom: "max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1.1rem))" }}
         >
           {/* Editorial CTA — a rule, not a pill. The arrow is the affordance. */}
           <Link
@@ -1063,16 +1128,21 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
             <span>Begin a conversation</span>{" "}
             <span className="transition-transform duration-300 group-active:translate-x-1" aria-hidden>→</span>
           </Link>
+          <Link
+            to="/about"
+            className="inline-flex min-h-6 items-center text-[11px] uppercase tracking-[0.3em] text-foreground/75 transition-colors hover:text-foreground active:text-foreground"
+          >
+            Explore my journey →
+          </Link>
 
-          <div className="flex flex-col items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.3em]">
-            <span className="text-foreground/75">Sushanth Paatnaik</span>
-            <span className="text-foreground/45">© 2026</span>
-          </div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/65">
+            © 2026 Sushanth Paatnaik
+          </p>
 
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex min-h-6 items-center font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55 transition-colors hover:text-foreground/85"
+            className="inline-flex min-h-6 items-center font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/70 transition-colors hover:text-foreground"
           >
             Back to top ↑
           </button>
@@ -1209,6 +1279,15 @@ function chapY(sp: number, n: number, yIn: number, yOut: number): number {
 /* ──────────────────────────────────────────────────────────────────
    Main export — single sticky cinematic stage
    ────────────────────────────────────────────────────────────────── */
+
+// The archive photographs are fetched once the reader reaches this chapter —
+// the one before Presidential Recognition — and not on first paint. They sit
+// inside a fixed stage, so to the browser they are "in the viewport" from the
+// first frame and loading="lazy" would fetch them immediately; mounting them
+// late is what actually defers the bytes. A full chapter of scrolling is ample
+// lead: three files, 197 KB together.
+const ARM_PLATES_AT = 1;
+
 export default function ScrollSections() {
   const reduce = useReducedMotionSafe();
   const mobile = useIsMobileStage();
@@ -1230,6 +1309,8 @@ export default function ScrollSections() {
   const op2 = useTransform(scrollYProgress, (sp) => chapOp(sp, 2));
   const op3 = useTransform(scrollYProgress, (sp) => chapOp(sp, 3));
   const op4 = useTransform(scrollYProgress, (sp) => chapOp(sp, 4));
+  const op5 = useTransform(scrollYProgress, (sp) => chapOp(sp, 5));
+  const op6 = useTransform(scrollYProgress, (sp) => chapOp(sp, 6));
 
   /* Exactly one chapter is interactive at a time — the dominant one.
      ─────────────────────────────────────────────────────────────────
@@ -1261,19 +1342,31 @@ export default function ScrollSections() {
   const pe2 = useTransform(dominant, (d) => (d === 2 ? "auto" : "none"));
   const pe3 = useTransform(dominant, (d) => (d === 3 ? "auto" : "none"));
   const pe4 = useTransform(dominant, (d) => (d === 4 ? "auto" : "none"));
+  const pe5 = useTransform(dominant, (d) => (d === 5 ? "auto" : "none"));
+  const pe6 = useTransform(dominant, (d) => (d === 6 ? "auto" : "none"));
 
   /* `aria-hidden` and `inert` are attributes, not styles, so they cannot ride
      a MotionValue — they need a render. This is the only per-scroll React
-     state on the page and it changes five times over the whole page, not per frame.
+     state on the page and it changes seven times over the whole page, not per
+     frame.
 
-     Without it a screen reader reads all five chapters as one continuous
+     Without it a screen reader reads all seven chapters as one continuous
      document and keyboard focus tabs into links sitting at opacity 0. `inert`
      covers the focus half, `aria-hidden` the announcement half; React 19
-     passes both straight through. */
+     passes both straight through.
+
+     `armed` rides the same subscription: it latches on the first time the
+     reader reaches ARM_PLATES_AT and never clears, so the photographs load
+     once and stay. */
   const [activeChapter, setActiveChapter] = useState(0);
+  const [armed, setArmed] = useState(false);
   useEffect(() => {
-    setActiveChapter(dominant.get());
-    return dominant.on("change", (d) => setActiveChapter(d));
+    const apply = (d: number) => {
+      setActiveChapter(d);
+      if (d >= ARM_PLATES_AT) setArmed(true);
+    };
+    apply(dominant.get());
+    return dominant.on("change", apply);
   }, [dominant]);
 
   const y0 = useTransform(scrollYProgress, (sp) => chapY(sp, 0, yIn, yOut));
@@ -1281,36 +1374,18 @@ export default function ScrollSections() {
   const y2 = useTransform(scrollYProgress, (sp) => chapY(sp, 2, yIn, yOut));
   const y3 = useTransform(scrollYProgress, (sp) => chapY(sp, 3, yIn, yOut));
   const y4 = useTransform(scrollYProgress, (sp) => chapY(sp, 4, yIn, yOut));
+  const y5 = useTransform(scrollYProgress, (sp) => chapY(sp, 5, yIn, yOut));
+  const y6 = useTransform(scrollYProgress, (sp) => chapY(sp, 6, yIn, yOut));
 
-  // ── Origin's internal two-beat cross-fade ────────────────────────────────
-  // Local progress inside chapter 0's band, then a single dissolve from the
-  // hero (beat A) to the founder's voice (beat B). Reduced motion skips the
-  // dissolve entirely and holds the hero, so nothing animates and no text is
-  // ever mid-fade.
-  const BEAT_FROM = 0.46;
-  const BEAT_TO   = 0.60;
-  const lp0 = useTransform(scrollYProgress, (sp) => {
-    const [bIn, bOut] = CHAPTER_BANDS[0];
-    return c01((sp - bIn) / (bOut - bIn));
-  });
-  const beatA = useTransform(lp0, (v) =>
-    reduce ? 1 : 1 - eoo(c01((v - BEAT_FROM) / (BEAT_TO - BEAT_FROM))),
-  );
-  const beatB = useTransform(lp0, (v) =>
-    reduce ? 0 : eoo(c01((v - BEAT_FROM) / (BEAT_TO - BEAT_FROM))),
-  );
-  const peA = useTransform(beatA, (v) => (v > 0.5 ? "auto" : "none"));
-  const peB = useTransform(beatB, (v) => (v > 0.5 ? "auto" : "none"));
-
-  // Local progress inside chapters 3 and 4 — the timeline the phone's
-  // staged compositions run on. Computed unconditionally (hooks cannot be
+  // Local progress inside chapters 2 and 6 — the timeline the phone's staged
+  // compositions run on. Computed unconditionally (hooks cannot be
   // conditional); desktop simply never reads them.
-  const lp3 = useTransform(scrollYProgress, (sp) => {
-    const [bIn, bOut] = CHAPTER_BANDS[3];
+  const lp2 = useTransform(scrollYProgress, (sp) => {
+    const [bIn, bOut] = CHAPTER_BANDS[2];
     return c01((sp - bIn) / (bOut - bIn));
   });
-  const lp4 = useTransform(scrollYProgress, (sp) => {
-    const [bIn, bOut] = CHAPTER_BANDS[4];
+  const lp6 = useTransform(scrollYProgress, (sp) => {
+    const [bIn, bOut] = CHAPTER_BANDS[6];
     return c01((sp - bIn) / (bOut - bIn));
   });
 
@@ -1318,7 +1393,7 @@ export default function ScrollSections() {
     <>
       {/* Ghost scroll track — provides TOTAL_VH of scroll travel and chapter anchor points */}
       <div className="relative" style={{ height: `${TOTAL_VH}vh` }}>
-        {(["spark", "carbon-intelligence", "industrial", "recognition", "future"] as const).map((id, i) => (
+        {HOME_CHAPTER_IDS.map((id, i) => (
           <div
             key={id}
             id={id}
@@ -1340,54 +1415,78 @@ export default function ScrollSections() {
       >
         <ScrollProgressBar progress={scrollYProgress} />
 
-        {/* Chapter 0 — Origin (hero → founder voice, one chapter, two beats) */}
+        {/* Chapter 0 — Origin */}
         <motion.div
           className="absolute inset-0"
           style={{ opacity: op0, y: y0, pointerEvents: pe0, willChange: wc }}
           aria-hidden={activeChapter !== 0}
           inert={activeChapter !== 0}
         >
-          <OriginContent beatA={beatA} beatB={beatB} peA={peA} peB={peB} />
+          <OriginHero />
         </motion.div>
 
-        {/* Chapter 1 — Material Intelligence */}
+        {/* Chapter 1 — Early Works */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op1, y: y1, pointerEvents: pe1, willChange: wc }}
           aria-hidden={activeChapter !== 1}
           inert={activeChapter !== 1}
         >
-          <MaterialContent />
+          <EarlyWorksContent />
         </motion.div>
 
-        {/* Chapter 2 — Industrial Translation */}
+        {/* Chapter 2 — Presidential Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op2, y: y2, pointerEvents: pe2, willChange: wc }}
           aria-hidden={activeChapter !== 2}
           inert={activeChapter !== 2}
         >
-          <IndustrialContent />
+          {mobile ? (
+            <PresidentialMobile lp={lp2} armed={armed} />
+          ) : (
+            <PresidentialContent armed={armed} />
+          )}
         </motion.div>
 
-        {/* Chapter 3 — Recognition & Ecosystem */}
+        {/* Chapter 3 — Global Recognition */}
         <motion.div
           className="absolute inset-0 flex items-center"
           style={{ opacity: op3, y: y3, pointerEvents: pe3, willChange: wc }}
           aria-hidden={activeChapter !== 3}
           inert={activeChapter !== 3}
         >
-          {mobile ? <RecognitionMobile lp={lp3} /> : <RecognitionEcosystemContent />}
+          <GlobalContent />
         </motion.div>
 
-        {/* Chapter 4 — Future Systems */}
+        {/* Chapter 4 — Advanced Materials */}
         <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center"
+          className="absolute inset-0 flex items-center"
           style={{ opacity: op4, y: y4, pointerEvents: pe4, willChange: wc }}
           aria-hidden={activeChapter !== 4}
           inert={activeChapter !== 4}
         >
-          {mobile ? <FutureMobile lp={lp4} /> : <FutureContent />}
+          <MaterialContent />
+        </motion.div>
+
+        {/* Chapter 5 — Industrial Impact */}
+        <motion.div
+          className="absolute inset-0 flex items-center"
+          style={{ opacity: op5, y: y5, pointerEvents: pe5, willChange: wc }}
+          aria-hidden={activeChapter !== 5}
+          inert={activeChapter !== 5}
+        >
+          <IndustrialContent />
+        </motion.div>
+
+        {/* Chapter 6 — The Work Continues */}
+        <motion.div
+          className="absolute inset-0 flex flex-col items-center justify-center"
+          style={{ opacity: op6, y: y6, pointerEvents: pe6, willChange: wc }}
+          aria-hidden={activeChapter !== 6}
+          inert={activeChapter !== 6}
+        >
+          {mobile ? <FutureMobile lp={lp6} /> : <FutureContent />}
         </motion.div>
       </div>
     </>

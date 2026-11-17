@@ -110,12 +110,15 @@ export function useChapterPhase(ids: readonly string[]): MotionValue<number> {
 }
 
 // Must stay in the same order as CHAPTER_BANDS — index i here is chapter i
-// there. Founder merged into Origin ("spark") and Ecosystem into Recognition,
-// so those two ids no longer exist as standalone anchors.
+// there. These are the film's seven scenes; "spark", "recognition",
+// "carbon-intelligence", "industrial" and "future" keep the ids they had when
+// the page ran five chapters in a different order.
 export const HOME_CHAPTER_IDS = [
   "spark",
+  "early-works",
+  "presidential",
+  "recognition",
   "carbon-intelligence",
   "industrial",
-  "recognition",
   "future",
 ] as const;

@@ -3,6 +3,10 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import GrapheneAtmosphere from "./GrapheneAtmosphere";
+import { CHAPTER_BANDS, CONTENT_FADE } from "./chapterBands";
+
+// Advanced Materials is chapter 4 in CHAPTER_BANDS.
+const [MATERIAL_IN, MATERIAL_OUT] = CHAPTER_BANDS[4];
 
 interface Props {
   /** Page scroll progress 0..1, supplied by the parent. */
@@ -41,9 +45,14 @@ function CanvasOpacity({ scrollProgress }: { scrollProgress: Props["scrollProgre
   useFrame(() => {
     if (!wrapper) return;
     const p = scrollProgress.current;
-    // Visible across chapters 02 → 04 (Material → Recognition). Must be fully
-    // gone before Ecosystem (p≈0.833) — no polygon mesh in that chapter.
-    const v = Math.max(range(p, 0.14, 0.68, 0.10, 0.08), range(p, 0.28, 0.45, 0.05, 0.10));
+    // Visible across Advanced Materials only — the one chapter whose subject
+    // is the lattice. It used to run from 0.14 to 0.68, which was Material,
+    // Industrial and Recognition while those were the page's middle chapters;
+    // in the film's order that span is the inventor, the hall and Earth, and a
+    // molecular mesh floating over archive photographs of a ceremony is
+    // clutter, not atmosphere. It arrives with the chapter's copy and is gone
+    // before the hand-over to Industrial Impact begins.
+    const v = range(p, MATERIAL_IN, MATERIAL_OUT - CONTENT_FADE, 0.03, 0.03);
     // Lowered ceiling — ambient atmosphere, never spectacle.
     wrapper.style.opacity = String(0.38 * v);
   });

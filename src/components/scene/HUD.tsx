@@ -3,13 +3,15 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import type Lenis from "lenis";
 import { N_CHAPTERS, CHAPTER_BANDS, getChapterFromProgress } from "./chapterBands";
 
-// Order and length must match CHAPTER_BANDS.
+// Order and length must match CHAPTER_BANDS: one marker per scene of the film.
 const chapters = [
   { id: "spark", label: "Origin" },
-  { id: "carbon-intelligence", label: "Material Intelligence" },
-  { id: "industrial", label: "Industrial Translation" },
-  { id: "recognition", label: "Recognition & Ecosystem" },
-  { id: "future", label: "Future Systems" },
+  { id: "early-works", label: "Early Works" },
+  { id: "presidential", label: "Presidential Recognition" },
+  { id: "recognition", label: "Global Recognition" },
+  { id: "carbon-intelligence", label: "Advanced Materials" },
+  { id: "industrial", label: "Industrial Impact" },
+  { id: "future", label: "The Work Continues" },
 ];
 
 export default function HUD({

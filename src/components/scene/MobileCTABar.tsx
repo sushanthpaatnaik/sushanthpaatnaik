@@ -23,10 +23,10 @@ export default function MobileCTABar() {
       const scrollY = window.scrollY;
       const travel = document.body.scrollHeight - window.innerHeight;
       // Retire the persistent rail the moment the closing chapter opens.
-      // Future Systems ends on its own "Begin a conversation" — showing
+      // The Work Continues ends on its own "Begin a conversation" — showing
       // both means two conversion actions on one phone screen, which is
-      // what this threshold exists to prevent. CHAPTER_BANDS[4][0] is the
-      // single source of truth for where that chapter starts.
+      // what this threshold exists to prevent. The last entry of
+      // CHAPTER_BANDS is the single source of truth for where it starts.
       const progress = travel > 0 ? scrollY / travel : 0;
       const inFinalChapter = progress >= CHAPTER_BANDS[N_CHAPTERS - 1][0];
       setVisible(scrollY > SHOW_THRESHOLD && !inFinalChapter);
@@ -42,7 +42,11 @@ export default function MobileCTABar() {
   return (
     <div
       aria-hidden={!visible}
-      className={`fixed bottom-0 left-0 right-0 z-[60] transition-all duration-500 ease-out lg:hidden ${
+      // Hidden below 480px of height — a phone held sideways. There the bar and
+      // its fade take 84 of 390 pixels, and every chapter's composition is
+      // already sized to the height that is left; the header's menu and the
+      // closing chapter both still reach the contact page.
+      className={`fixed bottom-0 left-0 right-0 z-[60] transition-all duration-500 ease-out lg:hidden [@media(max-height:480px)]:hidden ${
         visible ? "translate-y-0 opacity-100 pointer-events-auto" : "translate-y-full opacity-0 pointer-events-none"
       }`}
     >
