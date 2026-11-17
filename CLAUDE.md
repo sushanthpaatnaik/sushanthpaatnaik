@@ -1,12 +1,19 @@
 # Site — FROZEN
 
-The whole site is frozen as of `f0c46557` — the last commit that changed site
+The whole site is frozen as of `d9437694` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. Two subsystems carry their own
-detailed records below — the homepage motion system and the /innovations
-product panel — and everything in this first section applies site-wide.
+and `__root.tsx`. Three subsystems carry their own
+detailed records below — the homepage motion system, the film it plays and the
+/innovations product panel — and everything in this first section applies
+site-wide.
+
+This anchor sat at `f0c46557` through a run of later commits that did change
+site code — a portrait, a scroll fix, several passes over the copy, the
+advisory roster — because none of them touched this file. An anchor nobody
+moves is worse than none: it says the code is older than it is. Move it in the
+record commit that follows any code change, every time.
 
 **Last verified against production: 2026-08-20.** Re-freezing when nothing has
 changed does not need a new anchor — it needs this line re-dated and the claims
