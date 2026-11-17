@@ -27,6 +27,11 @@
 # If the sequence is ever regenerated again, bump SEQUENCE_PATH in
 # CanvasLayer.tsx (or rename the directory) rather than relying on this
 # window to expire.
+#
+# That is what happened when the film was replaced outright: the inventor film
+# lives in /sequences/inventor-film/, not in the old founder-film directory, so
+# no visitor can be served a cached frame of the previous film under a URL the
+# new one reuses.
 /sequences/*
   Cache-Control: public, max-age=2592000
 

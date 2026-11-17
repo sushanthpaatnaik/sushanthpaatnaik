@@ -6,8 +6,8 @@
  * sequence (CanvasLayer) and the chapter rail (HUD) all import this, so
  * their bands are always identical.
  *
- *  0  Origin                 0.000 – 0.210  (0.210 — opens on Earth, dissolves
- *                                            into the founder's lab; carries
+ *  0  Origin                 0.000 – 0.210  (0.210 — opens on the workbench and
+ *                                            arrives at the inventor; carries
  *                                            the hero and the founder voice)
  *  1  Material Intelligence  0.210 – 0.390  (0.180)
  *  2  Industrial Translation 0.390 – 0.550  (0.160)
@@ -36,10 +36,13 @@
  * 0.180 after the page was shortened to 1100vh, where it was still holding for
  * only 0.96 of a phone screen against Origin's 1.83. It is now 1.26 screens.
  *
- * Every boundary moved so far sits inside continuous footage — the founder
- * over the lattice runs unbroken from ~0.32 to ~0.46, and the interior
- * sequence carries the Industrial → Recognition → Future hand-overs — so no
- * text/frame pairing is disturbed. Verify that before moving them again.
+ * These bands were sized against the previous film, where every boundary sat
+ * inside continuous footage. They are unchanged for the inventor film, whose
+ * scenes run in a different order from the chapters — which scene sits behind
+ * which band is tabulated under "The inventor film" in CLAUDE.md. Read that
+ * before moving a boundary: the bands are sized by what each chapter has to
+ * say, not by where the film cuts, and moving one to chase a cut re-opens the
+ * pacing work recorded above.
  *
  * Previously seven bands: Founder was its own chapter between Origin and
  * Material, and Ecosystem its own chapter after Recognition. Those merged

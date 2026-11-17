@@ -920,6 +920,11 @@ The cinematic scroll system on `/` is frozen as of `17d221c8`. Do not retune
 easing, smoothing, transition overlap, retention or prefetch behaviour without
 first reproducing a specific, measurable defect.
 
+The film it plays is a separate matter with its own section, **The inventor
+film**, below. Replacing the film changed `FRAME_COUNT` and the sequence
+directory and nothing else in the renderer; every other value in the table is
+exactly as it was.
+
 This is not a style preference. Three separate tuning attempts were measured
 against the live build and all three were reverted because none produced an
 improvement distinguishable from run-to-run variance. Changing these values
@@ -934,7 +939,7 @@ again without evidence is more likely to regress the site than improve it.
 | Lenis on touch / reduced motion | never constructed | `useLenis.ts` |
 | `HANDOVER_OUT` / `HANDOVER_IN` | 0.50 / 0.50 | `chapterBands.ts` |
 | `CHAPTER_BANDS` | 0 / .21 / .39 / .55 / .75 | `chapterBands.ts` |
-| `FRAME_COUNT` | 381 | `CanvasLayer.tsx` |
+| `FRAME_COUNT` | 453 — 227 real + 226 synthesised | `CanvasLayer.tsx` |
 | `RETAIN_RADIUS` | 40 desktop, 55 touch | `CanvasLayer.tsx` |
 | `FALLBACK_RADIUS` | 14 | `CanvasLayer.tsx` |
 | `BLEND_STEPS` | 12, desktop only | `CanvasLayer.tsx` |
@@ -948,23 +953,37 @@ any scroll value the homepage mounts. Do not add a second one.
 
 ## Measured baselines
 
-Re-measure against these before claiming an improvement.
+Re-measure against these before claiming an improvement. Each line says whether
+it was re-measured on the inventor film (2026-11-17) or carried over from the
+previous one; carried-over lines are the renderer's and were not expected to
+move, but they have not been re-proved.
 
 - Determinism: five positions (2700/4050/5400/6750/7920) approached from above
-  and below give identical desired frame, selected frame, chapter and canvas
-  pixel hash. This is the strongest invariant on the page — do not break it.
-- Shot boundaries: never draws a frame from a non-adjacent chapter, forward or
-  reverse. The ±1 frame seen exactly at a seam is the cross-dissolve.
-- Arbitrary stops: 6 desktop and 4 mobile viewports, max 1 chapter readable at
-  a time, 0 coexistence, 0 overflow, 0 blanks, 0 film/copy mismatch.
+  and below give an identical canvas pixel hash. This is the strongest
+  invariant on the page — do not break it. **Re-measured:** 5/5 at 1440, and
+  3/3 at 390 on the portrait set.
+- Frame selection: the picture at rest is the expected frame, `round(progress
+  x 452)`. **Re-measured** by matching the live canvas against the exported
+  frames: 136, 203, 271, 339 and 398 at the five positions, each the expected
+  index, correlation 0.986-0.9998.
+- Arbitrary stops: 6 viewports, 15 samples each, one dominant chapter per
+  sample; no sample paints a second chapter above 5%; longest image-only beat
+  54px. **Re-measured** with `scripts/e2e-scroll.mjs`. The old line here also
+  claimed "0 film/copy mismatch". That is no longer true in the sense it meant
+  — see the scene table under The inventor film.
 - Main thread during scroll: 81.2% idle at 1920x1080. All site JS under 2% of
-  samples. React and framer-motion ~0%.
-- Loading: 33 frames requested initially of 381, 71 resident at rest, peak 12
-  concurrent, CLS 0. LCP ~800ms serving the deployed build locally; the figure
-  measured through a proxy mirror is inflated by the proxy, not the site.
+  samples. React and framer-motion ~0%. *Carried over.*
+- Loading: 41 frames fetched at rest before any scroll at 1440 (1,381 KB) and
+  56 on a 390 phone (1,014 KB); peak 12 and 6 concurrent; CLS 0.
+  **Re-measured**, with the previous film's build on the same harness as
+  control: 41 / 3,096 KB and 56 / 2,023 KB. Same counts, half the bytes. An
+  older record here read "33 requested initially"; 33 is `INITIAL_AHEAD` + 1,
+  the head start alone, counted before the first retention top-up.
 - Decoded memory: ~1.36 GB parked mid-film desktop, ~402 MB portrait mobile.
-  Scales at 8.29 MB per retained frame (1920x1080x4).
-- Draw scale: 1.00x on every desktop and mobile viewport. No upscaling.
+  Scales at 8.29 MB per retained frame (1920x1080x4). *Carried over* — same
+  window, same frame dimensions.
+- Draw scale: never above 1.00x. No upscaling. **Re-measured** at 1440x900:
+  0.83x.
 
 ## Known, deliberate, NOT defects
 
@@ -981,6 +1000,18 @@ Re-measure against these before claiming an improvement.
   position, while a video-and-DOM page has nothing to produce on the way back
   up. The only lever that moves it is a larger retention window, which costs
   memory at 8.29 MB a frame.
+- **After a scroll jump the canvas holds the previous picture until a frame
+  near the new position is resident.** Time to the correct picture after a
+  1500px jump at 1440, ten trials: 310-3877ms (median 799) on the previous
+  film, 349-2272ms (median 618) on the inventor film. On a 390 phone profile
+  both sit at 127-143ms. That is by design — the alternative is cutting to an
+  unrelated frame — and it is not something the film changed.
+- **Reduced motion still fetches the opening window.** 56 frame requests on a
+  390 phone with the preference set, on both films. `useReducedMotionSafe`
+  reports "no preference" for the first render so hydration matches the
+  server, and the loader's first pass goes out before the preference applies.
+  The visitor is shown the still and never sees them. It is waste, not
+  breakage, and it predates this film; fixing it means touching the loader.
 
 ## Measuring this page in a container without a GPU
 
@@ -1000,6 +1031,284 @@ input that reproduces it, the measurement showing it, and the measurement
 showing the fix — with enough runs that the effect exceeds run-to-run variance.
 Reverse-scroll blocking time varies by ±30ms on a mean of ~70ms; three samples
 cannot resolve a real change there.
+
+# The inventor film
+
+The homepage film was replaced on 2026-11-17 with one the owner supplied: a
+1920x1080, 24fps, ten-second clip, 240 frames, AI-generated — it arrived with
+Gemini's sparkle in the corner. The instruction was to use that exact video as
+the scroll background, in HD WebP, with the watermark removed. It plays in its
+own order, linearly, through the unchanged renderer.
+
+Read the scene table before touching anything here. The film's order is not the
+page's, that is known, and it was accepted.
+
+## What was done to the source, and what was not
+
+| | |
+|---|---|
+| Order | untouched |
+| Frames used | 0-226 of 240 |
+| Frames dropped | 227-239 |
+| Watermark | un-blended from every frame |
+| NASA insignia | painted out, frames 119-149 |
+| Frame count | doubled to 453, an exact 2x |
+| Exposure | 38 of the 227 real frames dimmed |
+
+**The dropped tail.** From frame 228 a fake website fades in over the city: a
+"MO.CH" logo, a nav reading "Contart Us / Pontact Us / Llogint Us / Login UP",
+a headline "Our Tiolest Hounge du Innovations". Frame 227 is already dimming
+toward it. The last frame of a scroll film is where the page comes to rest, so
+that screen would have sat permanently under the real header and the closing
+call to action — a second, garbled interface behind the first.
+
+**The insignia.** A generated NASA insignia in a HUD bracket, upper left of the
+Earth shot. It fades in at 119, holds, and leaves through the corner under
+motion blur by 149. NASA's insignia is not free to use, a generated copy on a
+personal homepage reads as an endorsement, and the owner's own brief for this
+work ruled out generated logos. The bracket and its label went with it; the
+arc from India now ends in open space, which reads as intended.
+
+Colour cannot find it: the disc and the ocean beside it are the same blue
+(HSV 105/165/149 against 106/164/135), and a colour mask returned the Earth.
+What worked was tracking its red chevron for position, then taking every
+bright or saturated feature left of the Earth — the Earth being the largest
+bright region, kept 12px clear — closing and dilating that into one blob.
+**Fill from a 25px-median copy of the frame, not from the frame.** Arcs and
+stars touch the hole, and a fill seeded from them smears each one into a pale
+wedge.
+
+## The watermark
+
+Static: the same position, centred on (1740, 900), 72px across, in 213 of 240
+frames by template match, and confirmed two ways that do not depend on
+matching — per-pixel temporal standard deviation shows the sparkle as a hole,
+because a blend scales every change underneath it, and the per-pixel temporal
+minimum shows it as a solid shape, because it never goes dark. It had looked
+like it drifted. That was a downscaled montage, read by eye.
+
+It is a blend, so it was un-blended rather than blurred or cloned over:
+`background = (observed - alpha x overlay) / (1 - alpha)`, per channel. The
+picture under the mark is recovered, not invented.
+
+| | R | G | B |
+|---|---|---|---|
+| alpha at the plateau | 0.326 | 0.338 | 0.374 |
+| overlay value | 227 | 221 | 203 |
+
+Three stages, each there because the one before left something:
+
+1. **Un-blend.** Accurate across the interior to under one level on smooth
+   frames.
+2. **Tone-match, smooth frames only.** Where the surround is featureless, the
+   low-frequency offset between the un-blended patch and a fill from the
+   surround is removed. Weighted by surround texture and gated: a discrepancy
+   under 8 levels is corrected, one over 16 is left alone, because a large one
+   is real picture, not calibration.
+3. **Rebuild the contour.** The source carries encoder ringing round the mark:
+   on smooth dark frames, +14.7 levels two pixels inside the edge and -3.7 one
+   pixel outside it. No matte fixes that. Each contour pixel is rebuilt from
+   nearby non-contour pixels that resemble its own un-blended value, so a
+   picture edge crossing the contour survives — a plain inpaint smeared the
+   edge of the wooden box into a notch. The rebuilt ribbon is 9px on smooth
+   frames and 5px on textured ones, where texture hides the ringing.
+
+Measured on the encoded result: the mark's own template correlates at 0.473
+(median) at its position in the source and 0.049 after; above 0.5 in 87 frames
+before and 0 after. Residual by distance from the edge, mean over smooth
+frames: within 0.7 levels on dark ones, within 1.5 on bright ones.
+
+Three fits were wrong before one was right, and each failed differently:
+
+- Alpha from the single darkest frame came out at 0.52. It was the maximum of
+  a patch with a star in it. Un-blending with it turned the white star black.
+- A regression seeded with an inpainted background gave 0.35 with white
+  assumed, and left a ghost 2-4 levels dark on black backgrounds.
+- The ratio of temporal variance inside to outside gave 0.288 — assumption-free
+  and biased low. It implied an overlay value of 280.
+
+What settled it was a two-parameter fit per channel over the 39 frames whose
+surround is smooth, spanning levels 9 to 160. The intercept is the
+well-determined quantity: the mark adds 74-76 levels on black in every channel.
+
+Any invisible provenance signal in the file was not looked for and was not
+touched.
+
+## Doubling the frames
+
+The renderer wants an integer multiple, and it wants density: 227 frames over
+this page is 4.4vh a frame, which is the stepping a phone was once measured
+complaining about at 4.2. At 2x it is 2.2vh, finer than the previous film's
+2.6.
+
+In-betweens are motion-interpolated. Tested by dropping every odd frame and
+synthesising it back, scored against the real one — the job at double the real
+motion, so pessimistic: 31.1 dB against 24.1 dB for a plain blend, better on
+106 of 112 frames. It lost on six, all inside the bloom-out into the inventor
+shot and the dissolve into the hall, where brightness is changing and there is
+no motion to follow. Pairs 35-42 and 57-64 use a blend instead.
+
+Even indices are the source's own frames and never pass through the
+interpolator. Where two real frames agree, the in-between is taken from them
+rather than from the interpolator, so static regions cannot be hallucinated.
+Every synthesised frame is a true midpoint — PSNR to its two neighbours agreed
+within 0.1 dB at all five pairs sampled — which is the property that stops the
+sequence stepping unevenly.
+
+## The exposure ceiling
+
+The previous film's per-frame mean luminance never exceeded 123.2, and every
+text shield on the page was tuned against that. This film reaches 205 in a
+ten-frame bloom between the workbench and the inventor, and 142-152 across the
+closing city. A scroll film can be stopped anywhere, so a flash that lasts 0.4s
+in the video is a place a reader can sit.
+
+Frames above 105 are rolled off toward 124. 38 of 227 are affected; the lowest
+gain is 0.647, at frame 36. The hall, at 113-118, is touched by 1.5%.
+
+## Export
+
+| Set | Size | Total | Average |
+|---|---|---|---|
+| desktop | 1920x1080, q86 | 53.1 MB | 114 KB |
+| `/p/` portrait phones | 500x1080 centre crop, q84 | 16.2 MB | 35 KB |
+| `/m/` landscape touch | 854x480, q84 | 18.8 MB | 41 KB |
+
+88.1 MB against the previous film's 109.9 MB. The centre crop was checked scene
+by scene: the board, the inventor's face and hands, the hall's central cases,
+India on the globe, the lattice's centre atom, the chip and the towers all sit
+inside it. No per-scene offset is needed.
+
+It lives in `public/sequences/inventor-film/`, a new directory, because frame
+URLs are not content-addressed and `/sequences/` is cached for 30 days. The
+reduced-motion still is the film's own frame 14, `film-still-origin.webp`.
+
+## Which scene is behind which chapter
+
+| Scene | Source frames | Scroll progress | Copy on screen |
+|---|---|---|---|
+| workbench | 0-29 | 0.00-0.13 | Origin: hero, then the dissolve to the founder's voice |
+| bloom | 30-39 | 0.13-0.17 | Origin: founder's voice |
+| inventor at the bench | 40-57 | 0.18-0.25 | hand-over, then Material |
+| dissolve | 58-65 | 0.26-0.29 | Material |
+| recognition hall | 66-113 | 0.29-0.50 | Material's second half, all of Industrial |
+| dissolve | 114-123 | 0.50-0.54 | hand-over |
+| Earth | 124-145 | 0.55-0.64 | Recognition |
+| zoom | 146-155 | 0.65-0.69 | Recognition |
+| graphene lattice | 156-175 | 0.69-0.77 | hand-over, then Future |
+| solar viaduct | 176-195 | 0.78-0.86 | Future |
+| plant | 196-205 | 0.87-0.91 | Future |
+| city | 206-226 | 0.91-1.00 | Future |
+
+So the hall plays behind "Engineering intelligent matter." and "One lattice.
+Many industries.", and the lattice arrives under Future Systems. The film tells
+origin, recognition, the world, graphene, industry, the future; the page runs
+Origin, Material, Industrial, Recognition, Future.
+
+This is recorded, not fixed. The owner asked for the exact video, and no
+mapping can fix it — a time-warp can stretch a scene but cannot reorder two.
+There are two real fixes and both are the owner's decision:
+
+- **Re-sequence the film's scenes to the chapter order.** Needs dissolves at
+  three new joins, and gives the chapters very unequal footage: the lattice is
+  20 source frames and the city 21, against 48 for the hall. Density would
+  spread about 4:1, which is the stutter the renderer's own notes warn about.
+- **Reorder the chapters to the film's order.** Touches the page, not the film.
+
+Do neither unasked.
+
+## What is in the film that someone should know about
+
+It is generated, start to finish. The man at the bench is a generated likeness.
+
+The hall, frames 66-113, shows trophies and framed "ceremony" photographs that
+are generated, on plinths carrying the State Emblem of India, whose use is
+regulated by the State Emblem of India (Prohibition of Improper Use) Act, 2005.
+It sits oddly beside a site whose `/recognitions` page will not print an
+evidence link it cannot source, and whose Presidential ledger itemises four
+citations against a stated six. It is in the film because the film was asked
+for as supplied, and it has been raised with the owner. If it has to come out,
+the replacement is the real archive in `src/assets/hof/`, not another
+generated room.
+
+## Two shields moved with the footage
+
+The text shields in `ScrollSections.tsx` follow what is behind them. Two did
+not survive the new film unchanged.
+
+| | previous film | inventor film, unchanged shield | after |
+|---|---|---|---|
+| Industrial, 390 wide — three list lines | 4.5-6.3 | 2.2-3.1 | 5.4-6.3 |
+| Material, 1440 wide — body paragraph | 2.75-3.23 | 2.33-2.76 | 2.70-2.96 |
+
+Contrast of the stroke cores against the pixels actually behind the glyphs, at
+the weakest sixth of each line.
+
+- **Industrial on phones.** Below `md` the copy is left-aligned, and the only
+  shield was the right-side one: strongest where there is no text, absent
+  where the lines begin. That went unnoticed while the film was dark on that
+  side. The hall puts lit display cases there. A left shield at 0.55 was
+  added, `md:hidden`, on top of the right one.
+- **Material.** The left shield went from 0.62 back to 0.82. It has followed
+  the footage both ways before: 0.82 for the original bright plate, 0.62 when
+  the film behind it became a dim lab. It was left a little short of parity
+  rather than darkened further.
+
+Whole page, every line of fully-arrived copy at 30 scroll stops:
+
+| | lines | below 3:1 | below AA |
+|---|---|---|---|
+| 390 phone, previous film | 212 | 25 | 49 |
+| 390 phone, inventor film | 212 | 18 | 43 |
+| 1440 desktop, previous film | 328 | 122 | 163 |
+| 1440 desktop, inventor film | 328 | 128 | 167 |
+
+The desktop floor is the design's: 10px mono labels and the directory's
+sub-lines at 30-60% alpha, as recorded under Contrast.
+
+## Measured
+
+2026-11-17, local production build under `wrangler dev`, with the previous
+film's build served beside it as control.
+
+- 24 of 24 film checks: frames only from the new directory, every request 200,
+  none to the old film, `/p/` on a portrait phone and `/m/` in landscape,
+  determinism and frame selection as above, 0 console errors, 0px overflow,
+  loader releases, reduced motion shows the new still and scrolls.
+- `scripts/e2e-scroll.mjs`: all passed, 5 inconclusive. **The control build
+  reports the same five** — the keyboard start and four rail jumps, "no
+  movement within 14s" — so they are this container's frame delivery, not the
+  film.
+- 13 routes at 1440 and 390: 200, 0px overflow, one `h1`, absolute canonical,
+  0 errors.
+
+Not verified here, and not verifiable here: how it feels on real hardware.
+This container rasterises in software and has no H.264 decoder. One scroll on
+a real phone is still owed.
+
+## Four more instruments that lied
+
+- **Stepping through pixel data by a number that is not a multiple of four.**
+  A "has the canvas painted yet" guard sampled every 4001st byte, landed on
+  the alpha channel, read 255 and declared a black canvas painted.
+- **A page opened straight after another browser context closes receives no
+  animation frames for about fifteen seconds**, while reporting
+  `visibilityState: "visible"`. The loader still exits — it runs on load
+  callbacks — the page scrolls, and the canvas is an unpainted rectangle. It
+  read as the renderer stalling after a jump, on the phone profile only, and
+  only when that test ran second. Wait for frames to be delivered before
+  measuring anything that is drawn.
+- **A stable canvas is not a settled one.** Six identical reads with nothing in
+  flight is not enough: see the jump note above. Three seconds of stillness
+  was.
+- **`vite preview` answers 500 for `/`.** Its preview plugin looks for
+  `dist/server/server.js`; the build emits `index.js`. Static files still
+  serve, so a frame URL returns 200 and suggests the server is fine. Serve the
+  build with `npx wrangler dev -c dist/server/wrangler.json`.
+
+And one about the tooling rather than the site: `/usr/local/bin/python3` here
+has no numpy; `/usr/bin/python3` does. "The imaging stack is gone" was a
+conclusion drawn from the first one on the path.
 
 # /innovations product panel — FROZEN
 

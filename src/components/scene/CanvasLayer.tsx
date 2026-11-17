@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 import type Lenis from "lenis";
-import sceneSpark from "@/assets/story-01-spark.webp";
+// Reduced motion shows one still instead of the film. It is the film's own
+// frame 14 — the workbench the page opens on — so both paths start on the
+// same picture.
+import filmStill from "@/assets/film-still-origin.webp";
 import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBands";
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
@@ -23,38 +26,38 @@ import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBan
 // replaced. Uniform mapping puts every chapter at 3.2vh/frame — better than
 // the old system everywhere.
 //
-// Content still lands where it should because the film's own arc already
-// follows the page's: Earth/India opening under Origin, the lab and graphene
-// sheet under Founder/Material, the lattice under Industrial Translation
-// ("One lattice. Many industries."), and the sunset facility walk under
-// Future Systems. Verify frame-to-chapter alignment before changing
-// CHAPTER_BANDS or the frame count — but do not reintroduce a non-uniform
-// map to "fix" alignment; that trades a visible stutter for a subtlety.
-const SEQUENCE_PATH = "founder-film";
-// 381 frames: the native-1080p 24fps/8s master (192 frames) interpolated to
-// 48fps — exactly 2x — so every synthesised frame sits at the midpoint of two
-// real ones. Desktop frames are the source's own 1920x1080 with no rescaling.
-// Touch has two sets: /p/ is a 500x1080 centre crop of the same master, for
-// portrait phones, and /m/ is a 854x480 downscale, for landscape. See
-// framesPath for which goes where and why.
+// The film is the owner-supplied inventor film, played in its own order:
+// workbench, the inventor at the bench, the recognition hall, Earth, the
+// graphene lattice, the solar viaduct, the plant, the city.
 //
-// It was 476, a 2.479x resample of the same master, and the non-integer ratio
-// is what made it shake. A fractional resample cannot place every synthesised
-// frame evenly between two real ones, so the sequence steps unevenly on a
-// repeating period. Measured on the served frames: the worst per-frame changes
-// in step size fell at frames 19, 24, 29, 34 and 68, 73, 78 — a regular 5-frame
-// beat. Scrolling through that reads as judder rather than motion, and it is
-// baked into the images, which is why every renderer-side fix left it alone.
+// That order is NOT the page's chapter order (Origin, Material, Industrial,
+// Recognition, Future). Under the linear map the hall sits behind the second
+// half of Material and all of Industrial, Earth behind Recognition, and the
+// lattice arrives under Future. That mismatch is known and recorded, and was
+// accepted so the film plays exactly as supplied — see "The inventor film" in
+// CLAUDE.md. The two honest fixes are re-sequencing the scenes or reordering
+// the chapters, and both are the owner's call. A non-uniform map is not one of
+// them: it cannot change the order, and it trades a visible stutter for
+// nothing.
+const SEQUENCE_PATH = "inventor-film";
+// 453 frames: frames 0-226 of the 1080p 24fps master at exactly 2x, so every
+// synthesised frame sits at the midpoint of two real ones — 227 real + 226
+// synthesised. Even indices are the master's own frames and never pass through
+// the interpolator. Desktop frames are 1920x1080 with no rescaling. Touch has
+// two sets: /p/ is a 500x1080 centre crop of the same frames, for portrait
+// phones, and /m/ is a 854x480 downscale, for landscape. See framesPath for
+// which goes where and why.
 //
-// At 2x the beat is gone: median jerk 0.390 -> 0.060, worst 1.33 -> 0.95, and
-// the remaining worst frames are irregular and content-driven rather than
-// periodic. Density is 2.6vh/frame against the old 2.1 — slightly coarser
-// steps, but even ones, and the sequence is 88MB against 122MB.
+// The ratio has to stay an integer. The previous film was first cut at 2.479x
+// and shook: a fractional resample cannot place every synthesised frame evenly
+// between two real ones, so the sequence steps unevenly on a repeating period
+// — measured then as a regular 5-frame beat, baked into the images where no
+// renderer-side fix could reach it. Regenerated at 2x the beat was gone.
 //
-// If this is ever regenerated, keep the frame count an integer multiple of the
-// master's 192. 381 is 192 real + 189 synthesised; ffmpeg drops the trailing
-// interpolation, which is harmless because the spacing stays uniform.
-const FRAME_COUNT   = 381;
+// If this is ever regenerated, keep it at 2N-1 for N real frames, and put it
+// in a new directory rather than reusing this one: frame URLs are not
+// content-addressed and /sequences/ is cached for 30 days.
+const FRAME_COUNT   = 453;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 function getFrameIndex(sp: number): number {
@@ -982,7 +985,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     >
       {reduce ? (
         <img
-          src={sceneSpark}
+          src={filmStill}
           alt=""
           className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
           style={{ filter: "brightness(0.65) saturate(0.52)" }}
@@ -1044,8 +1047,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
 
       {/* Bottom-right corner deepener — cinematic diagonal shadow. Originally
           added to cover a provenance mark baked into the old per-chapter
-          source clips; left in place as a second line of defense while the
-          new film's own mark is confirmed fully gone, not as the fix itself. */}
+          source clips. The inventor film carried one in the same corner, a
+          static sparkle centred on (1740, 900) of the 1920x1080 frame; that
+          was un-blended from the frames themselves, so this overlay is not
+          what hides it. It does sit over the repaired patch, which is a
+          second reason to leave it exactly as it is. */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

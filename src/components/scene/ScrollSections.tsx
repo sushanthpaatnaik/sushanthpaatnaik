@@ -128,9 +128,12 @@ const gateways = [
 function ContentShield({
   align = "left" as "left" | "right" | "center",
   strength = 0.72,
+  className = "",
 }: {
   align?: "left" | "right" | "center";
   strength?: number;
+  /** Extra classes — used to show a shield at some breakpoints only. */
+  className?: string;
 }) {
   const s = strength;
   const o = (v: number) => (s * v).toFixed(2);
@@ -176,7 +179,7 @@ function ContentShield({
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0"
+      className={`pointer-events-none absolute inset-0 ${className}`}
       style={{ background: bg }}
     />
   );
@@ -467,10 +470,14 @@ function FounderVoice() {
 function MaterialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
-      {/* Material: dim lab footage (founder examining graphene) — moderate
-          shield, left column. Was 0.82 for the old bright-metallic plate;
-          the new footage is already dark, so the old strength crushed it. */}
-      <ContentShield align="left" strength={0.62} />
+      {/* Material: left column. This strength follows the footage, and has
+          moved with it twice — 0.82 for the original bright-metallic plate,
+          0.62 when the film behind it became a dim lab, and 0.82 again for the
+          inventor film, which puts a lit workshop and then the hall here.
+          Measured at 1440 on the body paragraph's four lines, stroke-core
+          contrast against what is actually behind the glyphs: 2.75-3.23 on the
+          previous film, 2.33-2.76 on the inventor film at 0.62. */}
+      <ContentShield align="left" strength={0.82} />
       <div className="relative z-10 mr-auto text-left max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-7 bg-gradient-to-r from-primary via-accent to-transparent" />
@@ -515,8 +522,15 @@ function MaterialContent() {
 function IndustrialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20">
-      {/* Industrial: bright machinery footage, text on right — right-side shield */}
+      {/* Industrial: text on right — right-side shield */}
       <ContentShield align="right" strength={0.80} />
+      {/* Below md the copy is left-aligned, so the right-side shield is strongest
+          where there is no text and absent where the lines begin. That went
+          unnoticed while the film was dark on that side. The inventor film puts
+          the hall's lit cases there: at 390 the three list lines measured
+          2.2-3.1 against 4.5-6.3 on the previous film. A left shield, phones
+          only, on top of the right one. */}
+      <ContentShield align="left" strength={0.55} className="md:hidden" />
       <div className="relative z-10 ml-auto md:text-right max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-7 ml-auto bg-gradient-to-l from-primary via-accent to-transparent" />
