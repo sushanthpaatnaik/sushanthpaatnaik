@@ -443,6 +443,39 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // number in cover() is the one it was.
     let squeezeX = 1;
 
+    // ── A phone's collapsing toolbar ─────────────────────────────────────────
+    // The same defect on the other axis. The buffer's height is innerHeight at
+    // the moment syncSize last ran, and syncSize runs when <html> changes size.
+    // On a phone it does not: the page's height is set in vh, which iOS Safari
+    // and Chrome hold at the large viewport, so when the toolbar collapses
+    // under a scrolling thumb <html> keeps its size while the fixed stage, and
+    // the canvas box with it, grows. The buffer, sized for the shorter screen,
+    // was stretched to fill the taller one. Measured on a screen recording of
+    // the live site on an iPhone: vertical scale over horizontal 1.050, 1.051
+    // and 1.057 at three points down the page with the toolbar collapsed —
+    // the whole scroll — against 1.002 with it showing.
+    //
+    // Corrected the way squeezeX is, in the draw: sizedH is the height the
+    // buffer was sized for, a second observer watches the canvas box, and
+    // cover() draws the frame shorter by the factor the box stretches it.
+    // Resizing the buffer instead would clear the canvas every time the
+    // toolbar moves, which on a phone is every change of scroll direction.
+    // Touch only, and exactly 1 when the box is the height the buffer was
+    // sized for, so a desktop draw is the number it was.
+    let squeezeY = 1;
+    let sizedH = window.innerHeight;
+
+    // The canvas box against the height the buffer was sized for. Reads one
+    // layout value, and only when syncSize has run or the box changed size.
+    const syncBox = () => {
+      const boxH = canvas.clientHeight;
+      const nextSqueeze = isTouch && boxH > 0 ? Math.min(1.25, Math.max(0.8, sizedH / boxH)) : 1;
+      if (nextSqueeze !== squeezeY) {
+        squeezeY = nextSqueeze;
+        lastFrameRef.current = -1; // same picture, redrawn at its own proportions
+      }
+    };
+
     // ── Canvas sizing ────────────────────────────────────────────────────────
     // Cap DPR at 1.5 on mobile. iPhone 15 Pro reports DPR=3 which creates
     // a 1170×2532 buffer — 9× more pixels than needed. At 1.5 the buffer is
@@ -484,6 +517,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         canvas.height = nH;
         lastFrameRef.current = -1; // force redraw after resize
       }
+      sizedH = window.innerHeight;
       // Touch browsers overlay their scrollbars, and innerWidth there follows
       // a pinch zoom, so the factor stays 1 on touch. The clamp is a guard
       // against a transient layout, not a tuning value: a real scrollbar is
@@ -496,12 +530,17 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         squeezeX = nextSqueeze;
         lastFrameRef.current = -1; // same picture, redrawn at its own proportions
       }
+      syncBox();
     };
     syncSize();
     const ro = typeof ResizeObserver !== "undefined"
       ? new ResizeObserver(syncSize)
       : null;
     if (ro) ro.observe(document.documentElement);
+    // Its own observer, calling syncBox alone: syncSize would resize — and so
+    // clear — the buffer whenever the toolbar moves.
+    const boxRo = typeof ResizeObserver !== "undefined" ? new ResizeObserver(syncBox) : null;
+    if (boxRo) boxRo.observe(canvas);
 
     // ── Grade fill styles, built once per canvas size ────────────────────────
     // A CSS `Ndeg` gradient runs clockwise from "to top", and its line is
@@ -539,10 +578,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // tick's redraw condition for why.
     const cover = (bmp: ImageBitmap, cW: number, cH: number, alpha: number) => {
       // squeezeX is 1 unless a classic scrollbar narrows the box this buffer
-      // is shown in — see where it is declared.
-      const scale = Math.max(cW / (bmp.width * squeezeX), cH / bmp.height);
+      // is shown in, and squeezeY is 1 unless a phone's toolbar has made the
+      // box taller than the buffer was sized for — see where they are declared.
+      const scale = Math.max(cW / (bmp.width * squeezeX), cH / (bmp.height * squeezeY));
       const dW    = bmp.width  * scale * squeezeX;
-      const dH    = bmp.height * scale;
+      const dH    = bmp.height * scale * squeezeY;
       ctx.globalAlpha = alpha;
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
     };
@@ -1015,6 +1055,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
       ro?.disconnect();
+      boxRo?.disconnect();
       abortControllersRef.current.forEach(c => c.abort());
       abortControllersRef.current.clear();
       bitmapsRef.current.forEach(bmp => bmp?.close());
