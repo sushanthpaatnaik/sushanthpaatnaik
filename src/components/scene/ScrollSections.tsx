@@ -295,8 +295,12 @@ function OriginHero() {
 
         {/* Supporting line */}
         <p className="mx-auto mt-10 md:mt-14 [@media(max-height:560px)]:mt-5 max-w-xl font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80 [text-wrap:balance]">
+          {/* Two lines everywhere, as a laptop sets it. Left to balance on a
+              phone, the line fitted once in the iPhone's face and ran edge to
+              edge under a headline two thirds its width — a 390px iPhone,
+              read off the owner's recording; Inter, wider, had wrapped it. */}
           A young inventor. A workbench.{" "}
-          <br className="hidden md:inline" />
+          <br />
           The beginning of a journey.
         </p>
       </div>
@@ -402,7 +406,9 @@ function EarlyWorksContent() {
           <p className="mt-5 md:mt-7 stage-ls:mt-4 font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75">
             2008–2013
           </p>
-          <p className="mt-2.5 max-w-[26rem] text-[14.5px] md:text-base leading-relaxed text-foreground/80">
+          {/* Balanced: unbalanced, a 390px iPhone left "wearable safety." on a
+              line of its own under one that ran to the margin. */}
+          <p className="mt-2.5 max-w-[26rem] text-[14.5px] md:text-base leading-relaxed text-foreground/80 [text-wrap:balance]">
             From vehicle safety and assistive technology to energy and wearable safety.
           </p>
           <Link to="/early-works" className={`mt-6 md:mt-9 stage-ls:mt-5 ${CHAPTER_LINK}`}>
@@ -972,7 +978,27 @@ function MaterialContent() {
    Cement, Graffisol in Solar · Coatings, Graphenodes in Energy Storage ·
    Electrodes, Thermene in Thermal · Interfaces. Composites has no name
    here because the brief that set this copy named four.
+
+   What each one is comes from its own catalogue entry, cut to a noun
+   phrase — not from the brief that asked for descriptors, whose "Graphene
+   Thermal Management" and "Advanced Battery Materials" are not how the
+   catalogue describes those products:
+     Graphacrete  "Graphene nano-platelet admixture transforming standard
+                  concrete into a high-performance material."
+     Graffisol    "Solar coating delivering higher annual yield, …"
+     Graphenodes  "…graphene polymer cathode and anode materials for
+                  high-density batteries", in Energy Storage · Electrodes
+     Thermene     "Graphene-loaded thermal interface compound. …"
+   Each descriptor carries the industry the line above names for it, in
+   the same order. None is a performance claim.
    ────────────────────────────────────────────────────────────────── */
+const PRODUCTS = [
+  { name: "Graphacrete", what: "Concrete admixture" },
+  { name: "Graffisol", what: "Solar coating" },
+  { name: "Graphenodes", what: "Battery electrode materials" },
+  { name: "Thermene", what: "Thermal interface compound" },
+] as const;
+
 function IndustrialContent() {
   return (
     <div className="relative w-full h-full flex items-center px-5 sm:px-6 lg:pl-32 lg:pr-16 xl:pl-36 xl:pr-20 stage-ls:pt-14">
@@ -986,7 +1012,11 @@ function IndustrialContent() {
       <ContentShield align="left" strength={0.7} className="md:hidden" />
       <div className="relative z-10 ml-auto md:text-right max-w-2xl">
         {/* Decorative line */}
-        <div className="h-px w-20 md:w-24 mb-7 stage-ls:mb-3 ml-auto bg-gradient-to-l from-primary via-accent to-transparent" />
+        {/* At the copy's own edge: flush right where the copy is, which is
+            from md up, and flush left below that, the way chapter 5 sets its
+            rule. It stayed at the right edge on a phone, over copy that starts
+            at the left. */}
+        <div className="h-px w-20 md:w-24 mb-7 stage-ls:mb-3 md:ml-auto bg-gradient-to-r md:bg-gradient-to-l from-primary via-accent to-transparent" />
         <Eyebrow n="06" className="mb-6 stage-ls:mb-3">
           Industrial Impact
         </Eyebrow>
@@ -994,20 +1024,38 @@ function IndustrialContent() {
           <span className="block">One material platform.</span>{" "}
           <span className="block">Many industries.</span>
         </h2>
+        {/* On a phone held sideways the sentence takes the column's width
+            and one line instead of two. On one under 340px tall it steps
+            back: the four rows under it name four of its five industries,
+            and with both the chapter ran 40px into the header at 568x320. */}
         <p
-          className="text-[15px] md:text-base text-foreground/85 leading-relaxed max-w-[26rem] ml-auto"
+          className="text-[15px] md:text-base text-foreground/85 leading-relaxed max-w-[26rem] stage-ls:max-w-none ml-auto [@media(orientation:landscape)_and_(max-height:340px)]:hidden"
           style={{ textShadow: "0 1px 10px oklch(0.02 0.006 260 / 0.8)" }}
         >
           Concrete. Solar. Batteries. Thermal management. Advanced composites.
         </p>
-        <p
-          className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.22em] leading-[1.9] text-foreground/75 max-w-[26rem] ml-auto [text-wrap:balance]"
+        {/* One product to a row: the name as the label it was, then what it
+            is. Flush right on a laptop like everything else in the column,
+            flush left on a phone. The row's size is the descriptor's, so
+            the line height is set by the text in it: left at the inherited
+            16px, four rows stood 28px apart. */}
+        <ul
+          className="mt-4 stage-ls:mt-2 max-w-[26rem] ml-auto"
           style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.85)" }}
         >
-          {/* A no-break space before each dot, so a wrapped line ends on the
-              dot rather than starting with one. */}
-          Graphacrete{"\u00A0"}· Graffisol{"\u00A0"}· Graphenodes{"\u00A0"}· Thermene
-        </p>
+          {PRODUCTS.map((p) => (
+            <li
+              key={p.name}
+              className="text-[13px] md:text-[13.5px] leading-[1.7] stage-ls:leading-[1.5]"
+            >
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-foreground/85">
+                {p.name}
+              </span>
+              <span className="text-foreground/35">{" · "}</span>
+              <span className="text-foreground/80">{p.what}</span>
+            </li>
+          ))}
+        </ul>
         {/* Ventures — the commercial expression of the platform. */}
         <p
           className="mt-6 stage-ls:mt-2 text-sm md:text-[15px] text-foreground/70 leading-relaxed max-w-[26rem] ml-auto"
@@ -1041,27 +1089,30 @@ function IndustrialContent() {
    the site that sentence appears, so it moved here rather than being
    dropped, and this is the chapter it was always about.
 
-   The four roles are each stated elsewhere on the site: inventor
+   Four of the five roles are stated elsewhere on the site: inventor
    throughout, "serial entrepreneur" in the press on /news, TED@Bangalore
    and sixty keynotes on /recognitions, six companies advised on
-   /ventures. 25 and 6 are the catalogue on /innovations and the roster
-   on /ventures.
+   /ventures. Mentor is not; it is here on the owner's word, given on
+   2026-11-18, and it is last because that is where the storyline put it.
+   25 and 6 are the catalogue on /innovations and the roster on /ventures.
    ────────────────────────────────────────────────────────────────── */
-const ROLES = ["Inventor", "Entrepreneur", "Speaker", "Advisor"] as const;
+const ROLES = ["Inventor", "Entrepreneur", "Speaker", "Advisor", "Mentor"] as const;
 
-/* One row on a laptop. On a phone the four do not fit on a line at any
-   tracking that still reads as a label, and a wrapping row left "Advisor"
-   alone on the second line, so `pairs` sets them as two rows of two by
-   design. The separator between the rows is still in the text stream. */
+/* One row on a laptop. On a phone the five do not fit on a line at any
+   tracking that still reads as a label, and a wrapping row strands a word
+   on a line of its own, so `rows` sets them as two rows by design: the
+   first two, then the other three. The second row is the wider, and at
+   10px it is 258px, inside a 320px phone's 272. The separator between the
+   rows is still in the text stream. */
 function RoleLine({
   className = "",
-  pairs = false,
+  rows = false,
 }: {
   className?: string;
-  pairs?: boolean;
+  rows?: boolean;
 }) {
   const dot = <span className="mx-2.5 text-foreground/30">{" · "}</span>;
-  if (pairs) {
+  if (rows) {
     return (
       <p className={`font-mono uppercase ${className}`}>
         <span className="block">
@@ -1074,6 +1125,8 @@ function RoleLine({
           {ROLES[2]}
           {dot}
           {ROLES[3]}
+          {dot}
+          {ROLES[4]}
         </span>
       </p>
     );
@@ -1166,7 +1219,10 @@ function FutureContent() {
           </span>
         </h2>
         {/* Roles, then the count */}
-        <RoleLine className="mt-[clamp(1.25rem,4vh,2.25rem)] text-[10.5px] md:text-[11px] tracking-[0.3em] text-foreground/80" />
+        {/* 90% ink, not the phone's 80: with Mentor the line is 516px wide,
+            and its ends reach past the shield over the brighter edges of the
+            city, where at 80% they measured 4.14 and 4.46 against 4.5. */}
+        <RoleLine className="mt-[clamp(1.25rem,4vh,2.25rem)] text-[10.5px] md:text-[11px] tracking-[0.3em] text-foreground/90" />
         <p className="mt-2.5 font-mono text-[10.5px] md:text-[11px] uppercase tracking-[0.3em] text-foreground/70 [@media(orientation:landscape)_and_(max-height:340px)]:hidden">
           25 Innovations · 6 Ventures
         </p>
@@ -1273,7 +1329,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
               yet exist.
             </span>
           </h2>
-          <RoleLine pairs className="mt-6 text-[10px] tracking-[0.24em] text-foreground/80" />
+          <RoleLine rows className="mt-6 text-[10px] tracking-[0.24em] text-foreground/80" />
           <p className="mt-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/75">
             25 Innovations · 6 Ventures
           </p>
