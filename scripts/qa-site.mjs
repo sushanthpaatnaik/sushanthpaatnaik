@@ -65,6 +65,12 @@ function staticChecks() {
   assertCheck("Contact retains an email fallback and error state",
     contact.includes("window.location.href = mailto") &&
     contact.includes('status === "error"'));
+  assertCheck("Contact aborts stalled API requests and announces failures",
+    contact.includes("new AbortController()") &&
+    contact.includes("controller.abort()") &&
+    contact.includes("window.clearTimeout(timeoutId)") &&
+    contact.includes('role="alert"') &&
+    contact.includes('role="status"'));
   assertCheck("All indexable top-level routes declare canonicals",
     canonicalRoutes.every((route) =>
       read("src/routes/" + route + ".tsx").includes('rel: "canonical"')));
