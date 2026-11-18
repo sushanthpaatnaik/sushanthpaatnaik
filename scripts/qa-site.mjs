@@ -7,7 +7,7 @@
  *
  * The remote mode checks rendered HTTP responses, not motion quality or
  * real-device behavior. It cannot establish that a contact email arrived.
- * Set QA_SEND_CONTACT_TEST=true only for an explicitly requested one-off
+ * Set QA_SEND_SERVER_API_TEST=true only for an explicitly requested one-off
  * Web3Forms API test; it sends one clearly labelled message.
  *
  * No extra dependencies or private credentials are required.
@@ -171,7 +171,7 @@ async function oneContactTest() {
 const remote = process.argv.includes("--remote");
 if (remote) {
   const ok = await remoteChecks();
-  if (ok && process.env.QA_SEND_CONTACT_TEST === "true") await oneContactTest();
+  if (ok && process.env.QA_SEND_SERVER_API_TEST === "true") await oneContactTest();
 } else {
   staticChecks();
 }
