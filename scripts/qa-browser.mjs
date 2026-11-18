@@ -111,6 +111,42 @@ async function mockFormCheck() {
   }
 }
 
+
+async function mockFailureCheck() {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const page = await openPage(context, "/contact");
+  try {
+    await page.route("https://api.web3forms.com/**", async (route) => {
+      const headers = {
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "POST, OPTIONS",
+        "access-control-allow-headers": "Content-Type, Accept",
+      };
+      if (route.request().method() === "OPTIONS") {
+        await route.fulfill({ status: 204, headers });
+      } else {
+        await route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          headers,
+          body: JSON.stringify({ success: false, message: "QA simulated failure" }),
+        });
+      }
+    });
+    await fillContact(page);
+    await page.locator('button[type="submit"]').click();
+    const notice = page.locator("p").filter({ hasText: "Couldn't send." }).first();
+    await notice.waitFor({ state: "visible", timeout: 20000 });
+    assert.ok(await notice.locator('a[href^="mailto:"]').count() > 0);
+    console.log("PASS  Browser contact form exposes direct-email fallback on API failure");
+  } finally {
+    await context.close();
+  }
+}
+
 async function realFormCheck() {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
@@ -147,6 +183,7 @@ try {
   await layoutCheck(1440, 900, false);
   await layoutCheck(390, 844, true);
   await mockFormCheck();
+  await mockFailureCheck();
   if (process.env.QA_SEND_CONTACT_TEST === "true") {
     await realFormCheck();
   } else {
