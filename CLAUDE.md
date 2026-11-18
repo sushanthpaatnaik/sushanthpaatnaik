@@ -1,10 +1,12 @@
 # Site — FROZEN
 
-The whole site is frozen as of `13263f58` — the last commit that changed site
+The whole site is frozen as of `1be9000b` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. Four subsystems carry their own
+and `__root.tsx`. `1be9000b` itself only reformatted two lines. The commit
+before it, `eb1c9e65`, is the last that changed what the site does, and the
+two build to the same files, byte for byte. Four subsystems carry their own
 detailed records below — the homepage motion system, the film it plays, the
 seven-chapter story set to that film and the /innovations product panel — and
 everything in this first section applies site-wide.
@@ -27,11 +29,14 @@ and at 390 with a touch profile: the product-detail CTA on all 25 panels,
 15 external / 9 engage / 1 none, with `target` and `rel` correct on every
 external one and `product_site_click` carrying the right payload.
 
-The homepage alone has been verified on production twice since, both on
-2026-11-17: see **Measured** in the film's section and **Measured, second
-pass** in the story's. Nothing else in the list above was re-checked on
-production that day beyond the 13 routes answering 200, so this line keeps
-its date.
+The homepage alone has been verified on production three times since, twice
+on 2026-11-17 and once on 2026-11-18: see **Measured** in the film's section,
+and **Measured, second pass** and **Measured, third pass** in the story's.
+The third also changed the header and the menu, which are on every route: on
+production the menu was opened and closed on all 13 at three sizes, and the
+header measured on `/` and on `/about`, which stands for the internal routes
+because they share it. Nothing else in the list above was re-checked on
+production on either day, so this line keeps its date.
 
 **The site is no longer dark-only.** A whole-site light theme was previewed
 and declined earlier; what shipped is a narrower thing that was asked for
@@ -149,6 +154,120 @@ The menu does not lock body scroll and does not need to — a touch swipe over
 the open overlay leaves the page behind it unmoved. Do not "fix" that on the
 basis of `window.scrollTo()` appearing to scroll through: programmatic
 scrolling bypasses touch handling entirely and says nothing about a finger.
+
+The link row is in the header from 1280px up and in this overlay below that —
+see **The header row**. So the overlay is no longer a phone's menu only: a
+tablet held sideways and a narrow laptop window get it too, and on an internal
+route it is where the theme control is at those widths.
+
+The list is centred by auto margins on its first and last child, not by
+`justify-center`. Where the list fits, the two are the same thing: 0 pixels
+differ from the build before at 390x844 on `/` and on `/about`, and at
+768x1024. Where it does not fit, `justify-center` overflows equally above and
+below, and a scroll container cannot scroll to what lies above its own start.
+This was live until 2026-11-18:
+
+| | first link's top, before | after |
+|---|---|---|
+| `/`, a phone held sideways, 844x390 | -75px: off the screen and unreachable | 96px |
+| `/about`, 844x390 | -154px: three links unreachable, the fourth under the wordmark | 96px |
+| `/about`, 375x667 | 24px, under a header that ends at 76 | 96px |
+| `/about`, 360x640 | 11px | 96px |
+| `/about`, 320x568 | -25px | 96px |
+| `/`, 320x568 | 52px | 96px |
+
+Internal routes were worse than the homepage because their list is about
+160px longer: it ends with the theme control. Auto margins fall to zero when
+there is no room, so the list starts under the header and the rest is a
+scroll away. Every destination is reachable in all 32 page-and-viewport
+states tested between 568x320 and 1279x720, with the first and the last link
+both answering a hit test.
+
+A list that scrolls passes under the header, whose wordmark and buttons are
+painted above this layer with nothing behind them. The `nav` carries a mask
+that fades a link out across the 36px under the header. Where the list fits,
+nothing is painted in that band — it is the element's own top padding — which
+is why the mask costs no pixel there.
+
+**The check that opened this menu on every route counted its links.** It never
+asked where the first one was, and it passed on every profile while "About"
+lay under the wordmark on a 375px phone. Reachability is a hit test: scroll
+the list to each end and ask `elementFromPoint` what is under a point inside
+the first link and inside the last. And name the button when reading its
+state: `header button[aria-expanded]` matches the theme menu's trigger first
+on an internal route — it is in the DOM while hidden — and reported an open
+menu as closed.
+
+## The header row
+
+The wordmark, nine links, and on the right the theme control on internal
+routes, Contact and — below 1280px — the menu button.
+
+How wide the row is depends on the face, and the stack is `"Inter", "SF Pro
+Display", system-ui` with no webfont: a machine that has Inter installed gets
+Inter, which is the wider. This container has it. The owner's Mac does not,
+and there the row has 71px either side of it at 1280, read off their
+recording. So measure this header in Inter: a row that fits in Inter fits.
+
+Measured on the text, at the top of the page, where the wordmark is at its
+larger size. A negative number is text running through text.
+
+| Inter | wordmark to "About" | "Engage" to the first button | between links |
+|---|---|---|---|
+| 1024, `/`, until 2026-11-18 | -32px | -194px | 20px |
+| 1180, `/`, until 2026-11-18 | -18px | -52px | 20px |
+| 1280, `/`, until 2026-11-18 | -4px | -12px | 24px |
+| 1280, internal, until 2026-11-18 | -15px | -45px | 24px |
+| 1024 to 1279, now | in the menu | | |
+| 1280, `/`, now | 16px | 16px | 18px |
+| 1280, internal, now | 16px | 16px | 12.5px |
+| 1280, internal, beside a classic scrollbar, now | 16px | 16px | 10.6px |
+| 1366, internal: before, now | 13px, 16px | 13px, 16px | 24px, 23px |
+| 1440 and 1920, any route: before and now | 50 to 312px | the same | 24px |
+
+At 1440 and 1920 the header strip is the build before it to the pixel: 0
+pixels differ on three internal routes in both themes, at the top and
+scrolled, against a noise floor of 0. On `/` nothing moved and the 1,382 to
+1,392 pixels that differ are the links' own ink.
+
+Three things hold the row, each for a measured reason.
+
+- **It starts at `xl`.** It used to start at `lg`, with a tighter gap and
+  tracking from 1024 to 1279 that were an earlier attempt to make it fit
+  there. It did not, in either face — the Mac's needs about 1150px — so a
+  tablet held sideways got the wordmark through "About" and the last links
+  under Contact, on every route.
+- **The space between links is a spacer that can give**, `w-6 min-w-2.5
+  shrink`, where it was `gap-x-6`. The header's own `gap-x-4` keeps 16px
+  between its three groups, and the links are `shrink-0`. With room to spare
+  that is `gap-x-6` exactly; without it the row tightens instead of running
+  into its neighbours. In Inter it is at 24px from about 1340 on `/` and 1375
+  on an internal route.
+- **The wordmark and the button cluster are `shrink-0`.** Left to the default
+  they shrink too: the logo is an `img` with a percentage `max-width`, so its
+  minimum contribution to its parent's width is zero, the wordmark's box gave
+  up 20px, and its text ran out of the box into the gap the spacers had just
+  made.
+
+On the homepage the links are 90% of `muted-foreground`; every other route
+keeps 70%. Over the film they measured 3.18 to 3.23:1 on all seven chapters,
+72 of 72 readings under 4.5:1, and at 90% they measure 4.70 to 4.81. The
+internal routes' grounds are the theme's, and 70% there is part of the
+approved design. Hover takes a link to `foreground` and keyboard focus draws
+the site's 2px outline, on each of the nine: hovered one by one and tabbed
+through, not sampled.
+
+Two instruments, both wrong first.
+
+- **A box is not the ink in it.** The first check measured the gap between
+  the wordmark's box and the row's box. It read 0px for a header that a
+  screenshot showed as "PAATNAIKBOUT", and 16px for a first version of the
+  fix that still had the K touching the A. A box can be narrower than its
+  text. Measure a `Range` over the text node.
+- **A layout measured in one face is measured for that face.** Every check of
+  this header on the owner's own screen would have passed. Find out which
+  face the stack resolves to where you are measuring, and whether it is the
+  widest one it can resolve to.
 
 ## No-JS rendering
 
@@ -325,6 +444,13 @@ missing rows need source documents before the claim is safe.
   reflow: 1749 at 430/390/375/360, 1603 at 320x568 where two optional lines of
   chapter 3 step back under 700px of height, 1954 on the tablet, which gets the
   laptop compositions.
+- Re-run on 2026-11-18 on ten touch profiles — those six, 1024x768 and
+  1180x820 for a tablet held sideways, 844x390 and 667x375 for a phone held
+  sideways: 130 route-and-viewport checks, all passing. The tablet's count is
+  1910 now, 44 fewer: the line the owner had removed from chapter 3. A phone held sideways reads 1505, and the menu check counts
+  7 links on screen there where the others count 11. That is correct: the
+  rest are a scroll away, and whether they can be reached is the hit test
+  under **Mobile navigation**, not this count.
 - Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
   from above and below give an identical canvas pixel hash. The positions are
   kept from the five-chapter page so the series stays comparable. On the
@@ -810,11 +936,16 @@ suggested a global change that was in fact 3,651 pixels in the top 50 rows.
   the homepage header; without it that header measures 0. It is the one page
   whose header was asked to stay exactly as it is, and it ignores the setting
   anyway. The cost is real and deliberate: someone landing on `/` cannot set a
-  preference until they open an internal page.
+  preference until they open an internal page. That header has changed once
+  since, on the owner's brief of 2026-11-18: its nine links went from 70% to
+  90% of muted, because over the film they measured 3.2:1. Where the row had
+  room nothing in it moved. See **The header row**.
 - The control is a 32px glyph trigger, not the segmented control. The
   segmented version is ~190px wide and overlapped "Engage" at 1440, where the
   header already carries a wordmark, nine links and Contact. The drawer, which
-  has room, gets the segmented version.
+  has room, gets the segmented version. Since 2026-11-18 the glyph is in the
+  header from 1280px up, with the link row, and both are in the drawer below
+  that.
 - Full matrix: 11 routes × 2 themes × 9 viewports (1920/1728/1520/1440/1366
   and 430/390/375/360) — correct theme on every route, 0px horizontal
   overflow, 0 console errors. Persistence survives reload, navigation and a
@@ -1085,7 +1216,7 @@ being shown in a 1425-wide box and the film came out about 1% narrow.
 | 1920x1080, classic scrollbar | 0.9922 | 1.0000 |
 | 1366x768, classic scrollbar | — | 1.0000 |
 | any of them, no scrollbar | 1.0000 | 1.0000 |
-| the owner's Mac, 1280x832, read off the recording | 0.990 | — |
+| the owner's Mac, 1280x832, read off their recordings | 0.990 | 1.001 |
 
 That is most Windows and Linux desktops — Chrome and Edge there draw a
 scrollbar that takes space — and a Mac with a mouse attached or scrollbars set
@@ -1144,6 +1275,10 @@ one does not cover is a phone: it is a laptop with a trackpad. One scroll on a
 real phone is still owed. The copy's own timing was not measured separately;
 it runs on the same scroll position, so it cannot be further from the film
 than the film is from the scrollbar.
+
+A second recording, of the build with the proportion fix, is under **The
+second recording** in the story's section: 1.001 where this one read 0.990,
+and a delay of 14.8ms where this one read 33.
 
 Two things the instrument got wrong first, both worth keeping:
 
@@ -1420,6 +1555,10 @@ was. The generated frames and the emblems are still in the footage. If the hall
 has to come out, what replaces it is more of the real archive in
 `src/assets/hof/`, not another generated room.
 
+Since 2026-11-18 the veil is heaviest across the band the cases and plinths
+stand in, where it used to be lightest. See **The hall's veil follows what is
+in the room**.
+
 ## Shields follow the footage
 
 The text shields in `ScrollSections.tsx` are tuned to what is behind them, and
@@ -1429,7 +1568,7 @@ all seven chapters have new footage behind them. What each one carries now:
 |---|---|---|
 | 01 Origin | centre 0.56 | the same |
 | 02 Early Works | right 0.80 | a scrim rising from the foot, clear of the face |
-| 03 Presidential | a veil over the whole frame, 0.80 at the head, 0.60 through the middle, 0.76 at the foot | the same |
+| 03 Presidential | a veil over the whole frame: 0.80 under the header, 0.62 between the header and the copy, 0.76 by 46% of the height and 0.80 at the foot; and a band that travels with the headline and keeps its ground at 0.72 | 0.80 at the head, 0.72 at 30%, 0.76 at 56%, 0.80 at the foot |
 | 04 Global | right 0.82 | centre 0.80 |
 | 05 Materials | left 0.82 | a scrim rising from the foot, clear of the "C" atom |
 | 06 Industrial | right 0.88 | right 0.88 plus left 0.70 |
@@ -1438,7 +1577,9 @@ all seven chapters have new footage behind them. What each one carries now:
 The hall is the brightest sustained footage in the film and chapter 3's copy
 runs the full width of it, so no side shield can cover the type. Its veil was
 0.86 / 0.70 / 0.84 first, which measured well and showed a black room: the
-film has to stay a film.
+film has to stay a film. Then 0.80 / 0.70 / 0.60 / 0.76 until 2026-11-18,
+which was lightest across the generated display cases and heaviest on the
+architecture.
 
 Whole page, every line of fully-arrived copy at 25 scroll stops — the start,
 middle and end of every chapter's hold. Contrast of the stroke cores against
@@ -1452,6 +1593,8 @@ the pixels actually behind the glyphs, at the weakest sixth of each line:
 | 1440 desktop, seven chapters | 348 | 0 | 53 |
 | 390 phone, after the second pass | 287 | 0 | 0 |
 | 1440 desktop, after the second pass | 367 | 0 | 0 |
+| 390 phone, after the third pass | 287 | 0 | 0 |
+| 1440 desktop, after the third pass | 362 | 0 | 0 |
 
 The two rows of each pair are different pages measured at different stops, so
 read them as a level, not as a line-for-line comparison. What moved the desktop
@@ -1587,7 +1730,7 @@ cut**, in the film's section.
 |---|---|---|---|---|
 | 01 · Origin | workbench | Every invention begins with a problem worth solving. | A young inventor. A workbench. The beginning of a journey. | — |
 | 02 · Early Works | inventor at the bench | Six years. Six inventions. One purpose. | 2008–2013 · From vehicle safety and assistive technology to energy and wearable safety. | Explore Early Works → `/early-works` |
-| 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · National recognition for early inventions. · Six national recognitions. A journey of invention that continues today. · three archive photographs · Selected moments from the Presidential recognition archive · 2008–2013 | View Presidential Archive → `/recognitions` |
+| 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · Six national recognitions. A journey of invention that continues today. · three archive photographs · Selected moments from the Presidential recognition archive · 2008–2013 | View Presidential Archive → `/recognitions` |
 | 04 · Global Recognition | Earth | From India to the global stage. | a dated register, six rows | Explore Recognitions → `/recognitions` |
 | 05 · Advanced Materials | graphene lattice | From inventions to intelligent materials. | Graphene and advanced materials became the next chapter of the work. | Explore Innovations → `/innovations` |
 | 06 · Industrial Impact | viaduct, then plant | One material platform. Many industries. | Concrete. Solar. Batteries. Thermal management. Advanced composites. · Graphacrete · Graffisol · Graphenodes · Thermene · Six operating companies carry that platform into industry. | See the Work → `/innovations`, View Ventures → `/ventures` |
@@ -1739,8 +1882,9 @@ record exists. The next prototype matters more."; "Selected moments from the
 Presidential recognition archive · 2008–2013" sits under the gallery, on the
 archive link's row on a laptop. Neither is a new claim: six is the headline's
 count, and the three photographs are dated 2009, 2010 and 2013. The new
-sentence stands directly under "National recognition for early inventions."
-and echoes it. That was raised with the owner, not edited.
+sentence stood directly under "National recognition for early inventions."
+and echoed it. That was raised with the owner, not edited, and the next day
+they had the older line removed: see **The third pass**.
 
 The captions were asked to "distinguish former and sitting Presidents". They
 already did, and are unchanged: "With Dr. A.P.J. Abdul Kalam" carries no
@@ -1871,6 +2015,221 @@ first four stops. The loader had not released on the slow link, the page had
 not moved, and the harness's own "did not scroll" guard caught one of the
 four. Re-run, clean. **A row that repeats the row above it is the page not
 having moved**, whatever the flags column says.
+
+## The third pass
+
+2026-11-18. The owner sent a screenshot of the Presidential chapter with "Is
+it fine now?", a second recording of the live page, "yes do it" to the one
+change proposed in answer to the screenshot, and a third brief — "Final
+Cinematic Website Polish", a restrained pass over captions, the hall, the
+register, the header's contrast and the transitions, with a list of things to
+leave alone.
+
+**Copy.** One line went, on the owner's word: "National recognition for early
+inventions.", which the sentence added the day before said again. What is
+left is set one statement to a line on a laptop, the way the headline beside
+it is; as a single run it broke after "…invention that" and left "continues
+today." alone. On a phone it is `text-wrap: balance`.
+
+### The second recording
+
+The same Mac, 1280x832, 15 frames a second, the build with the proportion
+fix, down the page once in 12.2 seconds. Read the way the first one was.
+
+| | first recording | second |
+|---|---|---|
+| the film's horizontal scale over its vertical | 0.990 | 1.001 |
+| frames matched to the film | 454 | 215 |
+| at rest, picture behind the scroll position, median | 0.04vh | 0.05vh |
+| scrolling forward: median, p90, worst | 1.74, 3.12, 4.47vh at 55vh/s | 1.09, 2.09, 3.86vh at 76vh/s |
+| the delay that explains the moving frames | 33ms | 14.8ms |
+| captures with the scroll moving and the picture standing still | 0 | 0 |
+
+The correction recorded under **The film was drawn narrow beside a classic
+scrollbar** is confirmed on the machine it was found on. The delay is one
+display frame where it was two; two recordings are two observations, not a
+trend. Neither shows a flash at chapter 3's hand-overs: the frame's mean
+level runs 22, 39, 22 through one, smoothly.
+
+The recording carries a `CAM.ON` mark in a corner. It is the owner's screen
+recorder. It is not in the site and nothing was done about it.
+
+### What the brief named, and what was found
+
+Measured on the live build before anything was changed.
+
+- **The header's links over the film: 3.2:1**, on every chapter. Fixed, and
+  recorded with the header under **The header row** in the first section —
+  which also records two defects this audit found that the brief had not
+  named, in the header from 1024 to 1279px and in the menu on short screens.
+  Both were on every route: the first on a tablet held sideways or a narrow
+  laptop window, the second on a small phone or any phone held sideways.
+- **The hall's veil was upside down.** In the hall's frame the top third is
+  architecture: arches, a chandelier, the ceiling. From about 43% of the
+  height to 88% it is display cases, their trophies and framed pictures, and
+  plinths carrying the State Emblem — generated, all of it. The veil was 0.80
+  at the head and lightest, 0.60, at 56%: heaviest on the architecture and
+  lightest on the cases.
+- **Captions, labels and the register were legible already**, from 4.7:1
+  upward with nothing under AA. They were lifted because the brief asked,
+  not because they failed.
+- **Nothing reproducible in the scroll.** See the recording above and
+  **Measured on real hardware**. Nothing in the motion system was touched.
+
+### The hall's veil follows what is in the room
+
+The brief asked for a little more of the hall's architecture without
+lightening the page or weakening the type. On a laptop the veil is now 0.80
+under the header, 0.62 from 13% to 30% of the height, 0.76 by 46% and 0.80 at
+the foot.
+
+The headline does not stand on 0.62. Its block starts anywhere from 17% of
+the height, on a 1280x720 laptop, to 27% on a 1080p screen, so no stop in a
+frame-sized gradient can be "just above the headline" on all of them.
+`HeadScrim` is a band inside the block, bleeding past both edges of the
+frame, that brings its own ground back to 0.72 — the level the eyebrow stood
+on before — and fades in over 36px above the block and out over 32px below
+the headline, so there is no line across the hall where it starts or stops.
+What is left lighter is whatever lies between the header and the copy: a wide
+band on a tall screen, nothing on a phone held sideways. A phone held upright
+keeps a plain veil, 0.80 / 0.72 / 0.76 / 0.80, because its headline starts
+straight under the header and there is no band to open.
+
+Mean level of the frame at 1280x800 with chapter 3 at rest:
+
+| band | before | after |
+|---|---|---|
+| under the header | 4.6 | 5.0 |
+| between the header and the copy | 9.2 | 13.2 |
+| the margin left of the photographs | 16.4 | 10.0 |
+| the margin right of them | 6.1 | 3.4 |
+| the rows under the captions | 8.5 | 6.5 |
+
+The architecture is 43% brighter and the generated cases are darker than they
+were. **For two thirds of the frame that is the opposite of "reveal more of
+the hall", and it is deliberate**: see **What is in the film that someone
+should know about**. If more of the room is ever wanted, it is wanted above
+the copy.
+
+### Small type in chapters 3 and 4
+
+Contrast of the stroke cores at the weakest sixth of each line, 1440x900,
+each chapter at rest, the live build and then this one:
+
+| | before | after |
+|---|---|---|
+| photograph captions | 6.5 to 7.4 | 7.2 to 8.3 |
+| their second line, "Presidential Award · …" | 5.4 to 5.9 | 7.9 to 8.8 |
+| the archive note under the gallery | 7.1 | 9.0 |
+| "View Presidential Archive →" | 7.2 | 9.2 |
+| the supporting sentence | 8.2 | 10.2 and 11.4, a line each |
+| "Presidential Recognition", the eyebrow | 4.73 | 4.72 |
+| the headline's two lines | 15.4 and 11.0 | 15.5 and 11.4 |
+| the register's years | 6.0 to 8.2 | 7.9 to 8.8 |
+| the register's names | 9.6 to 11.9 | 10.6 to 13.3 |
+| what each was for: "TR-35", "Speaker" | 5.9 to 7.1 | 7.8 to 9.5 |
+| "Explore Recognitions →" | 6.9 | 8.9 |
+
+One of the four years, 2012, read 8.2 before and 8.0 after, with more ink
+and on the same ground. At 10.5px a thin digit's stroke lands across two
+pixels where at 10px it landed on one, and this instrument reads the core of
+the stroke. It is the note about the phone's "07" again: the stroke, not the
+colour.
+
+Ink went from 90% to 95% on the captions and the register's names, 85% to 95%
+on the captions' second line and the register's years, and 75% to 85% on the
+archive note, the register's notes and `CHAPTER_LINK` — which is one
+constant, so every chapter's link took the same step. Three sizes moved by
+half a pixel: the register's years and the captions' second line to 10.5px,
+the register's notes to 14px.
+
+The captions' second line takes its half pixel from 1280px up and no sooner.
+"Presidential Award · NIF · 2009" is 31 monospace characters at 0.2em
+tracking: 248px at 10px and 260px at 10.5px, whatever the face. A plate is
+265px wide at 1024, 260px there beside a classic scrollbar, and 251px on an
+834px tablet. From `md` the half pixel would have wrapped the first caption
+on those and left the other two on one line. It was written that way first
+and caught on paper.
+
+### What the brief asked for that was not done
+
+- **Anything in the scroll.** Step 6 asks for flicker, jerks, abrupt fades
+  and seeking conflicts to be removed "if found". None was found: two
+  recordings of real hardware show the picture one to two display frames
+  behind the scroll with no stall, and the sync check is 35 of 35 twice.
+- **"No brief blank screens" between the hall and the Earth.** The 70px in
+  which neither chapter's copy is painted is the 0.50/0.50 hand-over under
+  **Known, deliberate, NOT defects**. Closing it puts two headlines on screen
+  at once, which the same sentence of the brief rules out.
+- **A backdrop behind the nav.** The links needed ink, not a panel; the
+  header's veil is what it was.
+- **More of the hall where the cases are.** Above.
+- **A `<video>`, a clamp at the last clean frame, a reduced-motion fallback.**
+  There is no video element, frames 227-239 were never exported, and reduced
+  motion has shown the film's own still since the film was installed.
+
+### Measured, third pass
+
+2026-11-18, local production build under `wrangler dev`, with the live build
+served beside it through the mirror as control.
+
+- Sync: 35 of 35 at 1440 and 35 of 35 on a 390 phone. An earlier run of the
+  same check gave 34 of 35 at 1440: one sample in the close read frame 432
+  for 442, at correlation 0.958, while a numpy job ran beside the browser.
+  Alone, 35. It is the stale-canvas tell again, from a smaller cause than the
+  last one: not a second browser, one analysis script.
+- Film checks: 24 of 24, with the five determinism hashes identical to the
+  previous build's. Film proportions: 1.0000 at four sizes beside a classic
+  scrollbar and at the same four without one.
+- Layout, ten compositions at each of twenty-one viewports from 1920x1080 to
+  320x568: nothing outside its frame on any desktop, tablet or portrait
+  phone. On a phone held sideways the audit flags the seventeen rows it
+  flagged on the build before — a composition that starts within 6px of the
+  header — each where it was to the pixel, but one that is a pixel lower. The
+  834x1194 tablet printed one box for its first six stops and was re-run
+  alone: clean.
+- Contrast: 0 lines below 3:1 and 0 below AA, 362 lines at 1440 and 287 at
+  390. Five fewer at 1440 than the pass before, which is the removed line at
+  five stops.
+- The header and the menu: as under **The header row** and **Mobile
+  navigation**.
+- Entrance at 1280x800 and 1024x768, all checks; chapter rail 7 of 7; reduced
+  motion 9284px and 1749 characters on a phone, both unchanged.
+- Routes: 13 at 1440 and 390, and 130 route-and-viewport checks on ten touch
+  profiles with the menu opened and closed on each.
+- `scripts/e2e-scroll.mjs`: all passed, 7 inconclusive — the keyboard start
+  and the six rail jumps, as before. The rail is the 7 of 7 above.
+- Scroll tracking at 960x540, wheel-driven: three fast runs, a steady
+  run and a phone run. The picture is a median 0.5-0.6vh behind the scroll
+  position and within 1vh on every draw, forward and back; no long task in
+  four of the runs and one of 53ms in the fifth. The build before gave the
+  same medians, with one reverse run whose worst draw was 3vh.
+- `tsc --noEmit` is clean. `eslint` on the two files reports the formatter and
+  nothing else: 6 findings in `Nav.tsx` and 46 in `ScrollSections.tsx`, which
+  is what they had before this pass. `eb1c9e65` had added two, on lines it
+  wrote; `1be9000b` is those two lines reformatted.
+
+On production, live at 10:34:48 UTC the same day, 3m54s after the push of
+`eb1c9e65`. The four files a page loads — `Nav-Dckh8EMC.js`,
+`index-CBHhycHj.js`, `index-D5cCgcqP.js`, `styles-Cmnci6Wg.css` — are the
+files that were tested, by checksum, and `1be9000b` builds to the same four.
+13 routes answer 200, each with an absolute canonical. The served HTML
+carries the sentence and not the removed line; twenty seconds earlier the
+same check had found that line on the old build, so it can find it. In a
+real browser through the local mirror: the header's gaps are the local
+build's to the decimal at 1024, 1180, 1280, 1366 and 1440, and beside a
+classic scrollbar at 1280 and 1440; 16 of 16 menu states reachable; sync 35
+of 35 at 1440 and 35 of 35 on a 390 phone; the header's links 4.70 to 4.81:1
+over all seven chapters; the entrance checks at 1280x800; layout clean at
+1280x800, 1024x768, 390x844 and 320x568, with screenshots of chapters 3 and
+4.
+
+The route check printed FAIL for all 39 of its production rows. Every one is
+the mirror's own: it answers GET only, so the `/cdn-cgi/rum` beacon gets 501,
+which that check counts as a console error and a failed request. With that
+one request set aside, 39 of 39 — 200, 0px overflow, one `h1`, lock
+released, the menu opening and closing on Escape. And the 390x844 layout pass
+printed Origin's box twice through the slow mirror; alone, clean.
 
 ## What was retired
 
