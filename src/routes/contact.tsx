@@ -137,15 +137,15 @@ function AccessForm() {
           subject: `[${intentLabel}] ${name}`,
           from_name: name,
           Intent: intentLabel,
-          Name: name,
+          name: name.trim(),
           Organisation: org || "—",
-          Email: email,
+          email: email.trim(),
           Phone: phone || "—",
-          Context: context,
+          message: context.trim(),
         }),
       });
       const data = await res.json();
-      if (data?.success) {
+      if (res.ok && data?.success) {
         setStatus("sent");
         track("contact_submit", { intent: intentLabel, outcome: "sent" });
       } else {
@@ -414,7 +414,7 @@ function AccessForm() {
             </div>
             <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               {WEB3FORMS_ACCESS_KEY
-                ? "Your message goes straight to the founder's inbox. No email app required. Nothing else is stored on this site."
+                ? "Submissions are processed by Web3Forms and delivered by email. No email app required."
                 : "Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site."}
             </p>
           </>

@@ -141,7 +141,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           description:
             "Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital. CIO at Magppie.",
           image: "https://sushanthpaatnaik.com/social-preview.webp",
-          birthPlace: "Bhubaneswar, Odisha, India",
+          birthPlace: "Cuttack, Odisha, India",
           alumniOf: [
             { "@type": "CollegeOrUniversity", name: "IISER Bhopal" },
             { "@type": "CollegeOrUniversity", name: "OCT, Bhopal" },
