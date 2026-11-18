@@ -892,9 +892,7 @@ function GlobalContent() {
                     {h.title}
                   </span>
                   <span className="text-foreground/35">{" · "}</span>
-                  <span className="text-[12.5px] md:text-[14px] text-foreground/85">
-                    {h.note}
-                  </span>
+                  <span className="text-[12.5px] md:text-[14px] text-foreground/85">{h.note}</span>
                 </span>
               </li>
             ))}

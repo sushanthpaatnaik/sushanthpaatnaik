@@ -220,7 +220,8 @@ export default function Nav() {
           className="flex h-full w-full flex-col items-start gap-4 sm:gap-5 px-8 sm:px-12 pt-24 pb-10 overflow-y-auto [&>:first-child]:mt-auto [&>:last-child]:mb-auto"
           style={{
             maskImage: "linear-gradient(180deg, transparent 0, transparent 3.75rem, #000 6rem)",
-            WebkitMaskImage: "linear-gradient(180deg, transparent 0, transparent 3.75rem, #000 6rem)",
+            WebkitMaskImage:
+              "linear-gradient(180deg, transparent 0, transparent 3.75rem, #000 6rem)",
           }}
         >
           {navLinks.map((l, i) => (
