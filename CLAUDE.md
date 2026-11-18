@@ -1,15 +1,16 @@
 # Site — FROZEN
 
-The whole site is frozen as of `1be9000b` — the last commit that changed site
+The whole site is frozen as of `beed88de` — the last commit that changed site
 code. Date it to that, never to the commit that writes this file: a record-only
 commit would always describe code one commit older than itself, which is how the
 previous freeze came to read `4de2efac` while that same commit changed the icons
-and `__root.tsx`. `1be9000b` itself only reformatted two lines. The commit
-before it, `eb1c9e65`, is the last that changed what the site does, and the
-two build to the same files, byte for byte. Four subsystems carry their own
-detailed records below — the homepage motion system, the film it plays, the
-seven-chapter story set to that film and the /innovations product panel — and
-everything in this first section applies site-wide.
+and `__root.tsx`. `beed88de` itself only corrects three comments. The commit
+before it, `ced0de38`, is the last that changed what the site does — a merge,
+see **The fourth pass** — and the two build to the same files, byte for byte.
+Four subsystems carry their own detailed records below — the homepage motion
+system, the film it plays, the seven-chapter story set to that film and the
+/innovations product panel — and everything in this first section applies
+site-wide.
 
 This anchor sat at `f0c46557` through a run of later commits that did change
 site code — a portrait, a scroll fix, several passes over the copy, the
@@ -29,14 +30,14 @@ and at 390 with a touch profile: the product-detail CTA on all 25 panels,
 15 external / 9 engage / 1 none, with `target` and `rel` correct on every
 external one and `product_site_click` carrying the right payload.
 
-The homepage alone has been verified on production three times since, twice
-on 2026-11-17 and once on 2026-11-18: see **Measured** in the film's section,
-and **Measured, second pass** and **Measured, third pass** in the story's.
-The third also changed the header and the menu, which are on every route: on
-production the menu was opened and closed on all 13 at three sizes, and the
-header measured on `/` and on `/about`, which stands for the internal routes
-because they share it. Nothing else in the list above was re-checked on
-production on either day, so this line keeps its date.
+The homepage alone has been verified on production four times since, twice
+on 2026-11-17 and twice on 2026-11-18: see **Measured** in the film's section,
+and **Measured, second pass**, **Measured, third pass** and **Measured,
+fourth pass** in the story's. The third also changed the header and the menu,
+which are on every route: on production the menu was opened and closed on all
+13 at three sizes, and the header measured on `/` and on `/about`, which
+stands for the internal routes because they share it. Nothing else in the list
+above was re-checked on production on either day, so this line keeps its date.
 
 **The site is no longer dark-only.** A whole-site light theme was previewed
 and declined earlier; what shipped is a narrower thing that was asked for
@@ -451,6 +452,10 @@ missing rows need source documents before the claim is safe.
   7 links on screen there where the others count 11. That is correct: the
   rest are a scroll away, and whether they can be reached is the hit test
   under **Mobile navigation**, not this count.
+- Re-run after the fourth pass on the same ten profiles: 130 checks, all
+  passing. The homepage's counts rose by the four descriptors and "Mentor":
+  1848 at 430/390/375/360, 1702 at 320x568, 2009 on the tablets and 1604 on a
+  phone held sideways, each exactly 99 more than before.
 - Homepage determinism: five positions (2700/4050/5400/6750/7920) approached
   from above and below give an identical canvas pixel hash. The positions are
   kept from the five-chapter page so the series stays comparable. On the
@@ -458,11 +463,11 @@ missing rows need source documents before the claim is safe.
   Presidential, its last frames before the hand-over), 0.60 (the hand-over into
   Advanced Materials), 0.75 (the hand-over into Industrial Impact) and 0.88
   (the hand-over into the close). The check is about the canvas, not the copy.
-- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1749
-  characters of copy in `main.innerText` (1633 before the second pass on the
-  seven-chapter page, 1707 on the five-chapter page by the same measure; an
-  older figure here, 1881, predates copy edits that never re-measured it), 6
-  engage/contact links in the document.
+- Reduced motion, phone: lock released, 9284px document, scrolls freely, 1848
+  characters of copy in `main.innerText` (1749 before the fourth pass, 1633
+  before the second pass on the seven-chapter page, 1707 on the five-chapter
+  page by the same measure; an older figure here, 1881, predates copy edits
+  that never re-measured it), 6 engage/contact links in the document.
 - Canvas, both themes, ten internal pages × four scroll depths, sampled in the
   left gutter which carries no content at 1440: light **223.6 .. 225.6**
   (span 2, warmth +4.5..5.2), dark **2.2 .. 8.2** (span 6). `/essays` is the
@@ -1087,9 +1092,11 @@ the film. Nothing else in the renderer moved: the frame map is still linear,
 and every smoothing, hand-over, retention and prefetch value in the table is
 exactly as it was.
 
-One line of the draw has changed since, with its defect and its measurements:
-`cover()` now draws the film at its own proportions beside a classic
-scrollbar. See **The film was drawn narrow beside a classic scrollbar**.
+Two lines of the draw have changed since, each with its defect and its
+measurements: `cover()` now draws the film at its own proportions beside a
+classic scrollbar, and on a phone whose toolbar has collapsed. See **The film
+was drawn narrow beside a classic scrollbar** and **The film was drawn tall
+on a phone with its toolbar collapsed**.
 
 This is not a style preference. Three separate tuning attempts were measured
 against the live build and all three were reverted because none produced an
@@ -1113,6 +1120,7 @@ again without evidence is more likely to regress the site than improve it.
 | `INITIAL_AHEAD` | 32 desktop, 24 touch | `CanvasLayer.tsx` |
 | DPR cap | `min(rawDpr, 2, fit)`, floored at 1 | `CanvasLayer.tsx` |
 | Classic-scrollbar correction | `squeezeX` = innerWidth / clientWidth, desktop only, 1 when there is no bar | `CanvasLayer.tsx` |
+| Phone-toolbar correction | `squeezeY` = sizedH / the canvas box's height, touch only, 1 when the box is the height the buffer was sized for | `CanvasLayer.tsx` |
 
 There is exactly ONE smoothing layer: Lenis, desktop only. `scroll-behavior:
 auto !important` disables the browser's own, and no `useSpring` is applied to
@@ -1162,9 +1170,11 @@ re-proved.
   no classic scrollbar. Beside one, the frame is drawn wider inside the buffer
   by `squeezeX` — 1.0105 at 1440 — and the box the buffer is shown in takes
   exactly that back, so on screen the two scales are equal.
-- Real hardware, a MacBook, from a recording of the live site: at rest the
-  picture is the frame the scroll position calls for, within 0.04vh; while
-  scrolling it follows about 33ms behind. See **Measured on real hardware**.
+- Real hardware, from recordings of the live site: three on a MacBook — at
+  rest the picture is the frame the scroll position calls for, within
+  0.05vh; while scrolling it follows 33ms behind on the first and 15ms on the
+  two since — and one on an iPhone, about 23ms behind, a few frames more at
+  the fastest flicks. See **Measured on real hardware**.
 
 ## Known, deliberate, NOT defects
 
@@ -1241,6 +1251,63 @@ character — `c95be34d`, `98379bab`, `8e3ead53`, `37c2b0ce`, `b4f4cf74`.
 Nobody would have seen 1%. It is fixed because it was measured, it is on most
 desktops, and a circle that is 1% narrow is a wrong picture of the Earth.
 
+## The film was drawn tall on a phone with its toolbar collapsed
+
+Found on 2026-11-18 in a screen recording the owner made of the live site on
+an iPhone, in Safari. The portrait frames registered over the recording with
+the two scales fitted separately:
+
+| | vertical scale over horizontal | match at those scales | match at one scale |
+|---|---|---|---|
+| toolbar showing, top of the page, frame 0 | 1.002 | 0.868 | 0.838 |
+| toolbar collapsed, frame 109 | 1.050 | 0.723 | 0.445 |
+| toolbar collapsed, frame 336 | 1.051 | 0.826 | 0.436 |
+| toolbar collapsed, frame 480 | 1.057 | 0.810 | 0.366 |
+
+Safari's toolbar collapses under the first downward scroll and stays down to
+the end of the page, so for the whole of a scroll on an iPhone the film was
+5% too tall: the Earth an upright ellipse, every face long.
+
+The buffer's height is `innerHeight` when `syncSize` last ran, and `syncSize`
+runs when `<html>` changes size. On a phone it does not. The page's height is
+`TOTAL_VH` in `vh`, and iOS Safari holds `vh` at the large viewport, so a
+collapsing toolbar leaves `<html>` the size it was while the `fixed inset-0`
+stage, and the canvas box in it, grows. The browser stretched a buffer sized
+for the shorter screen into the taller box. Android Chrome's address bar
+collapses the same way and very likely did the same; only the iPhone has been
+measured.
+
+The correction is `squeezeY`, in `cover()`, the way `squeezeX` is. A second
+`ResizeObserver` watches the canvas box and calls `syncBox` alone, which
+compares the box with `sizedH`, the height the buffer was sized for, and the
+frame is drawn shorter by the factor the box stretches it. The buffer is not
+resized: that clears the canvas, and on a phone the toolbar moves at every
+change of scroll direction. Touch only, and exactly 1 when the box is the
+height the buffer was sized for, so a desktop draw is the arithmetic it was —
+`x * 1` is `x`.
+
+Reproduced here by doing what iOS does: on a touch profile, pin the page's
+height in pixels so `<html>` cannot resize, then make the viewport taller,
+664 to 720. Read from the renderer's own `drawImage` calls, vertical scale
+over horizontal on screen:
+
+| | build before | this build |
+|---|---|---|
+| toolbar showing | 1.0003 | 1.0003 |
+| collapsed, at rest | 1.0847 | 1.0003 |
+| collapsed, scrolled on | 1.0847 | 1.0003 |
+| showing again | 1.0003 | 1.0003 |
+
+1.0847 is 720/664, the reproduction's own toolbar; the iPhone's came to 1.05.
+After, the frame is drawn 996px tall in an 851px buffer, the taller box takes
+it back to its own proportions, and it still covers the screen. The control
+is the desktop: the five determinism hashes are the five every build since the
+story cut has given, character for character, and so are the three on the
+portrait set.
+
+Headless Chromium has no toolbar to collapse and resizes `vh` with its
+viewport, so no check here could have seen this. It took a phone.
+
 ## Measured on real hardware
 
 The first measurement of this page that was not made in this container. The
@@ -1271,14 +1338,15 @@ while the picture stood still, and nothing resembles the 576-frame cut's
 fallback, where the picture ran 25vh behind.
 
 What a 15fps recording cannot resolve is pacing finer than 67ms, and what this
-one does not cover is a phone: it is a laptop with a trackpad. One scroll on a
-real phone is still owed. The copy's own timing was not measured separately;
+one does not cover is a phone: it is a laptop with a trackpad. A phone is under
+**On an iPhone**, below. The copy's own timing was not measured separately;
 it runs on the same scroll position, so it cannot be further from the film
 than the film is from the scrollbar.
 
 A second recording, of the build with the proportion fix, is under **The
 second recording** in the story's section: 1.001 where this one read 0.990,
-and a delay of 14.8ms where this one read 33.
+and a delay of 14.8ms where this one read 33. A third, of the build after
+that, read 1.001 and 14.5ms: see **The fourth pass**.
 
 Two things the instrument got wrong first, both worth keeping:
 
@@ -1291,6 +1359,45 @@ Two things the instrument got wrong first, both worth keeping:
   scrollbar's track moved with it and the thumb read as a 600vh/s jump with
   the picture 50vh "behind". Those frames are excluded; the table is the 454
   before them.
+
+### On an iPhone
+
+The first measurement on a phone, 2026-11-18: the owner's iPhone in Safari,
+884x1920, 1,795 frames in 31 seconds at a varying rate around 60, down the
+whole page in flicks, 17 seconds from the first chapter to the last.
+
+Safari draws no scrollbar, but it draws a scroll indicator while the page
+moves, and it showed in every frame of the scroll: 170px long, its top
+travelling from 133px to 1620px. The film frame is found as on the laptop,
+against the 481 portrait frames placed the way the phone drew them — with the
+5% stretch above, since this was the build before its fix: x 0.886, y 0.930.
+Of 535 frames sampled at 30 a second, 521 match at a median of 0.83; the 14
+that do not are Safari's toolbar animating, at either end. The indicator is
+calibrated against the film itself with the delay left free. The delay comes
+to 23ms, and the indicator's end point to 1620.6px; it actually came to rest
+at 1620.
+
+| scroll speed | samples | picture behind the scroll position: median | worst |
+|---|---|---|---|
+| up to 50vh/s | 211 | 0.85vh | 5.3vh |
+| 50 to 100vh/s | 238 | 1.07vh | 7.6vh |
+| 100 to 150vh/s | 68 | 2.86vh | 10.9vh |
+| 150 to 212vh/s | 4 | 5.87vh | 7.0vh |
+
+A flick on glass is faster than a trackpad: 212vh/s at the top, against 144
+on the laptop the same evening. Up to 100vh/s the picture follows as it does
+on the laptop, a frame or two behind. Past that it falls a few frames behind
+for a single 33ms sample and catches up; the worst, 10.9vh, is the very first
+flick, inside the toolbar's collapse. There is no frozen picture: 13 times in
+17 seconds the film held a frame for one sample while the position moved on
+1.3 to 2.3 frames, and every one caught up on the next.
+
+These numbers are coarser than the laptop's. Position read off an overlay
+indicator, through a stretched registration, carries about a vh of error — at
+rest at the foot of the page it reads -1.08vh, where the truth is 0 — so read
+the medians as plus or minus 1vh. What it settles is that the phone keeps up,
+and that every chapter's copy was on its own scene, which the recording shows
+directly.
 
 ## Measuring this page in a container without a GPU
 
@@ -1595,6 +1702,8 @@ the pixels actually behind the glyphs, at the weakest sixth of each line:
 | 1440 desktop, after the second pass | 367 | 0 | 0 |
 | 390 phone, after the third pass | 287 | 0 | 0 |
 | 1440 desktop, after the third pass | 362 | 0 | 0 |
+| 390 phone, after the fourth pass | 305 | 0 | 0 |
+| 1440 desktop, after the fourth pass | 382 | 0 | 0 |
 
 The two rows of each pair are different pages measured at different stops, so
 read them as a level, not as a line-for-line comparison. What moved the desktop
@@ -1664,9 +1773,9 @@ several hundred is cut short by the container's proxy while still reporting
 second attempt. Compare checksums, with a retry, not the size of one download.
 
 Not verifiable here: how it feels on real hardware. This container rasterises
-in software and has no H.264 decoder. A laptop has since been measured, from a
-recording — see **Measured on real hardware** in the motion system's section.
-One scroll on a real phone is still owed.
+in software and has no H.264 decoder. A laptop and an iPhone have since been
+measured, from recordings — see **Measured on real hardware** in the motion
+system's section.
 
 ## Six more instruments that lied
 
@@ -1733,8 +1842,8 @@ cut**, in the film's section.
 | 03 · Presidential Recognition | hall | Six Presidential Awards. Three Presidents of India. | 2008–2013 · Six national recognitions. A journey of invention that continues today. · three archive photographs · Selected moments from the Presidential recognition archive · 2008–2013 | View Presidential Archive → `/recognitions` |
 | 04 · Global Recognition | Earth | From India to the global stage. | a dated register, six rows | Explore Recognitions → `/recognitions` |
 | 05 · Advanced Materials | graphene lattice | From inventions to intelligent materials. | Graphene and advanced materials became the next chapter of the work. | Explore Innovations → `/innovations` |
-| 06 · Industrial Impact | viaduct, then plant | One material platform. Many industries. | Concrete. Solar. Batteries. Thermal management. Advanced composites. · Graphacrete · Graffisol · Graphenodes · Thermene · Six operating companies carry that platform into industry. | See the Work → `/innovations`, View Ventures → `/ventures` |
-| 07 · The Work Continues | city | Sushanth Paatnaik · I build what does not yet exist. | The future is not imagined. It is engineered quietly. · Inventor · Entrepreneur · Speaker · Advisor · 25 Innovations · 6 Ventures | Begin a conversation → `/contact`, Explore my journey → `/about`, and an index of the other eight sections |
+| 06 · Industrial Impact | viaduct, then plant | One material platform. Many industries. | Concrete. Solar. Batteries. Thermal management. Advanced composites. · four rows: Graphacrete, concrete admixture; Graffisol, solar coating; Graphenodes, battery electrode materials; Thermene, thermal interface compound · Six operating companies carry that platform into industry. | See the Work → `/innovations`, View Ventures → `/ventures` |
+| 07 · The Work Continues | city | Sushanth Paatnaik · I build what does not yet exist. | The future is not imagined. It is engineered quietly. · Inventor · Entrepreneur · Speaker · Advisor · Mentor · 25 Innovations · 6 Ventures | Begin a conversation → `/contact`, Explore my journey → `/about`, and an index of the other eight sections |
 
 The headlines are the owner's captions. Chapter 6 takes its headline from the
 later brief, not the earlier storyline, which had "25 Innovations. 6 Ventures.
@@ -1774,18 +1883,22 @@ page that owns it before it went in:
 - **Four product names** — each is on `/innovations` in the industry beside
   it: Graphacrete in Construction · Cement, Graffisol in Solar · Coatings,
   Graphenodes in Energy Storage · Electrodes, Thermene in Thermal ·
-  Interfaces.
+  Interfaces. What each one is, since the fourth pass, is its own catalogue
+  entry cut to a noun phrase — see **The fourth pass**.
 - **25 and 6** — the catalogue on `/innovations` and the roster on
   `/ventures`.
-- **Four roles** — inventor throughout; "serial entrepreneur" in the press on
-  `/news`; TED@Bangalore and sixty keynotes on `/recognitions`; six companies
-  advised on `/ventures`.
+- **Five roles** — four stated on the site: inventor throughout; "serial
+  entrepreneur" in the press on `/news`; TED@Bangalore and sixty keynotes on
+  `/recognitions`; six companies advised on `/ventures`. The fifth is not.
 
-**Left out: "Mentor".** The brief's role line had five words. The fifth is not
-stated anywhere on the site, and the brief's own rule was to change no
-biography fact that the site does not already carry. It goes in on the owner's
-word, and `ROLES` in `ScrollSections.tsx` is the one place to add it — on a
-phone the roles are set as two rows of two, so a fifth needs a third row.
+**"Mentor" is there on the owner's word.** The brief's role line had five
+words, and the fifth is stated nowhere else on the site, so it was left out —
+the brief's own rule was to change no biography fact the site does not already
+carry — until the owner asked for it on 2026-11-18. `ROLES` in
+`ScrollSections.tsx` is the one place it lives. On a phone the five are two
+rows, the first two and then the other three, not two rows of two and a
+third of one: that would strand a word, which is what the rows are there to
+prevent.
 
 ## What the brief asked for that was not done
 
@@ -1965,7 +2078,8 @@ was left.
   concrete admixture, solar coating, cathode and anode materials, thermal
   interface compound, which is not the brief's wording; and this is the
   shortest hold on the page, where the rule is to shorten copy, not add it.
-  Offered to the owner in the catalogue's words.
+  Offered to the owner in the catalogue's words, and taken up the next day:
+  see **The fourth pass**.
 - Photographs or certificates in chapter 4, and rows that arrive one at a
   time. The Earth is that chapter's picture, six rows of a register are not
   clutter, and a 69vh hold is too short to stage them through.
@@ -2230,6 +2344,161 @@ which that check counts as a console error and a failed request. With that
 one request set aside, 39 of 39 — 200, 0px overflow, one `h1`, lock
 released, the menu opening and closing on Escape. And the 390x844 layout pass
 printed Origin's box twice through the slow mirror; alone, clean.
+
+## The fourth pass
+
+2026-11-18, evening. The owner asked for the two things the third pass had
+left as their call — "add the product descriptors and Mentor" — and, while
+that was being done, sent two screen recordings of the live site: one on an
+iPhone, one on the laptop.
+
+Seven commits reached `main` from another session while this pass was being
+verified, `c4392c5` to `88fd95c`: a timeout and corrected fields for the
+contact form, the birthplace in the root's JSON-LD and on `/about`, age
+wording on `/about` and `/early-works`, and new QA scripts and a CI
+workflow. The push of this pass was refused as a non-fast-forward; they were
+merged, not overwritten, in `ced0de38`. They touch no file this pass touches.
+They are that session's to record — this file has checked them only so far as
+the 13 routes answering 200 with an absolute canonical, no horizontal overflow
+and no console error, at 1440 and on a 390 phone.
+
+**Product descriptors.** Chapter 6's four names are four rows, each name
+followed by what it is, in its own catalogue entry's words rather than the
+brief's:
+
+| Product | On the page | From its catalogue entry |
+|---|---|---|
+| Graphacrete | Concrete admixture | "Graphene nano-platelet admixture transforming standard concrete…" |
+| Graffisol | Solar coating | "Solar coating delivering higher annual yield…" |
+| Graphenodes | Battery electrode materials | "…cathode and anode materials for high-density batteries", in Energy Storage · Electrodes |
+| Thermene | Thermal interface compound | "Graphene-loaded thermal interface compound…" |
+
+The brief had "Graphene Thermal Management" and "Advanced Battery Materials",
+and neither is how the catalogue describes those products. Graphenodes' joins
+the entry's own "batteries" to its domain, Electrodes, so that each row names
+the industry the sentence above it lists, in the same order. None is a
+performance claim.
+
+Every row is one line at all eighteen sizes measured, 320 to 1920 wide; the
+longest, Graphenodes', is 272px at 320 where the column is 280. As the rows
+first went in, a phone held sideways could not hold the chapter: at all five
+landscape sizes it ran into the header and off the foot, at 568x320 by 28px
+and 36px. Two things put it back. The row's type size is set on the `li`, not
+only on its spans: left at the inherited 16px, the line height set the four
+rows 28px apart instead of 22. And on a phone held sideways the industries
+sentence takes the column's width, one line instead of two, with the list's
+top margin halved; under 340px of height it steps back, because the four rows
+under it name four of its five industries. After: no composition outside its
+frame that was not outside it before, at twenty-one sizes.
+
+**Mentor.** Last of five, where the storyline put it. One row on a laptop,
+516px at 11px. On a phone two rows — the first two, then the other three,
+213px and 258px — inside the 272px a 320px phone has for them.
+
+### What the iPhone recording showed
+
+A single pass down the page in Safari: seven chapters, each over its own
+scene; the Presidential plates turning over; the close settling as Safari's
+toolbar came back at the foot. Four things were not right, and none could be
+seen from here: the first needs a collapsing toolbar, the other three the
+phone's own face.
+
+- **The film was 5% too tall** for the whole of the scroll. See **The film
+  was drawn tall on a phone with its toolbar collapsed** in the motion
+  system's section.
+- **Origin's supporting line ran edge to edge.** Below `md` its `<br>` was
+  hidden and the line left to `text-wrap: balance`. In Inter, the face this
+  container has, that wraps it, at 216 and 186px on every phone. In the
+  iPhone's face it fits on one line, so it sat as a single line from margin
+  to margin under a headline two thirds that width. The `<br>` is
+  unconditional now: two lines everywhere, as a laptop sets them.
+- **Chapter 2's sentence left "wearable safety." on a line of its own**
+  under one that ran to the margin, on the iPhone, and "and wearable safety."
+  in the laptop's recording. Balanced now: 227 and 292px on phones, and at
+  320, where Inter left "safety." alone on a third line of 46px, three even
+  lines.
+- **Chapter 6's decorative rule stayed at the right edge** below `md`, over
+  copy that starts at the left. It follows the copy: flush left below `md`,
+  as chapter 5 sets its rule, flush right from `md` up.
+
+The grey disc at the right of every frame is the phone's own AssistiveTouch
+button, not the site.
+
+### The third laptop recording
+
+The same Mac, the build before this pass, three minutes after the phone's.
+283 of the 283 frames that show the site land within three frames of the
+scrollbar's position, with no prior. The film's proportions read 1.001
+again. At rest the picture is 0.05vh from the frame the position calls for;
+scrolling, a median 0.98vh behind at a median 63vh/s, the worst 2.52vh at
+144vh/s. One delay, 14.5ms, explains the moving frames with 0.35vh of
+scatter. No stall; down the page in 13.9 seconds.
+
+### Two more instruments that lied
+
+- **`text-transform` is in `innerText` and not in `textContent`.** A weld
+  check that compares the two, whitespace stripped, and skips an element
+  where they differ — on the theory that the difference is hidden text —
+  skips every uppercase label. On this page that is every eyebrow, every
+  role and every product name: the four new rows and the role line were
+  never compared, and the check said 0. Compare without case, print what was
+  skipped, and plant a weld to prove the check can find one.
+- **`ffmpeg` pads a variable-rate recording to its nominal rate.** The
+  iPhone's file says 60 frames a second and holds 1,795. Extracted plainly it
+  came out as 1,864, the 69 extra duplicates filling the stream's own gaps,
+  and every timing read from them would have been wrong. `-fps_mode
+  passthrough` keeps the frames the phone recorded, one per timestamp.
+
+### Measured, fourth pass
+
+2026-11-18, local production build under `wrangler dev`, with the live build
+through the mirror as control.
+
+- Sync: 35 of 35 at 1440 and 35 of 35 on a 390 phone.
+- Film checks: 24 of 24. The five determinism hashes, and the three on the
+  portrait set, are those of every build since the story cut. Film
+  proportions beside a classic scrollbar: 1.0000, unchanged.
+- The toolbar, reproduced: as under **The film was drawn tall on a phone with
+  its toolbar collapsed**.
+- Layout, ten compositions at each of twenty-one viewports from 1920x1080 to
+  320x568: the seventeen rows flagged on the build before, each where it was,
+  and no other. One row, chapter 4 on the 834x1194 tablet, is the harness
+  reading a page that had not moved.
+- Rows and roles: every product row on one line and the role line whole, at
+  eighteen sizes.
+- Contrast: 0 lines below 3:1 and 0 below AA, 382 at 1440 and 305 at 390. The
+  first run gave 2 below AA, both the role line at the start of the close,
+  4.14 and 4.46: with Mentor it is 516px wide and its ends reach past the
+  shield. At 90% ink, from 80, they read 4.75 and 5.34. The phone's role
+  line passes at 80% and keeps it.
+- Welds: none, across 39 prose elements on a laptop and 40 on a phone, at ten
+  stops each, the new rows and the role line among them. A planted weld is
+  found.
+- Routes: 13 at 1440 and 390, and 130 route-and-viewport checks on ten touch
+  profiles with the menu opened and closed on each. Entrance at 1280x800, all
+  checks; chapter rail 7 of 7; reduced motion 9284px and 1848 characters.
+- `scripts/e2e-scroll.mjs`: all passed, 7 inconclusive, as before.
+- Scroll tracking at 960x540, wheel-driven: a median 0.5-0.6vh behind and
+  within 1vh on every draw, forward and back, in all five runs; no long task.
+- `tsc --noEmit` is clean. `eslint` on the two files reports what it reported
+  before, at the same counts: the formatter, and in `CanvasLayer.tsx` three
+  `exhaustive-deps` warnings. Two new formatter findings, the new ternaries,
+  were reformatted before commit.
+- After the merge: routes 26 of 26, film checks 24 of 24, no welds, the
+  toolbar reproduction 1.0003.
+
+On production, live at 21:57:06 UTC the same day, 4m34s after the push of the
+merge. The four files a page loads — `Nav-Csyur1pJ.js`, `index-0UQK5FUF.js`,
+`index-DjIBOEJh.js`, `styles-D9lpp2GS.css` — are the merged build's, by
+checksum, and the comment-only commit after it builds to the same four. 13
+routes answer 200, each with an absolute canonical. The served HTML carries
+the four descriptors, "Mentor", Origin's two-line supporting line and one
+`h1`; twenty seconds earlier the same check found no "Mentor" on the build
+before. In a real browser through the local mirror: the toolbar reproduction
+reads 1.0003 in every state, which is the fix running on the live site; every
+row and the role line whole at six sizes; no welds; sync 35 of 35 at 1440 and
+on a 390 phone; layout clean at 1280x800, 390x844 and 320x568, and at 844x390
+the six rows flagged there before, unchanged.
 
 ## What was retired
 
