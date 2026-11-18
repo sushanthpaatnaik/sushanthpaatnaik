@@ -27,6 +27,12 @@ and at 390 with a touch profile: the product-detail CTA on all 25 panels,
 15 external / 9 engage / 1 none, with `target` and `rel` correct on every
 external one and `product_site_click` carrying the right payload.
 
+The homepage alone has been verified on production twice since, both on
+2026-11-17: see **Measured** in the film's section and **Measured, second
+pass** in the story's. Nothing else in the list above was re-checked on
+production that day beyond the 13 routes answering 200, so this line keeps
+its date.
+
 **The site is no longer dark-only.** A whole-site light theme was previewed
 and declined earlier; what shipped is a narrower thing that was asked for
 afterwards — Auto/Light/Dark on the eleven internal routes, with `/`
@@ -1849,6 +1855,22 @@ was left.
   position and within 1vh on every draw, except one reverse fast run whose
   worst draw was 3vh; 0-1 long tasks a run. The previous build gave 0.5-0.6vh
   and 1vh on the same harness the same evening.
+
+On production, live at 23:41 UTC the same day. The deployed script and
+stylesheet are the files that were tested, by name — `index-B47C0F5X.js`,
+`styles-Bo8WeNTM.css`; 24 frames sampled across the three sets match the
+repository by checksum; 13 routes answer 200, and nothing answered anything
+else while the deploy landed. In a real browser through the local mirror:
+sync 35 of 35 at 1440 and 35 of 35 on a 390 phone; the entrance checks at
+1280x800; the film's proportions beside a classic scrollbar, 1.0000 at
+1440x900 and 1280x800; layout clean at 1280x800, 390x844, 320x568 and
+667x375, with screenshots of every chapter at the first two.
+
+The first 390x844 layout pass through the mirror printed Origin's box for the
+first four stops. The loader had not released on the slow link, the page had
+not moved, and the harness's own "did not scroll" guard caught one of the
+four. Re-run, clean. **A row that repeats the row above it is the page not
+having moved**, whatever the flags column says.
 
 ## What was retired
 
