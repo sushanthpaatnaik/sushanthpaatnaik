@@ -73,10 +73,13 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install Playwright test browser
+      - name: Install Playwright in isolated QA directory
         run: |
-          npm install --no-save --package-lock=false playwright@1.57.0
-          npx playwright install --with-deps chromium
+          mkdir -p "$RUNNER_TEMP/website-playwright"
+          npm install --prefix "$RUNNER_TEMP/website-playwright" --no-save --package-lock=false playwright@1.57.0
+          "$RUNNER_TEMP/website-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          mkdir -p node_modules
+          ln -s "$RUNNER_TEMP/website-playwright/node_modules/playwright" node_modules/playwright
 
       - name: Test desktop/mobile layouts and contact form interaction
         env:
