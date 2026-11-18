@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import spLogo from "@/assets/sp-logo.svg";
 import ThemeSelector, { ThemeMenu } from "./ThemeSelector";
 import { useThemeControl } from "@/lib/theme-context";
@@ -59,11 +59,11 @@ export default function Nav() {
         }}
       />
       <header
-        className={`fixed top-0 left-0 right-0 z-50 px-5 md:px-10 flex items-center justify-between pointer-events-none transition-[padding-top,padding-bottom] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+        className={`fixed top-0 left-0 right-0 z-50 px-5 md:px-10 flex items-center justify-between gap-x-4 pointer-events-none transition-[padding-top,padding-bottom] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
           scrolled ? "py-2 md:py-3.5" : "py-4 md:py-6"
         }`}
       >
-        <Link to="/" className="group flex items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik, Home">
+        <Link to="/" className="group flex shrink-0 items-center gap-3 pointer-events-auto" aria-label="Sushanth Paatnaik, Home">
           <img
             src={spLogo}
             alt=""
@@ -87,23 +87,59 @@ export default function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-x-5 xl:gap-x-6 text-[10px] uppercase tracking-[0.26em] xl:tracking-[0.28em] text-muted-foreground/70 pointer-events-auto">
-          {navLinks.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="inline-flex min-h-6 items-center whitespace-nowrap hover:text-foreground transition-colors duration-300 relative after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:bg-foreground/30 after:transition-all after:duration-500 hover:after:w-full"
-              activeProps={{ className: "text-foreground after:!w-full after:!bg-primary/60" }}
-            >
-              {l.label}
-            </Link>
+        {/* The link row starts at xl, not lg. Nine links, the wordmark and
+            Contact need about 1150px in the system face on a Mac and 1300 to
+            1340 in Inter, which this stack asks for first. From 1024 to 1279
+            they did not fit in either: the wordmark's text ran 32px into
+            "About" at 1024 and the last links sat under the Contact button,
+            on every route. Below xl the links are in the drawer, which
+            already carried them for phones.
+
+            At xl the row can still be short of room where the face is wide.
+            In Inter at 1280, top of the page, it was 16px over on the
+            homepage and 60px over on an internal page: "PAATNAIKBOUT" on one
+            side, "Engage" under the theme control on the other. So the space
+            between links is a spacer that can give — 24px wherever there is
+            room, which is every width in the Mac's face and from about 1375
+            in Inter, down to 10px where there is not — and the header's own
+            gap keeps 16px between the three groups. The links never shrink.
+            With room to spare this is gap-x-6 to the pixel: 0 pixels differ
+            from the build before it at 1440 and 1920.
+
+            The wordmark and the button cluster are shrink-0 for the same
+            reason. Left to the default they do shrink: the logo is an img
+            with a percentage max-width, which makes its minimum contribution
+            zero, so the wordmark's box gave up 20px and its text ran out of
+            it into the gap that had just been made.
+
+            On the homepage the links are 90% of muted, not 70%. Over the
+            film they measured 3.2:1 on every chapter, against 4.5 for text
+            this size; at 90% they measure 4.7 to 4.8. Other routes keep 70%:
+            their grounds are the theme's and that level is part of the
+            approved design there. */}
+        <nav
+          className={`hidden xl:flex min-w-0 items-center text-[10px] uppercase tracking-[0.28em] pointer-events-auto ${
+            forcedDark ? "text-muted-foreground/90" : "text-muted-foreground/70"
+          }`}
+        >
+          {navLinks.map((l, i) => (
+            <Fragment key={l.to}>
+              {i > 0 && <span aria-hidden className="w-6 min-w-2.5 shrink" />}
+              <Link
+                to={l.to}
+                className="shrink-0 inline-flex min-h-6 items-center whitespace-nowrap hover:text-foreground transition-colors duration-300 relative after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:bg-foreground/30 after:transition-all after:duration-500 hover:after:w-full"
+                activeProps={{ className: "text-foreground after:!w-full after:!bg-primary/60" }}
+              >
+                {l.label}
+              </Link>
+            </Fragment>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3 pointer-events-auto">
+        <div className="flex shrink-0 items-center gap-3 pointer-events-auto">
           {/* The theme control lives with the other utilities rather than in
               the link row: it is a setting, not a destination. Hidden below
-              lg, where the drawer carries it instead — the header row at 390
+              xl, where the drawer carries it instead — the header row at 390
               is already the wordmark plus a 44px trigger.
 
               Absent on the homepage. The homepage is approved as it stands
@@ -114,7 +150,7 @@ export default function Nav() {
               the deployed build were in the homepage header. Without it the
               header is byte-identical again. */}
           {!forcedDark && (
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <ThemeMenu />
             </div>
           )}
@@ -131,7 +167,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+            className="xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 hover:text-foreground hover:border-foreground/35 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
           >
             <span className="sr-only">Menu</span>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -153,7 +189,7 @@ export default function Nav() {
 
       {/* Mobile overlay — opacity-only transition, no backdrop-filter animation */}
       <div
-        className={`fixed inset-0 z-[45] lg:hidden transition-opacity duration-500 ${
+        className={`fixed inset-0 z-[45] xl:hidden transition-opacity duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -163,9 +199,29 @@ export default function Nav() {
         }}
         onClick={() => setOpen(false)}
       >
+        {/* Centred by auto margins on the first and last child, not by
+            justify-center. Where the list fits the two are the same thing,
+            to the pixel. Where it does not, justify-center overflows equally
+            above and below, and a scroll container cannot scroll to what is
+            above its start: on a phone held sideways "About" sat 75px above
+            the top of the screen and could not be reached, and on a 320x568
+            phone the first link lay under the wordmark. Auto margins fall to
+            zero when there is no room, so the list starts under the header
+            and everything past the foot is a scroll away.
+
+            The mask is for that scrolled state only. The header's wordmark
+            and buttons are painted above this layer with nothing behind
+            them, so a link scrolled up would run through the wordmark; it
+            fades out across the 36px under the header instead. Where the
+            list fits, nothing is ever painted in that band — it is this
+            element's own top padding — and the mask changes no pixel. */}
         <nav
           onClick={(e) => e.stopPropagation()}
-          className="flex h-full w-full flex-col items-start justify-center gap-4 sm:gap-5 px-8 sm:px-12 pt-24 pb-10 overflow-y-auto"
+          className="flex h-full w-full flex-col items-start gap-4 sm:gap-5 px-8 sm:px-12 pt-24 pb-10 overflow-y-auto [&>:first-child]:mt-auto [&>:last-child]:mb-auto"
+          style={{
+            maskImage: "linear-gradient(180deg, transparent 0, transparent 3.75rem, #000 6rem)",
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0, transparent 3.75rem, #000 6rem)",
+          }}
         >
           {navLinks.map((l, i) => (
             <Link

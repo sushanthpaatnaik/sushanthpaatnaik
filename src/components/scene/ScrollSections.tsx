@@ -243,7 +243,7 @@ function Eyebrow({
 // Archive →" is 297px in a 272px column, and the arrow wrapped onto a line of
 // its own.
 const CHAPTER_LINK =
-  "inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] [@media(max-width:340px)]:tracking-[0.28em] text-foreground/75 hover:text-foreground transition-colors";
+  "inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] [@media(max-width:340px)]:tracking-[0.28em] text-foreground/85 hover:text-foreground transition-colors";
 
 /* ──────────────────────────────────────────────────────────────────
    Chapter 0 — Origin (id="spark"). Film: the workbench.
@@ -515,17 +515,62 @@ function useReveal(sp: MotionValue<number>, [from, to]: RevealWindow, rise: numb
 
 /* The hall is the brightest sustained footage in the film — a lit gold room,
    edge to edge — and this chapter's copy runs the full width of it, so no
-   side scrim can cover the type. A veil over the whole frame, heavier at the
-   head where the headline sits and at the foot where the captions and the
-   link sit. */
-function HallVeil() {
+   side scrim can cover the type. A veil over the whole frame.
+
+   Its shape follows what is in the room, not only where the type is. The top
+   third of the frame is architecture: arches, a chandelier, the ceiling. From
+   about 43% down it is the hall's display cases, their trophies and framed
+   "ceremony" pictures, and plinths carrying the State Emblem — all of it
+   generated, none of it evidence. The first veil was lightest across exactly
+   that band, 0.60, and heaviest at the head, 0.80: backwards on both counts.
+   So the head now lets the architecture through, 0.62 between the header and
+   the copy, and the band the cases stand in is the darkest part of the frame,
+   which is also the ground the photographs' captions sit on.
+
+   The headline does not sit on 0.62. `HeadScrim` travels with the copy and
+   brings its own band back to 0.72 wherever on the frame the block lands —
+   the block's top runs from 17% of the height on a short laptop to 27% on a
+   1080p screen, so no stop in a frame-sized gradient can be "just above the
+   headline" for all of them. What is left lighter is whatever lies between
+   the header and the copy: a wide band on a tall screen, nothing at all on a
+   phone held sideways.
+
+   A phone held upright has no band to open: its headline starts at 13.6% of
+   the height, straight under the header. It keeps a plain veil, with the
+   same darker ground under the photograph that the laptop has under its
+   three. */
+const HALL_VEIL = {
+  laptop:
+    "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.78) 8%, rgba(0,0,0,0.62) 13%, rgba(0,0,0,0.62) 30%, rgba(0,0,0,0.76) 46%, rgba(0,0,0,0.80) 100%)",
+  phone:
+    "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.72) 30%, rgba(0,0,0,0.76) 56%, rgba(0,0,0,0.80) 100%)",
+} as const;
+
+function HallVeil({ variant }: { variant: keyof typeof HALL_VEIL }) {
   return (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-0"
+      style={{ background: HALL_VEIL[variant] }}
+    />
+  );
+}
+
+/* Behind the eyebrow, the headline and the note, wherever they are. It bleeds
+   past both edges of the frame — the stage clips it — and fades in over the
+   2.25rem above the block and out over the 2rem below the headline row, so
+   there is no line across the hall where it starts or stops. 0.27 over the
+   veil's 0.62 is 0.72, a hair more than the 0.71-0.72 the eyebrow stood on
+   before. Negative z-index inside the block's own stacking context: above
+   the veil, below the type. */
+function HeadScrim() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute -z-10 left-[-50vw] right-[-50vw] -top-9 -bottom-8"
       style={{
         background:
-          "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.70) 30%, rgba(0,0,0,0.60) 56%, rgba(0,0,0,0.76) 100%)",
+          "linear-gradient(180deg, transparent 0, rgba(0,0,0,0.27) 2.25rem, rgba(0,0,0,0.27) calc(100% - 2rem), transparent 100%)",
       }}
     />
   );
@@ -561,12 +606,20 @@ function ArchivePlate({ plate, armed }: { plate: Plate; armed: boolean }) {
       {/* Caption below the photograph, never on it: nothing here has to be
           legible against a picture. Two block spans, so an explicit space
           keeps "…Abdul Kalam" and "Presidential Award…" apart in the text
-          stream. */}
+          stream.
+
+          The second line is 10.5px from xl up and no sooner. "Presidential
+          Award · NIF · 2009" is 31 monospace characters at 0.2em tracking:
+          248px at 10px and 260px at 10.5px, whatever the face. A plate is
+          265px wide at 1024 — 260px beside a classic scrollbar — and 251px
+          on an 834px tablet, so the half pixel would have wrapped the first
+          caption there and left the other two on one line. At 1280 a plate
+          is 340px. */}
       <figcaption className="mt-2.5 md:mt-3">
-        <span className="block font-display text-[13.5px] md:text-[15px] leading-snug tracking-[-0.01em] text-foreground/90">
+        <span className="block font-display text-[13.5px] md:text-[15px] leading-snug tracking-[-0.01em] text-foreground/95">
           {plate.caption}
         </span>{" "}
-        <span className="mt-1 block font-mono text-[9.5px] md:text-[10px] uppercase tracking-[0.2em] text-foreground/85 [@media(orientation:landscape)_and_(max-height:340px)]:hidden">
+        <span className="mt-1 block font-mono text-[9.5px] md:text-[10px] xl:text-[10.5px] uppercase tracking-[0.2em] text-foreground/95 [@media(orientation:landscape)_and_(max-height:340px)]:hidden">
           {plate.meta}
         </span>
       </figcaption>
@@ -598,30 +651,38 @@ function PresidentialContent({
        the chrome rather than in the raw viewport. This is the tallest
        composition on the page. */
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:px-24 xl:px-28 md:pt-[68px] max-md:stage-ls:pt-14">
-      <HallVeil />
+      <HallVeil variant="laptop" />
       <div className="relative z-10 mx-auto w-full max-w-6xl">
-        <Eyebrow n="03" className="mb-4 md:mb-5 [@media(max-height:560px)]:mb-2.5">
-          Presidential Recognition
-        </Eyebrow>
-        <div className="flex flex-wrap items-end justify-between gap-x-14 gap-y-5">
-          <h2 className="font-display text-[clamp(1.5rem,min(4.1vw,7.6vh),3.4rem)] leading-[1.05] tracking-[-0.03em] font-medium text-gradient">
-            <span className="block">Six Presidential Awards.</span>{" "}
-            <span className="block">Three Presidents of India.</span>
-          </h2>
-          <motion.div
-            className="max-w-[23rem] pb-1 [@media(max-height:560px)]:hidden"
-            style={{ opacity: note.opacity, y: note.y, willChange: wc }}
-          >
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75">
-              2008–2013
-            </p>
-            <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-              National recognition for early inventions.
-            </p>
-            <p className="mt-1 text-[15px] leading-relaxed text-foreground/75">
-              Six national recognitions. A journey of invention that continues today.
-            </p>
-          </motion.div>
+        <div className="relative">
+          <HeadScrim />
+          <Eyebrow n="03" className="mb-4 md:mb-5 [@media(max-height:560px)]:mb-2.5">
+            Presidential Recognition
+          </Eyebrow>
+          <div className="flex flex-wrap items-end justify-between gap-x-14 gap-y-5">
+            <h2 className="font-display text-[clamp(1.5rem,min(4.1vw,7.6vh),3.4rem)] leading-[1.05] tracking-[-0.03em] font-medium text-gradient">
+              <span className="block">Six Presidential Awards.</span>{" "}
+              <span className="block">Three Presidents of India.</span>
+            </h2>
+            <motion.div
+              className="max-w-[23rem] pb-1 [@media(max-height:560px)]:hidden"
+              style={{ opacity: note.opacity, y: note.y, willChange: wc }}
+            >
+              <p className="font-mono text-[10.5px] uppercase tracking-[0.3em] text-foreground/75">
+                2008–2013
+              </p>
+              {/* One statement to a line, the way the headline beside it is set.
+                  As a single run it wrapped after "…invention that" and left
+                  "continues today." on a line of its own. It stood under
+                  "National recognition for early inventions." until the owner
+                  had that line removed: the two said the same thing twice.
+                  Block spans, so the explicit space keeps the sentences apart
+                  in the text stream. */}
+              <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
+                <span className="block">Six national recognitions.</span>{" "}
+                <span className="block">A journey of invention that continues today.</span>
+              </p>
+            </motion.div>
+          </div>
         </div>
 
         {/* The row is capped by viewport height as well as by the column.
@@ -656,7 +717,7 @@ function PresidentialContent({
             className="mt-6 lg:mt-7 [@media(max-height:560px)]:mt-2 flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3"
             style={{ opacity: foot.opacity, y: foot.y, willChange: wc }}
           >
-            <p className="text-[12.5px] lg:text-[13px] leading-snug text-foreground/75 [@media(max-height:560px)]:hidden">
+            <p className="text-[12.5px] lg:text-[13px] leading-snug text-foreground/85 [@media(max-height:560px)]:hidden">
               Selected moments from the Presidential recognition archive · 2008–2013
             </p>{" "}
             <Link to="/recognitions" className={CHAPTER_LINK}>
@@ -706,7 +767,7 @@ function PresidentialMobile({
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      <HallVeil />
+      <HallVeil variant="phone" />
 
       <div className="absolute inset-x-6 top-[13.5%] z-10">
         <Eyebrow n="03" className="mb-3.5">
@@ -745,10 +806,10 @@ function PresidentialMobile({
         {/* On a phone under 700px tall the photograph, its caption, these two
             lines and the link do not all clear the action bar, so the lines
             step back and the link keeps its place. */}
-        <p className="mt-5 max-w-[36ch] text-[14.5px] leading-[1.55] text-foreground/80 [@media(max-height:700px)]:hidden">
+        <p className="mt-5 max-w-[36ch] text-[14.5px] leading-[1.55] text-foreground/80 [text-wrap:balance] [@media(max-height:700px)]:hidden">
           Six national recognitions. A journey of invention that continues today.
         </p>
-        <p className="mt-2.5 max-w-[40ch] text-[12px] leading-[1.5] text-foreground/75 [@media(max-height:700px)]:hidden">
+        <p className="mt-2.5 max-w-[40ch] text-[12px] leading-[1.5] text-foreground/85 [@media(max-height:700px)]:hidden">
           Selected moments from the Presidential recognition archive · 2008–2013
         </p>
         <Link to="/recognitions" className={`mt-5 ${CHAPTER_LINK}`}>
@@ -823,15 +884,15 @@ function GlobalContent() {
                 className="flex items-baseline gap-4 [@media(max-width:340px)]:gap-3 border-t border-foreground/[0.12] py-2.5 md:py-3 stage-ps:py-1.5 stage-ls:py-0.5"
                 style={{ textShadow: "0 1px 8px oklch(0.02 0.006 260 / 0.75)" }}
               >
-                <span className="w-[4.1rem] [@media(max-width:340px)]:w-[3.4rem] shrink-0 font-mono text-[10px] tracking-[0.16em] text-foreground/85">
+                <span className="w-[4.1rem] [@media(max-width:340px)]:w-[3.4rem] shrink-0 font-mono text-[10px] md:text-[10.5px] tracking-[0.16em] text-foreground/95">
                   {h.year}
                 </span>{" "}
                 <span className="min-w-0">
-                  <span className="font-display text-[14.5px] md:text-[16px] tracking-[-0.01em] text-foreground/90">
+                  <span className="font-display text-[14.5px] md:text-[16px] tracking-[-0.01em] text-foreground/95">
                     {h.title}
                   </span>
                   <span className="text-foreground/35">{" · "}</span>
-                  <span className="text-[12.5px] md:text-[13.5px] text-foreground/75">
+                  <span className="text-[12.5px] md:text-[14px] text-foreground/85">
                     {h.note}
                   </span>
                 </span>
