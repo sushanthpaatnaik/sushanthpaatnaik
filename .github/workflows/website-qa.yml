@@ -1,0 +1,88 @@
+name: Website QA — source, build, browser and Cloudflare publication
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      send_contact_test:
+        type: boolean
+        description: "Submit one clearly labelled contact-form test through a browser"
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Check copy, form contract, metadata and sitemap
+        run: node scripts/qa-site.mjs
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Compile production application
+        run: npm run build
+
+  cloudflare-live-smoke:
+    needs: source-and-build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check published routes after Cloudflare deployment
+        env:
+          QA_BASE_URL: "https://sushanthpaatnaik.com"
+          QA_ATTEMPTS: "10"
+          QA_INTERVAL_MS: "25000"
+        run: node scripts/qa-site.mjs --remote
+
+  browser-smoke:
+    needs: source-and-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright in isolated QA directory
+        run: |
+          mkdir -p "$RUNNER_TEMP/website-playwright"
+          npm install --prefix "$RUNNER_TEMP/website-playwright" --no-save --package-lock=false playwright@1.57.0
+          "$RUNNER_TEMP/website-playwright/node_modules/.bin/playwright" install --with-deps chromium
+          mkdir -p node_modules
+          ln -s "$RUNNER_TEMP/website-playwright/node_modules/playwright" node_modules/playwright
+
+      - name: Test desktop/mobile layouts and contact form interaction
+        env:
+          QA_BASE_URL: "https://sushanthpaatnaik.com"
+          QA_SEND_CONTACT_TEST: ${{ (github.event_name == 'push' && contains(github.event.head_commit.message, '[site-contact-test]')) || (github.event_name == 'workflow_dispatch' && inputs.send_contact_test) }}
+        run: node scripts/qa-browser.mjs

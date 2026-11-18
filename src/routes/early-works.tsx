@@ -80,7 +80,7 @@ const innovations: Innovation[] = [
     solution:
       "A hardware-first safety system engineered to retrofit onto any existing vehicle, without redesigning the host platform. Field-deployable, low-cost and scalable from a school workshop.",
     impact:
-      "Recognized by the President of India at age 14. Built with school-workshop tools and parts bought locally.",
+      "Recognized by the President of India for a school-era invention. Built with school-workshop tools and parts bought locally.",
     image: rectofitImg,
     badges: ["Presidential Award"],
     layout: "split-right",

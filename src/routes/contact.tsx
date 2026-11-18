@@ -128,24 +128,28 @@ function AccessForm() {
     }
 
     setStatus("sending");
+    // A stalled third-party request must not leave the contact CTA stuck on "Sending…".
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 20_000);
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
+        signal: controller.signal,
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
           subject: `[${intentLabel}] ${name}`,
           from_name: name,
           Intent: intentLabel,
-          Name: name,
+          name: name.trim(),
           Organisation: org || "—",
-          Email: email,
+          email: email.trim(),
           Phone: phone || "—",
-          Context: context,
+          message: context.trim(),
         }),
       });
       const data = await res.json();
-      if (data?.success) {
+      if (res.ok && data?.success) {
         setStatus("sent");
         track("contact_submit", { intent: intentLabel, outcome: "sent" });
       } else {
@@ -158,6 +162,8 @@ function AccessForm() {
     } catch {
       setStatus("error");
       track("contact_submit", { intent: intentLabel, outcome: "network_error" });
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   }
 
@@ -359,7 +365,7 @@ function AccessForm() {
                 <path d="M20 6 9 17l-5-5" />
               </svg>
             </span>
-            <p className="font-display text-[20px] md:text-[24px] tracking-[-0.015em] text-foreground/92">
+            <p role="status" className="font-display text-[20px] md:text-[24px] tracking-[-0.015em] text-foreground/92">
               Message sent.
             </p>
             <p className="max-w-md font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground/55 leading-relaxed">
@@ -398,7 +404,7 @@ function AccessForm() {
                   )}
                 </button>
                 {status === "error" ? (
-                  <p className="max-w-[280px] text-right font-mono text-[10px] uppercase tracking-[0.3em] text-destructive/80 sm:max-w-none">
+                  <p role="alert" className="max-w-[280px] text-right font-mono text-[10px] uppercase tracking-[0.3em] text-destructive/80 sm:max-w-none">
                     Couldn&apos;t send.{" "}
                     <a href={mailto} className="underline underline-offset-2 hover:text-accent">
                       email directly
@@ -414,7 +420,7 @@ function AccessForm() {
             </div>
             <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-muted-foreground/40">
               {WEB3FORMS_ACCESS_KEY
-                ? "Your message goes straight to the founder's inbox. No email app required. Nothing else is stored on this site."
+                ? "Submissions are processed by Web3Forms and delivered by email. No email app required."
                 : "Submitting opens your mail client with the inquiry pre-composed. Nothing is stored on this site."}
             </p>
           </>
