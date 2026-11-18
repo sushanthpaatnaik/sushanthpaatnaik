@@ -1,0 +1,49 @@
+name: Website QA — source, build, and Cloudflare publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/qa-site.mjs"
+      - ".github/workflows/website-qa.yml"
+  workflow_dispatch:
+    inputs:
+      send_contact_test:
+        type: boolean
+        description: "Send one clearly labelled QA message through Web3Forms"
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  website-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out current website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Verify source, metadata, and factual contracts
+        run: node scripts/qa-site.mjs
+
+      - name: Install locked project dependencies
+        run: npm ci
+
+      - name: Compile the production site
+        run: npm run build
+
+      - name: Verify Cloudflare public routes and latest copy
+        env:
+          QA_BASE_URL: "https://sushanthpaatnaik.com"
+          QA_ATTEMPTS: "10"
+          QA_INTERVAL_MS: "25000"
+          QA_SEND_CONTACT_TEST: ${{ (github.event_name == 'push' && contains(github.event.head_commit.message, '[site-contact-test]')) || (github.event_name == 'workflow_dispatch' && inputs.send_contact_test) }}
+        run: node scripts/qa-site.mjs --remote
