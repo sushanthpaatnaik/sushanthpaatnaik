@@ -103,7 +103,7 @@ const ventures: Venture[] = [
     code: "02",
     name: "Grafillium",
     year: "2025",
-    role: "Co-Founder & CTO",
+    role: "Co-Founder & CIO",
     category: "Materials",
     domain: "Eco nano additives",
     thesis:
