@@ -106,7 +106,7 @@ function AboutPage() {
     <CinematicPageShell
       eyebrow="About · Founder"
       title={<>An inventor working on materials<br className="hidden md:inline" /> and industrial systems.</>}
-      lead="Born in Bhubaneswar, Odisha. The work began with a vehicle safety retrofit at fourteen, and it has not really paused since."
+      lead="Born in Bhubaneswar, Odisha. The work began with a vehicle safety retrofit as a teenager, and it has not really paused since."
       backdrop={backdrop}
       overlay={0.82}
     >
