@@ -1,11 +1,10 @@
 name: Website QA — source, build, and Cloudflare publication
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
-    paths:
-      - "scripts/qa-site.mjs"
-      - ".github/workflows/website-qa.yml"
   workflow_dispatch:
     inputs:
       send_contact_test:
@@ -18,11 +17,11 @@ permissions:
   contents: read
 
 jobs:
-  website-qa:
+  source-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 12
     steps:
-      - name: Check out current website
+      - name: Check out website
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -31,16 +30,30 @@ jobs:
           node-version: "22"
           cache: npm
 
-      - name: Verify source, metadata, and factual contracts
+      - name: Check copy, form contract, metadata and sitemap
         run: node scripts/qa-site.mjs
 
-      - name: Install locked project dependencies
+      - name: Install locked dependencies
         run: npm ci
 
-      - name: Compile the production site
+      - name: Compile production application
         run: npm run build
 
-      - name: Verify Cloudflare public routes and latest copy
+  cloudflare-live-smoke:
+    needs: source-and-build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check published routes after Cloudflare deployment
         env:
           QA_BASE_URL: "https://sushanthpaatnaik.com"
           QA_ATTEMPTS: "10"
