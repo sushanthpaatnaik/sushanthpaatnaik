@@ -296,8 +296,8 @@ function OriginHero() {
         {/* Supporting line */}
         <p className="mx-auto mt-10 md:mt-14 [@media(max-height:560px)]:mt-5 max-w-xl font-display text-[14.5px] md:text-[16px] leading-[1.6] tracking-[-0.005em] text-foreground/80 [text-wrap:balance]">
           {/* Two lines everywhere, as a laptop sets it. Left to balance on a
-              phone, the line fitted once in the iPhone's face and ran edge to
-              edge under a headline two thirds its width — a 390px iPhone,
+              phone, it fitted on one line in the iPhone's face and ran edge
+              to edge under a headline two thirds its width — a 390px iPhone,
               read off the owner's recording; Inter, wider, had wrapped it. */}
           A young inventor. A workbench.{" "}
           <br />
@@ -1026,8 +1026,9 @@ function IndustrialContent() {
         </h2>
         {/* On a phone held sideways the sentence takes the column's width
             and one line instead of two. On one under 340px tall it steps
-            back: the four rows under it name four of its five industries,
-            and with both the chapter ran 40px into the header at 568x320. */}
+            back: the four rows under it name four of its five industries.
+            When the rows first went in, the chapter ran 28px into the header
+            and 36px off the foot at 568x320. */}
         <p
           className="text-[15px] md:text-base text-foreground/85 leading-relaxed max-w-[26rem] stage-ls:max-w-none ml-auto [@media(orientation:landscape)_and_(max-height:340px)]:hidden"
           style={{ textShadow: "0 1px 10px oklch(0.02 0.006 260 / 0.8)" }}

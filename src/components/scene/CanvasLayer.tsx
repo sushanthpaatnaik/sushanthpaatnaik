@@ -447,7 +447,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // The same defect on the other axis. The buffer's height is innerHeight at
     // the moment syncSize last ran, and syncSize runs when <html> changes size.
     // On a phone it does not: the page's height is set in vh, which iOS Safari
-    // and Chrome hold at the large viewport, so when the toolbar collapses
+    // holds at the large viewport, so when the toolbar collapses
     // under a scrolling thumb <html> keeps its size while the fixed stage, and
     // the canvas box with it, grows. The buffer, sized for the shorter screen,
     // was stretched to fill the taller one. Measured on a screen recording of
