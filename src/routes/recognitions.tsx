@@ -886,7 +886,7 @@ function RecognitionsPage() {
         aria-label="Recognitions sections"
         className="not-prose sticky top-2 z-30 -mx-4 md:mx-0 mt-2 mb-10 backdrop-blur-xl bg-[var(--surface-sunken)]/75 border-y border-foreground/[0.08] scroll-mt-2"
       >
-        <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto px-5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex gap-x-7 md:gap-x-9 overflow-x-auto pl-5 pr-12 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_88%,transparent_99%)]">
           {sectionNav.map((s) => {
             const isActive = activeSection === s.id;
             return (

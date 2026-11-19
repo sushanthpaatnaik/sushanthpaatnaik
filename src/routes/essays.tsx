@@ -95,7 +95,7 @@ function EssaysIndex() {
           transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
           className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.5em] text-muted-foreground/55"
         >
-          <span className="text-primary/80">BLOGS</span>
+          <span className="text-primary/80">ESSAYS</span>
           <span className="hidden sm:inline">Volume I · MMXXVI</span>
           <span>Essays {String(essays.length).padStart(2, "0")}</span>
         </motion.div>

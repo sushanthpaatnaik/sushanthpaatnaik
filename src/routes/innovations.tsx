@@ -484,7 +484,7 @@ function InnovationsPage() {
   // which is derived — read "25 of 25".
   return (
     <CinematicPageShell
-      eyebrow={`Innovations · Catalogue · ${items.length} of ${items.length}`}
+      eyebrow={`Innovations · Catalogue · ${String(items.length).padStart(2, "0")} of ${String(items.length).padStart(2, "0")}`}
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
       lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
