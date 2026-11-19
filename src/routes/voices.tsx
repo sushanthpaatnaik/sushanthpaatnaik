@@ -126,7 +126,7 @@ const voices: Voice[] = [
     category: "Media · Entrepreneurship",
     quote:
       "A very inspiring entrepreneur and great social-revolutionary products.",
-    personName: "Shradha Sharma",
+    personName: "Shraddha Sharma",
     personTitle: "Founder & CEO",
     organization: "YourStory",
     logoScale: 1.0,

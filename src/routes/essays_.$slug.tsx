@@ -29,7 +29,7 @@ const essayBodies: Record<string, EssayContent> = {
       {
         heading: "A man asking for water",
         paragraphs: [
-          "I learned the lesson at fourteen, watching a man with locked-in syndrome try to ask for water. He could move two muscles: his eyebrows and his diaphragm. The room was full of caring people who could not hear him.",
+          "I learned the lesson at sixteen, watching a man with locked-in syndrome try to ask for water. He could move two muscles: his eyebrows and his diaphragm. The room was full of caring people who could not hear him.",
           "The wheelchair I built him wasn't elegant. It was a breath-pressure sensor wired to a relay, taped to a frame that I welded badly in a workshop borrowed for the weekend. But for the first time in years, he could move himself toward the glass.",
           "That afternoon changed what I thought engineering was for. Until then I had treated it as optimisation: more performance out of less material, less power, less time. After that afternoon I understood that the performance was only ever the means. What he actually needed back was the ability to act on his own.",
         ],
@@ -38,7 +38,7 @@ const essayBodies: Record<string, EssayContent> = {
         heading: "Why this still organises my work",
         paragraphs: [
           "Every venture I have built since has begun with the same question: who is this for, and what does dignity feel like for them?",
-          "In materials science, that question becomes: which sectors are still using carbon-intensive composites because nothing better has scaled? In energy, it becomes: which communities are still spending nine percent of their income on cooking fuel because the grid hasn't reached them? In assistive technology, it becomes the question I started with, and still, twenty years later, the one I'm proudest to answer well.",
+          "In materials science, that question becomes: which sectors are still using carbon-intensive composites because nothing better has scaled? In energy, it becomes: which communities are still spending nine percent of their income on cooking fuel because the grid hasn't reached them? In assistive technology, it becomes the question I started with, and still, fifteen years later, the one I'm proudest to answer well.",
           "The deep-tech world likes to romanticise the science. The science is necessary. It is not, by itself, the work.",
         ],
       },

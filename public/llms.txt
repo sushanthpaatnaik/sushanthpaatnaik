@@ -9,7 +9,7 @@ Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Cap
 - [Home](/): Inventor and deep-tech founder building from India for the world.
 - [About](/about): Founder philosophy, journey, and mission.
 - [Early Works](/early-works): Six original inventions from the workshop years.
-- [Innovations](/innovations): 23 graphene products across commercial, pilot, and R&D stages.
+- [Innovations](/innovations): 25 graphene products across commercial, pilot, and R&D stages.
 - [Evidence & Development-Stage Standards](/evidence-standards): How development stage and evidence labels are graded across the Innovations catalogue.
 - [Ventures](/ventures): Operating group across materials, industrial products, AI, and capital.
 - [Recognitions](/recognitions): Six Presidential awards, TED, MIT TR-35, NASA, NIF-India IGNITE.
@@ -22,6 +22,6 @@ Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Cap
 
 ## Essays
 
-- [On engineering with empathy](/essays/engineering-with-empathy): Why the wheelchair built at fourteen rewrote what engineering means.
+- [On engineering with empathy](/essays/engineering-with-empathy): Why the wheelchair built at sixteen rewrote what engineering means.
 - [On graphene and the next century](/essays/graphene-and-the-next-century): Why India can lead the carbon century.
 - [On staying a beginner](/essays/staying-a-beginner): Recognitions are lagging indicators; curiosity is the currency.
