@@ -260,19 +260,20 @@
   /* The fixed archival plate behind every internal page: a photograph,
      graded until it is atmosphere rather than subject, under a stack of
      washes. Every layer is a token because every layer has to reverse —
-     a plate graded down to 0.46 brightness under a near-black wash is the
-     page's ground, and on paper that same stack is a black rectangle. */
-  --plate-filter: blur(4px) saturate(0.38) brightness(0.46) contrast(1.05);
+     on paper that same stack is a black rectangle. The plate is graded
+     at full brightness with a light blur so the scene reads as a faint
+     texture behind the page rather than as a second subject. */
+  --plate-filter: blur(2px) saturate(0.6) brightness(1.0) contrast(1.02);
   --plate-haze-filter: blur(28px) saturate(0.32) brightness(0.42);
   --plate-haze-opacity: 0.85;
   --plate-ink: oklch(0.03 0.005 260);
   --plate-ink-top: oklch(0.04 0.006 260);
-  /* The floor under the caller's `overlay`. Each page picks its own alpha —
-     0.68 on /news up to 0.82 on /about — and against a near-black ink every
-     one of those lands on the same black, so the floor is 0 and nothing
-     changes. On paper the same spread is the difference between a page that
-     reads as ivory and one that reads as grey card, which is why the light
-     theme raises it. `max()` of a value and 0% is that value. */
+  /* The floor under the caller's `overlay`. Every internal page calls the
+     same 0.35 alpha: against the near-black ink that leaves the backdrop
+     clearly present behind the headline while body copy sits on its own
+     panels. On paper the light theme raises the floor so the sheet keeps
+     reading as paper, with the photograph as a faint modulation in it.
+     `max()` of a value and 0% is that value. */
   --plate-wash-min: 0%;
   /* Appended to every photographic grade on the site. Each of those was
      tuned for a graphite room and darkens and desaturates — nine of them
@@ -630,21 +631,17 @@
   --voice-plate-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.07), inset 0 1px 0 oklch(1 0 0 / 0.9);
 
   /* The same plate, printed rather than projected — but the grade has to do
-     far more work here than the first pass allowed. Every backdrop on the
-     site is a dark cinematic photograph, so brightness(1.34) left it around
-     luminance 55 on a 246 paper, and at 0.68–0.82 wash that residue was
-     between a sixth and a third of the ground. It made each page a slightly
-     different grey card: measured across the ten internal pages the light
-     canvas ranged 183 to 240, a span of 57, against 6 in the dark.
-
-     Brightness carries it well past mid and contrast then collapses what is
-     left toward that mid, so the photograph survives as a tonal modulation
-     in the paper rather than as a subject. With the wash floored at 91% the
-     page-to-page spread of the residue is a couple of levels. */
-  --plate-filter: blur(5px) saturate(0.16) brightness(2.10) contrast(0.40);
+     more work here than in the dark. Every backdrop on the site is a dark
+     cinematic photograph, so brightness carries it past mid and contrast
+     then collapses what is left toward that mid: the photograph survives
+     as a tonal modulation in the paper rather than as a subject. The wash
+     floor at 68% keeps every page on the same sheet of paper while letting
+     the texture stay visible, matching how far the dark theme now opens
+     its own plate. */
+  --plate-filter: blur(4px) saturate(0.30) brightness(1.62) contrast(0.55);
   --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
   --plate-haze-opacity: 0.55;
-  --plate-wash-min: 91%;
+  --plate-wash-min: 68%;
   /* Open the shadows, hold the contrast, give back the saturation those
      grades removed. A dusk construction site or a graded archive plate
      then reads as an open photograph on the sheet rather than as a hole

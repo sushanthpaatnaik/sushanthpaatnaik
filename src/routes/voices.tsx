@@ -306,7 +306,7 @@ function VoicesPage() {
       }
       lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages, spanning two decades of invention."
       backdrop={backdrop}
-      overlay={0.76}
+      overlay={0.35}
     >
       <VoicesStrip />
 

@@ -108,7 +108,7 @@ function AboutPage() {
       title={<>An inventor working on materials<br className="hidden md:inline" /> and industrial systems.</>}
       lead="Born in Cuttack, Odisha. The work began with a vehicle safety retrofit as a teenager, and it has not really paused since."
       backdrop={backdrop}
-      overlay={0.82}
+      overlay={0.35}
     >
       {/* ── Identity film ──
           Its own 16/9 frame rather than the portrait plate below. The plate is

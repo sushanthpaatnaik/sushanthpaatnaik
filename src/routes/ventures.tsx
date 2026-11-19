@@ -306,7 +306,7 @@ function VenturesPage() {
       title={<>Six companies,<br className="hidden md:inline" /> one materials platform.</>}
       lead="Founder, co-founder and chief innovation officer across six companies, and an advisory role at six more across industry, materials and climate."
       backdrop={backdrop}
-      overlay={0.72}
+      overlay={0.35}
     >
       {/* ---------- Holdings authority strip ---------- */}
       <motion.div

@@ -488,7 +488,7 @@ function InnovationsPage() {
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
       lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
       backdrop={backdrop}
-      overlay={0.78}
+      overlay={0.35}
     >
       <FounderPortrait
         variant="documentary"

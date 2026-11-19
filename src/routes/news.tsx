@@ -668,7 +668,7 @@ function NewsPage() {
       }
       lead="An editorial archive of coverage across sixteen years and eighteen publications: Indian, international, popular press and scientific institutions. Filed chronologically. Read selectively."
       backdrop={backdrop}
-      overlay={0.68}
+      overlay={0.35}
     >
       {/* Intelligence strip */}
       <IntelligenceStrip />

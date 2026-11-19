@@ -455,7 +455,7 @@ function ContactPage() {
       }
       lead="One inbox. Read personally. Open to industry partnerships, strategic advisory, speaking, deep-tech ventures, and research collaborations, when the work is right."
       backdrop={backdrop}
-      overlay={0.76}
+      overlay={0.35}
     >
       <AccessAuthority />
 

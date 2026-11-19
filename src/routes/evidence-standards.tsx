@@ -99,7 +99,7 @@ function EvidenceStandardsPage() {
       title={<>Evidence & development-stage<br className="hidden md:inline" /> standards.</>}
       lead="How every claim across the Innovations catalogue is graded, from bench formulation to field deployment, so a label's confidence level is never left to guesswork."
       backdrop={backdrop}
-      overlay={0.8}
+      overlay={0.35}
     >
       <EditorialSection number="01 · Development Stage" heading="Three stages, one honest hierarchy.">
         <p>
