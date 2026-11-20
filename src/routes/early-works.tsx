@@ -15,7 +15,7 @@ import supersenseImg from "@/assets/early/supersense.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "The six school-years inventions of Sushanth Paatnaik: the breath-operated wheelchair Enabler, Rectofit, Super Sense, Powergen, Sol-Ka and She Watch - each recognised with an Indian Presidential Award.";
+  "The six student-years inventions of Sushanth Paatnaik: the breath-operated wheelchair Enabler, Rectofit, Super Sense, Powergen, Sol-Ka and She Watch - each recognised with an Indian Presidential Award.";
 
 export const Route = createFileRoute("/early-works")({
   component: EarlyWorksPage,
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/early-works")({
       {
         property: "og:description",
         content:
-          "Six original devices built between 2008 and 2013. These teenage innovations earned six Presidential Awards.",
+          "Six original devices built between ages 15 and 20. These student innovations earned six Presidential Awards.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/early-works" },
@@ -165,7 +165,7 @@ const innovations: Innovation[] = [
     solution:
       "A discreet smart-watch wearable with silent alert and real-time location capabilities, engineered years before the women's safety wearable category reached mainstream product awareness.",
     impact:
-      "Presidential Award for the sixth consecutive year. The sixth and last of the school-years inventions.",
+      "Presidential Award for the sixth consecutive year. The sixth and last of the student-years inventions.",
     image: shewatchImg,
     videoUrl: "https://youtu.be/o8nir3oFzXg",
     badges: ["Presidential Award"],
