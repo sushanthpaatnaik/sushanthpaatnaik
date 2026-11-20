@@ -53,9 +53,11 @@ const SEQUENCE_PATH = "inventor-story-504";
 // scene (minterpolate mci at exact halves and thirds) and one plain blend at
 // the tail of the burst into the city, where interpolation loses. The final
 // city frame holds at the end of the sequence. Desktop frames are 1920x1080 with no
-// rescaling. Touch has two sets: /p/ is a 500x1080 centre crop of the same
+// rescaling. Touch has two sets: /p2/ is a 500x1080 centre crop of the same
 // frames, for portrait phones, and /m/ is a 854x480 downscale, for landscape.
-// See framesPath for which goes where.
+// See framesPath for which goes where. (/p2/ and /pl2/ are the lighter
+// 2026-11-21 re-encodes; /p/ and /pl/ remain on disk only because the old
+// URLs sit in 30-day caches.)
 //
 // Every multiple has to stay an integer. The previous film was first cut at
 // 2.479x and shook: a fractional resample cannot place every synthesised frame
@@ -331,8 +333,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // reasoning runs the other way. The choice is made once at mount; rotating
     // mid-visit keeps the set it started with rather than re-fetching the film.
     //
-    // /pl/ is 375x810 at q78, resampled from /p/ — 20 KB a frame against
-    // /p/'s 35 KB, and 1.2 MB decoded against 2.16 MB. It is the tier for
+    // /pl2/ is 375x810 at q65, resampled from the master crop — ~17 KB a
+    // frame against /p2/'s ~25 KB, and 1.2 MB decoded against 2.16 MB. It is
+    // the tier for
     // devices that say they cannot hold /p/: a slow-2g/2g/3g connection,
     // Save-Data, or a browser-reported deviceMemory of 4 GB or under. On
     // those, /p/'s ~240 MB retention window plus its decode churn is what
@@ -349,23 +352,88 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         (conn.saveData === true ||
           ["slow-2g", "2g", "3g"].includes(conn.effectiveType ?? ""))) ||
       (typeof deviceMemory === "number" && deviceMemory <= 4);
-    // Phones (<=600 css px portrait) take /pl/ outright, whatever their
+    // Phones (<=600 css px portrait) take /pl2/ outright, whatever their
     // network and RAM report: the stutter report came from an iPhone and a
     // 12 GB foldable on 4g, so high-end signals did not predict a smooth
-    // /p/. Decode cost scales with frame pixels, and /pl/ at 375x810 is 44%
-    // fewer pixels per frame than /p/ at 500x1080 and 43% fewer bytes — on a
-    // phone held upright the draw scale is 1.04x to css pixels (against
-    // /p/'s 1.17x), and both sets upscale to a dpr>=2 physical screen, so
-    // the visible difference on the footage is small while the decode and
-    // retention savings are what the scroll thread feels. Wider portrait
-    // touch (unfolded foldable, tablets) keeps /p/.
+    // /p/. Decode cost scales with frame pixels, and 375x810 is 44% fewer
+    // pixels per frame than 500x1080 and ~32% fewer bytes — on a phone held
+    // upright the draw scale is 1.04x to css pixels (against /p2/'s 1.17x),
+    // and both sets upscale to a dpr>=2 physical screen, so the visible
+    // difference on the footage is small while the decode and retention
+    // savings are what the scroll thread feels. Wider portrait touch
+    // (unfolded foldable, tablets) keeps /p2/.
+    //
+    // The 2-suffixed tiers are re-encodes of the same pixels at q72/q65
+    // (25 KB / 17 KB a frame, 32% / 23% lighter than the q80/q78 sets they
+    // replace): the first phone check of this film came back "stutters and
+    // lags", and on a metered 4g link the fetch is the ceiling the prefetch
+    // runway keeps hitting. New directory names because /sequences/ is
+    // cached for 30 days — re-encoding in place would mix old and new
+    // frames inside one session.
     const useLight = tightDevice || (isPortrait && window.innerWidth <= 600);
-    const touchSet = isPortrait ? (useLight ? "pl" : "p") : "m";
+    const touchSet = isPortrait ? (useLight ? "pl2" : "p2") : "m";
     const framesPath = (path: string) => (isTouch ? `${path}/${touchSet}` : path);
     /** Native size of whichever set this device is fetching. */
     const SOURCE_W = isTouch ? (isPortrait ? (useLight ? 375 : 500) : 854) : 1920;
     const SOURCE_H = isTouch ? (isPortrait ? (useLight ? 810 : 1080) : 480) : 1080;
-    const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
+    // Decode off the main thread on touch. WebKit runs createImageBitmap's
+    // decode on the main thread, so a burst of arriving frames (up to
+    // MAX_INFLIGHT at once) queues 10-30 ms of decode work behind the scroll
+    // gesture — the hitch a finger feels mid-fling. A single worker decodes
+    // instead and the bitmap transfers back by reference. Any failure — no
+    // Worker, no createImageBitmap in workers (older Safari), a decode error
+    // — flips to the main-thread decode for the rest of the session, so the
+    // worst case is exactly the previous behaviour. Desktop is unchanged:
+    // its decodes are already off the gesture's thread.
+    const workerDecode: ((blob: Blob) => Promise<ImageBitmap>) | null = (() => {
+      if (!isTouch || typeof Worker === "undefined") return null;
+      const src =
+        "self.onmessage=async(e)=>{const{id,blob}=e.data;try{" +
+        "const bmp=await createImageBitmap(blob);self.postMessage({id,bmp},[bmp]);" +
+        "}catch(err){self.postMessage({id,error:String(err&&err.message||err)});}};";
+      let w: Worker;
+      try {
+        w = new Worker(URL.createObjectURL(new Blob([src], { type: "text/javascript" })));
+      } catch {
+        return null;
+      }
+      const pending = new Map<number, { resolve: (b: ImageBitmap) => void; reject: (e: Error) => void }>();
+      let seq = 0;
+      let dead = false;
+      w.onmessage = (e: MessageEvent) => {
+        const { id, bmp, error } = e.data as { id: number; bmp?: ImageBitmap; error?: string };
+        const p = pending.get(id);
+        if (!p) return;
+        pending.delete(id);
+        if (bmp) p.resolve(bmp);
+        else p.reject(new Error(error || "worker decode failed"));
+      };
+      w.onerror = () => {
+        dead = true;
+        for (const p of pending.values()) p.reject(new Error("decode worker crashed"));
+        pending.clear();
+      };
+      return (blob: Blob): Promise<ImageBitmap> => {
+        if (dead) return createImageBitmap(blob);
+        return new Promise<ImageBitmap>((resolve, reject) => {
+          const id = ++seq;
+          pending.set(id, { resolve, reject });
+          try {
+            w.postMessage({ id, blob });
+          } catch {
+            pending.delete(id);
+            dead = true;
+            resolve(createImageBitmap(blob));
+          }
+        }).catch(() => {
+          // First failure marks the worker unusable; this frame retries inline.
+          dead = true;
+          return createImageBitmap(blob);
+        });
+      };
+    })();
+    const makeBitmap = (blob: Blob): Promise<ImageBitmap> =>
+      workerDecode ? workerDecode(blob) : createImageBitmap(blob);
     const frameStep = 1;
     // How many decoded frames are kept either side of the playhead. This is
     // both the eviction window and the prefetch runway — the retention loop
