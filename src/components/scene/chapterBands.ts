@@ -6,28 +6,28 @@
  * sequence (CanvasLayer) and the chapter rail (HUD) all import this, so
  * their bands are always identical.
  *
- *  0  Origin                    0.000 – 0.161  (0.161)  the workbench
- *  1  Early Works               0.161 – 0.287  (0.126)  the inventor at the bench
- *  2  Presidential Recognition  0.287 – 0.514  (0.227)  the hall
- *  3  Global Recognition        0.514 – 0.643  (0.129)  Earth
- *  4  Advanced Materials        0.643 – 0.769  (0.126)  the graphene lattice
- *  5  Industrial Impact         0.769 – 0.895  (0.126)  the viaduct, then the plant
- *  6  The Work Continues        0.895 – 1.000  (0.105)  the city
+ *  0  Origin                    0.000 – 0.160  (0.160)  the workbench
+ *  1  Early Works               0.160 – 0.293  (0.133)  the inventor at the bench
+ *  2  Presidential Recognition  0.293 – 0.506  (0.213)  the hall
+ *  3  Global Recognition        0.506 – 0.633  (0.127)  Earth
+ *  4  Advanced Materials        0.633 – 0.751  (0.118)  the graphene lattice
+ *  5  Industrial Impact         0.751 – 0.896  (0.145)  the viaduct, then the plant
+ *  6  The Work Continues        0.896 – 1.000  (0.104)  the city
  *
- * Sum = 0.161 + 0.126 + 0.227 + 0.129 + 0.126 + 0.126 + 0.105 = 1.000 ✓
+ * Sum = 0.160 + 0.133 + 0.213 + 0.127 + 0.118 + 0.145 + 0.104 = 1.000 ✓
  *
  * The chapters are the film's seven scenes, and these edges are not chosen —
  * they are read off the film. The frame map is linear (frame = progress x 480),
  * so a scene change sits wherever its frames sit, and each edge is placed 0.030
  * after the midpoint of the transition that separates two scenes:
  *
- *     transition          midpoint, source frame   in the 481   progress   edge
- *     bloom               35.0                      63.0        0.1313     0.161
- *     dissolve to hall    60.7                     123.4        0.2571     0.287
- *     dissolve to Earth  116.2                     232.2        0.4838     0.514
- *     zoom to lattice    150.0                     294.0        0.6125     0.643
- *     iris to viaduct    180.3                     354.6        0.7388     0.769
- *     burst to city      209.4                     415.4        0.8654     0.895
+ *     transition          midpoint, source frame   in the 504   progress   edge
+ *     bloom               35.5                      65.5        0.1302     0.160
+ *     dissolve to hall    61.5                     132.5        0.2634     0.293
+ *     dissolve to Earth  115.5                     239.5        0.4761     0.506
+ *     zoom to lattice    150.0                     303.5        0.6034     0.633
+ *     iris to viaduct    180.0                     362.5        0.7207     0.751
+ *     burst to city      209.0                     435.5        0.8658     0.896
  *
  * 0.030 is half of CONTENT_FADE. The text hand-over occupies the 0.060 before
  * an edge — the outgoing chapter leaves across the first half, the incoming one
@@ -46,7 +46,7 @@
  * replaced.
  *
  * Holds at full opacity are a band's width less the 0.060 hand-over at its far
- * end: 101, 66, 167, 69, 66, 66vh, and 105vh for the close, which never leaves.
+ * end: 100, 73, 153, 67, 58, 85vh, and 104vh for the close, which never leaves.
  * That is tighter than the five-chapter page was (90-210vh), because seven
  * chapters share the same 1000vh and pay for six hand-overs instead of four.
  * Each chapter is written to that budget — one headline, a line or two, a link.
@@ -61,13 +61,13 @@
 export const N_CHAPTERS = 7;
 
 export const CHAPTER_BANDS: ReadonlyArray<readonly [number, number]> = [
-  [0.000, 0.161],
-  [0.161, 0.287],
-  [0.287, 0.514],
-  [0.514, 0.643],
-  [0.643, 0.769],
-  [0.769, 0.895],
-  [0.895, 1.000],
+  [0.000, 0.160],
+  [0.160, 0.293],
+  [0.293, 0.506],
+  [0.506, 0.633],
+  [0.633, 0.751],
+  [0.751, 0.896],
+  [0.896, 1.000],
 ];
 
 /**

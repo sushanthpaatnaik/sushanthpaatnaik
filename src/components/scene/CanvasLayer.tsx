@@ -38,18 +38,21 @@ import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBan
 // order, which put the hall behind the materials copy and the lattice under
 // the closing chapter. A non-uniform map could not have fixed that — it trades
 // a visible stutter for nothing — so the fix went into the frames instead.
-const SEQUENCE_PATH = "inventor-story-481";
-// 481 frames: frames 0-226 of the 1080p 24fps master, with each scene slowed
-// by its own whole number so that it lasts as long as its chapter.
+const SEQUENCE_PATH = "inventor-story-504";
+// 504 frames: frames 0-232 of the replacement 1080p 24fps master (its closing
+// end card, frames 233-239, is dropped, and the generator's watermark is
+// removed), with each scene slowed by its own whole number so that it lasts
+// as long as its chapter.
 //
-//   workbench x2 · bloom x1 · inventor x3 · dissolve x2 · hall x2 · dissolve x1
+//   workbench x2 · bloom x1 · inventor x3 · dissolve x3 · hall x2 · dissolve x1
 //   Earth x2 · zoom x2 · lattice x2 · iris x2 · viaduct x3 · dissolve x2
-//   plant x2 · burst x1 · city x5
+//   plant x3 · burst x2 · city x3
 //
-// 227 of the 481 are the master's own frames and never pass through the
-// interpolator; the other 254 are in-betweens, motion-interpolated inside a
-// scene and plain blends inside the bloom's tail and the dissolve into the
-// hall, where interpolation loses. Desktop frames are 1920x1080 with no
+// 228 of the 504 are the master's own frames and never pass through the
+// interpolator; the other 276 are in-betweens, motion-interpolated inside a
+// scene (minterpolate mci at exact halves and thirds) and one plain blend at
+// the tail of the burst into the city, where interpolation loses. The final
+// city frame holds at the end of the sequence. Desktop frames are 1920x1080 with no
 // rescaling. Touch has two sets: /p/ is a 500x1080 centre crop of the same
 // frames, for portrait phones, and /m/ is a 854x480 downscale, for landscape.
 // See framesPath for which goes where.
@@ -69,14 +72,16 @@ const SEQUENCE_PATH = "inventor-story-481";
 // cut it replaced, and in a fast scroll it fell a median 12.7vh behind where
 // the 453 stayed within 1vh. More frames per screen is more to fetch and
 // decode per screen, and past the loader's throughput the film stops keeping
-// up. 481 over 1000vh is one frame every 2.08vh — the density this renderer
-// has been proven at (2.2vh for the 2x cut, 2.1vh for the film before that).
-// Do not raise it to buy hold time; shorten the copy instead.
+// up. 504 over 1000vh is one frame every 1.98vh — a touch denser than the
+// 2.08vh this renderer was proven at with the 481-frame cut (2.2vh for the 2x
+// cut, 2.1vh for the film before that), and still well clear of the 576-frame
+// cut that fell behind. Do not raise it to buy hold time; shorten the copy
+// instead.
 //
 // If this is ever regenerated, put it in a new directory rather than reusing
 // this one — frame URLs are not content-addressed and /sequences/ is cached
 // for 30 days — and re-derive CHAPTER_BANDS from the new frame counts.
-const FRAME_COUNT   = 481;
+const FRAME_COUNT   = 504;
 const LAST_FRAME    = FRAME_COUNT - 1;
 
 function getFrameIndex(sp: number): number {
