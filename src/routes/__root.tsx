@@ -111,6 +111,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Deferred like a non-blocking stylesheet: media="print" until the inline
+      // script below flips it to "all", so a slow font host never holds the page.
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap",
+        media: "print",
+        "data-webfont": "",
+      },
       // All three icons are TRANSPARENT, so whatever surface draws them shows
       // its own ground through the mark.
       //
@@ -130,6 +140,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", sizes: "512x512", href: "/favicon.png" },
     ],
     scripts: [
+      {
+        children:
+          "(function(){function f(l){if(l)l.media='all'}function g(){return document.querySelector('link[data-webfont]')}var l=g();if(l){if(l.sheet)f(l);else l.addEventListener('load',function(){f(l)},{once:true});return}document.addEventListener('DOMContentLoaded',function(){var m=g();if(!m)return;if(m.sheet)f(m);else m.addEventListener('load',function(){f(m)},{once:true})},{once:true})})()",
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({

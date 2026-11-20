@@ -863,6 +863,12 @@
     scroll-behavior: auto !important;
     overflow-anchor: none;
   }
+  /* Premium pass: display headings read in a light weight with optical
+     refinement. Explicit font-medium / font-semibold utilities still win. */
+  h1.font-display, h2.font-display {
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+  }
   body {
     overflow-x: hidden;
     max-width: 100%;
