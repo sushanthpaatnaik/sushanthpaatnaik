@@ -6,6 +6,7 @@ import type Lenis from "lenis";
 // same picture.
 import filmStill from "@/assets/film-still-origin.webp";
 import { N_CHAPTERS, getChapterFromProgress, gradeOpacityAt } from "./chapterBands";
+import { createVideoTrack } from "./videoTrack";
 
 // ─── Single continuous sequence ─────────────────────────────────────────────
 // The homepage plays one continuous film across the whole scroll instead of
@@ -706,13 +707,18 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // The chapter grade is composited into the same canvas, in the same pass,
     // rather than by a mix-blend-mode div stacked over it. See the note on the
     // tick's redraw condition for why.
+    // Frames are ImageBitmaps from the sequence loader or VideoFrames from
+    // the video track; VideoFrame carries displayWidth/displayHeight instead
+    // of width/height, and both draw the same.
+    const frameW = (b: ImageBitmap) => (b as unknown as VideoFrame).displayWidth || b.width;
+    const frameH = (b: ImageBitmap) => (b as unknown as VideoFrame).displayHeight || b.height;
     const cover = (bmp: ImageBitmap, cW: number, cH: number, alpha: number) => {
       // squeezeX is 1 unless a classic scrollbar narrows the box this buffer
       // is shown in, and squeezeY is 1 unless a phone's toolbar has made the
       // box taller than the buffer was sized for — see where they are declared.
-      const scale = Math.max(cW / (bmp.width * squeezeX), cH / (bmp.height * squeezeY));
-      const dW    = bmp.width  * scale * squeezeX;
-      const dH    = bmp.height * scale * squeezeY;
+      const scale = Math.max(cW / (frameW(bmp) * squeezeX), cH / (frameH(bmp) * squeezeY));
+      const dW    = frameW(bmp) * scale * squeezeX;
+      const dH    = frameH(bmp) * scale * squeezeY;
       ctx.globalAlpha = alpha;
       ctx.drawImage(bmp, (cW - dW) / 2, (cH - dH) / 2, dW, dH);
     };
@@ -814,13 +820,19 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const pending = new Set<number>();
     let inFlight = 0;
 
+    // Set once the video track has proven itself (see below): the sequence
+    // loader stands down while hardware-decoded VideoFrames fill the store.
+    const videoEngaged = { current: false };
+
     const enqueue = (fi: number) => {
+      if (videoEngaged.current) return;
       if (fi < 0 || fi >= FRAME_COUNT) return;
       if (bitmapsRef.current[fi] || loadingRef.current[fi]) return;
       pending.add(fi);
     };
 
     const pump = () => {
+      if (videoEngaged.current) { pending.clear(); return; }
       while (inFlight < capNow() && pending.size > 0) {
         const head = playheadRef.current >= 0 ? playheadRef.current : 0;
         let best = -1, bestD = Infinity;
@@ -961,6 +973,41 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // bounded queue above now owns every fetch, so a second loader with its
     // own pacing rules would only be able to disagree with it.
 
+    // ── Video track (portrait touch) ───────────────────────────────────────
+    // One all-intra H.264 MP4 decoded ahead of the playhead by WebCodecs —
+    // see videoTrack.ts for why. It engages only after proving itself end to
+    // end; until then, and forever if it fails, the image sequence above
+    // owns the film exactly as before. Both write the same store, so the
+    // handover mixes freely: an ImageBitmap and a VideoFrame sit side by
+    // side in it and draw identically.
+    const videoTrack = isTouch && isPortrait
+      ? createVideoTrack({
+          url: `/sequences/${SEQUENCE_PATH}/film-portrait-504.mp4`,
+          frameCount: FRAME_COUNT,
+          radius: 24,
+          sink: {
+            put: (i, f) => {
+              const old = bitmapsRef.current[i];
+              if (old && (old as unknown) !== f) old.close();
+              bitmapsRef.current[i] = f as unknown as ImageBitmap;
+            },
+            has: (i) => !!bitmapsRef.current[i],
+            close: (i) => {
+              const b = bitmapsRef.current[i];
+              if (b) { b.close(); bitmapsRef.current[i] = null; }
+            },
+          },
+          onEngaged: () => {
+            videoEngaged.current = true;
+            pending.clear(); // queued sequence fetches stop; in-flight ones land harmlessly
+          },
+          onFailed: () => {
+            videoEngaged.current = false;
+            pump(); // the image sequence owns the film again
+          },
+        })
+      : null;
+
     // ── RAF render loop ──────────────────────────────────────────────────────
     const tick = () => {
       if (!destroyed) rafRef.current = requestAnimationFrame(tick);
@@ -996,6 +1043,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const sp = Math.max(0, Math.min(rawSp, 1));
       const fi = getFrameIndex(sp);
       playheadRef.current = fi;
+      if (videoEngaged.current && videoTrack) videoTrack.setPlayhead(fi);
       const chapter = getChapterFromProgress(sp);
 
       // Sub-frame position, quantised. `fi` stays the rounded index — every
@@ -1213,6 +1261,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     return () => {
       destroyed = true;
       genRef.current++;            // invalidate all in-flight fetches from this run
+      videoTrack?.destroy();
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
       ro?.disconnect();
