@@ -177,7 +177,7 @@ const milestones: Milestone[] = [
     year: "2010",
     sortYear: 2010.5,
     title: "Intel IRIS National Recognition",
-    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair, the school-bench prototype that opened a sixteen-year practice in deep-tech.",
+    body: "Intel IRIS National Science Fair · Best Popular Invention for the breath-operated wheelchair, the school-bench prototype that opened an eighteen-year practice in deep-tech.",
     image: honorIntelIris,
     institution: "Intel Foundation · National Science Fair",
     category: "Innovation",
