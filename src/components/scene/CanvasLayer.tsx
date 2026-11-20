@@ -337,11 +337,22 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         (conn.saveData === true ||
           ["slow-2g", "2g", "3g"].includes(conn.effectiveType ?? ""))) ||
       (typeof deviceMemory === "number" && deviceMemory <= 4);
-    const touchSet = isPortrait ? (tightDevice ? "pl" : "p") : "m";
+    // Phones (<=600 css px portrait) take /pl/ outright, whatever their
+    // network and RAM report: the stutter report came from an iPhone and a
+    // 12 GB foldable on 4g, so high-end signals did not predict a smooth
+    // /p/. Decode cost scales with frame pixels, and /pl/ at 375x810 is 44%
+    // fewer pixels per frame than /p/ at 500x1080 and 43% fewer bytes — on a
+    // phone held upright the draw scale is 1.04x to css pixels (against
+    // /p/'s 1.17x), and both sets upscale to a dpr>=2 physical screen, so
+    // the visible difference on the footage is small while the decode and
+    // retention savings are what the scroll thread feels. Wider portrait
+    // touch (unfolded foldable, tablets) keeps /p/.
+    const useLight = tightDevice || (isPortrait && window.innerWidth <= 600);
+    const touchSet = isPortrait ? (useLight ? "pl" : "p") : "m";
     const framesPath = (path: string) => (isTouch ? `${path}/${touchSet}` : path);
     /** Native size of whichever set this device is fetching. */
-    const SOURCE_W = isTouch ? (isPortrait ? (tightDevice ? 375 : 500) : 854) : 1920;
-    const SOURCE_H = isTouch ? (isPortrait ? (tightDevice ? 810 : 1080) : 480) : 1080;
+    const SOURCE_W = isTouch ? (isPortrait ? (useLight ? 375 : 500) : 854) : 1920;
+    const SOURCE_H = isTouch ? (isPortrait ? (useLight ? 810 : 1080) : 480) : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
     // How many decoded frames are kept either side of the playhead. This is
@@ -378,7 +389,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // (the /pl/ tier above) drops to 24: 49 frames x 1.2 MB ≈ 59 MB held,
     // still a ~50-frame runway, and eviction is what keeps the film from
     // accumulating memory the GPU clearly does not have.
-    const RETAIN_RADIUS = isTouch ? (tightDevice ? 24 : 55) : 40;
+    // 55 measured hot on real phones: a full window is 111 frames x 2.16 MB
+    // ≈ 240 MB of decoded bitmaps, which sits iOS Safari close enough to its
+    // per-tab ceiling that the tab starts purging decoded images mid-scroll —
+    // the purge then forces re-decodes of frames the reader is passing, which
+    // is the stall. 32 keeps a 65-frame window (≈140 MB) with ~30 frames of
+    // runway each way; evicted frames come back from the 30-day HTTP cache.
+    const RETAIN_RADIUS = isTouch ? (tightDevice ? 24 : 32) : 40;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
@@ -673,7 +690,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // than the bandwidth actually available to this tab. An EWMA over frames
     // this page has really fetched needs no API and adapts to a link that
     // degrades mid-visit.
-    const MAX_INFLIGHT = isTouch ? 6 : 12;
+    // Touch 6 -> 4: every completed fetch is followed by a createImageBitmap
+    // decode, and on WebKit that decode work lands on the main thread. Six in
+    // flight meant up to six ~10-30 ms decodes queueing behind the scroll
+    // gesture. Four still saturates a phone's real throughput.
+    const MAX_INFLIGHT = isTouch ? 4 : 12;
     // Ramp UP from a small cap rather than down from a large one. Starting
     // optimistic made the adaptation useless: the very first burst is the one
     // that decides how long the preloader sits there, and it goes out before
@@ -925,6 +946,14 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
           : Math.round(raw / (peak / GRADE_STEPS)) * (peak / GRADE_STEPS);
         break; // sequenced — at most one grade is ever live
       }
+      // Touch skips the grade pass entirely. The tint is a full-viewport
+      // fillRect under globalCompositeOperation "color" on every redraw —
+      // per-pixel HSL math which iOS Safari rasterises in software — and at
+      // 0.07-0.105 alpha it is the subtlest thing on the page while being the
+      // most expensive part of a touch redraw. Desktop keeps it; touch draws
+      // the frame alone, which also lets the redraw skip when only the grade
+      // would have moved.
+      if (isTouch) { gradeIdx = -1; gradeAlpha = 0; }
 
       // On chapter change: preload active±1's frame regions — the direct
       // equivalent of the old on-group-change `loadGroup(gi); loadGroup(gi±1)`
