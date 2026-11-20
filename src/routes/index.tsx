@@ -42,6 +42,46 @@ export const Route = createFileRoute("/")({
       ldJsonScript(
         webPageSchema({ type: "WebSite", name: "Sushanth Paatnaik", description, path: "/" }),
       ),
+      // Every answer reuses copy the site already publishes (home description,
+      // ventures, recognitions, engage). No new claims.
+      ldJsonScript({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Who is Sushanth Paatnaik?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, MIT TR35, TED speaker. Building graphene and nanomaterial companies from India for the world.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What companies has Sushanth Paatnaik founded?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "He is founder or co-founder of six operating companies, including Monoatom Labs (graphene manufacturing), Grafillium (eco nano-additives), SPI Industries (external industrial R&D) and InThinks, and holds advisory roles across industry, materials and climate.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What recognition has Sushanth Paatnaik received?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Six Indian Presidential awards (2008-2013), MIT Technology Review TR35 (2010), Intel IRIS Best Popular Invention (2010), INK Talks Fellow (2010), NASA recognition (2011), TED@Bangalore speaker (2012), and MIT Fab-10 and Fab-11 awards (2013-14).",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How can companies work with Sushanth Paatnaik?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "As a deep-tech advisor, mentor and research collaborator, through the engage and contact pages on sushanthpaatnaik.com.",
+            },
+          },
+        ],
+      }),
     ],
   }),
 });
