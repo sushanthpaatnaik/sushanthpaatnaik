@@ -218,6 +218,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
 
   // bitmaps[frameIdx] — populated lazily as frames decode.
   const bitmapsRef = useRef<Bitmaps>(Array(FRAME_COUNT).fill(null));
+  // Compressed bytes, kept for the page's lifetime once fetched. SPI's film
+  // (which scrolls smoothly on the same phones) works this way: fetch once,
+  // keep the ~20-35 KB blob, and let only the DECODED frames slide with the
+  // playhead. Re-entering a stretch then costs a decode, never a network
+  // round-trip — and fetches are never aborted mid-flight, so a fast scroll
+  // cannot leave the playhead waiting on a request that keeps restarting.
+  const bytesRef = useRef<(Blob | null)[]>(Array(FRAME_COUNT).fill(null));
   // loading[frameIdx] — true once fetch for that frame has started.
   const loadingRef = useRef<boolean[]>(Array(FRAME_COUNT).fill(false));
   // chapterLoading[chapterIdx] — true once a load pass for that chapter's
@@ -425,11 +432,12 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         // ruled out, which is the same wasted bandwidth the abort below
         // exists to prevent — just one stage earlier.
         pending.delete(f);
-        if (loadingRef.current[f] && !bitmapsRef.current[f]) {
-          abortControllersRef.current.get(f)?.abort();
-          abortControllersRef.current.delete(f);
-          loadingRef.current[f] = false;
-        }
+        // In-flight fetches are NOT aborted any more: an aborted fetch
+        // restarts from byte zero when the window swings back, and on a real
+        // phone connection the constant abort/restart churn is what left the
+        // film holding a stale frame while the reader scrolled on. Let it
+        // land; the blob joins bytesRef and the bitmap is discarded if the
+        // frame is still out of window by then.
         if (bitmapsRef.current[f]) {
           bitmapsRef.current[f]!.close();
           bitmapsRef.current[f] = null;
@@ -502,6 +510,16 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // sized for, so a desktop draw is the number it was.
     let squeezeY = 1;
     let sizedH = window.innerHeight;
+    // Stable touch scroll range — see the tick. Measured at mount and
+    // re-measured only on a WIDTH change (fold/unfold, rotation): height-only
+    // changes are the browser chrome moving, not a layout change.
+    let stableRange = 0;
+    let rangeMeasuredAtW = 0;
+    const measureRange = () => {
+      stableRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      rangeMeasuredAtW = window.innerWidth;
+    };
+    measureRange();
 
     // The canvas box against the height the buffer was sized for. Reads one
     // layout value, and only when syncSize has run or the box changed size.
@@ -519,6 +537,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // a 1170×2532 buffer — 9× more pixels than needed. At 1.5 the buffer is
     // 585×1266: sharp at phone viewing distance, ~4× faster draws.
     const syncSize = () => {
+      if (window.innerWidth !== rangeMeasuredAtW) measureRange();
       const rawDpr = window.devicePixelRatio || 1;
       // The canvas carries the film and nothing else — no text, no UI — so its
       // resolution should follow the footage rather than the screen. Past a
@@ -759,22 +778,30 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // main thread at once instead of arriving spread out. Browser-default
       // priority keeps the decode work naturally staggered. Left explicit
       // so it isn't "optimised" again.
-      const controller = isTouch ? new AbortController() : undefined;
-      if (controller) abortControllersRef.current.set(fi, controller);
+      // Controllers survive only so unmount can cancel in-flight work —
+      // eviction no longer aborts (see evictExcept).
+      const controller = new AbortController();
+      abortControllersRef.current.set(fi, controller);
       const opts: RequestInit = {
         ...(fi === 0 || isCritical ? { priority: "high" as const } : {}),
-        ...(controller ? { signal: controller.signal } : {}),
+        signal: controller.signal,
       };
       const startedAt = performance.now();
-      return fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.webp`, opts)
-        .then(r  => r.blob())
-        .then(b  => {
-          // Timed at the blob, not after decode: this is meant to measure the
-          // link, and folding decode time in would shrink the queue on a slow
-          // CPU, which is the opposite of what helps there.
-          noteThroughput(b.size, performance.now() - startedAt);
-          return makeBitmap(b);
-        })
+      const cached = bytesRef.current[fi];
+      const blobPromise = cached
+        ? Promise.resolve(cached)
+        : fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.webp`, opts)
+            .then(r  => r.blob())
+            .then(b  => {
+              // Timed at the blob, not after decode: this is meant to measure the
+              // link, and folding decode time in would shrink the queue on a slow
+              // CPU, which is the opposite of what helps there.
+              noteThroughput(b.size, performance.now() - startedAt);
+              bytesRef.current[fi] = b; // fetched once, kept for the session
+              return b;
+            });
+      return blobPromise
+        .then(b  => makeBitmap(b))
         .then(bmp => {
           abortControllersRef.current.delete(fi);
           if (destroyed || genRef.current !== gen) { bmp.close(); return; }
@@ -878,10 +905,21 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       //
       // Falls back to window.scrollY when Lenis isn't ready, and on touch,
       // where Lenis is never constructed and window.scrollY *is* the position.
+      //
+      // On touch the denominator must be the STABLE range measured below, not
+      // a live one: mobile chrome retracts and grows mid-scroll, which moves
+      // innerHeight — and this page's sections are sized in vh, so scrollHeight
+      // moves with it. A live denominator shifts progress by ~1% (≈5 frames)
+      // every time the toolbar moves, in either direction, with no finger
+      // movement at all — the film twitching/reversing during a scroll. SPI's
+      // smooth-scroll carries the same note ("a moving denominator makes
+      // progress twitch") and the same fix.
       const lenis = lenisRef?.current;
+      const liveRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const range = isTouch && stableRange > 1 ? stableRange : liveRange;
       const rawSp = lenis && lenis.limit > 0
         ? lenis.scroll / lenis.limit
-        : window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        : window.scrollY / range;
       const sp = Math.max(0, Math.min(rawSp, 1));
       const fi = getFrameIndex(sp);
       playheadRef.current = fi;
@@ -1110,6 +1148,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       abortControllersRef.current.clear();
       bitmapsRef.current.forEach(bmp => bmp?.close());
       bitmapsRef.current = Array(FRAME_COUNT).fill(null);
+      bytesRef.current   = Array(FRAME_COUNT).fill(null);
       loadingRef.current = Array(FRAME_COUNT).fill(false);
       notifiedRef.current  = false;
       lastFrameRef.current = -1;
