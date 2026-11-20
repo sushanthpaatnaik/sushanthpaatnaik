@@ -18,7 +18,7 @@
 // false and the caller's image-sequence pipeline owns the film again. The
 // two share the frame store, so the handover is seamless in both directions.
 
-import * as MP4Box from "mp4box";
+import * as MP4Box from "@/lib/mp4box/mp4box.all.mjs";
 
 export type FrameSink = {
   put(index: number, frame: VideoFrame): void;
@@ -220,7 +220,7 @@ export function createVideoTrack(opts: {
   (async () => {
     try {
       const resp = await fetch(opts.url);
-      if (!resp.ok || !resp.body) return fail();
+      if (!resp.ok || !resp.body) return fail("http " + resp.status);
       reader = resp.body.getReader();
       const chunks: Uint8Array[] = [];
       let total = 0;
