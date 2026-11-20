@@ -318,12 +318,30 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // Landscape touch — a tablet, or a rotated phone — keeps /m/, where the
     // reasoning runs the other way. The choice is made once at mount; rotating
     // mid-visit keeps the set it started with rather than re-fetching the film.
+    //
+    // /pl/ is 375x810 at q78, resampled from /p/ — 20 KB a frame against
+    // /p/'s 35 KB, and 1.2 MB decoded against 2.16 MB. It is the tier for
+    // devices that say they cannot hold /p/: a slow-2g/2g/3g connection,
+    // Save-Data, or a browser-reported deviceMemory of 4 GB or under. On
+    // those, /p/'s ~240 MB retention window plus its decode churn is what
+    // makes scroll lag and the film flicker between stand-ins and decoded
+    // frames. Browsers without NetworkInformation (Safari) keep /p/ unless
+    // they report low memory; only explicit slow signals downgrade.
     const isPortrait = window.innerHeight >= window.innerWidth;
-    const framesPath = (path: string) =>
-      isTouch ? `${path}/${isPortrait ? "p" : "m"}` : path;
+    const conn = (navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean };
+    }).connection;
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    const tightDevice =
+      (!!conn &&
+        (conn.saveData === true ||
+          ["slow-2g", "2g", "3g"].includes(conn.effectiveType ?? ""))) ||
+      (typeof deviceMemory === "number" && deviceMemory <= 4);
+    const touchSet = isPortrait ? (tightDevice ? "pl" : "p") : "m";
+    const framesPath = (path: string) => (isTouch ? `${path}/${touchSet}` : path);
     /** Native size of whichever set this device is fetching. */
-    const SOURCE_W = isTouch ? (isPortrait ? 500 : 854) : 1920;
-    const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : 1080;
+    const SOURCE_W = isTouch ? (isPortrait ? (tightDevice ? 375 : 500) : 854) : 1920;
+    const SOURCE_H = isTouch ? (isPortrait ? (tightDevice ? 810 : 1080) : 480) : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
     // How many decoded frames are kept either side of the playhead. This is
@@ -356,8 +374,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     //
     // Touch stays at 55: a portrait frame is 500x1080 against the desktop
     // 1920x1080, so the same window costs a quarter as much, and it measured
-    // at 402 MB — well inside what mobile Safari tolerates.
-    const RETAIN_RADIUS = isTouch ? 55 : 40;
+    // at 402 MB — well inside what mobile Safari tolerates. A tight device
+    // (the /pl/ tier above) drops to 24: 49 frames x 1.2 MB ≈ 59 MB held,
+    // still a ~50-frame runway, and eviction is what keeps the film from
+    // accumulating memory the GPU clearly does not have.
+    const RETAIN_RADIUS = isTouch ? (tightDevice ? 24 : 55) : 40;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
