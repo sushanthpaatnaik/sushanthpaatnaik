@@ -16,7 +16,7 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
   head: () => ({
     meta: [
-      { title: "Contact · Sushanth Paatnaik" },
+      { title: "Contact Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Contact · Sushanth Paatnaik" },
       {

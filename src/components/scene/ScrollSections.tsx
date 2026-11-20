@@ -303,6 +303,15 @@ function OriginHero() {
           <br />
           The beginning of a journey.
         </p>
+
+        {/* The literal answer to "who is this", at caption size so the film
+            frame stays the hero. Answer engines quote plain definitional
+            sentences; the poetic lines on this page give them nothing to
+            quote. Hidden on short screens, where every row of the frame is
+            already accounted for. */}
+        <p className="mx-auto mt-6 max-w-md text-[12px] leading-[1.8] text-foreground/60 [text-wrap:balance] [@media(max-height:560px)]:hidden">
+          Inventor and deep-tech founder: graphene, nanomaterials and industrial systems, built in India.
+        </p>
       </div>
 
       {/* Animated indicator — decorative only, no text, aria-hidden.

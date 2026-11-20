@@ -48,13 +48,13 @@ export const essays: EssayMeta[] = [
 ];
 
 const description =
-  "An editorial archive of long-form notes by Sushanth Paatnaik on engineering, graphene, and the discipline of invention.";
+  "Long-form notes on graphene, the carbon century, engineering with empathy and the discipline of invention.";
 
 export const Route = createFileRoute("/essays")({
   component: EssaysIndex,
   head: () => ({
     meta: [
-      { title: "Essays on Deep-Tech & Invention · Sushanth Paatnaik" },
+      { title: "Essays on Graphene, Engineering & Invention | Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Essays · Sushanth Paatnaik" },
       {

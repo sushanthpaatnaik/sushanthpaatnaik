@@ -8,7 +8,7 @@ import backdrop from "@/assets/story-06-india.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Industrial collaboration, deep-tech research, advisory, speaking and partnerships, handled directly across the operating group.";
+  "Industrial collaboration, deep-tech advisory and mentorship, research partnerships and speaking - engage Sushanth Paatnaik on graphene, advanced materials and company building.";
 
 export const Route = createFileRoute("/engage")({
   component: EngagePage,
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/engage")({
     meta: [
       {
         title:
-          "Engage: Collaboration, Advisory, Research & Speaking · Sushanth Paatnaik",
+          "Work With Sushanth Paatnaik | Deep-Tech Advisor, Mentor & Research Collaborator",
       },
       { name: "description", content: description },
       { property: "og:title", content: "Engage · Sushanth Paatnaik" },

@@ -15,13 +15,13 @@ import supersenseImg from "@/assets/early/supersense.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Six original inventions built between 2008 and 2013. These teenage innovations earned six Presidential Awards and became the foundation for today's deep-tech ventures.";
+  "The six school-years inventions of Sushanth Paatnaik: the breath-operated wheelchair Enabler, Rectofit, Super Sense, Powergen, Sol-Ka and She Watch - each recognised with an Indian Presidential Award.";
 
 export const Route = createFileRoute("/early-works")({
   component: EarlyWorksPage,
   head: () => ({
     meta: [
-      { title: "Early Works · Sushanth Paatnaik" },
+      { title: "Early Works (2008-2013) | Six Award-Winning Inventions - Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Early Works · Sushanth Paatnaik" },
       {

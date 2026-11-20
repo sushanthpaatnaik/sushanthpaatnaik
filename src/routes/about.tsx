@@ -10,13 +10,13 @@ import backdrop from "@/assets/scene-about-graphite.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "The philosophy, journey and mission of Sushanth Paatnaik, inventor and six-time Indian Presidential awardee, building from India.";
+  "The journey of Sushanth Paatnaik: from a breath-powered wheelchair at 16 to six deep-tech ventures in graphene, nanomaterials, technology transfer and deep-tech capital. IISER Bhopal, six Presidential Awards.";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
+      { title: "About Sushanth Paatnaik | Deep-Tech Founder, Inventor & Materials Entrepreneur" },
       { name: "description", content: description },
       { property: "og:title", content: "About Sushanth Paatnaik" },
       {
@@ -32,6 +32,39 @@ export const Route = createFileRoute("/about")({
     ],
     links: [{ rel: "canonical", href: "https://sushanthpaatnaik.com/about" }],
     scripts: [
+      ldJsonScript({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        // The same three Q&As, verbatim, as the visible "Questions" section
+        // at the end of this page. FAQ structured data must mirror visible
+        // copy or it is spam.
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Who is Sushanth Paatnaik?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), an MIT Technology Review TR35 honouree and a TED@Bangalore speaker, and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is Sushanth Paatnaik the same person as Susant Pattnaik / Sushant Pattnaik?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. Older press coverage (2008-2013) often spelled the name Susant Pattnaik or Sushant Pattnaik; both refer to the same inventor.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What does Sushanth Paatnaik work on today?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Graphene and advanced nanomaterials across concrete, solar, batteries, ceramics, polymers, water and energy storage, developed with the Monoatom Labs R&D team and carried to industry through six ventures.",
+            },
+          },
+        ],
+      }),
       ldJsonScript(webPageSchema({ name: "About Sushanth Paatnaik", description, path: "/about" })),
       ldJsonScript(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])),
     ],
@@ -110,6 +143,21 @@ function AboutPage() {
       backdrop={backdrop}
       overlay={0.35}
     >
+      {/* Plain-language definition, the first text on the page: the sentence
+          search and AI answers can quote verbatim, including the older press
+          spellings of his name. */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
+        className="not-prose mx-auto mt-12 max-w-2xl border-l border-foreground/15 pl-6 text-[14px] leading-[1.9] text-foreground/70"
+      >
+        <p>
+          Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. Also written in older press as Susant Pattnaik and Sushant Pattnaik. He founded Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital, and received six Indian Presidential Awards between 2008 and 2013.
+        </p>
+      </motion.div>
+
       {/* ── Identity film ──
           Its own 16/9 frame rather than the portrait plate below. The plate is
           aspect-[4/5] on mobile through aspect-[4/4.6] at md, so object-cover
@@ -342,6 +390,25 @@ function AboutPage() {
             companies, capital, and the talent that compounds across them. The
             third, I suspect, will be about handing the work to the next
             generation of Indian builders who never had to ask permission.
+          </p>
+        </NarrativePassage>
+      </EditorialSection>
+
+      {/* ── Questions ── mirrors the FAQPage JSON-LD in this page's head,
+          same words both places ── */}
+      <EditorialSection number="07 · Questions" heading="Frequently asked.">
+        <NarrativePassage>
+          <p className="font-medium text-foreground/90">Who is Sushanth Paatnaik?</p>
+          <p className="mt-2">
+            Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), an MIT Technology Review TR35 honouree and a TED@Bangalore speaker, and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.
+          </p>
+          <p className="mt-8 font-medium text-foreground/90">Is Sushanth Paatnaik the same person as Susant Pattnaik / Sushant Pattnaik?</p>
+          <p className="mt-2">
+            Yes. Older press coverage (2008-2013) often spelled the name Susant Pattnaik or Sushant Pattnaik; both refer to the same inventor.
+          </p>
+          <p className="mt-8 font-medium text-foreground/90">What does Sushanth Paatnaik work on today?</p>
+          <p className="mt-2">
+            Graphene and advanced nanomaterials across concrete, solar, batteries, ceramics, polymers, water and energy storage, developed with the Monoatom Labs R&D team and carried to industry through six ventures.
           </p>
         </NarrativePassage>
       </EditorialSection>

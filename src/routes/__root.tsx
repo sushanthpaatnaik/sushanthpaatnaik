@@ -135,16 +135,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
+          "@id": "https://sushanthpaatnaik.com/#person",
           name: "Sushanth Paatnaik",
+          // Spellings older press coverage used, so searches and citations
+          // under those names resolve to the same person.
+          alternateName: ["Susant Pattnaik", "Sushant Pattnaik"],
           url: "https://sushanthpaatnaik.com",
-          jobTitle: "Inventor · Deep-Tech Founder",
+          jobTitle: "Inventor and Deep-Tech Founder",
           description:
-            "Six-time Indian Presidential awardee. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital. CIO at Magppie.",
+            "Indian inventor and deep-tech founder working on graphene, nanomaterials and industrial systems. Six-time Indian Presidential awardee (2008-2013), MIT Technology Review TR35 honouree, TED@Bangalore speaker. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital; Chief Innovation Officer at Magppie.",
           image: "https://sushanthpaatnaik.com/social-preview.webp",
           birthPlace: "Cuttack, Odisha, India",
+          nationality: "Indian",
           alumniOf: [
             { "@type": "CollegeOrUniversity", name: "IISER Bhopal" },
             { "@type": "CollegeOrUniversity", name: "OCT, Bhopal" },
+          ],
+          award: [
+            "Six Indian Presidential Awards (2008-2013)",
+            "MIT Technology Review TR35 (2010)",
+            "Intel IRIS Best Popular Invention (2010)",
+            "NASA recognition (2011)",
+            "TED@Bangalore speaker (2012)",
+            "MIT Fab-10 and Fab-11 awardee (2013-14)",
+            "NIF-India IGNITE",
+          ],
+          affiliation: [
+            { "@type": "Organization", name: "Monoatom Labs", url: "https://monoatomlabs.com" },
+            { "@type": "Organization", name: "Grafillium", url: "https://grafillium.com" },
+            { "@type": "Organization", name: "SPI Industries", url: "https://spiindustries.co" },
+            { "@type": "Organization", name: "InThinks", url: "https://inthinks.com" },
+            { "@type": "Organization", name: "Starunico Capital", url: "https://starunicocapital.com" },
+            { "@type": "Organization", name: "Magppie", url: "https://magppie.com" },
           ],
           sameAs: [
             "https://www.linkedin.com/in/sushanthpaatnaik/",
@@ -156,11 +178,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           ],
           knowsAbout: [
             "Graphene",
+            "Nanomaterials",
             "Advanced Materials",
-            "Nano-materials",
-            "Deep-Tech",
-            "Industrial Systems",
-            "Climate Technology",
+            "Industrial Coatings",
+            "Energy Storage",
+            "Water Systems",
+            "Deep Technology",
+            "Technology Transfer",
           ],
         }),
       },

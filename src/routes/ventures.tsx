@@ -35,13 +35,13 @@ import magppieLogo from "@/assets/ventures/magppie.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Six operating vehicles across advanced materials, industrial products, AI and capital, plus a six-house advisory roster.";
+  "Monoatom Labs (graphene manufacturing, in setup), Grafillium (eco nano-additives), SPI Industries (industrial R&D), InThinks (research to industrial readiness), Starunico Capital (deep-tech investment) and Magppie (stone wellness kitchens).";
 
 export const Route = createFileRoute("/ventures")({
   component: VenturesPage,
   head: () => ({
     meta: [
-      { title: "Ventures & Operating Group · Sushanth Paatnaik" },
+      { title: "Ventures | Six Deep-Tech Companies - Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Ventures · Sushanth Paatnaik" },
       {
