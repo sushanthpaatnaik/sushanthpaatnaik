@@ -34,7 +34,7 @@ export const Route = createFileRoute("/voices")({
   component: VoicesPage,
   head: () => ({
     meta: [
-      { title: "Voices · Testimonials & On-Record Recognition" },
+      { title: "Voices & Testimonials | Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Voices · Sushanth Paatnaik" },
       {

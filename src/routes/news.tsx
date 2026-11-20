@@ -59,13 +59,13 @@ import inkTalksLogoLight from "@/assets/outlets/inktalks-light.webp";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
-  "Editorial archive of press coverage across MIT Technology Review, India Today, Times of India, Business Standard, ThePrint and more.";
+  "Press coverage of Sushanth Paatnaik, including older coverage under the spellings Susant Pattnaik and Sushant Pattnaik.";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
   head: () => ({
     meta: [
-      { title: "News & Media · Editorial Archive · Sushanth Paatnaik" },
+      { title: "Press & News | Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "News · Sushanth Paatnaik" },
       {

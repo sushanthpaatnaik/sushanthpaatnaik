@@ -13,7 +13,7 @@ export const Route = createFileRoute("/evidence-standards")({
   component: EvidenceStandardsPage,
   head: () => ({
     meta: [
-      { title: "Evidence & Development-Stage Standards · Sushanth Paatnaik" },
+      { title: "Evidence & Development-Stage Standards | Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Evidence & Development-Stage Standards · Sushanth Paatnaik" },
       {

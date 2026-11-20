@@ -66,6 +66,36 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// Canonical origin is https on the apex (sushanthpaatnaik.com). Until this
+// ran, plain-http and www. requests were answered 200 with the full page, so
+// up to four URL variants of every page were live and indexable at once. One
+// permanent redirect sends each variant to the same path on the https apex.
+// Strictly a www.-prefix check on the hostname, so the target can never
+// itself match and loop, and preview hosts (workers.dev) are left alone apart
+// from the scheme upgrade.
+function canonicalRedirect(request: Request): Response | undefined {
+  let url: URL;
+  try {
+    url = new URL(request.url);
+  } catch {
+    return undefined;
+  }
+  let changed = false;
+  if (url.protocol === "http:") {
+    url.protocol = "https:";
+    // Explicit ports do not follow a scheme change on their own: a URL that
+    // arrived as http://host:80/ would otherwise keep :80 under https.
+    url.port = "";
+    changed = true;
+  }
+  if (url.hostname.toLowerCase().startsWith("www.")) {
+    url.hostname = url.hostname.slice(4);
+    changed = true;
+  }
+  if (!changed) return undefined;
+  return Response.redirect(url.toString(), 301);
+}
+
 function withCacheHeaders(response: Response, request: Request): Response {
   const url = new URL(request.url);
   const path = url.pathname;
@@ -97,6 +127,8 @@ function withCacheHeaders(response: Response, request: Request): Response {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const redirect = canonicalRedirect(request);
+      if (redirect) return redirect;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);

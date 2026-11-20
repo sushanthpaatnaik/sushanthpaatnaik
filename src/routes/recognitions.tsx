@@ -80,13 +80,13 @@ import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.web
 
 
 const description =
-  "Archival journey of recognition: six Indian Presidential Awards, MIT TR-35, TED@Bangalore, TEDx, NASA, NIF-India IGNITE, MIT Fab-10/11 and more.";
+  "Six Indian Presidential Awards (2008-2013) from three Presidents, MIT Technology Review TR35, TED@Bangalore, Intel IRIS, NASA recognition - the full, sourced record of Sushanth Paatnaik.";
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
   head: () => ({
     meta: [
-      { title: "Recognitions · Six Presidential Awards · TED · MIT · NASA" },
+      { title: "Recognitions | Six Presidential Awards, MIT TR35, TED, NASA - Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Recognitions · Sushanth Paatnaik" },
       {

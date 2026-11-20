@@ -19,21 +19,19 @@ const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumet
 const CursorAura = lazy(() => import("@/components/scene/CursorAura"));
 
 const description =
-  "Inventor and six-time Indian Presidential awardee building graphene, nano-materials, and industrial deep-tech ventures from India.";
+  "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, MIT TR35, TED speaker. Building graphene and nanomaterial companies from India for the world.";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Sushanth Paatnaik · Inventor & Deep-Tech Founder" },
+      { title: "Sushanth Paatnaik | Inventor & Deep-Tech Founder - Graphene, Nanomaterials, India" },
       { name: "description", content: description },
-      { property: "og:title", content: "Sushanth Paatnaik · Inventor, Graphene & Deep-Tech Founder" },
-      {
-        property: "og:description",
-        content:
-          "Six-time Indian Presidential awardee, engineering matter, capital and scale across graphene, nano-materials, AI and industrial commercialization.",
-      },
-      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Sushanth Paatnaik | Inventor & Deep-Tech Founder" },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "profile" },
+      { property: "profile:first_name", content: "Sushanth" },
+      { property: "profile:last_name", content: "Paatnaik" },
       { property: "og:url", content: "https://sushanthpaatnaik.com/" },
       { property: "og:image", content: "https://sushanthpaatnaik.com/social-preview.webp" },
       { name: "twitter:card", content: "summary_large_image" },

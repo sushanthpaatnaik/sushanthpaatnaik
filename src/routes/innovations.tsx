@@ -119,13 +119,13 @@ import appVitraphene from "@/assets/innovations/applications/vitraphene.webp";
 import appVoltaphene from "@/assets/innovations/applications/voltaphene.webp";
 
 const description =
-  "25 deep-tech graphene innovations across construction, energy, water, hydrogen, mobility, storage and armour, from commercial to pilot to R&D.";
+  "25 graphene and nanomaterial programmes across construction, energy, water, hydrogen, mobility, storage and armour, from bench R&D to field deployment, led by Sushanth Paatnaik with the Monoatom Labs R&D team.";
 
 export const Route = createFileRoute("/innovations")({
   component: InnovationsPage,
   head: () => ({
     meta: [
-      { title: "Innovations: 25 Graphene Products · Sushanth Paatnaik" },
+      { title: "25 Graphene & Nanomaterial Innovations | Sushanth Paatnaik, Graphene Innovator" },
       { name: "description", content: description },
       { property: "og:title", content: "Innovations · Sushanth Paatnaik" },
       {
@@ -486,7 +486,7 @@ function InnovationsPage() {
     <CinematicPageShell
       eyebrow={`Innovations · Catalogue · ${String(items.length).padStart(2, "0")} of ${String(items.length).padStart(2, "0")}`}
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
-      lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment."
+      lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment. The research behind these programmes is led with the Monoatom Labs R&D team."
       backdrop={backdrop}
       overlay={0.35}
     >
