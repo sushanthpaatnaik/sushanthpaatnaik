@@ -19,7 +19,7 @@ const GrapheneVolumetric = lazy(() => import("@/components/scene/GrapheneVolumet
 const CursorAura = lazy(() => import("@/components/scene/CursorAura"));
 
 const description =
-  "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, MIT TR35, TED speaker. Building graphene and nanomaterial companies from India for the world.";
+  "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, featured in MIT Technology Review's Top 10 (2010), TED speaker. Building graphene and nanomaterial companies from India for the world.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -53,7 +53,7 @@ export const Route = createFileRoute("/")({
             name: "Who is Sushanth Paatnaik?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, MIT TR35, TED speaker. Building graphene and nanomaterial companies from India for the world.",
+              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder. Six-time Indian Presidential awardee, featured in MIT Technology Review's Top 10 (2010), TED speaker. Building graphene and nanomaterial companies from India for the world.",
             },
           },
           {
@@ -69,7 +69,7 @@ export const Route = createFileRoute("/")({
             name: "What recognition has Sushanth Paatnaik received?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Six Indian Presidential awards (2008-2013), MIT Technology Review TR35 (2010), Intel IRIS Best Popular Invention (2010), INK Talks Fellow (2010), NASA recognition (2011), TED@Bangalore speaker (2012), and MIT Fab-10 and Fab-11 awards (2013-14).",
+              text: "Six Indian Presidential awards (2008-2013), MIT Technology Review Top 10 feature (2010), Intel IRIS Best Popular Invention (2010), INK Talks Fellow (2010), NASA recognition (2011), TED@Bangalore speaker (2012), and MIT Fab-10 and Fab-11 awards (2013-14).",
             },
           },
           {

@@ -296,7 +296,7 @@ function RecognitionBadge({ label }: { label: string }) {
     "Intel IRIS": "◆",
     "National Innovation Foundation": "◇",
     "NASA": "⬡",
-    "MIT TR35": "◉",
+    "MIT Tech Review Top 10": "◉",
     "TED@Bangalore": "◎",
   };
   return (
@@ -589,7 +589,7 @@ function HeroSection() {
           {[
             { icon: "✦", label: "6× Presidential" },
             { icon: "⬡", label: "NASA" },
-            { icon: "◈", label: "MIT TR35" },
+            { icon: "◈", label: "MIT Tech Review Top 10" },
             { icon: "◎", label: "TED@Bangalore" },
             { icon: "◆", label: "Intel IRIS" },
           ].map((badge) => (
