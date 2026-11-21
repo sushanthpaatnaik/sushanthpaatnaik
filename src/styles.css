@@ -645,8 +645,8 @@
      structure reads as atmosphere behind the content, the same job the
      dark theme's 68-82% black wash does there. The artwork gives the
      nanomaterial feel; the words stay effortlessly readable. */
-  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(1.32) contrast(0.72);
-  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.4) brightness(1.28) contrast(0.7) blur(30px);
+  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.55) brightness(1.5) contrast(0.55);
+  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(1.45) contrast(0.55) blur(30px);
   --plate-haze-opacity: 0.50;
   --plate-wash-min: 30%;
   /* Open the shadows, hold the contrast, give back the saturation those
