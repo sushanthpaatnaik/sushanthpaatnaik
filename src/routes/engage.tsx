@@ -5,6 +5,7 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-06-india.webp";
+import backdropLight from "@/assets/scene-engage-light.svg";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 
 const description =
@@ -335,6 +336,7 @@ function EngagePage() {
       }
       lead="One place to start a conversation about industrial collaboration, research, advisory, speaking or partnerships. Everything runs through the operating group. The work is getting advanced materials further into industrial use."
       backdrop={backdrop}
+      backdropLight={backdropLight}
       overlay={0.35}
     >
       <AccessStrip />

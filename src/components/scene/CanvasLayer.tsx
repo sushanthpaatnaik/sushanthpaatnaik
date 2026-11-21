@@ -702,6 +702,19 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       }
     };
 
+    // Masters are also published as .avif (~39% smaller at PSNR ~41 dB against
+    // the webp — visually identical). Touch sets (/p/, /m/) stay webp: that path
+    // was tuned byte-for-byte and AVIF buys little at 500/854 px. Probe the
+    // createImageBitmap decode path itself and cache the verdict — browsers
+    // without AVIF bitmap support keep the webp masters untouched.
+    const frameExt: Promise<string> = isTouch
+      ? Promise.resolve("webp")
+      : fetch("/sequences/inventor-story-481/frame_0001.avif")
+          .then(r => r.blob())
+          .then(b => createImageBitmap(b))
+          .then(bmp => { bmp.close(); return "avif"; })
+          .catch(() => "webp");
+
     const loadFrame = (fi: number): Promise<void> => {
       if (fi < 0 || fi >= FRAME_COUNT) return Promise.resolve();
       if (loadingRef.current[fi] || bitmapsRef.current[fi]) return Promise.resolve();
@@ -724,7 +737,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         ...(controller ? { signal: controller.signal } : {}),
       };
       const startedAt = performance.now();
-      return fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.webp`, opts)
+      return frameExt.then(ext => fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.${ext}`, opts)
         .then(r  => r.blob())
         .then(b  => {
           // Timed at the blob, not after decode: this is meant to measure the
@@ -810,7 +823,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
             onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
             if (criticalLoaded >= criticalCount) notifyReady();
           }
-        });
+        }));
     };
     // The chapter-region loader that used to live here is gone. It batched
     // touch fetches in serial groups of six, which was the right instinct,

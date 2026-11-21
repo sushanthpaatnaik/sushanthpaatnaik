@@ -243,7 +243,7 @@ function Eyebrow({
 // Archive →" is 297px in a 272px column, and the arrow wrapped onto a line of
 // its own.
 const CHAPTER_LINK =
-  "inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] [@media(max-width:340px)]:tracking-[0.28em] text-foreground/85 hover:text-foreground transition-colors";
+  "inline-flex items-center gap-3 py-2 -my-2 text-[11px] uppercase tracking-[0.4em] [@media(max-width:340px)]:tracking-[0.28em] text-foreground/85 hover:text-foreground transition-colors";
 
 /* ──────────────────────────────────────────────────────────────────
    Chapter 0 — Origin (id="spark"). Film: the workbench.
@@ -1254,7 +1254,7 @@ function FutureContent() {
             <span key={s.to} className="inline-flex">
               <Link
                 to={s.to}
-                className="font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/85 hover:text-foreground transition-colors"
+                className="inline-block py-2 -my-2 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/85 hover:text-foreground transition-colors"
               >
                 {s.label}
               </Link>{" "}
