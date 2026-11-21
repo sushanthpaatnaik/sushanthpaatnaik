@@ -161,7 +161,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "NIF-India IGNITE",
           ],
           affiliation: [
-            { "@type": "Organization", name: "Monoatom Labs", url: "https://monoatomlabs.com" },
+            { "@type": "Organization", name: "Monoatom Labs", url: "https://monoatomlabs.co" },
             { "@type": "Organization", name: "Grafillium", url: "https://grafillium.com" },
             { "@type": "Organization", name: "SPI Industries", url: "https://spiindustries.co" },
             { "@type": "Organization", name: "InThinks", url: "https://inthinks.com" },
