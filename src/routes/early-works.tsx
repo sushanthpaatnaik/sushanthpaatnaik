@@ -595,7 +595,7 @@ function HeroSection() {
           ].map((badge) => (
             <span
               key={badge.label}
-              className="flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[10px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/50"
+              className="ew-badge flex items-center gap-1.5 border border-foreground/[0.10] rounded-[2px] px-2.5 sm:px-3 py-1.5 font-mono text-[10px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/50"
             >
               <span className="text-accent/55">{badge.icon}</span>
               {badge.label}

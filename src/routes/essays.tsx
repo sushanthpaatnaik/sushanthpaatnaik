@@ -101,7 +101,7 @@ function EssaysIndex() {
         </motion.div>
 
         {/* Masthead */}
-        <header className="mt-28 md:mt-40">
+        <header className="mt-14 md:mt-20">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

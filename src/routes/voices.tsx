@@ -304,7 +304,7 @@ function VoicesPage() {
           What people say<br className="hidden md:inline" /> about the work.
         </>
       }
-      lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages, spanning two decades of invention."
+      lead="On-record testimonials from innovation foundations, global press, industry leaders, and international stages, spanning eighteen years of invention."
       backdrop={backdrop}
       overlay={0.35}
     >

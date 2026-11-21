@@ -875,7 +875,7 @@ function RecognitionsPage() {
           An archival journey<br className="hidden md:inline" /> of recognition.
         </>
       }
-      lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley. A photographic record of two decades on stage, in the lab and in conversation with institutions."
+      lead="From a school-bench prototype to Rashtrapati Bhavan and Silicon Valley. A photographic record of eighteen years on stage, in the lab and in conversation with institutions."
       backdrop={backdrop}
       overlay={0.35}
       contentPb="pb-0"
