@@ -79,7 +79,7 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${plateSrc})`,
+            backgroundImage: `url("${plateSrc}")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: lightPlate ? "none" : "var(--plate-filter)",
@@ -93,7 +93,7 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${plateSrc})`,
+            backgroundImage: `url("${plateSrc}")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: lightPlate ? "blur(30px)" : "var(--plate-haze-filter)",
