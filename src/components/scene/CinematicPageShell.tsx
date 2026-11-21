@@ -10,6 +10,14 @@ interface CinematicPageShellProps {
   title: ReactNode;
   lead?: string;
   backdrop: string;
+  /**
+   * Optional light-native plate. Some dark plates are photographic scenes
+   * whose colour-flip reads wrong on paper (e.g. a space scene inverts to
+   * smudges). When supplied, the light theme swaps to this artwork drawn
+   * for the paper canvas and skips the invert filter; dark keeps `backdrop`
+   * and its grade untouched.
+   */
+  backdropLight?: string;
   /** 0..1 — base darkening over the backdrop. Default 0.78 for reading-heavy pages. */
   overlay?: number;
   /**
@@ -34,6 +42,7 @@ export default function CinematicPageShell({
   title,
   lead,
   backdrop,
+  backdropLight,
   overlay = 0.78,
   contentPb = "pb-32 md:pb-40",
   children,
@@ -58,6 +67,11 @@ export default function CinematicPageShell({
   }, []);
   const wash = isLight ? Math.min(overlay, 0.32) : overlay;
 
+  /* In light, a page with a light-native plate shows it as drawn — no
+     invert grade — while every other page keeps the colour-flip. */
+  const lightPlate = isLight && backdropLight ? backdropLight : undefined;
+  const plateSrc = lightPlate ?? backdrop;
+
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
@@ -65,10 +79,10 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${backdrop})`,
+            backgroundImage: `url(${plateSrc})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "var(--plate-filter)",
+            filter: lightPlate ? "none" : "var(--plate-filter)",
             transform: "scale(1.10) translateZ(0)",
             willChange: "transform",
           }}
@@ -79,10 +93,10 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${backdrop})`,
+            backgroundImage: `url(${plateSrc})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "var(--plate-haze-filter)",
+            filter: lightPlate ? "blur(30px)" : "var(--plate-haze-filter)",
             transform: "scale(1.16)",
             WebkitMaskImage:
               "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
