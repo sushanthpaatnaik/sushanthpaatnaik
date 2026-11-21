@@ -585,7 +585,7 @@
      fade to transparent so it still reads as a gradient rather than a bar.
      The logo's blue bloom becomes a soft contact shadow — a glow is light
      emitted, which is meaningless on a white ground and reads as a smudge. */
-  --nav-veil: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.88) 0%, oklch(0.965 0.008 85 / 0.58) 55%, transparent 100%);
+  --nav-veil: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.94) 0%, oklch(0.965 0.008 85 / 0.72) 55%, transparent 100%);
   --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.95) 0%, oklch(0.965 0.008 85 / 0.90) 75%, transparent 100%);
   --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.008 85 / 0.97), oklch(0.945 0.009 85 / 0.99));
   --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
@@ -641,7 +641,7 @@
   --plate-filter: blur(4px) saturate(0.30) brightness(1.62) contrast(0.55);
   --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
   --plate-haze-opacity: 0.55;
-  --plate-wash-min: 68%;
+  --plate-wash-min: 78%;
   /* Open the shadows, hold the contrast, give back the saturation those
      grades removed. A dusk construction site or a graded archive plate
      then reads as an open photograph on the sheet rather than as a hole
@@ -846,6 +846,14 @@
 .dark {
   --background: oklch(0.06 0 0);
   --foreground: oklch(0.967 0 0);
+}
+
+/* Light theme: the nav row's 70% muted at 10px reads as fog over the paper
+   ground, worst where a page's backdrop runs under the header. Darker and a
+   point larger; the active link keeps its underline, so hierarchy survives. */
+:root[data-theme="light"] .nav-main-links {
+  color: color-mix(in oklab, var(--muted-foreground) 30%, var(--foreground));
+  font-size: 11px;
 }
 
 @layer base {

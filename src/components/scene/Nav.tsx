@@ -118,7 +118,7 @@ export default function Nav() {
             their grounds are the theme's and that level is part of the
             approved design there. */}
         <nav
-          className={`hidden xl:flex min-w-0 items-center text-[10px] uppercase tracking-[0.28em] pointer-events-auto ${
+          className={`nav-main-links hidden xl:flex min-w-0 items-center text-[10px] uppercase tracking-[0.28em] pointer-events-auto ${
             forcedDark ? "text-muted-foreground/90" : "text-muted-foreground/70"
           }`}
         >
