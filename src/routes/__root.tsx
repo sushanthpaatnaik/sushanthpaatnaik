@@ -143,7 +143,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           url: "https://sushanthpaatnaik.com",
           jobTitle: "Inventor and Deep-Tech Founder",
           description:
-            "Indian inventor and deep-tech founder working on graphene, nanomaterials and industrial systems. Six-time Indian Presidential awardee (2008-2013), MIT Technology Review TR35 honouree, TED@Bangalore speaker. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital; Chief Innovation Officer at Magppie.",
+            "Indian inventor and deep-tech founder working on graphene, nanomaterials and industrial systems. Six-time Indian Presidential awardee (2008-2013), featured in MIT Technology Review's Top 10 (2010), TED@Bangalore speaker. Founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital; Chief Innovation Officer at Magppie.",
           image: "https://sushanthpaatnaik.com/social-preview.webp",
           birthPlace: "Cuttack, Odisha, India",
           nationality: "Indian",
@@ -153,7 +153,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           ],
           award: [
             "Six Indian Presidential Awards (2008-2013)",
-            "MIT Technology Review TR35 (2010)",
+            "MIT Technology Review Top 10 feature (2010)",
             "Intel IRIS Best Popular Invention (2010)",
             "NASA recognition (2011)",
             "TED@Bangalore speaker (2012)",

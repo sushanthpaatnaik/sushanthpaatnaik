@@ -44,7 +44,7 @@ export const Route = createFileRoute("/about")({
             name: "Who is Sushanth Paatnaik?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), an MIT Technology Review TR35 honouree and a TED@Bangalore speaker, and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.",
+              text: "Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), was featured in MIT Technology Review's Top 10 (2010), and is a TED@Bangalore speaker and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.",
             },
           },
           {
@@ -400,7 +400,7 @@ function AboutPage() {
         <NarrativePassage>
           <p className="font-medium text-foreground/90">Who is Sushanth Paatnaik?</p>
           <p className="mt-2">
-            Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), an MIT Technology Review TR35 honouree and a TED@Bangalore speaker, and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.
+            Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene and nanomaterials. He is a six-time Indian Presidential awardee (2008-2013), was featured in MIT Technology Review's Top 10 (2010), and is a TED@Bangalore speaker and the founder of Monoatom Labs, Grafillium, SPI Industries, InThinks and Starunico Capital.
           </p>
           <p className="mt-8 font-medium text-foreground/90">Is Sushanth Paatnaik the same person as Susant Pattnaik / Sushant Pattnaik?</p>
           <p className="mt-2">

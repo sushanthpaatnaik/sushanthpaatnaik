@@ -80,13 +80,13 @@ import honorMonoatomTrophies from "@/assets/hof/honor-monoatom-labs-trophies.web
 
 
 const description =
-  "Six Indian Presidential Awards (2008-2013) from three Presidents, MIT Technology Review TR35, TED@Bangalore, Intel IRIS, NASA recognition - the full, sourced record of Sushanth Paatnaik.";
+  "Six Indian Presidential Awards (2008-2013) from three Presidents, MIT Technology Review Top 10 feature (2010), TED@Bangalore, Intel IRIS, NASA recognition - the full, sourced record of Sushanth Paatnaik.";
 
 export const Route = createFileRoute("/recognitions")({
   component: RecognitionsPage,
   head: () => ({
     meta: [
-      { title: "Recognitions | Six Presidential Awards, MIT TR35, TED, NASA - Sushanth Paatnaik" },
+      { title: "Recognitions | Six Presidential Awards, MIT Tech Review Top 10, TED, NASA - Sushanth Paatnaik" },
       { name: "description", content: description },
       { property: "og:title", content: "Recognitions · Sushanth Paatnaik" },
       {
@@ -166,8 +166,8 @@ const milestones: Milestone[] = [
   {
     year: "2010",
     sortYear: 2010,
-    title: "MIT TR-35 Awardee",
-    body: "Recognized by MIT Technology Review among the world's leading young innovators under 35, for early work on sustainable materials and assistive technology.",
+    title: "MIT Technology Review Top 10",
+    body: "Featured in MIT Technology Review's Top 10 in 2010, for early work on sustainable materials and assistive technology.",
     image: honorMitTr35,
     imageFocus: "center 25%",
     institution: "MIT Technology Review · Cambridge",
@@ -241,7 +241,7 @@ const authoritySignals: Array<{ value: string; label: string }> = [
 // adjusting the count, which is sourced from Sushanth directly.
 //
 // Archival ledger — chronologically grouped, with featured milestones
-// marked for cinematic hierarchy (Presidential, MIT TR-35, NASA, TED,
+// marked for cinematic hierarchy (Presidential, MIT Tech Review, NASA, TED,
 // Intel IRIS, MIT Fab-10/11, BRICS, G20, Silicon Valley). Featured
 // entries get a foregrounded archival marker; the rest sit as supporting
 // register lines beneath the year anchor.
@@ -275,7 +275,7 @@ const ledgerByYear: LedgerYear[] = [
     year: "2010",
     entries: [
       { title: "President of India Award", institution: "Smt. Pratibha Devisingh Patil · NIF", featured: true },
-      { title: "TR-35 Award", institution: "MIT Technology Review", featured: true },
+      { title: "Technology Review Top 10", institution: "MIT Technology Review", featured: true },
       {
         title: "INK Fellow",
         institution: "INK Talks · TED Partner",
@@ -499,7 +499,7 @@ const hallOfFame: ArchiveItem[] = [
   { src: awardPranab2, caption: "With President Pranab Mukherjee", meta: "Presidential Ceremony · 2013", category: "Award" },
   { src: honorBricsDiplomat, caption: "BRICS Global Forum", meta: "Diplomatic Engagement · New Delhi", category: "Honor" },
   { src: honorNasa, caption: "NASA Mobile Quarantine Facility", meta: "U.S. Space & Rocket Center · Huntsville, Alabama", category: "Honor" },
-  { src: honorMitTr35, caption: "MIT TR-35 Recognition", meta: "MIT Technology Review · Cambridge · 2010", category: "Honor" },
+  { src: honorMitTr35, caption: "MIT Technology Review Top 10", meta: "MIT Technology Review · Cambridge · 2010", category: "Honor" },
   { src: honorMitFab, caption: "MIT Fab-10 & Fab-11 Awardee", meta: "MIT Center for Bits and Atoms · Barcelona / Cambridge · 2013–14", category: "Honor" },
   { src: honorRepublic, caption: "With Mr. Amit Jain, CarDekho", meta: "Founder & CEO · CarDekho Group", category: "Honor" },
   { src: awardPatil, caption: "With President Pratibha Patil", meta: "Presidential Award · 2010", category: "Award" },

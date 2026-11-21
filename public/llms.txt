@@ -1,6 +1,6 @@
 # Sushanth Paatnaik
 
-> Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene, nanomaterials and industrial systems, building from India for the world. Six-time Indian Presidential awardee (2008-2013), MIT Technology Review TR35 (2010), Intel IRIS (2010), NASA recognition (2011), TED@Bangalore speaker (2012). Older press may spell his name Susant Pattnaik or Sushant Pattnaik - same person.
+> Sushanth Paatnaik is an Indian inventor and deep-tech founder working on graphene, nanomaterials and industrial systems, building from India for the world. Six-time Indian Presidential awardee (2008-2013), MIT Technology Review Top 10 feature (2010), Intel IRIS (2010), NASA recognition (2011), TED@Bangalore speaker (2012). Older press may spell his name Susant Pattnaik or Sushant Pattnaik - same person.
 
 Founder of Monoatom Labs (graphene manufacturing, capacity being set up), Grafillium (eco nano-additives), SPI Industries (external industrial R&D), InThinks (research to industrial readiness) and Starunico Capital (deep-tech investment). Chief Innovation Officer at Magppie. Graphene and nanomaterials research is led with the Monoatom Labs R&D team.
 
@@ -12,7 +12,7 @@ Founder of Monoatom Labs (graphene manufacturing, capacity being set up), Grafil
 - [Innovations](/innovations): 25 graphene and nanomaterial programmes across commercial, pilot and R&D stages.
 - [Evidence & Development-Stage Standards](/evidence-standards): How development stage and evidence labels are graded across the Innovations catalogue.
 - [Ventures](/ventures): Operating group across materials, industrial products, AI, and capital.
-- [Recognitions](/recognitions): Six Presidential awards, TED, MIT TR-35, NASA, NIF-India IGNITE.
+- [Recognitions](/recognitions): Six Presidential awards, TED, MIT Technology Review Top 10, NASA, NIF-India IGNITE.
 - [Voices](/voices): On-record testimonials from institutions, press, and industry leaders.
 
 - [Essays](/essays): Long-form notes on engineering, graphene, and the discipline of invention.

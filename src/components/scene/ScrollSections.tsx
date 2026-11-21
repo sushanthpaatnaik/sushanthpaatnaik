@@ -841,9 +841,9 @@ function PresidentialMobile({
 
    A dated register rather than a sentence. Every row is a line of the
    ledger on /recognitions, in that page's own words and with its years:
-   TR-35 from MIT Technology Review, Intel IRIS and the INK fellowship in
-   2010, NASA in 2011, TED@Bangalore in 2012, MIT Fab-10 and Fab-11 in
-   2013-14. The INK row is one of the four on that page that carry an
+   the Top 10 feature in MIT Technology Review, Intel IRIS and the INK
+   fellowship in 2010, NASA in 2011, TED@Bangalore in 2012, MIT Fab-10
+   and Fab-11 in 2013-14. The INK row is one of the four on that page that carry an
    evidence link — to the organisation's own profile of him.
 
    Six rows is the most this chapter holds. On a 320x568 phone two of
@@ -861,7 +861,7 @@ function PresidentialMobile({
    their origin stay in view.
    ────────────────────────────────────────────────────────────────── */
 const HONOURS = [
-  { year: "2010", title: "MIT Technology Review", note: "TR-35" },
+  { year: "2010", title: "MIT Technology Review", note: "Top 10 feature" },
   { year: "2010", title: "Intel IRIS", note: "Best Popular Invention" },
   { year: "2010", title: "INK Talks", note: "Fellow" },
   { year: "2011", title: "NASA recognition", note: "Huntsville, Alabama" },
