@@ -641,10 +641,12 @@
   /* Native light artwork, not a white layer over the dark design: the dark
      cinematic plate is colour-flipped with invert+hue-rotate (black ground
      becomes white, light nodes and lines become graphite, copper stays
-     copper), and it stays crisp — no haze grade on top. The wash floor is
-     the only veil, just enough to hold ink text over the densest nodes. */
-  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.75) contrast(1.02);
-  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.5) blur(30px);
+     copper), then faded back with brightness up and contrast down so the
+     structure reads as atmosphere behind the content, the same job the
+     dark theme's 68-82% black wash does there. The artwork gives the
+     nanomaterial feel; the words stay effortlessly readable. */
+  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(1.32) contrast(0.72);
+  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.4) brightness(1.28) contrast(0.7) blur(30px);
   --plate-haze-opacity: 0.50;
   --plate-wash-min: 30%;
   /* Open the shadows, hold the contrast, give back the saturation those
