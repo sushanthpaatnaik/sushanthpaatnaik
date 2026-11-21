@@ -314,12 +314,12 @@ function VenturesPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 1 }}
         transition={{ duration: 1.0, ease: [0.19, 1, 0.22, 1] }}
-        className="not-prose mb-12 md:mb-16 grid grid-cols-2 gap-px rounded-sm overflow-hidden ring-1 ring-foreground/[0.04] bg-foreground/[0.03]"
+        className="not-prose mb-12 md:mb-16 grid grid-cols-2 md:grid-cols-4 gap-px rounded-md overflow-hidden ring-1 ring-foreground/[0.07] bg-foreground/[0.03] shadow-[0_1px_2px_rgb(0_0_0/0.05),0_12px_32px_-16px_rgb(0_0_0/0.12)]"
       >
         {holdingStats.map((s) => (
           <div
             key={s.label}
-            className="relative flex flex-col items-center gap-1.5 px-4 py-6 md:py-8 bg-[var(--surface-plate-soft)]"
+            className="relative flex flex-col items-center gap-1.5 px-4 py-6 md:py-8 bg-[var(--surface-plate-soft)] transition-colors duration-500 hover:bg-[var(--surface-plate)]"
           >
             {/* div, not span — flex blockifies them, so this is a no-op on
                 screen and a real word boundary in the text stream. As spans
