@@ -261,7 +261,7 @@ function AboutPage() {
         <div className="mt-14 h-px w-12 bg-foreground/20" />
 
         <p className="mt-10 text-[16px] md:text-[17px] leading-[1.85] text-foreground/70">
-          Fourteen years of this has taught me one thing: the science only
+          Eighteen years of this has taught me one thing: the science only
           matters once it reaches a factory. Publishing it is not the hard
           part, and neither is a prototype. The hard part is carrying it
           through funding, through manufacturing, and through the years before
@@ -345,7 +345,7 @@ function AboutPage() {
         <NarrativePassage indent>
           <p>
             Three disciplines have to be held together for any of it to work:
-            invention, capital architecture, and operating systems. Fourteen
+            invention, capital architecture, and operating systems. Eighteen
             years in, I am still learning to keep all three moving at the same
             speed.
           </p>

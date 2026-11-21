@@ -984,7 +984,7 @@ function MaterialContent() {
 
    Five industries and four product names. Each name is a product on
    /innovations in the industry beside it: Graphacrete in Construction ·
-   Cement, Graffisol in Solar · Coatings, Graphenodes in Energy Storage ·
+   Cement, Graffisol in Solar · Coatings, Graphenode in Energy Storage ·
    Electrodes, Thermene in Thermal · Interfaces. Composites has no name
    here because the brief that set this copy named four.
 
@@ -995,7 +995,7 @@ function MaterialContent() {
      Graphacrete  "Graphene nano-platelet admixture transforming standard
                   concrete into a high-performance material."
      Graffisol    "Solar coating delivering higher annual yield, …"
-     Graphenodes  "…graphene polymer cathode and anode materials for
+     Graphenode  "…graphene polymer cathode and anode materials for
                   high-density batteries", in Energy Storage · Electrodes
      Thermene     "Graphene-loaded thermal interface compound. …"
    Each descriptor carries the industry the line above names for it, in
@@ -1004,7 +1004,7 @@ function MaterialContent() {
 const PRODUCTS = [
   { name: "Graphacrete", what: "Concrete admixture" },
   { name: "Graffisol", what: "Solar coating" },
-  { name: "Graphenodes", what: "Battery electrode materials" },
+  { name: "Graphenode", what: "Battery electrode materials" },
   { name: "Thermene", what: "Thermal interface compound" },
 ] as const;
 

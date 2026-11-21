@@ -198,10 +198,10 @@ type Item = {
 
 const items: Item[] = [
   { title: "Graphacrete", stage: "Commercial", domain: "Construction · Cement", status: "Patent · Field-deployed", metric: "49.5 MPa · −40 kg/m³ cement", body: "Graphene nano-platelet admixture transforming standard concrete into a high-performance material.", img: imgGraphacrete, cutout: cutGraphacrete, application: appGraphacrete, scene: sceneGraphacrete, sceneFit: "cover", featured: true },
-  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and superhydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, scene: sceneGraffisol, sceneFit: "cover", featured: true },
-  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "9H+ · ₹5,000", body: "Graphene-enhanced ceramic coating with 9H+ hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene, scene: sceneCeraphene, sceneFit: "cover" },
+  { title: "Graffisol", stage: "Commercial", domain: "Solar · Coatings", status: "Patent · Field-deployed", metric: "+10–12% annual yield", body: "Solar coating delivering higher annual yield, panel cooling and hydrophobic self-cleaning.", img: imgGraffisol, cutout: cutGraffisol, application: appGraffisol, scene: sceneGraffisol, sceneFit: "cover", featured: true },
+  { title: "Ceraphene", stage: "Commercial", domain: "Ceramics · Coatings", status: "Patent · Retail", metric: "10H · ₹5,000", body: "Graphene-enhanced ceramic coating with 10H hardness at one-third the price of premium options.", img: imgCeraphene, cutout: cutCeraphene, application: appCeraphene, scene: sceneCeraphene, sceneFit: "cover" },
   { title: "HD-G-PE", stage: "Commercial", domain: "Polymers · Masterbatch", status: "Patent · Industrial", metric: "+30% tensile · 100× barrier", body: "Graphene masterbatch. A drop-in dosage for stronger, longer-lasting polymers.", img: imgHdgpe, cutout: cutHdgpe, application: appHdgpe, scene: sceneHdgpe, sceneFit: "cover" },
-  { title: "Graphenodes", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes, scene: sceneGraphenodes, sceneFit: "cover" },
+  { title: "Graphenode", stage: "Commercial", domain: "Energy Storage · Electrodes", status: "Patent · Cell trials", metric: "Higher density · longer cycles", body: "Next-gen graphene polymer cathode and anode materials for high-density batteries.", img: imgGraphenodes, cutout: cutGraphenodes, application: appGraphenodes, scene: sceneGraphenodes, sceneFit: "cover" },
   /* Both co-developed with Monoatom Labs, and the only two programmes here that
      arrived with a single photograph instead of three. An earlier pass filled
      their application slot by re-cropping and regrading that one bench macro,
@@ -1089,7 +1089,7 @@ const CONTEXT_EXPOSURE: Record<string, number> = {
   "Bitumax": 0.91,
   "Ceraphene": 1.17,
   "Coalorix": 1.23,
-  "Graphenodes": 1.26,
+  "Graphenode": 1.26,
   "Graphosite": 1.26,
   "Graphyre": 1.78,
   "HD-G-PE": 1.09,

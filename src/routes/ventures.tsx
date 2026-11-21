@@ -185,7 +185,7 @@ const ventures: Venture[] = [
     category: "Design + Living",
     domain: "Stone wellness kitchens",
     thesis:
-      "The world's first 100% stone-built modular kitchen. Applies materials-led design to homes and living spaces.",
+      "A first-of-its-kind 100% stone-built modular kitchen. Applies materials-led design to homes and living spaces.",
     href: "https://magppie.com/",
     logo: magppieLogo,
     logoScale: 1.00,
