@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Light-native plate for Engage: a desk signal — one origin point right of
+       the reading column, concentric correspondence arcs radiating outward,
+       a few gold waypoints. Quiet linework for the paper canvas, same family
+       as the Contact star chart and the Ventures orbit. -->
+  <g fill="none">
+    <circle cx="1230" cy="520" r="70" stroke="#5c564a" stroke-width="1" opacity="0.20"/>
+    <circle cx="1230" cy="520" r="130" stroke="#5c564a" stroke-width="1" stroke-dasharray="2 7" opacity="0.15"/>
+    <circle cx="1230" cy="520" r="200" stroke="#5c564a" stroke-width="1" opacity="0.12"/>
+    <circle cx="1230" cy="520" r="285" stroke="#5c564a" stroke-width="1" stroke-dasharray="2 9" opacity="0.09"/>
+    <circle cx="1230" cy="520" r="380" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+    <line x1="1230" y1="520" x2="1300" y2="450" stroke="#5c564a" stroke-width="1" opacity="0.16"/>
+    <line x1="1230" y1="520" x2="1360" y2="520" stroke="#5c564a" stroke-width="1" opacity="0.14"/>
+    <line x1="1230" y1="520" x2="1300" y2="590" stroke="#5c564a" stroke-width="1" opacity="0.16"/>
+    <line x1="1230" y1="520" x2="1430" y2="390" stroke="#5c564a" stroke-width="1" opacity="0.10"/>
+    <line x1="1230" y1="520" x2="1430" y2="650" stroke="#5c564a" stroke-width="1" opacity="0.10"/>
+    <circle cx="1300" cy="450" r="3.5" fill="#a8823f" stroke="none" opacity="0.55"/>
+    <circle cx="1360" cy="520" r="3" fill="#8a6f3c" stroke="none" opacity="0.5"/>
+    <circle cx="1300" cy="590" r="3.5" fill="#a8823f" stroke="none" opacity="0.55"/>
+    <circle cx="1430" cy="390" r="2.5" fill="#5c564a" stroke="none" opacity="0.3"/>
+    <circle cx="1430" cy="650" r="2.5" fill="#5c564a" stroke="none" opacity="0.3"/>
+    <circle cx="1230" cy="520" r="5" fill="#8a6f3c" stroke="none" opacity="0.6"/>
+    <circle cx="1230" cy="520" r="11" stroke="#8a6f3c" stroke-width="1" opacity="0.35"/>
+    <path d="M 950 700 A 300 300 0 0 1 1510 700" stroke="#5c564a" stroke-width="1" stroke-dasharray="1 6" opacity="0.08"/>
+    <path d="M 900 300 A 380 380 0 0 1 1560 300" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+  </g>
+</svg>
