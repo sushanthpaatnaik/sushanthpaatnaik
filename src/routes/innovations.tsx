@@ -391,14 +391,14 @@ function InnovationsPage() {
      * which is an honest destination, and /ventures already links the homepages.
      */
     const productUrls: Record<string, string> = {
-      Graphacrete: "https://monoatomlabs.com/#/products/graphacrete",
-      Graffisol: "https://monoatomlabs.com/#/products/graffisol",
-      Ceraphene: "https://monoatomlabs.com/#/products/ceraphene",
-      "HD-G-PE": "https://monoatomlabs.com/#/products/hd-g-pe",
-      Graphyre: "https://monoatomlabs.com/#/products/pipeline/graphyre",
-      Graphosite: "https://monoatomlabs.com/#/products/pipeline/graphosite",
-      Thermaphene: "https://monoatomlabs.com/#/products/pipeline/thermaphene",
-      Armophene: "https://monoatomlabs.com/#/products/pipeline/armophene",
+      Graphacrete: "https://monoatomlabs.co/products/graphacrete",
+      Graffisol: "https://monoatomlabs.co/products/graffisol",
+      Ceraphene: "https://monoatomlabs.co/products/ceraphene",
+      "HD-G-PE": "https://monoatomlabs.co/products/hd-g-pe",
+      Graphyre: "https://monoatomlabs.co/products/pipeline/graphyre",
+      Graphosite: "https://monoatomlabs.co/products/pipeline/graphosite",
+      Thermaphene: "https://monoatomlabs.co/products/pipeline/thermaphene",
+      Armophene: "https://monoatomlabs.co/products/pipeline/armophene",
       "Ignitron D": "https://grafillium.com/#/products/ignitron-d",
       "Ignitron P": "https://grafillium.com/#/products/ignitron-p",
       Lubritron: "https://grafillium.com/#/products/lubritron",

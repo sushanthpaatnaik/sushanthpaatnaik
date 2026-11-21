@@ -94,7 +94,7 @@ const ventures: Venture[] = [
     domain: "Graphene at scale",
     thesis:
       "Develops a scalable, low-cost method for manufacturing graphene, and the applications built on it.",
-    href: "https://monoatomlabs.com/",
+    href: "https://monoatomlabs.co/",
     logo: monoatomLogo,
     logoScale: 1.06,
     invert: true,
