@@ -10,6 +10,14 @@ interface CinematicPageShellProps {
   title: ReactNode;
   lead?: string;
   backdrop: string;
+  /**
+   * Optional light-native plate. Some dark plates are photographic scenes
+   * whose colour-flip reads wrong on paper (e.g. a space scene inverts to
+   * smudges). When supplied, the light theme swaps to this artwork drawn
+   * for the paper canvas and skips the invert filter; dark keeps `backdrop`
+   * and its grade untouched.
+   */
+  backdropLight?: string;
   /** 0..1 — base darkening over the backdrop. Default 0.78 for reading-heavy pages. */
   overlay?: number;
   /**
@@ -34,6 +42,7 @@ export default function CinematicPageShell({
   title,
   lead,
   backdrop,
+  backdropLight,
   overlay = 0.78,
   contentPb = "pb-32 md:pb-40",
   children,
@@ -43,6 +52,26 @@ export default function CinematicPageShell({
     setIsTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
+  /* Light theme shows the native colour-flipped artwork, so the heavy
+     per-page wash (tuned to bury a dark photo under paper) would undo it.
+     In light the wash is clamped to a light veil; dark keeps every page's
+     own value. The floor token still applies in both. */
+  const [isLight, setIsLight] = useState(false);
+  useEffect(() => {
+    const el = document.documentElement;
+    const update = () => setIsLight(el.dataset.theme === "light");
+    update();
+    const mo = new MutationObserver(update);
+    mo.observe(el, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
+  const wash = isLight ? Math.min(overlay, 0.32) : overlay;
+
+  /* In light, a page with a light-native plate shows it as drawn — no
+     invert grade — while every other page keeps the colour-flip. */
+  const lightPlate = isLight && backdropLight ? backdropLight : undefined;
+  const plateSrc = lightPlate ?? backdrop;
+
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
@@ -50,10 +79,10 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${backdrop})`,
+            backgroundImage: `url(${plateSrc})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "var(--plate-filter)",
+            filter: lightPlate ? "none" : "var(--plate-filter)",
             transform: "scale(1.10) translateZ(0)",
             willChange: "transform",
           }}
@@ -64,10 +93,10 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${backdrop})`,
+            backgroundImage: `url(${plateSrc})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "var(--plate-haze-filter)",
+            filter: lightPlate ? "blur(30px)" : "var(--plate-haze-filter)",
             transform: "scale(1.16)",
             WebkitMaskImage:
               "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 85%)",
@@ -87,7 +116,7 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(${(overlay + 0.06) * 100}%, var(--plate-wash-min)) , transparent) 0%, color-mix(in oklab, var(--plate-ink) max(${overlay * 100}%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(${(overlay + 0.04) * 100}%, var(--plate-wash-min)), transparent) 100%)`,
+            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(${(wash + 0.06) * 100}%, var(--plate-wash-min)) , transparent) 0%, color-mix(in oklab, var(--plate-ink) max(${wash * 100}%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(${(wash + 0.04) * 100}%, var(--plate-wash-min)), transparent) 100%)`,
           }}
         />
         {/* Restrained copper rim, off-axis */}

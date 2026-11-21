@@ -6,6 +6,7 @@ import CinematicPageShell, {
 } from "@/components/scene/CinematicPageShell";
 import { StatsStrip } from "@/components/scene/cinematic";
 import backdrop from "@/assets/story-07-future.webp";
+import backdropLight from "@/assets/scene-contact-light.svg";
 import { breadcrumbSchema, ldJsonScript, webPageSchema } from "@/lib/seo";
 import { track } from "@/lib/analytics";
 
@@ -455,6 +456,7 @@ function ContactPage() {
       }
       lead="One inbox. Read personally. Open to industry partnerships, strategic advisory, speaking, deep-tech ventures, and research collaborations, when the work is right."
       backdrop={backdrop}
+      backdropLight={backdropLight}
       overlay={0.35}
     >
       <AccessAuthority />

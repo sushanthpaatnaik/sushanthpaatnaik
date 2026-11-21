@@ -494,10 +494,10 @@
   /* Multiply alone still leaves the blobs reading as visible smudges rather
      than atmosphere — cut to roughly a third on top of that, matching the
      "reduce haze 50-70%" brief without removing the effect outright. */
-  --ambient-opacity: 0.35;
-  --background: oklch(0.965 0.008 85);        /* warm paper */
+  --ambient-opacity: 0.22;
+  --background: oklch(0.985 0.005 85);        /* clean warm white */
   --foreground: oklch(0.195 0.006 260);       /* graphite ink, never #000 */
-  --card: oklch(0.985 0.006 85);
+  --card: oklch(0.995 0.004 85);
   --card-foreground: oklch(0.235 0.006 260);
   --popover: oklch(0.99 0.006 85);
   --popover-foreground: oklch(0.235 0.006 260);
@@ -505,7 +505,7 @@
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.93 0.008 85);
   --secondary-foreground: oklch(0.235 0.006 260);
-  --muted: oklch(0.945 0.008 85);
+  --muted: oklch(0.965 0.006 85);
   --muted-foreground: oklch(0.33 0.011 260);
   --accent: oklch(0.435 0.108 68);            /* copper that holds on paper */
   --accent-foreground: oklch(0.99 0 0);
@@ -534,13 +534,13 @@
 
   --masthead-vignette: none;
 
-  --surface-sunken:      oklch(0.925 0.009 85);
-  --surface-deep:        oklch(0.935 0.008 85);
-  --surface-plate:       oklch(0.945 0.008 85);
-  --surface-plate-soft:  oklch(0.952 0.008 85);
-  --surface-level:       oklch(0.965 0.008 85);
-  --surface-raised:      oklch(0.980 0.006 85);
-  --surface-high:        oklch(0.993 0.004 85);
+  --surface-sunken:      oklch(0.955 0.006 85);
+  --surface-deep:        oklch(0.965 0.006 85);
+  --surface-plate:       oklch(0.975 0.005 85);
+  --surface-plate-soft:  oklch(0.985 0.005 85);
+  --surface-level:       oklch(0.990 0.004 85);
+  --surface-raised:      oklch(0.996 0.003 85);
+  --surface-high:        oklch(0.999 0.002 85);
   --surface-veil:        oklch(0.96 0.008 85 / 0.72);
   --surface-veil-strong: oklch(0.97 0.008 85 / 0.88);
   --surface-glass:       oklch(0.99 0.006 85 / 0.78);
@@ -573,7 +573,7 @@
 
   --glass-plate: oklch(0.97 0.008 85 / 0.82);
 
-  --page-ground: oklch(0.955 0.008 85);
+  --page-ground: oklch(0.982 0.005 85);
   --ink: 250 248 244;                         /* the paper itself */
   --sheen: 44 44 50;                          /* graphite, for hairlines */
   --shadow-key: 46 40 32;                     /* warm, never neutral black */
@@ -585,8 +585,8 @@
      fade to transparent so it still reads as a gradient rather than a bar.
      The logo's blue bloom becomes a soft contact shadow — a glow is light
      emitted, which is meaningless on a white ground and reads as a smudge. */
-  --nav-veil: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.94) 0%, oklch(0.965 0.008 85 / 0.72) 55%, transparent 100%);
-  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.95) 0%, oklch(0.965 0.008 85 / 0.90) 75%, transparent 100%);
+  --nav-veil: linear-gradient(180deg, oklch(0.985 0.005 85 / 0.94) 0%, oklch(0.985 0.005 85 / 0.72) 55%, transparent 100%);
+  --nav-veil-scrolled: linear-gradient(180deg, oklch(0.985 0.005 85 / 0.95) 0%, oklch(0.985 0.005 85 / 0.90) 75%, transparent 100%);
   --nav-drawer: radial-gradient(110% 80% at 50% 30%, oklch(0.978 0.008 85 / 0.97), oklch(0.945 0.009 85 / 0.99));
   --logo-glow: drop-shadow(0 1px 2px oklch(0.30 0.02 70 / 0.22));
   --nav-veil-flat: linear-gradient(180deg, oklch(0.965 0.008 85 / 0.97) 0%, oklch(0.965 0.008 85 / 0.86) 55%, transparent 100%);
@@ -638,10 +638,17 @@
      floor at 68% keeps every page on the same sheet of paper while letting
      the texture stay visible, matching how far the dark theme now opens
      its own plate. */
-  --plate-filter: blur(4px) saturate(0.30) brightness(1.62) contrast(0.55);
-  --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.20) contrast(0.38);
-  --plate-haze-opacity: 0.55;
-  --plate-wash-min: 78%;
+  /* Native light artwork, not a white layer over the dark design: the dark
+     cinematic plate is colour-flipped with invert+hue-rotate (black ground
+     becomes white, light nodes and lines become graphite, copper stays
+     copper), then faded back with brightness up and contrast down so the
+     structure reads as atmosphere behind the content, the same job the
+     dark theme's 68-82% black wash does there. The artwork gives the
+     nanomaterial feel; the words stay effortlessly readable. */
+  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.55) brightness(1.5) contrast(0.55);
+  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(1.45) contrast(0.55) blur(30px);
+  --plate-haze-opacity: 0.50;
+  --plate-wash-min: 30%;
   /* Open the shadows, hold the contrast, give back the saturation those
      grades removed. A dusk construction site or a graded archive plate
      then reads as an open photograph on the sheet rather than as a hole
