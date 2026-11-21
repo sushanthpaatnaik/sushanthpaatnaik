@@ -4,6 +4,7 @@ import CinematicPageShell, {
   EditorialSection,
 } from "@/components/scene/CinematicPageShell";
 import backdrop from "@/assets/story-05-ventures.webp";
+import backdropLight from "@/assets/scene-ventures-light.svg";
 
 import vinroxLogo from "@/assets/clients/vinrox.webp";
 import vprplLogo from "@/assets/clients/vprpl.webp";
@@ -306,6 +307,7 @@ function VenturesPage() {
       title={<>Six companies,<br className="hidden md:inline" /> one materials platform.</>}
       lead="Founder, co-founder and chief innovation officer across six companies, and an advisory role at six more across industry, materials and climate."
       backdrop={backdrop}
+      backdropLight={backdropLight}
       overlay={0.35}
     >
       {/* ---------- Holdings authority strip ---------- */}

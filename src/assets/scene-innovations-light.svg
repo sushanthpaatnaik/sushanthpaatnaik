@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Light-native plate for Innovations: a graphene lattice drawn for the
+       warm paper canvas. Fine graphite hexagons with a few gold cells and
+       junction dots, right of the reading column, fading out organically. -->
+  <g fill="none">
+    <path d="M 773.1 394.3 L 692.5 440.8 L 611.9 394.3 L 611.9 301.2 L 692.5 254.6 L 773.1 301.2 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 773.1 558.8 L 692.5 605.4 L 611.9 558.8 L 611.9 465.7 L 692.5 419.2 L 773.1 465.7 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 773.1 723.4 L 692.5 769.9 L 611.9 723.4 L 611.9 630.3 L 692.5 583.7 L 773.1 630.3 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 915.6 147.5 L 835.0 194.0 L 754.4 147.5 L 754.4 54.4 L 835.0 7.8 L 915.6 54.4 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 915.6 312.0 L 835.0 358.6 L 754.4 312.0 L 754.4 218.9 L 835.0 172.4 L 915.6 218.9 Z" stroke="#a8823f" stroke-width="1" opacity="0.17"/>
+<path d="M 915.6 476.6 L 835.0 523.1 L 754.4 476.6 L 754.4 383.4 L 835.0 336.9 L 915.6 383.4 Z" stroke="#a8823f" stroke-width="1" opacity="0.21"/>
+<path d="M 915.6 641.1 L 835.0 687.6 L 754.4 641.1 L 754.4 548.0 L 835.0 501.4 L 915.6 548.0 Z" stroke="#5c564a" stroke-width="1" opacity="0.10"/>
+<path d="M 1058.1 65.2 L 977.5 111.7 L 896.9 65.2 L 896.9 -27.9 L 977.5 -74.5 L 1058.1 -27.9 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 1058.1 229.7 L 977.5 276.3 L 896.9 229.7 L 896.9 136.6 L 977.5 90.1 L 1058.1 136.6 Z" stroke="#5c564a" stroke-width="1" opacity="0.12"/>
+<path d="M 1058.1 723.4 L 977.5 769.9 L 896.9 723.4 L 896.9 630.3 L 977.5 583.7 L 1058.1 630.3 Z" stroke="#a8823f" stroke-width="1" opacity="0.21"/>
+<path d="M 1200.6 476.6 L 1120.0 523.1 L 1039.4 476.6 L 1039.4 383.4 L 1120.0 336.9 L 1200.6 383.4 Z" stroke="#5c564a" stroke-width="1" opacity="0.24"/>
+<path d="M 1200.6 641.1 L 1120.0 687.6 L 1039.4 641.1 L 1039.4 548.0 L 1120.0 501.4 L 1200.6 548.0 Z" stroke="#5c564a" stroke-width="1" opacity="0.17"/>
+<path d="M 1200.6 805.6 L 1120.0 852.2 L 1039.4 805.6 L 1039.4 712.5 L 1120.0 666.0 L 1200.6 712.5 Z" stroke="#5c564a" stroke-width="1" opacity="0.10"/>
+<path d="M 1200.6 970.2 L 1120.0 1016.7 L 1039.4 970.2 L 1039.4 877.1 L 1120.0 830.5 L 1200.6 877.1 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 1343.1 229.7 L 1262.5 276.3 L 1181.9 229.7 L 1181.9 136.6 L 1262.5 90.1 L 1343.1 136.6 Z" stroke="#5c564a" stroke-width="1" opacity="0.12"/>
+<path d="M 1343.1 394.3 L 1262.5 440.8 L 1181.9 394.3 L 1181.9 301.2 L 1262.5 254.6 L 1343.1 301.2 Z" stroke="#5c564a" stroke-width="1" opacity="0.17"/>
+<path d="M 1343.1 558.8 L 1262.5 605.4 L 1181.9 558.8 L 1181.9 465.7 L 1262.5 419.2 L 1343.1 465.7 Z" stroke="#5c564a" stroke-width="1" opacity="0.17"/>
+<path d="M 1485.6 147.5 L 1405.0 194.0 L 1324.4 147.5 L 1324.4 54.4 L 1405.0 7.8 L 1485.6 54.4 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 1485.6 312.0 L 1405.0 358.6 L 1324.4 312.0 L 1324.4 218.9 L 1405.0 172.4 L 1485.6 218.9 Z" stroke="#5c564a" stroke-width="1" opacity="0.10"/>
+<path d="M 1485.6 476.6 L 1405.0 523.1 L 1324.4 476.6 L 1324.4 383.4 L 1405.0 336.9 L 1485.6 383.4 Z" stroke="#5c564a" stroke-width="1" opacity="0.12"/>
+<path d="M 1628.1 229.7 L 1547.5 276.3 L 1466.9 229.7 L 1466.9 136.6 L 1547.5 90.1 L 1628.1 136.6 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 1628.1 394.3 L 1547.5 440.8 L 1466.9 394.3 L 1466.9 301.2 L 1547.5 254.6 L 1628.1 301.2 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+<path d="M 1628.1 723.4 L 1547.5 769.9 L 1466.9 723.4 L 1466.9 630.3 L 1547.5 583.7 L 1628.1 630.3 Z" stroke="#5c564a" stroke-width="1" opacity="0.06"/>
+    <circle cx="835.0" cy="265.5" r="3.4" fill="#a8823f" opacity="0.55"/>
+<circle cx="835.0" cy="430.0" r="3.4" fill="#a8823f" opacity="0.55"/>
+<circle cx="977.5" cy="676.8" r="3.4" fill="#a8823f" opacity="0.55"/>
+<circle cx="773.1" cy="394.3" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="915.6" cy="147.5" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="915.6" cy="641.1" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="1058.1" cy="723.4" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="1200.6" cy="805.6" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="1343.1" cy="394.3" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="1485.6" cy="312.0" r="2.2" fill="#5c564a" opacity="0.28"/>
+<circle cx="1628.1" cy="394.3" r="2.2" fill="#5c564a" opacity="0.28"/>
+    <path d="M -60 940 Q 700 720 1660 300" stroke="#5c564a" stroke-width="1" stroke-dasharray="1 6" opacity="0.10"/>
+  </g>
+</svg>

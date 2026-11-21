@@ -10,6 +10,7 @@ import { type Stage, stageMeta } from "@/lib/evidenceStandards";
 import { breadcrumbSchema, ldJsonScript, webPageSchema, SITE_URL } from "@/lib/seo";
 import { track } from "@/lib/analytics";
 import backdrop from "@/assets/story-03-material.webp";
+import backdropLight from "@/assets/scene-innovations-light.svg";
 import founderShowroom from "@/assets/founder-showroom.webp";
 
 import imgGraphacrete from "@/assets/innovations/graphacrete.webp";
@@ -488,6 +489,7 @@ function InnovationsPage() {
       title={<>One material platform.<br className="hidden md:inline" /> Twenty-five industrial expressions.</>}
       lead="A curated R&D archive of advanced materials engineering. Graphene calibrated for concrete, solar, batteries, ceramics, polymers, water, hydrogen, mobility, storage and armour, traced from bench formulation through plant pilot to field deployment. The research behind these programmes is led with the Monoatom Labs R&D team."
       backdrop={backdrop}
+      backdropLight={backdropLight}
       overlay={0.35}
     >
       <FounderPortrait
