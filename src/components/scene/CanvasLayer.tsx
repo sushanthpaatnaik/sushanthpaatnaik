@@ -709,7 +709,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // without AVIF bitmap support keep the webp masters untouched.
     const frameExt: Promise<string> = isTouch
       ? Promise.resolve("webp")
-      : fetch("data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADrbWV0YQAAAAAAAAAhaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAAAAAAAOcGl0bQAAAAAAAQAAAB5pbG9jAAAAAEQAAAEAAQAAAAEAAAETAAAAHwAAAChpaW5mAAAAAAABAAAAGmluZmUCAAAAAAEAAGF2MDFDb2xvcgAAAABqaXBycAAAAEtpcGNvAAAAFGlwY28AAAAAEAAAAAAAAAAAGGlzcGUAAAAAAAABAAAAAQAAABAAAAAMcGl4aQAAAAABCAAAAAxhdjFDgQAcAAAAABRjb2xvcm5jbHgAAQABAAEAAAAAEAAAABAAAAAA")
+      : fetch("/sequences/inventor-story-481/frame_0001.avif")
           .then(r => r.blob())
           .then(b => createImageBitmap(b))
           .then(bmp => { bmp.close(); return "avif"; })
