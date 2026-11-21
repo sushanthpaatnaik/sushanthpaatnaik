@@ -856,6 +856,20 @@
   font-size: 11px;
 }
 
+/* Light theme: faint meta text and hairline badges that disappear on the
+   paper ground. Eyebrows, stat labels and the Early Works honour pills get
+   a real presence; dark keeps its quieter values. */
+:root[data-theme="light"] .shell-eyebrow {
+  color: color-mix(in oklab, var(--foreground) 72%, transparent);
+}
+:root[data-theme="light"] .text-muted-foreground\/60 {
+  color: color-mix(in oklab, var(--muted-foreground) 30%, var(--foreground));
+}
+:root[data-theme="light"] .ew-badge {
+  border-color: color-mix(in oklab, var(--foreground) 22%, transparent);
+  color: color-mix(in oklab, var(--foreground) 72%, transparent);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

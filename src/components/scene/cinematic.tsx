@@ -57,7 +57,7 @@ export function StatsStrip({
         </motion.p>
       )}
       <div
-        className="grid grid-cols-2 gap-px overflow-hidden rounded-sm hairline md:grid-cols-4"
+        className="grid grid-cols-2 gap-px overflow-hidden rounded-md hairline md:grid-cols-4 shadow-[0_1px_2px_rgb(0_0_0/0.05),0_12px_32px_-16px_rgb(0_0_0/0.12)]"
         style={{ background: "var(--surface-hairline)" }}
       >
         {items.map((s, i) => (
@@ -71,7 +71,7 @@ export function StatsStrip({
               delay: i * 0.06,
               ease: EASE_CINEMATIC,
             }}
-            className="surface-plate px-5 py-7 md:px-7 md:py-9"
+            className="surface-plate px-5 py-7 md:px-7 md:py-9 transition-colors duration-500 hover:bg-[var(--surface-plate)]"
           >
             <p className="font-display text-xl md:text-2xl tracking-[-0.02em] text-foreground/95">
               {s.v}
