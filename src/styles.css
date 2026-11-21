@@ -638,10 +638,15 @@
      floor at 68% keeps every page on the same sheet of paper while letting
      the texture stay visible, matching how far the dark theme now opens
      its own plate. */
-  --plate-filter: blur(7px) saturate(0.42) brightness(1.92) contrast(0.38);
-  --plate-haze-filter: blur(30px) saturate(0.14) brightness(2.35) contrast(0.30);
-  --plate-haze-opacity: 0.40;
-  --plate-wash-min: 78%;
+  /* Native light artwork, not a white layer over the dark design: the dark
+     cinematic plate is colour-flipped with invert+hue-rotate (black ground
+     becomes white, light nodes and lines become graphite, copper stays
+     copper), and it stays crisp — no haze grade on top. The wash floor is
+     the only veil, just enough to hold ink text over the densest nodes. */
+  --plate-filter: invert(1) hue-rotate(180deg) saturate(0.75) contrast(1.02);
+  --plate-haze-filter: invert(1) hue-rotate(180deg) saturate(0.5) blur(30px);
+  --plate-haze-opacity: 0.50;
+  --plate-wash-min: 30%;
   /* Open the shadows, hold the contrast, give back the saturation those
      grades removed. A dusk construction site or a graded archive plate
      then reads as an open photograph on the sheet rather than as a hole

@@ -43,6 +43,21 @@ export default function CinematicPageShell({
     setIsTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
+  /* Light theme shows the native colour-flipped artwork, so the heavy
+     per-page wash (tuned to bury a dark photo under paper) would undo it.
+     In light the wash is clamped to a light veil; dark keeps every page's
+     own value. The floor token still applies in both. */
+  const [isLight, setIsLight] = useState(false);
+  useEffect(() => {
+    const el = document.documentElement;
+    const update = () => setIsLight(el.dataset.theme === "light");
+    update();
+    const mo = new MutationObserver(update);
+    mo.observe(el, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
+  const wash = isLight ? Math.min(overlay, 0.32) : overlay;
+
   return (
     <div className="relative min-h-screen bg-background text-foreground noise overflow-x-clip">
       {/* Fixed cinematic backdrop — single graded plate, heavily atmospheric */}
@@ -87,7 +102,7 @@ export default function CinematicPageShell({
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(${(overlay + 0.06) * 100}%, var(--plate-wash-min)) , transparent) 0%, color-mix(in oklab, var(--plate-ink) max(${overlay * 100}%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(${(overlay + 0.04) * 100}%, var(--plate-wash-min)), transparent) 100%)`,
+            background: `linear-gradient(180deg, color-mix(in oklab, var(--plate-ink-top) max(${(wash + 0.06) * 100}%, var(--plate-wash-min)) , transparent) 0%, color-mix(in oklab, var(--plate-ink) max(${wash * 100}%, var(--plate-wash-min)), transparent) 45%, color-mix(in oklab, var(--plate-ink) max(${(wash + 0.04) * 100}%, var(--plate-wash-min)), transparent) 100%)`,
           }}
         />
         {/* Restrained copper rim, off-axis */}
