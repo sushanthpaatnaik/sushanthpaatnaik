@@ -163,7 +163,10 @@ function Index() {
     // < 1024 catches Z Fold 6 unfolded (≈768 px) and other large-screen phones
     // that slip through the old < 768 threshold.
     const mobileViewport = window.innerWidth < 1024;
-    setIsLowPower(Boolean(reduce || lowMem || slowNet || mobileViewport || coarsePointer));
+    // The HD scroll film is the homepage visual. Concurrent full-screen
+    // WebGL, blur and blend decorations compete with its decode/compositor
+    // budget even on desktop; keep those optional embellishments off here.
+    setIsLowPower(true);
   }, []);
 
   useEffect(() => {

@@ -267,97 +267,22 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     let destroyed = false;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
-    // ── Memory budget ────────────────────────────────────────────────────────
-    // A decoded ImageBitmap costs width×height×4 bytes, so the masters at
-    // 1920×1080 are ~8.3 MB each and the 854×480 mobile variants ~1.6 MB.
-    //
-    // Touch: fetch the /m/ variants and retain a sliding window, same
-    // mechanism as desktop, just a smaller radius. iOS Safari's per-tab
-    // ceiling is ~300 MB and exceeding it kills the tab outright; a ±55
-    // window holds 111 frames ≈ 182 MB of bitmaps, comfortably inside it.
-    //
-    // Touch used to load every 2nd frame and retain the active chapter ±1
-    // instead. Retaining a whole chapter-triple at full density would be
-    // ~260 frames ≈ 430 MB — over the ceiling — so density was what got
-    // traded away, and the phone played the film at half the frame rate:
-    // measured 238 distinct frames across the page, one frame change per
-    // 4.2vh against desktop's 2.1. That stepping is what reads as "not
-    // smooth" on a phone, most of all through the slow holds where the
-    // image is the only thing moving. Capping *residency* rather than
-    // density buys the frames back at a third of the memory.
-    //
-    // Desktop: retain a sliding window of frames around the current index.
-    // Retaining the whole sequence (the previous behaviour, which was
-    // survivable at 720p) costs 472 × 8.3 MB ≈ 3.9 GB of bitmaps at 1080p —
-    // measured at 5.2 GB process RSS against a 0.7 GB baseline, enough to
-    // thrash or kill the tab on an 8 GB machine. A ±70 window holds ~140
-    // frames ≈ 1.2 GB, which is lower than the pre-1080p build actually
-    // used. Evicted frames re-fetch from the HTTP cache (30-day
-    // Cache-Control on /sequences/) so scrolling back costs a decode, not a
-    // download.
-    // Touch gets one of two sets, chosen by what the viewport actually needs.
-    //
-    // /m/ is 854x480 — a landscape frame. Cover-fitting that into a portrait
-    // phone canvas scales by height: at 390x844 the canvas is 585x1266, so the
-    // 480-tall frame is blown up 2.64x and only 26% of the file's pixels ever
-    // reach the screen. The other 74% is downloaded and cropped away.
-    //
-    // /p/ is 500x1080, a pure centre crop of the 1920x1080 master — no
-    // resampling, so these are the master's own pixels. 0.463 is the aspect
-    // every current phone lands on (390x844, 430x932 and 375x812 are all
-    // 0.461-0.462), which puts the draw scale at 1.17x and the on-screen share
-    // at 100%. The centre is safe: measured across the sequence, the detail
-    // centroid stays between 0.394 and 0.531 of the frame width, and this crop
-    // spans 0.370-0.630.
-    //
-    // Measured: 20.2 MB against /m/'s 21.1 MB, and PSNR 42.1 dB against the
-    // master where /m/ manages 37.8 dB against its own ideal downscale. Sharper
-    // and slightly smaller, which is why this is a resolution fix rather than a
-    // quality trade.
-    //
-    // Landscape touch — a tablet, or a rotated phone — keeps /m/, where the
-    // reasoning runs the other way. The choice is made once at mount; rotating
-    // mid-visit keeps the set it started with rather than re-fetching the film.
+    // Keep full-HD masters on large desktops. Laptop-sized viewports use an
+    // authored 1280x720 HD set, not a full-HD decode resized on the main path.
+    // Portrait touch retains the existing 500x1080 centre-cropped masters.
     const isPortrait = window.innerHeight >= window.innerWidth;
-    const framesPath = (path: string) =>
-      isTouch ? `${path}/${isPortrait ? "p" : "m"}` : path;
-    /** Native size of whichever set this device is fetching. */
-    const SOURCE_W = isTouch ? (isPortrait ? 500 : 854) : 1920;
-    const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : 1080;
+    const compactDesktop = !isTouch && window.innerWidth <= 1600;
+    const framesPath = (path: string) => isTouch
+      ? `${path}/${isPortrait ? "p" : "m"}`
+      : compactDesktop ? `${path}/hd` : path;
+    const SOURCE_W = isTouch ? (isPortrait ? 500 : 854) : compactDesktop ? 1280 : 1920;
+    const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : compactDesktop ? 720 : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
     const frameStep = 1;
-    // How many decoded frames are kept either side of the playhead. This is
-    // both the eviction window and the prefetch runway — the retention loop
-    // below enqueues out to the same radius — so it trades memory against how
-    // far ahead the film is already resident.
-    //
-    // Desktop was 70, a 141-frame window. Measured as real process RSS above an
-    // about:blank baseline, that cost ~1.9 GB parked mid-film and ~2.2 GB after
-    // a full traversal, which is more than the 141 x 1920x1080x4 = 1.17 GB the
-    // arithmetic predicts and more than is comfortable on an 8 GB machine with
-    // other tabs open. 40 gives an 81-frame window, still ~960px of runway at
-    // ~24px of scroll per frame, and evicted frames come back from the 30-day
-    // HTTP cache on /sequences/ as a decode rather than a download.
-    //
-    // The obvious worry is scroll-back, since this is the runway behind the
-    // playhead as well as ahead of it. Measured, it is not one. A downward
-    // sweep followed by an upward sweep at ~58 frames/s, 71 samples, same
-    // harness, 70 against 40:
-    //
-    //          cache off                    cache on
-    //   70     3/71 stale, drift p95 14     3/71 stale, p95 13
-    //   40     3/71 stale, drift p95 14     4/71 stale, p95 15
-    //
-    // The two are inside each other's run-to-run variance, and the worst
-    // offenders in both sit in the near-static tail around frames 355-380,
-    // where consecutive frames are not distinguishable anyway. Memory is the
-    // only thing that actually moved: 1863 -> 1361 MB parked mid-film, a delta
-    // of 8.37 MB per frame dropped against 1920x1080x4 = 8.29 MB.
-    //
-    // Touch stays at 55: a portrait frame is 500x1080 against the desktop
-    // 1920x1080, so the same window costs a quarter as much, and it measured
-    // at 402 MB — well inside what mobile Safari tolerates.
-    const RETAIN_RADIUS = isTouch ? 55 : 40;
+    // 33 desktop frames instead of 81: 116MiB at 720p / 261MiB at 1080p.
+    // HTTP caching makes evicted frames cheap to revisit without retaining
+    // hundreds of megabytes of decoded surfaces in a background tab.
+    const RETAIN_RADIUS = isTouch ? 55 : 16;
 
     // ── Critical frame threshold ──────────────────────────────────────────────
     // Scroll is locked until this many opening frames are decoded and drawn.
@@ -505,9 +430,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         SOURCE_W / Math.max(1, window.innerWidth),
         SOURCE_H / Math.max(1, window.innerHeight),
       );
-      // Floored at 1: on a monitor wider than the film, dropping below 1 would
-      // trade real on-screen pixels for memory, which is under-resolving.
-      const dpr = Math.max(1, isTouch
+      // Do not allocate a backing store larger than this frame set.
+      // Drawing HD into an oversized canvas cannot add image detail.
+      const dpr = Math.max(0.5, isTouch
         ? Math.min(rawDpr, 1.5, fit)
         : Math.min(rawDpr, 2, fit));
       const nW  = Math.round(window.innerWidth  * dpr);
@@ -604,7 +529,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // the dissolved result, exactly as it would read a real intermediate.
       if (blendBmp && blendAlpha > 0) cover(blendBmp, cW, cH, blendAlpha);
       ctx.globalAlpha = 1;
-      if (gradeIdx >= 0 && gradeAlpha > 0) {
+      if (isTouch && gradeIdx >= 0 && gradeAlpha > 0) {
         // `color` takes hue+chroma from the fill and keeps the frame's own
         // luminance — the same operator as CSS mix-blend-mode: color, so the
         // result is identical to the overlay it replaces.
@@ -652,7 +577,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // than the bandwidth actually available to this tab. An EWMA over frames
     // this page has really fetched needs no API and adapts to a link that
     // degrades mid-visit.
-    const MAX_INFLIGHT = isTouch ? 6 : 12;
+    const MAX_INFLIGHT = isTouch ? 6 : 3;
     // Ramp UP from a small cap rather than down from a large one. Starting
     // optimistic made the adaptation useless: the very first burst is the one
     // that decides how long the preloader sits there, and it goes out before
@@ -662,7 +587,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     //
     // Starting small costs a fast link almost nothing: four frames at ~40ms
     // each is one extra round-trip before the first sample raises the cap.
-    const START_INFLIGHT = isTouch ? 3 : 4;
+    const START_INFLIGHT = isTouch ? 3 : 3;
     let kbps = 0;                        // 0 = unmeasured
     const noteThroughput = (bytes: number, ms: number) => {
       if (ms <= 0 || bytes <= 0) return;
@@ -702,18 +627,9 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       }
     };
 
-    // Masters are also published as .avif (~39% smaller at PSNR ~41 dB against
-    // the webp — visually identical). Touch sets (/p/, /m/) stay webp: that path
-    // was tuned byte-for-byte and AVIF buys little at 500/854 px. Probe the
-    // createImageBitmap decode path itself and cache the verdict — browsers
-    // without AVIF bitmap support keep the webp masters untouched.
-    const frameExt: Promise<string> = isTouch
-      ? Promise.resolve("webp")
-      : fetch("/sequences/inventor-story-481/frame_0001.avif")
-          .then(r => r.blob())
-          .then(b => createImageBitmap(b))
-          .then(bmp => { bmp.close(); return "avif"; })
-          .catch(() => "webp");
+    // WebP is the scroll decoder path. AVIF saves transfer bytes but its
+    // decode cost regressed this interactive workload in measured tests.
+    const frameExt: Promise<string> = Promise.resolve("webp");
 
     const loadFrame = (fi: number): Promise<void> => {
       if (fi < 0 || fi >= FRAME_COUNT) return Promise.resolve();
@@ -730,7 +646,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       // main thread at once instead of arriving spread out. Browser-default
       // priority keeps the decode work naturally staggered. Left explicit
       // so it isn't "optimised" again.
-      const controller = isTouch ? new AbortController() : undefined;
+      const controller = new AbortController();
       if (controller) abortControllersRef.current.set(fi, controller);
       const opts: RequestInit = {
         ...(fi === 0 || isCritical ? { priority: "high" as const } : {}),
@@ -856,23 +772,13 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       const sp = Math.max(0, Math.min(rawSp, 1));
       const fi = getFrameIndex(sp);
       playheadRef.current = fi;
+      canvas.dataset.target = String(fi);
       const chapter = getChapterFromProgress(sp);
 
-      // Sub-frame position, quantised. `fi` stays the rounded index — every
-      // loader, evictor and fallback path below is keyed on it and must not
-      // change — while `blendTo`/`blendAlpha` describe the dissolve painted on
-      // top of it. Rounding means the partner is fi-1 below the midpoint and
-      // fi+1 above it, and the alpha runs 0 → 0.5 in both directions.
-      let blendTo = -1;
-      let blendAlpha = 0;
-      if (!isTouch) {
-        const frac = getFramePosition(sp) - fi;   // -0.5 .. +0.5
-        const partner = frac >= 0 ? fi + 1 : fi - 1;
-        if (partner >= 0 && partner < FRAME_COUNT) {
-          const a = Math.round(Math.abs(frac) * BLEND_STEPS) / BLEND_STEPS;
-          if (a > 0) { blendTo = partner; blendAlpha = a; }
-        }
-      }
+      // One authored frame per redraw. Full-size fractional dissolves made
+      // each scroll update upload and blend a second surface.
+      const blendTo = -1;
+      const blendAlpha = 0;
 
       // Colour grade — a pure function of scroll position, written every frame.
       //
@@ -1044,6 +950,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       lastGradeAlphaRef.current = gradeAlpha;
       lastBlendToRef.current = partnerBmp ? blendTo : -1;
       lastBlendAlphaRef.current = partnerBmp ? blendAlpha : 0;
+      canvas.dataset.frame = String(bitmapsRef.current.indexOf(bmp));
       drawBitmap(bmp, gradeIdx, gradeAlpha, partnerBmp, blendAlpha);
     };
 
@@ -1110,7 +1017,10 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
             height: "100%",
             willChange: "transform",
             transform: "translateZ(0)",
-            filter: "brightness(0.80) contrast(1.04) saturate(0.84)",
+            // Preserve the established phone grade; avoid the desktop
+            // full-viewport filter pass during every bitmap upload.
+            filter: typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+              ? "brightness(0.80) contrast(1.04) saturate(0.84)" : undefined,
           }}
         />
       )}
