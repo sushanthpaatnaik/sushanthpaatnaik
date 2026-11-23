@@ -12,6 +12,7 @@ import { WebGLBoundary, webglSupported } from "@/components/scene/WebGLGate";
 // CanvasLayer is imported directly (not lazy) so sequence preloading starts
 // on the very first render — the Loader overlay holds the screen until ready.
 import CanvasLayer from "@/components/scene/CanvasLayer";
+import ScrollPerf from "@/components/scene/ScrollPerf";
 const SceneDecorations = lazy(() => import("@/components/scene/SceneDecorations"));
 const AmbientAtmosphere = lazy(() => import("@/components/scene/AmbientAtmosphere"));
 const ChapterAtmosphere = lazy(() => import("@/components/scene/ChapterAtmosphere"));
@@ -336,6 +337,7 @@ function Index() {
        * Nav / HUD / MobileCTABar use their own high z-indexes (50+).
        */}
 
+      <ScrollPerf />
       {/* CanvasLayer starts preloading sequences on first paint. */}
       <CanvasLayer
         onReady={handleVideoReady}
