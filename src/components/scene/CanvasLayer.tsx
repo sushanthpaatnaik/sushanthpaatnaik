@@ -577,7 +577,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // than the bandwidth actually available to this tab. An EWMA over frames
     // this page has really fetched needs no API and adapts to a link that
     // degrades mid-visit.
-    const MAX_INFLIGHT = isTouch ? 6 : 3;
+    const MAX_INFLIGHT = 6;
     // Ramp UP from a small cap rather than down from a large one. Starting
     // optimistic made the adaptation useless: the very first burst is the one
     // that decides how long the preloader sits there, and it goes out before
@@ -587,7 +587,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     //
     // Starting small costs a fast link almost nothing: four frames at ~40ms
     // each is one extra round-trip before the first sample raises the cap.
-    const START_INFLIGHT = isTouch ? 3 : 3;
+    const START_INFLIGHT = 3;
     let kbps = 0;                        // 0 = unmeasured
     const noteThroughput = (bytes: number, ms: number) => {
       if (ms <= 0 || bytes <= 0) return;
@@ -600,7 +600,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
       kbps === 0 ? START_INFLIGHT
       : kbps < 350 ? 2
       : kbps < 900 ? 4
-      : MAX_INFLIGHT;
+      : (!packMode && !isTouch ? 3 : MAX_INFLIGHT);
 
     const pending = new Set<number>();
     let inFlight = 0;
@@ -631,6 +631,39 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     // decode cost regressed this interactive workload in measured tests.
     const frameExt: Promise<string> = Promise.resolve("webp");
 
+    // Compressed-byte cache, independent of the bounded decoded-bitmap window.
+    // Each pack is 16 original, byte-identical WebPs with a 64-byte size table.
+    let packMode = !isTouch && !new URLSearchParams(location.search).has('unpacked');
+    type FramePack = {bytes:ArrayBuffer,sizes:Uint32Array};
+    const packs = new Map<number,Promise<FramePack>>();
+    const packControllers = new Map<number,AbortController>();
+    const packProfile = compactDesktop ? 'hd' : 'full';
+    const packedBlob = async (fi:number):Promise<Blob> => {
+      const n=Math.floor(fi/16);
+      let entry=packs.get(n);
+      if(!entry){
+        const controller=new AbortController();packControllers.set(n,controller);
+        const timeout=setTimeout(()=>{packMode=false;packControllers.forEach(c=>c.abort());},700);
+        entry=fetch(`/sequences/${SEQUENCE_PATH}/packs-v1/${packProfile}/${String(n).padStart(3,'0')}.bin`,{signal:controller.signal})
+          .then(async r=>{
+            if(!r.ok)throw new Error('Frame pack unavailable');
+            const bytes=await r.arrayBuffer();
+            if(bytes.byteLength<64)throw new Error('Invalid frame pack');
+            const sizes=new Uint32Array(16),view=new DataView(bytes);
+            let total=64;for(let i=0;i<16;i++){sizes[i]=view.getUint32(i*4,true);total+=sizes[i];}
+            if(total!==bytes.byteLength)throw new Error('Incomplete frame pack');
+            return {bytes,sizes};
+          }).catch(error=>{packMode=false;packControllers.forEach(c=>c.abort());packs.delete(n);throw error;})
+          .finally(()=>{clearTimeout(timeout);packControllers.delete(n);});
+        packs.set(n,entry);
+      }
+      const {bytes,sizes}=await entry;
+      // The whole compressed desktop profile is 39-58 MB. Retain its original bytes
+      // for reverse travel, while decoded bitmaps still use the small window.
+      let offset=64;for(let i=0;i<fi%16;i++)offset+=sizes[i];
+      const size=sizes[fi%16];if(!size)throw new Error('Missing packed frame');
+      return new Blob([bytes.slice(offset,offset+size)],{type:'image/webp'});
+    };
     const loadFrame = (fi: number): Promise<void> => {
       if (fi < 0 || fi >= FRAME_COUNT) return Promise.resolve();
       if (loadingRef.current[fi] || bitmapsRef.current[fi]) return Promise.resolve();
@@ -653,8 +686,11 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
         ...(controller ? { signal: controller.signal } : {}),
       };
       const startedAt = performance.now();
-      return frameExt.then(ext => fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.${ext}`, opts)
-        .then(r  => r.blob())
+      return frameExt.then(ext => {
+        const individual = () => fetch(`/sequences/${framesPath(SEQUENCE_PATH)}/frame_${pad}.${ext}`, opts)
+          .then(r => { if (!r.ok) throw new Error('Frame unavailable'); return r.blob(); });
+        return packMode ? packedBlob(fi).catch(individual) : individual();
+      })
         .then(b  => {
           // Timed at the blob, not after decode: this is meant to measure the
           // link, and folding decode time in would shrink the queue on a slow
@@ -739,7 +775,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
             onProgress?.(Math.round((criticalLoaded / criticalCount) * 100));
             if (criticalLoaded >= criticalCount) notifyReady();
           }
-        }));
+        });
     };
     // The chapter-region loader that used to live here is gone. It batched
     // touch fetches in serial groups of six, which was the right instinct,
@@ -971,6 +1007,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
 
     return () => {
       destroyed = true;
+      packControllers.forEach(c=>c.abort());packControllers.clear();packs.clear();
       genRef.current++;            // invalidate all in-flight fetches from this run
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fallback);
