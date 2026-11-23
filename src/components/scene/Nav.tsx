@@ -51,8 +51,8 @@ export default function Nav() {
         }`}
         style={{
           background: scrolled ? "var(--nav-veil-scrolled)" : "var(--nav-veil)",
-          WebkitBackdropFilter: "blur(12px)",
-          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: forcedDark ? "none" : "blur(12px)",
+          backdropFilter: forcedDark ? "none" : "blur(12px)",
           maskImage: "linear-gradient(180deg, #000 0%, #000 70%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 70%, transparent 100%)",
           transition: "height 0.5s cubic-bezier(0.19,1,0.22,1), background 0.5s cubic-bezier(0.19,1,0.22,1)",

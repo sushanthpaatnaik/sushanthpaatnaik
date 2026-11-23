@@ -320,7 +320,7 @@ function Index() {
   }, []);
 
   return (
-    <div className="relative bg-transparent text-foreground noise">
+    <div className="relative bg-transparent text-foreground">
       {/* Loader holds the screen until critical frames are decoded */}
       <Loader progress={frameProgress} onDone={handleLoaderDone} />
 
