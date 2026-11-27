@@ -51,21 +51,8 @@ export default function MobileCTABar() {
       }`}
     >
       {/* Gradient fade above the bar so it doesn't hard-cut into content */}
-      <div
-        aria-hidden
-        className="pointer-events-none h-10 w-full"
-        style={{
-          background: "linear-gradient(0deg, oklch(0.04 0.005 260 / 0.85) 0%, transparent 100%)",
-        }}
-      />
-      <div
-        style={{
-          background: "oklch(0.06 0.006 260 / 0.92)",
-          backdropFilter: "blur(12px) saturate(120%)",
-          WebkitBackdropFilter: "blur(12px) saturate(120%)",
-          borderTop: "1px solid oklch(1 0 0 / 0.08)",
-        }}
-      >
+      <div aria-hidden className="mobile-cta-fade pointer-events-none h-10 w-full" />
+      <div className="mobile-cta-bar">
         {/* 44 px: a restrained action rail, not a footer bar. Android's
             gesture / 3-button area is added on top via the safe-area inset so
             the label never sits under system navigation. */}

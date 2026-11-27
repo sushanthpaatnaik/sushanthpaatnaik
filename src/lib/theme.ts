@@ -22,8 +22,9 @@ export type EffectiveTheme = "light" | "dark";
 
 export const THEME_KEY = "sp-theme";
 
-/** Routes that ignore the preference entirely. */
-export const isForcedDarkRoute = (pathname: string) => pathname === "/";
+/** No routes ignore the preference any more. Kept as a function so callers
+ *  (Nav, ThemeSelector) keep a single place to ask. */
+export const isForcedDarkRoute = (_pathname: string) => false;
 
 /**
  * The fixed window, kept only as the fallback for a timezone the solar table
@@ -129,8 +130,7 @@ var d=document.documentElement,p=null;
 try{p=localStorage.getItem(${JSON.stringify(THEME_KEY)})}catch(e){}
 if(p!=="light"&&p!=="dark"&&p!=="auto")p="auto";
 var t;
-if(location.pathname==="/"){t="dark"}
-else if(p!=="auto"){t=p}
+if(p!=="auto"){t=p}
 else{
 ${SOLAR_INLINE}
 var up=__sunUp();

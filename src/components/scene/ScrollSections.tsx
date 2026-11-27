@@ -267,7 +267,7 @@ function OriginHero() {
       {/* Origin: a dark workbench under one lamp — moderate centre shield */}
       <ContentShield align="center" strength={0.56} />
 
-      <div className="relative z-10 max-w-4xl text-center">
+      <div className="film-copy relative z-10 max-w-4xl text-center">
         {/* Eyebrow */}
         <div className="mb-10 md:mb-12 [@media(max-height:560px)]:mb-5 flex items-center justify-center gap-3">
           <span className="h-px w-8 bg-foreground/20" />
@@ -403,7 +403,7 @@ function EarlyWorksContent() {
 
       {/* 12-col grid, content in cols 7-12 */}
       <div className="relative z-10 mx-auto grid w-full max-w-6xl md:grid-cols-12">
-        <div className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
+        <div className="film-copy md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
           <Eyebrow n="02" className="mb-4 md:mb-6 stage-ls:mb-3">
             Early Works
           </Eyebrow>
@@ -668,7 +668,7 @@ function PresidentialContent({
     <div className="relative w-full h-full flex items-center justify-center px-5 sm:px-6 lg:px-24 xl:px-28 md:pt-[68px] max-md:stage-ls:pt-14">
       <HallVeil variant="laptop" />
       <div className="relative z-10 mx-auto w-full max-w-6xl">
-        <div className="relative">
+        <div className="film-copy relative">
           <HeadScrim />
           <Eyebrow n="03" className="mb-4 md:mb-5 [@media(max-height:560px)]:mb-2.5">
             Presidential Recognition
@@ -784,7 +784,7 @@ function PresidentialMobile({
     <div className="relative w-full h-full overflow-hidden">
       <HallVeil variant="phone" />
 
-      <div className="absolute inset-x-6 top-[13.5%] z-10">
+      <div className="film-copy absolute inset-x-6 top-[13.5%] z-10">
         <Eyebrow n="03" className="mb-3.5">
           Presidential Recognition
         </Eyebrow>
@@ -802,7 +802,7 @@ function PresidentialMobile({
           which at 0.42em tracking it did: "Three Presidents of India." sat
           behind the picture. The eyebrow now fits that width, and under 600px
           of height the box starts lower. */}
-      <div className="absolute inset-x-6 top-[27.5%] stage-ps:top-[30%] z-10">
+      <div className="film-copy film-copy-bleed absolute inset-x-6 top-[27.5%] stage-ps:top-[30%] z-10">
         {/* Reserves the height of a plate and its caption, so the copy below
             sits in the same place whichever photograph is showing. */}
         <div className="invisible" aria-hidden>
@@ -879,7 +879,7 @@ function GlobalContent() {
       <ContentShield align="center" strength={0.8} className="md:hidden" />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl md:grid-cols-12">
-        <div className="md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
+        <div className="film-copy md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
           <Eyebrow n="04" className="mb-4 md:mb-6 stage-ls:mb-3 [@media(orientation:landscape)_and_(max-height:340px)]:hidden">
             Global Recognition
           </Eyebrow>
@@ -950,7 +950,7 @@ function MaterialContent() {
             "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.50) 54%, rgba(0,0,0,0.80) 70%, rgba(0,0,0,0.90) 100%)",
         }}
       />
-      <div className="relative z-10 mr-auto text-left max-w-2xl">
+      <div className="film-copy relative z-10 mr-auto text-left max-w-2xl">
         {/* Decorative line */}
         <div className="h-px w-20 md:w-24 mb-6 md:mb-7 stage-ls:mb-3 bg-gradient-to-r from-primary via-accent to-transparent" />
         <Eyebrow n="05" className="mb-4 md:mb-6 stage-ls:mb-3">
@@ -1019,7 +1019,7 @@ function IndustrialContent() {
           strongest where there is no text and absent where the lines begin.
           A left shield, phones only, on top of the right one. */}
       <ContentShield align="left" strength={0.7} className="md:hidden" />
-      <div className="relative z-10 ml-auto md:text-right max-w-2xl">
+      <div className="film-copy relative z-10 ml-auto md:text-right max-w-2xl">
         {/* Decorative line */}
         {/* At the copy's own edge: flush right where the copy is, which is
             from md up, and flush left below that, the way chapter 5 sets its
@@ -1204,7 +1204,7 @@ function FutureContent() {
       {/* Text zone — centred on the frame below the header, both axes. The
           large gaps are sized in vh as well as rem so the block still clears
           a 720px-tall laptop: it is eight rows deep. */}
-      <div className="relative z-10 w-full max-w-3xl px-5 sm:px-6">
+      <div className="film-copy relative z-10 w-full max-w-3xl px-5 sm:px-6">
         {/* Eyebrow */}
         <p className="mb-[clamp(0.6rem,3vh,1.75rem)] text-[10px] uppercase tracking-[0.42em] md:tracking-[0.5em] text-foreground/95">
           <span>07</span>
@@ -1293,14 +1293,7 @@ function FutureMobile({ lp }: { lp: MotionValue<number> }) {
       {/* The portrait crop puts the lit sky directly behind the text band,
           so the scrim is weighted to the head of the frame and lets the
           skyline through below it. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.70) 34%, rgba(0,0,0,0.46) 54%, rgba(0,0,0,0.14) 70%, transparent 80%)",
-        }}
-      />
+      <div aria-hidden className="future-mobile-scrim pointer-events-none absolute inset-0" />
 
       {/* Persistent chapter label */}
       {/* The number is a weight heavier than the label. At 10px the strokes
