@@ -15,6 +15,8 @@
  * way through.
  */
 
+import { isSunUp, msUntilSunBoundary, SOLAR_INLINE } from "./solar";
+
 export type ThemePreference = "auto" | "light" | "dark";
 export type EffectiveTheme = "light" | "dark";
 
@@ -23,17 +25,17 @@ export const THEME_KEY = "sp-theme";
 /** Routes that ignore the preference entirely. */
 export const isForcedDarkRoute = (pathname: string) => pathname === "/";
 
-/** Local clock, used only as the documented fallback — see resolveAuto. */
+/**
+ * The fixed window, kept only as the fallback for a timezone the solar table
+ * does not carry — see resolveAuto and src/lib/solar.ts.
+ */
 const DAY_STARTS = 7;
 const DAY_ENDS = 19;
 
 /**
- * Does the operating system actually express a preference?
- *
- * Not the same question as "is it dark". A machine that has been told
- * nothing matches neither query, and that is the only case where guessing
- * from the room or the clock is appropriate — everywhere else the visitor
- * has already answered.
+ * Does the operating system express a preference? Retained for diagnostics;
+ * auto no longer consults it — daylight decides, by the site's stated rule
+ * that the sun wins over the device setting.
  */
 export function systemPreference(): EffectiveTheme | null {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return null;
@@ -49,34 +51,26 @@ export function systemPreference(): EffectiveTheme | null {
 /**
  * Auto, in full, in priority order:
  *
- *   1. The system preference. `prefers-color-scheme` is the primary signal
- *      because it is the one the visitor set deliberately. Someone who puts
- *      their OS in dark mode at noon has answered the question, and neither
- *      a bright room nor a clock should overrule them. This is the ordering
- *      chosen over "ambient light first" precisely because the alternative
- *      lets an invisible sensor fight a visible choice.
+ *   1. Daylight at the visitor's location: light while the sun is up, dark
+ *      after sunset. src/lib/solar.ts computes real sunrise and sunset from
+ *      the device's clock and timezone — latitude from an IANA zone table,
+ *      longitude from the standard offset — with no permission prompt and no
+ *      network. The sun wins over the device's own colour-scheme setting:
+ *      that is the stated rule for this site, chosen so an OS left in dark
+ *      mode does not keep the page dark through the afternoon.
  *
- *   2. Ambient light, when the system expresses no preference at all. That
- *      is the case the sensor is actually useful for, and it is also the
- *      only case where nothing is being overridden. See ambient-light.ts
- *      for why this is nearly always unavailable in practice.
+ *   2. The fixed window above, only when the zone is not in the solar table
+ *      and real sunrise cannot be worked out. It exists so an unknown zone
+ *      degrades to something reasonable rather than to a guess.
  *
- *   3. The local clock: light through the day, dark from 19:00 to 07:00
- *      local. An explicit stated window, not a guess at sunrise — real
- *      sunrise needs a latitude, the only way to get one is a geolocation
- *      prompt, and that is not a fair price for a colour. Timezone alone
- *      gives longitude, which moves sunrise by minutes while the seasons
- *      move it by hours, so a rough solar model would be less honest than
- *      a stated window rather than more accurate.
- *
- *   4. Dark, as the site's own default.
- *
- * Nothing here reads the network, requests geolocation, or touches a camera.
+ * Ambient light stays out of the chain on purpose: the sensor is available
+ * in practice nowhere by default, and a signal that almost never fires is
+ * not worth overruling the sun for. Nothing here reads the network or
+ * requests geolocation.
  */
-export function resolveAuto(now: Date = new Date(), ambient?: EffectiveTheme | null): EffectiveTheme {
-  const sys = systemPreference();
-  if (sys) return sys;
-  if (ambient) return ambient;
+export function resolveAuto(now: Date = new Date()): EffectiveTheme {
+  const up = isSunUp(now);
+  if (up !== null) return up ? "light" : "dark";
   const h = now.getHours();
   return h >= DAY_STARTS && h < DAY_ENDS ? "light" : "dark";
 }
@@ -99,13 +93,9 @@ export function writePreference(pref: ThemePreference) {
   }
 }
 
-export function effectiveTheme(
-  pref: ThemePreference,
-  pathname: string,
-  ambient?: EffectiveTheme | null,
-): EffectiveTheme {
+export function effectiveTheme(pref: ThemePreference, pathname: string): EffectiveTheme {
   if (isForcedDarkRoute(pathname)) return "dark";
-  return pref === "auto" ? resolveAuto(new Date(), ambient) : pref;
+  return pref === "auto" ? resolveAuto(new Date()) : pref;
 }
 
 /** Matches --page-ground so the browser's own chrome agrees with the page. */
@@ -141,9 +131,11 @@ if(p!=="light"&&p!=="dark"&&p!=="auto")p="auto";
 var t;
 if(location.pathname==="/"){t="dark"}
 else if(p!=="auto"){t=p}
-else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){t="dark"}
-else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches){t="light"}
-else{var h=new Date().getHours();t=(h>=${DAY_STARTS}&&h<${DAY_ENDS})?"light":"dark"}
+else{
+${SOLAR_INLINE}
+var up=__sunUp();
+if(up===null){var h=new Date().getHours();up=h>=${DAY_STARTS}&&h<${DAY_ENDS}}
+t=up?"light":"dark"}
 d.setAttribute("data-theme",t);
 d.style.colorScheme=t;
 var m=document.querySelector('meta[name="theme-color"]');
