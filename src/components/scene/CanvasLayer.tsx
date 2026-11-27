@@ -278,7 +278,17 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
     const SOURCE_W = isTouch ? (isPortrait ? 500 : 854) : compactDesktop ? 1280 : 1920;
     const SOURCE_H = isTouch ? (isPortrait ? 1080 : 480) : compactDesktop ? 720 : 1080;
     const makeBitmap = (blob: Blob): Promise<ImageBitmap> => createImageBitmap(blob);
-    const frameStep = 1;
+    // Touch fetches every 2nd frame (canonical even parity), the density the
+    // film shipped at on 2026-11-17 through 23, when it was measured on real
+    // hardware and accepted. The draw loop's FALLBACK search substitutes the
+    // resident neighbour — at most one frame away, the same shot a 48th of a
+    // second apart — and the sub-frame dissolve is desktop-only, so an absent
+    // odd frame costs nothing visible on a phone. This halves the film's
+    // bytes and request count on touch devices, the dominant share of the
+    // page's weight there (the /p/ set alone is ~17.6 MB over 481 requests).
+    // Critical frames stay dense so the loader's threshold is unchanged.
+    const frameStep = isTouch ? 2 : 1;
+    const canon = (fi: number) => (frameStep === 1 || fi % 2 === 0 ? fi : fi - 1);
     // 33 desktop frames instead of 81: 116MiB at 720p / 261MiB at 1080p.
     // HTTP caching makes evicted frames cheap to revisit without retaining
     // hundreds of megabytes of decoded surfaces in a background tab.
@@ -607,6 +617,7 @@ export default function CanvasLayer({ onReady, onProgress, lenisRef }: CanvasLay
 
     const enqueue = (fi: number) => {
       if (fi < 0 || fi >= FRAME_COUNT) return;
+      if (fi >= criticalCount) fi = canon(fi);
       if (bitmapsRef.current[fi] || loadingRef.current[fi]) return;
       pending.add(fi);
     };
